@@ -1,0 +1,54 @@
+{
+  "commands": [
+    "aide.tools",
+    "aide.roots",
+    "aide.repo"
+  ],
+  "dry_run_results": [
+    {
+      "command": "aide.tools",
+      "returncode": 0,
+      "underlying": "py -3 .aide/scripts/aide_lite.py tools validate"
+    },
+    {
+      "command": "aide.roots",
+      "returncode": 0,
+      "underlying": "py -3 .aide/scripts/aide_lite.py roots validate"
+    },
+    {
+      "command": "aide.repo",
+      "returncode": 0,
+      "underlying": "py -3 .aide/scripts/aide_lite.py repo validate"
+    }
+  ],
+  "execution_results": [
+    {
+      "command": "aide.tools",
+      "result": "PASS",
+      "returncode": 0,
+      "summary": "AIDE Lite tools validate passed; provider/model calls none; network calls none; unknown tool execution false; tool deletion/rename/migration false."
+    },
+    {
+      "command": "aide.roots",
+      "result": "PASS",
+      "returncode": 0,
+      "summary": "AIDE Lite roots validate passed; provider/model calls none; network calls none; file moves false; file deletes false; reference rewrites false."
+    },
+    {
+      "command": "aide.repo",
+      "result": "PASS_WITH_WARNINGS",
+      "returncode": 0,
+      "summary": "AIDE Lite repo validate exited 0 with known unknown file classification warnings.",
+      "warnings": [
+        "unknown file classifications: 1669"
+      ]
+    }
+  ],
+  "failures": [],
+  "next_recommendation": "AIDE-ROOT-00",
+  "task_id": "AIDE-STRUCTURE-02",
+  "warnings": [
+    "repo validate unknown file classifications remain known/non-blocking",
+    "unknown and high-risk tools remain preserved but execution-disabled"
+  ]
+}

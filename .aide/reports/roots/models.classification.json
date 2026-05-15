@@ -1,0 +1,80 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "models/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "__init__.py",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "model_asset",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "models/model_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "model_engine.py",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "model_asset",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "models",
+  "root_path": "models",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "adapt": 2
+    },
+    "risk_counts": {
+      "medium": 2
+    },
+    "sensitivity_counts": {
+      "executable_or_tool": 2,
+      "model_asset": 2,
+      "python_module": 2
+    }
+  },
+  "task_id": null
+}

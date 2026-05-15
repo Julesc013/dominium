@@ -1,0 +1,1324 @@
+{
+  "findings": [
+    {
+      "file": "models/model_engine.py",
+      "line": 8,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 34,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "_VALID_CACHE_MODES = {\"none\", \"by_inputs_hash\"}"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 54,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "return dict(value or {}) if isinstance(value, Mapping) else {}"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 58,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(value, Mapping):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 60,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(value, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 62,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if value is None or isinstance(value, (str, int, float, bool)):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 68,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(values, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 92,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 111,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 136,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "(dict(item) for item in list(payload.get(\"input_signature\") or []) if isinstance(item, Mapping)),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 143,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "(dict(item) for item in list(payload.get(\"output_signature\") or []) if isinstance(item, Mapping)),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 158,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 176,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 181,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 184,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get(\"model_id\", \"\"))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 198,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 200,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 208,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 210,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 213,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get(\"model_type_id\", \"\"))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 218,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 230,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 232,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 235,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get(\"cache_policy_id\", \"\"))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 247,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 271,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 282,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 287,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 290,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get(\"binding_id\", \"\"))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 302,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 305,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: (_as_int(item.get(\"tick\", 0), 0), str(item.get(\"result_id\", \"\")))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 308,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "inputs_hash = str(row.get(\"inputs_hash\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 309,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = str(row.get(\"outputs_hash\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 310,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if (not model_id) or (not binding_id) or (not inputs_hash) or (not outputs_hash):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 315,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 320,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 325,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 330,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 331,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 340,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 346,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(rows, list):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 349,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: (str(item.get(\"model_id\", \"\")), str(item.get(\"binding_id\", \"\")), str(item.get(\"tier\", \"\")), str(item.get(\"inputs_hash\", \"\")))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 349,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: (str(item.get(\"model_id\", \"\")), str(item.get(\"binding_id\", \"\")), str(item.get(\"tier\", \"\")), str(item.get(\"inputs_hash\", \"\")))):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 353,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "inputs_hash = str(row.get(\"inputs_hash\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 354,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = str(row.get(\"outputs_hash\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 355,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if (not model_id) or (not binding_id) or (not inputs_hash) or (not outputs_hash):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 357,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "key = (model_id, binding_id, tier, inputs_hash)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 362,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 363,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 372,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "def _rng_permille(*, stream_name: str, inputs_hash: str, tick: int) -> int:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 373,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "digest = canonical_sha256({\"stream_name\": stream_name, \"inputs_hash\": inputs_hash, \"tick\": int(max(0, _as_int(tick, 0)))})"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 373,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "digest = canonical_sha256({\"stream_name\": stream_name, \"inputs_hash\": inputs_hash, \"tick\": int(max(0, _as_int(tick, 0)))})"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 484,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 504,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 532,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 598,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 599,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 600,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 679,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 680,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 681,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 754,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 755,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 756,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 830,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 831,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 832,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 900,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 901,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 902,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1001,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1002,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1003,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1071,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1072,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1073,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1140,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1141,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1142,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1420,
+      "marker": "profile_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "profile_identity"
+      ],
+      "snippet": "profile_id = str(params.get(\"radiator_profile_id\", \"\")).strip() or None"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1447,
+      "marker": "profile_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "profile_identity"
+      ],
+      "snippet": "\"radiator_profile_id\": profile_id,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1572,
+      "marker": "release",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "heat_release_rate = int(max(0, _binding_param_int(binding=binding, key=\"heat_release_rate\", default_value=0)))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1580,
+      "marker": "release",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "default_value=max(1, heat_release_rate // 4) if heat_release_rate > 0 else 0,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1585,
+      "marker": "release",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "combustion_active = bool(fire_active and fuel_remaining > 0 and heat_release_rate > 0)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1587,
+      "marker": "release",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "heat_emission = int(heat_release_rate if (combustion_active and fuel_consumed > 0) else 0)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1597,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str(_as_map(output_ref.get(\"extensions\")).get(\"quantity_bundle_id\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1607,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 1608,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2065,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = \"\""
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2085,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2085,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2095,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_noise = int((int(rng_seed_hash[:8], 16) % int((max_noise * 2) + 1)) - int(max_noise))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2149,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"rng_seed_hash\": str(rng_seed_hash),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2294,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = \"\""
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2314,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2314,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_seed_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2322,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "rng_roll = int(int(rng_seed_hash[:8], 16) % 1000)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2373,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"rng_seed_hash\": str(rng_seed_hash),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2742,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(row, Mapping):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 2974,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(candidate, Mapping):"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3285,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "cache_index = dict(((row[\"model_id\"], row[\"binding_id\"], row[\"tier\"], row[\"inputs_hash\"]), dict(row)) for row in _normalize_cache_rows(cache_rows))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3342,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "inputs_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3342,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "inputs_hash = canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3362,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "cache_key = (model_id, binding_id, tier, inputs_hash)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3364,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = \"\""
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3368,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if mode == \"by_inputs_hash\" and cached_row:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3372,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "outputs = [dict(item) for item in list(cached_row.get(\"outputs\") or []) if isinstance(item, Mapping)]"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3373,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = str(cached_row.get(\"outputs_hash\", \"\")).strip()"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3377,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "seed = canonical_sha256({\"model_id\": model_id, \"binding_id\": binding_id, \"inputs_hash\": inputs_hash})"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3377,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "seed = canonical_sha256({\"model_id\": model_id, \"binding_id\": binding_id, \"inputs_hash\": inputs_hash})"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3382,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "base_value = int((base_value + _rng_permille(stream_name=rng_stream_name, inputs_hash=inputs_hash, tick=int(current_tick))) % 10000)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3385,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "(dict(item) for item in list(model_row.get(\"output_signature\") or []) if isinstance(item, Mapping)),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3398,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(item, Mapping)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3404,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "discriminator = int(int(canonical_sha256({\"output_id\": output_id, \"idx\": int(idx)})[:8], 16) % 1000)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3411,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "output_extensions = dict(output_ref.get(\"extensions\") or {}) if isinstance(output_ref.get(\"extensions\"), Mapping) else {}"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3412,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "binding_parameters = dict(binding.get(\"parameters\") or {}) if isinstance(binding.get(\"parameters\"), Mapping) else {}"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3413,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "quantity_bundle_id = str("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3414,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "output_extensions.get(\"quantity_bundle_id\")"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3415,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "or binding_parameters.get(\"quantity_bundle_id\")"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3429,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "if quantity_bundle_id:"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3430,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "payload[\"quantity_bundle_id\"] = quantity_bundle_id"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3446,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = canonical_sha256(outputs)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3446,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "outputs_hash = canonical_sha256(outputs)"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3447,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if mode == \"by_inputs_hash\":"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3454,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3455,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3463,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3468,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3469,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3482,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3483,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3491,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3496,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"inputs_hash\": inputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3497,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"outputs_hash\": outputs_hash,"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3514,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "(dict(row) for row in deferred_rows if isinstance(row, Mapping)),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3519,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "(dict(row) for row in output_actions if isinstance(row, Mapping)),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3522,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"observation_rows\": sorted((dict(row) for row in observation_rows if isinstance(row, Mapping)), key=lambda row: str(row.get(\"artifact_id\", \"\"))),"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3566,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3571,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "rows = [dict(item) for item in list(edge_rows or []) if isinstance(item, Mapping)]"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3607,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/model_engine.py",
+      "line": 3667,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "models/__init__.py",
+      "line": 1,
+      "marker": "export",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "\"\"\"META-MODEL-1 constitutive model package exports.\"\"\""
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "models",
+  "schema_version": "dominium.aide.identity_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 142
+  }
+}

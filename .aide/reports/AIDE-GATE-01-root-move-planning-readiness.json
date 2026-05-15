@@ -1,0 +1,282 @@
+{
+  "authorized_next": [
+    "AIDE-MOVE-01-PLAN"
+  ],
+  "blockers": [],
+  "branch": "main",
+  "first_move_candidate": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "risk": "low",
+    "root": "ide",
+    "selected": true,
+    "subtree": "ide/README.md and ide/manifests projection docs/examples"
+  },
+  "gate_result": "PASS_WITH_WARNINGS",
+  "head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "inventory_waves": [
+    {
+      "complete": true,
+      "missing_evidence": [],
+      "notes": "inventory evidence present",
+      "status": "complete",
+      "wave": "AIDE-ROOT-01"
+    },
+    {
+      "complete": true,
+      "missing_evidence": [],
+      "notes": "inventory evidence present",
+      "status": "complete",
+      "wave": "AIDE-ROOT-02"
+    },
+    {
+      "complete": true,
+      "missing_evidence": [],
+      "notes": "inventory evidence present",
+      "status": "complete",
+      "wave": "AIDE-ROOT-03"
+    },
+    {
+      "complete": true,
+      "missing_evidence": [],
+      "notes": "inventory evidence present",
+      "status": "complete",
+      "wave": "AIDE-ROOT-04"
+    },
+    {
+      "complete": true,
+      "missing_evidence": [],
+      "notes": "inventory evidence present",
+      "status": "complete",
+      "wave": "AIDE-ROOT-05"
+    }
+  ],
+  "known_warnings": [
+    "draft candidate has high reference complexity and requires AIDE-MOVE-01-PLAN review",
+    "AIDE repo validate advisory unknown classifications remain",
+    "full eval/full CTest/build/package/release not run"
+  ],
+  "move_apply_authorized": false,
+  "move_planning_authorized": true,
+  "no_apply_invariants": {
+    "active_aliases": false,
+    "deletes_applied": false,
+    "exceptions_retired": false,
+    "moves_applied": false,
+    "product_source_runtime_build_changed": false,
+    "references_rewritten": false,
+    "renames_applied": false
+  },
+  "origin_main": "b4342d70dfdda7903d61ed78113ab0125184dfc7",
+  "reconciliation_outputs": [
+    {
+      "notes": "present",
+      "path": ".aide/reports/roots/AIDE-ROOT-06-reconciliation.json",
+      "present": true,
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/reports/roots/AIDE-ROOT-06-move-wave-candidates.json",
+      "present": true,
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/reports/roots/AIDE-ROOT-06-first-move-recommendation.json",
+      "present": true,
+      "valid": true
+    },
+    {
+      "notes": "draft/not-approved/no-apply",
+      "path": ".aide/refactors/draft_move_wave_AIDE-MOVE-01.json",
+      "present": true,
+      "valid": true
+    }
+  ],
+  "root_framework_outputs": [
+    {
+      "notes": "present",
+      "path": ".aide/refactors/root_recycling.schema.json",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/refactors/salvage_map.schema.json",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/refactors/move_map.schema.json",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/refactors/path_aliases.toml",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": ".aide/reports/roots/root-recycling-index.json",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/inventory_root.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/classify_files.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/generate_salvage_map.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/check_salvage_map.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/scan_references.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    },
+    {
+      "notes": "present",
+      "path": "tools/aide/check_no_raw_root_references.py",
+      "present": true,
+      "role": "root_framework",
+      "valid": true
+    }
+  ],
+  "schema_version": "dominium.aide.gate.root_move_planning.v1",
+  "sync_status": {
+    "checkout_main": "pass",
+    "fetch_all_prune": "pass",
+    "local_ahead_count": 1,
+    "local_ahead_origin_main": true,
+    "pull_ff_only_origin_main": "pass"
+  },
+  "task_id": "AIDE-GATE-01",
+  "validation": [
+    {
+      "command": "python -m py_compile tools/aide/root_recycling_common.py tools/aide/inventory_root.py tools/aide/classify_files.py tools/aide/generate_salvage_map.py tools/aide/check_salvage_map.py tools/aide/scan_references.py tools/aide/check_no_raw_root_references.py tools/aide/scan_identity_markers.py tools/aide/scan_authority_markers.py tools/aide/scan_semantic_markers.py tools/aide/scan_abi_build_markers.py tools/aide/reconcile_root_inventories.py tools/aide/select_move_wave.py",
+      "notes": "root recycling tools compile",
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/validators/check_repo_layout.py --repo-root . --strict",
+      "notes": "ignored untracked local roots are excluded",
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "notes": "ignored untracked local roots are excluded",
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "notes": "strict validator passed",
+      "result": "PASS"
+    },
+    {
+      "command": "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "notes": "strict validator passed",
+      "result": "PASS"
+    },
+    {
+      "command": "python scripts/verify_docs_sanity.py --repo-root .",
+      "notes": "Docs sanity OK",
+      "result": "PASS"
+    },
+    {
+      "command": "python scripts/verify_build_target_boundaries.py --repo-root .",
+      "notes": "build boundary checks passed",
+      "result": "PASS"
+    },
+    {
+      "command": "python scripts/verify_ui_shell_purity.py --repo-root .",
+      "notes": "UI shell purity OK",
+      "result": "PASS"
+    },
+    {
+      "command": "python scripts/verify_abi_boundaries.py --repo-root .",
+      "notes": "ABI boundary check OK",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "notes": "AIDE doctor passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "notes": "AIDE validate passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py test",
+      "notes": "AIDE test passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py selftest",
+      "notes": "AIDE selftest passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+      "notes": "AIDE tools validate passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py roots validate",
+      "notes": "AIDE roots validate passed",
+      "result": "PASS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py repo validate",
+      "notes": "unknown file classifications remain advisory",
+      "result": "PASS_WITH_WARNINGS"
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "notes": "latest commit check passed",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "notes": "CRLF warnings only",
+      "result": "PASS_WITH_WARNINGS"
+    },
+    {
+      "command": "git diff --cached --check",
+      "notes": "no staged changes",
+      "result": "PASS"
+    }
+  ]
+}

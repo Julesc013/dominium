@@ -1,0 +1,52 @@
+{
+  "constraints": {
+    "deletes_allowed": false,
+    "moves_allowed": false,
+    "path_aliases_allowed": false,
+    "reference_rewrites_allowed": false,
+    "renames_allowed": false
+  },
+  "notes": {
+    "summary": "This is planning evidence only."
+  },
+  "plan": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "created_by": "AIDE-ROOT-06",
+    "id": "AIDE-MOVE-01",
+    "purpose": "Draft first low-risk move wave candidate; no application authorized.",
+    "status": "draft"
+  },
+  "required_before_apply": {
+    "blockers": [
+      "draft-only plan",
+      "high reference complexity requires review"
+    ],
+    "evidence": [
+      "approved salvage map",
+      "approved move map",
+      "reference rewrite plan",
+      "rollback packet"
+    ],
+    "validators": [
+      "repo_layout_strict",
+      "root_allowlist_strict",
+      "distribution_layout_strict",
+      "component_matrices_strict",
+      "docs_sanity",
+      "build_target_boundaries",
+      "ui_shell_purity",
+      "abi_boundaries"
+    ]
+  },
+  "selection": {
+    "reason": "Selected as the narrowest low-risk docs/projection/evidence candidate; still not approved for application.",
+    "recommended": true,
+    "reference_complexity": "high",
+    "reversibility": "easy",
+    "risk": "low",
+    "root": "ide",
+    "subtree": "ide/README.md and ide/manifests projection docs/examples",
+    "value": "medium"
+  }
+}

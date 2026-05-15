@@ -1,0 +1,1062 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".aide/git/workflow-detection.json",
+      "line": 27,
+      "snippet": "\"safety/mega-13cb8ca7\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/command-logs/command-summary.json",
+      "line": 70,
+      "snippet": "\"stdout_head\": \"canon-clean-2\\nsafety/mega-13cb8ca7\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/commands-run.md",
+      "line": 12,
+      "snippet": "| git_tag_list | git tag --list | PASS | 0 | 0.058 | canon-clean-2 | safety/mega-13cb8ca7 | .aide\\queue\\DCHECK-01-dominium-aide-operating-baseline-audit\\evidence\\command-logs-rerun\\git_tag_list.log |"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-current/summary.json",
+      "line": 60,
+      "snippet": "\"summary\":  \"canon-clean-2 | safety/mega-13cb8ca7\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-rerun/summary.json",
+      "line": 78,
+      "snippet": "\"summary\": \"canon-clean-2 | safety/mega-13cb8ca7\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/repo-state.md",
+      "line": 17,
+      "snippet": "- Tags observed: `canon-clean-2`, `safety/mega-13cb8ca7`."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/validation.md",
+      "line": 11,
+      "snippet": "- `git tag --list`: PASS; `canon-clean-2`, `safety/mega-13cb8ca7`."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2162,
+      "snippet": "\"archive/legacy/launcher_core_launcher/launcher/core/safety/launcher_safety.cpp\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3835,
+      "snippet": "\"contracts/schemas/safety/safety_instance.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3836,
+      "snippet": "\"contracts/schemas/safety/safety_pattern.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 9089,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11649,
+      "snippet": "\"safety/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11650,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/launcher_core_launcher/launcher/core/CMakeLists.txt",
+      "line": 7,
+      "snippet": "safety/launcher_safety.cpp"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/launcher_core_launcher/launcher/core/safety/launcher_safety.cpp",
+      "line": 2,
+      "snippet": "FILE: source/dominium/launcher/core/src/safety/launcher_safety.cpp"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/safety_instance.schema.json",
+      "line": 7,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/safety_pattern.schema.json",
+      "line": 7,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/safety_pattern_registry.schema.json",
+      "line": 7,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/chem/process_equipment_profile.schema",
+      "line": 12,
+      "snippet": "- Runtime/process layers enforce reaction execution and safety/compliance behavior."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/fluid/fluid_node_payload.schema",
+      "line": 8,
+      "snippet": "- Declare fluid node behavior through model/safety/state references, not inline device logic."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/safety/safety_instance.schema",
+      "line": 1,
+      "snippet": "SCHEMA: safety/safety_instance.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/safety/safety_pattern.schema",
+      "line": 1,
+      "snippet": "SCHEMA: safety/safety_pattern.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/system/system_template.schema",
+      "line": 8,
+      "snippet": "- Bind template declarations to interface/invariant/macro/tier/safety/spec contracts."
+    },
+    {
+      "classification": "unknown",
+      "file": "data/agents/agent_mirror_registry.json",
+      "line": 147,
+      "snippet": "\"maintenance_rule\": \"Create only when a bounded profile need is justified and later \u03a3 safety/task prompts provide sufficient guardrails.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/build_graph.json",
+      "line": 1,
+      "snippet": "{\"build_files_scanned\":[\"CMakeLists.txt\",\"CMakePresets.json\",\"app/CMakeLists.txt\",\"attic/src_quarantine/legacy/source/CMakeLists.txt\",\"attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\"client/CMakeLists.txt\",\"cmake/BaselineHeader"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2268,
+      "snippet": "\"safety/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2269,
+      "snippet": "\"safety/safety_engine.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/release_index_policy_report.json",
+      "line": 1,
+      "snippet": "{\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"changelog_files\":[\"CHANGELOG.md\",\"docs/architecture/CHANGELOG_ARCH.md\",\"docs/engine/CODE_1_CHANGELOG.md\"],\"default_resolution_policy_id\":\"policy.exact_suite\",\"determinism_replay_match\":true,"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/process_registry.json",
+      "line": 6354,
+      "snippet": "\"description\": \"Canonical SYS-5 certification evaluation process; validates interface/invariants/spec/safety/degradation inputs deterministically and emits certification result rows with optional certificate issuance.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_runtime_critical_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"3ab4d8f2221fb4913b59aaf6a9754c3fe978cb869ff726ef659ed10bc855c1c1\",\"entries\":[{\"architecture_impact\":9,\"blocked_file_count\":537,\"confidence\":0.9,\"current_root\":\"src\",\"example_files\":[\"src/embodiment/body/__init_"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_tool_only_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c3a1403ff836cd0c758ff1dabfc0d0fd9789bf3f441a67f3459177943a18f0c8\",\"entries\":[{\"category\":\"tools\",\"confidence\":0.8137,\"current_module_id\":\"unknown.src.appshell\",\"current_root\":\"src\",\"evidence\":{\"build_targets\":["
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_move_map.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_path\":\"data/restructure/src_domain_mapping_lock_approved_v4.json\",\"deterministic_fingerprint\":\"86c6801db990616d4038140d8f366680b2e452d5d81818c527f8cba18687b91d\",\"readiness_contract_path\":\"data/restructure/xi5_readiness_contr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_postmove_residual_src_report.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_roots\":[\"app/src\",\"src\"],\"deferred_to_xi5b_remaining\":[{\"deferred_phase_class\":\"legacy_source_pocket\",\"reason\":\"Current XI-4b mapping is accepted without further conflict because no stronger contradictory evidence was int"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_batch_plan.json",
+      "line": 1,
+      "snippet": "{\"batches\":[{\"batch_id\":\"BATCH_SAFE_1\",\"exclusion_logic\":\"Exclude tools/ui_shared and all legacy/content/manually blocked rows.\",\"execution_allowed_in_this_pass\":true,\"expected_repo_effects\":[\"Remove component-local src roots under libs/bui"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_postmove_residual_src_report.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths_remaining\":[],\"deterministic_fingerprint\":\"d05c7ccabf60f3787f9ba143d15a7d2df651277bc3a61929ce54319d2e97c79e\",\"remaining_classification_counts\":{\"BLOCKED_BY_MISSING_PRECONDITION\":18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_residual_classification_lock.json",
+      "line": 1,
+      "snippet": "{\"classification_counts\":{\"BLOCKED_BY_MISSING_PRECONDITION\":18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN\":94,\"LEGACY_KEEP_FOR_NOW\":92,\"MERGE_REQUIRED\":1,\"SAFE_LOCAL_REHOME\":48},\"deterministic_fingerprint\":\"93d820df0574c51222d293806a664e7e4cd2600ae7ff4c"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_batch_plan.json",
+      "line": 1,
+      "snippet": "{\"batches\":[{\"batch_id\":\"BATCH_SAFE_BUILD_1\",\"batch_status\":\"applied_successfully\",\"exclusion_logic\":\"Exclude Xcode adapter rows and policy-retained residual roots.\",\"execution_allowed_in_this_pass\":true,\"expected_repo_effects\":[\"Remove act"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_blocker_delta.json",
+      "line": 1,
+      "snippet": "{\"after_counts\":{},\"before_counts\":{\"BLOCKED_BY_MISSING_PRECONDITION\":18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN\":94,\"LEGACY_KEEP_FOR_NOW\":92},\"delta_by_class\":{\"BLOCKED_BY_MISSING_PRECONDITION\":-18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN\":-94,\"LEGACY_KEEP_FOR"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_execution_log.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths_remaining\":[],\"deterministic_fingerprint\":\"99232621302bc43f59bfaeade3db5a8388ff2b18f40aa7e0f21ba328f6db767a\",\"executed_action_counts\":{\"move\":99,\"move_to_attic\":10,\"retain_by_policy\":95},\"executed_item_count\":2"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_residual_classification_lock.json",
+      "line": 1,
+      "snippet": "{\"active_blocker_counts\":{},\"allowed_exception_counts\":{\"INTENTIONAL_RESIDUAL_ALLOWED\":95,\"OBSOLETE_ALREADY_RESOLVED\":109},\"current_classification_counts\":{\"INTENTIONAL_RESIDUAL_ALLOWED\":95,\"OBSOLETE_ALREADY_RESOLVED\":109},\"dangerous_shadow"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_residual_reality_refresh.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths\":[],\"dangerous_shadow_roots_reappeared\":false,\"deterministic_fingerprint\":\"8bec06d13718e3a9c81de9a14572b7d46965a31123298c40813954361ec2727f\",\"ignored_generated_source_like_roots\":[{\"reason\":\"untracked_or_genera"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1734,
+      "snippet": "- `docs/safety/SAFETY_PATTERN_LIBRARY.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ENERGY_MODEL.md",
+      "line": 92,
+      "snippet": "- safety/code violations"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/FLUIDS_MODEL.md",
+      "line": 94,
+      "snippet": "- safety/pressure violations"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1641,
+      "snippet": "| `docs/safety/SAFETY_PATTERN_LIBRARY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `LOGIC: signals/state machines/compile`, `SYS/PROC: capsules, stabilization, drift`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPAT: com"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/COUPLE0_RETRO_AUDIT.md",
+      "line": 72,
+      "snippet": "- `coupling.fluid.pressure_to_mech.load` (safety/failure coupling)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1641,
+      "snippet": "| `docs/safety/SAFETY_PATTERN_LIBRARY.md` | Safety Pattern Library and Interlock Framework | `canon`, `compat`, `determinism`, `diag`, `distribution`, `logic`, `meta`, `pack`, `release`, `time`, `validation` | `2026-03-16` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ELEC0_RETRO_AUDIT.md",
+      "line": 46,
+      "snippet": "- [src/safety/safety_engine.py](/d:/Projects/Dominium/dominium/src/safety/safety_engine.py)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/FLUID2_RETRO_AUDIT.md",
+      "line": 44,
+      "snippet": "- Route burst outcomes through safety/process artifacts and explain contracts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/FLUID_CONTAINMENT_BASELINE.md",
+      "line": 76,
+      "snippet": "Generation uses explain contracts + decision/safety/hazard/model evidence and produces `explain_artifact_rows`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/FORMALIZATION_BASELINE.md",
+      "line": 89,
+      "snippet": "- `spec_id` bridge enables MOB safety/compliance checks without hardcoded rail/road assumptions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/LOGIC2_RETRO_AUDIT.md",
+      "line": 32,
+      "snippet": "- Reviewed `src/safety/safety_engine.py` and `data/registries/safety_pattern_registry.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/LOGIC8_RETRO_AUDIT.md",
+      "line": 22,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/LOGIC_ELEMENTS_BASELINE.md",
+      "line": 23,
+      "snippet": "- SYS safety patterns remain safety/process orchestration contracts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MACROCAPSULE_BEHAVIOR_BASELINE.md",
+      "line": 19,
+      "snippet": "- Boundary input collection includes flow/signal/safety/declared field samples."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE_INDEX_POLICY0_RETRO_AUDIT.md",
+      "line": 45,
+      "snippet": "- Current local tags are legacy or safety-oriented: `canon-clean-2`, `safety/mega-13cb8ca7`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE_INDEX_POLICY_BASELINE.md",
+      "line": 34,
+      "snippet": "- current repo tags observed during retro audit: `canon-clean-2, safety/mega-13cb8ca7`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 568,
+      "snippet": "safety/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5966,
+      "snippet": "safety/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RWAM_BASELINE.md",
+      "line": 36,
+      "snippet": "- mobility/safety/time: MOB + ABS + CTRL + MECH + FIELD"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SAFETY_PATTERN_BASELINE.md",
+      "line": 30,
+      "snippet": "- `docs/safety/SAFETY_PATTERN_LIBRARY.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SAFETY_PATTERN_BASELINE.md",
+      "line": 34,
+      "snippet": "- `schema/safety/safety_pattern.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SAFETY_PATTERN_BASELINE.md",
+      "line": 35,
+      "snippet": "- `schema/safety/safety_instance.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYS5_RETRO_AUDIT.md",
+      "line": 34,
+      "snippet": "- evaluate interface/invariants/spec/safety/degradation checks"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYSTEM_FORENSICS_BASELINE.md",
+      "line": 28,
+      "snippet": "- subsystem contributors and safety/spec interactions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/THERM1_RETRO_AUDIT.md",
+      "line": 26,
+      "snippet": "- Notes: No direct shutdown mutation is performed in thermal engine; consumers are expected to apply trips through safety/process runtime."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/THERM3_RETRO_AUDIT.md",
+      "line": 51,
+      "snippet": "4. Extend safety/proof/inspection hooks"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/THERMAL_CONSTITUTION_BASELINE.md",
+      "line": 24,
+      "snippet": "- safety/hazard hooks"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+      "line": 378,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+      "line": 393,
+      "snippet": "\"src/safety/safety_engine.py\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json",
+      "line": 72,
+      "snippet": "\"output\": \"MSBuild version 18.0.5+e22287bf1 for .NET Framework\\n\\n  Run TestX and bump build number on success\\n  Test project C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\\n          Start   1: phase6_audit\\n    1/381 Test   #1: phas"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/electric/ELECTRICAL_UX_MODEL.md",
+      "line": 84,
+      "snippet": "- safety/trip event rows (`elec_trip_events`, `safety_events`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/GATES_AND_PROOFS.md",
+      "line": 194,
+      "snippet": "governance delta, mirror surface spec, and safety/escalation policy delta."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+      "line": 27,
+      "snippet": "| invent a crop | biology/ecology/medicine/evolution; geology/hydrology/climate; knowledge/language/culture/institutions; economy/logistics/industry | matter\u2194biology; biology\u2194culture; formalization/standards; safety/compliance | reproducibi"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+      "line": 28,
+      "snippet": "| run a factory | matter/physics/materials/construction; economy/logistics/industry; transport/infrastructure/networks; agents/minds/labor; knowledge/language/culture/institutions; persistence/networking/replay/modularity | knowledge\u2194indust"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+      "line": 30,
+      "snippet": "| colonize a moon | space/astronomy/offworld; matter/physics/materials/construction; geology/hydrology/climate; transport/infrastructure/networks; biology/ecology/medicine/evolution; politics/law/governance/war | causal/physical; infrastruc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/process/PROCESS_DEFINITION_MODEL.md",
+      "line": 30,
+      "snippet": "- Compliance/safety/spec verification."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 148,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 405,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`137` total_score=`60.83` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.3b31f4cda90f9694.md",
+      "line": 50,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.3b31f4cda90f9694.md",
+      "line": 73,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`17` total_score=`52.73` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`61.01` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.51ebeaff11b28eb5.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/SYSTEM_INTERFACE_INVARIANT_BASELINE.md, docs/electric/PROTECTION_AND_FAULT_MODEL.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/safety/SAFETY_PATTERN_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 159,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 449,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`136` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`61.01` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ad10341f8e797629.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/FAILURE_MODE_CATALOG.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/safety/SAFETY_PATTERN_LIBRARY.md, docs/specs/launcher/ARCHITECTURE.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b9c39c598132a295.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b9c39c598132a295.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b9c39c598132a295.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b9c39c598132a295.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b9c39c598132a295.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c5ddd63f7fcaacc0.md",
+      "line": 20,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c5ddd63f7fcaacc0.md",
+      "line": 28,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`merge` rank=`3` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.edacf213b2af653f.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.edacf213b2af653f.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.edacf213b2af653f.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.edacf213b2af653f.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.edacf213b2af653f.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.03d1474e0c2ba6ec.md",
+      "line": 31,
+      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/VALIDATION_STACK_MAP.md, docs/release/PROVISIONAL_FEATURE_LIST.md, "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`61.01` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0a4e00c802ba31e9.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/FAILURE_MODE_CATALOG.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/safety/SAFETY_PATTERN_LIBRARY.md, docs/specs/launcher/ARCHITECTURE.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.2e963ab89d5c4fef.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.2e963ab89d5c4fef.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.2e963ab89d5c4fef.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.2e963ab89d5c4fef.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.2e963ab89d5c4fef.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.3d73ce66e079e576.md",
+      "line": 57,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.3d73ce66e079e576.md",
+      "line": 82,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`19` total_score=`52.73` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 148,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 405,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`137` total_score=`60.83` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`61.01` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.8d6d991a8eef7c0c.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/SYSTEM_INTERFACE_INVARIANT_BASELINE.md, docs/electric/PROTECTION_AND_FAULT_MODEL.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/safety/SAFETY_PATTERN_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b3ecb089496e17cf.md",
+      "line": 20,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b3ecb089496e17cf.md",
+      "line": 28,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`merge` rank=`3` total_score=`53.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cfb8ee99cf55694d.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cfb8ee99cf55694d.md",
+      "line": 18,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cfb8ee99cf55694d.md",
+      "line": 19,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cfb8ee99cf55694d.md",
+      "line": 23,
+      "snippet": "- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cfb8ee99cf55694d.md",
+      "line": 24,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 159,
+      "snippet": "- `src/safety/safety_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 453,
+      "snippet": "- `src/safety/safety_engine.py` disposition=`drop` rank=`138` total_score=`67.98` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 154,
+      "snippet": "- `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is preserved."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/LAYOUT_ENFORCEMENT.md",
+      "line": 119,
+      "snippet": "POST-CONVERGE-04 keeps the active layout exception count at 32 after narrowing high-risk `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` exceptions. These roots remain explicit protected revie"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 137,
+      "snippet": "POST-CONVERGE-04 keeps this boundary conservative for the high-risk roots: `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` were not moved because active imports, CMake/ABI references, embedded"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 153,
+      "snippet": "After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because the"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 280,
+      "snippet": "- `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is unchanged."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 194,
+      "snippet": "| `safety/` | current_contract_or_schema_root | Safety/contract-adjacent surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_02_WRAPPER_TOOLING_CLEANUP.md",
+      "line": 32,
+      "snippet": "This task moved no product roots, runtime roots, domain roots, content/pack/profile roots, security/safety/spec/update roots, or core/control/net roots. It changed no source semantics, product IDs, executable names, install IDs, pack IDs, v"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_03_CONTENT_PACK_CLEANUP.md",
+      "line": 32,
+      "snippet": "- no security/safety/spec/update roots moved"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_04_COMPAT_LIB_SPEC_SECURITY_CLEANUP.md",
+      "line": 36,
+      "snippet": "- no compatibility/security/safety/update semantics changed"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_04_COMPAT_LIB_SPEC_SECURITY_CLEANUP.md",
+      "line": 157,
+      "snippet": "- security/safety/spec roots remain active due to protected semantics"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md",
+      "line": 103,
+      "snippet": "- `security/`, `safety/`, and `specs/` require protected review."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4B_UNBLOCK_REPORT.md",
+      "line": 310,
+      "snippet": "- `src/safety/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 38,
+      "snippet": "- deferred: `legacy/launcher_core_launcher/launcher/core/source/safety/launcher_safety.cpp`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md",
+      "line": 69,
+      "snippet": "- near-failure hazard threshold (from safety/reliability hooks)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/system/SYSTEM_FORENSICS_MODEL.md",
+      "line": 31,
+      "snippet": "- safety/compliance/reliability contributors,"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e177_inline_protection_smell.py",
+      "line": 55,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e177_inline_protection_smell.py",
+      "line": 92,
+      "snippet": "related_paths=[rel_path, \"safety/safety_engine.py\", \"tools/xstack/sessionx/process_runtime.py\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "line": 36,
+      "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "line": 46,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "line": 85,
+      "snippet": "related_paths=[rel_path, \"docs/safety/SAFETY_PATTERN_LIBRARY.md\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e184_breaker_bypass_smell.py",
+      "line": 53,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e184_breaker_bypass_smell.py",
+      "line": 92,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e187_inline_trip_smell.py",
+      "line": 55,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e189_unlogged_trip_smell.py",
+      "line": 83,
+      "snippet": "\"safety/safety_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e191_direct_breaker_toggle_smell.py",
+      "line": 54,
+      "snippet": "\"safety/safety_engine.py\","
+    }
+  ],
+  "references_rewritten": false,
+  "root": "safety",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 175
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Meta subsystem package.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1941,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/numeric.py",
+      "relative_path": "numeric.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 12956,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/observability.py",
+      "relative_path": "observability.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 10256,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/compile",
+      "relative_path": "compile",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"COMPILE-0 exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/compile/__init__.py",
+      "relative_path": "compile/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1832,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/compile/compile_engine.py",
+      "relative_path": "compile/compile_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 43121,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/compute",
+      "relative_path": "compute",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"META-COMPUTE0 exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/compute/__init__.py",
+      "relative_path": "compute/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1069,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/compute/compute_budget_engine.py",
+      "relative_path": "compute/compute_budget_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 27505,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/explain",
+      "relative_path": "explain",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic explain artifact helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/explain/__init__.py",
+      "relative_path": "explain/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 549,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/explain/explain_engine.py",
+      "relative_path": "explain/explain_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 23142,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/extensions",
+      "relative_path": "extensions",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Extension discipline helpers for deterministic normalization and access.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/extensions/__init__.py",
+      "relative_path": "extensions/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1067,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Compatibility wrapper for the extension discipline engine.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/extensions/extensions_engine.py",
+      "relative_path": "extensions/extensions_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1053,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/identity",
+      "relative_path": "identity",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"UNIVERSAL-ID helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/identity/__init__.py",
+      "relative_path": "identity/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1667,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/identity/identity_validator.py",
+      "relative_path": "identity/identity_validator.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 31239,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/instrumentation",
+      "relative_path": "instrumentation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic instrumentation surface helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/instrumentation/__init__.py",
+      "relative_path": "instrumentation/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1762,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/instrumentation/instrumentation_engine.py",
+      "relative_path": "instrumentation/instrumentation_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 27436,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/profile",
+      "relative_path": "profile",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic unified profile override helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/profile/__init__.py",
+      "relative_path": "profile/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 963,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/profile/profile_engine.py",
+      "relative_path": "profile/profile_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 21043,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/provenance",
+      "relative_path": "provenance",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic provenance compaction helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/provenance/__init__.py",
+      "relative_path": "provenance/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 501,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/provenance/compaction_engine.py",
+      "relative_path": "provenance/compaction_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 23016,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/reference",
+      "relative_path": "reference",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"META-REF0 exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/reference/__init__.py",
+      "relative_path": "reference/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1256,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/reference/geo_small_reference.py",
+      "relative_path": "reference/geo_small_reference.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 12889,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/reference/logic_small_reference.py",
+      "relative_path": "reference/logic_small_reference.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 13029,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/reference/reference_engine.py",
+      "relative_path": "reference/reference_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 44373,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "meta/stability",
+      "relative_path": "stability",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"META-STABILITY helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/stability/__init__.py",
+      "relative_path": "stability/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1141,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Registry families and file inventories for META-STABILITY.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/stability/stability_scope.py",
+      "relative_path": "stability/stability_scope.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 4826,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "meta/stability/stability_validator.py",
+      "relative_path": "stability/stability_validator.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 26384,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "meta",
+  "root_path": "meta",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 10,
+    "file_count": 26,
+    "tracked_file_count": 26
+  },
+  "task_id": null
+}

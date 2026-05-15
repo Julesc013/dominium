@@ -1,0 +1,53 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "locks/pack_lock.mvp_default.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "pack_lock.mvp_default.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "lock_sensitive",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "locks",
+  "root_path": "locks",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "preserve_unknown": 1
+    },
+    "risk_counts": {
+      "protected": 1
+    },
+    "sensitivity_counts": {
+      "authority_sensitive": 1,
+      "lock_sensitive": 1,
+      "machine_readable": 1
+    }
+  },
+  "task_id": null
+}

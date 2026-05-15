@@ -1,0 +1,324 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "deletes_applied": false,
+  "entries": [
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/canon_state.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/release_policy.toml",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/repox_exemptions.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/abstraction.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/change_shape.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/core.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/data_first.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/derived_artifacts.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/packaging.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/security.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "repo.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "repo/repox/rulesets/ui_parity.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "generated_from_inventory": "repo.inventory.json",
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "repo",
+  "schema_version": "dominium.aide.salvage_map.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "draft",
+  "summary": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "entry_count": 13
+  },
+  "task_id": null
+}

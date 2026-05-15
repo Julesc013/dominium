@@ -1,0 +1,40 @@
+[policy]
+id = "dominium.aide.migration.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Define the AIDE-controlled lifecycle for Dominium root and tool migration work."
+
+[lifecycle]
+steps = [
+  "inventory",
+  "classify",
+  "salvage_map",
+  "move_map",
+  "reference_rewrite",
+  "validate",
+  "build_test",
+  "evidence",
+  "shim_retire"
+]
+
+[file_fates]
+values = ["keep", "adapt", "extract", "convert", "archive", "drop"]
+drop_is_delete_approval = false
+archive_is_move_approval = false
+
+[apply_policy]
+apply_without_approved_move_map = false
+manual_drag_drop_allowed = false
+bulk_mixed_root_move_allowed = false
+unknown_tool_execution_allowed = false
+path_alias_application_allowed_by_default = false
+
+[rollback]
+required_before_apply = true
+must_include = ["source_paths", "target_paths", "references", "validation_restore_plan", "ledger_event"]
+
+[evidence]
+ledger = ".aide/ledgers/migration_ledger.jsonl"
+move_maps = ".aide/refactors/"
+salvage_maps = ".aide/refactors/"
+reports = ".aide/reports/"

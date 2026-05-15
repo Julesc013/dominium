@@ -1,0 +1,70 @@
+{
+  "blockers": [
+    "Unknown and high-risk legacy tools remain execution-disabled.",
+    "Broad XStack/AuditX/RepoX/TestX execution is deferred.",
+    "Full eval, full CTest, build, package, release, and GitHub mutation are outside this task.",
+    "Strict legacy repo layout validators may be blocked locally by ignored generated build/out roots."
+  ],
+  "commands": [
+    {
+      "command": "aide.tools",
+      "execution_allowed": true,
+      "underlying": [
+        "py",
+        "-3",
+        ".aide/scripts/aide_lite.py",
+        "tools",
+        "validate"
+      ]
+    },
+    {
+      "command": "aide.roots",
+      "execution_allowed": true,
+      "underlying": [
+        "py",
+        "-3",
+        ".aide/scripts/aide_lite.py",
+        "roots",
+        "validate"
+      ]
+    },
+    {
+      "command": "aide.repo",
+      "execution_allowed": true,
+      "underlying": [
+        "py",
+        "-3",
+        ".aide/scripts/aide_lite.py",
+        "repo",
+        "validate"
+      ]
+    }
+  ],
+  "execution_policy": {
+    "apply_allowed": false,
+    "dry_run_first": true,
+    "network_allowed": false,
+    "unknown_tools_allowed": false,
+    "writes_allowed": false
+  },
+  "next_tasks": [
+    "AIDE-ROOT-00",
+    "AIDE-STRUCTURE-03",
+    "POST-CONVERGE-10F"
+  ],
+  "schema_version": "dominium.aide.wrapper_plan.v1",
+  "task_id": "AIDE-STRUCTURE-02",
+  "underlying_commands": {
+    "aide.repo": "py -3 .aide/scripts/aide_lite.py repo validate",
+    "aide.roots": "py -3 .aide/scripts/aide_lite.py roots validate",
+    "aide.tools": "py -3 .aide/scripts/aide_lite.py tools validate"
+  },
+  "validations": [
+    "python tools/aide/run_task.py --repo-root . list",
+    "python tools/aide/run_task.py --repo-root . describe aide.tools",
+    "python tools/aide/run_task.py --repo-root . run aide.tools --dry-run",
+    "python tools/aide/run_task.py --repo-root . run aide.tools",
+    "AIDE doctor/validate/test/selftest",
+    "strict existing validators where not blocked by known local generated roots"
+  ]
+}

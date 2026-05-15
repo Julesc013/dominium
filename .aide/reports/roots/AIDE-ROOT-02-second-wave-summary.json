@@ -1,0 +1,171 @@
+{
+  "deletes_applied": false,
+  "fate_counts": {
+    "adapt": 8,
+    "convert": 59,
+    "preserve_unknown": 1825
+  },
+  "identity_summary": {
+    "bundle_identity": 3,
+    "capability_sensitive": 2,
+    "documentation": 59,
+    "executable_or_tool": 8,
+    "generated": 1,
+    "identity_sensitive": 1539,
+    "machine_readable": 1435,
+    "model_asset": 2,
+    "pack_identity": 256,
+    "profile_identity": 1,
+    "python_module": 8,
+    "template_scaffold": 2,
+    "test_or_fixture": 6
+  },
+  "ids_changed": false,
+  "moves_applied": false,
+  "recommended_next_task": "next AIDE-ROOT inventory wave",
+  "renames_applied": false,
+  "risk_counts": {
+    "medium": 6,
+    "protected": 1539,
+    "unknown": 347
+  },
+  "roots": [
+    {
+      "apply_allowed": false,
+      "directory_count": 236,
+      "exists": true,
+      "fate_counts": {
+        "convert": 55,
+        "preserve_unknown": 1460
+      },
+      "file_count": 1279,
+      "reference_count": 7192,
+      "risk_counts": {
+        "protected": 1279,
+        "unknown": 236
+      },
+      "root": "data",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 108,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 4,
+        "convert": 1,
+        "preserve_unknown": 359
+      },
+      "file_count": 256,
+      "reference_count": 2775,
+      "risk_counts": {
+        "protected": 256,
+        "unknown": 108
+      },
+      "root": "packs",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 1,
+      "exists": true,
+      "fate_counts": {
+        "preserve_unknown": 2
+      },
+      "file_count": 1,
+      "reference_count": 279,
+      "risk_counts": {
+        "protected": 1,
+        "unknown": 1
+      },
+      "root": "profiles",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 2,
+      "exists": true,
+      "fate_counts": {
+        "convert": 1,
+        "preserve_unknown": 4
+      },
+      "file_count": 3,
+      "reference_count": 153,
+      "risk_counts": {
+        "protected": 3,
+        "unknown": 2
+      },
+      "root": "bundles",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2
+      },
+      "file_count": 2,
+      "reference_count": 133,
+      "risk_counts": {
+        "medium": 2
+      },
+      "root": "modding",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2
+      },
+      "file_count": 2,
+      "reference_count": 298,
+      "risk_counts": {
+        "medium": 2
+      },
+      "root": "models",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "convert": 2
+      },
+      "file_count": 2,
+      "reference_count": 676,
+      "risk_counts": {
+        "medium": 2
+      },
+      "root": "templates",
+      "salvage_map_status": "not_approved"
+    }
+  ],
+  "schema_version": "dominium.aide.root_second_wave_summary.v1",
+  "sensitivity_counts": {
+    "bundle_identity": 3,
+    "capability_sensitive": 2,
+    "documentation": 59,
+    "executable_or_tool": 8,
+    "generated": 1,
+    "identity_sensitive": 1539,
+    "machine_readable": 1435,
+    "model_asset": 2,
+    "pack_identity": 256,
+    "profile_identity": 1,
+    "python_module": 8,
+    "template_scaffold": 2,
+    "test_or_fixture": 6
+  },
+  "summary": {
+    "directory_count": 347,
+    "file_count": 1545,
+    "high_or_protected_count": 1539,
+    "preserve_unknown_count": 1825,
+    "reference_count": 11506
+  },
+  "task_id": "AIDE-ROOT-02"
+}

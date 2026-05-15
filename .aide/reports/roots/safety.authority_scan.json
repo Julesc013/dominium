@@ -1,0 +1,903 @@
+{
+  "findings": [
+    {
+      "file": "safety/safety_engine.py",
+      "line": 1,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic SAFETY-0 safety pattern evaluation helpers.\"\"\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 7,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 7,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 10,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_PATTERN_INVALID = \"refusal.safety.pattern_invalid\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 10,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_PATTERN_INVALID = \"refusal.safety.pattern_invalid\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 11,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID = \"refusal.safety.instance_invalid\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 11,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID = \"refusal.safety.instance_invalid\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 14,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 26,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "class SafetyEngineError(ValueError):"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 27,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"\"\"Safety engine deterministic refusal.\"\"\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 27,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"\"\"Safety engine deterministic refusal.\"\"\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 31,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "self.reason_code = str(reason_code or REFUSAL_SAFETY_PATTERN_INVALID)"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 31,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "self.reason_code = str(reason_code or REFUSAL_SAFETY_PATTERN_INVALID)"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 73,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "return \"interlock\""
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 90,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "predicate_id = str(row.get(\"predicate_id\", \"\")).strip() or \"predicate.safety.{}\".format(str(idx).zfill(3))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 99,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "condition[\"deterministic_fingerprint\"] = canonical_sha256(dict(condition, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 99,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "condition[\"deterministic_fingerprint\"] = canonical_sha256(dict(condition, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 114,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "action_id = str(row.get(\"action_id\", \"\")).strip() or \"action.safety.{}\".format(str(idx).zfill(3))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 123,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "action[\"deterministic_fingerprint\"] = canonical_sha256(dict(action, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 123,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "action[\"deterministic_fingerprint\"] = canonical_sha256(dict(action, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 128,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def safety_pattern_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 130,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "rows = payload.get(\"safety_patterns\")"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 132,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "rows = _as_map(payload.get(\"record\")).get(\"safety_patterns\")"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 151,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 160,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_row[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload_row, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 160,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload_row[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload_row, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 165,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def build_safety_instance("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 175,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 185,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "raise SafetyEngineError("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 186,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID,"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 186,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID,"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 187,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"safety instance requires instance_id and pattern_id\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 190,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 190,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 194,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def normalize_safety_instance_rows(rows: object) -> List[dict]:"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 203,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "out[instance_id] = build_safety_instance("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 211,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "except SafetyEngineError:"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 216,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 230,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 244,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "payload[\"event_id\"] = \"event.safety.{}\".format("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 245,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 245,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 255,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 255,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 259,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def normalize_safety_event_rows(rows: object) -> List[dict]:"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 268,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "payload = build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 273,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=str(row.get(\"pattern_type\", \"interlock\")).strip(),"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 342,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "def evaluate_safety_instances("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 348,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "max_instance_updates: int,"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 350,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "instances = normalize_safety_instance_rows(instance_rows)"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 353,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "max_updates = int(max(0, _as_int(max_instance_updates, 0)))"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 364,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "if idx >= max_updates:"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 367,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 372,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=\"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 384,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 389,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=\"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 403,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 408,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=\"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 441,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"pattern_type\": str(pattern_row.get(\"pattern_type\", \"interlock\")).strip() or \"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 453,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 458,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=str(pattern_row.get(\"pattern_type\", \"interlock\")).strip() or \"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 468,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event("
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 473,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "pattern_type=str(pattern_row.get(\"pattern_type\", \"interlock\")).strip() or \"interlock\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 481,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "normalized_events = normalize_safety_event_rows(event_rows)"
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 503,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_INSTANCE_INVALID\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 503,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_INSTANCE_INVALID\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 504,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_PATTERN_INVALID\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 504,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_PATTERN_INVALID\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 505,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"SafetyEngineError\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 506,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"build_safety_event\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 507,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"build_safety_instance\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 508,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"evaluate_safety_instances\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 509,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"normalize_safety_event_rows\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 510,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"normalize_safety_instance_rows\","
+    },
+    {
+      "file": "safety/safety_engine.py",
+      "line": 511,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"safety_pattern_rows_by_id\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 1,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"\"\"SAFETY-0 package exports.\"\"\""
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 3,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "from .safety_engine import ("
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 4,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 4,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_INSTANCE_INVALID,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 5,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_PATTERN_INVALID,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 5,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "REFUSAL_SAFETY_PATTERN_INVALID,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 6,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "SafetyEngineError,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 7,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_event,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 8,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "build_safety_instance,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 9,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "evaluate_safety_instances,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 10,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "normalize_safety_event_rows,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 11,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "normalize_safety_instance_rows,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 12,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "safety_pattern_rows_by_id,"
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 16,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_INSTANCE_INVALID\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 16,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_INSTANCE_INVALID\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 17,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_PATTERN_INVALID\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 17,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SAFETY_PATTERN_INVALID\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 18,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"SafetyEngineError\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 19,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"build_safety_event\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 20,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"build_safety_instance\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 21,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"evaluate_safety_instances\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 22,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"normalize_safety_event_rows\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 23,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"normalize_safety_instance_rows\","
+    },
+    {
+      "file": "safety/__init__.py",
+      "line": 24,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"safety_pattern_rows_by_id\","
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "safety",
+  "schema_version": "dominium.aide.authority_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 99
+  }
+}

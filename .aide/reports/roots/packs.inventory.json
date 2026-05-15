@@ -1,0 +1,5048 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Pack compatibility helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "packs/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "identity_sensitive",
+        "pack_identity",
+        "python_module"
+      ],
+      "size": 37,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": "Status: DERIVED",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "packs/README.md",
+      "relative_path": "README.md",
+      "sensitivity_hints": [
+        "documentation",
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "size": 938,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/blueprints",
+      "relative_path": "blueprints",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/blueprints/blueprints.default.m1",
+      "relative_path": "blueprints/blueprints.default.m1",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/blueprints/blueprints.default.m1/data",
+      "relative_path": "blueprints/blueprints.default.m1/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.house.basic.json",
+      "relative_path": "blueprints/blueprints.default.m1/data/blueprint.house.basic.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4307,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.lathe.basic.json",
+      "relative_path": "blueprints/blueprints.default.m1/data/blueprint.lathe.basic.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4533,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.road.segment.basic.json",
+      "relative_path": "blueprints/blueprints.default.m1/data/blueprint.road.segment.basic.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2956,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.simple_bridge.basic.json",
+      "relative_path": "blueprints/blueprints.default.m1/data/blueprint.simple_bridge.basic.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4833,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/blueprints/blueprints.default.m1/data/blueprint.space_elevator.template.json",
+      "relative_path": "blueprints/blueprints.default.m1/data/blueprint.space_elevator.template.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4846,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/compat",
+      "relative_path": "compat",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic pack compatibility validation.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "packs/compat/__init__.py",
+      "relative_path": "compat/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "identity_sensitive",
+        "pack_identity",
+        "python_module"
+      ],
+      "size": 1929,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "packs/compat/pack_compat_validator.py",
+      "relative_path": "compat/pack_compat_validator.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "identity_sensitive",
+        "pack_identity",
+        "python_module"
+      ],
+      "size": 17461,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "packs/compat/pack_verification_pipeline.py",
+      "relative_path": "compat/pack_verification_pipeline.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "identity_sensitive",
+        "pack_identity",
+        "python_module"
+      ],
+      "size": 34345,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core",
+      "relative_path": "core",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/constraints.worldgen.default_lab",
+      "relative_path": "core/constraints.worldgen.default_lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/constraints.worldgen.default_lab/pack.capabilities.json",
+      "relative_path": "core/constraints.worldgen.default_lab/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 274,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"84c5de21544f38d13b3ad1bc5adc371cf9636d2e207b78430e9e2d85da3226a6\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/constraints.worldgen.default_lab/pack.compat.json",
+      "relative_path": "core/constraints.worldgen.default_lab/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1268,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/constraints.worldgen.default_lab/pack.json",
+      "relative_path": "core/constraints.worldgen.default_lab/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 621,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/constraints.worldgen.default_lab/pack.trust.json",
+      "relative_path": "core/constraints.worldgen.default_lab/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 368,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/constraints.worldgen.default_lab/data",
+      "relative_path": "core/constraints.worldgen.default_lab/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/constraints.worldgen.default_lab/data/constraints.lab.navigation.default.json",
+      "relative_path": "core/constraints.worldgen.default_lab/data/constraints.lab.navigation.default.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1873,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.camera",
+      "relative_path": "core/pack.core.camera",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/pack.capabilities.json",
+      "relative_path": "core/pack.core.camera/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 287,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_processes\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"fdbabb51c7af5d6e5cfd4ff9d9f0879f79833c9c6595a93ed80865bd692fc5df\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.jso",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/pack.compat.json",
+      "relative_path": "core/pack.core.camera/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1695,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/pack.json",
+      "relative_path": "core/pack.core.camera/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 735,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/pack.trust.json",
+      "relative_path": "core/pack.core.camera/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 352,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.camera/data",
+      "relative_path": "core/pack.core.camera/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/data/camera_assembly.main.json",
+      "relative_path": "core/pack.core.camera/data/camera_assembly.main.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 732,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.camera/data/camera_processes.json",
+      "relative_path": "core/pack.core.camera/data/camera_processes.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 347,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.diegetic_instruments",
+      "relative_path": "core/pack.core.diegetic_instruments",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/pack.capabilities.json",
+      "relative_path": "core/pack.core.diegetic_instruments/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 301,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_processes\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"c6bfd9643c5ea728ab69cb852c6f914040f7aff03b8ddd921502d51d94dff2a7\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.jso",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/pack.compat.json",
+      "relative_path": "core/pack.core.diegetic_instruments/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1765,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/pack.json",
+      "relative_path": "core/pack.core.diegetic_instruments/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 767,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/pack.trust.json",
+      "relative_path": "core/pack.core.diegetic_instruments/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 366,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.diegetic_instruments/data",
+      "relative_path": "core/pack.core.diegetic_instruments/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/data/instrument_assemblies.json",
+      "relative_path": "core/pack.core.diegetic_instruments/data/instrument_assemblies.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 3124,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.diegetic_instruments/data/instrument_processes.json",
+      "relative_path": "core/pack.core.diegetic_instruments/data/instrument_processes.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 271,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.logic_base",
+      "relative_path": "core/pack.core.logic_base",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/pack.capabilities.json",
+      "relative_path": "core/pack.core.logic_base/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 296,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_logic_elements\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"d6bdef59c5f1d128fa48079317102cf62bbb7e286c0b4f816d22fbf7decccd5d\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compa",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/pack.compat.json",
+      "relative_path": "core/pack.core.logic_base/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1722,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/pack.json",
+      "relative_path": "core/pack.core.logic_base/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1476,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/pack.trust.json",
+      "relative_path": "core/pack.core.logic_base/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 356,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.logic_base/data",
+      "relative_path": "core/pack.core.logic_base/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_assemblies.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_assemblies.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 5001,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_behavior_model_registry.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4752,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_element_registry.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_element_registry.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 7753,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_interface_signatures.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_interface_signatures.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 17232,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_state_machine_registry.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_state_machine_registry.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 10929,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_state_vectors.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 5276,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json",
+      "relative_path": "core/pack.core.logic_base/data/logic_watchdog_definitions.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 655,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.runtime",
+      "relative_path": "core/pack.core.runtime",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.runtime/pack.capabilities.json",
+      "relative_path": "core/pack.core.runtime/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 259,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"75c929b9682663448dfb43664eff68e74c0aef226a374c326924f3e2bc16ee46\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.runtime/pack.compat.json",
+      "relative_path": "core/pack.core.runtime/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.runtime/pack.json",
+      "relative_path": "core/pack.core.runtime/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 521,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.runtime/pack.trust.json",
+      "relative_path": "core/pack.core.runtime/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 355,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.core.runtime/data",
+      "relative_path": "core/pack.core.runtime/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.core.runtime/data/runtime_registry.json",
+      "relative_path": "core/pack.core.runtime/data/runtime_registry.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 164,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.server.governance",
+      "relative_path": "core/pack.server.governance",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.server.governance/pack.capabilities.json",
+      "relative_path": "core/pack.server.governance/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 264,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"25332b9e339cdf222618a903a9d50158c725bdfa2f725e76285c9aae115ff6c3\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.server.governance/pack.compat.json",
+      "relative_path": "core/pack.server.governance/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1311,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.server.governance/pack.json",
+      "relative_path": "core/pack.server.governance/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 581,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.server.governance/pack.trust.json",
+      "relative_path": "core/pack.server.governance/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 358,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/pack.server.governance/data",
+      "relative_path": "core/pack.server.governance/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/pack.server.governance/data/server_profile.governance.json",
+      "relative_path": "core/pack.server.governance/data/server_profile.governance.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 651,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.activation.default_lab",
+      "relative_path": "core/policy.activation.default_lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.activation.default_lab/pack.capabilities.json",
+      "relative_path": "core/policy.activation.default_lab/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 271,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"0053953a2012d350860f29cb09295c30171204822b3e0b2ef84c3c74e81b2d1f\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.activation.default_lab/pack.compat.json",
+      "relative_path": "core/policy.activation.default_lab/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1339,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.activation.default_lab/pack.json",
+      "relative_path": "core/policy.activation.default_lab/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 686,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.activation.default_lab/pack.trust.json",
+      "relative_path": "core/policy.activation.default_lab/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 365,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.activation.default_lab/data",
+      "relative_path": "core/policy.activation.default_lab/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.activation.default_lab/data/activation_policy.default_lab.json",
+      "relative_path": "core/policy.activation.default_lab/data/activation_policy.default_lab.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2007,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.budget.default_lab",
+      "relative_path": "core/policy.budget.default_lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/pack.capabilities.json",
+      "relative_path": "core/policy.budget.default_lab/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 267,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"19f24a99cf629223ea5b56404b423badc7f24c60bfb5935ff77e69298a265a8f\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/pack.compat.json",
+      "relative_path": "core/policy.budget.default_lab/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1323,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/pack.json",
+      "relative_path": "core/policy.budget.default_lab/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 764,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/pack.trust.json",
+      "relative_path": "core/policy.budget.default_lab/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 361,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.budget.default_lab/data",
+      "relative_path": "core/policy.budget.default_lab/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/data/budget_policy.default_lab.json",
+      "relative_path": "core/policy.budget.default_lab/data/budget_policy.default_lab.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 502,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.budget.default_lab/data/budget_policy.tiny_lab.json",
+      "relative_path": "core/policy.budget.default_lab/data/budget_policy.tiny_lab.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 495,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.fidelity.default_lab",
+      "relative_path": "core/policy.fidelity.default_lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.fidelity.default_lab/pack.capabilities.json",
+      "relative_path": "core/policy.fidelity.default_lab/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 269,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"9f276e70571530760f7b25921495e69a0c0472c3e0d1de5d31a0e1ac4d906d9a\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.fidelity.default_lab/pack.compat.json",
+      "relative_path": "core/policy.fidelity.default_lab/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1331,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.fidelity.default_lab/pack.json",
+      "relative_path": "core/policy.fidelity.default_lab/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 589,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.fidelity.default_lab/pack.trust.json",
+      "relative_path": "core/policy.fidelity.default_lab/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 363,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/core/policy.fidelity.default_lab/data",
+      "relative_path": "core/policy.fidelity.default_lab/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/core/policy.fidelity.default_lab/data/fidelity_policy.default_lab.json",
+      "relative_path": "core/policy.fidelity.default_lab/data/fidelity_policy.default_lab.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 995,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/derived",
+      "relative_path": "derived",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/derived/org.dominium.earth.tiles",
+      "relative_path": "derived/org.dominium.earth.tiles",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.earth.tiles/pack.capabilities.json",
+      "relative_path": "derived/org.dominium.earth.tiles/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 266,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.read_only_only\",\"deterministic_fingerprint\":\"fdad2c1164a3058a8056e741a84fd298f12e2f5fa554e2be8e86c008f85b4b82\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.sourc",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.earth.tiles/pack.compat.json",
+      "relative_path": "derived/org.dominium.earth.tiles/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1504,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.earth.tiles/pack.json",
+      "relative_path": "derived/org.dominium.earth.tiles/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 542,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.earth.tiles/pack.trust.json",
+      "relative_path": "derived/org.dominium.earth.tiles/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 360,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/derived/org.dominium.earth.tiles/data",
+      "relative_path": "derived/org.dominium.earth.tiles/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"entry_type\":\"terrain_tile_pyramid\",\"levels\":[{\"tiles\":[{\"source_path\":\"data/raw/N00E000.asc\",\"stats\":{\"max_height_mm\":130,\"mean_height_mm\":111,\"min_height_mm\":90,\"sample_count\":16},\"tile_id\":\"tile.0.0.0\",\"x\":0,\"y\":0,\"z\":0}],\"z\":0},{\"tiles",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.earth.tiles/data/earth_tile_pyramid.json",
+      "relative_path": "derived/org.dominium.earth.tiles/data/earth_tile_pyramid.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 964,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/derived/org.dominium.sol.ephemeris",
+      "relative_path": "derived/org.dominium.sol.ephemeris",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.sol.ephemeris/pack.capabilities.json",
+      "relative_path": "derived/org.dominium.sol.ephemeris/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 268,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.read_only_only\",\"deterministic_fingerprint\":\"eaa77aa50427df02070772783248f929d40add63eeb78705918a677791d75a8e\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.sourc",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.sol.ephemeris/pack.compat.json",
+      "relative_path": "derived/org.dominium.sol.ephemeris/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1512,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.sol.ephemeris/pack.json",
+      "relative_path": "derived/org.dominium.sol.ephemeris/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 548,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.sol.ephemeris/pack.trust.json",
+      "relative_path": "derived/org.dominium.sol.ephemeris/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 362,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/derived/org.dominium.sol.ephemeris/data",
+      "relative_path": "derived/org.dominium.sol.ephemeris/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/derived/org.dominium.sol.ephemeris/data/sol_ephemeris_table.json",
+      "relative_path": "derived/org.dominium.sol.ephemeris/data/sol_ephemeris_table.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 17318,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain",
+      "relative_path": "domain",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/astronomy.milky_way",
+      "relative_path": "domain/astronomy.milky_way",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/pack.capabilities.json",
+      "relative_path": "domain/astronomy.milky_way/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 261,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"fbd29a4448148d1ef03cd3f08f86e41fd17f4e846845165e0a5b358028e97b40\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/pack.compat.json",
+      "relative_path": "domain/astronomy.milky_way/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1482,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/pack.json",
+      "relative_path": "domain/astronomy.milky_way/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 718,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/pack.trust.json",
+      "relative_path": "domain/astronomy.milky_way/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 355,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/astronomy.milky_way/data",
+      "relative_path": "domain/astronomy.milky_way/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/data/milky_way_catalog.json",
+      "relative_path": "domain/astronomy.milky_way/data/milky_way_catalog.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 3162,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.milky_way/data/milky_way_frames.json",
+      "relative_path": "domain/astronomy.milky_way/data/milky_way_frames.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2313,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/astronomy.sol",
+      "relative_path": "domain/astronomy.sol",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/pack.capabilities.json",
+      "relative_path": "domain/astronomy.sol/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 255,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"f04363e5e3259586157beec67a362f806bf7c52aa854eb847eac34af633c4a1a\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/pack.compat.json",
+      "relative_path": "domain/astronomy.sol/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1458,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/pack.json",
+      "relative_path": "domain/astronomy.sol/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 716,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/pack.trust.json",
+      "relative_path": "domain/astronomy.sol/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 349,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/astronomy.sol/data",
+      "relative_path": "domain/astronomy.sol/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/data/sol_catalog.json",
+      "relative_path": "domain/astronomy.sol/data/sol_catalog.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 5227,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/astronomy.sol/data/sol_frames.json",
+      "relative_path": "domain/astronomy.sol/data/sol_frames.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1307,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/pack.domain.navigation",
+      "relative_path": "domain/pack.domain.navigation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/pack.capabilities.json",
+      "relative_path": "domain/pack.domain.navigation/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 264,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"19b938a6ced4e86d13b9462effb5ea7f9c5118a055795b7c5b4fff651cf9934f\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/pack.compat.json",
+      "relative_path": "domain/pack.domain.navigation/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1240,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/pack.json",
+      "relative_path": "domain/pack.domain.navigation/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 957,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/pack.trust.json",
+      "relative_path": "domain/pack.domain.navigation/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 358,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/pack.domain.navigation/assets",
+      "relative_path": "domain/pack.domain.navigation/assets",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/assets/starfield_manifest.json",
+      "relative_path": "domain/pack.domain.navigation/assets/starfield_manifest.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 121,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/pack.domain.navigation/data",
+      "relative_path": "domain/pack.domain.navigation/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/data/domain.navigation.json",
+      "relative_path": "domain/pack.domain.navigation/data/domain.navigation.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 132,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/data/lens.debug.json",
+      "relative_path": "domain/pack.domain.navigation/data/lens.debug.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 715,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/pack.domain.navigation/data/lens.sensor.json",
+      "relative_path": "domain/pack.domain.navigation/data/lens.sensor.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 643,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/planet.earth",
+      "relative_path": "domain/planet.earth",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/pack.capabilities.json",
+      "relative_path": "domain/planet.earth/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 254,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"eee8849268cd7bc3bcda2756ec14bf1bcb6582587949795a31326b74acb10043\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/pack.compat.json",
+      "relative_path": "domain/planet.earth/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1454,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/pack.json",
+      "relative_path": "domain/planet.earth/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 846,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/pack.trust.json",
+      "relative_path": "domain/planet.earth/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 348,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/domain/planet.earth/data",
+      "relative_path": "domain/planet.earth/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/data/earth_body.json",
+      "relative_path": "domain/planet.earth/data/earth_body.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 752,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/data/earth_frames.json",
+      "relative_path": "domain/planet.earth/data/earth_frames.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1300,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/domain/planet.earth/data/earth_sites.json",
+      "relative_path": "domain/planet.earth/data/earth_sites.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 5968,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience",
+      "relative_path": "experience",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/pack.experience.lab_galaxy",
+      "relative_path": "experience/pack.experience.lab_galaxy",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/pack.capabilities.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 296,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"42cd0494d2c5887ace26ba415a3c1e7c4991aa68dd9c5ea1bcef2fe1d759f09b\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/pack.compat.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1333,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/pack.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 910,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/pack.trust.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 362,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/pack.experience.lab_galaxy/data",
+      "relative_path": "experience/pack.experience.lab_galaxy/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/data/experience.profile.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/data/experience.profile.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 452,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/pack.experience.lab_galaxy/scenarios",
+      "relative_path": "experience/pack.experience.lab_galaxy/scenarios",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/scenarios/lab_galaxy_nav.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/scenarios/lab_galaxy_nav.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 140,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/pack.experience.lab_galaxy/ui",
+      "relative_path": "experience/pack.experience.lab_galaxy/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/pack.experience.lab_galaxy/ui/window.lab_nav.json",
+      "relative_path": "experience/pack.experience.lab_galaxy/ui/window.lab_nav.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 739,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.lab.developer",
+      "relative_path": "experience/profile.lab.developer",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.lab.developer/pack.capabilities.json",
+      "relative_path": "experience/profile.lab.developer/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"080314253168c27b79bc1a65b4423a6d0c34f4a6088215c02f83a0e5fd430ede\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.lab.developer/pack.compat.json",
+      "relative_path": "experience/profile.lab.developer/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1313,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.lab.developer/pack.json",
+      "relative_path": "experience/profile.lab.developer/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 620,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.lab.developer/pack.trust.json",
+      "relative_path": "experience/profile.lab.developer/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 357,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.lab.developer/data",
+      "relative_path": "experience/profile.lab.developer/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.lab.developer/data/experience_profile.lab.developer.json",
+      "relative_path": "experience/profile.lab.developer/data/experience_profile.lab.developer.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 516,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.observer.exploration",
+      "relative_path": "experience/profile.observer.exploration",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.observer.exploration/pack.capabilities.json",
+      "relative_path": "experience/profile.observer.exploration/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 298,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"90bdede984fddcb60394fa4018032ccfa13a53abc226c0cd760ee1aee33585ce\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.observer.exploration/pack.compat.json",
+      "relative_path": "experience/profile.observer.exploration/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1341,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.observer.exploration/pack.json",
+      "relative_path": "experience/profile.observer.exploration/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 646,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.observer.exploration/pack.trust.json",
+      "relative_path": "experience/profile.observer.exploration/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 364,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.observer.exploration/data",
+      "relative_path": "experience/profile.observer.exploration/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.observer.exploration/data/experience_profile.observer.exploration.json",
+      "relative_path": "experience/profile.observer.exploration/data/experience_profile.observer.exploration.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 563,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.player.default",
+      "relative_path": "experience/profile.player.default",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.player.default/pack.capabilities.json",
+      "relative_path": "experience/profile.player.default/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 292,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"820b469b5e2d8e36f9cf8341b6bdd2be605dbc09b54dc51c63f20828b8ee6d18\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.player.default/pack.compat.json",
+      "relative_path": "experience/profile.player.default/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1317,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.player.default/pack.json",
+      "relative_path": "experience/profile.player.default/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 631,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.player.default/pack.trust.json",
+      "relative_path": "experience/profile.player.default/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 358,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.player.default/data",
+      "relative_path": "experience/profile.player.default/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.player.default/data/experience_profile.player.default.json",
+      "relative_path": "experience/profile.player.default/data/experience_profile.player.default.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 473,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.spectator.default",
+      "relative_path": "experience/profile.spectator.default",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.spectator.default/pack.capabilities.json",
+      "relative_path": "experience/profile.spectator.default/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 295,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"df2b11151026660429e9e9c921391102204efcdf8188df11360cb0273c30d167\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.spectator.default/pack.compat.json",
+      "relative_path": "experience/profile.spectator.default/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1329,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.spectator.default/pack.json",
+      "relative_path": "experience/profile.spectator.default/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 637,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.spectator.default/pack.trust.json",
+      "relative_path": "experience/profile.spectator.default/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 361,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/experience/profile.spectator.default/data",
+      "relative_path": "experience/profile.spectator.default/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/experience/profile.spectator.default/data/experience_profile.spectator.default.json",
+      "relative_path": "experience/profile.spectator.default/data/experience_profile.spectator.default.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 529,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law",
+      "relative_path": "law",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.admin.lab",
+      "relative_path": "law/law.admin.lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.admin.lab/pack.capabilities.json",
+      "relative_path": "law/law.admin.lab/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 283,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"83018df1f12b8c4392a447a18a416aaa6bb7126b2cf2fa498054a0bd2eb33378\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.admin.lab/pack.compat.json",
+      "relative_path": "law/law.admin.lab/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1276,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.admin.lab/pack.json",
+      "relative_path": "law/law.admin.lab/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 568,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.admin.lab/pack.trust.json",
+      "relative_path": "law/law.admin.lab/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 349,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.admin.lab/data",
+      "relative_path": "law/law.admin.lab/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.admin.lab/data/law_profile.admin.lab.json",
+      "relative_path": "law/law.admin.lab/data/law_profile.admin.lab.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4407,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.lab.unrestricted",
+      "relative_path": "law/law.lab.unrestricted",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.lab.unrestricted/pack.capabilities.json",
+      "relative_path": "law/law.lab.unrestricted/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 290,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"0111145df80858b9c37bfd34e9823c7797a310b613c5c51235e831dfe26a1dc1\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.lab.unrestricted/pack.compat.json",
+      "relative_path": "law/law.lab.unrestricted/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1304,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.lab.unrestricted/pack.json",
+      "relative_path": "law/law.lab.unrestricted/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 592,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.lab.unrestricted/pack.trust.json",
+      "relative_path": "law/law.lab.unrestricted/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 356,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.lab.unrestricted/data",
+      "relative_path": "law/law.lab.unrestricted/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.lab.unrestricted/data/law_profile.unrestricted.json",
+      "relative_path": "law/law.lab.unrestricted/data/law_profile.unrestricted.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 4958,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.observer.truth",
+      "relative_path": "law/law.observer.truth",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.observer.truth/pack.capabilities.json",
+      "relative_path": "law/law.observer.truth/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 288,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"8a5b05034d2f58907d54df19df27a158650da6ac9473c18d79b83bc0e37e66f7\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.observer.truth/pack.compat.json",
+      "relative_path": "law/law.observer.truth/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1296,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.observer.truth/pack.json",
+      "relative_path": "law/law.observer.truth/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 588,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.observer.truth/pack.trust.json",
+      "relative_path": "law/law.observer.truth/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 354,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.observer.truth/data",
+      "relative_path": "law/law.observer.truth/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.observer.truth/data/law_profile.observer.truth.json",
+      "relative_path": "law/law.observer.truth/data/law_profile.observer.truth.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 3031,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.player.diegetic_default",
+      "relative_path": "law/law.player.diegetic_default",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.player.diegetic_default/pack.capabilities.json",
+      "relative_path": "law/law.player.diegetic_default/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 297,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"0ed0faae820b3617b5b7dba3f0ffe54119507e443ff8560df902dcef71acf843\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.player.diegetic_default/pack.compat.json",
+      "relative_path": "law/law.player.diegetic_default/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1332,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.player.diegetic_default/pack.json",
+      "relative_path": "law/law.player.diegetic_default/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 624,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.player.diegetic_default/pack.trust.json",
+      "relative_path": "law/law.player.diegetic_default/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 363,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.player.diegetic_default/data",
+      "relative_path": "law/law.player.diegetic_default/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json",
+      "relative_path": "law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2560,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.spectator.limited",
+      "relative_path": "law/law.spectator.limited",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.spectator.limited/pack.capabilities.json",
+      "relative_path": "law/law.spectator.limited/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"318ebbefcd278de5dbd0082e600ae3ba450a1a72c2224622c57598e390d3de53\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.spectator.limited/pack.compat.json",
+      "relative_path": "law/law.spectator.limited/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1308,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.spectator.limited/pack.json",
+      "relative_path": "law/law.spectator.limited/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 600,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.spectator.limited/pack.trust.json",
+      "relative_path": "law/law.spectator.limited/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 357,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/law.spectator.limited/data",
+      "relative_path": "law/law.spectator.limited/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/law.spectator.limited/data/law_profile.spectator.limited.json",
+      "relative_path": "law/law.spectator.limited/data/law_profile.spectator.limited.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1583,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/pack.law.observe_only",
+      "relative_path": "law/pack.law.observe_only",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/pack.law.observe_only/pack.capabilities.json",
+      "relative_path": "law/pack.law.observe_only/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_profiles\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"5806fc8e83e5a109423cba85550bd4c71626bcfba08697c42389ec7582d9e457\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/pack.law.observe_only/pack.compat.json",
+      "relative_path": "law/pack.law.observe_only/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1308,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/pack.law.observe_only/pack.json",
+      "relative_path": "law/pack.law.observe_only/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 557,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/pack.law.observe_only/pack.trust.json",
+      "relative_path": "law/pack.law.observe_only/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 357,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/law/pack.law.observe_only/data",
+      "relative_path": "law/pack.law.observe_only/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/law/pack.law.observe_only/data/law_profile.observe_only.json",
+      "relative_path": "law/pack.law.observe_only/data/law_profile.observe_only.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 944,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/official",
+      "relative_path": "official",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/official/pack.sol.pin_minimal",
+      "relative_path": "official/pack.sol.pin_minimal",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/pack.capabilities.json",
+      "relative_path": "official/pack.sol.pin_minimal/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.overlay_patch\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"2dc6c54ea181898df541d4890f2a9a72c389d5ab9f2237de80278672da323032\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.jso",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/pack.compat.json",
+      "relative_path": "official/pack.sol.pin_minimal/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1913,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/pack.json",
+      "relative_path": "official/pack.sol.pin_minimal/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 789,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/pack.trust.json",
+      "relative_path": "official/pack.sol.pin_minimal/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 354,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/official/pack.sol.pin_minimal/data",
+      "relative_path": "official/pack.sol.pin_minimal/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/official/pack.sol.pin_minimal/data/overlay",
+      "relative_path": "official/pack.sol.pin_minimal/data/overlay",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"deterministic_fingerprint\":\"a9548eb201bf5c80c7a680b5d282c94134da695780c2fdb2c1363244812af2fa\",\"extensions\":{\"anchor_id\":\"anchor.sol.default\",\"pack_hash\":\"placeholder.pack.sol.pin_minimal.v0\",\"pack_id\":\"pack.sol.pin_minimal\",\"signature_sta",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/data/overlay/overlay.layer.sol_pin_minimal.json",
+      "relative_path": "official/pack.sol.pin_minimal/data/overlay/overlay.layer.sol_pin_minimal.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 436,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
+      "relative_path": "official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 58973,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/physics",
+      "relative_path": "physics",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/physics/physics.default.realistic",
+      "relative_path": "physics/physics.default.realistic",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/physics/physics.default.realistic/pack.capabilities.json",
+      "relative_path": "physics/physics.default.realistic/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 267,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"a8e12ac4754623c05b630201ff24d59723b6820d6029e4da2abbd2223c9b7f79\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/physics/physics.default.realistic/pack.compat.json",
+      "relative_path": "physics/physics.default.realistic/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1326,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/physics/physics.default.realistic/pack.json",
+      "relative_path": "physics/physics.default.realistic/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 590,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/physics/physics.default.realistic/pack.trust.json",
+      "relative_path": "physics/physics.default.realistic/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 361,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/physics/physics.default.realistic/data",
+      "relative_path": "physics/physics.default.realistic/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/physics/physics.default.realistic/data/universe",
+      "relative_path": "physics/physics.default.realistic/data/universe",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/physics/physics.default.realistic/data/universe/physics_profile_realistic.json",
+      "relative_path": "physics/physics.default.realistic/data/universe/physics_profile_realistic.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1147,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/representation",
+      "relative_path": "representation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/representation/pack.representation.base",
+      "relative_path": "representation/pack.representation.base",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/pack.capabilities.json",
+      "relative_path": "representation/pack.representation.base/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 266,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"8907a2caa09d3dd55226f11ef03e78e8edd02191d075b0398e4c26d58d55d760\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/pack.compat.json",
+      "relative_path": "representation/pack.representation.base/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1327,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/pack.json",
+      "relative_path": "representation/pack.representation.base/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 868,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/pack.trust.json",
+      "relative_path": "representation/pack.representation.base/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 360,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/representation/pack.representation.base/data",
+      "relative_path": "representation/pack.representation.base/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/data/assets.representation.base.json",
+      "relative_path": "representation/pack.representation.base/data/assets.representation.base.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1035,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/data/cosmetic_pack.base.json",
+      "relative_path": "representation/pack.representation.base/data/cosmetic_pack.base.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 470,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/representation/pack.representation.base/data/registry.representation.base.json",
+      "relative_path": "representation/pack.representation.base/data/registry.representation.base.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 598,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source",
+      "relative_path": "source",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.earth.srtm",
+      "relative_path": "source/org.dominium.earth.srtm",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.earth.srtm/pack.capabilities.json",
+      "relative_path": "source/org.dominium.earth.srtm/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 265,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.read_only_only\",\"deterministic_fingerprint\":\"6c3b26c483654a6448a174bf00aa4c2db6ae9c4d68f01c243c7ecb2914a7bf12\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.sourc",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.earth.srtm/pack.compat.json",
+      "relative_path": "source/org.dominium.earth.srtm/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1244,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.earth.srtm/pack.json",
+      "relative_path": "source/org.dominium.earth.srtm/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 513,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.earth.srtm/pack.trust.json",
+      "relative_path": "source/org.dominium.earth.srtm/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 359,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.earth.srtm/data",
+      "relative_path": "source/org.dominium.earth.srtm/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.earth.srtm/data/dem_source.json",
+      "relative_path": "source/org.dominium.earth.srtm/data/dem_source.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 328,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.earth.srtm/data/raw",
+      "relative_path": "source/org.dominium.earth.srtm/data/raw",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".asc",
+      "first_line": "100 110 120 130",
+      "kind": "file",
+      "likely_kind": "unknown",
+      "path": "packs/source/org.dominium.earth.srtm/data/raw/N00E000.asc",
+      "relative_path": "source/org.dominium.earth.srtm/data/raw/N00E000.asc",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "size": 67,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.sol.spice",
+      "relative_path": "source/org.dominium.sol.spice",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.sol.spice/pack.capabilities.json",
+      "relative_path": "source/org.dominium.sol.spice/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 264,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.read_only_only\",\"deterministic_fingerprint\":\"a538d56b9abf29f0cd7a470e3ce115d4459ccee399b6369643feafd191f35153\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.sourc",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.sol.spice/pack.compat.json",
+      "relative_path": "source/org.dominium.sol.spice/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1241,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.sol.spice/pack.json",
+      "relative_path": "source/org.dominium.sol.spice/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 534,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.sol.spice/pack.trust.json",
+      "relative_path": "source/org.dominium.sol.spice/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 358,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.sol.spice/data",
+      "relative_path": "source/org.dominium.sol.spice/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/source/org.dominium.sol.spice/data/ephemeris_source.json",
+      "relative_path": "source/org.dominium.sol.spice/data/ephemeris_source.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 671,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/source/org.dominium.sol.spice/data/kernels",
+      "relative_path": "source/org.dominium.sol.spice/data/kernels",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".bsp",
+      "first_line": "SPICE-KERNEL:DE440S",
+      "kind": "file",
+      "likely_kind": "unknown",
+      "path": "packs/source/org.dominium.sol.spice/data/kernels/de440s.bsp",
+      "relative_path": "source/org.dominium.sol.spice/data/kernels/de440s.bsp",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "size": 100,
+      "tracked": true
+    },
+    {
+      "extension": ".tls",
+      "first_line": "SPICE-KERNEL:NAIF0012",
+      "kind": "file",
+      "likely_kind": "unknown",
+      "path": "packs/source/org.dominium.sol.spice/data/kernels/naif0012.tls",
+      "relative_path": "source/org.dominium.sol.spice/data/kernels/naif0012.tls",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "size": 106,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/specs",
+      "relative_path": "specs",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/specs/specs.default.realistic.m1",
+      "relative_path": "specs/specs.default.realistic.m1",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/specs/specs.default.realistic.m1/pack.capabilities.json",
+      "relative_path": "specs/specs.default.realistic.m1/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 268,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"889bdeff63da007993ab3c138ef10d700a37e9b5cfbf11967d2d4d32e7479401\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/specs/specs.default.realistic.m1/pack.compat.json",
+      "relative_path": "specs/specs.default.realistic.m1/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1070,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/specs/specs.default.realistic.m1/pack.json",
+      "relative_path": "specs/specs.default.realistic.m1/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 557,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/specs/specs.default.realistic.m1/pack.trust.json",
+      "relative_path": "specs/specs.default.realistic.m1/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 362,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/specs/specs.default.realistic.m1/data",
+      "relative_path": "specs/specs.default.realistic.m1/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/specs/specs.default.realistic.m1/data/spec_sheets.json",
+      "relative_path": "specs/specs.default.realistic.m1/data/spec_sheets.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2656,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/system_templates",
+      "relative_path": "system_templates",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/system_templates/base",
+      "relative_path": "system_templates/base",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/system_templates/base/pack.capabilities.json",
+      "relative_path": "system_templates/base/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 275,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[\"cap.add_templates\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"a7ae7e0478634cc83466a0e9d35042ed8d2a536ac0de7e8f664b298c97e05f7c\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.jso",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/system_templates/base/pack.compat.json",
+      "relative_path": "system_templates/base/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1639,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/system_templates/base/pack.json",
+      "relative_path": "system_templates/base/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 562,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/system_templates/base/pack.trust.json",
+      "relative_path": "system_templates/base/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 334,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/system_templates/base/data",
+      "relative_path": "system_templates/base/data",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/system_templates/base/data/system_template_registry.json",
+      "relative_path": "system_templates/base/data/system_template_registry.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 8682,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool",
+      "relative_path": "tool",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.admin_security",
+      "relative_path": "tool/pack.tool.admin_security",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.admin_security/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 266,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"d5daa2927870eeb888d7b8187b787bef56df1f2433059fda9dfbc32d0d0d20b3\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/pack.compat.json",
+      "relative_path": "tool/pack.tool.admin_security/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1053,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/pack.json",
+      "relative_path": "tool/pack.tool.admin_security/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 873,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/pack.trust.json",
+      "relative_path": "tool/pack.tool.admin_security/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 354,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.admin_security/ui",
+      "relative_path": "tool/pack.tool.admin_security/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
+      "relative_path": "tool/pack.tool.admin_security/ui/window.enforcement_actions.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 682,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/ui/window.peer_status.json",
+      "relative_path": "tool/pack.tool.admin_security/ui/window.peer_status.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 626,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.admin_security/ui/window.security_events.json",
+      "relative_path": "tool/pack.tool.admin_security/ui/window.security_events.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 638,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.control_debug",
+      "relative_path": "tool/pack.tool.control_debug",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.control_debug/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 265,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"cb93c84a8280dd56ab58b010ccf8e94e2485f53c930a564437c9b775aa8429f7\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/pack.compat.json",
+      "relative_path": "tool/pack.tool.control_debug/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1050,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/pack.json",
+      "relative_path": "tool/pack.tool.control_debug/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 882,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/pack.trust.json",
+      "relative_path": "tool/pack.tool.control_debug/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 353,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.control_debug/ui",
+      "relative_path": "tool/pack.tool.control_debug/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/ui/window.controller_status.json",
+      "relative_path": "tool/pack.tool.control_debug/ui/window.controller_status.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1388,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/ui/window.possession_graph.json",
+      "relative_path": "tool/pack.tool.control_debug/ui/window.possession_graph.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1888,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.control_debug/ui/window.spectator_controls.json",
+      "relative_path": "tool/pack.tool.control_debug/ui/window.spectator_controls.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 2084,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.inspector",
+      "relative_path": "tool/pack.tool.inspector",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.inspector/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 261,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"06bc4f35d6d868def5a55d65f88200e2d9ae4abaef2e5a98ac57759b6bc31af6\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/pack.compat.json",
+      "relative_path": "tool/pack.tool.inspector/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1038,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/pack.json",
+      "relative_path": "tool/pack.tool.inspector/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 687,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/pack.trust.json",
+      "relative_path": "tool/pack.tool.inspector/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 349,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.inspector/assets",
+      "relative_path": "tool/pack.tool.inspector/assets",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/assets/icons.manifest.json",
+      "relative_path": "tool/pack.tool.inspector/assets/icons.manifest.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 306,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.inspector/ui",
+      "relative_path": "tool/pack.tool.inspector/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.inspector/ui/window.inspector.json",
+      "relative_path": "tool/pack.tool.inspector/ui/window.inspector.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 887,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.log_viewer",
+      "relative_path": "tool/pack.tool.log_viewer",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.log_viewer/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.log_viewer/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 262,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"7955e565d59ad0f5598befa7ac75419d91bada96353c277612438e7b23d4fe45\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.log_viewer/pack.compat.json",
+      "relative_path": "tool/pack.tool.log_viewer/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1041,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.log_viewer/pack.json",
+      "relative_path": "tool/pack.tool.log_viewer/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 534,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.log_viewer/pack.trust.json",
+      "relative_path": "tool/pack.tool.log_viewer/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 350,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.log_viewer/ui",
+      "relative_path": "tool/pack.tool.log_viewer/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.log_viewer/ui/window.log.json",
+      "relative_path": "tool/pack.tool.log_viewer/ui/window.log.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 871,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.navigation",
+      "relative_path": "tool/pack.tool.navigation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.navigation/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 262,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"a8df378270d26ee4b7018bfb04e12f2afc53d1a36b108b949186aac3f982764a\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/pack.compat.json",
+      "relative_path": "tool/pack.tool.navigation/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1041,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/pack.json",
+      "relative_path": "tool/pack.tool.navigation/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 845,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/pack.trust.json",
+      "relative_path": "tool/pack.tool.navigation/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 350,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.navigation/ui",
+      "relative_path": "tool/pack.tool.navigation/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/ui/window.goto.json",
+      "relative_path": "tool/pack.tool.navigation/ui/window.goto.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1146,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/ui/window.navigator.json",
+      "relative_path": "tool/pack.tool.navigation/ui/window.navigator.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1279,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.navigation/ui/window.site_browser.json",
+      "relative_path": "tool/pack.tool.navigation/ui/window.site_browser.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1019,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.time_control",
+      "relative_path": "tool/pack.tool.time_control",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.time_control/pack.capabilities.json",
+      "relative_path": "tool/pack.tool.time_control/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 264,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"80c5834fdf82d45f282150c412da0bec6750be8ad68f610675bfd07ef5688469\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.time_control/pack.compat.json",
+      "relative_path": "tool/pack.tool.time_control/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1047,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.time_control/pack.json",
+      "relative_path": "tool/pack.tool.time_control/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 540,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.time_control/pack.trust.json",
+      "relative_path": "tool/pack.tool.time_control/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 352,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/pack.tool.time_control/ui",
+      "relative_path": "tool/pack.tool.time_control/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/pack.tool.time_control/ui/window.time.json",
+      "relative_path": "tool/pack.tool.time_control/ui/window.time.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1676,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.observer.truth",
+      "relative_path": "tool/workspace.observer.truth",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.observer.truth/pack.capabilities.json",
+      "relative_path": "tool/workspace.observer.truth/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 266,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"707913c68c107e4f5af090c736eaf0f86fe43a8d727c2b7e8ef0fccbe3593f00\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.observer.truth/pack.compat.json",
+      "relative_path": "tool/workspace.observer.truth/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1061,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.observer.truth/pack.json",
+      "relative_path": "tool/workspace.observer.truth/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 602,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.observer.truth/pack.trust.json",
+      "relative_path": "tool/workspace.observer.truth/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 360,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.observer.truth/ui",
+      "relative_path": "tool/workspace.observer.truth/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.observer.truth/ui/window.observer.watermark.json",
+      "relative_path": "tool/workspace.observer.truth/ui/window.observer.watermark.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 631,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.player.diegetic_default",
+      "relative_path": "tool/workspace.player.diegetic_default",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/pack.capabilities.json",
+      "relative_path": "tool/workspace.player.diegetic_default/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 275,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"8bbce8656492be1cfd410fcbfc0e8bda8bc8e001103a2ed0741ce87f7a709a54\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/pack.compat.json",
+      "relative_path": "tool/workspace.player.diegetic_default/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1088,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/pack.json",
+      "relative_path": "tool/workspace.player.diegetic_default/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1291,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/pack.trust.json",
+      "relative_path": "tool/workspace.player.diegetic_default/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 369,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.player.diegetic_default/ui",
+      "relative_path": "tool/workspace.player.diegetic_default/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.clock.json",
+      "relative_path": "tool/workspace.player.diegetic_default/ui/window.player.instrument.clock.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 591,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.compass.json",
+      "relative_path": "tool/workspace.player.diegetic_default/ui/window.player.instrument.compass.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 610,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.map_local.json",
+      "relative_path": "tool/workspace.player.diegetic_default/ui/window.player.instrument.map_local.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 604,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.notebook.json",
+      "relative_path": "tool/workspace.player.diegetic_default/ui/window.player.instrument.notebook.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 606,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.player.diegetic_default/ui/window.player.instrument.radio_text.json",
+      "relative_path": "tool/workspace.player.diegetic_default/ui/window.player.instrument.radio_text.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 609,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.spectator.limited",
+      "relative_path": "tool/workspace.spectator.limited",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/pack.capabilities.json",
+      "relative_path": "tool/workspace.spectator.limited/pack.capabilities.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 269,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"capability_ids\":[],\"degrade_mode_id\":\"pack.degrade.best_effort\",\"deterministic_fingerprint\":\"2e68fec40b6f8f342d1346b0204bde301fc6ca303a3f6c7cab0bf3fb5e8bf209\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.json\",\"official.source\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/pack.compat.json",
+      "relative_path": "tool/workspace.spectator.limited/pack.compat.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 1070,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/pack.json",
+      "relative_path": "tool/workspace.spectator.limited/pack.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 773,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/pack.trust.json",
+      "relative_path": "tool/workspace.spectator.limited/pack.trust.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 363,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "packs/tool/workspace.spectator.limited/ui",
+      "relative_path": "tool/workspace.spectator.limited/ui",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/ui/window.spectator.follow_controls.json",
+      "relative_path": "tool/workspace.spectator.limited/ui/window.spectator.follow_controls.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 961,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "packs/tool/workspace.spectator.limited/ui/window.spectator.scoreboard_stub.json",
+      "relative_path": "tool/workspace.spectator.limited/ui/window.spectator.scoreboard_stub.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "pack_identity"
+      ],
+      "size": 681,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "packs",
+  "root_path": "packs",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 108,
+    "file_count": 256,
+    "tracked_file_count": 256
+  },
+  "task_id": null
+}

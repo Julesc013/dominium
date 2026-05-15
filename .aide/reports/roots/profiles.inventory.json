@@ -1,0 +1,45 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "profiles/bundles",
+      "relative_path": "bundles",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "profiles/bundles/bundle.mvp_default.json",
+      "relative_path": "bundles/bundle.mvp_default.json",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "machine_readable",
+        "profile_identity"
+      ],
+      "size": 2608,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "profiles",
+  "root_path": "profiles",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 1,
+    "file_count": 1,
+    "tracked_file_count": 1
+  },
+  "task_id": null
+}

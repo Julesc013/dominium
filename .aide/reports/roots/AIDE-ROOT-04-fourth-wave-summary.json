@@ -1,0 +1,97 @@
+{
+  "authority_semantics_changed": false,
+  "deletes_applied": false,
+  "fate_counts": {
+    "adapt": 54,
+    "preserve_unknown": 20
+  },
+  "moves_applied": false,
+  "network_semantics_changed": false,
+  "recommended_next_task": "next AIDE-ROOT inventory wave",
+  "renames_applied": false,
+  "risk_counts": {
+    "protected": 54,
+    "unknown": 20
+  },
+  "roots": [
+    {
+      "apply_allowed": false,
+      "directory_count": 7,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 16,
+        "preserve_unknown": 7
+      },
+      "file_count": 16,
+      "reference_count": 5098,
+      "risk_counts": {
+        "protected": 16,
+        "unknown": 7
+      },
+      "root": "core",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 8,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 21,
+        "preserve_unknown": 8
+      },
+      "file_count": 21,
+      "reference_count": 1267,
+      "risk_counts": {
+        "protected": 21,
+        "unknown": 8
+      },
+      "root": "control",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 5,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 17,
+        "preserve_unknown": 5
+      },
+      "file_count": 17,
+      "reference_count": 1083,
+      "risk_counts": {
+        "protected": 17,
+        "unknown": 5
+      },
+      "root": "net",
+      "salvage_map_status": "not_approved"
+    }
+  ],
+  "runtime_semantics_changed": false,
+  "schema_version": "dominium.aide.root_fourth_wave_summary.v1",
+  "semantic_summary": {
+    "control_sensitive": 21,
+    "deterministic_sensitive": 16,
+    "executable_or_tool": 54,
+    "network_sensitive": 17,
+    "python_module": 54,
+    "runtime_sensitive": 54,
+    "test_or_fixture": 2
+  },
+  "sensitivity_counts": {
+    "control_sensitive": 21,
+    "deterministic_sensitive": 16,
+    "executable_or_tool": 54,
+    "network_sensitive": 17,
+    "python_module": 54,
+    "runtime_sensitive": 54,
+    "test_or_fixture": 2
+  },
+  "summary": {
+    "directory_count": 20,
+    "file_count": 54,
+    "high_or_protected_count": 54,
+    "preserve_unknown_count": 20,
+    "reference_count": 7448
+  },
+  "task_id": "AIDE-ROOT-04"
+}

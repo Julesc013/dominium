@@ -1,0 +1,111 @@
+{
+  "findings": [
+    {
+      "file": "templates/adapter_template.md",
+      "line": 23,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "- Stable IDs/hashes:"
+    },
+    {
+      "file": "templates/adapter_template.md",
+      "line": 24,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- No wall-clock/random usage:"
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Must inherit `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0 and conform to `schema/reality/domain_contract.schema.json`."
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 19,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- If ownership overlaps with `schema` / `schemas`, `packs` / `data/packs`, or other live split zones, record that in scope and compatibility notes. Do not silently choose a winner here."
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 144,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "- List actors, authority conditions, Process references, capability references, and refusal conditions."
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 245,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "## 14. Compatibility And Stability"
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 247,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Schema section: `compatibility_and_stability`"
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 253,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `compatibility_considerations`:"
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 263,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- Record overlap or compatibility sensitivity explicitly."
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 289,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `compatibility_requirements`:"
+    },
+    {
+      "file": "templates/domain_contract_template.md",
+      "line": 316,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility and stability metadata are explicit"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "templates",
+  "schema_version": "dominium.aide.identity_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 11
+  }
+}

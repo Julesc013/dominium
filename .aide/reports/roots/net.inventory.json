@@ -1,0 +1,348 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Net package root.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 25,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "net/anti_cheat",
+      "relative_path": "anti_cheat",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Anti-cheat engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/anti_cheat/__init__.py",
+      "relative_path": "anti_cheat/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1359,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/anti_cheat/anti_cheat_engine.py",
+      "relative_path": "anti_cheat/anti_cheat_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 28238,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "net/policies",
+      "relative_path": "policies",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic replication policy modules.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/policies/__init__.py",
+      "relative_path": "policies/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 832,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/policies/policy_lockstep.py",
+      "relative_path": "policies/policy_lockstep.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 9354,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/policies/policy_server_authoritative.py",
+      "relative_path": "policies/policy_server_authoritative.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 106908,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic SRZ-hybrid replication policy module (single-process multi-shard).\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/policies/policy_srz_hybrid.py",
+      "relative_path": "policies/policy_srz_hybrid.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 735,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "net/srz",
+      "relative_path": "srz",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"SRZ hybrid deterministic routing/coordinator package.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/srz/__init__.py",
+      "relative_path": "srz/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 435,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/srz/routing.py",
+      "relative_path": "srz/routing.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 8757,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/srz/shard_coordinator.py",
+      "relative_path": "srz/shard_coordinator.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 131172,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "net/testing",
+      "relative_path": "testing",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Network testing utilities.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/testing/__init__.py",
+      "relative_path": "testing/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive",
+        "test_or_fixture"
+      ],
+      "size": 212,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/testing/net_disorder_sim.py",
+      "relative_path": "testing/net_disorder_sim.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive",
+        "test_or_fixture"
+      ],
+      "size": 11962,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "net/transport",
+      "relative_path": "transport",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Transport exports for deterministic net protocol integration.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/transport/__init__.py",
+      "relative_path": "transport/__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 389,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Transport interface contract for deterministic protocol exchanges.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/transport/interface.py",
+      "relative_path": "transport/interface.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1173,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/transport/loopback.py",
+      "relative_path": "transport/loopback.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 10154,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Optional TCP transport stub for MP-2 contract phase.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/transport/tcp_stub.py",
+      "relative_path": "transport/tcp_stub.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1085,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Optional UDP transport stub for MP-2 contract phase.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "net/transport/udp_stub.py",
+      "relative_path": "transport/udp_stub.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "network_sensitive",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1107,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "net",
+  "root_path": "net",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 5,
+    "file_count": 17,
+    "tracked_file_count": 17
+  },
+  "task_id": null
+}

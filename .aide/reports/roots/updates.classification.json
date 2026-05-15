@@ -1,0 +1,190 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "updates/beta.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "beta.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "updates/changelog.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "changelog.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "updates/nightly.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "nightly.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "updates/pinned.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "pinned.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "updates/README.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "README.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "updates/stable.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "stable.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "updates",
+  "root_path": "updates",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "convert": 1,
+      "preserve_unknown": 5
+    },
+    "risk_counts": {
+      "protected": 6
+    },
+    "sensitivity_counts": {
+      "authority_sensitive": 6,
+      "documentation": 1,
+      "machine_readable": 5,
+      "update_sensitive": 6
+    }
+  },
+  "task_id": null
+}

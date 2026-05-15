@@ -1,0 +1,97 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".md",
+      "first_line": "# IDE Projections (/ide)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "ide/README.md",
+      "relative_path": "README.md",
+      "sensitivity_hints": [
+        "documentation",
+        "ide_projection"
+      ],
+      "size": 826,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "ide/manifests",
+      "relative_path": "manifests",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "ide/manifests/projection_manifest.schema.json",
+      "relative_path": "manifests/projection_manifest.schema.json",
+      "sensitivity_hints": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "size": 1256,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "ide/manifests/projection_manifest_examples",
+      "relative_path": "manifests/projection_manifest_examples",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "relative_path": "manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "sensitivity_hints": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "size": 643,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "relative_path": "manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "sensitivity_hints": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "size": 646,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "ide",
+  "root_path": "ide",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 2,
+    "file_count": 4,
+    "tracked_file_count": 4
+  },
+  "task_id": null
+}

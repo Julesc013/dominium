@@ -1,0 +1,5272 @@
+{
+  "findings": [
+    {
+      "file": "specs/spec_engine.py",
+      "line": 8,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 8,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 11,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SPEC_NONCOMPLIANT = \"refusal.spec.noncompliant\""
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 17,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "_BUILTIN_PARAMETER_SCHEMAS = {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 18,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.track.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 23,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.road.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 28,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.tunnel.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 33,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.bridge.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 38,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.vehicle_interface.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 43,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"dominium.schema.spec.params.docking_interface.v1\": {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 97,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 100,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"parameter_schema_id\": str(row.get(\"parameter_schema_id\", \"\")).strip(),"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 106,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def tolerance_policy_rows_by_id(registry_payload: Mapping[str, object] | None) -> Dict[str, dict]:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 114,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for row in sorted((dict(item) for item in rows if isinstance(item, Mapping)), key=lambda item: str(item.get(\"tolerance_policy_id\", \"\"))):"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 115,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_id = str(row.get(\"tolerance_policy_id\", \"\")).strip()"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 116,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if not tolerance_policy_id:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 118,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "out[tolerance_policy_id] = {"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 119,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 120,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_id\": tolerance_policy_id,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 145,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 151,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"failure_refusal_code\": ("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 153,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "if row.get(\"failure_refusal_code\") is None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 154,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "else str(row.get(\"failure_refusal_code\", \"\")).strip() or None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 161,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "def _validate_parameter_schema(*, parameter_schema_id: str, parameters: Mapping[str, object]) -> Tuple[bool, List[str]]:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 162,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema = _BUILTIN_PARAMETER_SCHEMAS.get(str(parameter_schema_id).strip())"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 163,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "if not schema:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 164,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "return False, [\"unknown parameter_schema_id '{}'\".format(str(parameter_schema_id).strip())]"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 166,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "required_keys = _sorted_unique_strings(schema.get(\"required_keys\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 167,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "numeric_keys = set(_sorted_unique_strings(schema.get(\"numeric_keys\")))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 168,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "string_keys = set(_sorted_unique_strings(schema.get(\"string_keys\")))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 189,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_rows: Mapping[str, dict],"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 198,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "known_tolerance_ids = set(str(key).strip() for key in tolerance_policy_rows.keys() if str(key).strip())"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 205,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_id = row.get(\"tolerance_policy_id\")"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 244,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_id = None if tolerance_policy_id is None else str(tolerance_policy_id).strip() or None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 248,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"code\": \"refuse.spec.unknown_tolerance_policy\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 249,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"message\": \"spec '{}' references unknown tolerance_policy_id '{}'\".format(spec_id, tolerance_id),"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 250,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"path\": \"$.spec_sheets.tolerance_policy_id\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 267,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "parameter_schema_id = str((dict(spec_type_rows.get(spec_type_id) or {}).get(\"parameter_schema_id\", \"\"))).strip()"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 268,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "valid_params, param_errors = _validate_parameter_schema("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 269,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "parameter_schema_id=parameter_schema_id,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 278,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "parameter_schema_id,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 286,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 291,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_id\": tolerance_id,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 308,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_registry: Mapping[str, object] | None,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 325,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_rows=tolerance_policy_rows_by_id(tolerance_policy_registry),"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 361,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 361,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "canonical_sha256("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 373,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 383,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 383,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload[\"deterministic_fingerprint\"] = canonical_sha256(dict(payload, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 547,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "elif check_id == \"check.interface.compatibility\":"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 549,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "measured_row = _as_map(_input_value(input_catalog, \"derived.interface.compatibility_summary\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 561,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "elif check_id == \"check.operation.max_speed_policy\":"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 563,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "measured_row = _as_map(_input_value(input_catalog, \"derived.operation.speed_policy_context\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 592,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"failure_refusal_code\": ("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 594,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "if check_row.get(\"failure_refusal_code\") is None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 595,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "else str(check_row.get(\"failure_refusal_code\", \"\")).strip() or None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 599,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "result[\"deterministic_fingerprint\"] = canonical_sha256(dict(result, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 599,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "result[\"deterministic_fingerprint\"] = canonical_sha256(dict(result, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 609,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_rows: Mapping[str, dict],"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 616,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_id = str(payload.get(\"tolerance_policy_id\", \"\")).strip()"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 617,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_row = dict(tolerance_policy_rows.get(tolerance_policy_id) or {})"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 620,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_id\": \"tol.default\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 636,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "strict_refusal_code: str | None = None"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 647,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = str(result_row.get(\"failure_refusal_code\", \"\")).strip()"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 648,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "if refusal_code and strict_refusal_code is None:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 649,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "strict_refusal_code = refusal_code"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 654,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "if strict_refusal_code is None and strict:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 655,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "strict_refusal_code = REFUSAL_SPEC_NONCOMPLIANT"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 664,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"failure_refusal_code\": REFUSAL_SPEC_NONCOMPLIANT,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 665,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": canonical_sha256("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 665,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": canonical_sha256("
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 672,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 680,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "result_id = \"compliance.result.{}\".format(canonical_sha256(result_seed)[:16])"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 680,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "result_id = \"compliance.result.{}\".format(canonical_sha256(result_seed)[:16])"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 682,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 694,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_id\": str(tolerance_row.get(\"tolerance_policy_id\", \"\")).strip() or None,"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 697,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "result[\"deterministic_fingerprint\"] = canonical_sha256(dict(result, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 697,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "result[\"deterministic_fingerprint\"] = canonical_sha256(dict(result, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 698,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "if strict and overall_grade == \"fail\" and strict_refusal_code is None:"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 699,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "strict_refusal_code = REFUSAL_SPEC_NONCOMPLIANT"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 700,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "return result, strict_refusal_code"
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 704,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SPEC_NONCOMPLIANT\","
+    },
+    {
+      "file": "specs/spec_engine.py",
+      "line": 714,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_rows_by_id\","
+    },
+    {
+      "file": "specs/__init__.py",
+      "line": 4,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_SPEC_NONCOMPLIANT,"
+    },
+    {
+      "file": "specs/__init__.py",
+      "line": 14,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "tolerance_policy_rows_by_id,"
+    },
+    {
+      "file": "specs/__init__.py",
+      "line": 18,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_SPEC_NONCOMPLIANT\","
+    },
+    {
+      "file": "specs/__init__.py",
+      "line": 28,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"tolerance_policy_rows_by_id\","
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 6,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, and `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, and `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 11,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "# Dominium Capability Surfaces v1"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 15,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "This document defines the constitutional capability-surface framework for Dominium after `\u039b-0` and `\u039b-1`."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 27,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the meaning of a capability surface"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 28,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the distinction between capability surfaces and nearby concepts"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 29,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the high-level taxonomy of lawful capability-surface classes"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 31,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the validity, visibility, composition, failure, and verification expectations for capability surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 35,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- every domain-specific capability instance"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 43,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Later domain constitutions, governance prompts, and runtime prompts must use this document as the interaction and action floor."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 47,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface is a lawful, machine-readable interaction surface exposed over domain-grounded substrate and affordances."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 55,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- the refusal, degradation, or failure boundaries that apply"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 57,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface is distinct from the following:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 70,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface is needed because the project must support embodied play, planning, AI, automation, institutional action, and future interfaces without redefining interaction rules separately for each interface."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 74,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces do not create truth."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 76,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "They expose lawful action structure over truth-bearing substrate that already exists under domain contracts."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 78,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces therefore:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 80,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- must be grounded in domain contracts and host structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 86,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "Truth mutation still occurs only through lawful Processes under Law and AuthorityContext."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 90,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability surfaces cannot redefine truth"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 91,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability surfaces cannot bypass lawful Processes"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 98,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces operate one layer above that:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 104,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces may:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 110,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces must not:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 113,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- invent capability meaning with no host affordance structure"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 118,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Recognized structures may host capability surfaces."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 126,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces must not replace recognitions or primitive truth."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 133,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability surfaces remain exposed action surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 135,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Interaction surfaces over recognized structures are lawful only when the recognized structure remains traceable to the underlying substrate and domain contract."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 137,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "## F. Capability Surface Classes"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 139,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "The following high-level capability-surface classes are constitutionally recognized:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 152,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "policy, authority, jurisdiction, assignment, certification, governance, or coordination surfaces over institutional structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 152,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "policy, authority, jurisdiction, assignment, certification, governance, or coordination surfaces over institutional structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 152,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "policy, authority, jurisdiction, assignment, certification, governance, or coordination surfaces over institutional structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 169,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces may be exposed to different actor classes."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 182,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "No capability surface is assumed to be universally available to all actor classes."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 186,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- AuthorityContext"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 191,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- institutional authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 196,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces must define or reference the conditions under which they are valid."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 202,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 206,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- organizational authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 208,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- safety state"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 211,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces must not be assumed always-on."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 217,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- blocked"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 224,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface may authorize or initiate:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 235,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "The capability surface may:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 240,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- declare refusal and degradation boundaries"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 253,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- institutions act through organizational authority surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 261,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- bypass law, capability, or causality"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 262,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- invent actions that the substrate and domain contracts do not support"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 270,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces are part of the project's interface-agnostic reality model."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 280,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Future interfaces must map onto lawful capability surfaces rather than redefining ontology or creating UI-only power."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 294,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface may exist even if a given actor cannot currently perceive or use it."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 309,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Observation and discoverability are shaped by epistemic and diegetic refinement, but they do not create or destroy capability surfaces silently."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 313,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Complex systems may expose composite capability surfaces."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 334,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces may be:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 337,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- `blocked`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 347,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- missing authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 356,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "A capability surface never implies guaranteed success."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 361,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces must be testable and auditable."
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 365,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- actor compatibility"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 367,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- authority and epistemic gating"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 369,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- refusal and degradation determinism"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 370,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- consistency with the host domain contract"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 371,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- preservation of capability meaning across interface adapters"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 375,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- schema validation"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 377,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- contract review"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 386,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- hardcoded object tags standing in for real capability"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 392,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- convenience surfaces that hide refusal, degradation, or authority boundaries"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 392,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- convenience surfaces that hide refusal, degradation, or authority boundaries"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 396,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- UI bindings are not capability surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 397,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability surfaces are not control bindings"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 398,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability meaning may not be inferred from ad hoc local tags alone"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 408,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- instantiate domain-specific capability surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 409,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- specialize capability classes"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 415,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- silently override the distinction between truth, affordance, capability surface, observation, and UI"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 416,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- redefine capability surfaces as local runtime convenience structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 420,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Any future change that alters the meaning of capability surfaces requires:"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 422,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- explicit artifact update"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 425,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- explicit semantic contract pinning where applicable"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 433,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 434,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `schema/reality/domain_contract.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 434,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schema/reality/domain_contract.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 435,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schemas/capability.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 435,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `schemas/capability.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 436,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schemas/affordance.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 437,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- `schemas/authority_context.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "line": 437,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schemas/authority_context.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 6,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 6,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 9,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Replacement Target: later domain bridge specifications, governance/task constitutions, and runtime/service boundary extractions must instantiate this framework rather than replace it"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 44,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- how bridges interact with capability surfaces, representation ladders, formalization, and semantic ownership review"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 45,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "- what later governance, runtime, release, and live-ops work may assume about inter-domain coupling"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 45,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- what later governance, runtime, release, and live-ops work may assume about inter-domain coupling"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 51,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- every persistence or networking contract"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 52,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- every later governance/task wrapper that consumes bridge law"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 72,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `capability surfaces`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 73,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "capability surfaces expose lawful action over substrate, while bridges define how domains relate underneath those surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 81,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "code adjacency is evidence of interaction, not constitutional authority to declare a bridge"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 88,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- shared code or convenience does not create semantic bridge authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 90,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- canonical versus projected distinctions still matter across bridges"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 116,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "Runtime, governance, tooling, release, and live-ops layers consume bridge law later."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 116,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Runtime, governance, tooling, release, and live-ops layers consume bridge law later."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 132,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "identity, conservation, jurisdiction, topology, lineage, safety, or other invariant families that must survive the bridge"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 134,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "how the bridge respects canonical domain contracts and avoids promoting projections into semantic owners"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 134,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "how the bridge respects canonical domain contracts and avoids promoting projections into semantic owners"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 135,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `capability_surface_implications`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 136,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "which capability surface classes the bridge enables, constrains, or conditions"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 142,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "how the bridge may be blocked, degraded, unsafe, contested, or invalid"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 155,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "## E. Ownership And Authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 162,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- every bridge must bind to the canonical semantic owner for each participating domain within declared scope"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 164,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- bridges may not silently transfer semantic authority from one domain to another"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 170,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `fields/` is the field substrate owner, while `field/` remains a transitional compatibility facade"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 171,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `schema/` owns semantic contract law, while `schemas/` remains validator-facing projection law"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 171,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schema/` owns semantic contract law, while `schemas/` remains validator-facing projection law"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 172,
+      "marker": "normative",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "spec_sensitive"
+      ],
+      "snippet": "- `specs/reality/` owns normative semantic meaning, while `data/reality/` remains an operational registry mirror"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 193,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- `authority_and_jurisdiction`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 194,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "permissions, obligations, legal authority, and institutional competence remain explicit"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 198,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "standards, offices, memberships, and governance meanings remain traceable"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 199,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `capability_legality`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 200,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "lawful action opportunities remain consistent with substrate, authority, and Process"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 201,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- `safety_and_compliance`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 202,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "hazard, refusal, containment, and compliance requirements remain explicit"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 206,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "A bridge is unlawful if it requires invariant loss that has not been explicitly declared and justified by the participating domain contracts."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 220,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "both directions exist, but each direction preserves different invariants, authority rules, or failure semantics"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 253,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- governance acting on inspection evidence"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 265,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "### H.4 Institutional / Governance Bridges"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 267,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "These bridges govern law, office, legitimacy, jurisdiction, compliance, coordination, and policy effects across domains."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 271,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- knowledge informing governance"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 272,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- infrastructure and territory changing political authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 312,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- standards reshaping infrastructure or safety"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 315,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "### H.9 Safety / Compliance Bridges"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 317,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "These bridges govern hazard, refusal, containment, inspection, certification, and legal or institutional constraint across domains."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 322,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- machine safety and governance"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 322,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- machine safety and governance"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 336,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- preserve conservation-relevant quantities, safety constraints, and provenance"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 346,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- preserve quantity, provenance, ownership, and compatibility commitments"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 347,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- distinguish material existence from price, contract, or accounting projection"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 382,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "This family is required because actors labor, exchange, own, reserve, command, contract, and consume within economic structures."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 386,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- preserve authority, accountability, obligation, and scarcity"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 388,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- support lawful delegation and refusal rather than invisible command magic"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 392,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "This family is required because industrial capability depends on designs, measurements, standards, training, repeatability, and process stabilization."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 396,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- preserve formalization lineage, validation, compatibility, and institutional continuity"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 400,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "### I.8 Knowledge \u2194 Governance"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 402,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "This family is required because law, administration, compliance, inspection, policy, and institutional legitimacy depend on records, evidence, doctrine, and knowledge circulation."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 406,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- preserve provenance, authority, certification, and contestability"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 407,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- keep governance from treating rumor or presentation as equivalent to verified knowledge"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 417,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- keep infrastructure from being modeled as politically neutral when it changes authority and social power"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 426,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- preserve canonical domain ownership"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 436,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- preserve identity, lineage, legality, and canonical ownership across record, save, replay, and synchronization paths"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 440,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "## J. Capability-Surface Implications"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 442,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Bridges may expose, constrain, or mediate capability surfaces across domains."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 443,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "That does not mean a bridge is itself a capability surface."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 447,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- a bridge may declare that capability surfaces in one domain depend on state or legitimacy in another"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 451,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- a bridge may not let capability surfaces bypass Process-only mutation or law-gated authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 451,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- a bridge may not let capability surfaces bypass Process-only mutation or law-gated authority"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 455,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- an economic bridge may constrain whether a fabrication capability is usable because materials or entitlements are absent"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 488,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- knowledge \u2194 governance may require recordkeeping, doctrine, procedure, and institutional adoption"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 490,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- agents \u2194 economy may require explicit contracts, accounting standards, or labor-role structures"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 503,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "Bridges may be lawful, degraded, blocked, unsafe, contested, or invalid."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 509,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "the bridge binds to the wrong semantic owner or ignores a canonical-versus-projection distinction"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 511,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "the bridge would require identity, conservation, topology, lineage, or authority loss"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 514,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- `authority_or_jurisdiction_refusal`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 514,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- `authority_or_jurisdiction_refusal`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 515,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "a bridge is blocked because authority, legitimacy, or jurisdiction is absent"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 515,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "a bridge is blocked because authority, legitimacy, or jurisdiction is absent"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 520,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `capability_surface_illegality`:"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 521,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "a claimed action would bypass lawful capability or Process boundaries"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 538,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- canonical-versus-projection adherence"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 541,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- bridge-class compatibility"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 542,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability-surface legality"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 545,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- explicit failure, refusal, degradation, or contestability paths"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 548,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Bridge declarations, task systems, governance surfaces, and provenance work all need machine-checkable bridge structure."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 556,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- bridges that treat projected or generated artifacts as canonical owners"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 560,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- bridge declarations that bypass standards, institutions, or authority where those are required"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 565,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "This artifact is `stable` for the current semantic constitution block."
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 572,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- use this framework to extract runtime/service boundaries and governance/task surfaces"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 578,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- collapse canonical-versus-projected distinctions"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 585,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- remain compatible with the universal reality framework, domain contract template, capability surfaces, representation ladders, formalization chain, player-desire acceptance map, and semantic ownership review"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 585,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- remain compatible with the universal reality framework, domain contract template, capability surfaces, representation ladders, formalization chain, player-desire acceptance map, and semantic ownership review"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 592,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "line": 593,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `specs/reality/SPEC_CAPABILITY_SURFACES.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 11,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "# Domain Contract Template Standard v1"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 15,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "This document defines the standard constitutional shape of a lawful Domain contract in Dominium."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 17,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "A Domain contract exists to prevent domains from entering the project as:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 36,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "It does not yet define all domain instances, all capability surfaces, all representation ladders, or all cross-domain bridges."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 40,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract is subordinate to:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 51,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- law-gated authority and refusal"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 51,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- law-gated authority and refusal"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 63,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `\u039b-2` builds capability surfaces over domain affordances"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 70,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "This template does not resolve the live `schema` versus `schemas`, `packs` versus `data/packs`, or `field` versus `fields` splits."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 76,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `schema/**` contract law may not be ignored"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 76,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schema/**` contract law may not be ignored"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 77,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- `schemas/**` may not be treated as automatic replacement authority"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 77,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schemas/**` may not be treated as automatic replacement authority"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 82,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define explicit identity and explicit scope."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 82,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define explicit identity and explicit scope."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 84,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Identity MUST include:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 92,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Scope MUST include:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 100,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Domain scope MUST NOT be implied from directory names alone."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 100,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Domain scope MUST NOT be implied from directory names alone."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 101,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Domain scope MUST NOT be \"everything related to X.\""
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 101,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Domain scope MUST NOT be \"everything related to X.\""
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 102,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If a domain has uncertain overlap with another domain or with a quarantined repo surface, that overlap MUST be declared explicitly rather than hand-waved away."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 106,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its primitive substrate."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 106,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its primitive substrate."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 119,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 119,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 126,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Higher-order meaning MUST NOT be smuggled into primitives without declaration."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 126,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Higher-order meaning MUST NOT be smuggled into primitives without declaration."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 127,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If a concept is already recognized, interpreted, institutional, or interface-facing, it is not primitive merely because the contract writer wants a shorter document."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 131,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define lawful Processes for authoritative transformation within the domain."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 131,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define lawful Processes for authoritative transformation within the domain."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 133,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 133,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 139,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal or degradation conditions apply"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 141,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Authoritative mutation MUST happen through Processes, not side effects, not UI events, not renderer code, and not ad hoc scripts."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 143,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain has no internal mutation path of its own, the contract MUST say so explicitly and explain which external Process families lawfully affect it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 143,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain has no internal mutation path of its own, the contract MUST say so explicitly and explain which external Process families lawfully affect it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 148,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its recognition layer."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 148,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its recognition layer."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 152,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 152,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 159,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Recognitions MUST remain distinct from primitive truth."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 170,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its affordance layer."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 170,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its affordance layer."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 172,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Affordances are the actionable capability relationships the domain exposes."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 173,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "They describe what kinds of actors, systems, or Assemblies may attempt to do in relation to the domain under law, authority, and domain conditions."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 175,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 175,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 181,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal or degradation conditions apply"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 188,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its formalization posture."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 188,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its formalization posture."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 192,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 192,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 197,
+      "marker": "normative",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "spec_sensitive"
+      ],
+      "snippet": "- what normative references they bind to"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 199,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain does not yet define any formalizations, it MUST say `none declared` and explain why."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 202,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "They are required to be explicit wherever the domain depends on standards, declarations, contracts, or institutionalized structure."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 206,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST declare its lawful representations."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 206,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST declare its lawful representations."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 208,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 208,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 213,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- when expansion, escalation, or refusal is required"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 215,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain allows substitution, collapse, or capsule use, the contract MUST define:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 215,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain allows substitution, collapse, or capsule use, the contract MUST define:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 221,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal conditions apply"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 223,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain allows no substitutions yet, the contract MUST state `none declared`."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 223,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If the domain allows no substitutions yet, the contract MUST state `none declared`."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 225,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Substitutions MUST NOT be implicit."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 225,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Substitutions MUST NOT be implicit."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 226,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Capsules MUST NOT be hand-waved."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 226,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Capsules MUST NOT be hand-waved."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 236,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define failure and degradation semantics."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 236,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define failure and degradation semantics."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 238,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST distinguish:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 238,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST distinguish:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 245,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 245,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 250,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal or degradation behavior follows"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 253,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Failure semantics MUST NOT be inferred from implementation behavior alone."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 253,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Failure semantics MUST NOT be inferred from implementation behavior alone."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 258,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how the domain is verified."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 258,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how the domain is verified."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 260,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 260,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 269,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- schema checks"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 280,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how the domain becomes observable or inspectable."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 280,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how the domain becomes observable or inspectable."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 282,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 282,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 289,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Observation bindings MUST be derived from truth."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 290,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT be treated as truth structure themselves."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 290,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT be treated as truth structure themselves."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 300,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how different interface classes interact with the domain."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 300,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how different interface classes interact with the domain."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 302,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "At minimum, the contract MUST address:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 302,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "At minimum, the contract MUST address:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 310,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state for each class:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 310,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state for each class:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 315,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal conditions apply"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 317,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "This section does not globally define capability surfaces."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 318,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "It records the domain-local interaction posture so later capability work can formalize it without guessing."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 320,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "## N. Compatibility And Stability Metadata"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 322,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST carry explicit compatibility and stability metadata."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 322,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST carry explicit compatibility and stability metadata."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 322,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Every domain contract MUST carry explicit compatibility and stability metadata."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 324,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "At minimum, the contract MUST include:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 324,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "At minimum, the contract MUST include:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 326,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- contract version"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 330,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility considerations"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 331,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- semantic contract pin back to `\u039b-0`"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 337,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility and stability metadata MUST NOT be omitted just because a domain is early."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 337,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility and stability metadata MUST NOT be omitted just because a domain is early."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 337,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility and stability metadata MUST NOT be omitted just because a domain is early."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 343,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its scaling path."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 343,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define its scaling path."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 345,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 345,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 356,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Domains that interact with civilization, institutions, logistics, infrastructure, ecology, or settlement systems MUST be especially explicit here because later cross-domain work depends on lawful scale transitions."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 360,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how packs, mods, and future extensions may lawfully extend it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 360,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Every domain contract MUST define how packs, mods, and future extensions may lawfully extend it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 362,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 362,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "The contract MUST state:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 367,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- what compatibility rules apply"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 368,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal rules apply when extensions are missing or invalid"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 374,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If no extension points are currently exposed, the contract MUST say so explicitly."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 374,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If no extension points are currently exposed, the contract MUST say so explicitly."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 381,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "the contract depends on unstated primitives, scope, or invariants"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 389,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "domain rules exist only as special behavior with no contract structure"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 393,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "capsules or substitutions are implied without invariants and refusal conditions"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 399,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "the domain exists only as a service shape with no semantic contract"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 405,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "A domain contract is complete enough only if it defines, at minimum:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 418,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility and stability metadata"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 426,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- exact capability vocabulary"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 441,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- extension/refusal posture"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 443,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "If any of those are missing, the domain contract is under-specified and later prompts should refuse to treat it as constitutionally valid."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 451,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `schema/reality/domain_contract.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 451,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "- `schema/reality/domain_contract.schema.json`"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 452,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `templates/domain_contract_template.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and the post-\u03a0 / post-P planning stack."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 23,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "- the continuity obligations that later domains, runtime systems, governance systems, and release systems must preserve"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 23,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- the continuity obligations that later domains, runtime systems, governance systems, and release systems must preserve"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 28,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- the detailed domain contract template"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 29,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the detailed capability catalog"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 36,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Later domain constitutions, capability constitutions, governance contracts, and runtime constitutions must inherit from this framework."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 36,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Later domain constitutions, capability constitutions, governance contracts, and runtime constitutions must inherit from this framework."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 36,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Later domain constitutions, capability constitutions, governance contracts, and runtime constitutions must inherit from this framework."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 49,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- `Perceived`: observer-scoped, authority-scoped, and lens-scoped projection derived from Truth plus lawful epistemic artifacts"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 50,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `Rendered`: presentation-specific projection derived from Perceived state and presentational contracts"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 54,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Truth MUST NOT be redefined by Perceived or Rendered state."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 54,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Truth MUST NOT be redefined by Perceived or Rendered state."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 55,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Perceived state MUST NOT mutate Truth."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 55,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Perceived state MUST NOT mutate Truth."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 56,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Rendered state MUST NOT mutate Truth or silently decide law, authority, or ontology."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 56,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Rendered state MUST NOT mutate Truth or silently decide law, authority, or ontology."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 56,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- Rendered state MUST NOT mutate Truth or silently decide law, authority, or ontology."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 57,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Observation and perception MAY filter, redact, summarize, quantize, or defer access, but they MUST NOT rewrite what is true."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 57,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Observation and perception MAY filter, redact, summarize, quantize, or defer access, but they MUST NOT rewrite what is true."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 58,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Rendering MAY choose presentation forms, but it MUST NOT create authoritative facts."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 58,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- Rendering MAY choose presentation forms, but it MUST NOT create authoritative facts."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 68,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- for any lawful world question that falls within the declared world scope and the relevant interaction or observation horizon, there exists one authoritative answer or one authoritative refusal / unknown form declared by law"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 97,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The system MUST NOT defer:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 97,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "The system MUST NOT defer:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 101,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- any information required to keep replay, audit, compatibility, or deterministic causality lawful"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 109,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Resolved state MUST be causally sufficient for the relevant interaction and observation horizon."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 121,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "If a representation cannot answer the current lawful question set without guesswork, it is not causally closed enough for that horizon and MUST be expanded, refused, or escalated explicitly."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 129,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- AuthorityContext"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 135,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Refinement MUST NOT silently depend on:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 135,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Refinement MUST NOT silently depend on:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 140,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- wall-clock time"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 161,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Representations MUST preserve declared meaning."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 162,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT silently redefine identity, conservation, topology, causality, authority, or domain commitments."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 162,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT silently redefine identity, conservation, topology, causality, authority, or domain commitments."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 162,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "They MUST NOT silently redefine identity, conservation, topology, causality, authority, or domain commitments."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 165,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Optimization MUST NOT change semantics silently."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 165,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Optimization MUST NOT change semantics silently."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 180,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `formalized`: explicit domain concepts with declared contracts and invariants"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 197,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- ascent MUST be grounded in lawful substrate, provenance, and declared recognition or formalization rules"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 198,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- descent MUST preserve continuity with the higher-order commitments already made"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 199,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "- ascent and descent MUST remain auditable rather than magical"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 204,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "When descent cannot recover detail uniquely, the system MUST:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 210,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "It MUST NOT invent hidden detail to make a higher-order representation look complete."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 210,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "It MUST NOT invent hidden detail to make a higher-order representation look complete."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 220,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- accompanied by explicit activation, expansion, and refusal conditions"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 224,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "They are canonical condensed forms of reality when used under declared constraints."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 238,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Optimization and representation change MUST preserve player-observable continuity."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 243,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "- identity anchors remain stable across expansion, collapse, substitution, migration, and projection changes"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 245,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- changes in fidelity or access are explainable by lawful refinement, observation, travel, distance, instrumentation, authority, or process outcomes"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 260,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Macro-to-micro expansion MUST preserve:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 267,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "Micro-to-macro collapse MUST preserve:"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 292,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- action affordances granted by profile or authority"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 294,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT alter what reality is."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 294,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT alter what reality is."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 297,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Capability surfaces will later formalize interface-specific access without allowing interface-specific ontology."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 301,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "All later domain constitutions MUST inherit from this framework."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 319,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- domain-specific capability contracts"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 319,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- domain-specific capability contracts"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 320,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- domain-specific lawful refusal conditions"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 325,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "## O. Runtime And Governance Implications"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 329,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- governance, task, safety, and wrapper systems must preserve the truth / perceived / render boundary"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 329,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- governance, task, safety, and wrapper systems must preserve the truth / perceived / render boundary"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 331,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- refusal, redaction, and capability gating are lawful semantic outcomes, not implementation defects"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 331,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- refusal, redaction, and capability gating are lawful semantic outcomes, not implementation defects"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 342,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "- treat deployment, release, migration, rollback, or live operations as permission to alter semantic meaning silently"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 342,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "- treat deployment, release, migration, rollback, or live operations as permission to alter semantic meaning silently"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 343,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- collapse compatibility identity into informal naming or presentation labels"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 344,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "- authorize runtime substitution, coexistence, migration, or cutover behavior that violates continuity or invariant preservation"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 350,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- the reusable domain contract template (`\u039b-1`)"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 351,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- the capability surface constitution (`\u039b-2`)"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 358,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "- release/versioning constitutions"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 368,
+      "marker": "MUST",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT silently override it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 368,
+      "marker": "MUST NOT",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "policy_or_contract"
+      ],
+      "snippet": "They MUST NOT silently override it."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 372,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- explicit artifact update"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 374,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- explicit semantic contract pinning"
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 377,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility and semantic identity must remain explicit."
+    },
+    {
+      "file": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "line": 378,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Later prompts may add domain detail, ladder detail, proof criteria, and operational contracts, but the universal framework frozen here remains the floor they inherit from."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 6,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 6,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 9,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "Replacement Target: later domain constitutions, governance/task constitutions, and provenance/versioning constitutions must instantiate this framework rather than replace it"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 32,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- the canonical stages of the formalization chain"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 35,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- how later domains, governance systems, runtime systems, and provenance systems must reason about reusable designs, methods, standards, and institutions"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 47,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "It formalizes repo-grounded direction already visible in surfaces such as `materials/blueprint_engine.py`, `materials/maintenance/decay_engine.py`, `infrastructure/formalization/inference_engine.py`, `docs/worldgen/CIVILIZATIONS_AND_HISTORY"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 103,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "Each stage has its own inputs, evidence requirements, actor requirements, and refusal conditions."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 126,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "- untrusted"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 145,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "Recognition alone does not create a portable standard, blueprint, or institutionally trusted artifact."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 171,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- doctrine or policy statement"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 218,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "Formalized artifacts may require validation before broader trust or deployment."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 229,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- safety or reliability validation"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 245,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "It is still required to be explicit when broader trust depends on it."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 262,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "It stabilizes expectations across repeated use, training, coordination, procurement, inspection, or governance."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 315,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- protocol compatibility"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 316,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "- trust and certification"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 319,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "A standard may remain local, underused, contested, or blocked by material or institutional conditions."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 340,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility posture"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 378,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- forbidden forms are prohibited under current law or institutional policy"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 381,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "Later `\u03a5` work will refine versioning, naming, and release/provenance mechanisms."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 398,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- laws and governance procedures"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 417,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- toolchains or automated systems acting within explicit authority limits"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 431,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "within different law, authority, capability, and epistemic constraints."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 431,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "within different law, authority, capability, and epistemic constraints."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 441,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- authority"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 444,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- measurement capability"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 447,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- protocol compatibility"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 453,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "It remains compatible with epistemic limits, capability surfaces, law-gated authority, and sparse materialization."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 453,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "It remains compatible with epistemic limits, capability surfaces, law-gated authority, and sparse materialization."
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 521,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- social habits that become institutions, doctrines, or governance procedures"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 527,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "- trusted methods"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 572,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- allowing revision to erase historical identity or compatibility posture silently"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 587,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- define provenance, compatibility, versioning, naming, and release details"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 587,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "- define provenance, compatibility, versioning, naming, and release details"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 588,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- define explicit actor workflows and governance around formalized artifacts"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 596,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- override the chain-stage meanings frozen here without explicit versioned update"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 600,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- explicit artifact update"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 610,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 611,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `specs/reality/SPEC_CAPABILITY_SURFACES.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "line": 621,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- `docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 6,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, and `specs/rea"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, and `specs/rea"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 6,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, and `specs/rea"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 49,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "It is also informed by existing repo embodiment in `docs/architecture/macro_capsules.md`, `docs/worldgen/REFINEMENT_CONTRACT.md`, `docs/worldgen/REFINEMENT_LATTICE.md`, `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`, `docs/system/MACROCAPSULE_B"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 125,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Formalized representation is a representation in which recognized meaning has been stabilized into explicit formal structures, contracts, standards, institutions, blueprints, or declared system roles."
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 134,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- formal route or governance artifacts"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 159,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "- population or trust summaries"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 201,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- activation and refusal conditions are explicit"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 211,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- silently coerce compatibility or legal state"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 235,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `capability_and_access_relationships`:"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 237,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `compatibility_relationships`:"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 238,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "explicit compatibility or incompatibility commitments"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 242,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "continuity of organizations, legal structures, standards, or governance identity where applicable"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 260,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- explicit refusal conditions"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 271,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- capability commitments required for current interaction"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 272,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- compatibility commitments that downstream systems rely on"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 331,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "- a macro summary implying safety, availability, or capacity that micro expansion contradicts without lawful intervening Process"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 346,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- what refusal conditions apply"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 370,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- treating camera distance alone as sufficient ladder authority"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 396,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- explicit artifact update"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 406,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 407,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `specs/reality/SPEC_CAPABILITY_SURFACES.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "line": 410,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `docs/worldgen/REFINEMENT_CONTRACT.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 6,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 6,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 23,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- institutional fragments becoming formal governance, administrative, or legal systems"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 67,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- institution fragments -> bureaucracy or governance system"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 74,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- stable capability relationships"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 110,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- a civilization or governance summary being expanded into concrete institutions, constraints, and interactions"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 150,
+      "marker": "feed",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "Recognition can feed ascent."
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 166,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- an institution may behave as governance before explicit charter or legal formalization exists"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 177,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- explicit contracts"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 202,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "These concepts must stay separate so later prompts can define proof, refusal, and runtime behavior clearly."
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 230,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- an institution may matter for legal authority, refusal conditions, capability exposure, and historical continuity"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 230,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- an institution may matter for legal authority, refusal conditions, capability exposure, and historical continuity"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 230,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- an institution may matter for legal authority, refusal conditions, capability exposure, and historical continuity"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 231,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "- a civilization summary may matter for trust, trade, law, conflict, education, and knowledge systems"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 243,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- an institutional fragment that does not yet lawfully constitute a governance system"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 257,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- explicit refusal"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 266,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "- declaring something \"a city,\" \"a factory,\" \"a road,\" or \"a governance system\" solely because of presentation"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 271,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "- using runtime convenience or camera distance as the authority for semantic level changes"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 285,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "- define more detailed proof and refusal criteria"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 296,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "- explicit artifact update"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 306,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 307,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "- `specs/reality/SPEC_CAPABILITY_SURFACES.md`"
+    },
+    {
+      "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "line": 310,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "- `docs/worldgen/REFINEMENT_CONTRACT.md`"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "specs",
+  "schema_version": "dominium.aide.authority_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 574
+  }
+}

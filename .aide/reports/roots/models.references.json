@@ -1,0 +1,1800 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 526,
+      "snippet": "\".aide/models/capabilities.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 528,
+      "snippet": "\"path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 538,
+      "snippet": "\".aide/models/fallback.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 540,
+      "snippet": "\"path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 550,
+      "snippet": "\".aide/models/hard-floors.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 552,
+      "snippet": "\"path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 562,
+      "snippet": "\".aide/models/providers.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 564,
+      "snippet": "\"path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 574,
+      "snippet": "\".aide/models/routes.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 576,
+      "snippet": "\"path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 52,
+      "snippet": "- existing_managed_file: `.aide/models/capabilities.yaml` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 53,
+      "snippet": "- existing_managed_file: `.aide/models/fallback.yaml` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 54,
+      "snippet": "- existing_managed_file: `.aide/models/hard-floors.yaml` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 55,
+      "snippet": "- existing_managed_file: `.aide/models/providers.yaml` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 56,
+      "snippet": "- existing_managed_file: `.aide/models/routes.yaml` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 619,
+      "snippet": "\"source_path\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 621,
+      "snippet": "\"target_path\": \".aide/models/capabilities.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 633,
+      "snippet": "\"source_path\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 635,
+      "snippet": "\"target_path\": \".aide/models/fallback.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 647,
+      "snippet": "\"source_path\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 649,
+      "snippet": "\"target_path\": \".aide/models/hard-floors.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 661,
+      "snippet": "\"source_path\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 663,
+      "snippet": "\"target_path\": \".aide/models/providers.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 675,
+      "snippet": "\"source_path\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 677,
+      "snippet": "\"target_path\": \".aide/models/routes.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 524,
+      "snippet": "\".aide/models/capabilities.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 526,
+      "snippet": "\"path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 536,
+      "snippet": "\".aide/models/fallback.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 538,
+      "snippet": "\"path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 548,
+      "snippet": "\".aide/models/hard-floors.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 550,
+      "snippet": "\"path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 560,
+      "snippet": "\".aide/models/providers.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 562,
+      "snippet": "\"path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 572,
+      "snippet": "\".aide/models/routes.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 574,
+      "snippet": "\"path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3831,
+      "snippet": "\"source_path\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3833,
+      "snippet": "\"target_path\": \".aide/models/capabilities.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3845,
+      "snippet": "\"source_path\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3847,
+      "snippet": "\"target_path\": \".aide/models/fallback.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3859,
+      "snippet": "\"source_path\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3861,
+      "snippet": "\"target_path\": \".aide/models/hard-floors.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3873,
+      "snippet": "\"source_path\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3875,
+      "snippet": "\"target_path\": \".aide/models/providers.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3887,
+      "snippet": "\"source_path\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3889,
+      "snippet": "\"target_path\": \".aide/models/routes.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 7276,
+      "snippet": "\".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 7277,
+      "snippet": "\".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 7278,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 7279,
+      "snippet": "\".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 7280,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 566,
+      "snippet": "\".aide/models/capabilities.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 572,
+      "snippet": "\"path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 574,
+      "snippet": "\"source\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 579,
+      "snippet": "\".aide/models/fallback.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 585,
+      "snippet": "\"path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 587,
+      "snippet": "\"source\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 592,
+      "snippet": "\".aide/models/hard-floors.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 598,
+      "snippet": "\"path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 600,
+      "snippet": "\"source\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 605,
+      "snippet": "\".aide/models/providers.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 611,
+      "snippet": "\"path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 613,
+      "snippet": "\"source\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 618,
+      "snippet": "\".aide/models/routes.yaml\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 624,
+      "snippet": "\"path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 626,
+      "snippet": "\"source\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/README.md",
+      "line": 18,
+      "snippet": "call providers/models/network services."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/policies/release-bundle.yaml",
+      "line": 7,
+      "snippet": "mutating branches, mutating targets, or calling providers/models/network."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/no-apply-boundary-audit.md",
+      "line": 13,
+      "snippet": "- Providers/models/network: no provider/model/network calls were made."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/prompt.md",
+      "line": 7,
+      "snippet": "Non-goals: Do not install or upgrade AIDE. Do not copy bundle files into Dominium. Do not modify Dominium product/source/doctrine/tool files. Do not mutate branches/remotes. Do not call providers/models/network. Do not run destructive build"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/operating-runbook.md",
+      "line": 57,
+      "snippet": "- Do not call providers/models/network."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/preservation-contract.md",
+      "line": 25,
+      "snippet": "- Call providers/models/network unless a future reviewed task explicitly enables live execution."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/prompt.md",
+      "line": 12,
+      "snippet": "- Do not install active CI, publish releases, mutate branches/remotes, or call providers/models/network."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/refactors/README.md",
+      "line": 54,
+      "snippet": "providers/models/network services."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 191,
+      "snippet": "\".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 192,
+      "snippet": "\".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 193,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 194,
+      "snippet": "\".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 195,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3575,
+      "snippet": "\"contracts/schemas/models/cache_policy.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3576,
+      "snippet": "\"contracts/schemas/models/constitutive_model.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3577,
+      "snippet": "\"contracts/schemas/models/input_ref.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3578,
+      "snippet": "\"contracts/schemas/models/model_binding.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3579,
+      "snippet": "\"contracts/schemas/models/model_evaluation_result.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3580,
+      "snippet": "\"contracts/schemas/models/model_type.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3581,
+      "snippet": "\"contracts/schemas/models/output_ref.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11300,
+      "snippet": "\"models/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11301,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/routing/latest-route-decision.json",
+      "line": 10,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/routing/latest-route-decision.json",
+      "line": 11,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/routing/latest-route-decision.md",
+      "line": 40,
+      "snippet": "- `.aide/models/hard-floors.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/routing/latest-route-decision.md",
+      "line": 41,
+      "snippet": "- `.aide/models/routes.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3754,
+      "snippet": "\".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3755,
+      "snippet": "\".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3756,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3757,
+      "snippet": "\".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3758,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 536,
+      "snippet": "\".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 537,
+      "snippet": "\".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 538,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 539,
+      "snippet": "\".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 540,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 72,
+      "snippet": "\".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 73,
+      "snippet": "\".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 74,
+      "snippet": "\".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 75,
+      "snippet": "\".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 76,
+      "snippet": "\".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 697,
+      "snippet": "\"path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 701,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 710,
+      "snippet": "\"path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 714,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 723,
+      "snippet": "\"path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 727,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 736,
+      "snippet": "\"path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 740,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 749,
+      "snippet": "\"path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 753,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1410,
+      "snippet": "\"current_path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1420,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1422,
+      "snippet": "\"target_path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1440,
+      "snippet": "\"current_path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1450,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1452,
+      "snippet": "\"target_path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1470,
+      "snippet": "\"current_path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1480,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1482,
+      "snippet": "\"target_path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1500,
+      "snippet": "\"current_path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1510,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1512,
+      "snippet": "\"target_path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1530,
+      "snippet": "\"current_path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1540,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 1542,
+      "snippet": "\"target_path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1423,
+      "snippet": "\"current_path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1433,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1435,
+      "snippet": "\"target_path\": \".aide/models/capabilities.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1453,
+      "snippet": "\"current_path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1463,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1465,
+      "snippet": "\"target_path\": \".aide/models/fallback.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1483,
+      "snippet": "\"current_path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1493,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1495,
+      "snippet": "\"target_path\": \".aide/models/hard-floors.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1513,
+      "snippet": "\"current_path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1523,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1525,
+      "snippet": "\"target_path\": \".aide/models/providers.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1543,
+      "snippet": "\"current_path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1553,
+      "snippet": "\"source_pack_path\": \"files/.aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 1555,
+      "snippet": "\"target_path\": \".aide/models/routes.yaml\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/README.md",
+      "line": 12,
+      "snippet": "activate CI, or call providers/models/network services."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/verification/latest-verification-report.md",
+      "line": 83,
+      "snippet": "- `.aide/models/capabilities.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/verification/latest-verification-report.md",
+      "line": 84,
+      "snippet": "- `.aide/models/fallback.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/verification/latest-verification-report.md",
+      "line": 85,
+      "snippet": "- `.aide/models/hard-floors.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/verification/latest-verification-report.md",
+      "line": 86,
+      "snippet": "- `.aide/models/providers.yaml`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/verification/latest-verification-report.md",
+      "line": 87,
+      "snippet": "- `.aide/models/routes.yaml`"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/launcher_core_launcher/launcher/core/include/launcher_job.h",
+      "line": 6,
+      "snippet": "ALLOWED DEPENDENCIES: C++98 standard headers and `include/domino/**` base types; launcher core models/services."
+    },
+    {
+      "classification": "unknown",
+      "file": "content/MANIFEST.md",
+      "line": 15,
+      "snippet": "| `models/` | not moved | left_for_review | Active Python constitutive model engine imported by engine, game domains, meta, and tests. | Model IDs and model binding semantics unchanged. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/cache_policy.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/cache_policy.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/constitutive_model.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/constitutive_model.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/input_ref.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/input_ref.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/model_binding.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/model_binding.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/model_evaluation_result.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/model_evaluation_result.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/model_type.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/model_type.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/models/output_ref.schema",
+      "line": 1,
+      "snippet": "SCHEMA: models/output_ref.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2198,
+      "snippet": "\"models/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2199,
+      "snippet": "\"models/model_engine.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/extension_interpretation_registry.json",
+      "line": 1445,
+      "snippet": "\"models/model_engine.py\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/extension_interpretation_registry.json",
+      "line": 5411,
+      "snippet": "\"models/model_engine.py\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/extension_interpretation_registry.json",
+      "line": 5439,
+      "snippet": "\"models/model_engine.py\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_runtime_critical_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"3ab4d8f2221fb4913b59aaf6a9754c3fe978cb869ff726ef659ed10bc855c1c1\",\"entries\":[{\"architecture_impact\":9,\"blocked_file_count\":537,\"confidence\":0.9,\"current_root\":\"src\",\"example_files\":[\"src/embodiment/body/__init_"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_tool_only_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c3a1403ff836cd0c758ff1dabfc0d0fd9789bf3f441a67f3459177943a18f0c8\",\"entries\":[{\"category\":\"tools\",\"confidence\":0.8137,\"current_module_id\":\"unknown.src.appshell\",\"current_root\":\"src\",\"evidence\":{\"build_targets\":["
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_move_map.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_path\":\"data/restructure/src_domain_mapping_lock_approved_v4.json\",\"deterministic_fingerprint\":\"86c6801db990616d4038140d8f366680b2e452d5d81818c527f8cba18687b91d\",\"readiness_contract_path\":\"data/restructure/xi5_readiness_contr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CHEM1_RETRO_AUDIT.md",
+      "line": 19,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CHEM3_RETRO_AUDIT.md",
+      "line": 16,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 21,
+      "snippet": "- `schema/models/constitutive_model.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 22,
+      "snippet": "- `schema/models/model_type.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 23,
+      "snippet": "- `schema/models/model_binding.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 24,
+      "snippet": "- `schema/models/input_ref.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 25,
+      "snippet": "- `schema/models/output_ref.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 26,
+      "snippet": "- `schema/models/cache_policy.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 27,
+      "snippet": "- `schema/models/model_evaluation_result.schema`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 42,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSTITUTIVE_MODEL_ENGINE_BASELINE.md",
+      "line": 43,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/EMB0_RETRO_AUDIT.md",
+      "line": 98,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/GLOBAL_SUBSTRATE_PURITY.md",
+      "line": 28,
+      "snippet": "Moved inline response-curve math into model-layer helper functions (`src/models/model_engine.py`) and switched call sites to consume those deterministic helpers:"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/GLOBAL_SUBSTRATE_PURITY.md",
+      "line": 52,
+      "snippet": "- `python -m py_compile src/models/model_engine.py src/fields/field_engine.py src/mechanics/structural_graph_engine.py src/mobility/maintenance/wear_engine.py src/mobility/micro/constrained_motion_solver.py src/mobility/traffic/traffic_engi"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/META_MODEL1_RETRO_AUDIT.md",
+      "line": 40,
+      "snippet": "1. Introduce canonical model schemas + registries (`schema/models/*`, `data/registries/*`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/META_MODEL1_RETRO_AUDIT.md",
+      "line": 41,
+      "snippet": "2. Add deterministic model evaluation runtime (`src/models/model_engine.py`) with cache and budget handling."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/META_REF0_RETRO_AUDIT.md",
+      "line": 17,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DUPLICATION_REPORT.md",
+      "line": 2236,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PHYS1_RETRO_AUDIT.md",
+      "line": 22,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PLATFORM_RENDERER_SURFACE.md",
+      "line": 18,
+      "snippet": "| `software` | `src/client/render/renderers/software_renderer.py` | `client`, `engine`, `launcher`, `setup`, `tool` | `no` | `no` | `src/appshell/rendered_stub.py`, `src/client/render/renderers/__init__.py`, `src/client/render/renderers/hw_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PROC2_RETRO_AUDIT.md",
+      "line": 17,
+      "snippet": "- `src/models/model_engine.py` (`model_type.chem_yield_factor`, `model_type.chem_contamination_risk`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 473,
+      "snippet": "models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5837,
+      "snippet": "models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYS0_RETRO_AUDIT.md",
+      "line": 42,
+      "snippet": "Result: passes constitutional direction (assemblies/models/processes), but lacks explicit SYS layer contracts/artifacts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/XI_3_FINAL.md",
+      "line": 39,
+      "snippet": "- `duplicate.cluster.3b31f4cda90f9694` `src/models/model_engine.py` score delta `0.0`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+      "line": 665,
+      "snippet": "\"src/models/model_engine.py\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+      "line": 717,
+      "snippet": "\"src/models/model_engine.py\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+      "line": 733,
+      "snippet": "\"src/models/model_engine.py\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16296,
+      "snippet": "\u2502  \u251c\u2500 models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16430,
+      "snippet": "\u251c\u2500 models/            # optional, renderer-dependent"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16476,
+      "snippet": "\"models\": \"models/models.json\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16568,
+      "snippet": "5. Graphics packs \u2014 /gfx/, /models/, /shaders/, /fonts/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16754,
+      "snippet": "5.5 Models \u2014 /models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 16758,
+      "snippet": "/data/packs/base_gfx/models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 18758,
+      "snippet": "\u2502  \u251c\u2500 models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 19194,
+      "snippet": "4.3 /tools/pipeline/models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 19234,
+      "snippet": "\u2022 Collects images/models/audio."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 27,
+      "snippet": "\u2502  \u251c\u2500 models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 94,
+      "snippet": "\u251c\u2500 models/            # optional, renderer-dependent"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 117,
+      "snippet": "\"models\": \"models/models.json\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 163,
+      "snippet": "5. Graphics packs \u2014 /gfx/, /models/, /shaders/, /fonts/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 256,
+      "snippet": "5.5 Models \u2014 /models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_packs.txt",
+      "line": 258,
+      "snippet": "/data/packs/base_gfx/models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 31,
+      "snippet": "\u2502  \u251c\u2500 models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 249,
+      "snippet": "4.3 /tools/pipeline/models/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 269,
+      "snippet": "\u2022 Collects images/models/audio."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/CONVERGENCE_RISK_REPORT.md",
+      "line": 43,
+      "snippet": "| `duplicate.cluster.3b31f4cda90f9694` | `_canon` | `src/mobility/vehicle/vehicle_engine.py` | `src/models/model_engine.py` | `0.0` | `pack_compat_install_resolver, time_anchor, worldgen_lock_or_overlay` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 116,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 368,
+      "snippet": "- `src/models/model_engine.py` disposition=`drop` rank=`100` total_score=`65.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.3b31f4cda90f9694.md",
+      "line": 46,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.3b31f4cda90f9694.md",
+      "line": 58,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 129,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 361,
+      "snippet": "- `src/models/model_engine.py` disposition=`merge` rank=`48` total_score=`77.62` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.3d73ce66e079e576.md",
+      "line": 53,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.3d73ce66e079e576.md",
+      "line": 65,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 116,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 368,
+      "snippet": "- `src/models/model_engine.py` disposition=`drop` rank=`100` total_score=`65.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b1298b209bfb3ba6.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b1298b209bfb3ba6.md",
+      "line": 18,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b1298b209bfb3ba6.md",
+      "line": 19,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b1298b209bfb3ba6.md",
+      "line": 23,
+      "snippet": "- `src/models/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b1298b209bfb3ba6.md",
+      "line": 24,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e2f7ad8ee5d2e5e3.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e2f7ad8ee5d2e5e3.md",
+      "line": 18,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e2f7ad8ee5d2e5e3.md",
+      "line": 19,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e2f7ad8ee5d2e5e3.md",
+      "line": 23,
+      "snippet": "- `src/models/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e2f7ad8ee5d2e5e3.md",
+      "line": 24,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8baa37570edecb1.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8baa37570edecb1.md",
+      "line": 18,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8baa37570edecb1.md",
+      "line": 19,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8baa37570edecb1.md",
+      "line": 23,
+      "snippet": "- `src/models/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8baa37570edecb1.md",
+      "line": 24,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 129,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 364,
+      "snippet": "- `src/models/model_engine.py` disposition=`merge` rank=`49` total_score=`77.62` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.efe06d5a0a99de92.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.efe06d5a0a99de92.md",
+      "line": 18,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.efe06d5a0a99de92.md",
+      "line": 19,
+      "snippet": "- `src/models/model_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.efe06d5a0a99de92.md",
+      "line": 23,
+      "snippet": "- `src/models/__init__.py` disposition=`canonical` rank=`1` total_score=`73.09` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.efe06d5a0a99de92.md",
+      "line": 24,
+      "snippet": "- `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 114,
+      "snippet": "- `modding/` and `models/` are active Python implementation packages, not content-only roots."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 122,
+      "snippet": "POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target ownership root for new authored content, but existing `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` material was not moved bec"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 151,
+      "snippet": "After POST-CONVERGE-03, content/package/profile/bundle review did not retire additional roots. `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` remain explicit active exceptions because each is mixed, iden"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 263,
+      "snippet": "- `modding/` and `models/` remain active implementation packages, not content-only roots."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 179,
+      "snippet": "| `models/` | current_content_or_data_root | Model/data surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4B_UNBLOCK_REPORT.md",
+      "line": 282,
+      "snippet": "- `src/models/__init__.py`"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 2073,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e179_inline_response_curve_smell.py",
+      "line": 60,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e180_model_bypass_smell.py",
+      "line": 58,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e180_model_bypass_smell.py",
+      "line": 97,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e182_bundle_bypass_smell.py",
+      "line": 48,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e183_electric_special_case_smell.py",
+      "line": 54,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e185_inline_power_loss_smell.py",
+      "line": 57,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e195_heat_loss_bypass_smell.py",
+      "line": 61,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e196_thermal_bypass_smell.py",
+      "line": 55,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e197_inline_phase_change_smell.py",
+      "line": 59,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e197_inline_phase_change_smell.py",
+      "line": 103,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e198_inline_cure_smell.py",
+      "line": 58,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e198_inline_cure_smell.py",
+      "line": 103,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e199_inline_cooling_smell.py",
+      "line": 60,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e199_inline_cooling_smell.py",
+      "line": 105,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e201_inline_fire_logic_smell.py",
+      "line": 62,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e201_inline_fire_logic_smell.py",
+      "line": 109,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e205_energy_bypass_smell.py",
+      "line": 64,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e206_momentum_bypass_smell.py",
+      "line": 54,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e211_unregistered_field_smell.py",
+      "line": 123,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e217_undeclared_coupling_smell.py",
+      "line": 64,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e219_inline_pressure_smell.py",
+      "line": 57,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e219_inline_pressure_smell.py",
+      "line": 99,
+      "snippet": "related_paths=[rel_path, \"models/model_engine.py\", \"tools/xstack/sessionx/process_runtime.py\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e220_adhoc_valve_smell.py",
+      "line": 55,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e233_implicit_civil_time_smell.py",
+      "line": 53,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e242_inline_fuel_burn_smell.py",
+      "line": 58,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e243_unregistered_combustion_smell.py",
+      "line": 131,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e244_inline_yield_logic_smell.py",
+      "line": 54,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e246_inline_corrosion_smell.py",
+      "line": 43,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e247_cross_domain_bypass_smell.py",
+      "line": 52,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e283_inline_yield_smell.py",
+      "line": 56,
+      "snippet": "\"models/model_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e284_defect_flag_bypass_smell.py",
+      "line": 57,
+      "snippet": "\"models/model_engine.py\","
+    }
+  ],
+  "references_rewritten": false,
+  "root": "models",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 298
+  }
+}

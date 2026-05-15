@@ -1,0 +1,26 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "deletes_applied": false,
+  "moves_applied": false,
+  "recommended_next_task": "AIDE-MOVE-01-PLAN ? First Low-Risk Move Plan",
+  "reference_rewrites_applied": false,
+  "renames_applied": false,
+  "schema_version": "dominium.aide.first_move_recommendation.v1",
+  "selected": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "reason": "Selected as the narrowest low-risk docs/projection/evidence candidate; still not approved for application.",
+    "recommended_action": "plan_move",
+    "reference_complexity": "high",
+    "reversibility": "easy",
+    "risk": "low",
+    "root": "ide",
+    "score": 19,
+    "sensitivity": "docs/projection",
+    "subtree": "ide/README.md and ide/manifests projection docs/examples",
+    "validation_coverage": "medium",
+    "value": "medium"
+  },
+  "task_id": "AIDE-ROOT-06"
+}

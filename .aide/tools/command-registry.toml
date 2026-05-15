@@ -1,0 +1,18 @@
+[registry]
+id = "dominium.aide.command_registry.v1"
+status = "provisional"
+
+[commands."aide.tools"]
+contract = ".aide/tools/command-contracts/dom-aide-structure-02.commands.toml"
+status = "enabled"
+notes = "Initial known-safe no-apply wrapper around AIDE tools validate."
+
+[commands."aide.roots"]
+contract = ".aide/tools/command-contracts/dom-aide-structure-02.commands.toml"
+status = "enabled"
+notes = "Initial known-safe no-apply wrapper around AIDE roots validate."
+
+[commands."aide.repo"]
+contract = ".aide/tools/command-contracts/dom-aide-structure-02.commands.toml"
+status = "enabled"
+notes = "Initial known-safe no-apply wrapper around AIDE repo validate; known classification warnings may remain."

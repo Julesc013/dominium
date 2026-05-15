@@ -1,0 +1,95 @@
+{
+  "schema_version": "dominium.aide.wrapper_candidates.v1",
+  "task_id": "AIDE-STRUCTURE-01",
+  "recommended_first_wrapper_family": "aide_lite_validation_family",
+  "execution_allowed_recommendation": false,
+  "required_contract_path": ".aide/tools/wrapper-contracts/aide-structure-02.validation-family.toml",
+  "ranked_candidates": [
+    {
+      "rank": 1,
+      "family": "aide_lite_validation_family",
+      "paths": [".aide/scripts/aide_lite.py"],
+      "commands": [
+        "py -3 .aide/scripts/aide_lite.py tools validate",
+        "py -3 .aide/scripts/aide_lite.py roots validate",
+        "py -3 .aide/scripts/aide_lite.py repo validate",
+        "py -3 .aide/scripts/aide_lite.py xstack validate"
+      ],
+      "risk": "low_to_medium",
+      "execution_safety": "safe_observed_no_apply",
+      "reason": "Prior AIDE baseline and DOM-AIDE-02 evidence prove these commands validate no-apply evidence and keep legacy execution disabled.",
+      "blockers": ["keep execution disabled by default in the wrapper contract", "document known repo validate warning for unknown file classifications"]
+    },
+    {
+      "rank": 2,
+      "family": "build_contract_validator",
+      "paths": ["tools/build/validate_build_contract.py"],
+      "commands": ["python tools/build/validate_build_contract.py --repo-root . --strict"],
+      "risk": "medium",
+      "execution_safety": "safe_observed_read_only_validator",
+      "reason": "Useful for future build-proof control-plane work without building binaries.",
+      "blockers": ["confirm no generated outputs for the exact wrapper invocation"]
+    },
+    {
+      "rank": 3,
+      "family": "layout_distribution_component_validators",
+      "paths": [
+        "tools/validators/check_distribution_layout.py",
+        "tools/validators/check_component_matrices.py"
+      ],
+      "commands": [
+        "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+        "python tools/validators/check_component_matrices.py --repo-root . --strict"
+      ],
+      "risk": "medium",
+      "execution_safety": "safe_observed_read_only_validator",
+      "reason": "Both validators passed in AIDE-STRUCTURE-00 and AIDE-STRUCTURE-01 validation without product/runtime changes.",
+      "blockers": ["document TOML fallback warning on local Python 3.8"]
+    },
+    {
+      "rank": 4,
+      "family": "repo_layout_root_allowlist_validators",
+      "paths": [
+        "tools/validators/check_repo_layout.py",
+        "tools/validators/check_root_allowlist.py"
+      ],
+      "commands": [
+        "python tools/validators/check_repo_layout.py --repo-root . --strict --no-write",
+        "python tools/validators/check_root_allowlist.py --repo-root . --strict --no-write"
+      ],
+      "risk": "medium_to_high",
+      "execution_safety": "blocked_in_current_checkout",
+      "reason": "Useful for root recycling, but current local ignored build/out roots block strict success.",
+      "blockers": ["resolve or classify ignored build/ and out/ generated roots before promoting"]
+    },
+    {
+      "rank": 5,
+      "family": "supplemental_boundary_validators",
+      "paths": [
+        "scripts/verify_docs_sanity.py",
+        "scripts/verify_build_target_boundaries.py",
+        "scripts/verify_ui_shell_purity.py",
+        "scripts/verify_abi_boundaries.py"
+      ],
+      "commands": [
+        "python scripts/verify_docs_sanity.py --repo-root .",
+        "python scripts/verify_build_target_boundaries.py --repo-root .",
+        "python scripts/verify_ui_shell_purity.py --repo-root .",
+        "python scripts/verify_abi_boundaries.py --repo-root ."
+      ],
+      "risk": "medium",
+      "execution_safety": "safe_observed_but_not_wrapped",
+      "reason": "They passed as supplemental validation, but script-root ownership is outside AIDE wrapper implementation scope for this task.",
+      "blockers": ["do not modify scripts/**; wrap only through future AIDE contracts"]
+    }
+  ],
+  "deferred_families": [
+    "broad_xstack_fast_full",
+    "full_ctest",
+    "full_eval",
+    "package_generation",
+    "release_publication",
+    "github_mutation",
+    "unknown_tools"
+  ]
+}

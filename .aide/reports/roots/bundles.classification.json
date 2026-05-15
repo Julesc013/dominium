@@ -1,0 +1,156 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "bundles/README.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "README.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "bundle_identity",
+        "documentation",
+        "identity_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "bundles/bundle.base.lab",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "bundle.base.lab",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "bundles/bundle.base.lab/bundle.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "bundle.base.lab/bundle.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "bundle_identity",
+        "identity_sensitive",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "bundles/bundle.null",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "bundle.null",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "bundles/bundle.null/bundle.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "bundle.null/bundle.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "bundle_identity",
+        "identity_sensitive",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "bundles",
+  "root_path": "bundles",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "convert": 1,
+      "preserve_unknown": 4
+    },
+    "risk_counts": {
+      "protected": 3,
+      "unknown": 2
+    },
+    "sensitivity_counts": {
+      "bundle_identity": 3,
+      "documentation": 1,
+      "identity_sensitive": 3,
+      "machine_readable": 2
+    }
+  },
+  "task_id": null
+}

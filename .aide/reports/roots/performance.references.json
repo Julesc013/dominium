@@ -1,0 +1,708 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/root-selection.md",
+      "line": 11,
+      "snippet": "AIDE root inventory found 44 roots. Candidate low-risk families from the generic rule exist: `governance/`, `meta/`, `validation/`, `performance/`, and `ide/`."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+      "line": 17,
+      "snippet": "- `performance/`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3657,
+      "snippet": "\"contracts/schemas/performance/arbitration_policy.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3658,
+      "snippet": "\"contracts/schemas/performance/budget_envelope.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3659,
+      "snippet": "\"contracts/schemas/performance/inspection_cache_policy.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6721,
+      "snippet": "\"docs/audit/performance/PERFORMX_BASELINE.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6722,
+      "snippet": "\"docs/audit/performance/PERFORMX_BASELINE.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6723,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6724,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6725,
+      "snippet": "\"docs/audit/performance/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 6726,
+      "snippet": "\"docs/audit/performance/RUN_META.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7402,
+      "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 10433,
+      "snippet": "\"game/domains/materials/performance/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 10434,
+      "snippet": "\"game/domains/materials/performance/mat_scale_engine.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11576,
+      "snippet": "\"performance/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11577,
+      "snippet": "\"performance/cost_engine.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11578,
+      "snippet": "\"performance/inspection_cache.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/performance/arbitration_policy.schema",
+      "line": 1,
+      "snippet": "SCHEMA: performance/arbitration_policy.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/performance/budget_envelope.schema",
+      "line": 1,
+      "snippet": "SCHEMA: performance/budget_envelope.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/performance/inspection_cache_policy.schema",
+      "line": 1,
+      "snippet": "SCHEMA: performance/inspection_cache_policy.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2143,
+      "snippet": "\"materials/performance/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2144,
+      "snippet": "\"materials/performance/mat_scale_engine.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2222,
+      "snippet": "\"performance/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2223,
+      "snippet": "\"performance/cost_engine.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2224,
+      "snippet": "\"performance/inspection_cache.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/derived_artifacts.json",
+      "line": 495,
+      "snippet": "\"path\": \"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/derived_artifacts.json",
+      "line": 525,
+      "snippet": "\"path\": \"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/derived_artifacts.json",
+      "line": 584,
+      "snippet": "\"path\": \"docs/audit/performance/PERFORMX_BASELINE.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/xstack_components.json",
+      "line": 83,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/xstack_components.json",
+      "line": 84,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/xstack_components.json",
+      "line": 301,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/xstack_components.json",
+      "line": 302,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_tool_only_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c3a1403ff836cd0c758ff1dabfc0d0fd9789bf3f441a67f3459177943a18f0c8\",\"entries\":[{\"category\":\"tools\",\"confidence\":0.8137,\"current_module_id\":\"unknown.src.appshell\",\"current_root\":\"src\",\"evidence\":{\"build_targets\":["
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_move_map.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_path\":\"data/restructure/src_domain_mapping_lock_approved_v4.json\",\"deterministic_fingerprint\":\"86c6801db990616d4038140d8f366680b2e452d5d81818c527f8cba18687b91d\",\"readiness_contract_path\":\"data/restructure/xi5_readiness_contr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/XSTACK.md",
+      "line": 27,
+      "snippet": "- performance/profile monitoring (PerformX)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/XSTACK.md",
+      "line": 116,
+      "snippet": "PerformX tracks performance/budget evidence and regression signals."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/XSTACK.md",
+      "line": 120,
+      "snippet": "- artifacts: `docs/audit/performance/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/app/TESTX_INVENTORY.md",
+      "line": 24,
+      "snippet": "- Engine tests: `engine_smoke`, performance/IR tests (`engine/tests/CMakeLists.txt`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1175,
+      "snippet": "- `docs/audit/performance/PERFORMX_BASELINE.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1176,
+      "snippet": "- `docs/audit/performance/README.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1632,
+      "snippet": "- `docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1052,
+      "snippet": "| `docs/audit/performance/PERFORMX_BASELINE.md` | `Determinism: fixed-point, RNG streams, replay`, `LOGIC: signals/state machines/compile`, `RELEASE/DIST: manifests, packaging` | `aligned` | `provisional` | `-` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1053,
+      "snippet": "| `docs/audit/performance/README.md` | `Determinism: fixed-point, RNG streams, replay`, `RELEASE/DIST: manifests, packaging` | `aligned` | `provisional` | `-` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1515,
+      "snippet": "| `docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md` | `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verification`, `LIB: installs/instances/saves, C"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 2152,
+      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md` | `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verifica"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CTRL3_RETRO_AUDIT.md",
+      "line": 63,
+      "snippet": "- `src/performance/cost_engine.py` (`reserve_inspection_budget`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST_FINAL_DRYRUN.md",
+      "line": 104,
+      "snippet": "- `docs/audit/performance/PERFORMX_BASELINE.json` -> exists=`yes`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1052,
+      "snippet": "| `docs/audit/performance/PERFORMX_BASELINE.md` | PerformX Baseline Protocol | `canon`, `diag`, `distribution`, `meta`, `release`, `validation`, `xstack` | `2026-02-11` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1053,
+      "snippet": "| `docs/audit/performance/README.md` | PerformX Audit Artifacts | `canon`, `determinism`, `diag`, `distribution`, `meta`, `release`, `time`, `validation` | `2026-02-11` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1515,
+      "snippet": "| `docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md` | Performance Envelope v0.0.0-mock | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `time` | `2026-03-14` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 2152,
+      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md` | Performance Envelope v0.0.0-mock | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/GLOBAL_REVIEW_FINAL.md",
+      "line": 23,
+      "snippet": "- Phase 7: performance/boundedness validation across SIG/MOB/ELEC/THERM/FLUID/CHEM; CHEM harness deterministic-order assertion corrected."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PERFORMANCE_CONSTITUTION_BASELINE.md",
+      "line": 40,
+      "snippet": "- `src/performance/cost_engine.py` computes per-tick cost snapshots from declared tier/entity cost classes."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PERFORMANCE_CONSTITUTION_BASELINE.md",
+      "line": 73,
+      "snippet": "- `src/performance/inspection_cache.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/proof_manifest.json",
+      "line": 30,
+      "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/proof_manifest.json",
+      "line": 60,
+      "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/proof_manifest.json",
+      "line": 117,
+      "snippet": "\"INV-DOC-STATUS-HEADER: missing status header: docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 398,
+      "snippet": "performance/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 505,
+      "snippet": "performance/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5875,
+      "snippet": "performance/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 7393,
+      "snippet": "performance/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/performance/PERFORMX_BASELINE.json",
+      "line": 7,
+      "snippet": "\"justification_path\": \"docs/audit/performance/PERFORMX_BASELINE.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/performance/PERFORMX_BASELINE.md",
+      "line": 18,
+      "snippet": "- `python tools/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/vs2026/20260211T233128Z_verify_ok/verification.json",
+      "line": 72,
+      "snippet": "\"output\": \"MSBuild version 18.0.5+e22287bf1 for .NET Framework\\n\\n  Run TestX verify suite\\n  {\\n    \\\"required_test_tags\\\": [\\n      \\\"determinism\\\",\\n      \\\"docs\\\",\\n      \\\"identity\\\",\\n      \\\"integration\\\",\\n      \\\"invariant\\\",\\n    "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/vs2026/20260212T143108Z_verify_ok/verification.json",
+      "line": 72,
+      "snippet": "\"output\": \"MSBuild version 18.0.5+e22287bf1 for .NET Framework\\n\\n  Run TestX verify suite\\n  {\\n    \\\"required_test_tags\\\": [\\n      \\\"determinism\\\",\\n      \\\"docs\\\",\\n      \\\"identity\\\",\\n      \\\"invariant\\\",\\n      \\\"performance\\\",\\n    "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/repox/REPOX_PROFILE.json",
+      "line": 30,
+      "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 344,
+      "snippet": "o Add /tests/perf explicitly for performance/load tests."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 92,
+      "snippet": "- `src/materials/performance/mat_scale_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 124,
+      "snippet": "- `src/performance/cost_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 125,
+      "snippet": "- `src/performance/inspection_cache.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 364,
+      "snippet": "- `src/performance/cost_engine.py` disposition=`drop` rank=`96` total_score=`66.13` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 400,
+      "snippet": "- `src/performance/inspection_cache.py` disposition=`drop` rank=`132` total_score=`61.19` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 439,
+      "snippet": "- `src/materials/performance/mat_scale_engine.py` disposition=`drop` rank=`171` total_score=`56.27` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 92,
+      "snippet": "- `src/materials/performance/mat_scale_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 124,
+      "snippet": "- `src/performance/cost_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 125,
+      "snippet": "- `src/performance/inspection_cache.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 364,
+      "snippet": "- `src/performance/cost_engine.py` disposition=`drop` rank=`96` total_score=`66.13` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 400,
+      "snippet": "- `src/performance/inspection_cache.py` disposition=`drop` rank=`132` total_score=`61.19` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 439,
+      "snippet": "- `src/materials/performance/mat_scale_engine.py` disposition=`drop` rank=`171` total_score=`56.27` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/DIST_FINAL_PLAN_v0_0_0_mock.md",
+      "line": 73,
+      "snippet": "- retained supporting baseline: `docs/audit/performance/PERFORMX_BASELINE.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 55,
+      "snippet": "- `governance/`, `ide/`, `labs/`, `meta/`, `performance/`, and `validation/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 77,
+      "snippet": "- `governance/`, `meta/`, `meta_extensions_engine.py`, `numeric_discipline.py`, `performance/`, and `validation/` have active imports and were not moved by this cleanup task."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 183,
+      "snippet": "| `performance/` | current_tools_root | Performance tooling/evidence surface. |"
+    },
+    {
+      "classification": "tests",
+      "file": "tests/tools/performx_determinism_tests.py",
+      "line": 10,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/tools/performx_determinism_tests.py",
+      "line": 11,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/tools/performx_smoke_tests.py",
+      "line": 55,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/tools/performx_smoke_tests.py",
+      "line": 56,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/tools/performx_smoke_tests.py",
+      "line": 57,
+      "snippet": "\"docs/audit/performance/RUN_META.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e229_wallclock_use_smell.py",
+      "line": 12,
+      "snippet": "WATCH_PREFIXES = (\"src/time/\", \"game/domains/reality/transitions/\", \"src/performance/\", \"game/domains/mobility/\", \"tools/xstack/sessionx/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "line": 13,
+      "snippet": "\"performance/cost_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "line": 14,
+      "snippet": "\"performance/inspection_cache.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "line": 58,
+      "snippet": "\"performance/cost_engine.py\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "line": 63,
+      "snippet": "\"performance/inspection_cache.py\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e535_performance_regression_smell.py",
+      "line": 158,
+      "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e73_unbounded_inspection_smell.py",
+      "line": 13,
+      "snippet": "INSPECTION_CACHE_PATH = \"performance/inspection_cache.py\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e74_unbounded_work_smell.py",
+      "line": 13,
+      "snippet": "\"game/domains/materials/performance/mat_scale_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e75_thrash_smell.py",
+      "line": 11,
+      "snippet": "MAT_SCALE_ENGINE_PATH = \"game/domains/materials/performance/mat_scale_engine.py\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/performx/README.md",
+      "line": 14,
+      "snippet": "- `python tools/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/performx/README.md",
+      "line": 19,
+      "snippet": "- `docs/audit/performance/PERFORMX_RESULTS.json`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/performx/README.md",
+      "line": 20,
+      "snippet": "- `docs/audit/performance/PERFORMX_REGRESSIONS.json`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/performx/README.md",
+      "line": 22,
+      "snippet": "- `docs/audit/performance/RUN_META.json`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/performx/README.md",
+      "line": 24,
+      "snippet": "- `docs/audit/performance/PERFORMX_BASELINE.json`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/core/runners.py",
+      "line": 352,
+      "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/core/runners.py",
+      "line": 353,
+      "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
+    }
+  ],
+  "references_rewritten": false,
+  "root": "performance",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 116
+  }
+}

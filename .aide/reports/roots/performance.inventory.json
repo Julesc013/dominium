@@ -1,0 +1,64 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic performance accounting helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "performance/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "performance_evidence",
+        "python_module"
+      ],
+      "size": 550,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic RS-5 cost accounting helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "performance/cost_engine.py",
+      "relative_path": "cost_engine.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "performance_evidence",
+        "python_module"
+      ],
+      "size": 6828,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic derived inspection snapshot cache helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "performance/inspection_cache.py",
+      "relative_path": "inspection_cache.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "performance_evidence",
+        "python_module"
+      ],
+      "size": 5920,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "performance",
+  "root_path": "performance",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 0,
+    "file_count": 3,
+    "tracked_file_count": 3
+  },
+  "task_id": null
+}

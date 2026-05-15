@@ -1,0 +1,4908 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".gitattributes",
+      "line": 5,
+      "snippet": "libs/appcore/ui_bind/** text eol=lf"
+    },
+    {
+      "classification": "unknown",
+      "file": "CMakeLists.txt",
+      "line": 1111,
+      "snippet": "add_subdirectory(libs/ui_backends/win32)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11184,
+      "snippet": "\"libs/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11185,
+      "snippet": "\"libs/appcore/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11186,
+      "snippet": "\"libs/appcore/command/command_dispatch.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11187,
+      "snippet": "\"libs/appcore/command/command_registry.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11188,
+      "snippet": "\"libs/appcore/command/command_registry.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11189,
+      "snippet": "\"libs/appcore/discover/appcore_discover.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11190,
+      "snippet": "\"libs/appcore/discover/appcore_discover.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11191,
+      "snippet": "\"libs/appcore/invoke/appcore_invoke.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11192,
+      "snippet": "\"libs/appcore/invoke/appcore_invoke.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11193,
+      "snippet": "\"libs/appcore/output/appcore_output.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11194,
+      "snippet": "\"libs/appcore/output/appcore_output.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11195,
+      "snippet": "\"libs/appcore/profile/appcore_profile.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11196,
+      "snippet": "\"libs/appcore/profile/appcore_profile.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11197,
+      "snippet": "\"libs/appcore/repox/appcore_repox.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11198,
+      "snippet": "\"libs/appcore/repox/appcore_repox.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11199,
+      "snippet": "\"libs/appcore/ui_bind/ui_accessibility_map.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11200,
+      "snippet": "\"libs/appcore/ui_bind/ui_accessibility_map.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11201,
+      "snippet": "\"libs/appcore/ui_bind/ui_command_binding_table.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11202,
+      "snippet": "\"libs/appcore/ui_bind/ui_command_binding_table.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11203,
+      "snippet": "\"libs/appcore/ui_bind/ui_localisation_usage_report.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11204,
+      "snippet": "\"libs/appcore/validate/appcore_validate.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11205,
+      "snippet": "\"libs/appcore/validate/appcore_validate.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11206,
+      "snippet": "\"libs/build_identity/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11207,
+      "snippet": "\"libs/build_identity/build_identity.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11208,
+      "snippet": "\"libs/build_identity/include/dom_build_identity/build_identity.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11209,
+      "snippet": "\"libs/contracts/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11210,
+      "snippet": "\"libs/contracts/include/dom_contracts/_internal/dom_build_version.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11211,
+      "snippet": "\"libs/contracts/include/dom_contracts/_internal/dom_keys.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11212,
+      "snippet": "\"libs/contracts/include/dom_contracts/app/product_entry.hpp\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11213,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_capabilities.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11214,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_failure_report.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11215,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_instance_manifest.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11216,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_launch_request.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11217,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_launch_result.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11218,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_pack_state.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11219,
+      "snippet": "\"libs/contracts/include/dom_contracts/app_version_info.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11220,
+      "snippet": "\"libs/contracts/include/dom_contracts/authority.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11221,
+      "snippet": "\"libs/contracts/include/dom_contracts/authority_token.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11222,
+      "snippet": "\"libs/contracts/include/dom_contracts/caps_split.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11223,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_audit.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11224,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_caps.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11225,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_err.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11226,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_installed_state.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11227,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_job.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11228,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_log.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11229,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_solver.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11230,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_tlv.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11231,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_tlv_schema.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11232,
+      "snippet": "\"libs/contracts/include/dom_contracts/core_util.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11233,
+      "snippet": "\"libs/contracts/include/dom_contracts/coredata_schema.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11234,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_app_mode.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11235,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_core.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11236,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_package_manifest.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11237,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_plat.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11238,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_plat_sys.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11239,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_plat_term.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11240,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_plat_ui.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11241,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/json.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11242,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/logging.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11243,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/manifest_install.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11244,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/os_paths.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11245,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/process.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11246,
+      "snippet": "\"libs/contracts/include/dom_contracts/dom_shared/uuid.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11247,
+      "snippet": "\"libs/contracts/include/dom_contracts/launcher_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11248,
+      "snippet": "\"libs/contracts/include/dom_contracts/launcher_edit_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11249,
+      "snippet": "\"libs/contracts/include/dom_contracts/launcher_ext_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11250,
+      "snippet": "\"libs/contracts/include/dom_contracts/product_info.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11251,
+      "snippet": "\"libs/contracts/include/dom_contracts/product_manifest.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11252,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11253,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_base.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11254,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_content_source.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11255,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_keychain.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11256,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_net.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11257,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_os_integration.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11258,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_registry.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11259,
+      "snippet": "\"libs/contracts/include/dom_contracts/provider_trust.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11260,
+      "snippet": "\"libs/contracts/include/dom_contracts/setup_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11261,
+      "snippet": "\"libs/contracts/include/dom_contracts/tool_api.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11262,
+      "snippet": "\"libs/contracts/include/dom_contracts/version.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11263,
+      "snippet": "\"libs/ui_backends/win32/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11264,
+      "snippet": "\"libs/ui_backends/win32/include/dom_ui_win32/ui_win32.h\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11265,
+      "snippet": "\"libs/ui_backends/win32/ui_ir_parser_stub.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11266,
+      "snippet": "\"libs/ui_backends/win32/win32_accessibility_stub.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11267,
+      "snippet": "\"libs/ui_backends/win32/win32_control_factory_stub.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11268,
+      "snippet": "\"libs/ui_backends/win32/win32_layout_stub.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11269,
+      "snippet": "\"libs/ui_backends/win32/win32_shell_stub.c\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8939,
+      "snippet": "\"source_tool\": \"libs/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8948,
+      "snippet": "\"source_tool\": \"libs/appcore/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8957,
+      "snippet": "\"source_tool\": \"libs/appcore/validate/appcore_validate.c\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8966,
+      "snippet": "\"source_tool\": \"libs/appcore/validate/appcore_validate.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8975,
+      "snippet": "\"source_tool\": \"libs/build_identity/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8984,
+      "snippet": "\"source_tool\": \"libs/build_identity/build_identity.c\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 8993,
+      "snippet": "\"source_tool\": \"libs/build_identity/include/dom_build_identity/build_identity.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9002,
+      "snippet": "\"source_tool\": \"libs/contracts/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9011,
+      "snippet": "\"source_tool\": \"libs/contracts/include/dom_contracts/_internal/dom_build_version.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9020,
+      "snippet": "\"source_tool\": \"libs/contracts/include/dom_contracts/core_audit.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9029,
+      "snippet": "\"source_tool\": \"libs/contracts/include/dom_contracts/core_installed_state.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9038,
+      "snippet": "\"source_tool\": \"libs/contracts/include/dom_contracts/dom_package_manifest.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9047,
+      "snippet": "\"source_tool\": \"libs/contracts/include/dom_contracts/dom_shared/manifest_install.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 9056,
+      "snippet": "\"source_tool\": \"libs/ui_backends/win32/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1031,
+      "snippet": "- `libs/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1032,
+      "snippet": "- `libs/appcore/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1033,
+      "snippet": "- `libs/appcore/validate/appcore_validate.c`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, capability_present_without_high_risk_hint, validate_hint:validate"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1034,
+      "snippet": "- `libs/appcore/validate/appcore_validate.h`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, capability_present_without_high_risk_hint, validate_hint:validate"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1035,
+      "snippet": "- `libs/build_identity/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1036,
+      "snippet": "- `libs/build_identity/build_identity.c`: risk=medium fate=wrap reasons=build_hint:build, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1037,
+      "snippet": "- `libs/build_identity/include/dom_build_identity/build_identity.h`: risk=medium fate=wrap reasons=build_hint:build, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1038,
+      "snippet": "- `libs/contracts/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1039,
+      "snippet": "- `libs/contracts/include/dom_contracts/_internal/dom_build_version.h`: risk=medium fate=wrap reasons=build_hint:build, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1040,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_audit.h`: risk=medium fate=wrap reasons=audit_hint:audit, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, capability_present_without_high_risk_hint"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1041,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_installed_state.h`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1042,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_package_manifest.h`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, capability_present_without_high_risk_hint, context_hint:pack"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1043,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_shared/manifest_install.h`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 1044,
+      "snippet": "- `libs/ui_backends/win32/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 249,
+      "snippet": "\"libs/appcore/repox/appcore_repox.c\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 250,
+      "snippet": "\"libs/appcore/repox/appcore_repox.h\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 697,
+      "snippet": "\"libs/appcore/repox/appcore_repox.c\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 698,
+      "snippet": "\"libs/appcore/repox/appcore_repox.h\","
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 33,
+      "snippet": "libs libs\\base libs\\base\\include libs\\base\\include\\dmn libs\\base\\modules"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 34,
+      "snippet": "libs\\base\\modules\\tlv libs\\base\\modules\\hash libs\\base\\modules\\fixed libs\\base\\modules\\math libs\\base\\modules\\audit"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 35,
+      "snippet": "libs\\fsmodel libs\\fsmodel\\include libs\\fsmodel\\modules"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 36,
+      "snippet": "libs\\crypto libs\\netproto"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 113,
+      "snippet": "REM engine\\external -> libs\\base\\modules\\hash\\xxhash (if exactly xxhash) else orphan"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 115,
+      "snippet": "if exist \"libs\\base\\modules\\hash\\xxhash\" call :qdir \"libs\\base\\modules\\hash\\xxhash\" \"hash_xxhash_conflict\""
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 116,
+      "snippet": "move \"engine\\external\\xxhash\" \"libs\\base\\modules\\hash\\xxhash\" >nul"
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "line": 117,
+      "snippet": "echo Moved: engine\\external\\xxhash -> libs\\base\\modules\\hash\\xxhash"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/architecture/repository_structure_lock.json",
+      "line": 1,
+      "snippet": "{\"allowed_source_like_root_rows\":[{\"policy_class\":\"VALID_LEGACY_ARCHIVE_SOURCE\",\"reason\":\"attic/src_quarantine/legacy/source is retained as explicit quarantine evidence and is fenced from active runtime and build ownership.\",\"root_path\":\"at"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/arch_audit_report.json",
+      "line": 1,
+      "snippet": "{\"blocking_finding_count\":0,\"blocking_findings\":[],\"check_order\":[\"truth_purity_scan\",\"renderer_truth_access_scan\",\"duplicate_semantics_scan\",\"determinism_scan\",\"float_in_truth_scan\",\"worldgen_lock_scan\",\"baseline_universe_scan\",\"gameplay_l"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/build_graph.json",
+      "line": 1,
+      "snippet": "{\"build_files_scanned\":[\"CMakeLists.txt\",\"CMakePresets.json\",\"app/CMakeLists.txt\",\"attic/src_quarantine/legacy/source/CMakeLists.txt\",\"attic/src_quarantine/legacy/source/provider/CMakeLists.txt\",\"client/CMakeLists.txt\",\"cmake/BaselineHeader"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/numeric_discipline_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"b89abe42362fadbb0d163ae03d8a9407c9aabc57d738f91ab6c0aefa834388ab\",\"last_reviewed\":\"2026-03-14\",\"numeric_scan_report\":{\"blocking_finding_count\":0,\"blocking_findings\":[],\"check_order\":[\"float_in_truth_scan\",\"nonc"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1113,
+      "snippet": "\"libs/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/extend_not_replace_registry.json",
+      "line": 355,
+      "snippet": "\"libs/appcore\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/extend_not_replace_registry.json",
+      "line": 356,
+      "snippet": "\"libs/contracts\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reality/module_map.json",
+      "line": 369,
+      "snippet": "\"notes\": \"Live utility root distinct from libs/** even though naming overlaps.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reality/runtime_surfaces.json",
+      "line": 135,
+      "snippet": "\"path\": \"libs/appcore\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reality/runtime_surfaces.json",
+      "line": 141,
+      "snippet": "\"libs/appcore/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reality/runtime_surfaces.json",
+      "line": 151,
+      "snippet": "\"path\": \"libs/contracts\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reality/runtime_surfaces.json",
+      "line": 157,
+      "snippet": "\"libs/contracts/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/assumption_invalidations.json",
+      "line": 156,
+      "snippet": "\"libs/appcore\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/assumption_invalidations.json",
+      "line": 157,
+      "snippet": "\"libs/contracts\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+      "line": 246,
+      "snippet": "\"libs/appcore\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+      "line": 247,
+      "snippet": "\"libs/contracts\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/subsystem_classification.json",
+      "line": 278,
+      "snippet": "\"libs/appcore\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/reconciliation/subsystem_classification.json",
+      "line": 279,
+      "snippet": "\"libs/contracts\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/derived_artifacts.json",
+      "line": 465,
+      "snippet": "\"path\": \"libs/appcore/ui_bind/ui_command_binding_table.c\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/gate_policy.json",
+      "line": 142,
+      "snippet": "\"libs/appcore/command/*\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/gate_policy.json",
+      "line": 143,
+      "snippet": "\"libs/appcore/ui_bind/*\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/build_graph_lock_registry.json",
+      "line": 27,
+      "snippet": "\"libs/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/build_graph_lock_registry.json",
+      "line": 28,
+      "snippet": "\"libs/build_identity/CMakeLists.txt\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_conflicts.json",
+      "line": 1,
+      "snippet": "{\"conflict_count\":48,\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_postmove_residual_src_report.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_roots\":[\"app/src\",\"src\"],\"deferred_to_xi5b_remaining\":[{\"deferred_phase_class\":\"legacy_source_pocket\",\"reason\":\"Current XI-4b mapping is accepted without further conflict because no stronger contradictory evidence was int"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_batch_plan.json",
+      "line": 1,
+      "snippet": "{\"batches\":[{\"batch_id\":\"BATCH_SAFE_1\",\"exclusion_logic\":\"Exclude tools/ui_shared and all legacy/content/manually blocked rows.\",\"execution_allowed_in_this_pass\":true,\"expected_repo_effects\":[\"Remove component-local src roots under libs/bui"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_execution_log.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths_remaining\":[],\"deterministic_fingerprint\":\"89bf70229ca537d0a29130e7b186f8fc80bb121fd8e31490e7c6f9b55928f9b4\",\"executed_item_count\":49,\"executed_items\":[{\"action\":\"quarantine_stale_duplicate\",\"batch_id\":\"BATCH_M"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_postmove_residual_src_report.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths_remaining\":[],\"deterministic_fingerprint\":\"d05c7ccabf60f3787f9ba143d15a7d2df651277bc3a61929ce54319d2e97c79e\",\"remaining_classification_counts\":{\"BLOCKED_BY_MISSING_PRECONDITION\":18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x1_residual_classification_lock.json",
+      "line": 1,
+      "snippet": "{\"classification_counts\":{\"BLOCKED_BY_MISSING_PRECONDITION\":18,\"HIGH_RISK_BUILD_OR_TOOLCHAIN\":94,\"LEGACY_KEEP_FOR_NOW\":92,\"MERGE_REQUIRED\":1,\"SAFE_LOCAL_REHOME\":48},\"deterministic_fingerprint\":\"93d820df0574c51222d293806a664e7e4cd2600ae7ff4c"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_postmove_residual_src_report.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_count\":0,\"dangerous_shadow_root_paths_remaining\":[],\"deterministic_fingerprint\":\"67d2c8c1d2b70ace4887a5e73081cab576259970d4fcc2f504dd28307cd34fac\",\"remaining_classification_counts\":{\"INTENTIONAL_RESIDUAL_ALLOWED\":95}"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_residual_classification_lock.json",
+      "line": 1,
+      "snippet": "{\"active_blocker_counts\":{},\"allowed_exception_counts\":{\"INTENTIONAL_RESIDUAL_ALLOWED\":95,\"OBSOLETE_ALREADY_RESOLVED\":109},\"current_classification_counts\":{\"INTENTIONAL_RESIDUAL_ALLOWED\":95,\"OBSOLETE_ALREADY_RESOLVED\":109},\"dangerous_shadow"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_residual_reality_refresh.json",
+      "line": 1,
+      "snippet": "{\"dangerous_shadow_root_paths\":[],\"dangerous_shadow_roots_reappeared\":false,\"deterministic_fingerprint\":\"8bec06d13718e3a9c81de9a14572b7d46965a31123298c40813954361ec2727f\",\"ignored_generated_source_like_roots\":[{\"reason\":\"untracked_or_genera"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5x2_source_pocket_policy.json",
+      "line": 1,
+      "snippet": "{\"allowlisted_residual_roots\":[{\"file_count\":13,\"policy_class\":\"VALID_CONTENT_SOURCE\",\"reason\":\"source packs are upstream data inputs and are excluded from default dist output unless explicitly selected\",\"root_path\":\"packs/source\"},{\"file_c"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5_readiness_contract_v4.json",
+      "line": 1,
+      "snippet": "{\"allowed_actions\":[\"move only rows listed in data/restructure/src_domain_mapping_lock_approved_v4.json approved_for_xi5 using their explicit source_path and target_path values\",\"route only rows listed in data/restructure/src_domain_mapping"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/runtime/component_model_registry.json",
+      "line": 70,
+      "snippet": "\"libs/contracts\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/app/TESTX_INVENTORY.md",
+      "line": 42,
+      "snippet": "- Product version macros: `libs/contracts/include/dom_contracts/version.h` (`DOMINIUM_*_VERSION`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/APPLICATION_CONTRACTS.md",
+      "line": 14,
+      "snippet": "- `libs/contracts/include/dom_contracts/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/APP_CANON0.md",
+      "line": 25,
+      "snippet": "- All applications communicate only via dom_contracts headers under `libs/contracts/include/dom_contracts/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/APP_CANON0.md",
+      "line": 30,
+      "snippet": "- All applications reuse `libs/appcore/` modules for discover/profile/repox/invoke/validate/command/output."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCHITECTURE.md",
+      "line": 57,
+      "snippet": "- `libs/` \u2014 shared interface libraries and contracts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCHITECTURE.md",
+      "line": 129,
+      "snippet": "- `launcher/` \u2192 `engine/` (public) + `libs/` (`contracts`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCHITECTURE.md",
+      "line": 132,
+      "snippet": "- `setup/` \u2192 `libs/` (`contracts`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCHITECTURE.md",
+      "line": 135,
+      "snippet": "- `tools/` \u2192 `libs/` (`contracts`) and select engine public APIs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCHITECTURE.md",
+      "line": 138,
+      "snippet": "- `libs/` \u2192 leaf (no engine/game/launcher/setup/tools dependencies)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 315,
+      "snippet": "- Reading launcher contracts via `libs/contracts`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 372,
+      "snippet": "- Setup contracts and plan/state handling via `libs/contracts`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 471,
+      "snippet": "### LIBS (libs/)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 597,
+      "snippet": "- `launcher/` \u2192 `engine/` (public) + `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 600,
+      "snippet": "- `setup/` \u2192 `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 603,
+      "snippet": "- `tools/` \u2192 `libs/contracts` and select engine public APIs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 615,
+      "snippet": "- Any dependency from `game/` to `client/`, `server/`, `tools/`, `launcher/`, `setup/`, or `libs/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_ENFORCEMENT.md",
+      "line": 618,
+      "snippet": "- Any dependency from `client/` or `server/` to `tools/`, `launcher/`, `setup/`, or `libs/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_REPO_LAYOUT.md",
+      "line": 89,
+      "snippet": "- `libs/` \u2014 interface libraries and shared contracts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_REPO_LAYOUT.md",
+      "line": 122,
+      "snippet": "- `launcher/` depends on `engine/` (public headers) + `libs/contracts`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_REPO_LAYOUT.md",
+      "line": 125,
+      "snippet": "- `setup/` depends on `libs/contracts`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_REPO_LAYOUT.md",
+      "line": 128,
+      "snippet": "- `tools/` depend on `libs/contracts`; select tools also depend on `engine/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/ARCH_REPO_LAYOUT.md",
+      "line": 266,
+      "snippet": "Cross-product contracts live in `libs/contracts/include/dom_contracts/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANONICAL_SYSTEM_MAP.md",
+      "line": 153,
+      "snippet": "CONTROL PLANE: launcher/setup -> libs/contracts"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANONICAL_SYSTEM_MAP.md",
+      "line": 156,
+      "snippet": "TOOLS: tools -> libs/contracts (+ engine public API only, read-only)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/COMPONENTS.md",
+      "line": 162,
+      "snippet": "## Libraries (`libs/`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/COMPONENTS.md",
+      "line": 168,
+      "snippet": "- Public API: `libs/contracts/include/dom_contracts/**`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/DIRECTORY_CONTEXT.md",
+      "line": 118,
+      "snippet": "\u251c\u2500\u2500 libs/                     \u2013 interface libraries and shared contracts"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/DIRECTORY_STRUCTURE.md",
+      "line": 70,
+      "snippet": "\u251c\u2500\u2500 libs/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/OVERVIEW_ARCHITECTURE.md",
+      "line": 51,
+      "snippet": "- **Shared contracts** (`libs/contracts`): cross-product headers used by"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 39,
+      "snippet": "| `libs/` | Shared libraries and contracts | Contract-preserving changes only | Frozen (contracts), Evolving (impl) |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_NAV.md",
+      "line": 90,
+      "snippet": "| cross-product contracts and shared interfaces | `libs/contracts/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
+      "line": 60,
+      "snippet": "| `/libs/**`, `/schema/**`, `/data/**` | AUTHORITATIVE | Contracts, schemas, and data. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/archive/ci/PHASE2_5_FIXLIST.md",
+      "line": 76,
+      "snippet": "- Update remaining specs that still state `engine -> libs/schema` or allow launcher/setup to use engine."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 977,
+      "snippet": "- `lib.libs.appcore` -> `libs/appcore`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 978,
+      "snippet": "- `lib.libs.appcore.command` -> `libs/appcore/command`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 979,
+      "snippet": "- `lib.libs.appcore.discover` -> `libs/appcore/discover`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 980,
+      "snippet": "- `lib.libs.appcore.invoke` -> `libs/appcore/invoke`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 981,
+      "snippet": "- `lib.libs.appcore.output` -> `libs/appcore/output`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 982,
+      "snippet": "- `lib.libs.appcore.profile` -> `libs/appcore/profile`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 983,
+      "snippet": "- `lib.libs.appcore.repox` -> `libs/appcore/repox`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 984,
+      "snippet": "- `lib.libs.appcore.ui_bind` -> `libs/appcore/ui_bind`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 985,
+      "snippet": "- `lib.libs.appcore.validate` -> `libs/appcore/validate`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 986,
+      "snippet": "- `lib.libs.build_identity` -> `libs/build_identity`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 987,
+      "snippet": "- `lib.libs.build_identity.include.dom_build_identity` -> `libs/build_identity/include/dom_build_identity`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 988,
+      "snippet": "- `lib.libs.contracts` -> `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 989,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts` -> `libs/contracts/include/dom_contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 990,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts._internal` -> `libs/contracts/include/dom_contracts/_internal`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 991,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts.app` -> `libs/contracts/include/dom_contracts/app`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 992,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts.dom_shared` -> `libs/contracts/include/dom_contracts/dom_shared`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 993,
+      "snippet": "- `lib.libs.ui_backends.win32` -> `libs/ui_backends/win32`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 994,
+      "snippet": "- `lib.libs.ui_backends.win32.include.dom_ui_win32` -> `libs/ui_backends/win32/include/dom_ui_win32`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/BOUNDARY_AUDIT.md",
+      "line": 30,
+      "snippet": "- UI scaffolding stubs under `launcher/`, `setup/`, and `libs/ui_backends/` remain"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CODE_DATA_SEPARATION_REPORT.md",
+      "line": 23,
+      "snippet": "| `libs/appcore/` | command metadata validation, capability checks | canonical command descriptors in `libs/appcore/command/command_registry.c` | generated UI binding tables in `libs/appcore/ui_bind/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CODE_DATA_SEPARATION_REPORT.md",
+      "line": 43,
+      "snippet": "- Registry exists in `libs/appcore/command/command_registry.c`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CODE_DATA_SEPARATION_REPORT.md",
+      "line": 48,
+      "snippet": "- Stub remains in `libs/appcore/command/command_dispatch.c` (`return -1`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CODE_DATA_SEPARATION_REPORT.md",
+      "line": 53,
+      "snippet": "- Win32 shared UI stubs under `libs/ui_backends/win32/src/*_stub.c`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSISTENCY_AUDIT_REPORT.md",
+      "line": 32,
+      "snippet": "- `RISK`: `docs/app/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md` claims mode-specific capability checks for memory/observer camera modes, but command metadata currently encodes only `ui.camera.mode.embodied` for `camera.set_mode` (`libs/appcore/c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSISTENCY_AUDIT_REPORT.md",
+      "line": 62,
+      "snippet": "- `INFO`: UI binding table maps to canonical command keys (`libs/appcore/ui_bind/ui_command_binding_table.c`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSISTENCY_MATRIX.json",
+      "line": 78,
+      "snippet": "\"ripgrep scan across engine/game/client/server/setup/launcher/tools/libs/schema/tests returned no stage token matches outside docs\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONSISTENCY_MATRIX.json",
+      "line": 113,
+      "snippet": "\"libs/appcore/ui_bind/ui_command_binding_table.c generated bindings\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INTEGRATION_READINESS_REPORT.md",
+      "line": 51,
+      "snippet": "- Win32 shared UI backend stubs under `libs/ui_backends/win32/src/*_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INTEGRATION_READINESS_REPORT.md",
+      "line": 52,
+      "snippet": "- appcore dispatch shared surface remains a stub contract in `libs/appcore/command/command_dispatch.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INTERFACE_LAUNCH_REPORT.md",
+      "line": 30,
+      "snippet": "| `dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe` | PASS | `--repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` -> PASS | N/A | N/A | canonical UI bind check passed |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 53,
+      "snippet": "libs/ui_backends/win32/src/ui_ir_parser_stub.c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 54,
+      "snippet": "libs/ui_backends/win32/src/win32_accessibility_stub.c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 55,
+      "snippet": "libs/ui_backends/win32/src/win32_control_factory_stub.c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 56,
+      "snippet": "libs/ui_backends/win32/src/win32_layout_stub.c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 57,
+      "snippet": "libs/ui_backends/win32/src/win32_shell_stub.c"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 182,
+      "snippet": "docs/ci/HYGIENE_QUEUE.md:27225 [TODO] | HYG-a7c55be6 | OPEN | D | libs/contracts/include/dom_contracts/dom_package_manifest.h:23 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 446,
+      "snippet": "libs/appcore/command/command_dispatch.c:12 [TODO]     /* TODO: route to application-specific command handlers. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 447,
+      "snippet": "libs/appcore/discover/appcore_discover.c:11 [TODO]     /* TODO: replace with real discover implementation. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 448,
+      "snippet": "libs/appcore/invoke/appcore_invoke.c:11 [TODO]     /* TODO: replace with explicit process invocation. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 449,
+      "snippet": "libs/appcore/output/appcore_output.c:11 [TODO]     /* TODO: implement output envelope rendering. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 450,
+      "snippet": "libs/appcore/profile/appcore_profile.c:11 [TODO]     /* TODO: replace with real profile implementation. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 451,
+      "snippet": "libs/appcore/repox/appcore_repox.c:11 [TODO]     /* TODO: replace with real RepoX metadata reader. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 452,
+      "snippet": "libs/appcore/validate/appcore_validate.c:11 [TODO]     /* TODO: replace with explicit validation hooks. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 453,
+      "snippet": "libs/contracts/include/dom_contracts/core_util.h:4 [PLACEHOLDER] PURPOSE: Placeholder shared utility helpers (R-1 scaffolding; implementation lives in kernel modules)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 454,
+      "snippet": "libs/contracts/include/dom_contracts/dom_package_manifest.h:24 [PLACEHOLDER]  * - This header now exposes a minimal POD placeholder until a stable ABI is published."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 455,
+      "snippet": "libs/contracts/include/dom_contracts/dom_plat_ui.h:17 [PLACEHOLDER] /* Native UI abstraction (NATIVE_UI mode). Most fields are placeholders. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 456,
+      "snippet": "libs/contracts/include/dom_contracts/dom_plat_ui.h:62 [PLACEHOLDER]     int placeholder;"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 457,
+      "snippet": "libs/ui_backends/win32/src/ui_ir_parser_stub.c:5 [PLACEHOLDER] NOTES: Stub only; deterministic placeholder."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MARKER_SCAN.txt",
+      "line": 458,
+      "snippet": "libs/ui_backends/win32/src/win32_layout_stub.c:9 [PLACEHOLDER] /* Placeholder for layout hooks; no-op by design. */"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULARITY_EXTENSION_PROOF.md",
+      "line": 37,
+      "snippet": "- `libs/appcore/command/command_registry.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULARITY_EXTENSION_PROOF.md",
+      "line": 38,
+      "snippet": "- `libs/appcore/command/command_registry.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULARITY_EXTENSION_PROOF.md",
+      "line": 44,
+      "snippet": "- `libs/appcore/command/command_dispatch.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULARITY_EXTENSION_PROOF.md",
+      "line": 50,
+      "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 981,
+      "snippet": "- `lib.libs.appcore` :: root=`libs/appcore` domain=`lib` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 982,
+      "snippet": "- `lib.libs.appcore.command` :: root=`libs/appcore/command` domain=`lib` files=`3` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 983,
+      "snippet": "- `lib.libs.appcore.discover` :: root=`libs/appcore/discover` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 984,
+      "snippet": "- `lib.libs.appcore.invoke` :: root=`libs/appcore/invoke` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 985,
+      "snippet": "- `lib.libs.appcore.output` :: root=`libs/appcore/output` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 986,
+      "snippet": "- `lib.libs.appcore.profile` :: root=`libs/appcore/profile` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 987,
+      "snippet": "- `lib.libs.appcore.repox` :: root=`libs/appcore/repox` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 988,
+      "snippet": "- `lib.libs.appcore.ui_bind` :: root=`libs/appcore/ui_bind` domain=`lib` files=`5` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 989,
+      "snippet": "- `lib.libs.appcore.validate` :: root=`libs/appcore/validate` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 990,
+      "snippet": "- `lib.libs.build_identity` :: root=`libs/build_identity` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 991,
+      "snippet": "- `lib.libs.build_identity.include.dom_build_identity` :: root=`libs/build_identity/include/dom_build_identity` domain=`lib` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 992,
+      "snippet": "- `lib.libs.contracts` :: root=`libs/contracts` domain=`lib` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 993,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts` :: root=`libs/contracts/include/dom_contracts` domain=`lib` files=`44` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 994,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts._internal` :: root=`libs/contracts/include/dom_contracts/_internal` domain=`lib` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 995,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts.app` :: root=`libs/contracts/include/dom_contracts/app` domain=`lib` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 996,
+      "snippet": "- `lib.libs.contracts.include.dom_contracts.dom_shared` :: root=`libs/contracts/include/dom_contracts/dom_shared` domain=`lib` files=`6` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 997,
+      "snippet": "- `lib.libs.ui_backends.win32` :: root=`libs/ui_backends/win32` domain=`lib` files=`6` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 998,
+      "snippet": "- `lib.libs.ui_backends.win32.include.dom_ui_win32` :: root=`libs/ui_backends/win32/include/dom_ui_win32` domain=`lib` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/NEXT_PROMPTS.md",
+      "line": 20,
+      "snippet": "- Scope: `engine/`, `game/`, `launcher/`, `setup/`, `libs/ui_backends/`, `tools/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PLATFORM_AND_PORTABILITY_CONSISTENCY_REPORT.md",
+      "line": 46,
+      "snippet": "- UI backend implementation path is `libs/ui_backends/win32/` (canonical module path)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RECOMMENDED_NEXT_FIXES.md",
+      "line": 19,
+      "snippet": "- Scope: `libs/appcore/command/command_registry.c`, `client/shell/client_shell.c`, `data/capabilities/app_ui_camera_blueprint.json`, related tests."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SRC_SHADOW_REPORT.md",
+      "line": 263,
+      "snippet": "- `[MED]` `libs/ui_backends/win32/src` files=`5` duplicates=`0` products=`none`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SRC_SHADOW_REPORT.md",
+      "line": 272,
+      "snippet": "- `[MED]` `libs/build_identity/src` files=`1` duplicates=`0` products=`none`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 215,
+      "snippet": "\"path\": \"libs/ui_backends/win32/src/ui_ir_parser_stub.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 220,
+      "snippet": "\"path\": \"libs/ui_backends/win32/src/win32_accessibility_stub.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 225,
+      "snippet": "\"path\": \"libs/ui_backends/win32/src/win32_control_factory_stub.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 230,
+      "snippet": "\"path\": \"libs/ui_backends/win32/src/win32_layout_stub.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 235,
+      "snippet": "\"path\": \"libs/ui_backends/win32/src/win32_shell_stub.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 306,
+      "snippet": "\"libs/appcore/command/command_dispatch.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 307,
+      "snippet": "\"libs/appcore/discover/appcore_discover.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 308,
+      "snippet": "\"libs/appcore/invoke/appcore_invoke.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 309,
+      "snippet": "\"libs/appcore/output/appcore_output.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 310,
+      "snippet": "\"libs/appcore/profile/appcore_profile.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 311,
+      "snippet": "\"libs/appcore/repox/appcore_repox.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.json",
+      "line": 312,
+      "snippet": "\"libs/appcore/validate/appcore_validate.c\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STUB_REPORT.md",
+      "line": 28,
+      "snippet": "- `libs/ui_backends/win32/src/*_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/XI_5X2_REALITY_REFRESH.md",
+      "line": 21,
+      "snippet": "- ignored generated/untracked root: `ide/win/vc6_win9x/client_gui/libs/build_identity/CMakeFiles/build_identity.dir/src`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/XI_5X2_REALITY_REFRESH.md",
+      "line": 22,
+      "snippet": "- ignored generated/untracked root: `ide/win/vc6_win9x/client_gui/libs/ui_backends/win32/CMakeFiles/shared_ui_win32.dir/src`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/INVARIANT_MAP.json",
+      "line": 257,
+      "snippet": "\"location\": \"libs/appcore/command/command_registry.c\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/INVARIANT_MAP.json",
+      "line": 262,
+      "snippet": "\"location\": \"libs/appcore/command/command_registry.c\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/INVARIANT_MAP.json",
+      "line": 267,
+      "snippet": "\"location\": \"libs/appcore/command/command_registry.c\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/INVARIANT_MAP.json",
+      "line": 272,
+      "snippet": "\"location\": \"libs/appcore/command/command_registry.c\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/auditx/INVARIANT_MAP.json",
+      "line": 277,
+      "snippet": "\"location\": \"libs/appcore/command/command_registry.c\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ci/CI_ENFORCEMENT_MATRIX.md",
+      "line": 108,
+      "snippet": "| ARCH-DEP-005 | `tools/` MAY depend on `libs/contracts` and select `engine/` public APIs; MUST NOT depend on `game/`, `launcher/`, or `setup/`. | Target graph rule in CMake | Configure | CI fail: ARCH-DEP-005 | Remove illegal dependencies "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ci/CI_ENFORCEMENT_MATRIX.md",
+      "line": 111,
+      "snippet": "| ARCH-DEP-006 | `launcher/` MAY depend on `engine/` (public) + `libs/contracts`; `setup/` MAY depend only on `libs/contracts`. | Target graph rule in CMake | Configure | CI fail: ARCH-DEP-006 | Remove illegal dependencies and route through"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ci/CI_ENFORCEMENT_MATRIX.md",
+      "line": 153,
+      "snippet": "| ARCH-SETUP-001 | `launcher/` or `setup/` depending on engine internals is FORBIDDEN. | Target graph rule in CMake | Configure | CI fail: ARCH-SETUP-001 | Remove the dependency and use `libs/` or `schema/`. | Avoids coupling operational to"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ci/CI_ENFORCEMENT_MATRIX.md",
+      "line": 1196,
+      "snippet": "- CANON0 note: ARCH-DEP-005/006 now align with the current build graph (launcher links engine public API; tools link `libs/contracts` plus select engine public APIs)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ci/CODEHYGIENE_RULES.md",
+      "line": 24,
+      "snippet": "Targets: engine/, game/, tools/, client/, server/, launcher/, setup/, libs/,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/GUI_TO_COMMAND_WORKFLOW.md",
+      "line": 43,
+      "snippet": "tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --write"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/GUI_TO_COMMAND_WORKFLOW.md",
+      "line": 58,
+      "snippet": "Generated artifacts under `libs/appcore/ui_bind/` are checked in and must remain in sync."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "line": 35,
+      "snippet": "- Canonical command registry: `libs/appcore/command/command_registry.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "line": 40,
+      "snippet": "- `libs/appcore/ui_bind/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "line": 67,
+      "snippet": "tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --write"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_RULES.md",
+      "line": 56,
+      "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_RULES.md",
+      "line": 57,
+      "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_RULES.md",
+      "line": 58,
+      "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_RULES.md",
+      "line": 59,
+      "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/UI_BINDING_RULES.md",
+      "line": 60,
+      "snippet": "- `libs/appcore/ui_bind/ui_localisation_usage_report.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 45,
+      "snippet": "- `launcher/` \u2192 `engine/` (public headers) + `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 48,
+      "snippet": "- `setup/` \u2192 `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 51,
+      "snippet": "- `tools/` \u2192 `libs/contracts` and select engine public APIs (e.g., `data_validate`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 54,
+      "snippet": "- `libs/` \u2192 leaf (no engine/game/launcher/setup/tools dependencies)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 66,
+      "snippet": "- `engine/` \u2192 `game/`, `client/`, `server/`, `launcher/`, `setup/`, `tools/`, `libs/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 69,
+      "snippet": "- `game/` \u2192 `launcher/`, `setup/`, `tools/`, `libs/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/DEPENDENCIES.md",
+      "line": 72,
+      "snippet": "- `client/`, `server/` \u2192 `launcher/`, `setup/`, `tools/`, `libs/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/SETUP_GAPS.md",
+      "line": 76,
+      "snippet": "- Public setup API in `libs/contracts/include/dom_contracts/setup_api.h` has no"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/SETUP_GAPS.md",
+      "line": 102,
+      "snippet": "`libs/contracts/include/dom_contracts/setup_api.h` (two different public"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 26728,
+      "snippet": "# - Builds small helper libs/tools for retro projects"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_ACTIONS_AND_EVENTS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_ACTIONS_AND_EVENTS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_CAPABILITIES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_CAPABILITIES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_CODEGEN_ACTIONS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_CODEGEN_ACTIONS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_UI_DOC_TLV.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/ui_editor/SPEC_UI_DOC_TLV.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+      "line": 91,
+      "snippet": "- `libs/appcore`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+      "line": 92,
+      "snippet": "- `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+      "line": 328,
+      "snippet": "- `app`, `compat`, `control`, `core`, `net`, `process`, `libs/appcore`, `libs/contracts`, and `server/runtime` for later \u03a6 work"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+      "line": 348,
+      "snippet": "4. Later \u03a6 should extract and formalize the `app` / `compat` / `control` / `core` / `net` / `process` / `libs/appcore` / `libs/contracts` / `server/runtime` substrate rather than replace it wholesale."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
+      "line": 37,
+      "snippet": "| runtime substrate cluster | `app`, `compat`, `control`, `core`, `libs/appcore`, `libs/contracts`, `net`, `process`, `server/net`, `server/persistence`, `server/runtime` | `extend` | the repo already contains distributed runtime, compat, p"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
+      "line": 76,
+      "snippet": "- `libs/contracts` and `libs/appcore` provide cross-product contract and application-core surfaces that later prompts should prefer extending over re-inventing."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
+      "line": 185,
+      "snippet": "Primarily in `engine`, `app`, `core`, `compat`, `control`, `net`, `server/runtime`, `libs/contracts`, and the data/registry/component-graph surfaces under `data/architecture` and `data/registries`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
+      "line": 210,
+      "snippet": "- shared support surfaces in `app`, `engine`, `game`, `libs/contracts`, and `libs/appcore`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "line": 75,
+      "snippet": "| 5 | `live_code_and_build_surface` | `engine/**`, `game/**`, `client/**`, `server/**`, `runtime/**`, `app/**`, `appshell/**`, `launcher/**`, `setup/**`, `lib/**`, `libs/**`, domain roots, build files | implementation and structure reality "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "line": 83,
+      "snippet": "- `lib/**` and `libs/**` are not classified by name alone. They remain in family 5 until stronger evidence marks them otherwise."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "line": 190,
+      "snippet": "- that `lib/**` or `libs/**` are legacy because of naming alone"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `libs/contracts/include/dom_contracts/core_caps.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 18,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_caps.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 19,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_job.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 20,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_log.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 21,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_solver.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 25,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_caps.h` disposition=`canonical` rank=`1` total_score=`69.99` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 26,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_log.h` disposition=`quarantine` rank=`2` total_score=`69.29` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 27,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_solver.h` disposition=`quarantine` rank=`3` total_score=`63.17` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.432239258cbdf701.md",
+      "line": 28,
+      "snippet": "- `libs/contracts/include/dom_contracts/core_job.h` disposition=`quarantine` rank=`4` total_score=`61.37` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.1b11eb30a15feba7.md",
+      "line": 18,
+      "snippet": "- `libs/contracts/include/dom_contracts/caps_split.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.1b11eb30a15feba7.md",
+      "line": 91,
+      "snippet": "- `libs/contracts/include/dom_contracts/caps_split.h` disposition=`drop` rank=`24` total_score=`65.69` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8b0cfc851a4f519.md",
+      "line": 22,
+      "snippet": "- `libs/contracts/include/dom_contracts/tool_api.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e8b0cfc851a4f519.md",
+      "line": 29,
+      "snippet": "- `libs/contracts/include/dom_contracts/tool_api.h` disposition=`quarantine` rank=`4` total_score=`80.95` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `libs/contracts/include/dom_contracts/dom_plat_sys.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 18,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_sys.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 19,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_term.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 20,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_ui.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 24,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_sys.h` disposition=`canonical` rank=`1` total_score=`58.55` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 25,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_ui.h` disposition=`quarantine` rank=`2` total_score=`58.55` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f9f49472e3992653.md",
+      "line": 26,
+      "snippet": "- `libs/contracts/include/dom_contracts/dom_plat_term.h` disposition=`quarantine` rank=`3` total_score=`56.62` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 75,
+      "snippet": "POST-CONVERGE-10C updated classification: `generated_output_stale`. The missing Visual Studio blocker and stale client/server path blocker are resolved on this machine, but build now fails because `tool_ui_bind --check` reports stale genera"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 126,
+      "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 127,
+      "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 128,
+      "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 129,
+      "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 130,
+      "snippet": "- `libs/appcore/ui_bind/ui_localisation_usage_report.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md",
+      "line": 135,
+      "snippet": "libs/appcore/ui_bind/** text eol=lf"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 151,
+      "snippet": "- `lib/` and `libs/` remain active implementation and build/ABI surfaces; no CMake target names, include paths, or ABI headers moved."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/LAYOUT_ENFORCEMENT.md",
+      "line": 119,
+      "snippet": "POST-CONVERGE-04 keeps the active layout exception count at 32 after narrowing high-risk `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` exceptions. These roots remain explicit protected revie"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 137,
+      "snippet": "POST-CONVERGE-04 keeps this boundary conservative for the high-risk roots: `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` were not moved because active imports, CMake/ABI references, embedded"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/POST_CONVERGE_NEXT_STEPS.md",
+      "line": 61,
+      "snippet": "- build remains red because `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/POST_CONVERGE_NEXT_STEPS.md",
+      "line": 66,
+      "snippet": "- `libs/appcore/ui_bind/**` is now pinned to LF line endings for byte-identical generated-source checks"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 153,
+      "snippet": "After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because the"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 277,
+      "snippet": "- `libs/` remains build- and ABI-critical C/C++ library and public contract header material."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 165,
+      "snippet": "| `lib/` | current_runtime_root | Shared library/root surface; overlaps with `libs/`. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 166,
+      "snippet": "| `libs/` | current_runtime_root | Shared library/root surface; overlaps with `lib/`. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 232,
+      "snippet": "| `docs/architecture/ARCH_REPO_LAYOUT.md` | present | `Status: CANONICAL`; `Last Reviewed: 2026-02-01`; `Stability: provisional`; `Replacement Target: patched document aligned to current canon ownership and release scope` | Yes. The title s"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 233,
+      "snippet": "| `docs/architecture/DIRECTORY_CONTEXT.md` | present | `Status: CANONICAL`; `Last Reviewed: 2026-02-01`; `Future Series: DOC-ARCHIVE`; `Replacement Target: legacy reference surface retained without current binding authority` | Yes. It says "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 359,
+      "snippet": "- Duplicate or overlapping roots are present, including `schema/` and `schemas/`, `lib/` and `libs/`, `field/` and `fields/`, and multiple archive/quarantine surfaces."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 92,
+      "snippet": "- `UI_BIND_ERROR|output|stale|libs/appcore/ui_bind/ui_command_binding_table.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 93,
+      "snippet": "- `UI_BIND_ERROR|output|stale|libs/appcore/ui_bind/ui_command_binding_table.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 94,
+      "snippet": "- `UI_BIND_ERROR|output|stale|libs/appcore/ui_bind/ui_accessibility_map.h`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 95,
+      "snippet": "- `UI_BIND_ERROR|output|stale|libs/appcore/ui_bind/ui_accessibility_map.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 96,
+      "snippet": "- `UI_BIND_ERROR|output|stale|libs/appcore/ui_bind/ui_localisation_usage_report.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+      "line": 173,
+      "snippet": "- `libs/appcore/ui_bind/**` is now pinned to LF line endings for byte-identical generated-source freshness checks."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 33,
+      "snippet": "- `tool_ui_bind --check` reported stale generated outputs under `libs/appcore/ui_bind/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 42,
+      "snippet": "| Build command | `scripts/dev/env_tools.py --repo-root <repo> run -- tool_ui_bind --repo-root <repo> --ui-index <repo>/tools/ui_index/ui_index.json --out-dir <repo>/libs/appcore/ui_bind --check` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 46,
+      "snippet": "| Generated outputs | tracked generated C/H/JSON files under `libs/appcore/ui_bind/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 47,
+      "snippet": "| Committed? | yes, as generated source artifacts consumed by `libs/appcore` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 49,
+      "snippet": "The failure was not stale semantic content after regeneration. It was byte-for-byte freshness drift caused by Windows checkout line-ending normalization: `core.autocrlf=true` and no attribute pinned `libs/appcore/ui_bind/**` to LF. `tool_ui"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 57,
+      "snippet": "| `tool_ui_bind --write` | `tools/ui_bind/ui_bind_main.cpp` | generator mode | used | scoped to `libs/appcore/ui_bind/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 59,
+      "snippet": "| `libs/appcore/ui_bind/**` | tracked generated source outputs | inspected and regenerated locally | no semantic content change | now governed by LF attribute |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 60,
+      "snippet": "| `libs/appcore/CMakeLists.txt` | active generated-source consumer | inspected | unchanged | consumes generated C files |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 61,
+      "snippet": "| `.gitattributes` | line-ending policy | updated | narrow `libs/appcore/ui_bind/** text eol=lf` rule |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 67,
+      "snippet": "| `.gitattributes` | added `libs/appcore/ui_bind/** text eol=lf` | keep tracked generated outputs byte-identical to `tool_ui_bind` output on Windows | no |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 78,
+      "snippet": "| `libs/appcore/ui_bind/ui_command_binding_table.h` | UI index + TLV docs + command registry | yes | yes | regenerated by `tool_ui_bind --write`; no normalized semantic diff |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 79,
+      "snippet": "| `libs/appcore/ui_bind/ui_command_binding_table.c` | UI index + TLV docs + command registry | yes | yes | regenerated by `tool_ui_bind --write`; no normalized semantic diff |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 80,
+      "snippet": "| `libs/appcore/ui_bind/ui_accessibility_map.h` | UI index + TLV docs | yes | yes | regenerated by `tool_ui_bind --write`; no normalized semantic diff |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 81,
+      "snippet": "| `libs/appcore/ui_bind/ui_accessibility_map.c` | UI index + TLV docs | yes | yes | regenerated by `tool_ui_bind --write`; no normalized semantic diff |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 82,
+      "snippet": "| `libs/appcore/ui_bind/ui_localisation_usage_report.json` | UI index + TLV docs | yes | yes | regenerated by `tool_ui_bind --write`; no normalized semantic diff |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+      "line": 144,
+      "snippet": "| `python scripts/dev/env_tools.py --repo-root . run -- tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` | pass | after regeneration and LF policy |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_10_BUILD_BINARY_PROOF.md",
+      "line": 185,
+      "snippet": "Current blocker: `tool_ui_bind --check` reports stale generated outputs in `libs/appcore/ui_bind/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/STALE_PATH_REFERENCE_AUDIT.md",
+      "line": 24,
+      "snippet": "`client/`, `server/`, `setup/`, `launcher/`, `schema/`, `schemas/`, `lib/`, `libs/`, `app/`, `appshell/`, `runtime/`, `contracts/`, `content/`, `archive/`, `attic/`, `legacy/`, `quarantine/`, `geo/`, `chem/`, `fluid/`, `materials/`, `physic"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 25,
+      "snippet": "| `libs/ui_backends/win32/src/ui_ir_parser_stub.c` | `platform` | `platform` | `approved_for_xi5` | `platform` | Win32 UI backend stubs are platform adapters and are approved under the platform domain. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 26,
+      "snippet": "| `libs/ui_backends/win32/src/win32_accessibility_stub.c` | `platform` | `platform` | `approved_for_xi5` | `platform` | Win32 UI backend stubs are platform adapters and are approved under the platform domain. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 27,
+      "snippet": "| `libs/ui_backends/win32/src/win32_control_factory_stub.c` | `platform` | `platform` | `approved_for_xi5` | `platform` | Win32 UI backend stubs are platform adapters and are approved under the platform domain. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 28,
+      "snippet": "| `libs/ui_backends/win32/src/win32_layout_stub.c` | `platform` | `platform` | `approved_for_xi5` | `platform` | Win32 UI backend stubs are platform adapters and are approved under the platform domain. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 29,
+      "snippet": "| `libs/ui_backends/win32/src/win32_shell_stub.c` | `platform` | `platform` | `approved_for_xi5` | `platform` | Win32 UI backend stubs are platform adapters and are approved under the platform domain. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 204,
+      "snippet": "- deferred: `libs/build_identity/src/build_identity.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 205,
+      "snippet": "- deferred: `libs/ui_backends/win32/src/ui_ir_parser_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 206,
+      "snippet": "- deferred: `libs/ui_backends/win32/src/win32_accessibility_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 207,
+      "snippet": "- deferred: `libs/ui_backends/win32/src/win32_control_factory_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 208,
+      "snippet": "- deferred: `libs/ui_backends/win32/src/win32_layout_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_5A_POSTMOVE_REPORT.md",
+      "line": 209,
+      "snippet": "- deferred: `libs/ui_backends/win32/src/win32_shell_stub.c`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/runtime/COMPONENT_MODEL.md",
+      "line": 146,
+      "snippet": "- `libs/contracts`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/CONTRACTS.md",
+      "line": 13,
+      "snippet": "`setup/include/{dsk,dsu}/**`, and `libs/contracts/include/dom_contracts/**`. It is"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ABI_TEMPLATES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ABI_TEMPLATES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ACTIONS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ACTIONS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ACTORS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ACTORS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AGENT.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AGENT.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AGGREGATES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AGGREGATES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AI_DECISION_TRACES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AI_DECISION_TRACES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AI_DETERMINISM.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_AI_DETERMINISM.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ARTIFACT_STORE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ARTIFACT_STORE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ASSETS_INSTRUMENTS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ASSETS_INSTRUMENTS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ATMOSPHERE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ATMOSPHERE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BACKEND_CONFORMANCE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BACKEND_CONFORMANCE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BIOMES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BIOMES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BLUEPRINTS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BLUEPRINTS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BUILD.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_BUILD.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CALENDARS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CALENDARS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CAPABILITIES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CAPABILITIES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CAPABILITY_REGISTRY.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CAPABILITY_REGISTRY.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CLIMATE_WEATHER.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CLIMATE_WEATHER.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COMMAND_MODEL.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COMMAND_MODEL.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COMMUNICATION.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COMMUNICATION.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONSTRUCTIONS_V0.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONSTRUCTIONS_V0.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTAINER_TLV.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTAINER_TLV.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTENT.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTENT.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTRACTS.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CONTRACTS.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA_PIPELINE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA_PIPELINE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA_VALIDATION.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CORE_DATA_VALIDATION.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_CORE_DATA.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_CORE_DATA.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_ECONOMY_EVENTS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_LANE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_COSMO_LANE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CROSS_SHARD_MESSAGES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_CROSS_SHARD_MESSAGES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DEBUG_UI.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DEBUG_UI.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DETERMINISM.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DETERMINISM.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DETERMINISM_GRADES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DETERMINISM_GRADES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DGFX_IR_VERSIONING.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DGFX_IR_VERSIONING.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOCTRINE_AUTONOMY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOCTRINE_AUTONOMY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMAINS_FRAMES_PROP.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMAINS_FRAMES_PROP.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINIUM_LAYER.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINIUM_LAYER.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINIUM_RULES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINIUM_RULES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_AUDIO_UI_INPUT.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_AUDIO_UI_INPUT.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_GFX.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_GFX.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_MOD.md",
+      "line": 33,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_MOD.md",
+      "line": 36,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SIM.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SIM.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SUBSYSTEMS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SUBSYSTEMS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SYS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DOMINO_SYS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DUI.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DUI.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ECONOMY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EDITOR_GUI.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EDITOR_GUI.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EFFECT_FIELDS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EFFECT_FIELDS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ENERGY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ENERGY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ENV.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ENV.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EPISTEMIC_GATING.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EPISTEMIC_GATING.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EPISTEMIC_INTERFACE.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EPISTEMIC_INTERFACE.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_EVENT_DRIVEN_STEPPING.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FACADES_BACKENDS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FACADES_BACKENDS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FACTIONS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FACTIONS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FEATURE_EPOCH.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FEATURE_EPOCH.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIDELITY_DEGRADATION.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIDELITY_DEGRADATION.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIDELITY_PROJECTION.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIDELITY_PROJECTION.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIELDS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIELDS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIELDS_EVENTS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FIELDS_EVENTS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FS_CONTRACT.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_FS_CONTRACT.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_CLI.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_CLI.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_CONTENT_API.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_CONTENT_API.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_PRODUCT.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GAME_PRODUCT.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GRAPH_TOOLKIT.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_GRAPH_TOOLKIT.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_HYDROLOGY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_HYDROLOGY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_IDENTITY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_IDENTITY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INFORMATION_MODEL.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INPUT.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INPUT.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INSTANCE_LAYOUT.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INSTANCE_LAYOUT.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_INTEREST_SETS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_JOBS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_JOBS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_JOB_AI.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_JOB_AI.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_KNOWLEDGE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_KNOWLEDGE_VIS_COMMS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LANES_AND_BUBBLES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LANES_AND_BUBBLES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LANGUAGE_BASELINES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LANGUAGE_BASELINES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LEDGER.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LOD.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LOD.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LOGICAL_TRAVEL.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_LOGICAL_TRAVEL.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MACHINES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MACHINES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MARKETS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MARKETS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MATTER.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MATTER.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MECHANICS_PROFILES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MECHANICS_PROFILES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MEDIA_FRAMEWORK.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MEDIA_FRAMEWORK.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MIGRATIONS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MIGRATIONS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MODELS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MODELS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MONEY_STANDARDS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_MONEY_STANDARDS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NET.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NET.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NETCODE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NETCODE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NETWORKS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NETWORKS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NET_HANDSHAKE.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NET_HANDSHAKE.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NO_MODAL_LOADING.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NO_MODAL_LOADING.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NUMERIC.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_NUMERIC.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ORBITS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ORBITS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ORBITS_TIMEWARP.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ORBITS_TIMEWARP.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PACKAGES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PACKAGES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PACKETS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PACKETS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PERF_BUDGETS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PERF_BUDGETS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PLAYER_CONTINUITY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PLAYER_CONTINUITY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PLAY_FLOW.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PLAY_FLOW.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_POSE_AND_ANCHORS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_POSE_AND_ANCHORS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PRODUCTS.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PRODUCTS.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROFILING.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROFILING.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROPERTY_RIGHTS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROPERTY_RIGHTS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROVENANCE.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_PROVENANCE.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_QOS_ASSISTANCE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_QOS_ASSISTANCE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RECIPES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RECIPES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REENTRY_THERMAL.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REENTRY_THERMAL.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REFERENCE_FRAMES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REFERENCE_FRAMES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REPLAY.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_REPLAY.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RESEARCH.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_RESEARCH.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SCHEDULING.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SCHEDULING.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SENSORS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SENSORS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SESSIONS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SESSIONS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SETUP_CLI.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SETUP_CLI.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SETUP_CORE.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SETUP_CORE.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SHARDING_AUTHORITY.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SHARDING_AUTHORITY.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SIM.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SIM.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SIM_SCHEDULER.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SIM_SCHEDULER.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SMOKE_TESTS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SMOKE_TESTS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SPACETIME.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SPACETIME.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SPACE_GRAPH.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SPACE_GRAPH.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STANDARDS_AND_RENDERERS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STANDARD_RESOLUTION.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STANDARD_RESOLUTION.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STREAMING_BUDGETS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STREAMING_BUDGETS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STRUCT.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_STRUCT.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SURFACE_STREAMING.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SURFACE_STREAMING.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SURFACE_TOPOLOGY.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SURFACE_TOPOLOGY.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SYSTEMS_BODIES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SYSTEMS_BODIES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SYSTEM_LOGISTICS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_SYSTEM_LOGISTICS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIERS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIERS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_CORE.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_CORE.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_FRAMES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_FRAMES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_KNOWLEDGE.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_KNOWLEDGE.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_STANDARDS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_STANDARDS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TIME_WARP.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOLS_AS_INSTANCES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOLS_AS_INSTANCES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOLS_CORE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOLS_CORE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOL_IO.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TOOL_IO.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANSPORT_NETWORKS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANSPORT_NETWORKS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANS_STRUCT_DECOR.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_TRANS_STRUCT_DECOR.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_CAPABILITIES.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_CAPABILITIES.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_PROJECTIONS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_PROJECTIONS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_WIDGETS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UI_WIDGETS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UNIVERSE_BUNDLE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UNIVERSE_BUNDLE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UNIVERSE_MODEL.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_UNIVERSE_MODEL.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VALIDATION.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VALIDATION.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VEHICLE.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VEHICLE.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VEHICLES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VEHICLES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VIEW_UI.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VIEW_UI.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VM.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_VM.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_WEATHER_CLIMATE_HOOKS.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_WEATHER_CLIMATE_HOOKS.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_WORLD_COORDS.md",
+      "line": 32,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_WORLD_COORDS.md",
+      "line": 35,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_WORLD_SOURCE_STACK.md",
+      "line": 36,
+      "snippet": "- Launcher/Setup -> libs/ + schema only (no engine/game dependencies)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ZONES.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_ZONES.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CAPABILITIES_AND_SOLVER.md",
+      "line": 55,
+      "snippet": "`libs/contracts/include/dom_contracts/core_caps.h`. Never renumber or reuse IDs."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CAPABILITIES_AND_SOLVER.md",
+      "line": 90,
+      "snippet": "`libs/contracts/include/dom_contracts/core_caps.h` and"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CAPABILITIES_AND_SOLVER.md",
+      "line": 91,
+      "snippet": "`libs/contracts/include/dom_contracts/core_solver.h`. Solver implementations"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CORE_LIBRARIES.md",
+      "line": 12,
+      "snippet": "`libs/contracts/include/dom_contracts` that are used by launcher and setup."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CORE_LIBRARIES.md",
+      "line": 36,
+      "snippet": "- Add new core headers under `libs/contracts/include/dom_contracts/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/CORE_LIBRARIES.md",
+      "line": 38,
+      "snippet": "- Update `libs/contracts/CMakeLists.txt` and link the new contract header into"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/core/PROVIDERS.md",
+      "line": 26,
+      "snippet": "- Provider registry contracts live in `libs/contracts/include/dom_contracts/provider_registry.h`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_CLI.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_CLI.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_CORE.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_CORE.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_EXT.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_EXT.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_GUI.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_GUI.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_NET.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_NET.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PACKS.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PACKS.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PRELAUNCH_CONFIG.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PROFILES.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PROFILES.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PROTOCOL.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_PROTOCOL.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_TUI.md",
+      "line": 30,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCHER_TUI.md",
+      "line": 33,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCH_HANDSHAKE_GAME.md",
+      "line": 31,
+      "snippet": "- Engine -> libs/ and schema/ only (never game/launcher/setup/tools)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/launcher/SPEC_LAUNCH_HANDSHAKE_GAME.md",
+      "line": 34,
+      "snippet": "- Launcher/Setup (if applicable) -> libs/contracts + schema (launcher may also use engine public API)."
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/security.json",
+      "line": 15,
+      "snippet": "\"scope_paths\": [\"client\", \"libs/appcore\", \"libs/appcore/command/command_registry.c\", \"tests/integration/freecam_epistemics_tests.py\"],"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/ui_parity.json",
+      "line": 8,
+      "snippet": "\"scope_paths\": [\"libs/appcore/command/command_registry.c\"],"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/ui_parity.json",
+      "line": 15,
+      "snippet": "\"scope_paths\": [\"libs/appcore/ui_bind/ui_command_binding_table.c\"],"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/ui_parity.json",
+      "line": 22,
+      "snippet": "\"scope_paths\": [\"libs/appcore/command/command_registry.c\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/verify_abi_boundaries.py",
+      "line": 46,
+      "snippet": "\"libs/contracts/include\","
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/audit/generate_inventory.py",
+      "line": 62,
+      "snippet": "\"libs/\","
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/ci/check_hygiene_scan.py",
+      "line": 58,
+      "snippet": "\"libs/contracts/include\","
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/ci/check_repox_rules.py",
+      "line": 1360,
+      "snippet": "if path.startswith(\"apps/client/\") or path.startswith(\"libs/appcore/command/\") or path.startswith(\"libs/appcore/ui_bind/\"):"
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/ci/check_repox_rules.py",
+      "line": 12513,
+      "snippet": "\"libs/appcore/\","
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/dev/gate_policy_eval.py",
+      "line": 33,
+      "snippet": "\"libs/ui_\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/ux/CMakeLists.txt",
+      "line": 12,
+      "snippet": "${CMAKE_SOURCE_DIR}/libs/contracts/include"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/a2_ownership_boundary.py",
+      "line": 145,
+      "snippet": "ui_prefixes = (\"apps/client/\", \"apps/launcher/\", \"tools/\", \"libs/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/a7_legacy_contamination.py",
+      "line": 27,
+      "snippet": "canonical_roots = (\"apps/client/\", \"apps/launcher/\", \"apps/setup/\", \"engine/\", \"game/\", \"libs/\", \"tools/\", \"app/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "line": 10,
+      "snippet": "WATCH_PREFIXES = (\"libs/appcore/command/\", \"tests/testx/capability_sets/\", \"data/registries/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "line": 60,
+      "snippet": "file_path=\"libs/appcore/command/command_registry.c\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "line": 69,
+      "snippet": "\"libs/appcore/command/command_registry.c\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 177,
+      "snippet": "\"libs/build_identity/src\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 178,
+      "snippet": "\"libs/ui_backends/win32/src\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 551,
+      "snippet": "elif current_root == \"libs/build_identity/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 554,
+      "snippet": "elif current_root == \"libs/ui_backends/win32/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1033,
+      "snippet": "elif current_root == \"libs/build_identity/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1035,
+      "snippet": "elif current_root == \"libs/ui_backends/win32/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1143,
+      "snippet": "if current_root == \"libs/build_identity/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1144,
+      "snippet": "return \"libs/build_identity/\" + rel_after_root"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1145,
+      "snippet": "if current_root == \"libs/ui_backends/win32/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1146,
+      "snippet": "return \"libs/ui_backends/win32/\" + rel_after_root"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1167,
+      "snippet": "if current_root == \"libs/build_identity/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1169,
+      "snippet": "if current_root == \"libs/ui_backends/win32/src\":"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4b_src_domain_mapping_common.py",
+      "line": 1203,
+      "snippet": "if current_root.startswith((\"legacy/\", \"tools/ui_shared/src\", \"libs/build_identity/src\", \"libs/ui_backends/win32/src\", \"app/src\")):"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4z_fix3_common.py",
+      "line": 137,
+      "snippet": "if token.startswith(\"libs/\") and \"/src/\" in token:"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4z_fix3_common.py",
+      "line": 337,
+      "snippet": "\"need to move any legacy/source, packs/source, libs/*/src, or tools/*/src row during Xi-5a-v3\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4z_structure_approval_common.py",
+      "line": 316,
+      "snippet": "if normalized.startswith(\"libs/ui_backends/win32/src/\"):"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 60,
+      "snippet": "\"libs/build_identity/src\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 61,
+      "snippet": "\"libs/ui_backends/win32/src\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 229,
+      "snippet": "if source_path.startswith(\"libs/build_identity/src/\") or source_path.startswith(\"libs/ui_backends/win32/src/\"):"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 241,
+      "snippet": "\"libs/build_identity/CMakeLists.txt\" if source_path.startswith(\"libs/build_identity/src/\") else \"libs/ui_backends/win32/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 394,
+      "snippet": "\"No target collisions under libs/build_identity or libs/ui_backends/win32\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 398,
+      "snippet": "\"Remove component-local src roots under libs/build_identity and libs/ui_backends/win32\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 765,
+      "snippet": "\"libs/build_identity/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x1_common.py",
+      "line": 766,
+      "snippet": "\"libs/ui_backends/win32/CMakeLists.txt\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x2_common.py",
+      "line": 92,
+      "snippet": "\"libs/build_identity/src\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi5x2_common.py",
+      "line": 93,
+      "snippet": "\"libs/ui_backends/win32/src\","
+    },
+    {
+      "classification": "tests",
+      "file": "tools/tests/registry_tests.cpp",
+      "line": 6,
+      "snippet": "ALLOWED DEPENDENCIES: engine public headers + libs/contracts public headers."
+    },
+    {
+      "classification": "tools",
+      "file": "tools/ui_bind/CMakeLists.txt",
+      "line": 12,
+      "snippet": "${CMAKE_SOURCE_DIR}/libs/appcore"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/ui_bind/CMakeLists.txt",
+      "line": 37,
+      "snippet": "${CMAKE_SOURCE_DIR}/libs/appcore"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/ui_bind/CMakeLists.txt",
+      "line": 61,
+      "snippet": "--out-dir ${CMAKE_SOURCE_DIR}/libs/appcore/ui_bind"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/ui_bind/ui_bind_main.cpp",
+      "line": 705,
+      "snippet": "out_dir_storage = std::string(repo_root) + \"/libs/appcore/ui_bind\";"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/validate/hygiene_validate_cli.cpp",
+      "line": 6,
+      "snippet": "ALLOWED DEPENDENCIES: engine public headers + libs/contracts public headers."
+    },
+    {
+      "classification": "tools",
+      "file": "tools/validate/registry_dump_cli.cpp",
+      "line": 6,
+      "snippet": "ALLOWED DEPENDENCIES: engine public headers + libs/contracts public headers."
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/test_auditx_read_only.py",
+      "line": 21,
+      "snippet": "\"libs/\","
+    }
+  ],
+  "references_rewritten": false,
+  "root": "libs",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 816
+  }
+}

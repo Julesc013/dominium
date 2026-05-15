@@ -1,0 +1,443 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-1 control plane engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 5900,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/control_plane_engine.py",
+      "relative_path": "control_plane_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 74130,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/capability",
+      "relative_path": "capability",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-7 capability engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/capability/__init__.py",
+      "relative_path": "capability/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 474,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic CTRL-7 capability query engine.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/capability/capability_engine.py",
+      "relative_path": "capability/capability_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 6867,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/effects",
+      "relative_path": "effects",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-8 deterministic effect engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/effects/__init__.py",
+      "relative_path": "effects/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 972,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/effects/effect_engine.py",
+      "relative_path": "effects/effect_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 20056,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/fidelity",
+      "relative_path": "fidelity",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-5 fidelity arbitration exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/fidelity/__init__.py",
+      "relative_path": "fidelity/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 833,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/fidelity/fidelity_engine.py",
+      "relative_path": "fidelity/fidelity_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 30852,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/ir",
+      "relative_path": "ir",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Control IR verifier/compiler exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/ir/__init__.py",
+      "relative_path": "ir/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1142,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/ir/control_ir_compiler.py",
+      "relative_path": "ir/control_ir_compiler.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 27598,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Multiplayer safety helpers for deterministic Control IR execution.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/ir/control_ir_multiplayer.py",
+      "relative_path": "ir/control_ir_multiplayer.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 4719,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/ir/control_ir_programs.py",
+      "relative_path": "ir/control_ir_programs.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 13791,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/ir/control_ir_verifier.py",
+      "relative_path": "ir/control_ir_verifier.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 17987,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/negotiation",
+      "relative_path": "negotiation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Negotiation kernel exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/negotiation/__init__.py",
+      "relative_path": "negotiation/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1133,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/negotiation/negotiation_kernel.py",
+      "relative_path": "negotiation/negotiation_kernel.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 29271,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/planning",
+      "relative_path": "planning",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-4 planning engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/planning/__init__.py",
+      "relative_path": "planning/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 734,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/planning/plan_engine.py",
+      "relative_path": "planning/plan_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 26581,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/proof",
+      "relative_path": "proof",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Control proof bundle helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/proof/__init__.py",
+      "relative_path": "proof/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 377,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/proof/control_proof_bundle.py",
+      "relative_path": "proof/control_proof_bundle.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 68702,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "control/view",
+      "relative_path": "view",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CTRL-6 view binding engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/view/__init__.py",
+      "relative_path": "view/__init__.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 640,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "control/view/view_engine.py",
+      "relative_path": "view/view_engine.py",
+      "sensitivity_hints": [
+        "control_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 15269,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "control",
+  "root_path": "control",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 8,
+    "file_count": 21,
+    "tracked_file_count": 21
+  },
+  "task_id": null
+}

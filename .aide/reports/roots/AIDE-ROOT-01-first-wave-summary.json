@@ -1,0 +1,116 @@
+{
+  "deletes_applied": false,
+  "fate_counts": {
+    "adapt": 34,
+    "preserve_unknown": 15
+  },
+  "moves_applied": false,
+  "recommended_next_task": "next AIDE-ROOT inventory wave",
+  "renames_applied": false,
+  "risk_counts": {
+    "low": 1,
+    "medium": 36,
+    "unknown": 12
+  },
+  "roots": [
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2
+      },
+      "file_count": 2,
+      "reference_count": 1399,
+      "risk_counts": {
+        "medium": 2
+      },
+      "root": "governance",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 10,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 26,
+        "preserve_unknown": 10
+      },
+      "file_count": 26,
+      "reference_count": 1345,
+      "risk_counts": {
+        "medium": 26,
+        "unknown": 10
+      },
+      "root": "meta",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2
+      },
+      "file_count": 2,
+      "reference_count": 1998,
+      "risk_counts": {
+        "medium": 2
+      },
+      "root": "validation",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 3
+      },
+      "file_count": 3,
+      "reference_count": 116,
+      "risk_counts": {
+        "medium": 3
+      },
+      "root": "performance",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 2,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 1,
+        "preserve_unknown": 5
+      },
+      "file_count": 4,
+      "reference_count": 21553,
+      "risk_counts": {
+        "low": 1,
+        "medium": 3,
+        "unknown": 2
+      },
+      "root": "ide",
+      "salvage_map_status": "not_approved"
+    }
+  ],
+  "schema_version": "dominium.aide.root_first_wave_summary.v1",
+  "sensitivity_counts": {
+    "documentation": 1,
+    "executable_or_tool": 33,
+    "ide_projection": 4,
+    "machine_readable": 3,
+    "performance_evidence": 3,
+    "policy_or_governance": 28,
+    "python_module": 33,
+    "validation_tooling": 2
+  },
+  "summary": {
+    "directory_count": 12,
+    "file_count": 37,
+    "high_or_protected_count": 0,
+    "preserve_unknown_count": 15,
+    "reference_count": 26411
+  },
+  "task_id": "AIDE-ROOT-01"
+}

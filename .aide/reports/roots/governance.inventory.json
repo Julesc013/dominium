@@ -1,0 +1,49 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Governance profile helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "governance/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 1211,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic governance profile helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "governance/governance_profile.py",
+      "relative_path": "governance_profile.py",
+      "sensitivity_hints": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "size": 7796,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "governance",
+  "root_path": "governance",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 0,
+    "file_count": 2,
+    "tracked_file_count": 2
+  },
+  "task_id": null
+}

@@ -1,0 +1,4755 @@
+{
+  "findings": [
+    {
+      "file": "security/__init__.py",
+      "line": 1,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "\"\"\"Security package surfaces.\"\"\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 1,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic license-capability trust helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 1,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic license-capability trust helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 9,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "build_universal_identity_block,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 10,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_universal_identity_block,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 10,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "canonicalize_universal_identity_block,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 11,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "validate_identity_block,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 13,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 13,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 15,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "from .trust_verifier import ("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 16,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_LICENSE_CAPABILITY,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 17,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 17,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 18,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_signature_record,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 20,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "load_trust_policy_registry,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 20,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "load_trust_policy_registry,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 21,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "select_trust_policy,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 21,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "select_trust_policy,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 22,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "verify_artifact_trust,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 26,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_ID = \"dominium.schema.security.license_capability_artifact\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 26,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_ID = \"dominium.schema.security.license_capability_artifact\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 26,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_ID = \"dominium.schema.security.license_capability_artifact\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 27,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_VERSION = \"1.0.0\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 27,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_VERSION = \"1.0.0\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 28,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_IDENTITY_KIND = \"identity.license_capability\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 29,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY = \"fixture_signature_records\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 30,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY = \"official.requested_capability_ids\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 65,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def license_capability_signature_rows(payload: Mapping[str, object] | None) -> list[dict]:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 68,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_signature_record(row)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 69,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "for row in _as_list(extensions.get(LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 85,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "extensions[LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY] = ["
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 86,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "dict(row) for row in license_capability_signature_rows(payload)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 89,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "extensions.pop(LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY, None)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 97,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def license_capability_signed_hash(payload: Mapping[str, object] | None) -> str:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 100,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "item[\"schema_id\"] = _token(item.get(\"schema_id\")) or LICENSE_CAPABILITY_SCHEMA_ID"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 100,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"schema_id\"] = _token(item.get(\"schema_id\")) or LICENSE_CAPABILITY_SCHEMA_ID"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 101,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "item[\"schema_version\"] = _token(item.get(\"schema_version\")) or LICENSE_CAPABILITY_SCHEMA_VERSION"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 101,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"schema_version\"] = _token(item.get(\"schema_version\")) or LICENSE_CAPABILITY_SCHEMA_VERSION"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 102,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"artifact_kind_id\"] = ARTIFACT_KIND_LICENSE_CAPABILITY"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 104,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "item[\"valid_from_release\"] = _token(item.get(\"valid_from_release\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 105,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "item[\"valid_to_release\"] = _token(item.get(\"valid_to_release\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 108,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "return canonical_sha256(_normalize_tree(item))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 108,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "return canonical_sha256(_normalize_tree(item))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 111,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "def canonicalize_license_capability_artifact(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 111,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def canonicalize_license_capability_artifact(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 113,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "item[\"schema_id\"] = _token(item.get(\"schema_id\")) or LICENSE_CAPABILITY_SCHEMA_ID"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 113,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"schema_id\"] = _token(item.get(\"schema_id\")) or LICENSE_CAPABILITY_SCHEMA_ID"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 114,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "item[\"schema_version\"] = _token(item.get(\"schema_version\")) or LICENSE_CAPABILITY_SCHEMA_VERSION"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 114,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"schema_version\"] = _token(item.get(\"schema_version\")) or LICENSE_CAPABILITY_SCHEMA_VERSION"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 115,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "item[\"artifact_kind_id\"] = ARTIFACT_KIND_LICENSE_CAPABILITY"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 117,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "item[\"valid_from_release\"] = _token(item.get(\"valid_from_release\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 118,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "item[\"valid_to_release\"] = _token(item.get(\"valid_to_release\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 121,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "item[UNIVERSAL_IDENTITY_FIELD] = canonicalize_universal_identity_block(item.get(UNIVERSAL_IDENTITY_FIELD))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 121,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "item[UNIVERSAL_IDENTITY_FIELD] = canonicalize_universal_identity_block(item.get(UNIVERSAL_IDENTITY_FIELD))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 127,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def build_license_capability_artifact("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 131,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "valid_from_release: str = \"\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 132,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "valid_to_release: str = \"\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 137,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload = canonicalize_license_capability_artifact("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 137,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "payload = canonicalize_license_capability_artifact("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 139,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\": LICENSE_CAPABILITY_SCHEMA_ID,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 139,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"schema_id\": LICENSE_CAPABILITY_SCHEMA_ID,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 140,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 140,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"schema_version\": LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 141,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"artifact_kind_id\": ARTIFACT_KIND_LICENSE_CAPABILITY,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 143,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"valid_from_release\": _token(valid_from_release),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 144,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"valid_to_release\": _token(valid_to_release),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 149,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "ext[LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY] = ["
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 152,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "(canonicalize_signature_record(row) for row in list(signature_records or [])),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 161,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload[UNIVERSAL_IDENTITY_FIELD] = build_universal_identity_block("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 162,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "identity_kind_id=LICENSE_CAPABILITY_IDENTITY_KIND,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 165,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "content_hash=license_capability_signed_hash(payload),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 166,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_version=LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 166,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "schema_version=LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 167,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "extensions={\"official.artifact_kind_id\": ARTIFACT_KIND_LICENSE_CAPABILITY},"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 169,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "return canonicalize_license_capability_artifact(payload)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 169,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "return canonicalize_license_capability_artifact(payload)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 172,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def _match_requested_capability(enabled_capability: str, requested_capability: str) -> bool:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 173,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "enabled = _token(enabled_capability)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 174,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "requested = _token(requested_capability)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 186,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def license_capability_enabled_view("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 188,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "requested_capability_ids: Sequence[object],"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 189,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "enabled_capability_ids: Sequence[object],"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 191,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "requested = _sorted_tokens(requested_capability_ids)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 192,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "enabled = _sorted_tokens(enabled_capability_ids)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 195,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "for capability_id in requested:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 196,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "if any(_match_requested_capability(candidate, capability_id) for candidate in enabled):"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 197,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "available.append(capability_id)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 199,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "degraded.append(capability_id)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 201,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"requested_capability_ids\": requested,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 202,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"enabled_capability_ids\": enabled,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 203,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"available_capability_ids\": available,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 204,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"degraded_capability_ids\": degraded,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 211,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "def verify_license_capability_artifact("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 215,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_roots: Sequence[Mapping[str, object]] | None = None,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 216,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "requested_capability_ids: Sequence[object] | None = None,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 218,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "artifact = canonicalize_license_capability_artifact(payload)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 218,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "artifact = canonicalize_license_capability_artifact(payload)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 219,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "signed_hash = license_capability_signed_hash(artifact)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 223,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 224,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 242,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 242,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 247,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "if _token(artifact.get(\"schema_id\")) != LICENSE_CAPABILITY_SCHEMA_ID:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 247,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "if _token(artifact.get(\"schema_id\")) != LICENSE_CAPABILITY_SCHEMA_ID:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 250,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 250,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 251,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"path\": \"$.schema_id\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 252,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"message\": \"schema_id must equal '{}'\".format(LICENSE_CAPABILITY_SCHEMA_ID),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 252,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"message\": \"schema_id must equal '{}'\".format(LICENSE_CAPABILITY_SCHEMA_ID),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 255,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "if _token(artifact.get(\"schema_version\")) != LICENSE_CAPABILITY_SCHEMA_VERSION:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 255,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "if _token(artifact.get(\"schema_version\")) != LICENSE_CAPABILITY_SCHEMA_VERSION:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 258,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 258,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 259,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"path\": \"$.schema_version\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 260,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"message\": \"schema_version must equal '{}'\".format(LICENSE_CAPABILITY_SCHEMA_VERSION),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 260,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"message\": \"schema_version must equal '{}'\".format(LICENSE_CAPABILITY_SCHEMA_VERSION),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 263,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "if _token(artifact.get(\"artifact_kind_id\")) != ARTIFACT_KIND_LICENSE_CAPABILITY:"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 266,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 266,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_schema_invalid\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 268,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"message\": \"artifact_kind_id must equal '{}'\".format(ARTIFACT_KIND_LICENSE_CAPABILITY),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 274,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"code\": \"license_capability_fingerprint_mismatch\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 279,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "expected_identity = build_universal_identity_block("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 280,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "identity_kind_id=LICENSE_CAPABILITY_IDENTITY_KIND,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 284,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_version=LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 284,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "schema_version=LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 285,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "extensions={\"official.artifact_kind_id\": ARTIFACT_KIND_LICENSE_CAPABILITY},"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 287,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "identity_report = validate_identity_block("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 289,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "identity_block=_as_map(artifact.get(UNIVERSAL_IDENTITY_FIELD)),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 292,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "path=\"license_capability\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 296,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy = select_trust_policy(load_trust_policy_registry(repo_root=repo_root), trust_policy_id=TRUST_POLICY_STRICT)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 296,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy = select_trust_policy(load_trust_policy_registry(repo_root=repo_root), trust_policy_id=TRUST_POLICY_STRICT)"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 297,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_report = verify_artifact_trust("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 298,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "artifact_kind=ARTIFACT_KIND_LICENSE_CAPABILITY,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 300,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "signatures=license_capability_signature_rows(artifact),"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 301,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy_id=TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 301,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy_id=TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 302,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy=trust_policy,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 302,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy=trust_policy,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 303,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_roots=trust_roots,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 306,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = \"\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 310,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "refusal_code = \"refusal.license_capability.schema_invalid\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 310,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = \"refusal.license_capability.schema_invalid\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 310,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "refusal_code = \"refusal.license_capability.schema_invalid\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 311,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Rebuild the license capability artifact so it satisfies the canonical schema and identity rules.\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 311,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Rebuild the license capability artifact so it satisfies the canonical schema and identity rules.\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 311,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Rebuild the license capability artifact so it satisfies the canonical schema and identity rules.\""
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 312,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "elif _token(trust_report.get(\"result\")) == \"refused\":"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 314,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = _token(trust_report.get(\"refusal_code\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 314,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "refusal_code = _token(trust_report.get(\"refusal_code\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 315,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint = _token(trust_report.get(\"remediation_hint\"))"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 316,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "display = license_capability_enabled_view("
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 317,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "requested_capability_ids=requested_capability_ids or _as_map(artifact.get(\"extensions\")).get(LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY) or [],"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 318,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "enabled_capability_ids=_as_list(artifact.get(\"enabled_capabilities\")) if result == \"complete\" else [],"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 322,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"refusal_code\": refusal_code,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 324,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"artifact_kind_id\": ARTIFACT_KIND_LICENSE_CAPABILITY,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 328,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_result\": trust_report,"
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 338,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 339,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 340,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_IDENTITY_KIND\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 341,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_ID\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 341,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_ID\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 342,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_VERSION\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 342,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_VERSION\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 343,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"build_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 344,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"canonicalize_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 344,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"canonicalize_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 345,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_enabled_view\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 346,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_signature_rows\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 347,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_signed_hash\","
+    },
+    {
+      "file": "security/trust/license_capability.py",
+      "line": 348,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"verify_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 1,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"\"\"Offline-first trust policy and signature verification helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 1,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"\"\"Offline-first trust policy and signature verification helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 9,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 9,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 12,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_REGISTRY_REL = os.path.join(\"data\", \"registries\", \"trust_policy_registry.json\")"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 12,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_REGISTRY_REL = os.path.join(\"data\", \"registries\", \"trust_policy_registry.json\")"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 13,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_ROOT_REGISTRY_REL = os.path.join(\"data\", \"registries\", \"trust_root_registry.json\")"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 14,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL = os.path.join(\"manifests\", \"trust_root_registry.local.json\")"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 14,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL = os.path.join(\"manifests\", \"trust_root_registry.local.json\")"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 15,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_ID = \"trust.default_mock\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 15,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_ID = \"trust.default_mock\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 16,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_POLICY_STRICT = \"trust.strict_ranked\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 16,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "TRUST_POLICY_STRICT = \"trust.strict_ranked\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 17,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_POLICY_ANARCHY = \"trust.anarchy\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 17,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "TRUST_POLICY_ANARCHY = \"trust.anarchy\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 21,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_INDEX = \"artifact.release_index\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 22,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_MANIFEST = \"artifact.release_manifest\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 22,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_MANIFEST = \"artifact.release_manifest\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 25,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_LICENSE_CAPABILITY = \"artifact.license_capability\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 27,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_OFFICIAL_SIGNED = \"trust.official_signed\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 28,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_THIRDPARTY_SIGNED = \"trust.thirdparty_signed\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 29,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_UNSIGNED = \"trust.unsigned\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 30,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_LOCAL_DEV = \"trust.local_dev\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 36,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_HASH_MISSING = \"refusal.trust.hash_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 36,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_HASH_MISSING = \"refusal.trust.hash_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 37,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_MISSING = \"refusal.trust.signature_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 37,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_MISSING = \"refusal.trust.signature_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 38,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_INVALID = \"refusal.trust.signature_invalid\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 38,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_INVALID = \"refusal.trust.signature_invalid\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 39,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_ROOT_NOT_TRUSTED = \"refusal.trust.root_not_trusted\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 39,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_ROOT_NOT_TRUSTED = \"refusal.trust.root_not_trusted\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 40,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING = \"refusal.trust.policy_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 40,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING = \"refusal.trust.policy_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 40,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING = \"refusal.trust.policy_missing\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 66,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "return canonical_sha256(body)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 66,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "return canonical_sha256(body)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 82,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "handle.write(canonical_json_text(dict(payload or {})))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 87,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "def _is_sha256_hex(token: str) -> bool:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 93,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "return canonical_sha256("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 93,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "return canonical_sha256("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 103,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "def canonicalize_signature_record(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 128,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_signature_record(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 193,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "def _canonicalize_trust_root(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 193,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def _canonicalize_trust_root(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 198,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_level_id\": _token(item.get(\"trust_level_id\")),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 209,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "def _canonicalize_trust_policy(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 209,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def _canonicalize_trust_policy(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 209,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def _canonicalize_trust_policy(payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 212,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_policy_id\": _token(item.get(\"trust_policy_id\")),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 212,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"trust_policy_id\": _token(item.get(\"trust_policy_id\")),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 225,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def load_trust_policy_registry(repo_root: str = \"\", registry_path: str = \"\") -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 225,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def load_trust_policy_registry(repo_root: str = \"\", registry_path: str = \"\") -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 230,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "path = os.path.join(_norm(repo_root), DEFAULT_TRUST_POLICY_REGISTRY_REL)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 230,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "path = os.path.join(_norm(repo_root), DEFAULT_TRUST_POLICY_REGISTRY_REL)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 234,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "_canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 234,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "_canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 234,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "_canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 235,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "for row in list(record.get(\"trust_policies\") or [])"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 236,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if _token(_as_map(row).get(\"trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 236,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if _token(_as_map(row).get(\"trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 239,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\": _token(payload.get(\"schema_id\")),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 240,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": _token(payload.get(\"schema_version\")),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 244,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_policies\": sorted(rows, key=lambda row: _token(row.get(\"trust_policy_id\"))),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 244,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"trust_policies\": sorted(rows, key=lambda row: _token(row.get(\"trust_policy_id\"))),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 250,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def _trust_root_paths(repo_root: str = \"\", install_root: str = \"\", trust_root_registry_path: str = \"\") -> list[str]:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 252,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "explicit = _token(trust_root_registry_path)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 256,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "paths.append(os.path.join(_norm(repo_root), DEFAULT_TRUST_ROOT_REGISTRY_REL))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 258,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "local_path = os.path.join(_norm(install_root), DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 264,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def load_trust_root_registry(repo_root: str = \"\", *, install_root: str = \"\", registry_path: str = \"\") -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 266,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_id = \"dominium.registry.security.trust_root_registry\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 266,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "schema_id = \"dominium.registry.security.trust_root_registry\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 266,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "schema_id = \"dominium.registry.security.trust_root_registry\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 267,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_version = \"1.0.0\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 268,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "registry_id = \"dominium.registry.security.trust_root_registry\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 268,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "registry_id = \"dominium.registry.security.trust_root_registry\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 271,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "for path in _trust_root_paths(repo_root=repo_root, install_root=install_root, trust_root_registry_path=registry_path):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 276,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_id = _token(payload.get(\"schema_id\")) or schema_id"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 277,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "schema_version = _token(payload.get(\"schema_version\")) or schema_version"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 280,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "extensions.update(_as_map(record.get(\"extensions\")))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 281,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "for row in list(record.get(\"trust_roots\") or []):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 282,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "root_row = _canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 282,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "root_row = _canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 287,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\": schema_id,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 288,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": schema_version,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 292,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_roots\": [merged_rows[key] for key in sorted(merged_rows.keys())],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 298,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def write_trust_root_registry(path: str, roots: Sequence[Mapping[str, object]]) -> str:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 300,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 300,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 300,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 301,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 303,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "\"registry_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 303,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"registry_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 305,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_roots\": sorted("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 306,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "(_canonicalize_trust_root(row) for row in list(roots or []) if _token(_as_map(row).get(\"signer_id\"))),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 306,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "(_canonicalize_trust_root(row) for row in list(roots or []) if _token(_as_map(row).get(\"signer_id\"))),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 310,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"official.source\": \"TRUST-MODEL0-4\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 317,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def select_trust_policy(registry_payload: Mapping[str, object] | None, trust_policy_id: str = \"\") -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 317,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def select_trust_policy(registry_payload: Mapping[str, object] | None, trust_policy_id: str = \"\") -> dict:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 318,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "target = _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 318,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "target = _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 319,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "rows = list(_as_map(registry_payload).get(\"record\", {}).get(\"trust_policies\") or [])"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 321,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "item = _canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 321,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "item = _canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 321,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "item = _canonicalize_trust_policy(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 322,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if _token(item.get(\"trust_policy_id\")) == target:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 322,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if _token(item.get(\"trust_policy_id\")) == target:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 327,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def _trust_policy_from_mod_policy(mod_policy_id: str) -> str:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 327,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def _trust_policy_from_mod_policy(mod_policy_id: str) -> str:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 328,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "token = _token(mod_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 329,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if token == \"mod_policy.strict\":"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 330,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return TRUST_POLICY_STRICT"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 330,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return TRUST_POLICY_STRICT"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 331,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if token == \"mod_policy.anarchy\":"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 332,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return TRUST_POLICY_ANARCHY"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 332,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return TRUST_POLICY_ANARCHY"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 333,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return DEFAULT_TRUST_POLICY_ID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 333,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return DEFAULT_TRUST_POLICY_ID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 336,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def effective_trust_policy_id("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 336,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def effective_trust_policy_id("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 338,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "requested_trust_policy_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 338,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "requested_trust_policy_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 339,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "install_manifest: Mapping[str, object] | None = None,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 340,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "mod_policy_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 343,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if _token(requested_trust_policy_id):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 343,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if _token(requested_trust_policy_id):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 344,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return _token(requested_trust_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 344,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return _token(requested_trust_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 345,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "install_extensions = _as_map(_as_map(install_manifest).get(\"extensions\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 346,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if _token(install_extensions.get(\"official.trust_policy_id\")):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 346,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if _token(install_extensions.get(\"official.trust_policy_id\")):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 347,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return _token(install_extensions.get(\"official.trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 347,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return _token(install_extensions.get(\"official.trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 349,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if _token(server_extensions.get(\"official.trust_policy_id\")):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 349,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if _token(server_extensions.get(\"official.trust_policy_id\")):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 350,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return _token(server_extensions.get(\"official.trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 350,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return _token(server_extensions.get(\"official.trust_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 351,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "install_default_mod = _token(_as_map(install_manifest).get(\"default_mod_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 351,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "install_default_mod = _token(_as_map(install_manifest).get(\"default_mod_policy_id\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 352,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "return _trust_policy_from_mod_policy(_token(mod_policy_id) or install_default_mod)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 352,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return _trust_policy_from_mod_policy(_token(mod_policy_id) or install_default_mod)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 364,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "def verify_artifact_trust("
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 369,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 369,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 370,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy: Mapping[str, object] | None = None,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 370,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy: Mapping[str, object] | None = None,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 371,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_roots: Sequence[Mapping[str, object]] | None = None,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 374,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_policy_registry_path: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 374,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "trust_policy_registry_path: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 375,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_root_registry_path: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 376,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trust_level_id: str = \"\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 382,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "if not _is_sha256_hex(hash_token):"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 387,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_policy_id\": _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 387,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"trust_policy_id\": _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 388,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_level_id\": _token(trust_level_id),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 392,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trusted_signer_ids\": [],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 393,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_TRUST_HASH_MISSING,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 393,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_TRUST_HASH_MISSING,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 395,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"remediation_hint\": \"Regenerate the artifact manifest or verification input so a canonical SHA-256 content hash is present.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 395,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"remediation_hint\": \"Regenerate the artifact manifest or verification input so a canonical SHA-256 content hash is present.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 397,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"errors\": [{\"code\": REFUSAL_TRUST_HASH_MISSING, \"message\": \"artifact content hash is missing or invalid\"}],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 397,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"errors\": [{\"code\": REFUSAL_TRUST_HASH_MISSING, \"message\": \"artifact content hash is missing or invalid\"}],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 403,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "policy_registry = load_trust_policy_registry(repo_root=repo_root, registry_path=trust_policy_registry_path)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 403,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "policy_registry = load_trust_policy_registry(repo_root=repo_root, registry_path=trust_policy_registry_path)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 404,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "policy = _canonicalize_trust_policy(trust_policy) if _token(_as_map(trust_policy).get(\"trust_policy_id\")) else select_trust_policy(policy_registry, trust_policy_id=trust_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 404,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "policy = _canonicalize_trust_policy(trust_policy) if _token(_as_map(trust_policy).get(\"trust_policy_id\")) else select_trust_policy(policy_registry, trust_policy_id=trust_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 404,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "policy = _canonicalize_trust_policy(trust_policy) if _token(_as_map(trust_policy).get(\"trust_policy_id\")) else select_trust_policy(policy_registry, trust_policy_id=trust_policy_id)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 405,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if not policy:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 410,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_policy_id\": _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 410,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"trust_policy_id\": _token(trust_policy_id) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 411,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_level_id\": _token(trust_level_id),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 415,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trusted_signer_ids\": [],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 416,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 416,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 416,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 417,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"reason\": \"trust policy is missing or undeclared\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 417,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"reason\": \"trust policy is missing or undeclared\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 418,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"remediation_hint\": \"Declare the requested trust policy in data/registries/trust_policy_registry.json or choose a supported trust policy id.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 418,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"remediation_hint\": \"Declare the requested trust policy in data/registries/trust_policy_registry.json or choose a supported trust policy id.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 420,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"errors\": [{\"code\": REFUSAL_TRUST_POLICY_MISSING, \"message\": \"trust policy is missing or undeclared\"}],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 420,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"errors\": [{\"code\": REFUSAL_TRUST_POLICY_MISSING, \"message\": \"trust policy is missing or undeclared\"}],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 420,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"errors\": [{\"code\": REFUSAL_TRUST_POLICY_MISSING, \"message\": \"trust policy is missing or undeclared\"}],"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 439,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 439,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 439,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 440,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 442,
+      "marker": "security",
+      "sensitivity_hints": [
+        "security_sensitive"
+      ],
+      "snippet": "\"registry_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 442,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"registry_id\": \"dominium.registry.security.trust_root_registry\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 444,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_roots\": ["
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 445,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "_canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 445,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "_canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 446,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "for row in list(trust_roots or [])"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 452,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if trust_roots is not None"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 453,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "else load_trust_root_registry(repo_root=repo_root, install_root=install_root, registry_path=trust_root_registry_path)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 455,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trusted_root_rows = {"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 456,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "_token(_as_map(row).get(\"signer_id\")): _canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 456,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "_token(_as_map(row).get(\"signer_id\")): _canonicalize_trust_root(row)"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 457,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "for row in list(_as_map(root_registry).get(\"record\", {}).get(\"trust_roots\") or [])"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 460,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "trusted_signers = sorted([token for token in verified_signer_ids if token in trusted_root_rows])"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 462,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "require_signatures_for = _sorted_tokens(policy.get(\"require_signatures_for\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 463,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "allow_unsigned_for = _sorted_tokens(policy.get(\"allow_unsigned_for\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 464,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "policy_extensions = _as_map(policy.get(\"extensions\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 465,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "warn_unsigned_for = _sorted_tokens(policy_extensions.get(\"warn_unsigned_for\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 466,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "signed_bridge_levels = _sorted_tokens(policy_extensions.get(\"allow_signed_bridge_trust_levels\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 466,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "signed_bridge_levels = _sorted_tokens(policy_extensions.get(\"allow_signed_bridge_trust_levels\"))"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 467,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "untrusted_root_behavior = _token(policy_extensions.get(\"untrusted_root_behavior\")) or \"warn\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 467,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "untrusted_root_behavior = _token(policy_extensions.get(\"untrusted_root_behavior\")) or \"warn\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 470,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = \"\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 477,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_INVALID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 477,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_INVALID"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 479,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "remediation_hint = \"Regenerate or replace the invalid signature records, or switch to a policy that accepts unsigned artifacts only if signatures are intentionally omitted.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 482,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "bridge_applies = artifact_kind_token in {ARTIFACT_KIND_PACK, ARTIFACT_KIND_PACK_COMPAT} and _token(trust_level_id) in signed_bridge_levels"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 487,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"warn.trust.pack_signed_bridge\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 488,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"pack trust_level_id satisfies the MVP signed-pack bridge without detached signatures\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 490,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "remediation_hint=\"Add detached signatures for pack artifacts when signed pack manifests become first-class governed artifacts.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 494,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_MISSING"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 494,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_MISSING"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 495,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "reason = \"signatures are required by the selected trust policy\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 495,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "reason = \"signatures are required by the selected trust policy\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 496,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Provide detached or inline signatures for the artifact, or select a trust policy that explicitly allows unsigned artifacts.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 496,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "remediation_hint = \"Provide detached or inline signatures for the artifact, or select a trust policy that explicitly allows unsigned artifacts.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 503,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"warn.trust.signature_missing\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 504,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"artifact is unsigned but the selected trust policy allows it\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 504,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"artifact is unsigned but the selected trust policy allows it\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 506,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint=\"Sign the artifact or choose a stricter trust policy for ranked or release environments.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 506,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "remediation_hint=\"Sign the artifact or choose a stricter trust policy for ranked or release environments.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 506,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "remediation_hint=\"Sign the artifact or choose a stricter trust policy for ranked or release environments.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 510,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_MISSING"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 510,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_SIGNATURE_MISSING"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 511,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "reason = \"artifact is unsigned and the selected trust policy does not allow unsigned acceptance\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 511,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "reason = \"artifact is unsigned and the selected trust policy does not allow unsigned acceptance\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 512,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Provide a valid signature or choose a trust policy that explicitly allows unsigned artifacts for this artifact kind.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 512,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "remediation_hint = \"Provide a valid signature or choose a trust policy that explicitly allows unsigned artifacts for this artifact kind.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 514,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "elif signature_status == SIGNATURE_STATUS_VERIFIED and not trusted_signers:"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 515,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "if untrusted_root_behavior == \"refuse\":"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 516,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_ROOT_NOT_TRUSTED"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 516,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "refusal_code = REFUSAL_TRUST_ROOT_NOT_TRUSTED"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 517,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "reason = \"artifact was signed by an untrusted signer\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 518,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint = \"Import the signer public key into the local trust root registry or choose a trust policy that only warns on untrusted roots.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 518,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "remediation_hint = \"Import the signer public key into the local trust root registry or choose a trust policy that only warns on untrusted roots.\""
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 524,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"warn.trust.root_not_trusted\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 525,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"artifact signature verified, but no matching trusted root is installed\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 527,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "remediation_hint=\"Import the signer into the trust root registry if this signer should be trusted offline.\","
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 535,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_policy_id\": _token(policy.get(\"trust_policy_id\")) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 535,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"trust_policy_id\": _token(policy.get(\"trust_policy_id\")) or DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 536,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trust_level_id\": _token(trust_level_id),"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 540,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"trusted_signer_ids\": trusted_signers,"
+    },
+    {
+      "file": "security/trust/trust_verifier.py",
+      "line": 541,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"refusal_code\": refusal_code,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 1,
+      "marker": "signing",
+      "sensitivity_hints": [
+        "signing_sensitive"
+      ],
+      "snippet": "\"\"\"Offline-first trust and signing helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 1,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"\"\"Offline-first trust and signing helpers.\"\"\""
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 3,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "from .trust_verifier import ("
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 4,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_LICENSE_CAPABILITY,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 7,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_INDEX,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 8,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_MANIFEST,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 8,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "ARTIFACT_KIND_RELEASE_MANIFEST,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 9,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 10,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 10,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_ID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 11,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_REGISTRY_REL,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 11,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_TRUST_POLICY_REGISTRY_REL,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 12,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "DEFAULT_TRUST_ROOT_REGISTRY_REL,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 13,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_HASH_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 13,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_HASH_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 14,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 14,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 14,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_TRUST_POLICY_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 15,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_ROOT_NOT_TRUSTED,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 15,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_ROOT_NOT_TRUSTED,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 16,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_INVALID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 16,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_INVALID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 17,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 17,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "REFUSAL_TRUST_SIGNATURE_MISSING,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 21,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_LOCAL_DEV,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 22,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_OFFICIAL_SIGNED,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 23,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_THIRDPARTY_SIGNED,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 24,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_LEVEL_UNSIGNED,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 25,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_POLICY_ANARCHY,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 25,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "TRUST_POLICY_ANARCHY,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 26,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 26,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "TRUST_POLICY_STRICT,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 27,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_signature_record,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 29,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "effective_trust_policy_id,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 29,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "effective_trust_policy_id,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 30,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "load_trust_policy_registry,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 30,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "load_trust_policy_registry,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 31,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "load_trust_root_registry,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 32,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "select_trust_policy,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 32,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "select_trust_policy,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 33,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "verify_artifact_trust,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 35,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "write_trust_root_registry,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 37,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "from .license_capability import ("
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 38,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 39,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 40,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_IDENTITY_KIND,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 41,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_ID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 41,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_ID,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 42,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 42,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "LICENSE_CAPABILITY_SCHEMA_VERSION,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 43,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "build_license_capability_artifact,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 44,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "canonicalize_license_capability_artifact,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 44,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "canonicalize_license_capability_artifact,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 45,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "license_capability_enabled_view,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 46,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "license_capability_signature_rows,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 47,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "license_capability_signed_hash,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 48,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "verify_license_capability_artifact,"
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 52,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"ARTIFACT_KIND_LICENSE_CAPABILITY\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 55,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"ARTIFACT_KIND_RELEASE_INDEX\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 56,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"ARTIFACT_KIND_RELEASE_MANIFEST\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 56,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"ARTIFACT_KIND_RELEASE_MANIFEST\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 57,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 58,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"DEFAULT_TRUST_POLICY_ID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 58,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"DEFAULT_TRUST_POLICY_ID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 59,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"DEFAULT_TRUST_POLICY_REGISTRY_REL\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 59,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"DEFAULT_TRUST_POLICY_REGISTRY_REL\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 60,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"DEFAULT_TRUST_ROOT_REGISTRY_REL\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 61,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_HASH_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 61,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_HASH_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 62,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_POLICY_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 62,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_POLICY_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 62,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_TRUST_POLICY_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 63,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_ROOT_NOT_TRUSTED\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 63,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_ROOT_NOT_TRUSTED\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 64,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_SIGNATURE_INVALID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 64,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_SIGNATURE_INVALID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 65,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_SIGNATURE_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 65,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"REFUSAL_TRUST_SIGNATURE_MISSING\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 69,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_LEVEL_LOCAL_DEV\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 70,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_LEVEL_OFFICIAL_SIGNED\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 71,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_LEVEL_THIRDPARTY_SIGNED\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 72,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_LEVEL_UNSIGNED\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 73,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_POLICY_ANARCHY\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 73,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"TRUST_POLICY_ANARCHY\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 74,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"TRUST_POLICY_STRICT\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 74,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"TRUST_POLICY_STRICT\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 75,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_EXTENSION_REQUESTED_KEY\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 76,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_EXTENSION_SIGNATURES_KEY\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 77,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_IDENTITY_KIND\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 78,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_ID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 78,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_ID\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 79,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_VERSION\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 79,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"LICENSE_CAPABILITY_SCHEMA_VERSION\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 80,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"build_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 81,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"canonicalize_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 81,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"canonicalize_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 82,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"canonicalize_signature_record\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 84,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"effective_trust_policy_id\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 84,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"effective_trust_policy_id\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 85,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_enabled_view\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 86,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_signature_rows\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 87,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"license_capability_signed_hash\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 88,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"load_trust_policy_registry\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 88,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"load_trust_policy_registry\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 89,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"load_trust_root_registry\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 90,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"select_trust_policy\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 90,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"select_trust_policy\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 91,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"verify_artifact_trust\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 92,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"verify_license_capability_artifact\","
+    },
+    {
+      "file": "security/trust/__init__.py",
+      "line": 94,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"write_trust_root_registry\","
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "security",
+  "schema_version": "dominium.aide.authority_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 527
+  }
+}

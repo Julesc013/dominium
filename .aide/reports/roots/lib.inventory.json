@@ -1,0 +1,448 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Shared LIB helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 27,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/artifact",
+      "relative_path": "artifact",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Shareable artifact manifest helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/artifact/__init__.py",
+      "relative_path": "artifact/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2790,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/artifact/artifact_validator.py",
+      "relative_path": "artifact/artifact_validator.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 28218,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/bundle",
+      "relative_path": "bundle",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"LIB-6 bundle helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/bundle/__init__.py",
+      "relative_path": "bundle/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 1278,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/bundle/bundle_manifest.py",
+      "relative_path": "bundle/bundle_manifest.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 18869,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/export",
+      "relative_path": "export",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"LIB-6 export engines.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/export/__init__.py",
+      "relative_path": "export/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 540,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/export/export_engine.py",
+      "relative_path": "export/export_engine.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 29686,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/import",
+      "relative_path": "import",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"LIB-6 import engines.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/import/__init__.py",
+      "relative_path": "import/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 246,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/import/import_engine.py",
+      "relative_path": "import/import_engine.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 27044,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/install",
+      "relative_path": "install",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Install manifest validation and registry helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/install/__init__.py",
+      "relative_path": "install/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2364,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/install/install_discovery_engine.py",
+      "relative_path": "install/install_discovery_engine.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 21903,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/install/install_validator.py",
+      "relative_path": "install/install_validator.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 38977,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/instance",
+      "relative_path": "instance",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Instance manifest helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/instance/__init__.py",
+      "relative_path": "instance/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2047,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/instance/instance_clone.py",
+      "relative_path": "instance/instance_clone.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 10750,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/instance/instance_validator.py",
+      "relative_path": "instance/instance_validator.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 26861,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/provides",
+      "relative_path": "provides",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Provides/claims resolution helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/provides/__init__.py",
+      "relative_path": "provides/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2190,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/provides/provider_resolution.py",
+      "relative_path": "provides/provider_resolution.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 24257,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/save",
+      "relative_path": "save",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Save manifest helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/save/__init__.py",
+      "relative_path": "save/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 1642,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/save/save_validator.py",
+      "relative_path": "save/save_validator.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 33318,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "lib/store",
+      "relative_path": "store",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Store reachability, verification, and deterministic GC helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/store/__init__.py",
+      "relative_path": "store/__init__.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 1495,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/store/gc_engine.py",
+      "relative_path": "store/gc_engine.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 17720,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "lib/store/reachability_engine.py",
+      "relative_path": "store/reachability_engine.py",
+      "sensitivity_hints": [
+        "build_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 24337,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "lib",
+  "root_path": "lib",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 9,
+    "file_count": 22,
+    "tracked_file_count": 22
+  },
+  "task_id": null
+}

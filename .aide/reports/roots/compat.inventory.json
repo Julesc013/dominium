@@ -1,0 +1,335 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Compatibility helpers with lazy exports to avoid cross-layer import cycles.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 3619,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/capability_negotiation.py",
+      "relative_path": "capability_negotiation.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 51732,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/data_format_loader.py",
+      "relative_path": "data_format_loader.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 25040,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/migration_lifecycle.py",
+      "relative_path": "migration_lifecycle.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 26927,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "compat/descriptor",
+      "relative_path": "descriptor",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"CAP-NEG-1 deterministic endpoint descriptor helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/descriptor/__init__.py",
+      "relative_path": "descriptor/__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 671,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/descriptor/descriptor_engine.py",
+      "relative_path": "descriptor/descriptor_engine.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 13587,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "compat/handshake",
+      "relative_path": "handshake",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Reusable transport-agnostic handshake helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/handshake/__init__.py",
+      "relative_path": "handshake/__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 474,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic CAP-NEG handshake message helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/handshake/handshake_engine.py",
+      "relative_path": "handshake/handshake_engine.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2989,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "compat/negotiation",
+      "relative_path": "negotiation",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Reusable CAP-NEG negotiation engine surfaces.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/negotiation/__init__.py",
+      "relative_path": "negotiation/__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 659,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic runtime enforcement for negotiated CAP-NEG degrade state.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/negotiation/degrade_enforcer.py",
+      "relative_path": "negotiation/degrade_enforcer.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 7988,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Reusable deterministic negotiation engine wrappers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/negotiation/negotiation_engine.py",
+      "relative_path": "negotiation/negotiation_engine.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 1327,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "compat/shims",
+      "relative_path": "shims",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Transitional compatibility shims for convergence without semantic drift.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/__init__.py",
+      "relative_path": "shims/__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 946,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic helpers for transitional compatibility shims.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/common.py",
+      "relative_path": "shims/common.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 4725,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic legacy CLI flag migration helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/flag_shims.py",
+      "relative_path": "shims/flag_shims.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 7196,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/path_shims.py",
+      "relative_path": "shims/path_shims.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 10727,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic deprecation notices for legacy tool entrypoints.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/tool_shims.py",
+      "relative_path": "shims/tool_shims.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 2993,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic adapters from legacy validation entrypoints to validate --all.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "compat/shims/validation_shims.py",
+      "relative_path": "shims/validation_shims.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "compatibility_sensitive",
+        "executable_or_tool",
+        "python_module"
+      ],
+      "size": 3834,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "compat",
+  "root_path": "compat",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 4,
+    "file_count": 17,
+    "tracked_file_count": 17
+  },
+  "task_id": null
+}

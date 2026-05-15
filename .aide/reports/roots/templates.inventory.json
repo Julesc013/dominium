@@ -1,0 +1,47 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".md",
+      "first_line": "# Adapter Template",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "templates/adapter_template.md",
+      "relative_path": "adapter_template.md",
+      "sensitivity_hints": [
+        "documentation",
+        "template_scaffold"
+      ],
+      "size": 528,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "templates/domain_contract_template.md",
+      "relative_path": "domain_contract_template.md",
+      "sensitivity_hints": [
+        "documentation",
+        "template_scaffold"
+      ],
+      "size": 8994,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "templates",
+  "root_path": "templates",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 0,
+    "file_count": 2,
+    "tracked_file_count": 2
+  },
+  "task_id": null
+}

@@ -1,0 +1,638 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/constraints",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "constraints",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/constraints/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "constraints/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/constraints/constraint_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "constraints/constraint_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/flow",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "flow",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/flow/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "flow/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/flow/flow_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "flow/flow_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/graph",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "graph",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/graph/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "graph/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/graph/network_graph_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "graph/network_graph_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/graph/routing_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "graph/routing_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/hazards",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "hazards",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/hazards/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "hazards/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/hazards/hazard_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "hazards/hazard_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/schedule",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "schedule",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/schedule/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "schedule/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/schedule/schedule_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "schedule/schedule_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/spatial",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "spatial",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/spatial/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "spatial/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/spatial/spatial_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "spatial/spatial_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "core/state",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "state",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/state/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "state/__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "core/state/state_machine_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "state/state_machine_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "core",
+  "root_path": "core",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "adapt": 16,
+      "preserve_unknown": 7
+    },
+    "risk_counts": {
+      "protected": 16,
+      "unknown": 7
+    },
+    "sensitivity_counts": {
+      "deterministic_sensitive": 16,
+      "executable_or_tool": 16,
+      "python_module": 16,
+      "runtime_sensitive": 16
+    }
+  },
+  "task_id": null
+}

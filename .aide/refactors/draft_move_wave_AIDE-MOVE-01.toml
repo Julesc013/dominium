@@ -1,0 +1,32 @@
+[plan]
+id = "AIDE-MOVE-01"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "AIDE-ROOT-06"
+purpose = "Draft first low-risk move wave candidate; no application authorized."
+
+[selection]
+recommended = true
+root = "ide"
+subtree = "ide/README.md and ide/manifests projection docs/examples"
+reason = "Selected as the narrowest low-risk docs/projection/evidence candidate; still not approved for application."
+risk = "low"
+value = "medium"
+reference_complexity = "high"
+reversibility = "easy"
+
+[constraints]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+reference_rewrites_allowed = false
+path_aliases_allowed = false
+
+[required_before_apply]
+validators = ["repo_layout_strict", "root_allowlist_strict", "distribution_layout_strict", "component_matrices_strict", "docs_sanity", "build_target_boundaries", "ui_shell_purity", "abi_boundaries"]
+evidence = ["approved salvage map", "approved move map", "reference rewrite plan", "rollback packet"]
+blockers = ["draft-only plan", "high reference complexity requires review"]
+
+[notes]
+summary = "This is planning evidence only."

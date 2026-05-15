@@ -1,0 +1,2859 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "libs/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "CMakeLists.txt",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "libs/appcore/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "appcore/CMakeLists.txt",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/command",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/command",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/command/command_dispatch.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/command/command_dispatch.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/command/command_registry.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/command/command_registry.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/command/command_registry.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/command/command_registry.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/discover",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/discover",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/discover/appcore_discover.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/discover/appcore_discover.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/discover/appcore_discover.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/discover/appcore_discover.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/invoke",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/invoke",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/invoke/appcore_invoke.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/invoke/appcore_invoke.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/invoke/appcore_invoke.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/invoke/appcore_invoke.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/output",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/output",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/output/appcore_output.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/output/appcore_output.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/output/appcore_output.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/output/appcore_output.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/profile",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/profile",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/profile/appcore_profile.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/profile/appcore_profile.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/profile/appcore_profile.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/profile/appcore_profile.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/repox",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/repox",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/repox/appcore_repox.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/repox/appcore_repox.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/repox/appcore_repox.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/repox/appcore_repox.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/ui_bind",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind/ui_accessibility_map.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind/ui_accessibility_map.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind/ui_command_binding_table.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind/ui_command_binding_table.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/ui_bind/ui_localisation_usage_report.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/ui_bind/ui_localisation_usage_report.json",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/appcore/validate",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "appcore/validate",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/validate/appcore_validate.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/validate/appcore_validate.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/appcore/validate/appcore_validate.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "appcore/validate/appcore_validate.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/build_identity",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "build_identity",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/build_identity/build_identity.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "build_identity/build_identity.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "libs/build_identity/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "build_identity/CMakeLists.txt",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/build_identity/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "build_identity/include",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/build_identity/include/dom_build_identity",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "build_identity/include/dom_build_identity",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/build_identity/include/dom_build_identity/build_identity.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "build_identity/include/dom_build_identity/build_identity.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "libs/contracts/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "contracts/CMakeLists.txt",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts/include",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts/include/dom_contracts",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_capabilities.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_capabilities.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_failure_report.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_failure_report.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_instance_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_instance_manifest.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_launch_request.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_launch_request.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_launch_result.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_launch_result.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_pack_state.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_pack_state.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app_version_info.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app_version_info.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/authority.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/authority.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/authority_token.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/authority_token.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/caps_split.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/caps_split.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_audit.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_audit.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_caps.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_caps.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_err.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_err.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_installed_state.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_installed_state.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_job.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_job.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_log.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_log.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_solver.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_solver.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_tlv.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_tlv.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_tlv_schema.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_tlv_schema.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/core_util.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/core_util.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/coredata_schema.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/coredata_schema.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_app_mode.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_app_mode.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_core.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_core.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_package_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_package_manifest.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_plat.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_plat.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_sys.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_plat_sys.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_term.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_plat_term.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_ui.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_plat_ui.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/launcher_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/launcher_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/launcher_edit_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/launcher_edit_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/launcher_ext_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/launcher_ext_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/product_info.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/product_info.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/product_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/product_manifest.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_base.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_base.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_content_source.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_content_source.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_keychain.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_keychain.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_net.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_net.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_os_integration.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_os_integration.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_registry.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_registry.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/provider_trust.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/provider_trust.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/setup_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/setup_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/tool_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/tool_api.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/version.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/version.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/_internal",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/_internal",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_build_version.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/_internal/dom_build_version.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_keys.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/_internal/dom_keys.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/app",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/app/product_entry.hpp",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/app/product_entry.hpp",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/dom_shared",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/json.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/json.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/logging.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/logging.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/manifest_install.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/manifest_install.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/os_paths.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/os_paths.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/process.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/process.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/uuid.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "contracts/include/dom_contracts/dom_shared/uuid.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/ui_backends",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "ui_backends",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/ui_backends/win32",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/CMakeLists.txt",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/ui_ir_parser_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/ui_ir_parser_stub.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/win32_accessibility_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/win32_accessibility_stub.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/win32_control_factory_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/win32_control_factory_stub.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/win32_layout_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/win32_layout_stub.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/win32_shell_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/win32_shell_stub.c",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/ui_backends/win32/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/include",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/include/dom_ui_win32",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32/ui_win32.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "ui_backends/win32/include/dom_ui_win32/ui_win32.h",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "libs",
+  "root_path": "libs",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "convert": 5,
+      "preserve_unknown": 103
+    },
+    "risk_counts": {
+      "protected": 86,
+      "unknown": 22
+    },
+    "sensitivity_counts": {
+      "ABI_sensitive": 86,
+      "build_sensitive": 86,
+      "c_source": 16,
+      "documentation": 5,
+      "machine_readable": 1,
+      "public_header_sensitive": 64
+    }
+  },
+  "task_id": null
+}

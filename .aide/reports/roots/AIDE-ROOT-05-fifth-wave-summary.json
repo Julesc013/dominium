@@ -1,0 +1,84 @@
+{
+  "abi_semantics_changed": false,
+  "build_abi_summary": {
+    "ABI_sensitive": 86,
+    "build_sensitive": 108,
+    "c_source": 16,
+    "documentation": 5,
+    "executable_or_tool": 22,
+    "machine_readable": 1,
+    "public_header_sensitive": 64,
+    "python_module": 22
+  },
+  "build_semantics_changed": false,
+  "deletes_applied": false,
+  "fate_counts": {
+    "adapt": 22,
+    "convert": 5,
+    "preserve_unknown": 112
+  },
+  "generated_outputs_changed": false,
+  "moves_applied": false,
+  "recommended_next_task": "AIDE-ROOT-06 ? Root Inventory Reconciliation and Move-Wave Selection",
+  "renames_applied": false,
+  "risk_counts": {
+    "high": 22,
+    "protected": 86,
+    "unknown": 31
+  },
+  "roots": [
+    {
+      "apply_allowed": false,
+      "directory_count": 9,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 22,
+        "preserve_unknown": 9
+      },
+      "file_count": 22,
+      "reference_count": 1241,
+      "risk_counts": {
+        "high": 22,
+        "unknown": 9
+      },
+      "root": "lib",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 22,
+      "exists": true,
+      "fate_counts": {
+        "convert": 5,
+        "preserve_unknown": 103
+      },
+      "file_count": 86,
+      "reference_count": 816,
+      "risk_counts": {
+        "protected": 86,
+        "unknown": 22
+      },
+      "root": "libs",
+      "salvage_map_status": "not_approved"
+    }
+  ],
+  "schema_version": "dominium.aide.root_fifth_wave_summary.v1",
+  "sensitivity_counts": {
+    "ABI_sensitive": 86,
+    "build_sensitive": 108,
+    "c_source": 16,
+    "documentation": 5,
+    "executable_or_tool": 22,
+    "machine_readable": 1,
+    "public_header_sensitive": 64,
+    "python_module": 22
+  },
+  "summary": {
+    "directory_count": 31,
+    "file_count": 108,
+    "high_or_protected_count": 108,
+    "preserve_unknown_count": 112,
+    "reference_count": 2057
+  },
+  "task_id": "AIDE-ROOT-05"
+}

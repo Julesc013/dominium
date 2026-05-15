@@ -1,0 +1,164 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "deletes_applied": false,
+  "entries": [
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/beta.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/changelog.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/nightly.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/pinned.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/README.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "updates.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "updates/stable.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "generated_from_inventory": "updates.inventory.json",
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "updates",
+  "schema_version": "dominium.aide.salvage_map.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "draft",
+  "summary": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "entry_count": 6
+  },
+  "task_id": null
+}

@@ -1,0 +1,186 @@
+{
+  "records": [
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "tools/xstack/auditx/__init__.py",
+        "tools/xstack/auditx/check.py",
+        "tools/xstack/auditx/README.md",
+        "tools/xstack/bundle_list",
+        "tools/xstack/bundle_list.cmd",
+        "tools/xstack/bundle_list.py",
+        "tools/xstack/bundle_validate",
+        "tools/xstack/bundle_validate.cmd",
+        "tools/xstack/bundle_validate.py",
+        "tools/xstack/cache_store/__init__.py",
+        "tools/xstack/cache_store/__pycache__/__init__.cpython-38.pyc",
+        "tools/xstack/cache_store/__pycache__/__init__.cpython-39.pyc"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 2030,
+      "kind": "directory",
+      "path": "tools/xstack",
+      "present": true
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "tools/auditx/__pycache__/cache_engine.cpython-39.pyc",
+        "tools/auditx/__pycache__/canonicalize.cpython-39.pyc",
+        "tools/auditx/analyzers/__init__.py",
+        "tools/auditx/analyzers/__pycache__/__init__.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a1_reachability_orphaned.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a2_ownership_boundary.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a3_canon_drift.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a4_schema_usage.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a5_capability_misuse.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a6_ui_parity_bypass.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a7_legacy_contamination.cpython-39.pyc",
+        "tools/auditx/analyzers/__pycache__/a8_derived_freshness_smell.cpython-39.pyc"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 1135,
+      "kind": "directory",
+      "path": "tools/auditx",
+      "present": true
+    },
+    {
+      "classification": "missing_candidate_tooling",
+      "examples": [],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 0,
+      "kind": "missing",
+      "path": "tools/repox",
+      "present": false
+    },
+    {
+      "classification": "missing_candidate_tooling",
+      "examples": [],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 0,
+      "kind": "missing",
+      "path": "tools/testx",
+      "present": false
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "tools/build/__pycache__/build_contract_common.cpython-38.pyc",
+        "tools/build/__pycache__/generate_user_presets.cpython-38.pyc",
+        "tools/build/__pycache__/probe_toolchains.cpython-38.pyc",
+        "tools/build/__pycache__/run_tuple.cpython-38.pyc",
+        "tools/build/__pycache__/validate_build_contract.cpython-38.pyc",
+        "tools/build/build_contract_common.py",
+        "tools/build/generate_user_presets.py",
+        "tools/build/probe_toolchains.py",
+        "tools/build/run_tuple.py",
+        "tools/build/validate_build_contract.py"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 10,
+      "kind": "directory",
+      "path": "tools/build",
+      "present": true
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "tools/validators/check_component_matrices.py",
+        "tools/validators/check_distribution_layout.py",
+        "tools/validators/check_local_playtest_path.py",
+        "tools/validators/check_portable_projection.py",
+        "tools/validators/check_product_boot_matrix.py",
+        "tools/validators/check_repo_layout.py",
+        "tools/validators/check_root_allowlist.py"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 7,
+      "kind": "directory",
+      "path": "tools/validators",
+      "present": true
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "scripts/dev/__pycache__/env_tools_lib.cpython-39.pyc",
+        "scripts/dev/__pycache__/gate.cpython-39.pyc",
+        "scripts/dev/__pycache__/gate_policy_eval.cpython-39.pyc",
+        "scripts/dev/__pycache__/identity_fingerprint_lib.cpython-39.pyc",
+        "scripts/dev/__pycache__/testx_proof_engine.cpython-39.pyc",
+        "scripts/dev/dev.cmd",
+        "scripts/dev/dev.py",
+        "scripts/dev/env_tools.cmd",
+        "scripts/dev/env_tools.ps1",
+        "scripts/dev/env_tools.py",
+        "scripts/dev/env_tools.sh",
+        "scripts/dev/env_tools_lib.py"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 22,
+      "kind": "directory",
+      "path": "scripts/dev",
+      "present": true
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        "scripts/ci/__pycache__/check_repox_rules.cpython-39.pyc",
+        "scripts/ci/__pycache__/hygiene_utils.cpython-39.pyc",
+        "scripts/ci/check_comment_density.py",
+        "scripts/ci/check_execution_contracts.py",
+        "scripts/ci/check_forbidden_enums.py",
+        "scripts/ci/check_hygiene_scan.py",
+        "scripts/ci/check_magic_numbers.py",
+        "scripts/ci/check_repox_rules.py",
+        "scripts/ci/check_switch_on_taxonomy.py",
+        "scripts/ci/check_todo_blockers.py",
+        "scripts/ci/compliance_report.py",
+        "scripts/ci/hygiene_utils.py"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 13,
+      "kind": "directory",
+      "path": "scripts/ci",
+      "present": true
+    },
+    {
+      "classification": "candidate_tooling",
+      "examples": [
+        ".aide/tools/dominium-tool-adapter-map.json",
+        ".aide/tools/dominium-tool-classification.json",
+        ".aide/tools/dominium-tool-inventory.json",
+        ".aide/tools/dominium-tool-wrap-plan.md",
+        ".aide/tools/latest-tool-adapter-map.json",
+        ".aide/tools/latest-tool-adapter-map.md",
+        ".aide/tools/latest-tool-classification.json",
+        ".aide/tools/latest-tool-classification.md",
+        ".aide/tools/latest-tool-inventory.json",
+        ".aide/tools/latest-tool-inventory.md",
+        ".aide/tools/latest-tool-wrap-plan.json",
+        ".aide/tools/latest-tool-wrap-plan.md"
+      ],
+      "executed": false,
+      "execution_inferred_safe": false,
+      "file_count": 31,
+      "kind": "directory",
+      "path": ".aide/tools",
+      "present": true
+    }
+  ],
+  "repo_root": "C:\\Inbox\\Git Repos\\dominium",
+  "schema_version": "dominium.aide.tooling_inventory.v1",
+  "summary": {
+    "executed": 0,
+    "known_paths": 9,
+    "missing": 2,
+    "present": 7
+  }
+}

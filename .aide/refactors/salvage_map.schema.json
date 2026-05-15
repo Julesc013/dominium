@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.salvage_map.schema.v1",
+  "title": "Dominium AIDE Salvage Map",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "root",
+    "source_head",
+    "generated_from_inventory",
+    "approval_status",
+    "apply_allowed",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": ["string", "null"]
+    },
+    "root": {
+      "type": "string"
+    },
+    "source_head": {
+      "type": ["string", "null"]
+    },
+    "generated_from_inventory": {
+      "type": ["string", "null"]
+    },
+    "status": {
+      "type": "string",
+      "default": "draft"
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["draft", "review", "not_approved", "approved", "applied", "retired", "blocked"],
+      "default": "draft"
+    },
+    "apply_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "path",
+        "fate",
+        "target_path",
+        "action",
+        "reason",
+        "risk",
+        "sensitivity_flags",
+        "identity_preservation",
+        "references_to_update",
+        "validators_required",
+        "rollback_notes",
+        "evidence_refs"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "fate": {
+          "type": "string",
+          "enum": ["keep", "adapt", "extract", "convert", "archive", "drop", "preserve_unknown"]
+        },
+        "target_path": {
+          "type": ["string", "null"]
+        },
+        "action": {
+          "type": "string",
+          "enum": ["keep", "move", "split", "convert", "archive", "drop", "no_action", "review"]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "protected", "unknown"]
+        },
+        "sensitivity_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "identity_preservation": {
+          "type": "string"
+        },
+        "references_to_update": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validators_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollback_notes": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

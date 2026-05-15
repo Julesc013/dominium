@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.move_map.schema.v1",
+  "title": "Dominium AIDE Move Map",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "source_head",
+    "approval_status",
+    "apply_allowed",
+    "moves"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "source_head": {
+      "type": ["string", "null"]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["draft", "review", "not_approved", "approved", "applied", "retired", "blocked"],
+      "default": "draft"
+    },
+    "apply_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "moves": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/move"
+      }
+    }
+  },
+  "$defs": {
+    "move": {
+      "type": "object",
+      "required": [
+        "source_path",
+        "target_path",
+        "action",
+        "reason",
+        "risk",
+        "identity_sensitive",
+        "build_sensitive",
+        "references_to_rewrite",
+        "validators_required",
+        "shim_required",
+        "rollback"
+      ],
+      "properties": {
+        "source_path": {
+          "type": "string"
+        },
+        "target_path": {
+          "type": ["string", "null"]
+        },
+        "action": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "protected", "unknown"]
+        },
+        "identity_sensitive": {
+          "type": "boolean"
+        },
+        "build_sensitive": {
+          "type": "boolean"
+        },
+        "references_to_rewrite": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validators_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shim_required": {
+          "type": "boolean"
+        },
+        "rollback": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

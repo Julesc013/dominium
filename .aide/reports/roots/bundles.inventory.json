@@ -1,0 +1,86 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".md",
+      "first_line": "Status: DERIVED",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "bundles/README.md",
+      "relative_path": "README.md",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "documentation",
+        "identity_sensitive"
+      ],
+      "size": 1184,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "bundles/bundle.base.lab",
+      "relative_path": "bundle.base.lab",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "bundles/bundle.base.lab/bundle.json",
+      "relative_path": "bundle.base.lab/bundle.json",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive",
+        "machine_readable"
+      ],
+      "size": 1361,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "bundles/bundle.null",
+      "relative_path": "bundle.null",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "bundles/bundle.null/bundle.json",
+      "relative_path": "bundle.null/bundle.json",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive",
+        "machine_readable"
+      ],
+      "size": 177,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "bundles",
+  "root_path": "bundles",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 2,
+    "file_count": 3,
+    "tracked_file_count": 3
+  },
+  "task_id": null
+}

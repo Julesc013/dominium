@@ -1,0 +1,352 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Core deterministic abstraction engines.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 49,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/constraints",
+      "relative_path": "constraints",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core constraint helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/constraints/__init__.py",
+      "relative_path": "constraints/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 571,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/constraints/constraint_engine.py",
+      "relative_path": "constraints/constraint_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 9848,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/flow",
+      "relative_path": "flow",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core flow helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/flow/__init__.py",
+      "relative_path": "flow/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 779,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/flow/flow_engine.py",
+      "relative_path": "flow/flow_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 63426,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/graph",
+      "relative_path": "graph",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core network graph helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/graph/__init__.py",
+      "relative_path": "graph/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 1145,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/graph/network_graph_engine.py",
+      "relative_path": "graph/network_graph_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 20997,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/graph/routing_engine.py",
+      "relative_path": "graph/routing_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 25922,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/hazards",
+      "relative_path": "hazards",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core hazard helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/hazards/__init__.py",
+      "relative_path": "hazards/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 343,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core HazardModel helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/hazards/hazard_engine.py",
+      "relative_path": "hazards/hazard_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 6700,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/schedule",
+      "relative_path": "schedule",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core schedule helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/schedule/__init__.py",
+      "relative_path": "schedule/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 285,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/schedule/schedule_engine.py",
+      "relative_path": "schedule/schedule_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 14606,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/spatial",
+      "relative_path": "spatial",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core spatial helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/spatial/__init__.py",
+      "relative_path": "spatial/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 313,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core SpatialNode helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/spatial/spatial_engine.py",
+      "relative_path": "spatial/spatial_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 5969,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "core/state",
+      "relative_path": "state",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"Deterministic core state-machine helpers.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/state/__init__.py",
+      "relative_path": "state/__init__.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 391,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "core/state/state_machine_engine.py",
+      "relative_path": "state/state_machine_engine.py",
+      "sensitivity_hints": [
+        "deterministic_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "runtime_sensitive"
+      ],
+      "size": 13170,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "core",
+  "root_path": "core",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 7,
+    "file_count": 16,
+    "tracked_file_count": 16
+  },
+  "task_id": null
+}

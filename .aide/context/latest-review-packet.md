@@ -10,7 +10,7 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md` (5639 chars, 1410 approximate tokens)
+- `.aide/context/latest-task-packet.md` (4152 chars, 1038 approximate tokens)
 
 ## Context Packet Reference
 
@@ -35,20 +35,29 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - allowed: `.aide/context/latest-review-packet.md` (M; matches active task allowed path)
 - allowed: `.aide/context/latest-task-packet.md` (M; matches active task allowed path)
-- allowed: `.aide/reports/DOM-AIDE-02-blockers.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/DOM-AIDE-02-validation.md` (??; matches active task allowed path)
-- allowed: `.aide/reports/DOM-AIDE-02-wrapper-selection.json` (??; matches active task allowed path)
-- allowed: `.aide/reports/DOM-AIDE-02-wrapper-selection.md` (??; matches active task allowed path)
-- unknown: `.aide/tools/latest-tool-adapter-map.json` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/latest-tool-adapter-map.md` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/latest-tool-classification.json` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/latest-tool-classification.md` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/latest-tool-wrap-plan.json` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/latest-tool-wrap-plan.md` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/wrapper-contracts` (??; does not match active task allowed paths)
-- unknown: `.aide/tools/wrapper-plans` (??; does not match active task allowed paths)
-- unknown: `.aide/tools/xstack-wrapper-registry.json` (M; does not match active task allowed paths)
-- unknown: `.aide/tools/xstack-wrapper-registry.md` (M; does not match active task allowed paths)
+- unknown: `.aide/ledgers` (??; does not match active task allowed paths)
+- unknown: `.aide/policies/evidence.toml` (??; does not match active task allowed paths)
+- unknown: `.aide/policies/migration.toml` (??; does not match active task allowed paths)
+- unknown: `.aide/policies/naming.toml` (??; does not match active task allowed paths)
+- unknown: `.aide/policies/repo_layout.toml` (??; does not match active task allowed paths)
+- allowed: `.aide/refactors/README.md` (M; matches active task allowed path)
+- unknown: `.aide/refactors/draft_move_wave_AIDE-MOVE-01.json` (??; does not match active task allowed paths)
+- unknown: `.aide/refactors/draft_move_wave_AIDE-MOVE-01.toml` (??; does not match active task allowed paths)
+- unknown: `.aide/refactors/move_map.schema.json` (??; does not match active task allowed paths)
+- unknown: `.aide/refactors/path_aliases.toml` (??; does not match active task allowed paths)
+- unknown: `.aide/refactors/root_recycling.schema.json` (??; does not match active task allowed paths)
+- unknown: `.aide/refactors/salvage_map.schema.json` (??; does not match active task allowed paths)
+- allowed: `.aide/reports/AIDE-GATE-00-blockers.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-00-structure-root-readiness.json` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-00-structure-root-readiness.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-00-validation.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-01-blockers.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.json` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-GATE-01-validation.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-ROOT-00-blockers.md` (??; matches active task allowed path)
+- allowed: `.aide/reports/AIDE-ROOT-00-next-wave-plan.md` (??; matches active task allowed path)
+- additional changed paths omitted from compact packet: 58; see task evidence changed-files report
 
 ## Validation Summary
 
@@ -58,8 +67,8 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 - packet_path: `.aide/context/latest-review-packet.md`
 - method: chars / 4, rounded up
-- chars: 5147
-- approx_tokens: 1287
+- chars: 6013
+- approx_tokens: 1504
 - budget_status: PASS
 - max_token_warning: 2400
 - warnings:

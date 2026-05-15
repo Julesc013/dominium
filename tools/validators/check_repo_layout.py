@@ -466,9 +466,35 @@ def _root_entries(repo_root):
     for name in os.listdir(repo_root):
         if name == ".git":
             continue
+        if _is_untracked_ignored_root(repo_root, name):
+            continue
         entries.append(name)
     entries.sort(key=lambda item: (item.casefold(), item))
     return entries
+
+
+def _is_untracked_ignored_root(repo_root, name):
+    """Return true for ignored local roots that have no tracked files beneath them."""
+    try:
+        ignored = subprocess.call(
+            ["git", "check-ignore", "-q", "--", name],
+            cwd=repo_root,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return False
+    if ignored != 0:
+        return False
+    try:
+        tracked = subprocess.check_output(
+            ["git", "ls-files", "--", name],
+            cwd=repo_root,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        return False
+    return not tracked.decode("utf-8", "replace").strip()
 
 
 def _phase_number(phase):

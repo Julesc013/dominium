@@ -1,0 +1,4068 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".gitignore",
+      "line": 312,
+      "snippet": "!/data/templates/**"
+    },
+    {
+      "classification": "unknown",
+      "file": "AGENTS.md",
+      "line": 290,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=codex_agents_md generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/AGENTS.md.template mode=managed_s"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 10,
+      "snippet": "template_path: .aide/adapters/templates/AGENTS.md.template"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 21,
+      "snippet": "template_path: .aide/adapters/templates/CLAUDE.md.template"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 32,
+      "snippet": "template_path: .aide/adapters/templates/aider.conf.yml.template"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 43,
+      "snippet": "template_path: .aide/adapters/templates/clinerules.template"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 54,
+      "snippet": "template_path: .aide/adapters/templates/continue-checks.template.md"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 65,
+      "snippet": "template_path: .aide/adapters/templates/cursor-rule.template.md"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/adapters/targets.yaml",
+      "line": 76,
+      "snippet": "template_path: .aide/adapters/templates/windsurf-rule.template.md"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 35,
+      "snippet": "- `.aide/adapters/templates/AGENTS.md.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 36,
+      "snippet": "- `.aide/adapters/templates/CLAUDE.md.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 37,
+      "snippet": "- `.aide/adapters/templates/aider.conf.yml.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 38,
+      "snippet": "- `.aide/adapters/templates/clinerules.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 39,
+      "snippet": "- `.aide/adapters/templates/continue-checks.template.md` (priority 10, document, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 40,
+      "snippet": "- `.aide/adapters/templates/cursor-rule.template.md` (priority 10, document, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 41,
+      "snippet": "- `.aide/adapters/templates/windsurf-rule.template.md` (priority 10, document, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 199,
+      "snippet": "- `.aide/changelog/templates/changelog.md.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/context/repo-map.md",
+      "line": 200,
+      "snippet": "- `.aide/changelog/templates/release-notes.md.template` (priority 10, unknown, manual)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/evals/runs/latest-golden-tasks.json",
+      "line": 66,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/evals/runs/latest-golden-tasks.json",
+      "line": 67,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/evals/runs/latest-golden-tasks.md",
+      "line": 49,
+      "snippet": "- related_paths: .aide/changelog/CHANGELOG.preview.md, .aide/changelog/RELEASE_NOTES.preview.md, .aide/changelog/config.yaml, .aide/changelog/templates/changelog.md.template, .aide/changelog/templates/release-notes.md.template, .aide/polici"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/AGENTS.md",
+      "line": 1,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=codex_agents_md generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/AGENTS.md.template mode=managed_s"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/aider.conf.yml",
+      "line": 1,
+      "snippet": "# AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=aider generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/aider.conf.yml.template mode=preview_only manu"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/CLAUDE.md",
+      "line": 1,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=claude_code generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/CLAUDE.md.template mode=preview_only "
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/clinerules",
+      "line": 1,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=cline generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/clinerules.template mode=preview_only manua"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/continue-checks/aide-token-survival.md",
+      "line": 1,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=continue generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/continue-checks.template.md mode=preview"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/generated/adapters/windsurf-rules/aide-token-survival.md",
+      "line": 1,
+      "snippet": "<!-- AIDE-GENERATED:BEGIN section=aide-token-survival-adapter target=windsurf generator=aide-adapter-compiler-v0 version=q24.existing-tool-adapter-compiler.v0 source_template=.aide/adapters/templates/windsurf-rule.template.md mode=preview_o"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 70,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 72,
+      "snippet": "\"path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 82,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.json",
+      "line": 84,
+      "snippet": "\"path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 14,
+      "snippet": "- existing_managed_file: `.aide/changelog/templates/changelog.md.template` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-conflict-report.md",
+      "line": 15,
+      "snippet": "- existing_managed_file: `.aide/changelog/templates/release-notes.md.template` blocking=false"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 87,
+      "snippet": "\"source_path\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 89,
+      "snippet": "\"target_path\": \".aide/changelog/templates/changelog.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 101,
+      "snippet": "\"source_path\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-dry-run.json",
+      "line": 103,
+      "snippet": "\"target_path\": \".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 68,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 70,
+      "snippet": "\"path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 80,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 82,
+      "snippet": "\"path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3299,
+      "snippet": "\"source_path\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3301,
+      "snippet": "\"target_path\": \".aide/changelog/templates/changelog.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3313,
+      "snippet": "\"source_path\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 3315,
+      "snippet": "\"target_path\": \".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 6965,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 6966,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 72,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 78,
+      "snippet": "\"path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 80,
+      "snippet": "\"source\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 85,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 91,
+      "snippet": "\"path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-ownership-ledger.example.json",
+      "line": 93,
+      "snippet": "\"source\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/policies/file-classification.yaml",
+      "line": 83,
+      "snippet": "- \"**/templates/**\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/command-logs/command-summary.json",
+      "line": 818,
+      "snippet": "\"stdout_head\": \"AIDE Lite changelog validate\\nresult: PASS\\n- PASS changelog source artifact exists: .aide/policies/changelog.yaml\\n- PASS changelog source artifact exists: .aide/changelog/config.yaml\\n- PASS changelog source artifact exist"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-current/summary.json",
+      "line": 740,
+      "snippet": "\"summary\":  \"AIDE Lite changelog validate | result: PASS | - PASS changelog source artifact exists: .aide/policies/changelog.yaml | - PASS changelog source artifact exists: .aide/changelog/config.yaml | - PASS changelog source artifact exis"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-rerun/summary.json",
+      "line": 962,
+      "snippet": "\"summary\": \"AIDE Lite changelog validate | result: PASS | - PASS changelog source artifact exists: .aide/policies/changelog.yaml | - PASS changelog source artifact exists: .aide/changelog/config.yaml | - PASS changelog source artifact exist"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/changed-files.md",
+      "line": 64,
+      "snippet": "- `.aide/adapters/templates/AGENTS.md.template`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 8,
+      "snippet": "\"path\": \".aide/adapters/templates/AGENTS.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 18,
+      "snippet": "\"path\": \".aide/adapters/templates/CLAUDE.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 28,
+      "snippet": "\"path\": \".aide/adapters/templates/aider.conf.yml.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 38,
+      "snippet": "\"path\": \".aide/adapters/templates/clinerules.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 48,
+      "snippet": "\"path\": \".aide/adapters/templates/continue-checks.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 58,
+      "snippet": "\"path\": \".aide/adapters/templates/cursor-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 68,
+      "snippet": "\"path\": \".aide/adapters/templates/windsurf-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 148,
+      "snippet": "\"path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/generated-map.json",
+      "line": 158,
+      "snippet": "\"path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 92,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 93,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 131,
+      "snippet": "\".aide/adapters/templates/AGENTS.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 132,
+      "snippet": "\".aide/adapters/templates/CLAUDE.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 133,
+      "snippet": "\".aide/adapters/templates/aider.conf.yml.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 134,
+      "snippet": "\".aide/adapters/templates/clinerules.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 135,
+      "snippet": "\".aide/adapters/templates/continue-checks.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 136,
+      "snippet": "\".aide/adapters/templates/cursor-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 137,
+      "snippet": "\".aide/adapters/templates/windsurf-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2545,
+      "snippet": "\"cmake/ide/templates/codewarrior/codewarrior_project.mcp.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2546,
+      "snippet": "\"cmake/ide/templates/vc6/vc6_project.dsp.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2547,
+      "snippet": "\"cmake/ide/templates/vc6/vc6_workspace.dsw.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2548,
+      "snippet": "\"cmake/ide/templates/vc71/vc71_project.vcproj.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2549,
+      "snippet": "\"cmake/ide/templates/vc71/vc71_solution.sln.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 5428,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 5474,
+      "snippet": "\"data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 10526,
+      "snippet": "\"game/domains/systems/templates/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 10527,
+      "snippet": "\"game/domains/systems/templates/template_compiler.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11514,
+      "snippet": "\"packs/system_templates/base/data/system_template_registry.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11515,
+      "snippet": "\"packs/system_templates/base/pack.capabilities.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11516,
+      "snippet": "\"packs/system_templates/base/pack.compat.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11517,
+      "snippet": "\"packs/system_templates/base/pack.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11518,
+      "snippet": "\"packs/system_templates/base/pack.trust.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11713,
+      "snippet": "\"templates/adapter_template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11714,
+      "snippet": "\"templates/domain_contract_template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 12351,
+      "snippet": "\"tests/perf/exploration_fixtures/deep_hierarchy/data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 12353,
+      "snippet": "\"tests/perf/exploration_fixtures/galaxy_scale/data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 12354,
+      "snippet": "\"tests/perf/exploration_fixtures/local_only/data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 12355,
+      "snippet": "\"tests/perf/exploration_fixtures/system_scale/data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/test-map.json",
+      "line": 5171,
+      "snippet": "\"test_path\": \"tests/perf/exploration_fixtures/deep_hierarchy/data/world/templates/exploration_baseline.worlddef.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/test-map.json",
+      "line": 5187,
+      "snippet": "\"test_path\": \"tests/perf/exploration_fixtures/galaxy_scale/data/world/templates/exploration_baseline.worlddef.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/test-map.json",
+      "line": 5195,
+      "snippet": "\"test_path\": \"tests/perf/exploration_fixtures/local_only/data/world/templates/exploration_baseline.worlddef.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/test-map.json",
+      "line": 5203,
+      "snippet": "\"test_path\": \"tests/perf/exploration_fixtures/system_scale/data/world/templates/exploration_baseline.worlddef.json\""
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_adapter_compiler.py",
+      "line": 137,
+      "snippet": "\"files/.aide/adapters/templates/AGENTS.md.template\","
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_adapter_compiler.py",
+      "line": 138,
+      "snippet": "\"files/.aide/adapters/templates/CLAUDE.md.template\","
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_adapter_compiler.py",
+      "line": 139,
+      "snippet": "\"files/.aide/adapters/templates/windsurf-rule.template.md\","
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_q37_repo_intelligence.py",
+      "line": 39,
+      "snippet": "self.write(root, \"docs/templates/card.md.template\", \"template\\n\")"
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_q37_repo_intelligence.py",
+      "line": 61,
+      "snippet": "\"docs/templates/card.md.template\": \"template\","
+    },
+    {
+      "classification": "tests",
+      "file": ".aide/scripts/tests/test_q38_file_quality.py",
+      "line": 50,
+      "snippet": "self.write(root, \"docs/templates/card.md.template\", \"template\\n\")"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 11,
+      "snippet": "\"source_tool\": \".aide/adapters/templates/continue-checks.template.md\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 65,
+      "snippet": "\"source_tool\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 21010,
+      "snippet": "\"high_risk_tool_candidates: .aide/changelog/RELEASE_NOTES.preview.md, .aide/changelog/release-notes.preview.json, .aide/changelog/templates/release-notes.md.template, .aide/policies/github-release-draft.yaml, .aide/policies/release-artifact"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.md",
+      "line": 12,
+      "snippet": "- `.aide/adapters/templates/continue-checks.template.md` -> future tools wrapper for validate (validate)"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.md",
+      "line": 18,
+      "snippet": "- `.aide/changelog/templates/release-notes.md.template` -> future tools wrapper for release (release)"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-inventory.md",
+      "line": 33,
+      "snippet": "- `.aide/adapters/templates/continue-checks.template.md`: capabilities=validate risk=medium fate=wrap"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-inventory.md",
+      "line": 39,
+      "snippet": "- `.aide/changelog/templates/release-notes.md.template`: capabilities=release risk=release fate=wrap"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-inventory.md",
+      "line": 117,
+      "snippet": "- high_risk_tool_candidates: .aide/changelog/RELEASE_NOTES.preview.md, .aide/changelog/release-notes.preview.json, .aide/changelog/templates/release-notes.md.template, .aide/policies/github-release-draft.yaml, .aide/policies/release-artifac"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-wrap-plan.md",
+      "line": 15,
+      "snippet": "- `.aide/adapters/templates/continue-checks.template.md`: capability=validate status=planned execution_allowed=false"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-wrap-plan.md",
+      "line": 21,
+      "snippet": "- `.aide/changelog/templates/release-notes.md.template`: capability=release status=planned execution_allowed=false"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 9,
+      "snippet": "- `.aide/adapters/templates/continue-checks.template.md`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, capability_present_without_high_risk_hint, validate_hint:check"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 15,
+      "snippet": "- `.aide/changelog/templates/release-notes.md.template`: risk=release fate=wrap reasons=candidate_tool_name_hint, high_risk_hint:release, high_risk_tool_wrap_requires_future_review, release_hint:release"
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 433,
+      "snippet": "\"cmake/ide/templates/codewarrior/codewarrior_project.mcp.in\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 434,
+      "snippet": "\"cmake/ide/templates/vc6/vc6_project.dsp.in\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 435,
+      "snippet": "\"cmake/ide/templates/vc6/vc6_workspace.dsw.in\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 436,
+      "snippet": "\"cmake/ide/templates/vc71/vc71_project.vcproj.in\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/xstack-wrapper-registry.json",
+      "line": 437,
+      "snippet": "\"cmake/ide/templates/vc71/vc71_solution.sln.in\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3716,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 3717,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8064,
+      "snippet": "\".aide/adapters/templates/AGENTS.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8065,
+      "snippet": "\".aide/adapters/templates/CLAUDE.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8066,
+      "snippet": "\".aide/adapters/templates/aider.conf.yml.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8067,
+      "snippet": "\".aide/adapters/templates/clinerules.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8068,
+      "snippet": "\".aide/adapters/templates/continue-checks.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8069,
+      "snippet": "\".aide/adapters/templates/cursor-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 8070,
+      "snippet": "\".aide/adapters/templates/windsurf-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-plan.md",
+      "line": 19,
+      "snippet": "- remove_portable_file_future: .aide/changelog/templates/changelog.md.template (remove_portable_file_future)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-plan.md",
+      "line": 20,
+      "snippet": "- remove_portable_file_future: .aide/changelog/templates/release-notes.md.template (remove_portable_file_future)"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 166,
+      "snippet": "\".aide/adapters/templates/AGENTS.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 167,
+      "snippet": "\".aide/adapters/templates/CLAUDE.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 168,
+      "snippet": "\".aide/adapters/templates/aider.conf.yml.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 169,
+      "snippet": "\".aide/adapters/templates/clinerules.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 170,
+      "snippet": "\".aide/adapters/templates/continue-checks.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 171,
+      "snippet": "\".aide/adapters/templates/cursor-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 172,
+      "snippet": "\".aide/adapters/templates/windsurf-rule.template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 185,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-current-install-observation.json",
+      "line": 186,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 34,
+      "snippet": "\".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-source-pack-observation.json",
+      "line": 35,
+      "snippet": "\".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 203,
+      "snippet": "\"path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 207,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 216,
+      "snippet": "\"path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-comparison.json",
+      "line": 220,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 270,
+      "snippet": "\"current_path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 280,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 282,
+      "snippet": "\"target_path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 300,
+      "snippet": "\"current_path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 310,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-dry-run.json",
+      "line": 312,
+      "snippet": "\"target_path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 283,
+      "snippet": "\"current_path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 293,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 295,
+      "snippet": "\"target_path\": \".aide/changelog/templates/changelog.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 313,
+      "snippet": "\"current_path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 323,
+      "snippet": "\"source_pack_path\": \"files/.aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/upgrade/latest-upgrade-plan.json",
+      "line": 325,
+      "snippet": "\"target_path\": \".aide/changelog/templates/release-notes.md.template\","
+    },
+    {
+      "classification": "active_source",
+      "file": "apps/client/app/main_client.c",
+      "line": 137,
+      "snippet": "printf(\"  templates       List available templates\\n\");"
+    },
+    {
+      "classification": "active_source",
+      "file": "apps/client/shell/client_shell.c",
+      "line": 3047,
+      "snippet": "if (!dom_shell_load_template_text(\"data/world/templates/exploration_baseline.worlddef.json\","
+    },
+    {
+      "classification": "active_source",
+      "file": "cmake/ide/IdeGenerateCodeWarrior.cmake",
+      "line": 13,
+      "snippet": "\"${CMAKE_SOURCE_DIR}/cmake/ide/templates/codewarrior/codewarrior_project.mcp.in\""
+    },
+    {
+      "classification": "active_source",
+      "file": "cmake/ide/IdeGenerateLegacyVc6.cmake",
+      "line": 23,
+      "snippet": "\"${CMAKE_SOURCE_DIR}/cmake/ide/templates/vc6/vc6_project.dsp.in\""
+    },
+    {
+      "classification": "active_source",
+      "file": "cmake/ide/IdeGenerateLegacyVc6.cmake",
+      "line": 28,
+      "snippet": "\"${CMAKE_SOURCE_DIR}/cmake/ide/templates/vc6/vc6_workspace.dsw.in\""
+    },
+    {
+      "classification": "active_source",
+      "file": "cmake/ide/IdeGenerateLegacyVc71.cmake",
+      "line": 28,
+      "snippet": "\"${CMAKE_SOURCE_DIR}/cmake/ide/templates/vc71/vc71_project.vcproj.in\""
+    },
+    {
+      "classification": "active_source",
+      "file": "cmake/ide/IdeGenerateLegacyVc71.cmake",
+      "line": 33,
+      "snippet": "\"${CMAKE_SOURCE_DIR}/cmake/ide/templates/vc71/vc71_solution.sln.in\""
+    },
+    {
+      "classification": "unknown",
+      "file": "content/MANIFEST.md",
+      "line": 16,
+      "snippet": "| `templates/` | not moved | left_for_review | Root templates are referenced by protected `specs/reality` and XStack/AIDE contract surfaces. | Template paths remain stable pending protected review. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/ownership_slots.toml",
+      "line": 141,
+      "snippet": "target = \"content/templates/<template>/\""
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/ownership_slots.toml",
+      "line": 142,
+      "snippet": "examples = [\"content/templates/domains/\"]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/arch_audit_report.json",
+      "line": 1,
+      "snippet": "{\"blocking_finding_count\":0,\"blocking_findings\":[],\"check_order\":[\"truth_purity_scan\",\"renderer_truth_access_scan\",\"duplicate_semantics_scan\",\"determinism_scan\",\"float_in_truth_scan\",\"worldgen_lock_scan\",\"baseline_universe_scan\",\"gameplay_l"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ci_run_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"eef85dde0a8c2f42c7ffd300724dd97dde093602685ccef08f2b8816ca263c59\",\"gate_definitions_fingerprint\":\"c7253e5cf505f809a7a54ca0fcd0ae52ffd10e287114a426614ac069492a5740\",\"profile\":\"STRICT\",\"profile_fingerprint\":\"1d61"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/clean_room_win64.json",
+      "line": 1,
+      "snippet": "{\"assertions\":{\"exit_codes_all_success\":true,\"negotiation_records_present\":true,\"no_external_absolute_paths\":true,\"pack_verification_passed\":true,\"portable_root_detected\":true,\"replay_validates_determinism\":true,\"teleport_chain_complete\":tr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2316,
+      "snippet": "\"system/templates/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2317,
+      "snippet": "\"system/templates/template_compiler.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_reuse_plan.json",
+      "line": 94,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1031,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1205,
+      "snippet": "\"evidence\": \"Audit verified profile.bundle.mvp_default, locks/pack_lock.mvp_default.json, data/session_templates/session.mvp_default.json, and live packs list output.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1218,
+      "snippet": "\"data/session_templates/\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/universal_identity_report.json",
+      "line": 1,
+      "snippet": "{\"artifact_count\":59,\"deterministic_fingerprint\":\"d644d115d83d43951336b1bf3ef54e1c15f4da7d64ac6dddb20de379c4122146\",\"error_count\":0,\"identity_kind_ids\":[\"identity.bundle\",\"identity.format\",\"identity.install\",\"identity.instance\",\"identity.li"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_FAST.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_STRICT.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/virtual_paths_report.json",
+      "line": 163,
+      "snippet": "\"line\": \"_runtime_abs(repo_root, os.path.join(\\\"dist\\\", \\\"session_templates\\\")),\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1025,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1108,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1191,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1275,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1358,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1441,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1525,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1608,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1691,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1775,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1858,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 1941,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2027,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2113,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2199,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2284,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2369,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2455,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2540,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2625,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2711,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2796,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2881,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 2967,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3052,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3137,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3225,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3313,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3401,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3488,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3575,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3663,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3750,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3837,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 3925,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4012,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4099,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4187,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4274,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4361,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4447,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4532,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4617,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4703,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4789,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4874,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 4959,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5045,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5130,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5215,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5301,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5386,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5471,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5560,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5648,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5736,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5825,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 5913,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6001,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6090,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6179,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6267,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6355,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6444,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6532,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6620,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6702,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6784,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6866,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 6947,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7028,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7110,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7191,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7272,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7354,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7435,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7516,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7598,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7679,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7760,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7847,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 7933,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8019,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8106,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8192,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8278,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8365,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8451,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8537,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8624,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8711,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8797,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8883,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 8969,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9054,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9139,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9225,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9310,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9395,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9481,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9566,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9651,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9737,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9822,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9907,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 9995,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10082,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10169,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10257,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10344,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10431,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10519,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10606,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10693,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10781,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10868,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/meta/player_demand_matrix.json",
+      "line": 10955,
+      "snippet": "\"notes\": \"System templates/reliability/collapse path required.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/registries/system_template_registry.json",
+      "line": 102,
+      "snippet": "\"packs/system_templates/base\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 232,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 303,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 154,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 303,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 455,
+      "snippet": "\"path_or_subsystem\": \"profiles/, locks/, data/session_templates/, data/registries/, and the default-bundle seam between authored MVP assets and bundle.base.lab\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 691,
+      "snippet": "\"path_or_cluster\": \"profiles/, locks/, data/session_templates/, and data/registries/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 814,
+      "snippet": "\"profiles/, locks/, data/session_templates/, and data/registries/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 64,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 138,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 268,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 589,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_phased_migration_shims_validation_and_rollback.json",
+      "line": 471,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_target_topology_options_and_comparison.json",
+      "line": 211,
+      "snippet": "\"directory_boundary_model\": \"A five-zone lattice where surfaces host AppShell and entry shells, substrate hosts runtime and authority implementation, control_plane hosts release/security/validation and XStack assembly tooling, content hosts"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_target_topology_options_and_comparison.json",
+      "line": 264,
+      "snippet": "\"directory_boundary_model\": \"A lifecycle split where products hosts client/server/AppShell/launcher/setup, runtime_services hosts runtime/net/process and shared substrate, repo_ops hosts release/security/validation and tool surfaces, catalo"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 74,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 112,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 129,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 593,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 716,
+      "snippet": "\"path\": \"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 730,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 736,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1090,
+      "snippet": "\"statement\": \"The authored baseline asset trio is physically located at profiles/bundles/bundle.mvp_default.json, locks/pack_lock.mvp_default.json, and data/session_templates/session.mvp_default.json.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1095,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1308,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1381,
+      "snippet": "\"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1441,
+      "snippet": "\"location\": \"data/session_templates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1446,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1607,
+      "snippet": "\"statement\": \"profiles/bundles/, locks/, data/session_templates/, and data/registries/ are all live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled bundle.base.lab.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1642,
+      "snippet": "\"profiles/, locks/, data/session_templates/, and data/registries/ physical locations as current live inputs\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_tool_only_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c3a1403ff836cd0c758ff1dabfc0d0fd9789bf3f441a67f3459177943a18f0c8\",\"entries\":[{\"category\":\"tools\",\"confidence\":0.8137,\"current_module_id\":\"unknown.src.appshell\",\"current_root\":\"src\",\"evidence\":{\"build_targets\":["
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_move_map.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_path\":\"data/restructure/src_domain_mapping_lock_approved_v4.json\",\"deterministic_fingerprint\":\"86c6801db990616d4038140d8f366680b2e452d5d81818c527f8cba18687b91d\",\"readiness_contract_path\":\"data/restructure/xi5_readiness_contr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/aide_adapter_contract.json",
+      "line": 54,
+      "snippet": "\"templates/adapter_template.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 64,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 288,
+      "snippet": "\"data/session_templates/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 311,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 532,
+      "snippet": "\"data/session_templates/session.mvp_default.json\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CONTENT_AND_STORAGE_MODEL.md",
+      "line": 37,
+      "snippet": "system_templates/<hash>/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 52,
+      "snippet": "| `templates/` | Canonical authored template inputs and generated template fixtures | Template/schema-preserving changes only | Evolving |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 98,
+      "snippet": "- `cmake.ide.templates.codewarrior` -> `cmake/ide/templates/codewarrior`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 99,
+      "snippet": "- `cmake.ide.templates.vc6` -> `cmake/ide/templates/vc6`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 100,
+      "snippet": "- `cmake.ide.templates.vc71` -> `cmake/ide/templates/vc71`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 1123,
+      "snippet": "- `packs.system_templates.base` -> `packs/system_templates/base`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 1124,
+      "snippet": "- `packs.system_templates.base.data` -> `packs/system_templates/base/data`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/COMPILE0_RETRO_AUDIT.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/COMPILE0_RETRO_AUDIT.md",
+      "line": 34,
+      "snippet": "4. System template compiler (`src/system/templates/template_compiler.py`)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONTENT_STORE_BASELINE.md",
+      "line": 25,
+      "snippet": "store/system_templates/<hash>/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DEPRECATION_FRAMEWORK_BASELINE.md",
+      "line": 30,
+      "snippet": "- Template available at `templates/adapter_template.md`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST1_RETRO_AUDIT.md",
+      "line": 39,
+      "snippet": "- `data/session_templates/session.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ELEC4_RETRO_AUDIT.md",
+      "line": 28,
+      "snippet": "3. Existing electrical actions (`connect_wire`, `flip_breaker`, `lockout_tagout`) are process-based; additional operator affordances were not fully surfaced as electrical action templates/workspace actions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 102,
+      "snippet": "- `cmake.ide.templates.codewarrior` :: root=`cmake/ide/templates/codewarrior` domain=`cmake` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 103,
+      "snippet": "- `cmake.ide.templates.vc6` :: root=`cmake/ide/templates/vc6` domain=`cmake` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 104,
+      "snippet": "- `cmake.ide.templates.vc71` :: root=`cmake/ide/templates/vc71` domain=`cmake` files=`2` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 1127,
+      "snippet": "- `packs.system_templates.base` :: root=`packs/system_templates/base` domain=`packs` files=`4` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 1128,
+      "snippet": "- `packs.system_templates.base.data` :: root=`packs/system_templates/base/data` domain=`packs` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
+      "line": 42,
+      "snippet": "- Canonical SessionSpec template: `data/session_templates/session.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PACK_COMPAT2_RETRO_AUDIT.md",
+      "line": 40,
+      "snippet": "- `profiles/bundles/bundle.mvp_default.json` and `data/session_templates/session.mvp_default.json` are generated by `tools/mvp/runtime_bundle.py`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PROC0_RETRO_AUDIT.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PROC1_RETRO_AUDIT.md",
+      "line": 17,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RENDERMODEL_CONTRACT_BASELINE.md",
+      "line": 116,
+      "snippet": "2. MAT/domain visual style can be extended through registry templates/rules without code hardwiring."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 630,
+      "snippet": "templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5078,
+      "snippet": "session_templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5137,
+      "snippet": "templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYS4_RETRO_AUDIT.md",
+      "line": 34,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYS4_RETRO_AUDIT.md",
+      "line": 38,
+      "snippet": "- `packs/system_templates/base/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYSTEM_TEMPLATES_BASELINE.md",
+      "line": 46,
+      "snippet": "- `packs/system_templates/base/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYSTEM_TEMPLATES_BASELINE.md",
+      "line": 59,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "line": 23,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "line": 11,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "line": 45,
+      "snippet": "| Pack, profile, lock, and template baseline data | packs/<br>profiles/<br>locks/<br>data/session_templates/ | JSON | implemented_and_used | wired_to_entrypoints | launcher_python_appshell, setup_python_appshell, xstack_session_create | con"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/XI_3_FINAL.md",
+      "line": 16,
+      "snippet": "- `duplicate.cluster.03a31072d7ac07a9` -> canonical `src/system/templates/__init__.py` vs secondary `src/system/templates/template_compiler.py` (quarantine)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/EXPLORATION_SCALING_TESTS.md",
+      "line": 25,
+      "snippet": "`data/world/templates/exploration_baseline.worlddef.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/dev/EXPLORATION_SCALING_TESTS.md",
+      "line": 52,
+      "snippet": "2. Provide a data-only template at `data/world/templates/exploration_baseline.worlddef.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/examples/EXPLORATION_BASELINE.md",
+      "line": 24,
+      "snippet": "- Source: `data/world/templates/exploration_baseline.worlddef.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/governance/REPOX_RULESETS.md",
+      "line": 873,
+      "snippet": "- Fails when `data/session_templates/session.mvp_default.json` does not record the canonical `pack_lock_hash`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 812,
+      "snippet": "\u2502  \u2514\u2500 templates/        # example universes/saves"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 2076,
+      "snippet": "\u2022 /data/templates/: sample saves."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 2800,
+      "snippet": "\u2502   \u2514\u2500\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 14132,
+      "snippet": "\u2514\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 14528,
+      "snippet": "7. /data/templates/ \u2014 Example universes and demo saves"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 14532,
+      "snippet": "/data/templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17092,
+      "snippet": "Next message will define the dev-spec for /data/templates/ (sample universes, example saves, demo worlds, etc.)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17102,
+      "snippet": "This message is the dev-spec for /data/templates/."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17122,
+      "snippet": "/data/templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17174,
+      "snippet": "1. /data/templates/README.md"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17388,
+      "snippet": "o Loads worldgen_preset from /data/templates/presets/worldgen_presets.json."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 17646,
+      "snippet": "/data/templates/blueprints/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 18908,
+      "snippet": "\u2022 Export blueprint.json under /data/templates/blueprints."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 19036,
+      "snippet": "\u2514\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 19136,
+      "snippet": "These tools output files under /data/templates/worlds or /data/packs."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 26140,
+      "snippet": "!/data/templates/**"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data.txt",
+      "line": 27,
+      "snippet": "\u2514\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data.txt",
+      "line": 225,
+      "snippet": "7. /data/templates/ \u2014 Example universes and demo saves"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data.txt",
+      "line": 227,
+      "snippet": "/data/templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_templates.txt",
+      "line": 6,
+      "snippet": "This message is the dev-spec for /data/templates/."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_templates.txt",
+      "line": 16,
+      "snippet": "/data/templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_templates.txt",
+      "line": 42,
+      "snippet": "1. /data/templates/README.md"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_templates.txt",
+      "line": 149,
+      "snippet": "o Loads worldgen_preset from /data/templates/presets/worldgen_presets.json."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_data_templates.txt",
+      "line": 278,
+      "snippet": "/data/templates/blueprints/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 522,
+      "snippet": "\u2502  \u2514\u2500 templates/        # example universes/saves"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 2418,
+      "snippet": "\u2022 /data/templates/: sample saves."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 3504,
+      "snippet": "\u2502   \u2514\u2500\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 106,
+      "snippet": "\u2022 Export blueprint.json under /data/templates/blueprints."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 170,
+      "snippet": "\u2514\u2500 templates/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_tools.txt",
+      "line": 220,
+      "snippet": "These tools output files under /data/templates/worlds or /data/packs."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 48,
+      "snippet": "| engr.precision_lathe_alignment | Precision Lathe Alignment | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (precision lathe alignment). | crafting_engineering"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 49,
+      "snippet": "| engr.pressure_vessel_welding | Pressure Vessel Welding | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (pressure vessel welding). | crafting_engineering_reali"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 50,
+      "snippet": "| engr.milling_jig_calibration | Milling Jig Calibration | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (milling jig calibration). | crafting_engineering_reali"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 51,
+      "snippet": "| engr.diesel_engine_rebuild | Diesel Engine Rebuild | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (diesel engine rebuild). | crafting_engineering_realism | m"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 52,
+      "snippet": "| engr.tolerance_stackup_debug | Tolerance Stackup Debug | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (tolerance stackup debug). | crafting_engineering_reali"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 53,
+      "snippet": "| engr.tool_wear_compensation | Tool Wear Compensation | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (tool wear compensation). | crafting_engineering_realism "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 54,
+      "snippet": "| engr.metrology_lab_flow | Metrology Lab Flow | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (metrology lab flow). | crafting_engineering_realism | measure, m"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 55,
+      "snippet": "| engr.heat_treat_recipe_lock | Heat Treat Recipe Lock | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (heat treat recipe lock). | crafting_engineering_realism "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 56,
+      "snippet": "| engr.safety_interlock_retrofit | Safety Interlock Retrofit | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (safety interlock retrofit). | crafting_engineering"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 57,
+      "snippet": "| engr.bearing_failure_forensics | Bearing Failure Forensics | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (bearing failure forensics). | crafting_engineering"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 58,
+      "snippet": "| engr.cleanroom_contamination_control | Cleanroom Contamination Control | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (cleanroom contamination control). | cr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 59,
+      "snippet": "| engr.field_overhaul_campaign | Field Overhaul Campaign | Deliver the crafting / engineering realism fantasy where players can measure and machine through lawful deterministic systems (field overhaul campaign). | crafting_engineering_reali"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 65,
+      "snippet": "| fact.balanced_bus_factory | Balanced Bus Factory | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (balanced bus factory). | factory_automation | route, schedule, optimize |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 66,
+      "snippet": "| fact.plc_control_panel | PLC Control Panel | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (PLC control panel). | factory_automation | route, schedule, optimize | action_f"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 67,
+      "snippet": "| fact.automated_factory | Automated Factory | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (automated factory). | factory_automation | route, schedule, optimize | action_f"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 68,
+      "snippet": "| fact.lights_out_shift | Lights Out Shift | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (lights out shift). | factory_automation | route, schedule, optimize | action_fami"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 69,
+      "snippet": "| fact.bottleneck_hunt | Bottleneck Hunt | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (bottleneck hunt). | factory_automation | route, schedule, optimize | action_family."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 70,
+      "snippet": "| fact.automated_rework_loop | Automated Rework Loop | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (automated rework loop). | factory_automation | route, schedule, optimiz"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 71,
+      "snippet": "| fact.predictive_line_maintenance | Predictive Line Maintenance | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (predictive line maintenance). | factory_automation | route,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 72,
+      "snippet": "| fact.traceability_backfill | Traceability Backfill | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (traceability backfill). | factory_automation | route, schedule, optimiz"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 73,
+      "snippet": "| fact.compliance_shift_management | Compliance Shift Management | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (compliance shift management). | factory_automation | route,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 74,
+      "snippet": "| fact.rapid_changeover | Rapid Changeover | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (rapid changeover). | factory_automation | route, schedule, optimize | action_fami"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 75,
+      "snippet": "| fact.power_sag_shedding | Power Sag Shedding | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (power sag shedding). | factory_automation | route, schedule, optimize | actio"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 76,
+      "snippet": "| fact.conveyor_jam_forensics | Conveyor Jam Forensics | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (conveyor jam forensics). | factory_automation | route, schedule, opti"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 77,
+      "snippet": "| fact.multi_plant_dispatch | Multi Plant Dispatch | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (multi plant dispatch). | factory_automation | route, schedule, optimize |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 78,
+      "snippet": "| fact.deadlock_free_signaling | Deadlock Free Signaling | Deliver the factory automation fantasy where players can route and schedule through lawful deterministic systems (deadlock free signaling). | factory_automation | route, schedule, o"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 84,
+      "snippet": "| city.district_heating_grid | District Heating Grid | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (district heating grid). | cities_infrastructure | plan, allocate, p"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 85,
+      "snippet": "| city.smart_power_grid | Smart Power Grid | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (smart power grid). | cities_infrastructure | plan, allocate, protect | action"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 86,
+      "snippet": "| city.traffic_lights_coordination | Traffic Lights Coordination | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (traffic lights coordination). | cities_infrastructure |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 87,
+      "snippet": "| city.water_main_leak_response | Water Main Leak Response | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (water main leak response). | cities_infrastructure | plan, al"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 88,
+      "snippet": "| city.blackout_restoration_plan | Blackout Restoration Plan | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (blackout restoration plan). | cities_infrastructure | plan,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 89,
+      "snippet": "| city.stormwater_overflow_control | Stormwater Overflow Control | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (stormwater overflow control). | cities_infrastructure |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 90,
+      "snippet": "| city.waste_sorting_ecology | Waste Sorting Ecology | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (waste sorting ecology). | cities_infrastructure | plan, allocate, p"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 91,
+      "snippet": "| city.transit_signal_priority | Transit Signal Priority | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (transit signal priority). | cities_infrastructure | plan, alloc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 92,
+      "snippet": "| city.bridge_load_management | Bridge Load Management | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (bridge load management). | cities_infrastructure | plan, allocate"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 93,
+      "snippet": "| city.hospital_backup_power | Hospital Backup Power | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (hospital backup power). | cities_infrastructure | plan, allocate, p"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 94,
+      "snippet": "| city.zoning_pollution_tradeoff | Zoning Pollution Tradeoff | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (zoning pollution tradeoff). | cities_infrastructure | plan,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 95,
+      "snippet": "| city.heatwave_cooling_strategy | Heatwave Cooling Strategy | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (heatwave cooling strategy). | cities_infrastructure | plan,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 96,
+      "snippet": "| city.earthquake_retrofit_program | Earthquake Retrofit Program | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (earthquake retrofit program). | cities_infrastructure |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 97,
+      "snippet": "| city.smart_meter_rollout | Smart Meter Rollout | Deliver the cities / infrastructure fantasy where players can plan and allocate through lawful deterministic systems (smart meter rollout). | cities_infrastructure | plan, allocate, protect"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 103,
+      "snippet": "| trans.hub_and_spoke_terminal | Hub And Spoke Terminal | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (hub and spoke terminal). | transport_logistics | dispatch, route,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 104,
+      "snippet": "| trans.last_mile_cold_chain | Last Mile Cold Chain | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (last mile cold chain). | transport_logistics | dispatch, route, recov"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 105,
+      "snippet": "| trans.rail_interlocking_mastery | Rail Interlocking Mastery | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (rail interlocking mastery). | transport_logistics | dispatc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 106,
+      "snippet": "| trans.train_interlocking_cabinet | Train Interlocking Cabinet | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (train interlocking cabinet). | transport_logistics | disp"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 107,
+      "snippet": "| trans.harbor_tide_window_ops | Harbor Tide Window Ops | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (harbor tide window ops). | transport_logistics | dispatch, route,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 108,
+      "snippet": "| trans.fleet_fuel_optimization | Fleet Fuel Optimization | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (fleet fuel optimization). | transport_logistics | dispatch, rou"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 109,
+      "snippet": "| trans.derailment_prevention_program | Derailment Prevention Program | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (derailment prevention program). | transport_logisti"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 110,
+      "snippet": "| trans.hazmat_route_control | Hazmat Route Control | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (hazmat route control). | transport_logistics | dispatch, route, recov"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 111,
+      "snippet": "| trans.jit_factory_supply | Jit Factory Supply | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (jit factory supply). | transport_logistics | dispatch, route, recover | a"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 112,
+      "snippet": "| trans.winter_timetable_recovery | Winter Timetable Recovery | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (winter timetable recovery). | transport_logistics | dispatc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 113,
+      "snippet": "| trans.multimodal_container_tracking | Multimodal Container Tracking | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (multimodal container tracking). | transport_logisti"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 114,
+      "snippet": "| trans.tunnel_ventilation_dispatch | Tunnel Ventilation Dispatch | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (tunnel ventilation dispatch). | transport_logistics | d"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 115,
+      "snippet": "| trans.mega_convoy_security | Mega Convoy Security | Deliver the transport / logistics fantasy where players can dispatch and route through lawful deterministic systems (mega convoy security). | transport_logistics | dispatch, route, recov"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 121,
+      "snippet": "| space.orbital_refinery_chain | Orbital Refinery Chain | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (orbital refinery chain). | space_engineering | launch, dock, repair | ac"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 122,
+      "snippet": "| space.reusable_launch_turnaround | Reusable Launch Turnaround | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (reusable launch turnaround). | space_engineering | launch, dock,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 123,
+      "snippet": "| space.deep_space_life_support | Deep Space Life Support | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (deep space life support). | space_engineering | launch, dock, repair |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 124,
+      "snippet": "| space.cryogenic_orbit_transfer | Cryogenic Orbit Transfer | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (cryogenic orbit transfer). | space_engineering | launch, dock, repai"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 125,
+      "snippet": "| space.docking_port_alignment | Docking Port Alignment | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (docking port alignment). | space_engineering | launch, dock, repair | ac"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 126,
+      "snippet": "| space.reactor_scram_recovery | Reactor Scram Recovery | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (reactor scram recovery). | space_engineering | launch, dock, repair | ac"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 127,
+      "snippet": "| space.reactor_control_room | Reactor Control Room | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (reactor control room). | space_engineering | launch, dock, repair | action_f"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 128,
+      "snippet": "| space.habitat_pressure_integrity | Habitat Pressure Integrity | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (habitat pressure integrity). | space_engineering | launch, dock,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 129,
+      "snippet": "| space.asteroid_mining_caravan | Asteroid Mining Caravan | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (asteroid mining caravan). | space_engineering | launch, dock, repair |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 130,
+      "snippet": "| space.radiation_storm_shelter | Radiation Storm Shelter | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (radiation storm shelter). | space_engineering | launch, dock, repair |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 131,
+      "snippet": "| space.interplanetary_supply_windows | Interplanetary Supply Windows | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (interplanetary supply windows). | space_engineering | laun"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 132,
+      "snippet": "| space.rover_failure_forensics | Rover Failure Forensics | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (rover failure forensics). | space_engineering | launch, dock, repair |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 133,
+      "snippet": "| space.space_elevator_maintenance | Space Elevator Maintenance | Deliver the space engineering fantasy where players can launch and dock through lawful deterministic systems (space elevator maintenance). | space_engineering | launch, dock,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 139,
+      "snippet": "| cyber.ics_network_hardening | Ics Network Hardening | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (ics network hardening). | cyber_automation_hacking | probe, ha"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 140,
+      "snippet": "| cyber.hacking_scada | Hacking SCADA | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (hacking SCADA). | cyber_automation_hacking | probe, harden, verify | action_fa"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 141,
+      "snippet": "| cyber.firmware_flashing_pipeline_integration | Firmware Flashing Pipeline Integration | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (firmware flashing pipeline i"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 142,
+      "snippet": "| cyber.scada_red_team_drill | Scada Red Team Drill | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (scada red team drill). | cyber_automation_hacking | probe, harde"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 143,
+      "snippet": "| cyber.packet_loss_control_recovery | Packet Loss Control Recovery | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (packet loss control recovery). | cyber_automatio"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 144,
+      "snippet": "| cyber.firmware_supply_attestation | Firmware Supply Attestation | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (firmware supply attestation). | cyber_automation_h"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 145,
+      "snippet": "| cyber.sensor_spoof_detection | Sensor Spoof Detection | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (sensor spoof detection). | cyber_automation_hacking | probe,"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 146,
+      "snippet": "| cyber.segmented_broadcast_design | Segmented Broadcast Design | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (segmented broadcast design). | cyber_automation_hack"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 147,
+      "snippet": "| cyber.encrypted_telemetry_backhaul | Encrypted Telemetry Backhaul | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (encrypted telemetry backhaul). | cyber_automatio"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 148,
+      "snippet": "| cyber.remote_patch_rollout | Remote Patch Rollout | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (remote patch rollout). | cyber_automation_hacking | probe, harde"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 149,
+      "snippet": "| cyber.deterministic_failover_drill | Deterministic Failover Drill | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (deterministic failover drill). | cyber_automatio"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 150,
+      "snippet": "| cyber.credential_revocation_cascade | Credential Revocation Cascade | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (credential revocation cascade). | cyber_automa"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 151,
+      "snippet": "| cyber.grid_attack_response | Grid Attack Response | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (grid attack response). | cyber_automation_hacking | probe, harde"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 152,
+      "snippet": "| cyber.digital_twin_dispute_replay | Digital Twin Dispute Replay | Deliver the cyber / automation / hacking fantasy where players can probe and harden through lawful deterministic systems (digital twin dispute replay). | cyber_automation_h"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 158,
+      "snippet": "| mil.base_power_under_siege | Base Power Under Siege | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (base power under siege). | military_defense_sabotage | for"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 159,
+      "snippet": "| mil.fuel_depot_sabotage_hunt | Fuel Depot Sabotage Hunt | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (fuel depot sabotage hunt). | military_defense_sabotage"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 160,
+      "snippet": "| mil.bridge_demolition_prevention | Bridge Demolition Prevention | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (bridge demolition prevention). | military_defe"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 161,
+      "snippet": "| mil.radar_network_resilience | Radar Network Resilience | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (radar network resilience). | military_defense_sabotage"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 162,
+      "snippet": "| mil.convoy_ambush_recovery | Convoy Ambush Recovery | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (convoy ambush recovery). | military_defense_sabotage | for"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 163,
+      "snippet": "| mil.munitions_line_safety | Munitions Line Safety | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (munitions line safety). | military_defense_sabotage | fortif"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 164,
+      "snippet": "| mil.chemical_leak_under_fire | Chemical Leak Under Fire | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (chemical leak under fire). | military_defense_sabotage"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 165,
+      "snippet": "| mil.blackout_psyops_counter | Blackout Psyops Counter | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (blackout psyops counter). | military_defense_sabotage | "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 166,
+      "snippet": "| mil.hardened_bunker_life_support | Hardened Bunker Life Support | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (hardened bunker life support). | military_defe"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 167,
+      "snippet": "| mil.drone_swarm_jamming | Drone Swarm Jamming | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (drone swarm jamming). | military_defense_sabotage | fortify, dis"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 168,
+      "snippet": "| mil.drone_autopilot | Drone Autopilot | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (drone autopilot). | military_defense_sabotage | fortify, disrupt, surviv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 169,
+      "snippet": "| mil.logistics_denial_resilience | Logistics Denial Resilience | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (logistics denial resilience). | military_defense"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 170,
+      "snippet": "| mil.battlefield_repair_pipeline | Battlefield Repair Pipeline | Deliver the military / defense / sabotage fantasy where players can fortify and disrupt through lawful deterministic systems (battlefield repair pipeline). | military_defense"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 176,
+      "snippet": "| sci.replicate_breakthrough_recipe | Replicate Breakthrough Recipe | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (replicate breakthrough recipe). | scien"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 177,
+      "snippet": "| sci.high_entropy_material_discovery | High Entropy Material Discovery | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (high entropy material discovery). |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 178,
+      "snippet": "| sci.long_horizon_experiment_series | Long Horizon Experiment Series | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (long horizon experiment series). | sc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 179,
+      "snippet": "| sci.contested_peer_review | Contested Peer Review | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (contested peer review). | science_research_invention | "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 180,
+      "snippet": "| sci.reverse_engineer_ancient_device | Reverse Engineer Ancient Device | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (reverse engineer ancient device). |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 181,
+      "snippet": "| sci.instrument_calibration_campaign | Instrument Calibration Campaign | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (instrument calibration campaign). |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 182,
+      "snippet": "| sci.catalyst_screening_factory | Catalyst Screening Factory | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (catalyst screening factory). | science_resear"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 183,
+      "snippet": "| sci.field_trial_protocol_design | Field Trial Protocol Design | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (field trial protocol design). | science_res"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 184,
+      "snippet": "| sci.lab_to_plant_scaleup | Lab To Plant Scaleup | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (lab to plant scaleup). | science_research_invention | hyp"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 185,
+      "snippet": "| sci.open_data_trust_network | Open Data Trust Network | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (open data trust network). | science_research_invent"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 186,
+      "snippet": "| sci.patent_dispute_forensics | Patent Dispute Forensics | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (patent dispute forensics). | science_research_inv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 187,
+      "snippet": "| sci.autonomous_lab_scheduler | Autonomous Lab Scheduler | Deliver the science / research / invention fantasy where players can hypothesize and measure through lawful deterministic systems (autonomous lab scheduler). | science_research_inv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 193,
+      "snippet": "| sand.sky_city_gravity_inversion | Sky City Gravity Inversion | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (sky city gravity inversion). | sandbox_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 194,
+      "snippet": "| sand.steam_castle_automation | Steam Castle Automation | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (steam castle automation). | sandbox_creative_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 195,
+      "snippet": "| sand.arcane_grid_failsafes | Arcane Grid Failsafes | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (arcane grid failsafes). | sandbox_creative_magic_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 196,
+      "snippet": "| sand.impossible_bridge_choreography | Impossible Bridge Choreography | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (impossible bridge choreography)"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 197,
+      "snippet": "| sand.living_factory_biomechanics | Living Factory Biomechanics | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (living factory biomechanics). | sandb"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 198,
+      "snippet": "| sand.musical_machine_metropolis | Musical Machine Metropolis | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (musical machine metropolis). | sandbox_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 199,
+      "snippet": "| sand.world_scale_sculpting | World Scale Sculpting | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (world scale sculpting). | sandbox_creative_magic_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 200,
+      "snippet": "| sand.alternate_law_challenge | Alternate Law Challenge | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (alternate law challenge). | sandbox_creative_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 201,
+      "snippet": "| sand.cooperative_megastructure | Cooperative Megastructure | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (cooperative megastructure). | sandbox_cre"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 202,
+      "snippet": "| sand.theatrical_disaster_simulator | Theatrical Disaster Simulator | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (theatrical disaster simulator). |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 203,
+      "snippet": "| sand.god_builder_constraints | God Builder Constraints | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (god builder constraints). | sandbox_creative_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md",
+      "line": 204,
+      "snippet": "| sand.chaos_to_order_masterpiece | Chaos To Order Masterpiece | Deliver the sandbox / creative / magic / alt physics fantasy where players can invent and compose through lawful deterministic systems (chaos to order masterpiece). | sandbox_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/CONVERGENCE_PLAN.md",
+      "line": 37,
+      "snippet": "| `duplicate.cluster.03a31072d7ac07a9` | `quarantine` | `src/system/templates/__init__.py` | `src/system/templates/template_compiler.py` | `HIGH` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/CONVERGENCE_RISK_REPORT.md",
+      "line": 18,
+      "snippet": "| `duplicate.cluster.03a31072d7ac07a9` | `REFUSAL_TEMPLATE_INVALID` | `src/system/templates/__init__.py` | `src/system/templates/template_compiler.py` | `quarantine` | `semantic_contracts` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.03a31072d7ac07a9.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.03a31072d7ac07a9.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.03a31072d7ac07a9.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.03a31072d7ac07a9.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.03a31072d7ac07a9.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 167,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.1bec37cc2c0b2390.md",
+      "line": 436,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`168` total_score=`56.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.2c051718b8564626.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.2c051718b8564626.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.2c051718b8564626.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.2c051718b8564626.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.2c051718b8564626.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.6b5ee58967461300.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.6b5ee58967461300.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.6b5ee58967461300.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.6b5ee58967461300.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`49.7` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.6b5ee58967461300.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`46.23` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 180,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 546,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`233` total_score=`57.68` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.9df213dd2ebf7592.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.9df213dd2ebf7592.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.9df213dd2ebf7592.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.9df213dd2ebf7592.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`62.86` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.9df213dd2ebf7592.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`56.26` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b511496002d746b7.md",
+      "line": 64,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.b511496002d746b7.md",
+      "line": 154,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`59` total_score=`57.68` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c238025437cf6182.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c238025437cf6182.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c238025437cf6182.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c238025437cf6182.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.c238025437cf6182.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.f7f2f65ae800c93e.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.f7f2f65ae800c93e.md",
+      "line": 18,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.f7f2f65ae800c93e.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.f7f2f65ae800c93e.md",
+      "line": 23,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`51.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.f7f2f65ae800c93e.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`2` total_score=`46.45` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0bb8d9b37100d6bc.md",
+      "line": 99,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0bb8d9b37100d6bc.md",
+      "line": 282,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`115` total_score=`57.68` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4361e2a6d5e69dd4.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4361e2a6d5e69dd4.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4361e2a6d5e69dd4.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4361e2a6d5e69dd4.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`74.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4361e2a6d5e69dd4.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`merge` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 167,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.4cde0d5952af6722.md",
+      "line": 436,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`168` total_score=`56.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.5e0e0515cba78884.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.5e0e0515cba78884.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.5e0e0515cba78884.md",
+      "line": 25,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`quarantine` rank=`2` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.5e0e0515cba78884.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9a8eb4ba6e188ef9.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9a8eb4ba6e188ef9.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9a8eb4ba6e188ef9.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9a8eb4ba6e188ef9.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.7` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9a8eb4ba6e188ef9.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`merge` rank=`3` total_score=`50.31` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9db27018d5effd89.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9db27018d5effd89.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9db27018d5effd89.md",
+      "line": 25,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`quarantine` rank=`2` total_score=`49.7` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.9db27018d5effd89.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`46.23` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b445d8ac25d632c5.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b445d8ac25d632c5.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b445d8ac25d632c5.md",
+      "line": 25,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`quarantine` rank=`2` total_score=`51.71` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.b445d8ac25d632c5.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`46.45` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.bd3305fc0c192ca7.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.bd3305fc0c192ca7.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.bd3305fc0c192ca7.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.bd3305fc0c192ca7.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.bd3305fc0c192ca7.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cac82a29708091f4.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cac82a29708091f4.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cac82a29708091f4.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cac82a29708091f4.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`60.48` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.cac82a29708091f4.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e26656cfc65d1b6c.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e26656cfc65d1b6c.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e26656cfc65d1b6c.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e26656cfc65d1b6c.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`74.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.e26656cfc65d1b6c.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`merge` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 180,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 550,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`drop` rank=`235` total_score=`57.68` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.ed19ef0397396a0e.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.ed19ef0397396a0e.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.ed19ef0397396a0e.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.ed19ef0397396a0e.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`74.76` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.ed19ef0397396a0e.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`merge` rank=`3` total_score=`54.33` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.fbd7f0acc92e673d.md",
+      "line": 12,
+      "snippet": "- Canonical Candidate: `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.fbd7f0acc92e673d.md",
+      "line": 19,
+      "snippet": "- `src/system/templates/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.fbd7f0acc92e673d.md",
+      "line": 20,
+      "snippet": "- `src/system/templates/template_compiler.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.fbd7f0acc92e673d.md",
+      "line": 24,
+      "snippet": "- `src/system/templates/__init__.py` disposition=`canonical` rank=`1` total_score=`62.86` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.fbd7f0acc92e673d.md",
+      "line": 26,
+      "snippet": "- `src/system/templates/template_compiler.py` disposition=`quarantine` rank=`3` total_score=`56.26` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 115,
+      "snippet": "- `templates/` remains active because safe relocation crosses protected specs/reality and XStack/AIDE contract references."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 120,
+      "snippet": "Content ownership covers authored packs, profiles, fixtures, datasets, assets, templates, and domain data. Mixed roots such as `data/`, `packs/`, `bundles/`, and `templates/` require review because they may also contain registries, planning"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 122,
+      "snippet": "POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target ownership root for new authored content, but existing `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` material was not moved bec"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 203,
+      "snippet": "authored content, configuration, and machine-readable input families, including `packs/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `schema/`, `schemas/`, and the explicitly unresolved `packs/` versus `data/packs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 254,
+      "snippet": "`packs/`, `profiles/`, `locks/`, `data/session_templates/`, and `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 164,
+      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 279,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `build/registries/`, `build/lockfile.json`, repo-local `saves/`, registry-compile defaults"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 390,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, and the default-bundle seam between authored MVP assets and `bundle.base.lab`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 592,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 690,
+      "snippet": "- `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 52,
+      "snippet": "- The authored MVP baseline asset trio exists and is live: `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 248,
+      "snippet": "`profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/xstack/session_create.py`, `tools/xstack/registry_compile/constants.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md",
+      "line": 338,
+      "snippet": "`tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `profiles/`, `locks/`, `data/session_templates/`, `data/r"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 86,
+      "snippet": "- Omega1 ownership and path-contract facts for `appshell/`, `client/`, `server/`, `tools/`, `release/`, `security/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `schema/`, and `schemas/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 131,
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 152,
+      "snippet": "`surfaces/` would conceptually host AppShell, launcher/setup entry shells, and user-facing orchestration; `substrate/` would conceptually host `client/`, `server/`, `runtime/`, `net/`, and the strongest shared runtime/engine adjacency; `con"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 173,
+      "snippet": "`products/` would conceptually host `client/`, `server/`, `appshell/`, `launcher/`, and `setup/`; `runtime_services/` would conceptually host `runtime/`, `net/`, `process/`, and distributed runtime/service substrate; `repo_ops/` would conce"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 76,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are the authored and machine-readable data roots that current flows consume directly."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 91,
+      "snippet": "- `data/session_templates/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 443,
+      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 542,
+      "snippet": "`data/session_templates/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 558,
+      "snippet": "`data/session_templates/session.mvp_default.json`, session materialization flows, SessionX tooling, baseline recipe docs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 560,
+      "snippet": "`data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 814,
+      "snippet": "The authored baseline asset trio is physically located at `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 921,
+      "snippet": "`tools/xstack/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, generated `build/registries/` and `build/lockfile.json`, repo-local `saves/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 976,
+      "snippet": "| `data/session_templates/` | authored session template payloads | canonical support-data location | current baseline template lives here and tooling references it directly |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 999,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are all real live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled `bundle.base.lab`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 1031,
+      "snippet": "- `profiles/`, `locks/`, `data/session_templates/`, `data/registries/` physical locations as current live inputs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 151,
+      "snippet": "After POST-CONVERGE-03, content/package/profile/bundle review did not retire additional roots. `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` remain explicit active exceptions because each is mixed, iden"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 264,
+      "snippet": "- `templates/` remains active because protected specs/reality and XStack/AIDE contract references still point at it."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 206,
+      "snippet": "| `templates/` | current_content_or_data_root | Template/content surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/system/SYSTEM_TEMPLATES.md",
+      "line": 70,
+      "snippet": "- Starter templates are delivered as optional pack content (`packs/system_templates/base/`)."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+      "line": 351,
+      "snippet": "- `templates/adapter_template.md` proves the repo already has a documented notion of adapter identity, legacy mapping, refusal behavior, determinism notes, and removal planning."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 181,
+      "snippet": "- treat the authored default template as `data/session_templates/session.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 244,
+      "snippet": "- `data/session_templates/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 142,
+      "snippet": "| `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json` | Live baseline content/config pair and session template called out by the audit as the near-term playab"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 271,
+      "snippet": "- `data/session_templates/session.mvp_default.json`"
+    },
+    {
+      "classification": "unknown",
+      "file": "packs/system_templates/base/pack.compat.json",
+      "line": 1,
+      "snippet": "{\"capability_ids\":[\"cap.add_templates\"],\"degrade_mode_id\":\"pack.degrade.strict_refuse\",\"deterministic_fingerprint\":\"a7ae7e0478634cc83466a0e9d35042ed8d2a536ac0de7e8f664b298c97e05f7c\",\"extensions\":{\"official.manifest_sidecar\":\"pack.compat.jso"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 1238,
+      "snippet": "\"data/session_templates/session.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "line": 452,
+      "snippet": "- `templates/domain_contract_template.md`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e267_template_bypass_smell.py",
+      "line": 44,
+      "snippet": "compiler_rel = \"game/domains/systems/templates/template_compiler.py\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e268_unversioned_template_smell.py",
+      "line": 47,
+      "snippet": "pack_registry_rel = \"packs/system_templates/base/data/system_template_registry.json\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e300_orphan_feature_smell.py",
+      "line": 30,
+      "snippet": "\"packs/system_templates/\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 11,
+      "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 15,
+      "snippet": "\"data/session_templates/session.mvp_default.json\": (\"pack_lock_hash\", \"profile.bundle.mvp_default\"),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist_tree_common.py",
+      "line": 342,
+      "snippet": "(\"data/session_templates/session.mvp_default.json\", \"data/session_templates/session.mvp_default.json\"),"
+    }
+  ],
+  "references_rewritten": false,
+  "root": "templates",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 676
+  }
+}

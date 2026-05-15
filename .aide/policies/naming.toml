@@ -1,0 +1,44 @@
+[policy]
+id = "dominium.aide.naming.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Keep architecture names durable while preserving legacy tool names until evidence-backed migration."
+
+[durable_naming_rules]
+rules = [
+  "name by ownership and lifecycle",
+  "prefer domain, contract, runtime, content, docs, tools, release, or archive slots",
+  "avoid phase IDs in durable architecture paths",
+  "avoid support-status or era labels as root names",
+  "preserve legacy names in adapters and ledgers until migration is proven"
+]
+
+[forbidden_patterns]
+patterns = [
+  "legacy as a durable active root name",
+  "modern as a durable active root name",
+  "universal as a vague active root name",
+  "compat as a vague root name",
+  "temporary prompt IDs in architecture paths",
+  "XStack as durable product architecture",
+  "AuditX as durable product architecture",
+  "RepoX as durable product architecture",
+  "TestX as durable product architecture"
+]
+
+[accepted_historical_contexts]
+paths = [
+  ".aide/ledgers/",
+  "docs/aide/history/",
+  "archive/",
+  ".aide/reports/",
+  ".aide/tools/wrapper-plans/"
+]
+
+[stable_examples]
+product = "apps/<product>/"
+runtime_renderer = "runtime/render/backends/<renderer>/"
+protocol_contract = "contracts/protocols/<protocol>/"
+authored_pack = "content/packs/<pack>/"
+aide_adapter = "tools/aide/"
+validator = "tools/validators/"

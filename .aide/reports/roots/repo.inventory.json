@@ -1,0 +1,206 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/canon_state.json",
+      "relative_path": "canon_state.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 426,
+      "tracked": true
+    },
+    {
+      "extension": ".toml",
+      "first_line": "schema_version = 1",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/release_policy.toml",
+      "relative_path": "release_policy.toml",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 291,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "repo/repox",
+      "relative_path": "repox",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/repox_exemptions.json",
+      "relative_path": "repox/repox_exemptions.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 26,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "repo/repox/rulesets",
+      "relative_path": "repox/rulesets",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/abstraction.json",
+      "relative_path": "repox/rulesets/abstraction.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 3411,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/change_shape.json",
+      "relative_path": "repox/rulesets/change_shape.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 388,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/core.json",
+      "relative_path": "repox/rulesets/core.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 85051,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/data_first.json",
+      "relative_path": "repox/rulesets/data_first.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 3477,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/derived_artifacts.json",
+      "relative_path": "repox/rulesets/derived_artifacts.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 2347,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/packaging.json",
+      "relative_path": "repox/rulesets/packaging.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 4774,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/security.json",
+      "relative_path": "repox/rulesets/security.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 2479,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "repo/repox/rulesets/ui_parity.json",
+      "relative_path": "repox/rulesets/ui_parity.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "repo_policy_sensitive"
+      ],
+      "size": 1916,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "repo",
+  "root_path": "repo",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 2,
+    "file_count": 11,
+    "tracked_file_count": 11
+  },
+  "task_id": null
+}

@@ -1,0 +1,77 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "templates/adapter_template.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "adapter_template.md",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "documentation",
+        "template_scaffold"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "templates/domain_contract_template.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "domain_contract_template.md",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "documentation",
+        "template_scaffold"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "templates",
+  "root_path": "templates",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "convert": 2
+    },
+    "risk_counts": {
+      "medium": 2
+    },
+    "sensitivity_counts": {
+      "documentation": 2,
+      "template_scaffold": 2
+    }
+  },
+  "task_id": null
+}

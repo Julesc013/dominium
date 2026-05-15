@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.repo.root_constitution.schema.v1",
+  "title": "Dominium Repo Root Constitution",
+  "type": "object",
+  "required": [
+    "contract",
+    "policy",
+    "stable_roots",
+    "generated_roots",
+    "local_roots",
+    "forbidden_root_policy",
+    "transitional_roots"
+  ],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "phase", "purpose"],
+      "properties": {
+        "id": {"type": "string"},
+        "status": {"type": "string"},
+        "phase": {"type": "string"},
+        "purpose": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "new_top_level_roots_default": {"type": "string"},
+        "paths_are_identity": {"type": "boolean"},
+        "contracts_define_identity": {"type": "boolean"},
+        "aide_controls_refactors": {"type": "boolean"},
+        "move_maps_required": {"type": "boolean"},
+        "salvage_maps_required_for_mixed_roots": {"type": "boolean"},
+        "path_aliases_must_expire": {"type": "boolean"},
+        "manual_drag_drop_forbidden": {"type": "boolean"},
+        "generated_roots_are_not_source_authority": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    },
+    "stable_roots": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/root_record"}
+    },
+    "generated_roots": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/root_record"}
+    },
+    "local_roots": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/root_record"}
+    },
+    "forbidden_root_policy": {
+      "type": "object",
+      "properties": {
+        "description": {"type": "string"},
+        "requirements": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    },
+    "transitional_roots": {
+      "type": "object",
+      "properties": {
+        "notes": {"type": "string"},
+        "roots": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "root_record": {
+      "type": "object",
+      "required": ["path", "purpose"],
+      "properties": {
+        "path": {"type": "string"},
+        "purpose": {"type": "string"},
+        "lifecycle": {"type": "string"},
+        "source_authority": {"type": "boolean"},
+        "may_contain": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "must_not_contain": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

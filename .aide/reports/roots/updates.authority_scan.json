@@ -1,0 +1,5556 @@
+{
+  "findings": [
+    {
+      "file": "updates/beta.json",
+      "line": 2,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": 1,"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": 1,"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 8,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"CLEAN-2:post-status-and-frozen-canon-hash-update\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 9,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"CLEAN-2:post-status-and-frozen-canon-hash-update\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 38,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"SRZ-0:restore-srz-schema-fields\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 39,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"SRZ-0:restore-srz-schema-fields\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 44,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"SRZ-0:SRZ-schema-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 44,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"SRZ-0:SRZ-schema-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 45,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"SRZ-0:SRZ-schema-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 45,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"SRZ-0:SRZ-schema-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 56,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add_autonomy_contracts_tooling_and_tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 57,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add_autonomy_contracts_tooling_and_tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 74,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-conflict-layer-fields-schemas-docs-and-tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 75,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-conflict-layer-fields-schemas-docs-and-tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 92,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-institution-schemas-and-governance-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 92,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-institution-schemas-and-governance-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 93,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-institution-schemas-and-governance-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 93,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-institution-schemas-and-governance-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 110,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_KNS0_schemas_and_docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 111,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_KNS0_schemas_and_docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 116,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"summary\": \"Normalize_trust_fixtures_for_perf\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 117,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"subject\": \"Normalize_trust_fixtures_for_perf\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 122,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_trust_tool_fixtures_and_tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 123,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_trust_tool_fixtures_and_tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 128,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_trust_field_resolution_core\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 129,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_trust_field_resolution_core\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 134,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_trust_schemas_and_docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 134,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_trust_schemas_and_docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 135,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_trust_schemas_and_docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 135,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_trust_schemas_and_docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 146,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add_risk_field_contracts_and_engine_resolver\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 147,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add_risk_field_contracts_and_engine_resolver\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 152,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_risk_liability_docs_and_schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 153,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_risk_liability_docs_and_schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 170,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_hazard_docs_and_schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 171,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_hazard_docs_and_schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 188,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-info-docs-and-schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 189,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-info-docs-and-schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 212,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-fluid-schemas-and-baseline-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 213,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-fluid-schemas-and-baseline-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 260,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"docs(schema):add_travel_baseline_and_schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 261,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs(schema):add_travel_baseline_and_schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 278,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"docs(schema):add-structure-baseline-and-schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 279,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs(schema):add-structure-baseline-and-schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 290,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"T6:add-animal-schemas-docs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 291,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"T6:add-animal-schemas-docs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 308,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"T5:add-vegetation-docs-schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 309,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"T5:add-vegetation-docs-schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 344,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"p2: add terrain truth/field/overlay contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 345,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"p2: add terrain truth/field/overlay contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 404,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add-product-shell-contracts-and-TestX-guards\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 405,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add-product-shell-contracts-and-TestX-guards\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 440,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"RENDERER-PERFECT-0_renderer_contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 441,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"RENDERER-PERFECT-0_renderer_contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 446,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"PLATFORM-PERFECT-0_platform_contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 447,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"PLATFORM-PERFECT-0_platform_contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 470,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"OPS-1_compatibility_model\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 471,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"OPS-1_compatibility_model\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 488,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"CLEAN-1_repo_hygiene_and_contract_guards\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 489,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"CLEAN-1_repo_hygiene_and_contract_guards\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 512,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"DATA-2-governance-packs-and-fixtures\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 513,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"DATA-2-governance-packs-and-fixtures\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 566,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add-CONST0-FAB0-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 567,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add-CONST0-FAB0-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 590,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"MMO0-distributed-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 591,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"MMO0-distributed-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 614,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"SCALE-0_scaling_contracts_macro_capsule_schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 614,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"SCALE-0_scaling_contracts_macro_capsule_schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 615,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"SCALE-0_scaling_contracts_macro_capsule_schema\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 615,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"SCALE-0_scaling_contracts_macro_capsule_schema\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 656,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add_WD0_schema_and_tooling\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 657,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add_WD0_schema_and_tooling\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 764,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"agent:ag2_governance_and_plan_validation\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 765,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"agent:ag2_governance_and_plan_validation\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 794,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"agent:add_core_agent_contract_header\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 795,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"agent:add_core_agent_contract_header\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 824,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add_UPS_contract_doc\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 825,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"add_UPS_contract_doc\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 830,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"\\\"add-api-spine-and-interface-contract-docs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 831,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"\\\"add-api-spine-and-interface-contract-docs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 884,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"add-worldgen-compatibility-audit-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 885,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"add-worldgen-compatibility-audit-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1040,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update-schema-index-for-worldgen\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1040,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update-schema-index-for-worldgen\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1041,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update-schema-index-for-worldgen\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1041,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update-schema-index-for-worldgen\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1046,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add-worldgen-schema-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1046,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-worldgen-schema-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1047,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add-worldgen-schema-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1047,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-worldgen-schema-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1052,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"Add-worldgen-refinement-contract-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1053,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"Add-worldgen-refinement-contract-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1070,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Fix-canonical-architecture-references\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1071,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Fix-canonical-architecture-references\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1076,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"Allow-pack-manifest-tracking\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1077,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"Allow-pack-manifest-tracking\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1154,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"Add-base-pack-topology-manifest\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1155,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"Add-base-pack-topology-manifest\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1172,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-UPS-docs-and-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1173,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-UPS-docs-and-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1190,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-canonical-schemas-and-forward-compat-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1190,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add-canonical-schemas-and-forward-compat-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1191,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-canonical-schemas-and-forward-compat-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1191,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add-canonical-schemas-and-forward-compat-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1208,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"use-authority-token-header\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1209,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher:use-authority-token-header\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1274,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update-lod-execution-includes\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1275,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"engine:update-lod-execution-includes\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1292,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"expose-engine-headers-to-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1293,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"build:expose-engine-headers-to-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1304,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update-cmake-presets\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1305,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"build:update-cmake-presets\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1310,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update-architecture-and-policy-text\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1310,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"update-architecture-and-policy-text\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1311,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:update-architecture-and-policy-text\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1311,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs:update-architecture-and-policy-text\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1328,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"add-canonical-architecture-entrypoints\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1329,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:add-canonical-architecture-entrypoints\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1370,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update-presets-ci-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1371,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"build:update-presets-ci-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1406,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"add_readonly_capability_report\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1407,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher:add_readonly_capability_report\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1484,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"add ui flags and platform capability output\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1485,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"client: add ui flags and platform capability output\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1550,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"testx-inventory-update\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1551,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:testx-inventory-update\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1562,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add-app-cli-contract-checks\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1563,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tests:add-app-cli-contract-checks\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1580,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"app:cli-contracts-and-build-info\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1581,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"app:cli-contracts-and-build-info\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1592,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"apr0:inventory-testx-and-cli-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1593,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"apr0:inventory-testx-and-cli-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1616,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"[DOCS]add-repox-governance-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1617,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"[DOCS]add-repox-governance-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1622,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"[CI]update-testx2-testx3-matrix\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1623,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"[CI]update-testx2-testx3-matrix\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1634,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"[TEST]add-control-and-authority-test-suites\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1635,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"[TEST]add-control-and-authority-test-suites\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1640,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"[TOOLS]add-launcher-authority-and-setup-control-reporting\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1641,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"[TOOLS]add-launcher-authority-and-setup-control-reporting\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1646,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"[SERVER]add-authority-validation-and-status-reporting\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1647,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"[SERVER]add-authority-validation-and-status-reporting\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1658,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"[DATA]add-control-capability-registry\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1659,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"[DATA]add-control-capability-registry\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1664,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"[ENGINE]add-control-hooks-and-authority-token-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1664,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"[ENGINE]add-control-hooks-and-authority-token-contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1665,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"[ENGINE]add-control-hooks-and-authority-token-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1665,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"[ENGINE]add-control-hooks-and-authority-token-contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1682,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"life0_governance\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1683,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:life0_governance\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1693,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"scope\": \"schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1695,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema:life0_specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1706,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"reality0_schema_ci_sync\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1707,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:reality0_schema_ci_sync\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1730,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update_readme_and_contrib\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1731,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:update_readme_and_contrib\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1754,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"docs(omni0):add_authority_docs_ci\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1755,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"docs(omni0):add_authority_docs_ci\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1760,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1760,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1760,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1761,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1761,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1761,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(omni0):add_authority_capability_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1772,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(time3):add_replay_buffer_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1773,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(time3):add_replay_buffer_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1784,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(time2):add_observer_clock_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1784,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(time2):add_observer_clock_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1785,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(time2):add_observer_clock_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1785,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(time2):add_observer_clock_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1796,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(travel2):add_exotic_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1797,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(travel2):add_exotic_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1808,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(travel1):add_capacity_cost_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1809,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(travel1):add_capacity_cost_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1820,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(travel0):add_travel_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1821,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(travel0):add_travel_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1832,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"\\\"tests(domain4):add_visitability_contract\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1833,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"\\\"tests(domain4):add_visitability_contract\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1844,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema(domain4):add_visitability_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1845,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema(domain4):add_visitability_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1879,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"scope\": \"schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1881,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema:add_domain_volume_specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1898,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema:add_domain_jurisdiction_specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1899,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema:add_domain_jurisdiction_specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1952,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"ADOPT:work-IR-migrations-and-agent-system\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1953,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"ADOPT:work-IR-migrations-and-agent-system\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1958,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update-readme-and-adoption-protocol\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1959,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:update-readme-and-adoption-protocol\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1994,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"ARCH0_docs_and_README_updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 1995,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"ARCH0_docs_and_README_updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2030,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"refactor-stage2-data-schema-layout\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2031,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"refactor-stage2-data-schema-layout\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2048,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"final0-policy-docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2049,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"final0-policy-docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2072,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update README.md\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2073,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update README.md\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2078,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema(agents): add agent canon and context specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2079,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema(agents): add agent canon and context specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2096,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"data(world): add canonical Milky Way dataset\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2097,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"data(world): add canonical Milky Way dataset\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2114,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"data(world): add canonical Earth dataset\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2115,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"data(world): add canonical Earth dataset\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2126,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"add Sol content README and update guides\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2127,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add Sol content README and update guides\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2132,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"data(world): add canonical Sol system dataset\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2133,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"data(world): add canonical Sol system dataset\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2156,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update subsystem and component documentation\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2157,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update subsystem and component documentation\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2210,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update CI enforcement matrix (Phase 6 complete)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2211,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update CI enforcement matrix (Phase 6 complete)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2234,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"add validation governance guide + CI matrix entries\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2235,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add validation governance guide + CI matrix entries\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2264,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"implement schema + determinism validators\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2265,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"tools: implement schema + determinism validators\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2276,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ4-scale-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2277,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ4-scale-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2306,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/scale:-add-civ4-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2307,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/scale:-add-civ4-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2318,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"fix:diffusion-secrecy-missing-policy\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2319,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"fix:diffusion-secrecy-missing-policy\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2324,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ3-knowledge-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2325,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ3-knowledge-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2354,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"\\\"schema/knowledge-technology:-add-civ3-specs\\\"\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2355,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"\\\"schema/knowledge-technology:-add-civ3-specs\\\"\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2360,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ2-governance-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2360,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ2-governance-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2361,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ2-governance-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2361,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ2-governance-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2366,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/tests:-add-civ2-governance-suite\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2367,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/tests:-add-civ2-governance-suite\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2372,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"game/governance:-add-policy-scheduler-and-bindings\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2372,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/governance:-add-policy-scheduler-and-bindings\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2373,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game/governance:-add-policy-scheduler-and-bindings\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2373,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/governance:-add-policy-scheduler-and-bindings\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2378,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/governance:-add-jurisdiction-legitimacy-enforcement\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2379,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/governance:-add-jurisdiction-legitimacy-enforcement\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2384,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/governance:-add-civ2-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2384,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/governance:-add-civ2-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2385,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/governance:-add-civ2-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2385,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/governance:-add-civ2-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2390,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"fix:continuation-policy-NULL-cleanup\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2391,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"fix:continuation-policy-NULL-cleanup\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2402,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ1-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2403,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ1-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2432,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/civ:-add-civ1-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2433,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/civ:-add-civ1-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2438,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update README to clarify non-goals\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2439,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update README to clarify non-goals\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2444,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"-add-civ0-population-guide-and-matrix-updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2445,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:-add-civ0-population-guide-and-matrix-updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2462,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/population:-add-household-and-migration-models\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2463,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/population:-add-household-and-migration-models\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2468,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/population:-add-cohort-types-demographics-projections-refusals\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2469,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/population:-add-cohort-types-demographics-projections-refusals\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2474,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/civ:-add-population-cohort-household-migration-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2474,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema/civ:-add-population-cohort-household-migration-specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2475,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/civ:-add-population-cohort-household-migration-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2475,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema/civ:-add-population-cohort-household-migration-specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2588,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"game/rules:reproduction-policy-hooks\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2589,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game/rules:reproduction-policy-hooks\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2624,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/life:death-pipeline-audit-refusals\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2625,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/life:death-pipeline-audit-refusals\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2666,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"game/life:control-authority-bounded-eligibility\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2667,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"game/life:control-authority-bounded-eligibility\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2672,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"game/life:core-types-AbilityPackage-ContinuationPolicy\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2673,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game/life:core-types-AbilityPackage-ContinuationPolicy\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2678,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update spec index and CI matrix references\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2679,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update spec index and CI matrix references\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2684,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"schema(life): add life continuity specs and schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2685,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema(life): add life continuity specs and schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2696,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update specs with clarifications only\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2697,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update specs with clarifications only\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2708,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update CI enforcement matrix (final Phase-1)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2709,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update CI enforcement matrix (final Phase-1)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2726,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"add UI bypass and capability enforcement tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2727,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"tests: add UI bypass and capability enforcement tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2738,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update CI enforcement matrix with REND checks\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2739,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update CI enforcement matrix with REND checks\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2750,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"add validation guide and update policies\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2751,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add validation guide and update policies\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2774,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"validation: add shared schema validator library\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2775,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"validation: add shared schema validator library\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2780,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update CI enforcement matrix\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2781,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update CI enforcement matrix\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2785,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"scope\": \"schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2786,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"add schema governance, versioning, migration, validation policies\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2786,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"add schema governance, versioning, migration, validation policies\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2786,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"add schema governance, versioning, migration, validation policies\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2787,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema: add schema governance, versioning, migration, validation policies\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2787,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema: add schema governance, versioning, migration, validation policies\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2787,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"schema: add schema governance, versioning, migration, validation policies\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2840,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"enforce InterestSet in macro update paths\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2841,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"game: enforce InterestSet in macro update paths\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2852,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"add sharding and authority partition specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2853,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add sharding and authority partition specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2858,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"add profiling guide and update budgets\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2859,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add profiling guide and update budgets\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2888,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"add guide and update specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2889,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add guide and update specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2948,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"document deterministic ordering contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 2949,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: document deterministic ordering contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3032,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"lock engine public headers to engine/include\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3033,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"build: lock engine public headers to engine/include\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3038,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"ref2: add ownership block to SPEC_INDEX\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3039,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"ref2: add ownership block to SPEC_INDEX\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3044,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"ref2: annotate spec ownership blocks - Add ownership responsibility blocks to all SPEC_* docs. - Regenerate SPEC_INDEX with ownership, consumers, and stability. - Add docs/ARCH_SPEC_OWNERSHIP.md.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3045,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"ref2: annotate spec ownership blocks - Add ownership responsibility blocks to all SPEC_* docs. - Regenerate SPEC_INDEX with ownership, consumers, and stability. - Add docs/ARCH_SPEC_OWNERSHIP.md.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3050,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"ref1: enforce build boundary lockdown - Rename engine target to domino_engine and keep compatibility aliases. - Add configure-time checks for forbidden links and global include_directories. - Extend include sanity rules for clie"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3050,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"ref1: enforce build boundary lockdown - Rename engine target to domino_engine and keep compatibility aliases. - Add configure-time checks for forbidden links and global include_directories. - Extend include sanity rules for clie"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3051,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"ref1: enforce build boundary lockdown - Rename engine target to domino_engine and keep compatibility aliases. - Add configure-time checks for forbidden links and global include_directories. - Extend include sanity rules for clie"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3051,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"ref1: enforce build boundary lockdown - Rename engine target to domino_engine and keep compatibility aliases. - Add configure-time checks for forbidden links and global include_directories. - Extend include sanity rules for clie"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3056,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"ref0: align architecture docs and spec ownership - Add docs/ARCH_REPO_LAYOUT.md with canonical layout, ownership, and CI notes. - Expand docs/SPEC_INDEX.md to annotate ownership for every SPEC_*.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3057,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"ref0: align architecture docs and spec ownership - Add docs/ARCH_REPO_LAYOUT.md with canonical layout, ownership, and CI notes. - Expand docs/SPEC_INDEX.md to annotate ownership for every SPEC_*.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3086,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"[phase 4] enforce contract boundaries in targets\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3087,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"[phase 4] enforce contract boundaries in targets\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3092,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"[phase 3] create contracts layer and relocate headers\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3093,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"[phase 3] create contracts layer and relocate headers\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3116,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Phase 8: update build and architecture docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3117,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Phase 8: update build and architecture docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3158,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Phase 1: normalize CMake target graph - add canonical product CMake entry points and output layout - define engine libs game client/server and stub setup/launcher targets - add minimal tools stubs and preserve legacy tools CMake"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3159,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Phase 1: normalize CMake target graph - add canonical product CMake entry points and output layout - define engine libs game client/server and stub setup/launcher targets - add minimal tools stubs and preserve legacy tools CMake"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3164,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"summary\": \"Phase0addrefactorsafetynet\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3165,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"subject\": \"Phase0addrefactorsafetynet\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3290,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"fix_capability_test_target\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3291,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"build:fix_capability_test_target\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3296,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"ui:add_capability_engine_and_belief_store\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3297,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"ui:add_capability_engine_and_belief_store\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3344,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"time(knowledge): add sundial clock definition helper\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3345,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"time(knowledge): add sundial clock definition helper\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3350,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"time(knowledge): add clock device base types\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3351,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"time(knowledge): add clock device base types\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3374,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"core_time_update_docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3375,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"core_time_update_docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3482,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"add-coredata-compiler-determinism-and-refusal-tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3483,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"tests:add-coredata-compiler-determinism-and-refusal-tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3494,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"tools(coredata):emit-deterministic-pack-manifest-record-hashes-pack-hash\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3495,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"tools(coredata):emit-deterministic-pack-manifest-record-hashes-pack-hash\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3506,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"tools(coredata):add-strict-schema-reference-bounds-validation-with-refusal-first-errors\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3506,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"tools(coredata):add-strict-schema-reference-bounds-validation-with-refusal-first-errors\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3507,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"tools(coredata):add-strict-schema-reference-bounds-validation-with-refusal-first-errors\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3507,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"tools(coredata):add-strict-schema-reference-bounds-validation-with-refusal-first-errors\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3602,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"add SPEC_COSMO_CORE_DATA.md defining cosmos anchor and region schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3603,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add SPEC_COSMO_CORE_DATA.md defining cosmos anchor and region schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3614,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update spec index and terminology for core data canon\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3615,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update spec index and terminology for core data canon\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3650,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"perf: add budget enforcer with deterministic degrade/refusal behavior\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3651,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"perf: add budget enforcer with deterministic degrade/refusal behavior\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3662,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define performance budgets and profiling contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3663,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define performance budgets and profiling contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3674,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"integrate tools and editors into bundle/migration/replay specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3675,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: integrate tools and editors into bundle/migration/replay specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3698,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"add validator tool for content/universe/schema checks\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3699,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"tools: add validator tool for content/universe/schema checks\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3710,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add shared tool runtime harness enforcing instance/handshake contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3711,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tools: add shared tool runtime harness enforcing instance/handshake contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3716,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define tools-as-instances and tool IO contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3717,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define tools-as-instances and tool IO contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3752,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"ai: route AI actions through canonical command log and emit decision traces\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3753,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"ai: route AI actions through canonical command log and emit decision traces\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3812,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"integrate seamless UX and player continuity contract into UI/runtime specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3813,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: integrate seamless UX and player continuity contract into UI/runtime specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3836,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"ui: add zoom and warp transition presentation (non-blocking)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3837,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"ui: add zoom and warp transition presentation (non-blocking)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3854,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define player continuity and seamless UX contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3855,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define player continuity and seamless UX contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3878,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"caps/gfx: enforce capability negotiation and backend claim correctness\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3879,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"caps/gfx: enforce capability negotiation and backend claim correctness\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3896,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define dgfx IR versioning and backend conformance contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 3897,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define dgfx IR versioning and backend conformance contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4052,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add systems/bodies/frames/topology contract tests and bundle roundtrip tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4053,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tests: add systems/bodies/frames/topology contract tests and bundle roundtrip tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4136,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define cosmos lane and logical travel contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4137,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define cosmos lane and logical travel contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4142,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update runtime and determinism specs for caps and math wrappers\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4143,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update runtime and determinism specs for caps and math wrappers\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4172,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"common/game: add SIM_CAPS compatibility and handshake identity digest\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4173,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"common/game: add SIM_CAPS compatibility and handshake identity digest\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4208,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"define QoS/assistance TLV schema and invariants\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4209,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: define QoS/assistance TLV schema and invariants\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4214,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"add_session_authority_smoke\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4215,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"tests:add_session_authority_smoke\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4238,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"foundation-enforce:remove-UI-blocking-sleeps\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4239,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"foundation-enforce:remove-UI-blocking-sleeps\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4256,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"game(net): wire QoS into server-auth and lockstep drivers (non-sim)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4257,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"game(net): wire QoS into server-auth and lockstep drivers (non-sim)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4268,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"define QoS/assistance negotiation schema and invariants\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4269,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: define QoS/assistance negotiation schema and invariants\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4274,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"add session role/authority smoke tests + desync bundle tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4275,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"tests: add session role/authority smoke tests + desync bundle tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4292,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"game(net): add NetDriver interface with lockstep and server-auth implementations\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4293,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"game(net): add NetDriver interface with lockstep and server-auth implementations\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4298,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"define session roles and authority modes (contract + docs)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4298,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define session roles and authority modes (contract + docs)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4299,
+      "marker": "authority",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"game: define session roles and authority modes (contract + docs)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4299,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game: define session roles and authority modes (contract + docs)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4304,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define no-modal-loading contract, budgets, and fidelity rules\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4305,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define no-modal-loading contract, budgets, and fidelity rules\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4340,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"foundation(audit): catalog render-thread blocking and modal load risks - docs/IMPLEMENTATION_BACKLOG_NO_MODAL_LOADING.md - Tests: not run (audit only)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4341,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"foundation(audit): catalog render-thread blocking and modal load risks - docs/IMPLEMENTATION_BACKLOG_NO_MODAL_LOADING.md - Tests: not run (audit only)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4346,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - tools/ui_pr"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4347,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - tools/ui_pr"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4358,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add universe bundle, migration, spacetime, and path contract tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4358,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"add universe bundle, migration, spacetime, and path contract tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4359,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tests: add universe bundle, migration, spacetime, and path contract tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4359,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"tests: add universe bundle, migration, spacetime, and path contract tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4388,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"common: add schema registry + migration dispatcher framework\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4388,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"common: add schema registry + migration dispatcher framework\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4389,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"common: add schema registry + migration dispatcher framework\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4389,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"common: add schema registry + migration dispatcher framework\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4400,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"core: add spacetime canonical types (ticks/ups, segmented coords, stable id hash)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4401,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"core: add spacetime canonical types (ticks/ups, segmented coords, stable id hash)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4406,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"add universe/spacetime/reference-frame/orbit/calendar/bundle/migration specs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4407,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add universe/spacetime/reference-frame/orbit/calendar/bundle/migration specs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4466,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update README and documentation index\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4467,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update README and documentation index\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4484,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"document public headers as contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4485,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: document public headers as contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4508,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"implement minimize/close policy on instance launch; set run-root env for game\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4509,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"launcher: implement minimize/close policy on instance launch; set run-root env for game\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4520,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"game(ui): add splash + session loading screens with progress; optional transparent loading capability\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4521,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"game(ui): add splash + session loading screens with progress; optional transparent loading capability\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4532,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"define play flow and game phase/state machine contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4533,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: define play flow and game phase/state machine contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4538,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"document run-root/home resolution, refusal behavior, dev override\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4539,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: document run-root/home resolution, refusal behavior, dev override\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4544,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"enforce launcher-owned path contract (env roots only, no traversal, no guessing)\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4545,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tests: enforce launcher-owned path contract (env roots only, no traversal, no guessing)\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4556,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"remove ad-hoc path guessing/scanning; enforce launcher FS contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4557,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game: remove ad-hoc path guessing/scanning; enforce launcher FS contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4562,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"game(handshake): remove absolute paths; resolve FS via env-rooted contract; refuse on missing roots\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4563,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"game(handshake): remove absolute paths; resolve FS via env-rooted contract; refuse on missing roots\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4592,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"specify launcher-owned filesystem contract (no absolute paths) + update handshake spec\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4592,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"specify launcher-owned filesystem contract (no absolute paths) + update handshake spec\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4593,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: specify launcher-owned filesystem contract (no absolute paths) + update handshake spec\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4593,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: specify launcher-owned filesystem contract (no absolute paths) + update handshake spec\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4610,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"finalize Setup2 v1 read-only lock and handoff snapshot\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4611,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: finalize Setup2 v1 read-only lock and handoff snapshot\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4640,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"add_release_readiness_checklist\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4641,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:add_release_readiness_checklist\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4682,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"SR-7: scaffold adapters + update frontend_id schema What: add setup2 adapter CMake stubs and document frontend_id/payload_root/platform fields in request/plan/audit TLVs Why: make frontend attribution explicit and lay down adapt"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4682,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"SR-7: scaffold adapters + update frontend_id schema What: add setup2 adapter CMake stubs and document frontend_id/payload_root/platform fields in request/plan/audit TLVs Why: make frontend attribution explicit and lay down adapt"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4683,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"SR-7: scaffold adapters + update frontend_id schema What: add setup2 adapter CMake stubs and document frontend_id/payload_root/platform fields in request/plan/audit TLVs Why: make frontend attribution explicit and lay down adapt"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4683,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"SR-7: scaffold adapters + update frontend_id schema What: add setup2 adapter CMake stubs and document frontend_id/payload_root/platform fields in request/plan/audit TLVs Why: make frontend attribution explicit and lay down adapt"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4754,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"tlv_schema_governance\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4754,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"summary\": \"tlv_schema_governance\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4755,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:tlv_schema_governance\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4755,
+      "marker": "governance",
+      "sensitivity_hints": [
+        "governance_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:tlv_schema_governance\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4766,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"add_contract_test_suite\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4767,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"tests:add_contract_test_suite\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4784,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"core_tlv_schema:add_schema_registry_and_registrations\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4785,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"core_tlv_schema:add_schema_registry_and_registrations\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4838,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"setup2: document SR-4 planning contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4839,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"setup2: document SR-4 planning contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4862,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"setup2: add resolver and manifest planning fields\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4863,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"setup2: add resolver and manifest planning fields\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4880,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"core_caps:add_typed_capability_catalog_and_helpers\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4881,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"core_caps:add_typed_capability_catalog_and_helpers\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4952,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"setup2: extend audit schema and kernel selection capture\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4953,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup2: extend audit schema and kernel selection capture\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4958,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"setup2: add deterministic splat selection and schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 4959,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup2: add deterministic splat selection and schema\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5060,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"docs(game): define canonical CLI and save/replay v1 formats\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5061,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs(game): define canonical CLI and save/replay v1 formats\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5096,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"setup2: add TLV core and contract tags\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5097,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"setup2: add TLV core and contract tags\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5222,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"summary\": \"p2: setup: add EXE parity and archive safety tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5223,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"subject\": \"p2: setup: add EXE parity and archive safety tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5252,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"\\\\p2: setup: add invocation policy flags for integration intents\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5253,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"\\\\p2: setup: add invocation policy flags for integration intents\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5264,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"refresh setup, packaging, and recovery guidance Rationale: document invocation payloads, installer UX contract, and MSI guidance across setup, release, and platform docs. Verification: not run; not requested.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5264,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"refresh setup, packaging, and recovery guidance Rationale: document invocation payloads, installer UX contract, and MSI guidance across setup, release, and platform docs. Verification: not run; not requested.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5265,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: refresh setup, packaging, and recovery guidance Rationale: document invocation payloads, installer UX contract, and MSI guidance across setup, release, and platform docs. Verification: not run; not requested.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5265,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: refresh setup, packaging, and recovery guidance Rationale: document invocation payloads, installer UX contract, and MSI guidance across setup, release, and platform docs. Verification: not run; not requested.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5270,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"runtime: refine UI loops and startup selection Rationale: prefer GUI/TUI when no arguments, remove frame caps in GUI loops, and update WinNT terminal detection. Verification: not run; not requested.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5271,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"runtime: refine UI loops and startup selection Rationale: prefer GUI/TUI when no arguments, remove frame caps in GUI loops, and update WinNT terminal detection. Verification: not run; not requested.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5390,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"Document Minecraft launcher capability test\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5391,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"Document Minecraft launcher capability test\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5402,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Integrate launcher canonical UI loading with legacy fallback\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5403,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Integrate launcher canonical UI loading with legacy fallback\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5408,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add Minecraft-structure launcher UI ops script and generated canonical docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5409,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add Minecraft-structure launcher UI ops script and generated canonical docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5432,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add ops.json schema and parser for headless apply\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5433,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add ops.json schema and parser for headless apply\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5450,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add canonical UI export workflow and docs\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5451,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add canonical UI export workflow and docs\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5492,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"Route MSVC outputs under build dir - Send bin/lib/pdb outputs to build/${presetName}/out/ for Debug and Release.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5493,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"Route MSVC outputs under build dir - Send bin/lib/pdb outputs to build/${presetName}/out/ for Debug and Release.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5498,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Use VS 2026 generator for MSVC presets - Update msvc-base to Visual Studio 18 2026.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5499,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Use VS 2026 generator for MSVC presets - Update msvc-base to Visual Studio 18 2026.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5504,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add MSVC presets and set VS Code default build - Add msvc-debug/msvc-release configure, build, and test presets. - Set VS Code CMake presets to msvc-debug.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5505,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add MSVC presets and set VS Code default build - Add msvc-debug/msvc-release configure, build, and test presets. - Set VS Code CMake presets to msvc-debug.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5522,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Implement UI Editor Win32 shell and document lifecycle - Update save pathing to use doc-root layout with gen/user/registry. - Validate docs on load and append diagnostics. - Route codegen through doc-root registry paths.\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5523,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Implement UI Editor Win32 shell and document lifecycle - Update save pathing to use doc-root layout with gen/user/registry. - Validate docs on load and append diagnostics. - Route codegen through doc-root registry paths.\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5582,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Apply batching to Win32 list updates and visibility toggles - source/domino/dui/dui_win32.c\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5583,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Apply batching to Win32 list updates and visibility toggles - source/domino/dui/dui_win32.c\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5588,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add DUI Win32 batch update and coalesced relayout primitives - include/dui/dui_win32.h - source/domino/dui/dui_win32.c\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5589,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add DUI Win32 batch update and coalesced relayout primitives - include/dui/dui_win32.h - source/domino/dui/dui_win32.c\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5594,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - sourc"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5594,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - sourc"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5595,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - sourc"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5595,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - sourc"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5654,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add generic UI backend capability system\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5655,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add generic UI backend capability system\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5672,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add UI Doc TLV read/write and file safety\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5673,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add UI Doc TLV read/write and file safety\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5678,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Add UI IR unit tests and docs updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5679,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Add UI IR unit tests and docs updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5684,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"Implement canonical UI IR core types\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5685,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"Implement canonical UI IR core types\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5750,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"document config headers - include/domino/launcher_config.h: add file header and API docs - include/dominium/_internal/dom_priv/dom_setup/dom_setup_config.h: add file header and CLI contract docs - source/domino/render/soft/soft_"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5751,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: document config headers - include/domino/launcher_config.h: add file header and API docs - include/dominium/_internal/dom_priv/dom_setup/dom_setup_config.h: add file header and CLI contract docs - source/domino/render/soft"
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5756,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"release: add readiness checklist and verification commands\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5757,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"release: add readiness checklist and verification commands\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5762,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"release: add end-to-end release gate scripts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5763,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"release: add end-to-end release gate scripts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5768,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"summary\": \"release documentation closure + recovery playbook\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5769,
+      "marker": "release",
+      "sensitivity_hints": [
+        "release_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: release documentation closure + recovery playbook\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5780,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"enforce installed-state contract + smoke tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5781,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"launcher: enforce installed-state contract + smoke tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5792,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"harden CLI contracts and determinism controls\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5793,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"setup: harden CLI contracts and determinism controls\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5834,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"test:add-unit-manifest-platform\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5835,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"test:add-unit-manifest-platform\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5858,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"S-8:artifact-manifest-compression-metadata\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5859,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"S-8:artifact-manifest-compression-metadata\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5876,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"S-8:canonical-artifact-layout-pipeline\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5877,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"S-8:canonical-artifact-layout-pipeline\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5888,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"setup-cli-v1-reference-and-schemas\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5889,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs:setup-cli-v1-reference-and-schemas\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5984,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"enforce prelaunch refusal in launch plumbing\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5985,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher: enforce prelaunch refusal in launch plumbing\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5990,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"summary\": \"launcher(core): add offline network-required stub refusal\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 5991,
+      "marker": "refusal",
+      "sensitivity_hints": [
+        "refusal_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher(core): add offline network-required stub refusal\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6008,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"launcher(core): add exit_status.tlv schema v1\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6009,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher(core): add exit_status.tlv schema v1\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6038,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"setup/dsu: add S-5 forensics reporting + installed-state schema\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6039,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup/dsu: add S-5 forensics reporting + installed-state schema\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6044,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"add DEV_UI guide for schema-driven launcher\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6045,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: add DEV_UI guide for schema-driven launcher\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6092,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"Launcher UI: render schema state from caches\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6093,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"Launcher UI: render schema state from caches\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6098,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"- Load launcher_ui_v1.tlv at runtime with argv0-based search - Build initial DUI state for tabs, instance list/search, status bar - Thread argv0 through LauncherConfig for schema lookup\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6099,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"- Load launcher_ui_v1.tlv at runtime with argv0-based search - Build initial DUI state for tabs, instance list/search, status bar - Thread argv0 through LauncherConfig for schema lookup\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6104,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"add DUI schema file for dev UI\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6105,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher: add DUI schema file for dev UI\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6128,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"L-9-A2: add tool_manifest_inspector example tool\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6129,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"L-9-A2: add tool_manifest_inspector example tool\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6146,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"L-9-A2: add tools_registry.tlv TLV schema + core loader\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6147,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"L-9-A2: add tools_registry.tlv TLV schema + core loader\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6206,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"summary\": \"tlv-migrations-safety\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6206,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"summary\": \"tlv-migrations-safety\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6207,
+      "marker": "migration",
+      "sensitivity_hints": [
+        "migration_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher:tlv-migrations-safety\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6207,
+      "marker": "safety",
+      "sensitivity_hints": [
+        "safety_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher:tlv-migrations-safety\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6254,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"add TLV manifest tests and update smoke test\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6254,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"add TLV manifest tests and update smoke test\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6255,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup: add TLV manifest tests and update smoke test\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6255,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"setup: add TLV manifest tests and update smoke test\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6260,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"document TLV manifest schema and add samples\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6260,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"document TLV manifest schema and add samples\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6261,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup: document TLV manifest schema and add samples\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6261,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"setup: document TLV manifest schema and add samples\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6266,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"dominium-setup: add manifest-dump and manifest-validate\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6267,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"dominium-setup: add manifest-dump and manifest-validate\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6272,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"implement TLV manifest v2 parsing and canonicalization\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6272,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"implement TLV manifest v2 parsing and canonicalization\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6273,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup: implement TLV manifest v2 parsing and canonicalization\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6273,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"setup: implement TLV manifest v2 parsing and canonicalization\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6278,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"summary\": \"define TLV manifest v2 schema API\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6278,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"define TLV manifest v2 schema API\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6279,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"subject\": \"setup: define TLV manifest v2 schema API\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6279,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"setup: define TLV manifest v2 schema API\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6308,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"summary\": \"p7: setup: implement baseline manifest parser\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6309,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "\"subject\": \"p7: setup: implement baseline manifest parser\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6344,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"launcher/core: artifact store + tx install/update/rollback\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6345,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"launcher/core: artifact store + tx install/update/rollback\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6362,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"tighten public header contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6363,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: tighten public header contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6380,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"document io facade ABI contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6381,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: document io facade ABI contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6392,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"strengthen core API contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6393,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: strengthen core API contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6416,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"update README and documentation map\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6417,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"docs: update README and documentation map\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6428,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"document public headers as contracts\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6429,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"docs: document public headers as contracts\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6446,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"p8: documentation updates for done definition and smoke tests\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6447,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"p8: documentation updates for done definition and smoke tests\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6458,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"p8: enforce lockstep-strict policy in smoke gui paths\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6458,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"p8: enforce lockstep-strict policy in smoke gui paths\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6459,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"p8: enforce lockstep-strict policy in smoke gui paths\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6459,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"p8: enforce lockstep-strict policy in smoke gui paths\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6476,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"summary\": \"p8: define launcher/game smoke-gui contract\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6477,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"subject\": \"p8: define launcher/game smoke-gui contract\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6626,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"summary\": \"p3: add canonical baseline/modern presets\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6627,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"subject\": \"p3: add canonical baseline/modern presets\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6644,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"summary\": \"p2: enforce determinism grades and lockstep-strict selection rules\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6645,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"subject\": \"p2: enforce determinism grades and lockstep-strict selection rules\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6656,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"summary\": \"p2: implement central capability registry and deterministic selection\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 6657,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "\"subject\": \"p2: implement central capability registry and deterministic selection\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7028,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"updates\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7029,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"updates\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7172,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update README.md\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7173,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update README.md\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7178,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update README.md\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7179,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update README.md\""
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7196,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"summary\": \"Update README.md\","
+    },
+    {
+      "file": "updates/changelog.json",
+      "line": 7197,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "\"subject\": \"Update README.md\""
+    },
+    {
+      "file": "updates/nightly.json",
+      "line": 2,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": 1,"
+    },
+    {
+      "file": "updates/pinned.json",
+      "line": 2,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": 1,"
+    },
+    {
+      "file": "updates/README.md",
+      "line": 1,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "# Update Feeds"
+    },
+    {
+      "file": "updates/README.md",
+      "line": 1,
+      "marker": "feed",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "# Update Feeds"
+    },
+    {
+      "file": "updates/README.md",
+      "line": 3,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "This directory contains machine-readable update feeds generated by RepoX."
+    },
+    {
+      "file": "updates/README.md",
+      "line": 3,
+      "marker": "feed",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "This directory contains machine-readable update feeds generated by RepoX."
+    },
+    {
+      "file": "updates/README.md",
+      "line": 4,
+      "marker": "update",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "Do not edit by hand. Use scripts/repox/repox_update_feeds.py."
+    },
+    {
+      "file": "updates/README.md",
+      "line": 4,
+      "marker": "feed",
+      "sensitivity_hints": [
+        "update_sensitive"
+      ],
+      "snippet": "Do not edit by hand. Use scripts/repox/repox_update_feeds.py."
+    },
+    {
+      "file": "updates/stable.json",
+      "line": 2,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "\"schema_version\": 1,"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "updates",
+  "schema_version": "dominium.aide.authority_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 616
+  }
+}

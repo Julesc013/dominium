@@ -1,0 +1,109 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "updates/beta.json",
+      "relative_path": "beta.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "size": 132,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "updates/changelog.json",
+      "relative_path": "changelog.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "size": 293490,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "updates/nightly.json",
+      "relative_path": "nightly.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "size": 135,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "updates/pinned.json",
+      "relative_path": "pinned.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "size": 134,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": "# Update Feeds",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "updates/README.md",
+      "relative_path": "README.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "update_sensitive"
+      ],
+      "size": 156,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "updates/stable.json",
+      "relative_path": "stable.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "machine_readable",
+        "update_sensitive"
+      ],
+      "size": 134,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "updates",
+  "root_path": "updates",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 0,
+    "file_count": 6,
+    "tracked_file_count": 6
+  },
+  "task_id": null
+}

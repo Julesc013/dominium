@@ -1,0 +1,844 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "deletes_applied": false,
+  "entries": [
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/numeric.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/observability.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compile",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compile/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compile/compile_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compute",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compute/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/compute/compute_budget_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/explain",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/explain/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/explain/explain_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/extensions",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/extensions/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/extensions/extensions_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/identity",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/identity/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/identity/identity_validator.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/instrumentation",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/instrumentation/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/instrumentation/instrumentation_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/profile",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/profile/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/profile/profile_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/provenance",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/provenance/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/provenance/compaction_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/reference",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/reference/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/reference/geo_small_reference.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/reference/logic_small_reference.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/reference/reference_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/stability",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/stability/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/stability/stability_scope.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "review",
+      "evidence_refs": [
+        "meta.classification.json"
+      ],
+      "fate": "adapt",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "meta/stability/stability_validator.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "references_to_update": [],
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "executable_or_tool",
+        "policy_or_governance",
+        "python_module"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "generated_from_inventory": "meta.inventory.json",
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "meta",
+  "schema_version": "dominium.aide.salvage_map.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "draft",
+  "summary": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "entry_count": 36
+  },
+  "task_id": null
+}

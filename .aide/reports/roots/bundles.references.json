@@ -1,0 +1,930 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".agentignore",
+      "line": 49,
+      "snippet": "/bundles/"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/install/latest-install-plan.json",
+      "line": 9503,
+      "snippet": "\"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2523,
+      "snippet": "\"bundles/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2524,
+      "snippet": "\"bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2525,
+      "snippet": "\"bundles/bundle.null/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2587,
+      "snippet": "\"contracts/bundles/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11579,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 14356,
+      "snippet": "\"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/rollback/latest-rollback-plan.json",
+      "line": 2843,
+      "snippet": "\"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 18875,
+      "snippet": "\"source_tool\": \"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 2960,
+      "snippet": "- `tools/xstack/testdata/bundles/bundle.base.lab/bundle.json`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_path, medium_risk_hint:test, package_hint:bundle"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 1856,
+      "snippet": "\"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/uninstall/latest-uninstall-observation.json",
+      "line": 6274,
+      "snippet": "\"tools/xstack/testdata/bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "content/MANIFEST.md",
+      "line": 12,
+      "snippet": "| `profiles/` | not moved | left_for_review | Contains `profiles/bundles/bundle.mvp_default.json`, which embeds profile bundle identity and path metadata. | Profile IDs, profile bundle ID, hashes, and rel-path metadata unchanged. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "content/MANIFEST.md",
+      "line": 13,
+      "snippet": "| `bundles/` | not moved | left_for_review | Active bundle profile source referenced by XStack/control tooling and docs. | Bundle IDs unchanged. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/MANIFEST.md",
+      "line": 35,
+      "snippet": "- `contracts/bundles/`"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/README.md",
+      "line": 25,
+      "snippet": "- `packs/`, `install/`, `instances/`, `saves/`, and `bundles/`: package, install, instance, save, and bundle contract families."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/layout_exceptions.toml",
+      "line": 252,
+      "snippet": "notes = \"POST-CONVERGE-03 found two tracked bundle.json profiles and live references to bundles/bundle.base.lab/bundle.json. Bundle IDs and dependency/lock semantics were not changed.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/layout_exceptions.toml",
+      "line": 396,
+      "snippet": "notes = \"POST-CONVERGE-03 left profiles/bundles/bundle.mvp_default.json in place because direct release, XStack, RepoX, and baseline references remain live. Profile IDs and hashes were not changed.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ci_run_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"eef85dde0a8c2f42c7ffd300724dd97dde093602685ccef08f2b8816ca263c59\",\"gate_definitions_fingerprint\":\"c7253e5cf505f809a7a54ca0fcd0ae52ffd10e287114a426614ac069492a5740\",\"profile\":\"STRICT\",\"profile_fingerprint\":\"1d61"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/clean_room_win64.json",
+      "line": 1,
+      "snippet": "{\"assertions\":{\"exit_codes_all_success\":true,\"negotiation_records_present\":true,\"no_external_absolute_paths\":true,\"pack_verification_passed\":true,\"portable_root_detected\":true,\"replay_validates_determinism\":true,\"teleport_chain_complete\":tr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_content_audit.json",
+      "line": 26,
+      "snippet": "\"store/profiles/bundles/bundle.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2923,
+      "snippet": "\"profile_bundle_path\": \"store/profiles/bundles/bundle.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_verify_win64.json",
+      "line": 1,
+      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ecosystem_verify_run.json",
+      "line": 1,
+      "snippet": "{\"baseline_comparison\":{\"baseline_matches\":true,\"baseline_present\":true,\"committed_baseline_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102ad2081b57d76f3640ece02570eb61\",\"expected_baseline_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/store_gc_report.json",
+      "line": 1,
+      "snippet": "{\"aggressive_refusal_code\":\"refusal.store.gc.explicit_flag_required\",\"candidate_hashes\":[\"packs/e8fbcee0d3702eef874fb0709bf80fbaa69fefd55fe5ff9f4ef4a85551bd0a5e\"],\"deterministic_fingerprint\":\"21205fc37e2190a818563301f583b7d92a1319c999420a39"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_reuse_plan.json",
+      "line": 92,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/universal_identity_report.json",
+      "line": 1,
+      "snippet": "{\"artifact_count\":59,\"deterministic_fingerprint\":\"d644d115d83d43951336b1bf3ef54e1c15f4da7d64ac6dddb20de379c4122146\",\"error_count\":0,\"identity_kind_ids\":[\"identity.bundle\",\"identity.format\",\"identity.install\",\"identity.instance\",\"identity.li"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_FAST.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_STRICT.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/virtual_paths_report.json",
+      "line": 67,
+      "snippet": "\"line\": \"os.path.join(repo_root, \\\"profiles\\\", \\\"bundles\\\"),\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/virtual_paths_report.json",
+      "line": 79,
+      "snippet": "\"line\": \"os.path.join(repo_root, \\\"profiles\\\", \\\"bundles\\\"),\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/disaster/disaster_suite_cases.json",
+      "line": 1,
+      "snippet": "{\"record\":{\"baseline_seed\":\"DOMINIUM_MVP_BASELINE_SEED_0\",\"case_count\":18,\"cases\":[{\"case_id\":\"artifact_corruption.corrupted_lock_file\",\"command\":\"load_versioned_artifact(pack_lock)\",\"deterministic_fingerprint\":\"3d02426636138e3a85d7040380ea"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/trust/signed_release_index.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/trust/unsigned_release_index.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/universe/baseline_profile_bundle.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.bfa086e1ece381b1\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_baseline.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_strict.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_upgrade.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_yanked.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/regression/ecosystem_verify_baseline.json",
+      "line": 1,
+      "snippet": "{\"baseline_id\":\"ecosystem_verify.baseline.v0_0_0\",\"deterministic_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102ad2081b57d76f3640ece02570eb61\",\"ecosystem_verify_version\":0,\"identity_coverage\":{\"binary_identity_result\":\"complete\",\"binary_p"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 152,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 62,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 136,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 266,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 587,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 72,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 111,
+      "snippet": "\"profiles/bundles/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 664,
+      "snippet": "\"actual_purpose\": \"Authored profile root, currently dominated by profiles/bundles/.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 677,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 682,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1090,
+      "snippet": "\"statement\": \"The authored baseline asset trio is physically located at profiles/bundles/bundle.mvp_default.json, locks/pack_lock.mvp_default.json, and data/session_templates/session.mvp_default.json.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1093,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1141,
+      "snippet": "\"statement\": \"Release/update logic also expects installed or projected payloads such as store/profiles/bundles/bundle.mvp_default.json and store/locks/pack_lock.mvp_default.json.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1421,
+      "snippet": "\"location\": \"profiles/bundles/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1426,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1607,
+      "snippet": "\"statement\": \"profiles/bundles/, locks/, data/session_templates/, and data/registries/ are all live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled bundle.base.lab.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 62,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 286,
+      "snippet": "\"profiles/bundles/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 350,
+      "snippet": "\"bundles/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 309,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 530,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "dist/profiles/bundle.mvp_default.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/astronomy_catalogs.md",
+      "line": 78,
+      "snippet": "- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/deterministic_packaging.md",
+      "line": 20,
+      "snippet": "- `dist/bundles/<bundle_id>/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/deterministic_packaging.md",
+      "line": 52,
+      "snippet": "- `bin/`, `packs/`, `bundles/`, `registries/`, `lockfile.json`, `manifest.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/pack_system.md",
+      "line": 28,
+      "snippet": "- Bundle profiles live under `bundles/<bundle_id>/bundle.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/pack_system.md",
+      "line": 39,
+      "snippet": "- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/registry_compile.md",
+      "line": 20,
+      "snippet": "- Bundle selection from `bundles/<bundle_id>/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/registry_compile.md",
+      "line": 52,
+      "snippet": "- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 29,
+      "snippet": "| `bundles/` | Governed bundle fixtures and serialized bundle artifacts | Bundle/schema-preserving changes only | Evolving |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/session_lifecycle.md",
+      "line": 25,
+      "snippet": "- Read `bundles/<bundle_id>/bundle.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 1051,
+      "snippet": "- `packs.bundles.bundle.base.lab` -> `bundles/bundle.base.lab`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 1052,
+      "snippet": "- `packs.bundles.bundle.null` -> `bundles/bundle.null`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "line": 1713,
+      "snippet": "- `tools.xstack.testdata.bundles.bundle.base.lab` -> `tools/xstack/testdata/bundles/bundle.base.lab`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 25,
+      "snippet": "| `bundles/README.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Profiles: LawProfile/PhysicsProfile/etc.`, `LOGIC: signals/state machines/compile`, `SYS/PROC: capsules, stabilization, drift`, `PACK-COMPAT: compat manifests, off"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST1_RETRO_AUDIT.md",
+      "line": 38,
+      "snippet": "- `profiles/bundles/bundle.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST1_RETRO_AUDIT.md",
+      "line": 61,
+      "snippet": "- `bundles/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST_REFINE1_RETRO_AUDIT.md",
+      "line": 21,
+      "snippet": "- The default profile bundle is governed by `profiles/bundles/bundle.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST_TREE_ASSEMBLY_FINAL.md",
+      "line": 18,
+      "snippet": "- `store/profiles/bundles/bundle.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 25,
+      "snippet": "| `bundles/README.md` | Bundle Profiles | `build`, `canon`, `compat`, `determinism`, `logic`, `meta`, `pack`, `server`, `sol`, `time`, `xstack` | `2026-02-14` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 1055,
+      "snippet": "- `packs.bundles.bundle.base.lab` :: root=`bundles/bundle.base.lab` domain=`packs` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 1056,
+      "snippet": "- `packs.bundles.bundle.null` :: root=`bundles/bundle.null` domain=`packs` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "line": 1717,
+      "snippet": "- `tools.xstack.testdata.bundles.bundle.base.lab` :: root=`tools/xstack/testdata/bundles/bundle.base.lab` domain=`tools` files=`1` confidence=`0.92`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 21,
+      "snippet": "- Active runtime bundles are legacy `bundle.*` pack selections under `bundles/<bundle_id>/bundle.json`; there is no dedicated MVP runtime bundle artifact carrying profile selections."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 23,
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 41,
+      "snippet": "- `bundles/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 98,
+      "snippet": "- The active default compile/runtime bundle is `bundles/bundle.base.lab/bundle.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 173,
+      "snippet": "- Dist tooling currently creates `bundles/` and `registries/` but not `profiles/` or `locks/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PACK_COMPAT2_RETRO_AUDIT.md",
+      "line": 40,
+      "snippet": "- `profiles/bundles/bundle.mvp_default.json` and `data/session_templates/session.mvp_default.json` are generated by `tools/mvp/runtime_bundle.py`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 26,
+      "snippet": "- `bundles/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 34,
+      "snippet": "- bundle manifest `dist/bundles/bundle.base.lab/bundle.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 2552,
+      "snippet": "bundles/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SYSTEM_INTERFACE_INVARIANT_BASELINE.md",
+      "line": 49,
+      "snippet": "- `validate_macro_model_set(capsule_id)` enforces macro model registration, signature compatibility with interface bundles/signals, and error-bound policy presence."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "line": 23,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "line": 11,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.json",
+      "line": 8,
+      "snippet": "\"output\": \"WARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile\\nWARN: WARN-GLOSSARY-TERM-CANON: docs/audit/re"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/verification.json",
+      "line": 10,
+      "snippet": "\"output\": \"WARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile\\nWARN: WARN-GLOSSARY-TERM-CANON: docs/audit/re"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/governance/MODE_GOVERNANCE_POLICY.md",
+      "line": 69,
+      "snippet": "3. Declare required bundles/capabilities in scenario/mission metadata."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 112,
+      "snippet": "- `profiles/bundles/bundle.mvp_default.json` embeds identity, hashes, and rel-path metadata and was not moved."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 113,
+      "snippet": "- `bundles/` remains active bundle profile source referenced by XStack/control tooling."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/MOVE_MAP.md",
+      "line": 223,
+      "snippet": "- `profiles`: still preserves `profiles/bundles/bundle.mvp_default.json` identity, hashes, and rel-path metadata."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 120,
+      "snippet": "Content ownership covers authored packs, profiles, fixtures, datasets, assets, templates, and domain data. Mixed roots such as `data/`, `packs/`, `bundles/`, and `templates/` require review because they may also contain registries, planning"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 122,
+      "snippet": "POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target ownership root for new authored content, but existing `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` material was not moved bec"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 164,
+      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 52,
+      "snippet": "- The authored MVP baseline asset trio exists and is live: `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 248,
+      "snippet": "`profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/xstack/session_create.py`, `tools/xstack/registry_compile/constants.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 76,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are the authored and machine-readable data roots that current flows consume directly."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 498,
+      "snippet": "authored profile root, currently dominated by `profiles/bundles/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 512,
+      "snippet": "`profiles/bundles/bundle.mvp_default.json`, AppShell virtual roots, release/install store projections"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 514,
+      "snippet": "`profiles/bundles/bundle.mvp_default.json`, `appshell/paths/virtual_paths.py`, `tools/mvp/runtime_bundle.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 814,
+      "snippet": "The authored baseline asset trio is physically located at `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 836,
+      "snippet": "Release/update logic also expects installed or projected payloads such as `store/profiles/bundles/bundle.mvp_default.json` and `store/locks/pack_lock.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 974,
+      "snippet": "| `profiles/bundles/` | authored profile bundles | canonical source of truth for authored profile bundles | current baseline assets live here and AppShell resolves profiles here |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 999,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are all real live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled `bundle.base.lab`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 151,
+      "snippet": "After POST-CONVERGE-03, content/package/profile/bundle review did not retire additional roots. `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` remain explicit active exceptions because each is mixed, iden"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 262,
+      "snippet": "- `profiles/` and `bundles/` remain identity-sensitive because profile and bundle IDs, hashes, lock semantics, and release/XStack references are live."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 127,
+      "snippet": "| `bundles/` | current_content_or_data_root | Bundle data/content surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_03_CONTENT_PACK_CLEANUP.md",
+      "line": 44,
+      "snippet": "| `profiles` | yes | yes | yes | `protected_identity_review` | Contains `profiles/bundles/bundle.mvp_default.json` with profile bundle identity, fingerprint, content hash, and rel-path metadata. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 240,
+      "snippet": "- `profiles/bundles/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 280,
+      "snippet": "- `dist/**`, `bundles/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 142,
+      "snippet": "| `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json` | Live baseline content/config pair and session template called out by the audit as the near-term playab"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 269,
+      "snippet": "- `profiles/bundles/bundle.mvp_default.json`"
+    },
+    {
+      "classification": "active_source",
+      "file": "meta/identity/identity_validator.py",
+      "line": 75,
+      "snippet": "\"/profiles/bundles/\","
+    },
+    {
+      "classification": "active_source",
+      "file": "meta/identity/identity_validator.py",
+      "line": 378,
+      "snippet": "if \"profile_bundle\" in name or \"profile.bundle\" in name or \"/profiles/bundles/\" in path:"
+    },
+    {
+      "classification": "unknown",
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "classification": "active_source",
+      "file": "release/update_resolver.py",
+      "line": 490,
+      "snippet": "return [\"store/profiles/bundles/bundle.mvp_default.json\"]"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 1249,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 11,
+      "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 16,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\": (\"pack_lock.mvp_default\", \"profile.bundle.mvp_default\"),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 89,
+      "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\", \"profiles/bundles/bundle.mvp_default.json\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist_verify_common.py",
+      "line": 46,
+      "snippet": "\"store/profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/lib/store_gc_common.py",
+      "line": 228,
+      "snippet": "for rel_path in (\"bin\", \"manifests\", \"instances/default\", \"saves/save.default\", \"bundles/pinned/content\", \"docs\"):"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/mvp/disaster_suite_common.py",
+      "line": 857,
+      "snippet": "\"preconditions\": [{\"action_id\": \"declare_missing_required_pack\", \"operation\": \"bundle_reference_missing_pack\", \"target_rel\": \"pack_repo/bundles/bundle.omega4.missing_required/bundle.json\"}],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/release/update_model_common.py",
+      "line": 208,
+      "snippet": "rel_path = \"store/profiles/bundles/bundle.mvp_default.json\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/doc_inventory_common.py",
+      "line": 59,
+      "snippet": "\"bundles/README.md\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/bundle_list.py",
+      "line": 2,
+      "snippet": "\"\"\"CLI: list deterministic bundle profiles from bundles/<bundle_id>/bundle.json.\"\"\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/bundle_validate.cmd",
+      "line": 12,
+      "snippet": "echo Example: tools\\xstack\\bundle_validate bundles\\bundle.base.lab\\bundle.json"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/bundle_validate.py",
+      "line": 29,
+      "snippet": "parser.add_argument(\"bundle_json\", help=\"path to bundles/<bundle_id>/bundle.json\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/controlx/orchestrator.py",
+      "line": 188,
+      "snippet": "\"file_path\": \"bundles/bundle.base.lab/bundle.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/controlx/orchestrator.py",
+      "line": 197,
+      "snippet": "artifact_path = \"bundles/bundle.base.lab/bundle.json\""
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/registry_compile/README.md",
+      "line": 16,
+      "snippet": "- Bundle selection from `bundles/<bundle_id>/bundle.json` via `tools/xstack/registry_compile/bundle_profile.py`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/skills/skill.pack_contrib.md",
+      "line": 21,
+      "snippet": "- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/testdata/README.md",
+      "line": 15,
+      "snippet": "- `tools/xstack/testdata/bundles/`: fixture BundleProfile manifests for fixture packs."
+    },
+    {
+      "classification": "tools",
+      "file": "tools/xstack/testx/runner.py",
+      "line": 109,
+      "snippet": "if path.startswith(\"bundles/\"):"
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/dist1_testlib.py",
+      "line": 38,
+      "snippet": "\"store/profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/test_cli_parses_seed_and_bundle.py",
+      "line": 25,
+      "snippet": "\"profiles/bundles/bundle.mvp_default.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/test_cli_parses_seed_and_bundle.py",
+      "line": 36,
+      "snippet": "if str(args.profile_bundle) != \"profiles/bundles/bundle.mvp_default.json\":"
+    },
+    {
+      "classification": "unknown",
+      "file": "updates/changelog.json",
+      "line": 458,
+      "snippet": "\"summary\": \"\\\"SHARE-0_bundles\\\"\","
+    },
+    {
+      "classification": "unknown",
+      "file": "updates/changelog.json",
+      "line": 459,
+      "snippet": "\"subject\": \"\\\"SHARE-0_bundles\\\"\""
+    }
+  ],
+  "references_rewritten": false,
+  "root": "bundles",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 153
+  }
+}

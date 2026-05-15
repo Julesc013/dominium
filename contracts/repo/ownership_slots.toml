@@ -1,0 +1,236 @@
+[contract]
+id = "dominium.repo.ownership_slots.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Route future material into stable ownership slots instead of new top-level roots."
+
+[policy]
+new_material_uses_existing_slots = true
+new_top_level_roots_default = "refuse"
+paths_are_storage_not_identity = true
+contracts_and_manifests_define_identity = true
+
+[slots.product]
+id = "product"
+target = "apps/<product>/"
+examples = ["apps/client/", "apps/server/", "apps/setup/", "apps/launcher/"]
+must_not_contain = ["engine internals", "simulation truth", "generated package bytes"]
+validation_expectations = ["repo layout validation", "product matrix review when support status changes"]
+
+[slots.engine_substrate]
+id = "engine_substrate"
+target = "engine/"
+examples = ["engine/core/", "engine/determinism/"]
+must_not_contain = ["product entrypoints", "platform UI ownership", "authored packs"]
+validation_expectations = ["determinism checks", "ABI boundary checks when public interfaces change"]
+
+[slots.game_domain]
+id = "game_domain"
+target = "game/domains/<domain>/"
+examples = ["game/domains/physics/", "game/domains/fields/"]
+must_not_contain = ["schema authority", "authored content", "runtime adapter ownership"]
+validation_expectations = ["domain tests", "determinism checks", "contract link review"]
+
+[slots.runtime_platform]
+id = "runtime_platform"
+target = "runtime/platform/"
+examples = ["runtime/platform/hosts/<host>/"]
+must_not_contain = ["simulation truth", "domain law", "product identity"]
+validation_expectations = ["runtime boundary validation", "build target boundary validation"]
+
+[slots.runtime_render]
+id = "runtime_render"
+target = "runtime/render/"
+examples = ["runtime/render/backends/<renderer>/"]
+must_not_contain = ["truth mutation", "domain ownership"]
+validation_expectations = ["render boundary checks", "component matrix review"]
+
+[slots.runtime_drawing]
+id = "runtime_drawing"
+target = "runtime/render/drawing/"
+examples = ["runtime/render/drawing/canvas/", "runtime/ui/drawing/"]
+must_not_contain = ["domain truth", "schema authority"]
+validation_expectations = ["UI shell purity", "runtime boundary checks"]
+
+[slots.runtime_ui]
+id = "runtime_ui"
+target = "runtime/ui/"
+examples = ["runtime/ui/shell/", "runtime/ui/views/"]
+must_not_contain = ["truth mutation", "domain law"]
+validation_expectations = ["UI shell purity", "authority-boundary review"]
+
+[slots.runtime_network]
+id = "runtime_network"
+target = "runtime/network/"
+examples = ["runtime/network/transports/<transport>/"]
+must_not_contain = ["server authority shortcuts", "domain law without contracts"]
+validation_expectations = ["network boundary tests", "replay/determinism review when authority changes"]
+
+[slots.runtime_storage]
+id = "runtime_storage"
+target = "runtime/storage/"
+examples = ["runtime/storage/vfs/", "runtime/storage/saves/"]
+must_not_contain = ["authored pack source", "release package bytes"]
+validation_expectations = ["storage boundary tests", "compatibility contract review"]
+
+[slots.protocol_contract]
+id = "protocol_contract"
+target = "contracts/protocols/"
+examples = ["contracts/protocols/network/"]
+must_not_contain = ["runtime implementation", "generated packets without provenance"]
+validation_expectations = ["schema/contract parse", "implementation reference review"]
+
+[slots.schema_contract]
+id = "schema_contract"
+target = "contracts/schemas/"
+examples = ["contracts/schemas/domains/<domain>/"]
+must_not_contain = ["source implementation", "authored instance data"]
+validation_expectations = ["JSON schema parse", "schema identity review"]
+
+[slots.registry_contract]
+id = "registry_contract"
+target = "contracts/registries/"
+examples = ["contracts/registries/domains/<domain>/"]
+must_not_contain = ["runtime cache", "generated registry output without provenance"]
+validation_expectations = ["registry parse", "authority-order review"]
+
+[slots.capability_contract]
+id = "capability_contract"
+target = "contracts/capabilities/"
+examples = ["contracts/capabilities/domains/<domain>/"]
+must_not_contain = ["implementation-only switches", "UI-only powers"]
+validation_expectations = ["capability contract validation", "doctrine boundary review"]
+
+[slots.build_contract]
+id = "build_contract"
+target = "contracts/build/"
+examples = ["contracts/build/tuples.toml", "contracts/build/toolchains.toml"]
+must_not_contain = ["generated build output", "machine-local paths"]
+validation_expectations = ["build contract validator", "preset boundary checks"]
+
+[slots.distribution_contract]
+id = "distribution_contract"
+target = "contracts/distribution/"
+examples = ["contracts/distribution/layout.contract.toml"]
+must_not_contain = ["package bytes", "mutable install state"]
+validation_expectations = ["distribution layout validator", "release evidence review"]
+
+[slots.repo_policy]
+id = "repo_policy"
+target = "contracts/repo/"
+examples = ["contracts/repo/layout.contract.toml", "contracts/repo/root_constitution.toml"]
+must_not_contain = ["product implementation", "build output"]
+validation_expectations = ["repo layout validators", "AIDE repo validate"]
+
+[slots.authored_pack]
+id = "authored_pack"
+target = "content/packs/<pack>/"
+examples = ["content/packs/base/"]
+must_not_contain = ["runtime pack implementation", "generated package bytes"]
+validation_expectations = ["pack manifest validation", "identity/hash review"]
+
+[slots.authored_profile]
+id = "authored_profile"
+target = "content/profiles/<profile>/"
+examples = ["content/profiles/mvp/"]
+must_not_contain = ["runtime mutable state", "generated profile cache"]
+validation_expectations = ["profile manifest validation", "hash/identity review"]
+
+[slots.authored_template]
+id = "authored_template"
+target = "content/templates/<template>/"
+examples = ["content/templates/domains/"]
+must_not_contain = ["temporary prompt IDs as architecture", "generated build output"]
+validation_expectations = ["template reference review", "schema contract link review"]
+
+[slots.authored_asset]
+id = "authored_asset"
+target = "content/assets/<asset-family>/"
+examples = ["content/assets/icons/"]
+must_not_contain = ["runtime caches", "release package bytes"]
+validation_expectations = ["asset manifest review", "pack/content validation"]
+
+[slots.domain_data]
+id = "domain_data"
+target = "content/domain-data/<domain>/"
+examples = ["content/domain-data/geology/"]
+must_not_contain = ["domain implementation", "schema authority"]
+validation_expectations = ["data parse", "domain contract reference review"]
+
+[slots.human_docs]
+id = "human_docs"
+target = "docs/"
+examples = ["docs/repo/", "docs/aide/", "docs/domains/"]
+must_not_contain = ["source authority except named doctrine files", "generated output without provenance"]
+validation_expectations = ["docs sanity", "authority-order review when doctrine-adjacent"]
+
+[slots.validator]
+id = "validator"
+target = "tools/validators/"
+examples = ["tools/validators/check_repo_layout.py"]
+must_not_contain = ["product runtime behavior", "release publication side effects"]
+validation_expectations = ["py_compile", "scoped validator run"]
+
+[slots.migration_tool]
+id = "migration_tool"
+target = "tools/migration/"
+examples = ["tools/migration/root_inventory.json"]
+must_not_contain = ["applied moves without ledger", "destructive defaults"]
+validation_expectations = ["dry-run proof", "move/salvage map validation"]
+
+[slots.aide_adapter]
+id = "aide_adapter"
+target = "tools/aide/"
+examples = ["tools/aide/inventory_roots.py"]
+must_not_contain = ["product runtime behavior", "network/provider calls", "destructive defaults"]
+validation_expectations = ["py_compile", "read-only smoke run", "AIDE validation"]
+
+[slots.test_fixture]
+id = "test_fixture"
+target = "tests/"
+examples = ["tests/fixtures/", "tests/golden/"]
+must_not_contain = ["product source ownership", "release package bytes"]
+validation_expectations = ["test map update if applicable", "targeted tests"]
+
+[slots.release_recipe]
+id = "release_recipe"
+target = "release/"
+examples = ["release/package-recipes/"]
+must_not_contain = ["generated public release bytes", "unreviewed signing material"]
+validation_expectations = ["release policy validation", "publication-boundary review"]
+
+[slots.generated_output]
+id = "generated_output"
+target = "dist/, build/, out/, .dominium.local/, or .aide.local/"
+examples = ["dist/", "build/", "out/", ".dominium.local/", ".aide.local/"]
+must_not_contain = ["source authority", "unignored secrets"]
+validation_expectations = ["ignored/local-state check", "no generated outputs staged"]
+
+[slots.historical_archive]
+id = "historical_archive"
+target = "archive/"
+examples = ["archive/historical/", "archive/legacy/", "archive/quarantine/"]
+must_not_contain = ["new canonical source ownership", "active product entrypoints"]
+validation_expectations = ["provenance note", "reference update only when approved"]
+
+[slots.external_dependency]
+id = "external_dependency"
+target = "external/"
+examples = ["external/<dependency>/"]
+must_not_contain = ["Dominium-owned source", "generated build output"]
+validation_expectations = ["license/provenance review", "dependency contract review"]
+
+[routing_examples]
+new_product = "apps/<product>/"
+new_renderer_backend = "runtime/render/backends/<renderer>/"
+vector_or_canvas_drawing = "runtime/render/drawing/ or runtime/ui/drawing/"
+new_platform_host = "runtime/platform/hosts/<host>/"
+new_protocol = "contracts/protocols/ plus runtime implementation"
+new_domain = "game/domains/<domain>/"
+domain_schema = "contracts/schemas/domains/<domain>/"
+domain_registry = "contracts/registries/domains/<domain>/"
+authored_pack = "content/packs/<pack>/"
+release_recipe = "release/"
+generated_output = "dist/, build/, out/, .dominium.local/, or .aide.local/"
+validator = "tools/validators/"
+aide_adapter = "tools/aide/"

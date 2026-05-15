@@ -1,0 +1,75 @@
+{
+  "findings": [
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "canonical",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "schema_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "trust",
+      "sensitivity_hints": [
+        "trust_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "machine_readable"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "file": "locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "marker": "policy",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "locks",
+  "schema_version": "dominium.aide.authority_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 7
+  }
+}

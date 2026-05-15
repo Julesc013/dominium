@@ -1,0 +1,59 @@
+[contract]
+id = "dominium.aide.command_contracts.aide_structure_02.v1"
+task = "AIDE-STRUCTURE-02"
+status = "provisional"
+purpose = "Define initial stable AIDE wrapper commands for known-safe existing checks."
+
+[policy]
+wrap_before_rename = true
+unknown_tools_allowed = false
+apply_allowed_default = false
+network_allowed_default = false
+writes_allowed_default = false
+requires_repo_root = true
+legacy_tools_preserved = true
+
+[commands."aide.tools"]
+description = "Validate AIDE tool inventory and wrapper-plan evidence without executing unknown legacy tools."
+family = "tools"
+underlying = ["py", "-3", ".aide/scripts/aide_lite.py", "tools", "validate"]
+execution_allowed = true
+dry_run_supported = true
+apply_allowed = false
+network_allowed = false
+writes_allowed = false
+timeout_seconds = 60
+allowed_output_roots = [".aide/reports"]
+known_warnings = []
+failure_policy = "propagate"
+evidence_source = ".aide/reports/DOM-AIDE-02-wrapper-selection.md"
+
+[commands."aide.roots"]
+description = "Validate AIDE root inventory and root-refactor evidence in no-apply mode."
+family = "roots"
+underlying = ["py", "-3", ".aide/scripts/aide_lite.py", "roots", "validate"]
+execution_allowed = true
+dry_run_supported = true
+apply_allowed = false
+network_allowed = false
+writes_allowed = false
+timeout_seconds = 60
+allowed_output_roots = [".aide/reports"]
+known_warnings = []
+failure_policy = "propagate"
+evidence_source = ".aide/reports/AIDE-STRUCTURE-01-wrapper-candidates.md"
+
+[commands."aide.repo"]
+description = "Validate AIDE repo inventory and classification evidence without changing product/runtime behavior."
+family = "repo"
+underlying = ["py", "-3", ".aide/scripts/aide_lite.py", "repo", "validate"]
+execution_allowed = true
+dry_run_supported = true
+apply_allowed = false
+network_allowed = false
+writes_allowed = false
+timeout_seconds = 60
+allowed_output_roots = [".aide/reports"]
+known_warnings = ["repo validate may report unknown file classifications until later classification waves run"]
+failure_policy = "propagate"
+evidence_source = ".aide/reports/AIDE-STRUCTURE-01-wrapper-candidates.md"

@@ -1,0 +1,167 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".py",
+      "first_line": "\"\"\"SPEC-1 deterministic SpecSheet engine exports.\"\"\"",
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "specs/__init__.py",
+      "relative_path": "__init__.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "spec_sensitive"
+      ],
+      "size": 799,
+      "tracked": true
+    },
+    {
+      "extension": ".py",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "tool_or_script",
+      "path": "specs/spec_engine.py",
+      "relative_path": "spec_engine.py",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "spec_sensitive"
+      ],
+      "size": 30529,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "specs/reality",
+      "relative_path": "reality",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "relative_path": "reality/SPEC_CAPABILITY_SURFACES.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 15048,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "relative_path": "reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 27044,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "relative_path": "reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 16327,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "relative_path": "reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 17405,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "relative_path": "reality/SPEC_FORMALIZATION_CHAIN.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 20871,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "relative_path": "reality/SPEC_REPRESENTATION_LADDERS.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 16099,
+      "tracked": true
+    },
+    {
+      "extension": ".md",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "relative_path": "reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "size": 11539,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "specs",
+  "root_path": "specs",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 1,
+    "file_count": 9,
+    "tracked_file_count": 9
+  },
+  "task_id": null
+}

@@ -1,0 +1,34 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".json",
+      "first_line": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "locks/pack_lock.mvp_default.json",
+      "relative_path": "pack_lock.mvp_default.json",
+      "sensitivity_hints": [
+        "authority_sensitive",
+        "lock_sensitive",
+        "machine_readable"
+      ],
+      "size": 5467,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "locks",
+  "root_path": "locks",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 0,
+    "file_count": 1,
+    "tracked_file_count": 1
+  },
+  "task_id": null
+}

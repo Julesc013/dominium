@@ -1,0 +1,146 @@
+{
+  "findings": [
+    {
+      "file": "bundles/README.md",
+      "line": 6,
+      "marker": "compatibility",
+      "sensitivity_hints": [
+        "compatibility_sensitive"
+      ],
+      "snippet": "Compatibility: Bound to `schemas/bundle_profile.schema.json` v1.0.0 and `docs/architecture/pack_system.md`."
+    },
+    {
+      "file": "bundles/README.md",
+      "line": 14,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "Store declarative bundle selections under `bundles/<bundle_id>/bundle.json` for deterministic lockfile and registry compile."
+    },
+    {
+      "file": "bundles/README.md",
+      "line": 14,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "Store declarative bundle selections under `bundles/<bundle_id>/bundle.json` for deterministic lockfile and registry compile."
+    },
+    {
+      "file": "bundles/README.md",
+      "line": 18,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "- `pack_ids` order is not trusted for dependency ordering."
+    },
+    {
+      "file": "bundles/README.md",
+      "line": 20,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- Runtime must consume compiled registries + lockfile; no ad hoc bundle merge at boot."
+    },
+    {
+      "file": "bundles/README.md",
+      "line": 25,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "- `tools/xstack/lockfile_build --bundle bundle.base.lab --out build/lockfile.json`"
+    },
+    {
+      "file": "bundles/bundle.base.lab/bundle.json",
+      "line": 2,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "bundles/bundle.base.lab/bundle.json",
+      "line": 3,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "\"bundle_id\": \"bundle.base.lab\","
+    },
+    {
+      "file": "bundles/bundle.base.lab/bundle.json",
+      "line": 5,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_ids\": ["
+    },
+    {
+      "file": "bundles/bundle.base.lab/bundle.json",
+      "line": 32,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"optional_pack_ids\": ["
+    },
+    {
+      "file": "bundles/bundle.null/bundle.json",
+      "line": 2,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "bundles/bundle.null/bundle.json",
+      "line": 3,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "\"bundle_id\": \"bundle.null\","
+    },
+    {
+      "file": "bundles/bundle.null/bundle.json",
+      "line": 5,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_ids\": [],"
+    },
+    {
+      "file": "bundles/bundle.null/bundle.json",
+      "line": 6,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"optional_pack_ids\": []"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "bundles",
+  "schema_version": "dominium.aide.identity_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 14
+  }
+}

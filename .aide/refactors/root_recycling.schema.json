@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.aide.root_recycling.schema.v1",
+  "title": "Dominium AIDE Root Recycling Plan",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "root",
+    "root_path",
+    "phase",
+    "status",
+    "source_head",
+    "authority_inputs",
+    "inventory_path",
+    "salvage_map_path",
+    "move_map_path",
+    "reference_scan_path",
+    "summary",
+    "risk",
+    "approval_status",
+    "moves_allowed",
+    "deletes_allowed",
+    "renames_allowed",
+    "generated_outputs_allowed",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "root": {
+      "type": "string"
+    },
+    "root_path": {
+      "type": "string"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "source_head": {
+      "type": ["string", "null"]
+    },
+    "authority_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inventory_path": {
+      "type": ["string", "null"]
+    },
+    "salvage_map_path": {
+      "type": ["string", "null"]
+    },
+    "move_map_path": {
+      "type": ["string", "null"]
+    },
+    "reference_scan_path": {
+      "type": ["string", "null"]
+    },
+    "summary": {
+      "type": "object"
+    },
+    "risk": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "protected", "unknown"]
+    },
+    "approval_status": {
+      "type": "string",
+      "enum": ["draft", "review", "not_approved", "approved", "applied", "retired", "blocked"],
+      "default": "draft"
+    },
+    "moves_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "deletes_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "renames_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "generated_outputs_allowed": {
+      "type": "boolean",
+      "default": false
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "path",
+        "relative_path",
+        "kind",
+        "active",
+        "fate",
+        "risk",
+        "sensitivity_flags",
+        "referenced_by",
+        "target_path",
+        "reason",
+        "blockers",
+        "validators_required",
+        "rollback_notes"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "relative_path": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "active": {
+          "type": ["boolean", "null"]
+        },
+        "fate": {
+          "type": "string",
+          "enum": ["keep", "adapt", "extract", "convert", "archive", "drop", "preserve_unknown"]
+        },
+        "risk": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "protected", "unknown"]
+        },
+        "sensitivity_flags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "referenced_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_path": {
+          "type": ["string", "null"]
+        },
+        "reason": {
+          "type": "string"
+        },
+        "blockers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "validators_required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollback_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

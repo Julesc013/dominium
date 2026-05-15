@@ -1,0 +1,51 @@
+[policy]
+id = "dominium.aide.evidence.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Define evidence requirements for AIDE-controlled Dominium refactor work."
+
+[inventory_evidence]
+required = [
+  "source_paths",
+  "classification_basis",
+  "known_references",
+  "risk",
+  "fate",
+  "validation_expectations"
+]
+
+[move_evidence]
+required = [
+  "approved_move_map",
+  "salvage_map_for_mixed_roots",
+  "reference_rewrite_plan",
+  "rollback_plan",
+  "validator_results",
+  "ledger_event"
+]
+
+[validation_outputs]
+required_for_framework_tasks = [
+  "AIDE doctor/validate/test/selftest",
+  "AIDE roots/repo/tools validators",
+  "JSON/TOML parse checks",
+  "git diff --check",
+  "git status"
+]
+required_for_move_tasks = [
+  "strict repo layout",
+  "strict root allowlist",
+  "distribution layout when projections are touched",
+  "component matrices when support status changes",
+  "targeted build/test proof when source, build, runtime, or contracts are touched"
+]
+
+[allowed_locations]
+committed = [".aide/reports", ".aide/refactors", ".aide/ledgers", "docs/aide", "docs/repo", "contracts/repo"]
+local_ignored = [".aide.local", ".dominium.local"]
+
+[network_and_provider_policy]
+provider_calls_required = false
+network_required = false
+raw_prompts_committed = false
+raw_responses_committed = false

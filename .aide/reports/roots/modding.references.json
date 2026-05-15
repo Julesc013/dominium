@@ -1,0 +1,810 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3566,
+      "snippet": "\"contracts/schemas/modding/mod_policy_profile.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3567,
+      "snippet": "\"contracts/schemas/modding/pack_capabilities.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 3568,
+      "snippet": "\"contracts/schemas/modding/pack_trust_descriptor.schema\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7348,
+      "snippet": "\"docs/modding/DEBUGGING_DATA.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7349,
+      "snippet": "\"docs/modding/FABRICATION_AUTHORING_GUIDE.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7350,
+      "snippet": "\"docs/modding/FORBIDDEN_MOD_PATTERNS.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7351,
+      "snippet": "\"docs/modding/LOCALIZATION_PACKS.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7352,
+      "snippet": "\"docs/modding/MOD_AUTHORING_OVERVIEW.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7353,
+      "snippet": "\"docs/modding/MOD_COMPATIBILITY_CHECKLIST.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7354,
+      "snippet": "\"docs/modding/MOD_ECOSYSTEM.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7355,
+      "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7356,
+      "snippet": "\"docs/modding/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 7357,
+      "snippet": "\"docs/modding/SAFE_MOD_PATTERNS.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11298,
+      "snippet": "\"modding/__init__.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11299,
+      "snippet": "\"modding/mod_policy_engine.py\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/latest-tool-adapter-map.json",
+      "line": 7508,
+      "snippet": "\"source_tool\": \"docs/modding/MOD_COMPATIBILITY_CHECKLIST.md\","
+    },
+    {
+      "classification": "tools",
+      "file": ".aide/tools/tool-risk-summary.md",
+      "line": 864,
+      "snippet": "- `docs/modding/MOD_COMPATIBILITY_CHECKLIST.md`: risk=low fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, docs_hint:docs, low_risk_hint:docs"
+    },
+    {
+      "classification": "unknown",
+      "file": "content/MANIFEST.md",
+      "line": 14,
+      "snippet": "| `modding/` | not moved | left_for_review | Active Python mod policy engine imported by product/server and XStack tooling. | Mod policy IDs and trust/capability semantics unchanged. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/modding/mod_policy_profile.schema",
+      "line": 1,
+      "snippet": "SCHEMA: modding/mod_policy_profile.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/modding/pack_capabilities.schema",
+      "line": 1,
+      "snippet": "SCHEMA: modding/pack_capabilities.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/schemas/modding/pack_trust_descriptor.schema",
+      "line": 1,
+      "snippet": "SCHEMA: modding/pack_trust_descriptor.schema"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2196,
+      "snippet": "\"modding/__init__.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2197,
+      "snippet": "\"modding/mod_policy_engine.pyc\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/src_directory_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"9a54214bfcb8a2894a120d078e92d932797e70b10bd3e5f5a5673d272d2ea2be\",\"directories\":[{\"directory_path\":\"legacy/launcher_core_launcher/launcher/core/source\",\"duplicate_cluster_count\":0,\"duplicate_group_count\":0,\"dup"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/reality/player_desire_map.json",
+      "line": 30,
+      "snippet": "\"docs/modding/MOD_ECOSYSTEM.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"bc23201f4ff20c480f08752e5955d47dc4acbace9f43f9d5ac62ca76ba404ac4\",\"major_missing_inputs\":[],\"mapping_count\":795,\"mappings\":[{\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_module_id\":\"apps.app.src\",\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_candidates.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c22f3b38cfab633035248af1ec288d3496924e198b53f0d51db037b6f6782406\",\"missing_inputs\":[],\"options\":[{\"advantages\":[\"Aligns immediately with the long-term domain-first topology.\",\"Makes later enforcement simpler on"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_conflicts.json",
+      "line": 1,
+      "snippet": "{\"conflict_count\":48,\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_decisions.json",
+      "line": 1,
+      "snippet": "{\"decision_count\":795,\"decisions\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/sr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"evidence_refs\":[\"data/restructure/src_domain_mappi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"category\":\"runtime_support\",\"confidence\":0.9426,\"current_root\":\"app/src\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_lock_proposal.json",
+      "line": 1,
+      "snippet": "{\"conflicts\":[{\"category\":\"runtime_critical\",\"cluster_id_or_file\":\"duplicate.sig.86283723894c7a97\",\"confidence\":0.3935,\"evidence\":{\"build_targets\":[],\"dependency_domains\":[],\"focus_tags\":[\"contracts\",\"pack_verification\",\"protocol_negotiatio"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v3.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_domain_mapping_target_paths_v4.json",
+      "line": 1,
+      "snippet": "{\"approved_for_xi5_target_paths\":[{\"approved_domain\":\"apps\",\"approved_module_id\":\"apps.app\",\"decision_class\":\"approved_for_xi5\",\"decision_provenance\":{\"classification_report_id\":\"xi.4z.src_domain_mapping_lock_approved.v1\",\"classification_re"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_runtime_critical_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"3ab4d8f2221fb4913b59aaf6a9754c3fe978cb869ff726ef659ed10bc855c1c1\",\"entries\":[{\"architecture_impact\":9,\"blocked_file_count\":537,\"confidence\":0.9,\"current_root\":\"src\",\"example_files\":[\"src/embodiment/body/__init_"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/src_tool_only_set.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"c3a1403ff836cd0c758ff1dabfc0d0fd9789bf3f441a67f3459177943a18f0c8\",\"entries\":[{\"category\":\"tools\",\"confidence\":0.8137,\"current_module_id\":\"unknown.src.appshell\",\"current_root\":\"src\",\"evidence\":{\"build_targets\":["
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi4z_fix1_report.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_v1_path\":\"data/restructure/src_domain_mapping_lock_approved.json\",\"approved_lock_v2_path\":\"data/restructure/src_domain_mapping_lock_approved_v2.json\",\"decision_candidate_mismatch_rows\":[{\"approved_domain\":\"apps\",\"approved_mo"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/restructure/xi5a_move_map.json",
+      "line": 1,
+      "snippet": "{\"approved_lock_path\":\"data/restructure/src_domain_mapping_lock_approved_v4.json\",\"deterministic_fingerprint\":\"86c6801db990616d4038140d8f366680b2e452d5d81818c527f8cba18687b91d\",\"readiness_contract_path\":\"data/restructure/xi5_readiness_contr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/README.md",
+      "line": 45,
+      "snippet": "- `docs/modding/` modding how-to only"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 327,
+      "snippet": "- `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1590,
+      "snippet": "- `docs/modding/DEBUGGING_DATA.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1591,
+      "snippet": "- `docs/modding/FABRICATION_AUTHORING_GUIDE.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1592,
+      "snippet": "- `docs/modding/FORBIDDEN_MOD_PATTERNS.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1593,
+      "snippet": "- `docs/modding/LOCALIZATION_PACKS.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1594,
+      "snippet": "- `docs/modding/MOD_AUTHORING_OVERVIEW.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1595,
+      "snippet": "- `docs/modding/MOD_COMPATIBILITY_CHECKLIST.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1596,
+      "snippet": "- `docs/modding/MOD_ECOSYSTEM.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1597,
+      "snippet": "- `docs/modding/README.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CANON_INDEX.md",
+      "line": 1598,
+      "snippet": "- `docs/modding/SAFE_MOD_PATTERNS.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CONTRACTS_INDEX.md",
+      "line": 114,
+      "snippet": "| `docs/modding/MOD_TRUST_AND_CAPABILITIES.md` | FROZEN | Deterministic mod trust levels, capability declarations, and refusal policy |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/FROZEN_CONTRACT_HASHES.json",
+      "line": 136,
+      "snippet": "\"path\": \"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 66,
+      "snippet": "- `docs/dev/` and `docs/modding/` are how-to only."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1468,
+      "snippet": "| `docs/modding/DEBUGGING_DATA.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `LOGIC: signals/state machines/compile`, `PACK-COMPAT: compat manifests, offline verification`, `LIB: "
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1469,
+      "snippet": "| `docs/modding/FABRICATION_AUTHORING_GUIDE.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `SYS/PROC: capsules, stabilization, drift`, `PACK-COMPAT: compat manifests, offline verification`, `LIB: installs/instances/saves, CAS`, `"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1470,
+      "snippet": "| `docs/modding/FORBIDDEN_MOD_PATTERNS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, `CAP-NEG: negotiation + degrade ladders`, `RELEASE"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1471,
+      "snippet": "| `docs/modding/LOCALIZATION_PACKS.md` | `SYS/PROC: capsules, stabilization, drift`, `PACK-COMPAT: compat manifests, offline verification`, `APPSHELL: CLI/TUI/IPC/supervisor`, `RELEASE/DIST: manifests, packaging` | `partially_aligned` | `pr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1472,
+      "snippet": "| `docs/modding/MOD_AUTHORING_OVERVIEW.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, `"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1473,
+      "snippet": "| `docs/modding/MOD_COMPATIBILITY_CHECKLIST.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, `PACK-COMPAT: compat manifests, offline verif"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1474,
+      "snippet": "| `docs/modding/MOD_ECOSYSTEM.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `SYS/PROC: capsules, stabilization, drift`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPAT: compat manifests, offline verification`, `LIB: insta"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1475,
+      "snippet": "| `docs/modding/MOD_TRUST_AND_CAPABILITIES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `GEO: topology/metric/projection/overlays`, `L"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1476,
+      "snippet": "| `docs/modding/README.md` | `SYS/PROC: capsules, stabilization, drift`, `RELEASE/DIST: manifests, packaging` | `partially_aligned` | `provisional` | `-` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CANON_MAP.md",
+      "line": 1477,
+      "snippet": "| `docs/modding/SAFE_MOD_PATTERNS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Epistemics: Truth/Perceived/Render separation`, `GEO: topology/metric/projection/overlays`, `SYS/PROC: capsules, stabilization, drift`, `PACK-COMPA"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1468,
+      "snippet": "| `docs/modding/DEBUGGING_DATA.md` | Debugging Data (TOOLS-1) | `appshell`, `canon`, `determinism`, `logic`, `meta`, `pack`, `platform`, `server` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1469,
+      "snippet": "| `docs/modding/FABRICATION_AUTHORING_GUIDE.md` | Fabrication Authoring Guide (FAB0) | `build`, `canon`, `diag`, `distribution`, `meta`, `pack`, `release` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1470,
+      "snippet": "| `docs/modding/FORBIDDEN_MOD_PATTERNS.md` | Forbidden Mod Patterns | `canon`, `diag`, `distribution`, `epistemics`, `meta`, `release`, `server`, `sol`, `worldgen` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1471,
+      "snippet": "| `docs/modding/LOCALIZATION_PACKS.md` | Localization Packs (UX-1) | `appshell`, `canon`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1472,
+      "snippet": "| `docs/modding/MOD_AUTHORING_OVERVIEW.md` | Mod Authoring Overview | `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `worldgen` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1473,
+      "snippet": "| `docs/modding/MOD_COMPATIBILITY_CHECKLIST.md` | Mod Compatibility Checklist | `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1474,
+      "snippet": "| `docs/modding/MOD_ECOSYSTEM.md` | Mod Ecosystem (MOD1) | `canon`, `compat`, `diag`, `distribution`, `meta`, `pack`, `release`, `sol`, `time` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1475,
+      "snippet": "| `docs/modding/MOD_TRUST_AND_CAPABILITIES.md` | MOD-POLICY-0 Mod Trust And Capabilities | `canon`, `compat`, `determinism`, `diag`, `distribution`, `geo`, `logic`, `meta`, `pack`, `release`, `server`, `time`, `validation` | `2026-03-10` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1476,
+      "snippet": "| `docs/modding/README.md` | Modding Docs (How-To) | `canon`, `diag`, `distribution`, `meta`, `release`, `time` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DOC_INDEX.md",
+      "line": 1477,
+      "snippet": "| `docs/modding/SAFE_MOD_PATTERNS.md` | Safe Mod Patterns | `canon`, `diag`, `distribution`, `epistemics`, `geo`, `meta`, `pack`, `release`, `server`, `sol`, `worldgen` | `2026-02-01` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/EG_H_REPO_AUDIT.md",
+      "line": 126,
+      "snippet": "- `docs/modding/` now contains mod authoring rules."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/IMPLEMENTATION_SCORECARD.md",
+      "line": 50,
+      "snippet": "- `PACK_TRUST_DESCRIPTOR_NAME` lead=`src/modding/__init__.py` score=`67.14` gap=`19.28`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/IMPLEMENTATION_SCORECARD.md",
+      "line": 51,
+      "snippet": "- `REFUSAL_MOD_TRUST_DENIED` lead=`src/modding/__init__.py` score=`67.14` gap=`15.94`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2320,
+      "snippet": "\"docs/modding/DEBUGGING_DATA.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2321,
+      "snippet": "\"docs/modding/FABRICATION_AUTHORING_GUIDE.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2322,
+      "snippet": "\"docs/modding/FORBIDDEN_MOD_PATTERNS.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2323,
+      "snippet": "\"docs/modding/LOCALIZATION_PACKS.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2324,
+      "snippet": "\"docs/modding/MOD_AUTHORING_OVERVIEW.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2325,
+      "snippet": "\"docs/modding/MOD_COMPATIBILITY_CHECKLIST.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2326,
+      "snippet": "\"docs/modding/MOD_ECOSYSTEM.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2327,
+      "snippet": "\"docs/modding/README.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/INVENTORY.json",
+      "line": 2328,
+      "snippet": "\"docs/modding/SAFE_MOD_PATTERNS.md\","
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MODULE_DUPLICATION_REPORT.md",
+      "line": 104,
+      "snippet": "- `src/modding/mod_policy_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MOD_POLICY_BASELINE.md",
+      "line": 6,
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/geo/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PACK_COMPAT0_RETRO_AUDIT.md",
+      "line": 32,
+      "snippet": "- `src/modding/mod_policy_engine.py` computes deterministic hashes for trust and capability sidecars and enforces `mod_policy.*`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/PACK_COMPAT1_RETRO_AUDIT.md",
+      "line": 27,
+      "snippet": "- MOD-POLICY-0 enforcement exists in `src/modding/mod_policy_engine.py`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 470,
+      "snippet": "modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_TREE_INDEX.md",
+      "line": 5833,
+      "snippet": "modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/SERVER_MVP0_RETRO_AUDIT.md",
+      "line": 27,
+      "snippet": "- `src/modding/mod_policy_engine.py` validates saved mod policy and conflict"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/TRUST_STRICT0_RETRO_AUDIT.md",
+      "line": 24,
+      "snippet": "- `src/modding/mod_policy_engine.py` declares strict-only signed trust levels through policy data, not mode flags."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/VALIDATION_STACK_MAP.md",
+      "line": 560,
+      "snippet": "| `schema/modding/pack_trust_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md",
+      "line": 183,
+      "snippet": "- `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 160,
+      "snippet": "\u2022 Keep the rest of /engine (core/sim/ecs/space/topo/blueprints/physics/io/modding/api) \u2013 they fit under \u201ccore\u201d + \u201csim\u201d + generic engine modules. You don\u2019t need to rename them, but you should ensure determinism-sensitive parts sit under /eng"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 700,
+      "snippet": "\u2502  \u251c\u2500 modding/          # engine-side mod loading + API exposure"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 1788,
+      "snippet": "2.12 /engine/modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/context/dominium_newcontext.txt",
+      "line": 2638,
+      "snippet": "\u2502   \u251c\u2500\u2500 modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 354,
+      "snippet": "\u2502  \u251c\u2500 modding/          # engine-side mod loading + API exposure"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 1986,
+      "snippet": "2.12 /engine/modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/guides/dev/dominium_new_root.txt",
+      "line": 3261,
+      "snippet": "\u2502   \u251c\u2500\u2500 modding/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
+      "line": 5,
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/geo/OVERLAY_"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+      "line": 6,
+      "snippet": "Compatibility: Bound to `docs/packs/PACK_COMPATIBILITY_MANIFEST.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.33b8e7eba7858b47.md",
+      "line": 36,
+      "snippet": "- `src/modding/mod_policy_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.33b8e7eba7858b47.md",
+      "line": 150,
+      "snippet": "- `src/modding/mod_policy_engine.py` disposition=`drop` rank=`63` total_score=`51.2` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 128,
+      "snippet": "- `src/modding/mod_policy_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+      "line": 597,
+      "snippet": "- `src/modding/mod_policy_engine.py` disposition=`drop` rank=`284` total_score=`51.2` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.cluster.ceede769c9081f64.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/modding/DEBUGGING_DATA.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0bb8d9b37100d6bc.md",
+      "line": 69,
+      "snippet": "- `src/modding/mod_policy_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.0bb8d9b37100d6bc.md",
+      "line": 307,
+      "snippet": "- `src/modding/mod_policy_engine.py` disposition=`drop` rank=`140` total_score=`51.2` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 128,
+      "snippet": "- `src/modding/mod_policy_engine.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+      "line": 601,
+      "snippet": "- `src/modding/mod_policy_engine.py` disposition=`drop` rank=`286` total_score=`51.2` risk=`HIGH`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/refactor/QUARANTINE_duplicate.sig.f81a61ac3989de35.md",
+      "line": 29,
+      "snippet": "- Docs: `docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/modding/DEBUGGING_DATA.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 114,
+      "snippet": "- `modding/` and `models/` are active Python implementation packages, not content-only roots."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 122,
+      "snippet": "POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target ownership root for new authored content, but existing `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` material was not moved bec"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 151,
+      "snippet": "After POST-CONVERGE-03, content/package/profile/bundle review did not retire additional roots. `data/`, `packs/`, `profiles/`, `bundles/`, `modding/`, `models/`, and `templates/` remain explicit active exceptions because each is mixed, iden"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 263,
+      "snippet": "- `modding/` and `models/` remain active implementation packages, not content-only roots."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 177,
+      "snippet": "| `modding/` | current_content_or_data_root | Modding/content-adjacent root. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4B_UNBLOCK_REPORT.md",
+      "line": 471,
+      "snippet": "- `src/modding/__init__.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
+      "line": 55,
+      "snippet": "| `src/modding/__init__.py` | `runtime_critical` | `game` | `approved_for_xi5` | `game` | Modding policy is approved with the game/content layer. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 804,
+      "snippet": "\"modding/mod_policy_engine.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 808,
+      "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\""
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 817,
+      "snippet": "\"modding/mod_policy_engine.py\","
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 828,
+      "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\""
+    },
+    {
+      "classification": "tests",
+      "file": "tests/app/harden1_docs_tests.py",
+      "line": 67,
+      "snippet": "\"docs/modding/MOD_ECOSYSTEM.md\": ["
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e394_missing_capabilities_smell.py",
+      "line": 12,
+      "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e394_missing_capabilities_smell.py",
+      "line": 31,
+      "snippet": "\"modding/mod_policy_engine.py\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e395_trust_bypass_smell.py",
+      "line": 12,
+      "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e395_trust_bypass_smell.py",
+      "line": 27,
+      "snippet": "\"modding/mod_policy_engine.py\": ("
+    },
+    {
+      "classification": "tools",
+      "file": "tools/review/xi4z_structure_approval_common.py",
+      "line": 334,
+      "snippet": "if normalized.startswith(\"src/modding/\"):"
+    }
+  ],
+  "references_rewritten": false,
+  "root": "modding",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 133
+  }
+}

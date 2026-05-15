@@ -1,0 +1,299 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "specs/__init__.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "__init__.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "specs/spec_engine.py",
+      "reason": "Tooling may be wrapped or moved later only after references are clear.",
+      "referenced_by": [],
+      "relative_path": "spec_engine.py",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "executable_or_tool",
+        "python_module",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "specs/reality",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "reality",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_CAPABILITY_SURFACES.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_FORMALIZATION_CHAIN.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_REPRESENTATION_LADDERS.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "convert",
+      "kind": "file",
+      "path": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "referenced_by": [],
+      "relative_path": "reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "authority_sensitive",
+        "documentation",
+        "spec_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "specs",
+  "root_path": "specs",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "adapt": 2,
+      "convert": 7,
+      "preserve_unknown": 1
+    },
+    "risk_counts": {
+      "protected": 9,
+      "unknown": 1
+    },
+    "sensitivity_counts": {
+      "authority_sensitive": 9,
+      "documentation": 7,
+      "executable_or_tool": 2,
+      "python_module": 2,
+      "spec_sensitive": 9
+    }
+  },
+  "task_id": null
+}

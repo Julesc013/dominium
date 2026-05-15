@@ -1,0 +1,162 @@
+[contract]
+id = "dominium.repo.root_constitution.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Define stable top-level ownership roots and rules for future root creation."
+
+[policy]
+new_top_level_roots_default = "refuse"
+paths_are_identity = false
+contracts_define_identity = true
+aide_controls_refactors = true
+move_maps_required = true
+salvage_maps_required_for_mixed_roots = true
+path_aliases_must_expire = true
+manual_drag_drop_forbidden = true
+generated_roots_are_not_source_authority = true
+
+[stable_roots.aide]
+path = ".aide"
+purpose = "Committed AIDE control-plane policy, queues, ledgers, reports, and task specs."
+lifecycle = "project_control"
+may_contain = ["policies", "queue", "refactors", "ledgers", "reports", "context", "memory"]
+must_not_contain = ["product_runtime_state", "secrets", "build_outputs"]
+
+[stable_roots.github]
+path = ".github"
+purpose = "GitHub CI and repository integration."
+lifecycle = "platform_integration"
+
+[stable_roots.apps]
+path = "apps"
+purpose = "Thin product entrypoints and product composition surfaces."
+lifecycle = "product_entrypoint"
+
+[stable_roots.engine]
+path = "engine"
+purpose = "Deterministic engine substrate."
+lifecycle = "source_authority"
+
+[stable_roots.game]
+path = "game"
+purpose = "Dominium rules, simulation, and game domains."
+lifecycle = "source_authority"
+
+[stable_roots.runtime]
+path = "runtime"
+purpose = "AppShell, platform, render, audio, input, network, storage, UI, diagnostics, and host-facing adapters."
+lifecycle = "source_authority"
+
+[stable_roots.contracts]
+path = "contracts"
+purpose = "Machine-readable and normative contracts: schemas, registries, ABI, protocols, capabilities, replay, repo, build, distribution."
+lifecycle = "contract_authority"
+
+[stable_roots.content]
+path = "content"
+purpose = "Authored packs, profiles, templates, fixtures-as-content, assets, and domain data."
+lifecycle = "authored_content"
+
+[stable_roots.docs]
+path = "docs"
+purpose = "Human-readable explanation, architecture, audits, guides, and operations."
+lifecycle = "documentation"
+
+[stable_roots.tests]
+path = "tests"
+purpose = "Tests, fixtures, golden cases, integration, determinism, and regression."
+lifecycle = "validation"
+
+[stable_roots.tools]
+path = "tools"
+purpose = "Validators, generators, audit, repo, test, build, migration, and AIDE adapters."
+lifecycle = "tooling"
+
+[stable_roots.scripts]
+path = "scripts"
+purpose = "Small workflow wrappers and entrypoints."
+lifecycle = "workflow_entrypoints"
+
+[stable_roots.cmake]
+path = "cmake"
+purpose = "CMake modules and toolchain/build glue."
+lifecycle = "build_configuration"
+
+[stable_roots.external]
+path = "external"
+purpose = "Vendored or referenced third-party material."
+lifecycle = "external_dependency"
+
+[stable_roots.release]
+path = "release"
+purpose = "Release recipes, package policy, signing, channels, and release inputs."
+lifecycle = "release_control_plane"
+
+[stable_roots.archive]
+path = "archive"
+purpose = "Historical, superseded, quarantined, and generated-evidence snapshots."
+lifecycle = "archive"
+
+[generated_roots.dist]
+path = "dist"
+purpose = "Generated build/release projection."
+source_authority = false
+
+[generated_roots.build]
+path = "build"
+purpose = "Generated build output."
+source_authority = false
+
+[generated_roots.out]
+path = "out"
+purpose = "Generated build output."
+source_authority = false
+
+[local_roots.dominium_local]
+path = ".dominium.local"
+purpose = "Ignored local machine probe/build evidence."
+source_authority = false
+
+[local_roots.aide_local]
+path = ".aide.local"
+purpose = "Ignored local AIDE runtime/cache/scratch/secrets state."
+source_authority = false
+
+[forbidden_root_policy]
+description = "New top-level roots require explicit constitution update, allowlist update, validator update, and justification."
+requirements = [
+  "distinct lifecycle",
+  "not cleanly owned by existing stable roots",
+  "durable multi-year name",
+  "not named after temporary phase, support status, era, or implementation detail",
+  "validator and ownership contract updated in same change"
+]
+
+[transitional_roots]
+notes = "Known transitional roots are governed by layout_exceptions.toml and must be processed by AIDE inventory/salvage/move waves."
+roots = [
+  "core",
+  "control",
+  "data",
+  "packs",
+  "profiles",
+  "bundles",
+  "compat",
+  "lib",
+  "libs",
+  "locks",
+  "repo",
+  "safety",
+  "security",
+  "specs",
+  "updates",
+  "meta",
+  "governance",
+  "ide",
+  "performance",
+  "validation",
+  "modding",
+  "models",
+  "templates",
+  "net"
+]

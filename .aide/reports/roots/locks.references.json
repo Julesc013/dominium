@@ -1,0 +1,1326 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 2594,
+      "snippet": "\"contracts/locks/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 5514,
+      "snippet": "\"dist/locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 11270,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/engine_modules_engine/engine/agent/group/dg_group.h",
+      "line": 17,
+      "snippet": "* Used for herds/flocks/squads/swarms and non-physical controllers."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/MANIFEST.md",
+      "line": 14,
+      "snippet": "| `locks/` | `locks/` | review | Left in place because it contains concrete deterministic pack lock artifacts, not only lockfile schemas. |"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/MANIFEST.md",
+      "line": 36,
+      "snippet": "- `contracts/locks/`"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/MANIFEST.md",
+      "line": 48,
+      "snippet": "`compat/`, `locks/`, and `data/registries/` remain under review. They require file-level ownership inspection before any future movement."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/README.md",
+      "line": 26,
+      "snippet": "- `locks/`: deterministic lockfile schemas and contract definitions only."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/README.md",
+      "line": 42,
+      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/README.md",
+      "line": 43,
+      "snippet": "- `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts in install/runtime projections."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/README.md",
+      "line": 44,
+      "snippet": "- `runtime/locks/`: process, IPC, and transient runtime locks."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/distribution/layout.contract.toml",
+      "line": 196,
+      "snippet": "paths = [\"install.manifest.json\", \"semantic_contract_registry.json\", \"release.manifest.json\", \"bin/\", \"descriptors/\", \"store/packs/\", \"store/profiles/\", \"store/locks/\", \"instances/\", \"saves/\", \"exports/\", \"logs/\", \"runtime/ipc/\", \"runtime/l"
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/locks/README.md",
+      "line": 8,
+      "snippet": "Concrete lock artifacts belong in install/runtime projections such as `store/locks/`. Process and IPC locks belong under `runtime/locks/`. Setup, update, and rollback transaction state belongs under `ops/transactions/`."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/locks/README.md",
+      "line": 12,
+      "snippet": "`locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity metadata and distribution copy behavior. Move only lockfile schemas or contract definitions here after protected lock ownership review."
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/layout.contract.toml",
+      "line": 234,
+      "snippet": "notes = \"Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "contracts/repo/root_allowlist.toml",
+      "line": 71,
+      "snippet": "locks = { classification = \"transitional_contract_root\", target_or_review = \"contracts/locks or store/locks review\", retire_by_phase = \"review\", notes = \"Root-level locks/ contains concrete deterministic pack lock artifacts, not only lockfi"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ci_run_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"eef85dde0a8c2f42c7ffd300724dd97dde093602685ccef08f2b8816ca263c59\",\"gate_definitions_fingerprint\":\"c7253e5cf505f809a7a54ca0fcd0ae52ffd10e287114a426614ac069492a5740\",\"profile\":\"STRICT\",\"profile_fingerprint\":\"1d61"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/clean_room_win64.json",
+      "line": 1,
+      "snippet": "{\"assertions\":{\"exit_codes_all_success\":true,\"negotiation_records_present\":true,\"no_external_absolute_paths\":true,\"pack_verification_passed\":true,\"portable_root_detected\":true,\"replay_validates_determinism\":true,\"teleport_chain_complete\":tr"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_content_audit.json",
+      "line": 22,
+      "snippet": "\"store/locks/pack_lock.mvp_default.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_tree_assembly_report.json",
+      "line": 2917,
+      "snippet": "\"pack_lock_path\": \"store/locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/dist_verify_win64.json",
+      "line": 1,
+      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ecosystem_verify_run.json",
+      "line": 1,
+      "snippet": "{\"baseline_comparison\":{\"baseline_matches\":true,\"baseline_present\":true,\"committed_baseline_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102ad2081b57d76f3640ece02570eb61\",\"expected_baseline_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/store_gc_report.json",
+      "line": 1,
+      "snippet": "{\"aggressive_refusal_code\":\"refusal.store.gc.explicit_flag_required\",\"candidate_hashes\":[\"packs/e8fbcee0d3702eef874fb0709bf80fbaa69fefd55fe5ff9f4ef4a85551bd0a5e\"],\"deterministic_fingerprint\":\"21205fc37e2190a818563301f583b7d92a1319c999420a39"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/store_verify_report.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"97319d9bfaef0e1946e92169638d70999fdea2c9eda4968e1d00ae08e48aa227\",\"reachability_fingerprint\":\"487048911df2efcc66320b07e062b0ca5621a71b8836af7ac329651c35bbdbf3\",\"reachability_source_count\":6,\"report_id\":\"store.v"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "line": 5,
+      "snippet": "\"Use profile.bundle.mvp_default plus locks/pack_lock.mvp_default.json as the baseline content/config pair.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_reuse_plan.json",
+      "line": 93,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1034,
+      "snippet": "\"locks/\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1205,
+      "snippet": "\"evidence\": \"Audit verified profile.bundle.mvp_default, locks/pack_lock.mvp_default.json, data/session_templates/session.mvp_default.json, and live packs list output.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1217,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_wiring_map.json",
+      "line": 272,
+      "snippet": "\"path\": \"packs/, profiles/, locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/universal_identity_report.json",
+      "line": 1,
+      "snippet": "{\"artifact_count\":59,\"deterministic_fingerprint\":\"d644d115d83d43951336b1bf3ef54e1c15f4da7d64ac6dddb20de379c4122146\",\"error_count\":0,\"identity_kind_ids\":[\"identity.bundle\",\"identity.format\",\"identity.install\",\"identity.instance\",\"identity.li"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_FAST.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/validation_report_STRICT.json",
+      "line": 1,
+      "snippet": "{\"adapter_id\":\"validation_engine\",\"category_id\":\"validate.aggregate\",\"checked_paths\":[\"compat/capability_negotiation.py\",\"data/registries/validation_suite_registry.json\",\"lib/artifact/artifact_validator.py\",\"lib/install/install_validator.py"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/trust/signed_release_index.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/trust/unsigned_release_index.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/universe/baseline_pack_lock.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.bfa086e1ece381b1\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_baseline.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_strict.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_upgrade.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/baselines/update_sim/release_index_yanked.json",
+      "line": 1,
+      "snippet": "{\"channel\":\"mock\",\"component_graph_hash\":\"f850e846bd0904b5bb2f3e0a75a03d6a4012d564093b5fa2964aadc2a4babdfe\",\"components\":[{\"capability_filters\":{\"abi_ids\":[],\"arch_ids\":[],\"exclude_abi_ids\":[],\"exclude_arch_ids\":[],\"exclude_platform_ids\":[]"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/regression/ecosystem_verify_baseline.json",
+      "line": 1,
+      "snippet": "{\"baseline_id\":\"ecosystem_verify.baseline.v0_0_0\",\"deterministic_fingerprint\":\"2237a437f4e575aa3c4058be1a0c0490102ad2081b57d76f3640ece02570eb61\",\"ecosystem_verify_version\":0,\"identity_coverage\":{\"binary_identity_result\":\"complete\",\"binary_p"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 231,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 302,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 117,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 153,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 302,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 455,
+      "snippet": "\"path_or_subsystem\": \"profiles/, locks/, data/session_templates/, data/registries/, and the default-bundle seam between authored MVP assets and bundle.base.lab\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 691,
+      "snippet": "\"path_or_cluster\": \"profiles/, locks/, data/session_templates/, and data/registries/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "line": 814,
+      "snippet": "\"profiles/, locks/, data/session_templates/, and data/registries/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 63,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 137,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 267,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_non_negotiables_and_current_reality.json",
+      "line": 588,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_phased_migration_shims_validation_and_rollback.json",
+      "line": 470,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_target_topology_options_and_comparison.json",
+      "line": 211,
+      "snippet": "\"directory_boundary_model\": \"A five-zone lattice where surfaces host AppShell and entry shells, substrate hosts runtime and authority implementation, control_plane hosts release/security/validation and XStack assembly tooling, content hosts"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_target_topology_options_and_comparison.json",
+      "line": 264,
+      "snippet": "\"directory_boundary_model\": \"A lifecycle split where products hosts client/server/AppShell/launcher/setup, runtime_services hosts runtime/net/process and shared substrate, repo_ops hosts release/security/validation and tool surfaces, catalo"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 73,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 97,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 128,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 239,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 417,
+      "snippet": "\"store/locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 592,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 689,
+      "snippet": "\"path\": \"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 703,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 709,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 932,
+      "snippet": "\"dist/locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1090,
+      "snippet": "\"statement\": \"The authored baseline asset trio is physically located at profiles/bundles/bundle.mvp_default.json, locks/pack_lock.mvp_default.json, and data/session_templates/session.mvp_default.json.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1094,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1141,
+      "snippet": "\"statement\": \"Release/update logic also expects installed or projected payloads such as store/profiles/bundles/bundle.mvp_default.json and store/locks/pack_lock.mvp_default.json.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1307,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1380,
+      "snippet": "\"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1431,
+      "snippet": "\"location\": \"locks/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1436,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1607,
+      "snippet": "\"statement\": \"profiles/bundles/, locks/, data/session_templates/, and data/registries/ are all live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled bundle.base.lab.\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "line": 1642,
+      "snippet": "\"profiles/, locks/, data/session_templates/, and data/registries/ physical locations as current live inputs\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 63,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 287,
+      "snippet": "\"locks/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_inventory_and_classification.json",
+      "line": 477,
+      "snippet": "\"locks/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 310,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/xstack_scope_freeze.json",
+      "line": 531,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "dist/locks/pack_lock.mvp_default.json",
+      "line": 1,
+      "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/CONTENT_AND_STORAGE_MODEL.md",
+      "line": 42,
+      "snippet": "locks/<hash>/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/LOCKFILES.md",
+      "line": 21,
+      "snippet": "- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_artifacts/locks/<hash>/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 40,
+      "snippet": "| `locks/` | Canonical lock artifacts used by MVP/runtime packaging | Packaging/verification changes only | Evolving |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/CONTENT_STORE_BASELINE.md",
+      "line": 30,
+      "snippet": "store/locks/<hash>/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST1_RETRO_AUDIT.md",
+      "line": 37,
+      "snippet": "- `locks/pack_lock.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST1_RETRO_AUDIT.md",
+      "line": 60,
+      "snippet": "- `locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md",
+      "line": 36,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST_REFINE1_RETRO_AUDIT.md",
+      "line": 20,
+      "snippet": "- The default pack lock is governed by `locks/pack_lock.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/DIST_TREE_ASSEMBLY_FINAL.md",
+      "line": 19,
+      "snippet": "- `store/locks/pack_lock.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 23,
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP1_RETRO_AUDIT.md",
+      "line": 173,
+      "snippet": "- Dist tooling currently creates `bundles/` and `registries/` but not `profiles/` or `locks/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
+      "line": 64,
+      "snippet": "- `dist/locks/pack_lock.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 15,
+      "snippet": "- Existing lockfile and pack-lock outputs under `dist/locks/` and `dist/lockfile.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 25,
+      "snippet": "- `locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 35,
+      "snippet": "- pack lock `dist/locks/pack_lock.mvp_default.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+      "line": 63,
+      "snippet": "- `dist/locks/pack_lock.mvp_default.json` includes:"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STORE_GC_BASELINE.md",
+      "line": 20,
+      "snippet": "- `install_manifest` `install.store_gc_fixture` -> locks/262a0af7113a079d5622b0d646b726113012d0217f91609b32fbd0699e44e791, locks/c65795a71f2dd0b0703923b6e6ed4b5066b330e25532d7eb3c72847878c5560d, profiles/5d5d4ccb7379aed7c9cbd5454c11d771387f"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STORE_GC_BASELINE.md",
+      "line": 21,
+      "snippet": "- `instance_manifest` `instance.default` -> locks/c65795a71f2dd0b0703923b6e6ed4b5066b330e25532d7eb3c72847878c5560d, profiles/5d5d4ccb7379aed7c9cbd5454c11d771387f3be869f6f582714384300b46fbc5"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STORE_GC_BASELINE.md",
+      "line": 22,
+      "snippet": "- `release_index` `release.v0.0.0-mock-store_gc_fixture` -> locks/262a0af7113a079d5622b0d646b726113012d0217f91609b32fbd0699e44e791, profiles/5d5d4ccb7379aed7c9cbd5454c11d771387f3be869f6f582714384300b46fbc5"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STORE_GC_BASELINE.md",
+      "line": 23,
+      "snippet": "- `release_manifest` `release.v0.0.0-mock-store_gc_fixture` -> locks/262a0af7113a079d5622b0d646b726113012d0217f91609b32fbd0699e44e791, profiles/5d5d4ccb7379aed7c9cbd5454c11d771387f3be869f6f582714384300b46fbc5"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/STORE_GC_BASELINE.md",
+      "line": 24,
+      "snippet": "- `save_manifest` `save.default` -> locks/c65795a71f2dd0b0703923b6e6ed4b5066b330e25532d7eb3c72847878c5560d"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "line": 23,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "line": 40,
+      "snippet": "3. Use profile.bundle.mvp_default plus locks/pack_lock.mvp_default.json as the baseline content/config pair."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
+      "line": 57,
+      "snippet": "3. Use profile.bundle.mvp_default plus locks/pack_lock.mvp_default.json as the baseline content/config pair."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+      "line": 20,
+      "snippet": "3. Use profile.bundle.mvp_default plus locks/pack_lock.mvp_default.json as the baseline content/config pair."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
+      "line": 11,
+      "snippet": "| Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configurat"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "line": 45,
+      "snippet": "| Pack, profile, lock, and template baseline data | packs/<br>profiles/<br>locks/<br>data/session_templates/ | JSON | implemented_and_used | wired_to_entrypoints | launcher_python_appshell, setup_python_appshell, xstack_session_create | con"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+      "line": 24,
+      "snippet": "| packs_profiles_locks | content_config | implemented_and_used | packs/, profiles/, locks/ |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json",
+      "line": 72,
+      "snippet": "\"output\": \"MSBuild version 18.0.5+e22287bf1 for .NET Framework\\n\\n  Run TestX and bump build number on success\\n  Test project C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\\n          Start   1: phase6_audit\\n    1/381 Test   #1: phas"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/INSTALLED_LAYOUT.md",
+      "line": 19,
+      "snippet": "The immutable root carries binaries, descriptors, docs, licenses, release manifests, and redistributables. Mutable roots carry stores, instances, saves, exports, logs, runtime IPC/locks/temp, cache, and ops transactions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 23,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 30,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 58,
+      "snippet": "| `STORE_LOCK_ROOT` | `store/locks/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 59,
+      "snippet": "| `RUNTIME_LOCK_ROOT` | `runtime/locks/` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 64,
+      "snippet": "`store/locks/` holds deterministic pack, content, capability, compatibility, and store-resolution locks. `runtime/locks/` holds process and IPC locks. `ops/transactions/` holds setup/update/rollback state."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+      "line": 66,
+      "snippet": "Do not collapse these into one generic portable `locks/` doctrine."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md",
+      "line": 37,
+      "snippet": "- `store/locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md",
+      "line": 43,
+      "snippet": "- `runtime/locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/governance/REPOX_RULESETS.md",
+      "line": 866,
+      "snippet": "- Fails when `locks/pack_lock.mvp_default.json` does not resolve to exactly the three MVP install-visible pack IDs."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/REAL_WORLD_AFFORDANCE_MATRIX.md",
+      "line": 192,
+      "snippet": "- clocks/schedules/drift/timestamp/traceability"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/meta/REAL_WORLD_AFFORDANCE_MATRIX.md",
+      "line": 214,
+      "snippet": "- interlocks/relief/breakers/redundancy/fail-safe"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/mvp/MVP_INSTALL_LAYOUT.md",
+      "line": 28,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/mvp/MVP_INSTALL_LAYOUT.md",
+      "line": 44,
+      "snippet": "- `locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/DISTRIBUTION_MODEL.md",
+      "line": 82,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/DIST_BUNDLE_ASSEMBLY.md",
+      "line": 95,
+      "snippet": "locks/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/CONTRACT_CONVERGENCE.md",
+      "line": 20,
+      "snippet": "- `locks/` stayed at the repository root because it contains a concrete deterministic pack lock artifact, not only lockfile schemas."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/CONTRACT_CONVERGENCE.md",
+      "line": 38,
+      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/CONTRACT_CONVERGENCE.md",
+      "line": 39,
+      "snippet": "- `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts in install/runtime projections."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/CONTRACT_CONVERGENCE.md",
+      "line": 40,
+      "snippet": "- `runtime/locks/`: process, IPC, and transient runtime locks."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 152,
+      "snippet": "- `locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity and distribution copy behavior."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/LAYOUT_ENFORCEMENT.md",
+      "line": 119,
+      "snippet": "POST-CONVERGE-04 keeps the active layout exception count at 32 after narrowing high-risk `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` exceptions. These roots remain explicit protected revie"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/MOVE_MAP.md",
+      "line": 93,
+      "snippet": "| `locks` | `contracts/locks_or_store_locks_review` | `review` | `true` | `true` | `review` | `CONVERGE-06` | `review` | Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile sche"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/MOVE_MAP.md",
+      "line": 170,
+      "snippet": "- Future scoped tasks: split protected roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `net/`, `packs/`, `repo/`, `security/`, and `specs/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/MOVE_MAP.md",
+      "line": 190,
+      "snippet": "- split or reclassify protected roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `net/`, `packs/`, `repo/`, `security/`, and `specs/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 25,
+      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 26,
+      "snippet": "- `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 27,
+      "snippet": "- `runtime/locks/`: process, IPC, and transient runtime locks."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 130,
+      "snippet": "`compat/` and `locks/` remain root-level review items after CONVERGE-06:"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 133,
+      "snippet": "- `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/locks/`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 137,
+      "snippet": "POST-CONVERGE-04 keeps this boundary conservative for the high-risk roots: `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` were not moved because active imports, CMake/ABI references, embedded"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 203,
+      "snippet": "authored content, configuration, and machine-readable input families, including `packs/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `schema/`, `schemas/`, and the explicitly unresolved `packs/` versus `data/packs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 254,
+      "snippet": "`packs/`, `profiles/`, `locks/`, `data/session_templates/`, and `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 141,
+      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 164,
+      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 279,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `build/registries/`, `build/lockfile.json`, repo-local `saves/`, registry-compile defaults"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 390,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, and the default-bundle seam between authored MVP assets and `bundle.base.lab`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 592,
+      "snippet": "`profiles/`, `locks/`, `data/session_templates/`, `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+      "line": 690,
+      "snippet": "- `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_LAYOUT_TARGET.md",
+      "line": 66,
+      "snippet": "`contracts/` is canonical for schemas, registries, protocols, capabilities, compatibility contracts, stability contracts, replay/proof contracts, ABI contracts, repository layout contracts, and distribution projection contracts. Mixed contr"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_LAYOUT_TARGET.md",
+      "line": 143,
+      "snippet": "- CONVERGE-06: contract, schema, compatibility, and lock convergence. Completed for root-level `schema/` and `schemas/`; `compat/` and `locks/` remain review roots."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 52,
+      "snippet": "- The authored MVP baseline asset trio exists and is live: `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
+      "line": 248,
+      "snippet": "`profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/xstack/session_create.py`, `tools/xstack/registry_compile/constants.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md",
+      "line": 338,
+      "snippet": "`tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `profiles/`, `locks/`, `data/session_templates/`, `data/r"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 86,
+      "snippet": "- Omega1 ownership and path-contract facts for `appshell/`, `client/`, `server/`, `tools/`, `release/`, `security/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, `schema/`, and `schemas/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 131,
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 152,
+      "snippet": "`surfaces/` would conceptually host AppShell, launcher/setup entry shells, and user-facing orchestration; `substrate/` would conceptually host `client/`, `server/`, `runtime/`, `net/`, and the strongest shared runtime/engine adjacency; `con"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 173,
+      "snippet": "`products/` would conceptually host `client/`, `server/`, `appshell/`, `launcher/`, and `setup/`; `runtime_services/` would conceptually host `runtime/`, `net/`, `process/`, and distributed runtime/service substrate; `repo_ops/` would conce"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 9,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 63,
+      "snippet": "`packs/`, `profiles/`, `locks/`, `data/`, `schema/`, `schemas/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 76,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are the authored and machine-readable data roots that current flows consume directly."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 90,
+      "snippet": "- `locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 167,
+      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 305,
+      "snippet": "`manifests/release_manifest.json`, `manifests/release_index.json`, `data/registries/component_graph_registry.json`, `data/registries/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `dist/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 443,
+      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 519,
+      "snippet": "`locks/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 535,
+      "snippet": "`locks/pack_lock.mvp_default.json`, AppShell virtual roots, release/install store projections, SessionX create and boot flows"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 537,
+      "snippet": "`locks/pack_lock.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `release/update_resolver.py`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 719,
+      "snippet": "`dist/manifests/release_manifest.json`, `dist/packs/`, `dist/profiles/`, `dist/locks/`, AppShell install/store search roots"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 814,
+      "snippet": "The authored baseline asset trio is physically located at `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 836,
+      "snippet": "Release/update logic also expects installed or projected payloads such as `store/profiles/bundles/bundle.mvp_default.json` and `store/locks/pack_lock.mvp_default.json`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 921,
+      "snippet": "`tools/xstack/`, `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`, generated `build/registries/` and `build/lockfile.json`, repo-local `saves/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 975,
+      "snippet": "| `locks/` | authored lock declarations | canonical source of truth for authored locks | baseline lock lives here; generated and store copies exist elsewhere |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 999,
+      "snippet": "- `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are all real live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled `bundle.base.lab`."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+      "line": 1031,
+      "snippet": "- `profiles/`, `locks/`, `data/session_templates/`, `data/registries/` physical locations as current live inputs"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 73,
+      "snippet": "Lock artifacts and lock contracts must not be confused. `contracts/locks/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 153,
+      "snippet": "After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because the"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 67,
+      "snippet": "| `locks` | `transitional_contract_or_schema_root` | `contracts` | `review` | `CONVERGE-06` | `review` | Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 114,
+      "snippet": "- `locks`: `transitional_contract_or_schema_root`, target `contracts/locks_or_store_locks_review`, risk `review`. Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 208,
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 278,
+      "snippet": "- `locks/` remains a concrete source lock artifact root, not a pure lockfile contract root."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 168,
+      "snippet": "| `locks/` | current_content_or_data_root | Lock/artifact surface needing future split review. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 429,
+      "snippet": "CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schemas/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirm"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_04_COMPAT_LIB_SPEC_SECURITY_CLEANUP.md",
+      "line": 46,
+      "snippet": "| `locks` | yes | yes, 1 file | yes | protected_review | `locks/pack_lock.mvp_default.json` is a concrete pack lock artifact with embedded identity, hash, ordered pack, and rel-path semantics. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md",
+      "line": 75,
+      "snippet": "| `store/locks/` | yes | no | no projection root generated | blocker |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md",
+      "line": 81,
+      "snippet": "| `runtime/locks/` | yes | no | no projection root generated | blocker |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md",
+      "line": 102,
+      "snippet": "- `locks/` may contain deterministic pack/content locks, not only schemas."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
+      "line": 156,
+      "snippet": "| `dist/profiles/*`, `dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/plannin"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 242,
+      "snippet": "- `locks/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+      "line": 345,
+      "snippet": "- Major Dependencies: `packs/**`, `profiles/**`, `locks/**`, `build/registries/**`, `modding`, `tools/xstack/cache_store/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 142,
+      "snippet": "| `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, and `data/session_templates/session.mvp_default.json` | Live baseline content/config pair and session template called out by the audit as the near-term playab"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "line": 270,
+      "snippet": "- `locks/pack_lock.mvp_default.json`"
+    },
+    {
+      "classification": "active_source",
+      "file": "meta/identity/identity_validator.py",
+      "line": 74,
+      "snippet": "\"/locks/\","
+    },
+    {
+      "classification": "active_source",
+      "file": "release/update_resolver.py",
+      "line": 492,
+      "snippet": "return [\"store/locks/pack_lock.mvp_default.json\"]"
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 1225,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 1237,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "repo/repox/rulesets/core.json",
+      "line": 1239,
+      "snippet": "\"dist/locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tests/launcher/launcher_cli_tests.py",
+      "line": 389,
+      "snippet": "\"artifact_path\": \"embedded_artifacts/locks/%s\" % pack_lock_hash,"
+    },
+    {
+      "classification": "tests",
+      "file": "tests/ops/export_import_bundle_tests.py",
+      "line": 159,
+      "snippet": "\"artifact_path\": slash(\"embedded_artifacts/locks/{}\".format(pack_lock_hash)),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e157_adhoc_interlocking_smell.py",
+      "line": 21,
+      "snippet": "re.compile(r\"\\broute_reserve_blocks\\b\", re.IGNORECASE),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "line": 95,
+      "snippet": "related_paths=[rel_path, \"tools/mvp/runtime_bundle.py\", \"locks/pack_lock.mvp_default.json\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 11,
+      "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 70,
+      "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 89,
+      "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\", \"profiles/bundles/bundle.mvp_default.json\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "line": 121,
+      "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\"],"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist6_interop_common.py",
+      "line": 561,
+      "snippet": "\"pack_lock_a\": _load_bundle_json(bundle_root_a, \"store/locks/pack_lock.mvp_default.json\"),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist6_interop_common.py",
+      "line": 562,
+      "snippet": "\"pack_lock_b\": _load_bundle_json(bundle_root_b, \"store/locks/pack_lock.mvp_default.json\"),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist_tree_common.py",
+      "line": 1232,
+      "snippet": "rel_path for rel_path in _iter_bundle_files(root) if rel_path.startswith(\"store/locks/\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/dist/dist_verify_common.py",
+      "line": 45,
+      "snippet": "\"store/locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/lib/lib_stress_common.py",
+      "line": 1064,
+      "snippet": "\"artifact_path\": _slash(\"embedded_artifacts/locks/{}\".format(portable_lock_hash), slash_mode),"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/migration/root_inventory.json",
+      "line": 675,
+      "snippet": "\"notes\": \"Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/migration/root_move_map.json",
+      "line": 1448,
+      "snippet": "\"notes\": \"Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas.\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/release/distribution_model_common.py",
+      "line": 246,
+      "snippet": "\"    locks/\","
+    },
+    {
+      "classification": "tools",
+      "file": "tools/release/update_model_common.py",
+      "line": 220,
+      "snippet": "rel_path = \"store/locks/pack_lock.mvp_default.json\""
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/dist1_testlib.py",
+      "line": 37,
+      "snippet": "\"store/locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/test_cli_parses_seed_and_bundle.py",
+      "line": 27,
+      "snippet": "\"locks/pack_lock.mvp_default.json\","
+    },
+    {
+      "classification": "tests",
+      "file": "tools/xstack/testx/tests/test_cli_parses_seed_and_bundle.py",
+      "line": 38,
+      "snippet": "if str(args.pack_lock) != \"locks/pack_lock.mvp_default.json\":"
+    }
+  ],
+  "references_rewritten": false,
+  "root": "locks",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 219
+  }
+}

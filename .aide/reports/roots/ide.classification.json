@@ -1,0 +1,179 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "adapt",
+      "kind": "file",
+      "path": "ide/README.md",
+      "reason": "Documentation/evidence may be low-risk after reference review, but no move is approved.",
+      "referenced_by": [],
+      "relative_path": "README.md",
+      "risk": "low",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "documentation",
+        "ide_projection"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "ide/manifests",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "manifests",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "ide/manifests/projection_manifest.schema.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "manifests/projection_manifest.schema.json",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "directory",
+      "path": "ide/manifests/projection_manifest_examples",
+      "reason": "Directories are containers; classify files before any move.",
+      "referenced_by": [],
+      "relative_path": "manifests/projection_manifest_examples",
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "active": null,
+      "blockers": [
+        "no approved salvage map",
+        "no approved move map"
+      ],
+      "drop_requires_review": false,
+      "fate": "preserve_unknown",
+      "kind": "file",
+      "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "referenced_by": [],
+      "relative_path": "manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "risk": "medium",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ide_projection",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "ide",
+  "root_path": "ide",
+  "schema_version": "dominium.aide.root_classification.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "classified",
+  "summary": {
+    "fate_counts": {
+      "adapt": 1,
+      "preserve_unknown": 5
+    },
+    "risk_counts": {
+      "low": 1,
+      "medium": 3,
+      "unknown": 2
+    },
+    "sensitivity_counts": {
+      "documentation": 1,
+      "ide_projection": 4,
+      "machine_readable": 3
+    }
+  },
+  "task_id": null
+}

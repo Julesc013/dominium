@@ -1,0 +1,1551 @@
+{
+  "deletes_applied": false,
+  "entries": [
+    {
+      "extension": ".txt",
+      "first_line": "cmake_minimum_required(VERSION 3.16)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "libs/CMakeLists.txt",
+      "relative_path": "CMakeLists.txt",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "size": 871,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore",
+      "relative_path": "appcore",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".txt",
+      "first_line": "cmake_minimum_required(VERSION 3.16)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "libs/appcore/CMakeLists.txt",
+      "relative_path": "appcore/CMakeLists.txt",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "size": 674,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/command",
+      "relative_path": "appcore/command",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/command/command_dispatch.c",
+      "relative_path": "appcore/command/command_dispatch.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 424,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/command/command_registry.c",
+      "relative_path": "appcore/command/command_registry.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 29576,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/command/command_registry.h",
+      "relative_path": "appcore/command/command_registry.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 7105,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/discover",
+      "relative_path": "appcore/discover",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/discover/appcore_discover.c",
+      "relative_path": "appcore/discover/appcore_discover.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 363,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/discover/appcore_discover.h",
+      "relative_path": "appcore/discover/appcore_discover.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 544,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/invoke",
+      "relative_path": "appcore/invoke",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/invoke/appcore_invoke.c",
+      "relative_path": "appcore/invoke/appcore_invoke.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 352,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/invoke/appcore_invoke.h",
+      "relative_path": "appcore/invoke/appcore_invoke.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 528,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/output",
+      "relative_path": "appcore/output",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/output/appcore_output.c",
+      "relative_path": "appcore/output/appcore_output.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 323,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/output/appcore_output.h",
+      "relative_path": "appcore/output/appcore_output.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 434,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/profile",
+      "relative_path": "appcore/profile",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/profile/appcore_profile.c",
+      "relative_path": "appcore/profile/appcore_profile.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 357,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/profile/appcore_profile.h",
+      "relative_path": "appcore/profile/appcore_profile.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 536,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/repox",
+      "relative_path": "appcore/repox",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/repox/appcore_repox.c",
+      "relative_path": "appcore/repox/appcore_repox.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 346,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/repox/appcore_repox.h",
+      "relative_path": "appcore/repox/appcore_repox.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 520,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/ui_bind",
+      "relative_path": "appcore/ui_bind",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.c",
+      "relative_path": "appcore/ui_bind/ui_accessibility_map.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 7089,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.h",
+      "relative_path": "appcore/ui_bind/ui_accessibility_map.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 709,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.c",
+      "relative_path": "appcore/ui_bind/ui_command_binding_table.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 4445,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.h",
+      "relative_path": "appcore/ui_bind/ui_command_binding_table.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 950,
+      "tracked": true
+    },
+    {
+      "extension": ".json",
+      "first_line": "{",
+      "kind": "file",
+      "likely_kind": "machine_readable",
+      "path": "libs/appcore/ui_bind/ui_localisation_usage_report.json",
+      "relative_path": "appcore/ui_bind/ui_localisation_usage_report.json",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "machine_readable"
+      ],
+      "size": 6236,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/appcore/validate",
+      "relative_path": "appcore/validate",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/appcore/validate/appcore_validate.c",
+      "relative_path": "appcore/validate/appcore_validate.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 360,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/appcore/validate/appcore_validate.h",
+      "relative_path": "appcore/validate/appcore_validate.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 544,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/build_identity",
+      "relative_path": "build_identity",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/build_identity/build_identity.c",
+      "relative_path": "build_identity/build_identity.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 508,
+      "tracked": true
+    },
+    {
+      "extension": ".txt",
+      "first_line": "cmake_minimum_required(VERSION 3.16)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "libs/build_identity/CMakeLists.txt",
+      "relative_path": "build_identity/CMakeLists.txt",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "size": 448,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/build_identity/include",
+      "relative_path": "build_identity/include",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/build_identity/include/dom_build_identity",
+      "relative_path": "build_identity/include/dom_build_identity",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/build_identity/include/dom_build_identity/build_identity.h",
+      "relative_path": "build_identity/include/dom_build_identity/build_identity.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 507,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts",
+      "relative_path": "contracts",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".txt",
+      "first_line": "cmake_minimum_required(VERSION 3.16)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "libs/contracts/CMakeLists.txt",
+      "relative_path": "contracts/CMakeLists.txt",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "size": 306,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts/include",
+      "relative_path": "contracts/include",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts/include/dom_contracts",
+      "relative_path": "contracts/include/dom_contracts",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_capabilities.h",
+      "relative_path": "contracts/include/dom_contracts/app_capabilities.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1181,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_failure_report.h",
+      "relative_path": "contracts/include/dom_contracts/app_failure_report.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 999,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_instance_manifest.h",
+      "relative_path": "contracts/include/dom_contracts/app_instance_manifest.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 995,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_launch_request.h",
+      "relative_path": "contracts/include/dom_contracts/app_launch_request.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1287,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_launch_result.h",
+      "relative_path": "contracts/include/dom_contracts/app_launch_result.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 838,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_pack_state.h",
+      "relative_path": "contracts/include/dom_contracts/app_pack_state.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 896,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app_version_info.h",
+      "relative_path": "contracts/include/dom_contracts/app_version_info.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 760,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/authority.h",
+      "relative_path": "contracts/include/dom_contracts/authority.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2346,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/authority_token.h",
+      "relative_path": "contracts/include/dom_contracts/authority_token.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 5088,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/caps_split.h",
+      "relative_path": "contracts/include/dom_contracts/caps_split.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1638,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_audit.h",
+      "relative_path": "contracts/include/dom_contracts/core_audit.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 468,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_caps.h",
+      "relative_path": "contracts/include/dom_contracts/core_caps.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 7121,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_err.h",
+      "relative_path": "contracts/include/dom_contracts/core_err.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 10819,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_installed_state.h",
+      "relative_path": "contracts/include/dom_contracts/core_installed_state.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2910,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_job.h",
+      "relative_path": "contracts/include/dom_contracts/core_job.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 5359,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": null,
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_log.h",
+      "relative_path": "contracts/include/dom_contracts/core_log.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 9063,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_solver.h",
+      "relative_path": "contracts/include/dom_contracts/core_solver.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 6563,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_tlv.h",
+      "relative_path": "contracts/include/dom_contracts/core_tlv.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4802,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_tlv_schema.h",
+      "relative_path": "contracts/include/dom_contracts/core_tlv_schema.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4550,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/core_util.h",
+      "relative_path": "contracts/include/dom_contracts/core_util.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 377,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/coredata_schema.h",
+      "relative_path": "contracts/include/dom_contracts/coredata_schema.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4616,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_app_mode.h",
+      "relative_path": "contracts/include/dom_contracts/dom_app_mode.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1838,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_core.h",
+      "relative_path": "contracts/include/dom_contracts/dom_core.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1964,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_package_manifest.h",
+      "relative_path": "contracts/include/dom_contracts/dom_package_manifest.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1494,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_plat.h",
+      "relative_path": "contracts/include/dom_contracts/dom_plat.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1205,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_sys.h",
+      "relative_path": "contracts/include/dom_contracts/dom_plat_sys.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3326,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_term.h",
+      "relative_path": "contracts/include/dom_contracts/dom_plat_term.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2949,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_ui.h",
+      "relative_path": "contracts/include/dom_contracts/dom_plat_ui.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3626,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/launcher_api.h",
+      "relative_path": "contracts/include/dom_contracts/launcher_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4534,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/launcher_edit_api.h",
+      "relative_path": "contracts/include/dom_contracts/launcher_edit_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3035,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/launcher_ext_api.h",
+      "relative_path": "contracts/include/dom_contracts/launcher_ext_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3704,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/product_info.h",
+      "relative_path": "contracts/include/dom_contracts/product_info.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2703,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/product_manifest.h",
+      "relative_path": "contracts/include/dom_contracts/product_manifest.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2587,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_api.h",
+      "relative_path": "contracts/include/dom_contracts/provider_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 435,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_base.h",
+      "relative_path": "contracts/include/dom_contracts/provider_base.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 756,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_content_source.h",
+      "relative_path": "contracts/include/dom_contracts/provider_content_source.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2913,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_keychain.h",
+      "relative_path": "contracts/include/dom_contracts/provider_keychain.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1330,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_net.h",
+      "relative_path": "contracts/include/dom_contracts/provider_net.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1341,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_os_integration.h",
+      "relative_path": "contracts/include/dom_contracts/provider_os_integration.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2079,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_registry.h",
+      "relative_path": "contracts/include/dom_contracts/provider_registry.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1987,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/provider_trust.h",
+      "relative_path": "contracts/include/dom_contracts/provider_trust.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1932,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/setup_api.h",
+      "relative_path": "contracts/include/dom_contracts/setup_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4065,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/tool_api.h",
+      "relative_path": "contracts/include/dom_contracts/tool_api.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 5249,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/version.h",
+      "relative_path": "contracts/include/dom_contracts/version.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 4538,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/_internal",
+      "relative_path": "contracts/include/dom_contracts/_internal",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_build_version.h",
+      "relative_path": "contracts/include/dom_contracts/_internal/dom_build_version.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2652,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_keys.h",
+      "relative_path": "contracts/include/dom_contracts/_internal/dom_keys.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3452,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/app",
+      "relative_path": "contracts/include/dom_contracts/app",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".hpp",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/app/product_entry.hpp",
+      "relative_path": "contracts/include/dom_contracts/app/product_entry.hpp",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3702,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/contracts/include/dom_contracts/dom_shared",
+      "relative_path": "contracts/include/dom_contracts/dom_shared",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/json.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/json.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1548,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/logging.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/logging.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2019,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/manifest_install.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/manifest_install.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2058,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/os_paths.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/os_paths.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 3201,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/process.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/process.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 2716,
+      "tracked": true
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/uuid.h",
+      "relative_path": "contracts/include/dom_contracts/dom_shared/uuid.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 1755,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/ui_backends",
+      "relative_path": "ui_backends",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/ui_backends/win32",
+      "relative_path": "ui_backends/win32",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".txt",
+      "first_line": "cmake_minimum_required(VERSION 3.16)",
+      "kind": "file",
+      "likely_kind": "documentation",
+      "path": "libs/ui_backends/win32/CMakeLists.txt",
+      "relative_path": "ui_backends/win32/CMakeLists.txt",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "size": 821,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/ui_backends/win32/ui_ir_parser_stub.c",
+      "relative_path": "ui_backends/win32/ui_ir_parser_stub.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 468,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/ui_backends/win32/win32_accessibility_stub.c",
+      "relative_path": "ui_backends/win32/win32_accessibility_stub.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 348,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/ui_backends/win32/win32_control_factory_stub.c",
+      "relative_path": "ui_backends/win32/win32_control_factory_stub.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 267,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/ui_backends/win32/win32_layout_stub.c",
+      "relative_path": "ui_backends/win32/win32_layout_stub.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 254,
+      "tracked": true
+    },
+    {
+      "extension": ".c",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "c_cpp_source",
+      "path": "libs/ui_backends/win32/win32_shell_stub.c",
+      "relative_path": "ui_backends/win32/win32_shell_stub.c",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "size": 1594,
+      "tracked": true
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/ui_backends/win32/include",
+      "relative_path": "ui_backends/win32/include",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": "",
+      "first_line": null,
+      "kind": "directory",
+      "likely_kind": "directory",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32",
+      "relative_path": "ui_backends/win32/include/dom_ui_win32",
+      "sensitivity_hints": [],
+      "size": 0,
+      "tracked": false
+    },
+    {
+      "extension": ".h",
+      "first_line": "/*",
+      "kind": "file",
+      "likely_kind": "header",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32/ui_win32.h",
+      "relative_path": "ui_backends/win32/include/dom_ui_win32/ui_win32.h",
+      "sensitivity_hints": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "size": 832,
+      "tracked": true
+    }
+  ],
+  "exists": true,
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "libs",
+  "root_path": "libs",
+  "schema_version": "dominium.aide.root_inventory.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "present",
+  "summary": {
+    "directory_count": 22,
+    "file_count": 86,
+    "tracked_file_count": 86
+  },
+  "task_id": null
+}

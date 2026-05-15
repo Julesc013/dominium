@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands
+UNSPECIFIED - AIDE polish root recycling gates and evidence
 
 ## GOAL
 
-DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands
+AIDE polish root recycling gates and evidence
 
 ## WHY
 
@@ -17,7 +17,6 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/memory/project-state.md`
 - `.aide/memory/decisions.md`
 - `.aide/memory/open-risks.md`
-- `.aide/context/dominium-doctrine-refs.md`
 - `.aide/context/repo-snapshot.json` (present)
 - `.aide/context/repo-map.json` (present)
 - `.aide/context/repo-map.md` (present)
@@ -25,10 +24,6 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 - `.aide/context/context-index.json` (present)
 - `.aide/context/latest-context-packet.md` (present)
 - `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/tools/latest-tool-inventory.json` (present)
-- `.aide/tools/latest-tool-classification.json` (present)
-- `.aide/tools/latest-tool-wrap-plan.json` (present)
-- `.aide/tools/xstack-wrapper-registry.json` (present)
 - `.aide/repo/file-inventory.json` (present)
 - `.aide/reports/file-quality-summary.md` (present)
 - `.aide/reports/file-quality-ledger.json` (present)
@@ -45,14 +40,10 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 ## ALLOWED_PATHS
 
+- `<fill from the next reviewed queue packet>`
 - `.aide/context/**`
-- `.aide/reports/DOM-AIDE-02-*`
-- `.aide/tools/wrapper-contracts/**`
-- `.aide/tools/wrapper-plans/**`
-- `.aide/tools/latest-tool-classification.*`
-- `.aide/tools/latest-tool-wrap-plan.*`
-- `.aide/tools/latest-tool-adapter-map.*`
-- `.aide/tools/xstack-wrapper-registry.*`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
@@ -105,7 +96,7 @@ Continue AIDE token survival by using repo-local context refs, compact objective
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, autonomous loop, product/source/doctrine/tool-root edits, root moves, tool renames, legacy tool execution, build, package, release, full CTest, full FAST, or full eval.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
@@ -122,35 +113,9 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4182
-- approx_tokens: 1046
+- chars: 4152
+- approx_tokens: 1038
 - budget_status: PASS
 - warnings:
   - none
 - formal ledger: `.aide/reports/token-ledger.jsonl`
-
-## DOM-AIDE-02 TASK DETAIL
-
-Task: `DOM-AIDE-02 - Wrap Existing Validators Through AIDE Commands`
-
-Immediate goal: create provisional AIDE wrapper contracts and wrapper-plan
-evidence for the first low-risk existing validator/check family without
-renaming, deleting, moving, or executing legacy tools.
-
-Selected validator family:
-
-- `aide_tool_wrapper_plan_validator`
-- selected command: `py -3 .aide/scripts/aide_lite.py tools validate`
-- supporting evidence commands: `tools classify`, `tools wrap-plan`
-
-Acceptance:
-
-- Create DOM-AIDE-02 wrapper contract, wrapper plan, selection report,
-  validation report, and blocker report under `.aide/**`.
-- Keep `execution_allowed = false`, `apply_allowed = false`, network disabled,
-  writes disabled for the provisional wrapper contract, and unknown tool
-  execution disabled.
-- Preserve XStack/AuditX/RepoX/TestX, BuildX-like surfaces, and all existing
-  validators.
-- Do not modify product/source/doctrine/tool roots.
-- Run AIDE validation, `git diff --check`, and scoped status checks.

@@ -1,0 +1,1206 @@
+{
+  "findings": [
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 1,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic mod trust and capability policy helpers.\"\"\""
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 10,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 11,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "from tools.xstack.compatx.validator import validate_instance"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 23,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "CAPABILITY_REGISTRY_REL = os.path.join(\"data\", \"registries\", \"capability_registry.json\")"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 26,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "REFUSAL_MOD_CAPABILITY_DENIED = \"refusal.mod.capability_denied\""
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 40,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "return dict(value or {}) if isinstance(value, Mapping) else {}"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 44,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "return list(value or []) if isinstance(value, list) else []"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 76,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(payload, dict):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 84,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(rows, list):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 85,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "return [dict(item) for item in rows if isinstance(item, Mapping)]"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 88,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(rows, list):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 89,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "return [dict(item) for item in rows if isinstance(item, Mapping)]"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 94,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "report = validate_instance(repo_root=repo_root, schema_name=schema_name, payload=payload, strict_top_level=True)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 99,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if not isinstance(err, Mapping):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 114,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "return canonical_sha256(body)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 142,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": str(row.get(\"schema_version\", \"1.0.0\")).strip() or \"1.0.0\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 173,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": str(payload.get(\"schema_version\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 186,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "def mod_policy_registry_hash(payload: Mapping[str, object] | None) -> str:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 187,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "return canonical_sha256(_as_map(payload))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 200,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "def load_capability_registry(payload_path: str) -> Tuple[dict, str]:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 206,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": str(payload.get(\"schema_version\", \"1.0.0\")).strip() or \"1.0.0\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 207,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(payload.get(\"pack_id\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 209,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"signature_hash\": payload.get(\"signature_hash\"),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 233,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "\"schema_version\": str(payload.get(\"schema_version\", \"1.0.0\")).strip() or \"1.0.0\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 234,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(payload.get(\"pack_id\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 235,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capability_ids\": _sorted_tokens(payload.get(\"capability_ids\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 260,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "pack_id = str(pack_row.get(\"pack_id\", \"\")).strip()"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 265,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "errors.append(_error(\"$.pack.trust\", \"missing pack.trust.json for '{}'\".format(pack_id), code=\"pack_trust_missing\"))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 270,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"missing pack.capabilities.json for '{}'\".format(pack_id),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 279,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "errors.append(_error(\"$.pack.trust\", \"invalid trust descriptor for '{}'\".format(pack_id), code=\"pack_trust_invalid\"))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 285,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"invalid capabilities descriptor for '{}'\".format(pack_id),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 293,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "capability_row, capability_schema_errors = _normalize_capabilities_descriptor(schema_root, capabilities_payload)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 295,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "errors.extend(capability_schema_errors)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 298,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "if str(trust_row.get(\"pack_id\", \"\")).strip() != pack_id:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 299,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "errors.append(_error(\"$.pack_id\", \"trust descriptor pack_id mismatch for '{}'\".format(pack_id), code=\"pack_trust_pack_id_mismatch\"))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 300,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "if str(capability_row.get(\"pack_id\", \"\")).strip() != pack_id:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 300,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "if str(capability_row.get(\"pack_id\", \"\")).strip() != pack_id:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 302,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "_error(\"$.pack_id\", \"capabilities descriptor pack_id mismatch for '{}'\".format(pack_id), code=\"pack_capabilities_pack_id_mismatch\")"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 312,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "extensions=_as_map(capability_row.get(\"extensions\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 320,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capabilities_descriptor\": capability_row,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 322,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capability_ids\": _sorted_tokens(capability_row.get(\"capability_ids\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 323,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"trust_descriptor_hash\": canonical_sha256(trust_row),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 323,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"trust_descriptor_hash\": canonical_sha256(trust_row),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 324,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"capabilities_hash\": canonical_sha256(capability_row),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 324,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"capabilities_hash\": canonical_sha256(capability_row),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 324,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capabilities_hash\": canonical_sha256(capability_row),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 341,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "pack_id = str(pack_row.get(\"pack_id\", \"\")).strip()"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 345,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "if isinstance(item, Mapping) and str(item.get(\"pack_id\", \"\")).strip() == pack_id"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 345,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(item, Mapping) and str(item.get(\"pack_id\", \"\")).strip() == pack_id"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 348,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "manifest_sensitive"
+      ],
+      "snippet": "manifest = _as_map(pack_row.get(\"manifest\"))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 349,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "manifest_sensitive"
+      ],
+      "snippet": "for token in _sorted_tokens(manifest.get(\"contribution_types\")):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 385,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 396,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 404,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "capability_errors: List[dict] = []"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 405,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "for raw_pack in sorted(ordered_packs or [], key=lambda row: str(row.get(\"pack_id\", \"\"))):"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 407,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "if \"trust_level_id\" not in pack_row or \"capability_ids\" not in pack_row:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 414,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "capability_errors.extend(load_errors)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 416,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "declared_capabilities = _sorted_tokens(pack_row.get(\"capability_ids\"))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 420,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "capability_errors.append("
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 422,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"$.packs.{}\".format(str(pack_row.get(\"pack_id\", \"\"))),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 424,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 427,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "code=REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 436,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 442,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 455,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 457,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 462,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 463,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capability_ids\": denied_capabilities,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 466,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"$.capability_ids\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 472,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 477,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(pack_row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 484,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(pack_row.get(\"pack_id\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 487,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capability_ids\": declared_capabilities,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 489,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"trust_descriptor_hash\": str(pack_row.get(\"trust_descriptor_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 490,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"capabilities_hash\": str(pack_row.get(\"capabilities_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 491,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "manifest_sensitive"
+      ],
+      "snippet": "\"compat_manifest_hash\": str(pack_row.get(\"compat_manifest_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 491,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"compat_manifest_hash\": str(pack_row.get(\"compat_manifest_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 497,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "if capability_errors:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 500,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 501,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"message\": \"pack capability declarations are incomplete or invalid\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 504,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"errors\": sorted(capability_errors, key=lambda row: (row[\"code\"], row[\"path\"], row[\"message\"])),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 509,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_registry_hash\": mod_policy_registry_hash(policy_registry),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 514,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "proof_bundle[\"mod_policy_proof_hash\"] = canonical_sha256(dict(proof_bundle))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 514,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "proof_bundle[\"mod_policy_proof_hash\"] = canonical_sha256(dict(proof_bundle))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 519,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_registry_hash\": mod_policy_registry_hash(policy_registry),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 524,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "def validate_saved_mod_policy("
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 527,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "expected_registry_hash: str,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 532,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "actual_registry_hash = str(bundle.get(\"mod_policy_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 537,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"Rebuild the lockfile or proof surfaces under the pinned mod policy before load or replay.\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 541,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if expected_registry_hash and not actual_registry_hash:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 544,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"runtime mod policy proof bundle is missing mod_policy_registry_hash\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 545,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"Rebuild the lockfile or proof surfaces under the pinned mod policy before load or replay.\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 546,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "{\"expected_mod_policy_registry_hash\": expected_registry_hash},"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 547,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"$.mod_policy_registry_hash\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 552,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"saved mod_policy_id '{}' does not match runtime policy '{}'\".format(expected_mod_policy_id, actual_policy_id),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 553,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"Replay or resume with the original mod policy, or recreate the save under the new policy.\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 560,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if expected_registry_hash and actual_registry_hash and expected_registry_hash != actual_registry_hash:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 563,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"saved mod policy registry hash does not match runtime proof bundle\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 563,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"saved mod policy registry hash does not match runtime proof bundle\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 564,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"Use the same mod policy registry revision or rebuild the save under the current policy set.\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 566,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"expected_mod_policy_registry_hash\": expected_registry_hash,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 567,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"actual_mod_policy_registry_hash\": actual_registry_hash,"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 569,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"$.mod_policy_registry_hash\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 574,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "def proof_bundle_from_lockfile(lockfile_payload: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 575,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "payload = dict(lockfile_payload or {})"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 578,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_registry_hash\": str(payload.get(\"mod_policy_registry_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 580,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_proof_hash\": str(payload.get(\"mod_policy_proof_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 583,
+      "marker": "pack_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "pack_identity"
+      ],
+      "snippet": "\"pack_id\": str(row.get(\"pack_id\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 586,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"capability_ids\": _sorted_tokens(row.get(\"capability_ids\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 587,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"trust_descriptor_hash\": str(row.get(\"trust_descriptor_hash\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 588,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"capabilities_hash\": str(row.get(\"capabilities_hash\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 589,
+      "marker": "manifest",
+      "sensitivity_hints": [
+        "manifest_sensitive"
+      ],
+      "snippet": "\"compat_manifest_hash\": str(row.get(\"compat_manifest_hash\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 589,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"compat_manifest_hash\": str(row.get(\"compat_manifest_hash\", \"\")),"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 593,
+      "marker": "instance",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "if isinstance(row, Mapping)"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 596,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "if (not bundle[\"mod_policy_proof_hash\"]) and bundle[\"mod_policy_id\"]:"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 597,
+      "marker": "sha256",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "bundle[\"mod_policy_proof_hash\"] = canonical_sha256(dict(bundle))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 597,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "bundle[\"mod_policy_proof_hash\"] = canonical_sha256(dict(bundle))"
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 605,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"REFUSAL_MOD_CAPABILITY_DENIED\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 614,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_registry_hash\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 615,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"proof_bundle_from_lockfile\","
+    },
+    {
+      "file": "modding/mod_policy_engine.py",
+      "line": 617,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"validate_saved_mod_policy\","
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 1,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic mod trust and capability policy helpers.\"\"\""
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 7,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "REFUSAL_MOD_CAPABILITY_DENIED,"
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 16,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "mod_policy_registry_hash,"
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 18,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "proof_bundle_from_lockfile,"
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 19,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "validate_saved_mod_policy,"
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 26,
+      "marker": "capability",
+      "sensitivity_hints": [
+        "capability_sensitive"
+      ],
+      "snippet": "\"REFUSAL_MOD_CAPABILITY_DENIED\","
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 35,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "\"mod_policy_registry_hash\","
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 37,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "\"proof_bundle_from_lockfile\","
+    },
+    {
+      "file": "modding/__init__.py",
+      "line": 38,
+      "marker": "save",
+      "sensitivity_hints": [
+        "save_instance_sensitive"
+      ],
+      "snippet": "\"validate_saved_mod_policy\","
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "modding",
+  "schema_version": "dominium.aide.identity_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 130
+  }
+}

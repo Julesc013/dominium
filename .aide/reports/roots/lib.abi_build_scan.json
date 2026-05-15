@@ -1,0 +1,2442 @@
+{
+  "findings": [
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 10,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "from lib.install import compare_required_contract_ranges, normalize_contract_range"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 12,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 47,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_ARTIFACT_CONTRACT_RANGE_MISMATCH = \"refusal.artifact.contract_range_mismatch\""
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 48,
+      "marker": "ABI",
+      "sensitivity_hints": [
+        "ABI_sensitive"
+      ],
+      "snippet": "REFUSAL_ARTIFACT_CAPABILITY_MISMATCH = \"refusal.artifact.capability_mismatch\""
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 66,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "SCHEMA_KIND_HINTS = {"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 67,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"dominium.schema.profile.bundle\": ARTIFACT_KIND_PROFILE_BUNDLE,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 68,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"dominium.schema.materials.blueprint\": ARTIFACT_KIND_BLUEPRINT,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 69,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"dominium.schema.system.system_template\": ARTIFACT_KIND_SYSTEM_TEMPLATE,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 70,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"dominium.schema.process.process_definition\": ARTIFACT_KIND_PROCESS_DEFINITION,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 156,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def _normalize_contract_ranges(values: object) -> Dict[str, dict]:"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 158,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for contract_id, row in sorted(_as_map(values).items(), key=lambda item: str(item[0])):"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 159,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "token = str(contract_id or \"\").strip()"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 162,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "item = normalize_contract_range(row)"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 163,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if not str(item.get(\"contract_category_id\", \"\")).strip():"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 164,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "item[\"contract_category_id\"] = token"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 198,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "schema_id = str(row.get(\"schema_id\", \"\")).strip()"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 199,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if schema_id in SCHEMA_KIND_HINTS:"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 200,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return SCHEMA_KIND_HINTS[schema_id]"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 282,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "or str(manifest.get(\"schema_version\", \"\")).strip()"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 293,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"required_contract_ranges\"] = _normalize_contract_ranges("
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 294,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "manifest.get(\"required_contract_ranges\", manifest.get(\"required_contracts\", {}))"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 314,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"required_contract_ranges\","
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 326,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if field in (\"required_contract_ranges\", \"extensions\"):"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 554,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "required_contract_ranges = dict(manifest.get(\"required_contract_ranges\") or {})"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 559,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_mismatches: List[dict] = []"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 560,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if install_manifest is not None and required_contract_ranges:"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 561,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_mismatches = compare_required_contract_ranges(install_manifest, required_contract_ranges)"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 562,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if contract_mismatches:"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 567,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "refusal_code=REFUSAL_ARTIFACT_CONTRACT_RANGE_MISMATCH,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 568,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "degrade_reason=\"artifact_contract_range_mismatch\","
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 581,
+      "marker": "ABI",
+      "sensitivity_hints": [
+        "ABI_sensitive"
+      ],
+      "snippet": "refusal_code=REFUSAL_ARTIFACT_CAPABILITY_MISMATCH,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 633,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"required_contract_ranges\": required_contract_ranges,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 634,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_mismatches\": contract_mismatches,"
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 661,
+      "marker": "ABI",
+      "sensitivity_hints": [
+        "ABI_sensitive"
+      ],
+      "snippet": "\"REFUSAL_ARTIFACT_CAPABILITY_MISMATCH\","
+    },
+    {
+      "file": "lib/artifact/artifact_validator.py",
+      "line": 662,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_ARTIFACT_CONTRACT_RANGE_MISMATCH\","
+    },
+    {
+      "file": "lib/artifact/__init__.py",
+      "line": 17,
+      "marker": "ABI",
+      "sensitivity_hints": [
+        "ABI_sensitive"
+      ],
+      "snippet": "REFUSAL_ARTIFACT_CAPABILITY_MISMATCH,"
+    },
+    {
+      "file": "lib/artifact/__init__.py",
+      "line": 18,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_ARTIFACT_CONTRACT_RANGE_MISMATCH,"
+    },
+    {
+      "file": "lib/artifact/__init__.py",
+      "line": 57,
+      "marker": "ABI",
+      "sensitivity_hints": [
+        "ABI_sensitive"
+      ],
+      "snippet": "\"REFUSAL_ARTIFACT_CAPABILITY_MISMATCH\","
+    },
+    {
+      "file": "lib/artifact/__init__.py",
+      "line": 58,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_ARTIFACT_CONTRACT_RANGE_MISMATCH\","
+    },
+    {
+      "file": "lib/bundle/bundle_manifest.py",
+      "line": 186,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": str(row.get(\"contract_registry_hash\", ZERO_SHA256)).strip().lower() or ZERO_SHA256,"
+    },
+    {
+      "file": "lib/bundle/bundle_manifest.py",
+      "line": 205,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash: str,"
+    },
+    {
+      "file": "lib/bundle/bundle_manifest.py",
+      "line": 216,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": str(contract_registry_hash or ZERO_SHA256).strip().lower() or ZERO_SHA256,"
+    },
+    {
+      "file": "lib/bundle/bundle_manifest.py",
+      "line": 301,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash: str,"
+    },
+    {
+      "file": "lib/bundle/bundle_manifest.py",
+      "line": 335,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash=contract_registry_hash,"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 10,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "from runtime.appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 28,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "save_semantic_contract_registry_hash,"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 31,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.lib.content_store import ("
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 99,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def _contract_registry_hash(*candidates: object) -> str:"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 401,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash=_contract_registry_hash("
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 402,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "pack_lock_payload.get(\"semantic_contract_registry_hash\"),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 403,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "install_manifest.get(\"semantic_contract_registry_hash\"),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 424,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "\"product_id\": \"tool.attach_console_stub\","
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 452,
+      "marker": "vendor",
+      "sensitivity_hints": [
+        "vendored"
+      ],
+      "snippet": "vendor_packs: bool = False,"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 489,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "(\"contract_bundle_ref\", \"save\", True),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 545,
+      "marker": "vendor",
+      "sensitivity_hints": [
+        "vendored"
+      ],
+      "snippet": "if vendor_packs and pack_lock_payload:"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 577,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash=_contract_registry_hash("
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 578,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "save_semantic_contract_registry_hash(save_manifest),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 579,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "_as_map(pack_lock_payload).get(\"semantic_contract_registry_hash\"),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 585,
+      "marker": "vendor",
+      "sensitivity_hints": [
+        "vendored"
+      ],
+      "snippet": "\"vendor_packs\": bool(vendor_packs),"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 631,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.lib.content_store import initialize_store_root, store_add_tree_artifact"
+    },
+    {
+      "file": "lib/export/export_engine.py",
+      "line": 642,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_hash=ZERO_SHA256,"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 10,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "from runtime.appshell.paths import ("
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 36,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.lib.content_store import ("
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 179,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_source_path: str = \"\","
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 206,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_rel = \"\""
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 207,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if str(contract_bundle_source_path or \"\").strip() and os.path.isfile(contract_bundle_source_path):"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 208,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "staged_contract = os.path.join(tmp_root, \"contract_bundle.json\")"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 209,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "_copy_file(contract_bundle_source_path, staged_contract)"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 210,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_rel = os.path.relpath(staged_contract, tmp_root).replace(\"\\\\\", \"/\")"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 220,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "schema_repo_root=repo_root,"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 222,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "universe_contract_bundle_path=contract_bundle_rel,"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 240,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "\"product_id\": \"tool.attach_console_stub\","
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 254,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "\"product_id\": \"tool.attach_console_stub\","
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 467,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_source = \"\""
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 468,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_ref = str(manifest.get(\"contract_bundle_ref\", \"\")).strip()"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 469,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if contract_bundle_ref:"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 470,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_source = _bundle_content_path(bundle_path, \"save/{}\".format(contract_bundle_ref))"
+    },
+    {
+      "file": "lib/import/import_engine.py",
+      "line": 482,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_source_path=contract_bundle_source,"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 10,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 60,
+      "marker": "enum",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "for index, token in enumerate(values):"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 169,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "def load_runtime_install_registry(path: str) -> dict:"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 173,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.install_registry\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 174,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 184,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.install_registry\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 185,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 208,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": _token(entry.get(\"contract_registry_hash\") or entry.get(\"semantic_contract_registry_hash\")),"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 212,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_id\": _token(payload.get(\"schema_id\")) or \"dominium.registry.install_registry\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 213,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": _token(payload.get(\"schema_version\")) or \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 253,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "payload = load_runtime_install_registry(path)"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 281,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 323,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 338,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"official.contract_registry_hash\": _token(manifest_payload.get(\"semantic_contract_registry_hash\")),"
+    },
+    {
+      "file": "lib/install/install_discovery_engine.py",
+      "line": 556,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "\"load_runtime_install_registry\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 11,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "from runtime.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 20,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 29,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH = \"refusal.install.contract_registry_mismatch\""
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 155,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for rel_path in (\"bin\", os.path.join(\"data\", \"registries\", \"semantic_contract_registry.json\")):"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 164,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": str(payload.get(\"schema_version\", \"1.0.0\")).strip() or \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 177,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def normalize_contract_range(row: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 184,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": str(payload.get(\"schema_version\", \"1.0.0\")).strip() or \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 185,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_category_id\": str(payload.get(\"contract_category_id\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 211,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def merge_contract_ranges(rows: Sequence[Mapping[str, object]] | None) -> Dict[str, dict]:"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 214,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized = normalize_contract_range(row)"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 215,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_id = str(normalized.get(\"contract_category_id\", \"\")).strip()"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 216,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if not contract_id:"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 218,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "current = dict(out.get(contract_id) or {})"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 220,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "out[contract_id] = normalized"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 225,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "out[contract_id] = current"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 304,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_ranges = merge_contract_ranges(_as_map(manifest.get(\"supported_contract_ranges\")).values())"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 310,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"semantic_contract_registry_hash\"] = str(manifest.get(\"semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 312,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"supported_contract_ranges\"] = dict((key, contract_ranges[key]) for key in sorted(contract_ranges.keys()))"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 331,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"semantic_contract_registry_hash\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 333,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"supported_contract_ranges\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 346,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if field in {\"product_builds\", \"supported_protocol_versions\", \"supported_contract_ranges\", \"store_root_ref\", \"extensions\"}:"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 356,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "ref = str(extensions.get(\"official.semantic_contract_registry_ref\", \"\")).strip()"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 359,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return os.path.join(install_root, \"semantic_contract_registry.json\")"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 420,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def compare_required_contract_ranges("
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 422,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "required_contract_ranges: Mapping[str, object] | None,"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 425,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "str(key): normalize_contract_range(value)"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 426,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for key, value in sorted(_as_map(install_manifest.get(\"supported_contract_ranges\")).items(), key=lambda item: str(item[0]))"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 429,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "str(key): normalize_contract_range(value)"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 430,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for key, value in sorted(_as_map(required_contract_ranges).items(), key=lambda item: str(item[0]))"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 434,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for contract_id, expected in sorted(required.items()):"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 435,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "current = dict(supported.get(contract_id) or {})"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 439,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_category_id\": contract_id,"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 449,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_category_id\": contract_id,"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 459,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_category_id\": contract_id,"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 555,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_registry_path = _registry_path_from_manifest(install_root, normalized)"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 556,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "expected_contract_hash = str(normalized.get(\"semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 557,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if not os.path.isfile(contract_registry_path):"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 558,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "errors.append({\"code\": REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH, \"path\": \"$.extensions.official.semantic_contract_registry_ref\", \"message\": \"bundled semantic contract registry missing\"})"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 560,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "registry_payload, registry_error = _read_json(contract_registry_path)"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 562,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "errors.append({\"code\": REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH, \"path\": \"$.extensions.official.semantic_contract_registry_ref\", \"message\": \"bundled semantic contract registry invalid\"})"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 563,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "elif canonical_sha256(registry_payload) != expected_contract_hash:"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 564,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "errors.append({\"code\": REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH, \"path\": \"$.semantic_contract_registry_hash\", \"message\": \"semantic contract registry hash mismatch\"})"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 641,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_id\": \"dominium.registry.install_registry\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 642,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 667,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": str("
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 668,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "entry.get(\"contract_registry_hash\", \"\") or entry.get(\"semantic_contract_registry_hash\", \"\")"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 670,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"semantic_contract_registry_hash\": str(entry.get(\"semantic_contract_registry_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 693,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": str("
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 694,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "entry.get(\"contract_registry_hash\", \"\") or entry.get(\"semantic_contract_registry_hash\", \"\")"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 696,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"semantic_contract_registry_hash\": str(entry.get(\"semantic_contract_registry_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 716,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_registry_hash\": str(install_manifest.get(\"semantic_contract_registry_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 717,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"semantic_contract_registry_hash\": str(install_manifest.get(\"semantic_contract_registry_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 820,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 826,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"compare_required_contract_ranges\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 832,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"merge_contract_ranges\","
+    },
+    {
+      "file": "lib/install/install_validator.py",
+      "line": 834,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"normalize_contract_range\","
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 11,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "load_runtime_install_registry,"
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 15,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH,"
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 21,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "compare_required_contract_ranges,"
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 27,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "merge_contract_ranges,"
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 29,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalize_contract_range,"
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 49,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_INSTALL_CONTRACT_REGISTRY_MISMATCH\","
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 55,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"compare_required_contract_ranges\","
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 63,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "\"load_runtime_install_registry\","
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 64,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"merge_contract_ranges\","
+    },
+    {
+      "file": "lib/install/__init__.py",
+      "line": 66,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"normalize_contract_range\","
+    },
+    {
+      "file": "lib/instance/instance_clone.py",
+      "line": 14,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.lib.content_store import ("
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 22,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 27,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "INSTANCE_KIND_TOOLING = \"instance.tooling\""
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 31,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "INSTANCE_KIND_TOOLING,"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 187,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def _normalize_required_contract_ranges(values: object) -> Dict[str, dict]:"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 190,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for contract_id, row in sorted(payload.items(), key=lambda item: str(item[0])):"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 191,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "token = str(contract_id or \"\").strip()"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 200,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_category_id\": str(item.get(\"contract_category_id\", token)).strip() or token,"
+    },
+    {
+      "file": "lib/instance/instance_validator.py",
+      "line": 385,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"required_contract_ranges\"] = _normalize_required_contract_ranges(manifest.get(\"required_contract_ranges\"))"
+    },
+    {
+      "file": "lib/instance/__init__.py",
+      "line": 7,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "INSTANCE_KIND_TOOLING,"
+    },
+    {
+      "file": "lib/instance/__init__.py",
+      "line": 39,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "\"INSTANCE_KIND_TOOLING\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 9,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 38,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "REFUSAL_PACK_NAMESPACE_INVALID = \"refusal.pack.namespace_invalid\""
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 81,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "def classify_pack_namespace(pack_id: str) -> Dict[str, object]:"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 81,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "def classify_pack_namespace(pack_id: str) -> Dict[str, object]:"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 85,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"namespace_kind\": \"\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 109,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "row[\"namespace_kind\"] = \"fork\""
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 117,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "row[\"namespace_kind\"] = parts[0]"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 121,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "row[\"namespace_kind\"] = \"legacy_short\""
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 125,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "row[\"namespace_kind\"] = \"legacy\""
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 128,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "row[\"message\"] = \"pack_id must use a supported namespace or legacy reverse-DNS id\""
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 157,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "required_contract_ranges = _as_map(item.get(\"required_contract_ranges\") or extensions.get(\"required_contract_ranges\"))"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 158,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if required_contract_ranges:"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 159,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "extensions[\"required_contract_ranges\"] = {"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 161,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for key, value in sorted(required_contract_ranges.items(), key=lambda entry: str(entry[0]))"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 201,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "namespace_status = classify_pack_namespace(str(declaration.get(\"pack_id\", \"\")).strip())"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 201,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "namespace_status = classify_pack_namespace(str(declaration.get(\"pack_id\", \"\")).strip())"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 202,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "if str(declaration.get(\"pack_id\", \"\")).strip() and not bool(namespace_status.get(\"valid\", False)):"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 205,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"code\": REFUSAL_PACK_NAMESPACE_INVALID,"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 207,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"message\": str(namespace_status.get(\"message\", \"\")).strip() or \"pack_id namespace is invalid\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 240,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"namespace_status\": namespace_status,"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 339,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "namespace_status = classify_pack_namespace(str(resolution.get(\"chosen_pack_id\", \"\")).strip())"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 339,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "namespace_status = classify_pack_namespace(str(resolution.get(\"chosen_pack_id\", \"\")).strip())"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 340,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "if str(resolution.get(\"chosen_pack_id\", \"\")).strip() and not bool(namespace_status.get(\"valid\", False)):"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 343,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"code\": REFUSAL_PACK_NAMESPACE_INVALID,"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 345,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"message\": str(namespace_status.get(\"message\", \"\")).strip() or \"chosen_pack_id namespace is invalid\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 370,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"namespace_status\": namespace_status,"
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 586,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"REFUSAL_PACK_NAMESPACE_INVALID\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 598,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"classify_pack_namespace\","
+    },
+    {
+      "file": "lib/provides/provider_resolution.py",
+      "line": 598,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "\"classify_pack_namespace\","
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 10,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "REFUSAL_PACK_NAMESPACE_INVALID,"
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 22,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "classify_pack_namespace,"
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 22,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "classify_pack_namespace,"
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 41,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"REFUSAL_PACK_NAMESPACE_INVALID\","
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 53,
+      "marker": "namespace",
+      "sensitivity_hints": [
+        "cpp_source"
+      ],
+      "snippet": "\"classify_pack_namespace\","
+    },
+    {
+      "file": "lib/provides/__init__.py",
+      "line": 53,
+      "marker": "class",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "\"classify_pack_namespace\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 9,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "from runtime.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 20,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 25,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_CONTRACT_BUNDLE_REF = \"universe_contract_bundle.json\""
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 28,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_SAVE_CONTRACT_MISMATCH = \"refusal.save.contract_mismatch\""
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 36,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_ref\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 108,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def save_semantic_contract_registry_hash(manifest: Mapping[str, object] | None) -> str:"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 110,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "token = str(payload.get(\"semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 113,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "return str(_as_map(payload.get(\"extensions\")).get(\"official.semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 176,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_hash = str("
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 177,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "manifest.get(\"universe_contract_bundle_hash\", manifest.get(\"contract_bundle_hash\", \"\"))"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 184,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"universe_contract_bundle_hash\"] = contract_bundle_hash"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 185,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "semantic_contract_registry_hash = save_semantic_contract_registry_hash(manifest)"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 186,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if semantic_contract_registry_hash:"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 187,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"semantic_contract_registry_hash\"] = semantic_contract_registry_hash"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 196,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "for field in (\"contract_bundle_ref\", \"state_snapshots_ref\", \"patches_ref\", \"proofs_ref\"):"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 200,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "normalized[\"contract_bundle_hash\"] = contract_bundle_hash"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 212,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"universe_contract_bundle_hash\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 244,
+      "marker": "enum",
+      "sensitivity_hints": [
+        "public_header_sensitive"
+      ],
+      "snippet": "for index, row in enumerate(list(migration_chain or [])):"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 314,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "expected_contract_bundle_hash=str(manifest.get(\"universe_contract_bundle_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 428,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "def load_save_contract_bundle(save_root: str, manifest: Mapping[str, object] | None = None) -> Tuple[dict, str, str]:"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 431,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "explicit_ref = str(manifest_payload.get(\"contract_bundle_ref\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 436,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_CONTRACT_BUNDLE_REF,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 437,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "os.path.join(\"proofs\", DEFAULT_CONTRACT_BUNDLE_REF),"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 438,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "os.path.join(\"proofs\", \"anchors\", DEFAULT_CONTRACT_BUNDLE_REF),"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 576,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_payload, contract_bundle_path, contract_bundle_error = load_save_contract_bundle(save_root, save_manifest)"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 577,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "contract_bundle_hash = canonical_sha256(contract_bundle_payload) if contract_bundle_payload else \"\""
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 578,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if contract_bundle_error:"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 581,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 584,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_path\": contract_bundle_path,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 585,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_error\": contract_bundle_error,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 592,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if contract_bundle_hash != str(save_manifest.get(\"universe_contract_bundle_hash\", \"\")).strip():"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 596,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 599,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_path\": contract_bundle_path,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 600,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_hash\": contract_bundle_hash,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 606,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "degrade_reasons.append(\"save_contract_bundle_mismatch\")"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 608,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "expected_registry_hash = save_semantic_contract_registry_hash(save_manifest)"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 609,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "install_registry_hash = str(_as_map(install_manifest).get(\"semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 610,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "lock_registry_hash = str(_as_map(pack_lock_payload).get(\"semantic_contract_registry_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 615,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 628,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 654,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "lock_contract_bundle_hash = str(_as_map(pack_lock_payload).get(\"engine_contract_bundle_hash\", \"\")).strip()"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 655,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "if lock_contract_bundle_hash and lock_contract_bundle_hash != str(save_manifest.get(\"universe_contract_bundle_hash\", \"\")).strip():"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 659,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"refusal_code\": REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 667,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "degrade_reasons.append(\"save_engine_contract_mismatch\")"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 764,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_path\": contract_bundle_path,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 765,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"contract_bundle_hash\": contract_bundle_hash,"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 766,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"expected_contract_bundle_hash\": str(save_manifest.get(\"universe_contract_bundle_hash\", \"\")).strip(),"
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 778,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"DEFAULT_CONTRACT_BUNDLE_REF\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 780,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_SAVE_CONTRACT_MISMATCH\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 789,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"load_save_contract_bundle\","
+    },
+    {
+      "file": "lib/save/save_validator.py",
+      "line": 796,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"save_semantic_contract_registry_hash\","
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 5,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "DEFAULT_CONTRACT_BUNDLE_REF,"
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 7,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "REFUSAL_SAVE_CONTRACT_MISMATCH,"
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 16,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "load_save_contract_bundle,"
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 23,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "save_semantic_contract_registry_hash,"
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 32,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"DEFAULT_CONTRACT_BUNDLE_REF\","
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 34,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"REFUSAL_SAVE_CONTRACT_MISMATCH\","
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 43,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"load_save_contract_bundle\","
+    },
+    {
+      "file": "lib/save/__init__.py",
+      "line": 50,
+      "marker": "contract",
+      "sensitivity_hints": [
+        "policy_or_contract"
+      ],
+      "snippet": "\"save_semantic_contract_registry_hash\","
+    },
+    {
+      "file": "lib/store/gc_engine.py",
+      "line": 10,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/store/gc_engine.py",
+      "line": 244,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "\"remediation\": \"Run `python tools/lib/tool_store_verify.py --store-root {}` and repair the reported corruption before retrying GC.\".format(_norm_rel(target_root)),"
+    },
+    {
+      "file": "lib/store/reachability_engine.py",
+      "line": 12,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "from lib.install.install_discovery_engine import load_runtime_install_registry"
+    },
+    {
+      "file": "lib/store/reachability_engine.py",
+      "line": 18,
+      "marker": "tool",
+      "sensitivity_hints": [
+        "executable_or_tool"
+      ],
+      "snippet": "from tools.xstack.compatx.canonical_json import canonical_sha256"
+    },
+    {
+      "file": "lib/store/reachability_engine.py",
+      "line": 246,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "runtime_registry = load_runtime_install_registry(registry_token) if registry_token else {}"
+    },
+    {
+      "file": "lib/store/reachability_engine.py",
+      "line": 247,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "for row in _as_list(_as_map(runtime_registry.get(\"record\")).get(\"installs\")):"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "lib",
+  "schema_version": "dominium.aide.abi_build_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 270
+  }
+}

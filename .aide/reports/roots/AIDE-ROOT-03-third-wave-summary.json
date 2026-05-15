@@ -1,0 +1,169 @@
+{
+  "authority_semantics_changed": false,
+  "authority_summary": {
+    "authority_sensitive": 50,
+    "compatibility_sensitive": 17,
+    "documentation": 8,
+    "executable_or_tool": 25,
+    "lock_sensitive": 1,
+    "machine_readable": 17,
+    "python_module": 25,
+    "repo_policy_sensitive": 11,
+    "safety_sensitive": 2,
+    "security_sensitive": 4,
+    "spec_sensitive": 9,
+    "update_sensitive": 6
+  },
+  "deletes_applied": false,
+  "fate_counts": {
+    "adapt": 25,
+    "convert": 8,
+    "preserve_unknown": 25
+  },
+  "moves_applied": false,
+  "recommended_next_task": "next AIDE-ROOT inventory wave",
+  "renames_applied": false,
+  "risk_counts": {
+    "protected": 50,
+    "unknown": 8
+  },
+  "roots": [
+    {
+      "apply_allowed": false,
+      "directory_count": 4,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 17,
+        "preserve_unknown": 4
+      },
+      "file_count": 17,
+      "reference_count": 1942,
+      "risk_counts": {
+        "protected": 17,
+        "unknown": 4
+      },
+      "root": "compat",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "preserve_unknown": 1
+      },
+      "file_count": 1,
+      "reference_count": 219,
+      "risk_counts": {
+        "protected": 1
+      },
+      "root": "locks",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 2,
+      "exists": true,
+      "fate_counts": {
+        "preserve_unknown": 13
+      },
+      "file_count": 11,
+      "reference_count": 1107,
+      "risk_counts": {
+        "protected": 11,
+        "unknown": 2
+      },
+      "root": "repo",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2
+      },
+      "file_count": 2,
+      "reference_count": 175,
+      "risk_counts": {
+        "protected": 2
+      },
+      "root": "safety",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 1,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 4,
+        "preserve_unknown": 1
+      },
+      "file_count": 4,
+      "reference_count": 644,
+      "risk_counts": {
+        "protected": 4,
+        "unknown": 1
+      },
+      "root": "security",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 1,
+      "exists": true,
+      "fate_counts": {
+        "adapt": 2,
+        "convert": 7,
+        "preserve_unknown": 1
+      },
+      "file_count": 9,
+      "reference_count": 5305,
+      "risk_counts": {
+        "protected": 9,
+        "unknown": 1
+      },
+      "root": "specs",
+      "salvage_map_status": "not_approved"
+    },
+    {
+      "apply_allowed": false,
+      "directory_count": 0,
+      "exists": true,
+      "fate_counts": {
+        "convert": 1,
+        "preserve_unknown": 5
+      },
+      "file_count": 6,
+      "reference_count": 128,
+      "risk_counts": {
+        "protected": 6
+      },
+      "root": "updates",
+      "salvage_map_status": "not_approved"
+    }
+  ],
+  "schema_version": "dominium.aide.root_third_wave_summary.v1",
+  "sensitivity_counts": {
+    "authority_sensitive": 50,
+    "compatibility_sensitive": 17,
+    "documentation": 8,
+    "executable_or_tool": 25,
+    "lock_sensitive": 1,
+    "machine_readable": 17,
+    "python_module": 25,
+    "repo_policy_sensitive": 11,
+    "safety_sensitive": 2,
+    "security_sensitive": 4,
+    "spec_sensitive": 9,
+    "update_sensitive": 6
+  },
+  "summary": {
+    "directory_count": 8,
+    "file_count": 50,
+    "high_or_protected_count": 50,
+    "preserve_unknown_count": 25,
+    "reference_count": 9520
+  },
+  "task_id": "AIDE-ROOT-03"
+}

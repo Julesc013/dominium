@@ -1,0 +1,3315 @@
+{
+  "findings": [
+    {
+      "file": "core/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Core deterministic abstraction engines.\"\"\""
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core ConstraintComponent helpers.\"\"\""
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 13,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic constraint refusal.\"\"\""
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 61,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 112,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 141,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Evaluate active constraints in deterministic order with budget-aware degradation.\"\"\""
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 155,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed = normalized_rows[:limit]"
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 160,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "for row in processed:"
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 201,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "cost_units = int(max(0, _as_int(cost_units_per_constraint, 1))) * int(len(processed))"
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 208,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_count\": int(len(processed)),"
+    },
+    {
+      "file": "core/constraints/constraint_engine.py",
+      "line": 222,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Build deterministic, policy-filtered hook payloads for downstream domains.\"\"\""
+    },
+    {
+      "file": "core/constraints/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core constraint helpers.\"\"\""
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core FlowSystem helpers.\"\"\""
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 9,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "from core.graph.network_graph_engine import normalize_network_graph"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 10,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "from core.graph.routing_engine import build_cross_shard_route_plan, normalize_graph_partition_row"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 20,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic FlowSystem refusal.\"\"\""
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 59,
+      "marker": "fixed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"division by zero in FlowSystem fixed-point calculation\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 137,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 140,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(row.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 160,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 164,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(row.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 484,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "# Re-partition total loss deterministically with per-component override."
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 516,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "# Keep deterministic output stable for zero-loss channels."
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 538,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"flow solver policy missing required deterministic fields\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 552,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 648,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "schema_version = str(payload.get(\"schema_version\", \"\")).strip()"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 649,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if schema_version not in {\"1.0.0\", \"1.1.0\"}:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 650,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "schema_version = \"1.1.0\" if quantity_bundle_id else \"1.0.0\""
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 652,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": schema_version,"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 685,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "schema_version = str(payload.get(\"schema_version\", \"\")).strip()"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 686,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if schema_version not in {\"1.0.0\", \"1.1.0\"}:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 687,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "schema_version = \"1.1.0\" if transferred_components or lost_components else \"1.0.0\""
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 690,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": schema_version,"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 699,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(payload.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 702,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "if not row_out[\"deterministic_fingerprint\"]:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 703,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "row_out[\"deterministic_fingerprint\"] = canonical_sha256(dict(row_out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 740,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed_mass = quantity_mass if normalized_capacity is None else int(min(quantity_mass, normalized_capacity))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 744,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if processed_mass <= 0 or normalized_loss_fraction <= 0:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 747,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "loss_mass = int(max(0, _round_div_away_from_zero(int(processed_mass) * int(normalized_loss_fraction), int(scale))))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 748,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "delivered_mass = int(max(0, int(processed_mass) - int(loss_mass)))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 749,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "deferred_mass = int(max(0, int(quantity_mass) - int(processed_mass)))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 751,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_mass\": int(processed_mass),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 794,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "def _normalize_channel_runtime(value: Mapping[str, object] | None) -> Dict[str, dict]:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 826,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 849,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "def _cross_shard_flow_plan(*, channel_row: Mapping[str, object], graph_row: Mapping[str, object] | None, partition_row: Mapping[str, object] | None) -> dict:"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 853,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": canonical_sha256({\"partitioned\": False, \"channel_id\": str(channel_row.get(\"channel_id\", \"\"))}),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 855,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundaries\": [],"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 857,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 865,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": canonical_sha256({\"partitioned\": False, \"channel_id\": str(channel_row.get(\"channel_id\", \"\"))}),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 867,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundaries\": [],"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 871,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "return build_cross_shard_route_plan("
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 884,
+      "marker": "fixed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "fixed_point_scale: int,"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 890,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "channel_runtime: Mapping[str, object] | None = None,"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 906,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "runtime_by_channel = _normalize_channel_runtime(channel_runtime)"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 917,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 921,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(row.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 931,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 934,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(row.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 944,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 947,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(row.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 951,
+      "marker": "fixed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "scale = max(1, _as_int(fixed_point_scale, 1))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 958,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "cross_shard_transfer_plans: List[dict] = []"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 959,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed_count = 0"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 964,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if processed_count >= int(limit):"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 975,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "runtime_row = dict(runtime_by_channel.get(channel_id) or {\"queued_amount\": 0, \"queued_components\": {}, \"in_transit\": []})"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 976,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "queued_amount = max(0, _as_int(runtime_row.get(\"queued_amount\", 0), 0))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 977,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "queued_components = _normalize_component_map(runtime_row.get(\"queued_components\"))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 981,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "(entry for entry in list(runtime_row.get(\"in_transit\") or []) if isinstance(entry, dict)),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1037,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "capacity_processed = requested_outbound"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1039,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "capacity_processed = min(requested_outbound, max(0, _as_int(channel_capacity, 0)))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1040,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "overflow_from_capacity = int(max(0, requested_outbound - capacity_processed))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1052,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "consumed_from_queue = min(int(queued_amount), int(capacity_processed))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1053,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "consumed_from_source = int(max(0, int(capacity_processed) - int(consumed_from_queue)))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1074,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "launched_amount = int(capacity_processed)"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1158,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "runtime_by_channel[channel_id] = {"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1184,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.1.0\" if is_bundle_channel else \"1.0.0\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1186,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "canonical_sha256({\"channel_id\": channel_id, \"tick\": int(tick), \"sequence\": int(processed_count)})[:24]"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1195,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1264,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "max(0, int(runtime_by_channel[channel_id][\"queued_amount\"]))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1265,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "+ sum(int(_as_int(item.get(\"amount\", 0), 0)) for item in list(runtime_by_channel[channel_id][\"in_transit\"]))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1283,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "plan_row = _cross_shard_flow_plan("
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1288,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "cross_shard_transfer_plans.append("
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1295,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed_count += 1"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1300,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"flow tick exceeded deterministic channel budget\","
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1301,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "{\"processed_count\": int(processed_count), \"remaining_count\": int(remaining_count)},"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1309,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "\"channel_runtime\": dict("
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1310,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "(str(key), dict(runtime_by_channel[key]))"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1311,
+      "marker": "runtime",
+      "sensitivity_hints": [
+        "runtime_sensitive"
+      ],
+      "snippet": "for key in sorted(runtime_by_channel.keys())"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1328,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_transfer_plans\": sorted("
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1329,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "(dict(row) for row in cross_shard_transfer_plans if isinstance(row, dict)),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1332,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_count\": int(processed_count),"
+    },
+    {
+      "file": "core/flow/flow_engine.py",
+      "line": 1334,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"cost_units\": int(max(0, _as_int(cost_units_per_channel, 1)) * int(processed_count)),"
+    },
+    {
+      "file": "core/flow/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core flow helpers.\"\"\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core NetworkGraph helpers.\"\"\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 1,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core NetworkGraph helpers.\"\"\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 9,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "REFUSAL_CORE_GRAPH_INVALID = \"refusal.core.network_graph.invalid\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 10,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "REFUSAL_CORE_GRAPH_ROUTE_MISSING = \"refusal.core.network_graph.route_missing\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 13,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "class NetworkGraphError(ValueError):"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 14,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic NetworkGraph refusal.\"\"\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 14,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic NetworkGraph refusal.\"\"\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 37,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 39,
+      "marker": "fixed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"division by zero in NetworkGraph fixed-point calculation\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 39,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"division by zero in NetworkGraph fixed-point calculation\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 84,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 86,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network payload requires payload or payload_ref\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 92,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 94,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network payload must be object when provided\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 105,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 107,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network payload_ref string must be non-empty\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 112,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 114,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network payload_ref must be object or string\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 120,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "def normalize_network_node(row: Mapping[str, object]) -> dict:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 125,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 127,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network node missing required node_id/node_type_id\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 138,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 153,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "def normalize_network_edge(row: Mapping[str, object], node_ids: set[str]) -> dict:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 160,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 162,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge missing required fields\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 171,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 173,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge references unknown node\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 186,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 188,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge capacity must be >= 0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 197,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 199,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge delay_ticks must be >= 0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 208,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 210,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge loss_fraction must be >= 0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 219,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 221,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network edge cost_units must be >= 0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 228,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 248,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "def normalize_network_graph(row: Mapping[str, object]) -> dict:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 251,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "deterministic_routing_policy_id = str(payload.get(\"deterministic_routing_policy_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 252,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "if not graph_id or not deterministic_routing_policy_id:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 253,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 255,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"network graph missing graph_id or deterministic_routing_policy_id\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 255,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network graph missing graph_id or deterministic_routing_policy_id\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 258,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_routing_policy_id\": deterministic_routing_policy_id,"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 261,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "node_type_schema_id = str(payload.get(\"node_type_schema_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 262,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "edge_type_schema_id = str(payload.get(\"edge_type_schema_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 263,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_schema_versions_raw = payload.get(\"payload_schema_versions\")"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 264,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_schema_versions = {}"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 265,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if isinstance(payload_schema_versions_raw, dict):"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 266,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "for key in sorted(payload_schema_versions_raw.keys(), key=lambda item: str(item)):"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 267,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "schema_id = str(key).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 268,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "version = str(payload_schema_versions_raw.get(key, \"\")).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 269,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if schema_id and version:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 270,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_schema_versions[schema_id] = version"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 271,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if node_type_schema_id and node_type_schema_id not in payload_schema_versions:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 272,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_schema_versions[node_type_schema_id] = \"1.0.0\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 273,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if edge_type_schema_id and edge_type_schema_id not in payload_schema_versions:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 274,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "payload_schema_versions[edge_type_schema_id] = \"1.0.0\""
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 279,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "if not node_type_schema_id or not edge_type_schema_id:"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 280,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 282,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"strict network graph validation requires node/edge payload schema IDs\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 282,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"strict network graph validation requires node/edge payload schema IDs\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 285,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "for schema_id in (node_type_schema_id, edge_type_schema_id):"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 286,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "version = str(payload_schema_versions.get(schema_id, \"\")).strip()"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 288,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 290,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"strict network graph validation requires payload schema version mapping\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 290,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"strict network graph validation requires payload schema version mapping\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 291,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "{\"graph_id\": graph_id, \"schema_id\": schema_id},"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 294,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 296,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"payload schema version must be semantic version\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 297,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "{\"graph_id\": graph_id, \"schema_id\": schema_id, \"version\": version},"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 302,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 304,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"network graph nodes/edges must be arrays\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 309,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalized = normalize_network_node(node)"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 312,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 314,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"duplicate network node_id in graph\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 329,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalized = normalize_network_edge(edge, node_id_set)"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 332,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 334,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"duplicate network edge_id in graph\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 349,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 351,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"node_type_schema_id\": node_type_schema_id,"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 352,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"edge_type_schema_id\": edge_type_schema_id,"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 353,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"payload_schema_versions\": dict("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 354,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "(str(key), str(payload_schema_versions[key]).strip())"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 355,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "for key in sorted(payload_schema_versions.keys())"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 362,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_routing_policy_id\": deterministic_routing_policy_id,"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 420,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 432,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 434,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"no direct route exists between network nodes\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 438,
+      "marker": "test",
+      "sensitivity_hints": [
+        "test_or_fixture"
+      ],
+      "snippet": "if policy_id == \"route.shortest_delay\":"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 469,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "raise NetworkGraphError("
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 471,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"no route exists between network nodes\","
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 477,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/network_graph_engine.py",
+      "line": 488,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic NetworkGraph routing engine with cache and partition hooks.\"\"\""
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 1,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic NetworkGraph routing engine with cache and partition hooks.\"\"\""
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 9,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "from .network_graph_engine import ("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 10,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "NetworkGraphError,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 11,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalize_network_graph,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 22,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic routing refusal.\"\"\""
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 85,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 101,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 105,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": str(payload.get(\"deterministic_fingerprint\", \"\")).strip(),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 108,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "if not result[\"deterministic_fingerprint\"]:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 109,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "result[\"deterministic_fingerprint\"] = canonical_sha256("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 110,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "dict(result, deterministic_fingerprint=\"\")"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 117,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 136,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "node_shard_map_raw = payload.get(\"node_shard_map\")"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 137,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if not isinstance(node_shard_map_raw, dict):"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 138,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "node_shard_map_raw = {}"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 139,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "node_shard_map = {}"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 140,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "for key in sorted(node_shard_map_raw.keys(), key=lambda item: str(item)):"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 142,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "shard_id = str(node_shard_map_raw.get(key, \"\")).strip()"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 143,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if not node_id or not shard_id:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 151,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "node_shard_map[node_id] = shard_id"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 153,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "edge_shard_map_raw = payload.get(\"edge_shard_map\")"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 154,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if not isinstance(edge_shard_map_raw, dict):"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 155,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "edge_shard_map_raw = {}"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 156,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "edge_shard_map = {}"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 157,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "for key in sorted(edge_shard_map_raw.keys(), key=lambda item: str(item)):"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 159,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "shard_id = str(edge_shard_map_raw.get(key, \"\")).strip()"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 160,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if not edge_id or not shard_id:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 168,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "edge_shard_map[edge_id] = shard_id"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 171,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "for token in _sorted_unique_strings(payload.get(\"cross_shard_boundary_nodes\")):"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 180,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 183,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"node_shard_map\": dict(node_shard_map),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 184,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"edge_shard_map\": dict(edge_shard_map),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 185,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundary_nodes\": list(boundary_node_ids),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 252,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 305,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "graph_hash: str,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 309,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "constraints_hash: str,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 313,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"graph_hash\": str(graph_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 317,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"constraints_hash\": str(constraints_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 394,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "except NetworkGraphError:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 396,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "_route_query_base(normalize_network_graph(graph_row), policy, str(from_node_id).strip(), str(to_node_id).strip())"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 397,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "except NetworkGraphError as exc:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 434,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "def build_cross_shard_route_plan("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 443,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 446,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundaries\": [],"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 447,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": canonical_sha256("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 451,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundaries\": [],"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 455,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 458,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "node_shards = dict(partition.get(\"node_shard_map\") or {})"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 459,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "edge_shards = dict(partition.get(\"edge_shard_map\") or {})"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 460,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "default_shard = str(partition.get(\"partition_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 469,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "shard_id = str(edge_shards.get(str(edge_id).strip(), \"\")).strip()"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 470,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if not shard_id:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 471,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "shard_id = str(node_shards.get(from_node_id, \"\")).strip() or str(node_shards.get(to_node_id, \"\")).strip() or default_shard"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 472,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "if current_segment is None or str(current_segment.get(\"shard_id\", \"\")) != shard_id:"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 478,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"from_shard_id\": str(current_segment.get(\"shard_id\", \"\")),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 479,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"to_shard_id\": shard_id,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 484,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"shard_id\": shard_id,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 499,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"shard_id\": str(row.get(\"shard_id\", \"\")).strip() or default_shard,"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 505,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 510,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_boundaries\": sorted("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 514,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"from_shard_id\": str(item.get(\"from_shard_id\", \"\")).strip(),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 515,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"to_shard_id\": str(item.get(\"to_shard_id\", \"\")).strip(),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 520,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "key=lambda item: (str(item.get(\"boundary_node_id\", \"\")), str(item.get(\"from_shard_id\", \"\")), str(item.get(\"to_shard_id\", \"\"))),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 522,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 524,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "plan[\"deterministic_fingerprint\"] = canonical_sha256("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 525,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "dict(plan, deterministic_fingerprint=\"\")"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 542,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "graph = normalize_network_graph(graph_row)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 545,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "graph_hash = canonical_sha256(graph)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 546,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "constraints_hash = canonical_sha256(constraints)"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 548,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "graph_hash=str(graph_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 552,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "constraints_hash=str(constraints_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 562,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"graph_hash\": str(graph_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 563,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"constraints_hash\": str(constraints_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 565,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_route_plan\": dict(route_result.get(\"extensions\", {}).get(\"cross_shard_route_plan\") or {}),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 579,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "cross_shard_route_plan = build_cross_shard_route_plan("
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 587,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 591,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 595,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"graph_hash\": str(graph_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 596,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"constraints_hash\": str(constraints_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 597,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_route_plan\": dict(cross_shard_route_plan),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 611,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"graph_hash\": str(graph_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 612,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"constraints_hash\": str(constraints_hash),"
+    },
+    {
+      "file": "core/graph/routing_engine.py",
+      "line": 614,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"cross_shard_route_plan\": dict(cross_shard_route_plan),"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core network graph helpers.\"\"\""
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 1,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core network graph helpers.\"\"\""
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 3,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "from .network_graph_engine import ("
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 4,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "NetworkGraphError,"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 5,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalize_network_edge,"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 6,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalize_network_graph,"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 7,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "normalize_network_node,"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 16,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "build_cross_shard_route_plan,"
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 26,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"NetworkGraphError\","
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 27,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"normalize_network_edge\","
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 28,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"normalize_network_graph\","
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 29,
+      "marker": "network",
+      "sensitivity_hints": [
+        "network_sensitive"
+      ],
+      "snippet": "\"normalize_network_node\","
+    },
+    {
+      "file": "core/graph/__init__.py",
+      "line": 36,
+      "marker": "shard",
+      "sensitivity_hints": [
+        "shard_sensitive"
+      ],
+      "snippet": "\"build_cross_shard_route_plan\","
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core HazardModel helpers.\"\"\""
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 14,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic hazard refusal.\"\"\""
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 34,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "consequence_process_id = str(payload.get(\"consequence_process_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 35,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if not hazard_id or not hazard_type_id or not target_id or not consequence_process_id:"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 43,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"consequence_process_id\": consequence_process_id,"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 51,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 57,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"consequence_process_id\": consequence_process_id,"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 89,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Advance hazards in deterministic order with threshold-trigger consequence intents.\"\"\""
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 102,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed = hazards[:limit]"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 109,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "for row in processed:"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 137,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"consequence_process_id\": str(hazard.get(\"consequence_process_id\", \"\")),"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 141,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 143,
+      "marker": "seed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "seed = dict(consequence)"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 144,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "seed[\"deterministic_fingerprint\"] = \"\""
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 144,
+      "marker": "seed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "seed[\"deterministic_fingerprint\"] = \"\""
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 145,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "consequence[\"deterministic_fingerprint\"] = canonical_sha256(seed)"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 145,
+      "marker": "seed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "consequence[\"deterministic_fingerprint\"] = canonical_sha256(seed)"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 159,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "str(row.get(\"consequence_process_id\", \"\")),"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 162,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_count\": int(len(processed)),"
+    },
+    {
+      "file": "core/hazards/hazard_engine.py",
+      "line": 165,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"cost_units\": int(max(0, _as_int(cost_units_per_hazard, 1))) * int(len(processed)),"
+    },
+    {
+      "file": "core/hazards/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core hazard helpers.\"\"\""
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core ScheduleComponent helpers.\"\"\""
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 14,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic schedule refusal.\"\"\""
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 35,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id = str(payload.get(\"trigger_process_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 39,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger_process_id,"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 80,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 106,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 111,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 114,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "out[\"deterministic_fingerprint\"] = canonical_sha256(dict(out, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 157,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Advance schedules deterministically and emit due events.\"\"\""
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 177,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed = rows[:limit]"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 185,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "for row in processed:"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 205,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 207,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "domain_eval[\"deterministic_fingerprint\"] = canonical_sha256(dict(domain_eval, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 217,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": str(recurrence_rule.get(\"trigger_process_id\", \"\")),"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 222,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 224,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "event[\"deterministic_fingerprint\"] = canonical_sha256(dict(event, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 261,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "binding[\"deterministic_fingerprint\"] = canonical_sha256(dict(binding, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 274,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 276,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "domain_eval[\"deterministic_fingerprint\"] = canonical_sha256(dict(domain_eval, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 287,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": str(recurrence_rule.get(\"trigger_process_id\", \"\")),"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 292,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"deterministic_fingerprint\": \"\","
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 294,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "event[\"deterministic_fingerprint\"] = canonical_sha256(dict(event, deterministic_fingerprint=\"\"))"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 323,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "integrity_sensitive"
+      ],
+      "snippet": "\"schedule_domain_evaluation_hash\": canonical_sha256(list(domain_evaluations)),"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 324,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_count\": int(len(processed)),"
+    },
+    {
+      "file": "core/schedule/schedule_engine.py",
+      "line": 327,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"cost_units\": int(max(0, _as_int(cost_units_per_schedule, 1))) * int(len(processed)),"
+    },
+    {
+      "file": "core/schedule/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core schedule helpers.\"\"\""
+    },
+    {
+      "file": "core/spatial/spatial_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core SpatialNode helpers.\"\"\""
+    },
+    {
+      "file": "core/spatial/spatial_engine.py",
+      "line": 12,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic spatial refusal.\"\"\""
+    },
+    {
+      "file": "core/spatial/spatial_engine.py",
+      "line": 31,
+      "marker": "fixed",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"division by zero in SpatialNode fixed-point calculation\","
+    },
+    {
+      "file": "core/spatial/spatial_engine.py",
+      "line": 93,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/spatial/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core spatial helpers.\"\"\""
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core StateMachineComponent helpers.\"\"\""
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 13,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic state machine refusal.\"\"\""
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 33,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id = str(payload.get(\"trigger_process_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 34,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if not transition_id or not from_state or not to_state or not trigger_process_id:"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 42,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger_process_id,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 55,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 59,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger_process_id,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 148,
+      "marker": "schema",
+      "sensitivity_hints": [
+        "authority_sensitive"
+      ],
+      "snippet": "\"schema_version\": \"1.0.0\","
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 161,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id: str,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 165,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger = str(trigger_process_id).strip()"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 175,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if str(row.get(\"trigger_process_id\", \"\")).strip() != trigger:"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 186,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id: str,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 193,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger = str(trigger_process_id).strip()"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 196,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id=trigger,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 202,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"no deterministic transition available for process trigger\","
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 202,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"no deterministic transition available for process trigger\","
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 206,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 222,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 234,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 248,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Apply process-triggered transitions deterministically across a machine set.\"\"\""
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 248,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"\"\"Apply process-triggered transitions deterministically across a machine set.\"\"\""
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 261,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "processed_machine_ids = set(ordered_machine_ids[:limit])"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 268,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id = str(row.get(\"trigger_process_id\", \"\")).strip()"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 269,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if not machine_id or not trigger_process_id:"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 274,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"trigger_process_id\": trigger_process_id,"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 283,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "str(row.get(\"trigger_process_id\", \"\")),"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 293,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "if machine_id not in processed_machine_ids:"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 308,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "trigger_process_id=str(trigger.get(\"trigger_process_id\", \"\")),"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 328,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "deferred_machine_ids = [machine_id for machine_id in ordered_machine_ids if machine_id not in processed_machine_ids]"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 329,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "cost_units = int(max(0, _as_int(cost_units_per_machine, 1))) * int(len(processed_machine_ids))"
+    },
+    {
+      "file": "core/state/state_machine_engine.py",
+      "line": 348,
+      "marker": "process",
+      "sensitivity_hints": [
+        "process_mutation_sensitive"
+      ],
+      "snippet": "\"processed_count\": int(len(processed_machine_ids)),"
+    },
+    {
+      "file": "core/state/__init__.py",
+      "line": 1,
+      "marker": "deterministic",
+      "sensitivity_hints": [
+        "deterministic_sensitive"
+      ],
+      "snippet": "\"\"\"Deterministic core state-machine helpers.\"\"\""
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "core",
+  "schema_version": "dominium.aide.semantic_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 367
+  }
+}

@@ -1,0 +1,2524 @@
+{
+  "apply_allowed": false,
+  "approval_status": "not_approved",
+  "deletes_applied": false,
+  "entries": [
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/command",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/command/command_dispatch.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/command/command_registry.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/command/command_registry.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/discover",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/discover/appcore_discover.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/discover/appcore_discover.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/invoke",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/invoke/appcore_invoke.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/invoke/appcore_invoke.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/output",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/output/appcore_output.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/output/appcore_output.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/profile",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/profile/appcore_profile.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/profile/appcore_profile.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/repox",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/repox/appcore_repox.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/repox/appcore_repox.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind/ui_accessibility_map.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind/ui_command_binding_table.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/ui_bind/ui_localisation_usage_report.json",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "machine_readable"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/validate",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/validate/appcore_validate.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/appcore/validate/appcore_validate.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity/build_identity.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity/include/dom_build_identity",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/build_identity/include/dom_build_identity/build_identity.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_capabilities.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_failure_report.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_instance_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_launch_request.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_launch_result.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_pack_state.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app_version_info.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/authority.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/authority_token.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/caps_split.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_audit.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_caps.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_err.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_installed_state.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_job.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_log.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_solver.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_tlv.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_tlv_schema.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/core_util.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/coredata_schema.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_app_mode.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_core.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_package_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_plat.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_sys.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_term.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_plat_ui.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/launcher_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/launcher_edit_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/launcher_ext_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/product_info.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/product_manifest.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_base.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_content_source.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_keychain.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_net.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_os_integration.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_registry.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/provider_trust.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/setup_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/tool_api.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/version.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/_internal",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_build_version.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/_internal/dom_keys.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/app/product_entry.hpp",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/json.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/logging.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/manifest_install.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/os_paths.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/process.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/contracts/include/dom_contracts/dom_shared/uuid.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "convert",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "convert",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/CMakeLists.txt",
+      "reason": "Documentation may become canonical docs or contracts after review.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "documentation"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/ui_ir_parser_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/win32_accessibility_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/win32_control_factory_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/win32_layout_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/win32_shell_stub.c",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "c_source"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/include",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32",
+      "reason": "Directories are containers; classify files before any move.",
+      "references_to_update": [],
+      "risk": "unknown",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    },
+    {
+      "action": "no_action",
+      "evidence_refs": [
+        "libs.classification.json"
+      ],
+      "fate": "preserve_unknown",
+      "identity_preservation": "preserve original path and identifiers; no ID rewrite approved",
+      "path": "libs/ui_backends/win32/include/dom_ui_win32/ui_win32.h",
+      "reason": "Conservative default; preserve until stronger evidence exists.",
+      "references_to_update": [],
+      "risk": "protected",
+      "rollback_notes": "No move has been applied; preserve original path.",
+      "sensitivity_flags": [
+        "ABI_sensitive",
+        "build_sensitive",
+        "public_header_sensitive"
+      ],
+      "target_path": null,
+      "validators_required": [
+        "repo_layout",
+        "root_allowlist",
+        "reference_scan"
+      ]
+    }
+  ],
+  "generated_from_inventory": "libs.inventory.json",
+  "moves_applied": false,
+  "renames_applied": false,
+  "root": "libs",
+  "schema_version": "dominium.aide.salvage_map.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "status": "draft",
+  "summary": {
+    "apply_allowed": false,
+    "approval_status": "not_approved",
+    "entry_count": 108
+  },
+  "task_id": null
+}

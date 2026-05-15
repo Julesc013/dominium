@@ -1,0 +1,77 @@
+{
+  "findings": [
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "profile_id",
+      "sensitivity_hints": [
+        "identity_sensitive",
+        "profile_identity"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "bundle_id",
+      "sensitivity_hints": [
+        "bundle_identity",
+        "identity_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "schema_version",
+      "sensitivity_hints": [
+        "schema_version_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "hash",
+      "sensitivity_hints": [
+        "content_hash_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "lock",
+      "sensitivity_hints": [
+        "lock_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "projection",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    },
+    {
+      "file": "profiles/bundles/bundle.mvp_default.json",
+      "line": 1,
+      "marker": "release",
+      "sensitivity_hints": [
+        "distribution_sensitive"
+      ],
+      "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
+    }
+  ],
+  "moves_applied": false,
+  "rewrites_applied": false,
+  "root": "profiles",
+  "schema_version": "dominium.aide.identity_marker_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "finding_count": 7
+  }
+}

@@ -1,0 +1,16 @@
+[contract]
+id = "dominium.aide.path_aliases.v1"
+status = "planning"
+phase = "AIDE-STRUCTURE-00"
+
+[policy]
+active_aliases_allowed = false
+aliases_require_retirement = true
+aliases_are_not_identity = true
+runtime_aliases_allowed = false
+build_aliases_allowed = false
+alias_use_requires_approved_move_map = true
+
+[planned_aliases]
+# Intentionally empty. AIDE-STRUCTURE-00 creates schema and policy scaffolding
+# only; it does not authorize active runtime/build aliases.

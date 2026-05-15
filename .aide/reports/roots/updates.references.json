@@ -1,0 +1,780 @@
+{
+  "moves_applied": false,
+  "references": [
+    {
+      "classification": "unknown",
+      "file": ".agentignore",
+      "line": 36,
+      "snippet": "/updates/"
+    },
+    {
+      "classification": "unknown",
+      "file": "AGENTS.md",
+      "line": 208,
+      "snippet": "- `release/**`, `repo/**`, `updates/**`, `security/**`"
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
+      "line": 31,
+      "snippet": "- Release/control/security roots: `docs/release/**`, `repo/release_policy.toml`, `release/**`, `updates/**`, `security/**`."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
+      "line": 56,
+      "snippet": "- `docs/release/**`, `repo/**`, `release/**`, `updates/**`, `security/**`."
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16144,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16145,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16146,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16147,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16148,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": ".aide/repo/ownership-map.json",
+      "line": 16149,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "generated_or_archive",
+      "file": "archive/legacy/engine_modules_engine/engine/sim/bus/dg_field.h",
+      "line": 71,
+      "snippet": "u32 probe_deferred_work;     /* updates/samples deferred by budget */"
+    },
+    {
+      "classification": "unknown",
+      "file": "data/agents/agent_context.json",
+      "line": 135,
+      "snippet": "\"updates/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/agents/agent_context.json",
+      "line": 219,
+      "snippet": "\"path_family\": \"release/**, repo/**, updates/**, security/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/agents/task_intent_map.json",
+      "line": 363,
+      "snippet": "\"updates/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/agents/xstack_task_catalog.json",
+      "line": 428,
+      "snippet": "\"updates/**\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1080,
+      "snippet": "\"updates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1315,
+      "snippet": "\"evidence\": \"updates/ contains stable.json, beta.json, nightly.json, pinned.json, changelog.json, and README.md, but no update runtime code lives there.\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_system_inventory.json",
+      "line": 1326,
+      "snippet": "\"updates/\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/audit/ultra_repo_audit_wiring_map.json",
+      "line": 161,
+      "snippet": "\"updates/\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 920,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1070,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1071,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1072,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1176,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1212,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1301,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/final_prompt_inventory.json",
+      "line": 1768,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_phib1_y0.json",
+      "line": 163,
+      "snippet": "\"updates/changelog.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "line": 171,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "line": 172,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "line": 173,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "line": 174,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "line": 175,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
+      "line": 147,
+      "snippet": "\"updates/*.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 572,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 628,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 663,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 664,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 665,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 703,
+      "snippet": "\"updates/stable.json\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/prompt_status_registry.json",
+      "line": 873,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/series_readiness_matrix.json",
+      "line": 287,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/planning/readiness/series_readiness_matrix.json",
+      "line": 288,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/archive_and_mirror_registry.json",
+      "line": 194,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/archive_and_mirror_registry.json",
+      "line": 195,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/archive_and_mirror_registry.json",
+      "line": 196,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/artifact_naming_changelog_target_registry.json",
+      "line": 164,
+      "snippet": "\"updates/changelog.json summaries\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/artifact_naming_changelog_target_registry.json",
+      "line": 186,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/canary_and_deterministic_downgrade_registry.json",
+      "line": 211,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/canary_and_deterministic_downgrade_registry.json",
+      "line": 212,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/canary_and_deterministic_downgrade_registry.json",
+      "line": 213,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/canary_and_deterministic_downgrade_registry.json",
+      "line": 214,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/manual_automation_parity_and_rehearsal_registry.json",
+      "line": 253,
+      "snippet": "\"updates/README.md\""
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_and_downgrade_registry.json",
+      "line": 196,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_and_downgrade_registry.json",
+      "line": 197,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_and_downgrade_registry.json",
+      "line": 198,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_receipts_and_provenance_registry.json",
+      "line": 186,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_receipts_and_provenance_registry.json",
+      "line": 208,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/operator_transaction_receipts_and_provenance_registry.json",
+      "line": 209,
+      "snippet": "\"updates/changelog.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/publication_trust_licensing_gates_registry.json",
+      "line": 202,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/publication_trust_licensing_gates_registry.json",
+      "line": 203,
+      "snippet": "\"updates/beta.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/publication_trust_licensing_gates_registry.json",
+      "line": 204,
+      "snippet": "\"updates/pinned.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/publication_trust_licensing_gates_registry.json",
+      "line": 205,
+      "snippet": "\"updates/nightly.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/release_ops_execution_envelope_registry.json",
+      "line": 250,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/release_rehearsal_sandbox_and_rollback_registry.json",
+      "line": 205,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/release/release_rehearsal_sandbox_and_rollback_registry.json",
+      "line": 206,
+      "snippet": "\"updates/stable.json\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 173,
+      "snippet": "\"updates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "line": 298,
+      "snippet": "\"updates/\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/runtime/multi_version_coexistence_registry.json",
+      "line": 106,
+      "snippet": "\"updates/README.md\","
+    },
+    {
+      "classification": "unknown",
+      "file": "data/xstack/codex_repo_operating_contract.json",
+      "line": 304,
+      "snippet": "\"updates/**\""
+    },
+    {
+      "classification": "docs",
+      "file": "docs/agents/AGENT_TASKS.md",
+      "line": 35,
+      "snippet": "| `release_control_plane` | `release/**`, `repo/**`, `updates/**`, `data/architecture/**`, `data/registries/**`, `tools/xstack/**`, trust and publication surfaces | implementation-adjacent doctrine and tooling | review for public policy, li"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md",
+      "line": 104,
+      "snippet": "| `release_distribution_control_plane` | Release, publication, identity, trust, archive, update, and control-plane work. | implementation-adjacent doctrine or tooling | `release/**`, `repo/**`, `updates/**`, `security/**`, `docs/release/**`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/agents/XSTACK_TASK_CATALOG.md",
+      "line": 237,
+      "snippet": "- Typical authoritative inputs: `docs/release/**`, `release/**`, `repo/**`, `updates/**`, `security/**`, trust policy, provenance rules, compatibility doctrine."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/architecture/REPO_INTENT.md",
+      "line": 32,
+      "snippet": "| `updates/` | Update feeds and channel metadata | Packaging metadata only | Evolving |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/REPO_INVENTORY_SUMMARY.md",
+      "line": 90,
+      "snippet": "- Distribution: `dist/`, `updates/`, `docs/distribution/`, `docs/build/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "line": 78,
+      "snippet": "| Release manifest and update resolution control plane | release/<br>updates/<br>dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, la"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+      "line": 80,
+      "snippet": "| Static update feed artifacts | updates/ | JSON, Markdown | implemented_but_isolated | support_data_only | setup_python_appshell | release_support | updates/ contains stable.json, beta.json, nightly.json, pinned.json, changelog.json, and R"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+      "line": 69,
+      "snippet": "- static_update_feed_data: updates/ - Channel JSON exists, but the directory itself is data-only rather than a runnable update service."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json",
+      "line": 72,
+      "snippet": "\"output\": \"MSBuild version 18.0.5+e22287bf1 for .NET Framework\\n\\n  Run TestX and bump build number on success\\n  Test project C:/Inbox/Git Repos/dominium/out/build/vs2026/verify\\n          Start   1: phase6_audit\\n    1/381 Test   #1: phas"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/ops/UPDATE_AND_ROLLBACK.md",
+      "line": 43,
+      "snippet": "- Update feeds live under updates/<channel>.json"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md",
+      "line": 93,
+      "snippet": "| Changelog policy | `\u03a5-6 \u2014 CHANGELOG_POLICY-0` | `mostly_consolidation` | `updates/changelog.json` already exists. The remaining work is to define governed change-record meaning rather than create a new change surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md",
+      "line": 145,
+      "snippet": "- `updates/changelog.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "line": 7,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "line": 66,
+      "snippet": "| Is completed `\u03a5-A` sufficient to begin selected `\u03a5-B` work? | `yes_for_selected_families` | The repo already has strong operational substrate in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`, so a narro"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "line": 106,
+      "snippet": "| `upsilon.publication_models` | `\u03a5-B7 \u2014 PUBLICATION_MODEL_OPERATIONAL_ALIGNMENT-0` | `dangerous_to_operationalize_yet` | `updates/*.json` feeds and release surfaces exist, but `\u03a5-A` explicitly froze publication as gated, not automatic. Arc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "line": 157,
+      "snippet": "- `updates/*.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "line": 158,
+      "snippet": "- `updates/changelog.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md",
+      "line": 154,
+      "snippet": "- `updates/*.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/FOUNDATION_READINESS_REPORT.md",
+      "line": 239,
+      "snippet": "- `updates/*.json`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/FOUNDATION_READINESS_REPORT.md",
+      "line": 301,
+      "snippet": "- the release/repo/updates/data/architecture/data/registries control-plane backbone"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+      "line": 167,
+      "snippet": "Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: \u03a5-2, `release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
+      "line": 215,
+      "snippet": "Planning-only. Convert the already-existing changelog-like update surfaces into one governed changelog policy that matches release identity and publication doctrine. Inputs: \u03a5-2, \u03a5-3, `updates/changelog.json`. Outputs: `CHANGELOG_POLICY.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
+      "line": 80,
+      "snippet": "- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
+      "line": 120,
+      "snippet": "- `updates/*.json` and `repo/release_policy.toml` are machine-readable control artifacts for release/update behavior."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "line": 74,
+      "snippet": "| 4 | `registries_manifests_and_pack_metadata` | `data/registries/**`, `data/packs/**`, `packs/**/pack*.json`, `repo/**`, `data/architecture/**`, `updates/**` | machine-readable runtime, compat, and release declarations | authoritative with"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+      "line": 76,
+      "snippet": "| 6 | `release_distribution_and_update_surface` | `release/**`, `docs/release/**`, `repo/release_policy.toml`, `data/release/**`, `updates/**` | install, distribution, channel, archive, and update truth | release-authoritative |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "line": 192,
+      "snippet": "Machine-readable surfaces such as `updates/changelog.json`, release manifests, release indices, yanks, and later operator transaction records carry structured change state for tools and automation."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "line": 276,
+      "snippet": "Additional caution applies because `docs/release/**`, `release/**`, `updates/**`, `repo/**`, and `security/**` can look operationally central while still remaining subordinate to stronger doctrine and checkpoint law."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "line": 308,
+      "snippet": "Additional caution is required because `docs/release/**`, `release/**`, `updates/**`, `repo/**`, and `security/**` are release-control or trust-bearing roots. Convenience, exposure, or implementation locality does not change their governanc"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "line": 353,
+      "snippet": "- thin operational roots such as `tools/controlx/`, `tools/xstack/`, `release/`, `updates/`, or `security/trust/` are important evidence surfaces, but none of them alone becomes execution canon by convenience"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "line": 8,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNER"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+      "line": 155,
+      "snippet": "- `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/LAYOUT_ENFORCEMENT.md",
+      "line": 119,
+      "snippet": "POST-CONVERGE-04 keeps the active layout exception count at 32 after narrowing high-risk `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` exceptions. These roots remain explicit protected revie"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/OWNERSHIP_RULES.md",
+      "line": 137,
+      "snippet": "POST-CONVERGE-04 keeps this boundary conservative for the high-risk roots: `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` were not moved because active imports, CMake/ABI references, embedded"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 181,
+      "snippet": "release, install, update, and trust policy surfaces, including `release/`, `security/trust/`, `updates/`, `repo/` release-policy law, install discovery, manifest resolution, and trust verification behavior consumed by the stronger launcher/"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+      "line": 252,
+      "snippet": "`release/`, `security/trust/`, `updates/`, and `repo/` policy surfaces"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+      "line": 152,
+      "snippet": "`surfaces/` would conceptually host AppShell, launcher/setup entry shells, and user-facing orchestration; `substrate/` would conceptually host `client/`, `server/`, `runtime/`, `net/`, and the strongest shared runtime/engine adjacency; `con"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_FILE_POLICY.md",
+      "line": 153,
+      "snippet": "After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because the"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 208,
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/ROOT_INVENTORY.md",
+      "line": 281,
+      "snippet": "- `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling."
+    },
+    {
+      "classification": "docs",
+      "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "line": 215,
+      "snippet": "| `updates/` | current_release_or_dist_root | Update/release surface. |"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "line": 7,
+      "snippet": "Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/agents/AGENT_TASKS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/agents/XSTA"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "line": 58,
+      "snippet": "- `updates/README.md`"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "line": 98,
+      "snippet": "- `updates/README.md` already treats feeds as generated control-plane projections rather than hand-edited truth"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/specs/SPEC_DETERMINISM.md",
+      "line": 112,
+      "snippet": "- **Events**, **messages**, and **field updates/samples** are the only allowed"
+    },
+    {
+      "classification": "docs",
+      "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "line": 261,
+      "snippet": "- `release/**`, `repo/**`, `security/**`, `updates/**`"
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/dev/gate_policy_eval.py",
+      "line": 55,
+      "snippet": "\"updates/\","
+    },
+    {
+      "classification": "tools",
+      "file": "scripts/repox/repox_changelog.py",
+      "line": 198,
+      "snippet": "sys.stderr.write(\"updates/changelog.json is out of date.\\n\")"
+    },
+    {
+      "classification": "tools",
+      "file": "tools/auditx/analyzers/e159_maintenance_bypass_smell.py",
+      "line": 20,
+      "snippet": "re.compile(r\"\\bapply_wear_updates\\s*\\(\", re.IGNORECASE),"
+    }
+  ],
+  "references_rewritten": false,
+  "root": "updates",
+  "schema_version": "dominium.aide.root_reference_scan.v1",
+  "source_head": "f2bd322e7403cc076f29a512868516119d4becad",
+  "summary": {
+    "reference_count": 128
+  }
+}

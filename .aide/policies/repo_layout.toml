@@ -1,0 +1,78 @@
+[policy]
+id = "dominium.aide.repo_layout.v1"
+status = "provisional"
+phase = "AIDE-STRUCTURE-00"
+purpose = "Bind AIDE repo layout checks to the Dominium repo constitution and existing layout contracts."
+
+[references]
+root_constitution = "contracts/repo/root_constitution.toml"
+ownership_slots = "contracts/repo/ownership_slots.toml"
+layout_contract = "contracts/repo/layout.contract.toml"
+root_allowlist = "contracts/repo/root_allowlist.toml"
+layout_exceptions = "contracts/repo/layout_exceptions.toml"
+
+[stable_roots]
+paths = [
+  ".aide",
+  ".github",
+  "apps",
+  "engine",
+  "game",
+  "runtime",
+  "contracts",
+  "content",
+  "docs",
+  "tests",
+  "tools",
+  "scripts",
+  "cmake",
+  "external",
+  "release",
+  "archive"
+]
+
+[forbidden_root_default]
+action = "refuse"
+new_root_requires = ["constitution_update", "allowlist_update", "validator_update", "justification"]
+
+[transitional_roots]
+handling = "inventory_classify_salvage_before_move"
+roots = [
+  "core",
+  "control",
+  "data",
+  "packs",
+  "profiles",
+  "bundles",
+  "compat",
+  "lib",
+  "libs",
+  "locks",
+  "repo",
+  "safety",
+  "security",
+  "specs",
+  "updates",
+  "meta",
+  "governance",
+  "ide",
+  "performance",
+  "validation",
+  "modding",
+  "models",
+  "templates",
+  "net"
+]
+
+[generated_and_local_roots]
+source_authority = false
+generated = ["dist", "build", "out"]
+local = [".dominium.local", ".aide.local"]
+tracked_exception_surfaces = ["artifacts"]
+
+[validation_commands]
+aide_roots_validate = "py -3 .aide/scripts/aide_lite.py roots validate"
+aide_repo_validate = "py -3 .aide/scripts/aide_lite.py repo validate"
+strict_repo_layout = "python tools/validators/check_repo_layout.py --repo-root . --strict"
+strict_root_allowlist = "python tools/validators/check_root_allowlist.py --repo-root . --strict"
+advisory_forbidden_root_check = "python tools/aide/check_no_forbidden_roots.py --repo-root . --json"
