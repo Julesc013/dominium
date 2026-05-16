@@ -13,3 +13,4 @@ Superseded By: none
 - CTest smoke labels now discover 57 tests after `dom_add_testx` label repair and reconfigure.
 - Full CTest, product boot proof, package proof, and portable projection proof remain not run by scope.
 - Full CTest remains a promotion gate rather than the normal post-change feedback path.
+- The first TEST-PERF-00 commit has a classified AIDE commit-message policy issue in its changelog category prefixes; amend is avoided and the issue is recorded by a follow-up evidence commit.
