@@ -172,6 +172,15 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 9. Rerun portable projection smoke proof after projection generation is available.
 10. Start CONTRACT-00 only after these blockers are resolved or explicitly accepted as warning-only.
 
+## POST-CONVERGE-10J Update - Authority Documentation Status
+
+- Result: PARTIAL.
+- Focused RepoX improved from 71 failures / 5 warnings to 60 failures / 5 warnings.
+- `INV-DOC-STATUS-HEADER` reduced from 12 to 0 through narrow authority-sensitive metadata repairs.
+- Seven architecture documents were added to the DERIVED canon index bucket to avoid introducing canon-index drift after their headers became parseable.
+- POST-CONVERGE-11 remains blocked.
+- Next recommended task: `POST-CONVERGE-10K - Contract Registry Acceptance Backlog Remediation`.
+
 ## Domain Work Rule
 
 Future domain work must use the split model:

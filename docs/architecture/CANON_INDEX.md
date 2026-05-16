@@ -569,6 +569,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/ADAPTER_PATTERN.md`
 - `docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md`
 - `docs/architecture/APPLICATION_CONTRACTS.md`
+- `docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md`
 - `docs/architecture/ARTIFACT_LIFECYCLE.md`
 - `docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md`
 - `docs/architecture/BOUNDARY_ENFORCEMENT.md`
@@ -583,13 +584,19 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/EXTENSION_MAP.md`
 - `docs/architecture/FLOWSYSTEM_STANDARD.md`
 - `docs/architecture/HISTORY_AND_CIVILIZATION_MODEL.md`
+- `docs/architecture/IDE_PROJECTIONS.md`
 - `docs/architecture/KNOWN_WARNINGS.md`
 - `docs/architecture/MIGRATION_TEMPLATE.md`
 - `docs/architecture/MODES_AS_PROFILES.md`
+- `docs/architecture/MODULE_BOUNDARIES_v1.md`
+- `docs/architecture/MODULE_INDEX_v1.md`
 - `docs/architecture/NETWORKGRAPH_STANDARD.md`
 - `docs/architecture/POST_CLEAN_2_STATUS.md`
 - `docs/architecture/QUANTITY_BUNDLES.md`
+- `docs/architecture/REPOSITORY_STRUCTURE_v1.md`
 - `docs/architecture/RETRO_CONSISTENCY_AUDIT_FRAMEWORK.md`
+- `docs/architecture/SHIM_SUNSET_PLAN.md`
+- `docs/architecture/SOURCE_POCKET_POLICY_v1.md`
 - `docs/architecture/STANDARDS_AND_META_SYSTEMS_MODEL.md`
 - `docs/architecture/SYSTEM_TOPOLOGY_MAP.md`
 - `docs/architecture/TERMINOLOGY_GLOSSARY.md`

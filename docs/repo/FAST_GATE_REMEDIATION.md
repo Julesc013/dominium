@@ -85,3 +85,11 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - `INV-CANON-NO-HIST-REF` reduced from 81 to 0 by aligning RepoX enforcement to canonical-doc scope and preserving DERIVED quarantine/archive evidence references.
 - POST-CONVERGE-11 remains blocked.
 - Next recommended task: `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.
+
+## POST-CONVERGE-10J Update - Authority Documentation Status
+
+- Result: PARTIAL.
+- Focused RepoX improved from 71 failures / 5 warnings to 60 failures / 5 warnings.
+- `INV-DOC-STATUS-HEADER` reduced from 12 to 0.
+- FAST remains blocked because focused tuple `inv_repox_rules` still fails on contract registry, product proof, retired-domain path policy, tool hash/audit staleness, and related families.
+- Next recommended task: `POST-CONVERGE-10K - Contract Registry Acceptance Backlog Remediation`.

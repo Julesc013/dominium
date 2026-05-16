@@ -1,0 +1,189 @@
+{
+  "after": {
+    "failures": 60,
+    "warnings": 5
+  },
+  "before": {
+    "failures": 71,
+    "warnings": 5
+  },
+  "fixed_families": [
+    {
+      "after": 0,
+      "before": 12,
+      "id": "INV-DOC-STATUS-HEADER",
+      "notes": "All 12 deferred authority-sensitive doc status entries received evidence-backed top-of-file RepoX headers."
+    },
+    {
+      "after": 0,
+      "before": 0,
+      "id": "INV-CANON-INDEX",
+      "notes": "Seven architecture docs with DERIVED headers were added to CANON_INDEX DERIVED; no canon-index mismatch remains."
+    }
+  ],
+  "ready_for_post_converge_11": false,
+  "remaining_families": [
+    {
+      "classification": "contract_registry_acceptance_backlog",
+      "count": 9,
+      "id": "INV-NEW-CONTRACT-REQUIRES-ENTRY"
+    },
+    {
+      "classification": "distribution_descriptor_product_proof_blocker",
+      "count": 7,
+      "id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR"
+    },
+    {
+      "classification": "distribution_descriptor_product_proof_blocker",
+      "count": 5,
+      "id": "INV-NO-ADHOC-MAIN"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 5,
+      "id": "INV-TOOLS-REQUIRE-ENTITLEMENT"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 4,
+      "id": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 2,
+      "id": "INV-CACHE-KEY-INCLUDES-CONTRACTS"
+    },
+    {
+      "classification": "tool_hash_audit_staleness",
+      "count": 2,
+      "id": "INV-TOOL-VERSION-MISMATCH"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 2,
+      "id": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-BODY-MOTION-PROCESS-ONLY"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-CAMERA-SMOOTH-RENDER-ONLY"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 1,
+      "id": "INV-CANON-NO-SUPERSEDED"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-COLLISION-DETERMINISTIC"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-CONFLICTS-NOT-SILENT-IN-STRICT"
+    },
+    {
+      "classification": "tool_hash_audit_staleness",
+      "count": 1,
+      "id": "INV-IDENTITY-FINGERPRINT"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-JUMP-PROFILE-GATED"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-LENS-PROFILED"
+    },
+    {
+      "classification": "canon_index_local_acceptance",
+      "count": 1,
+      "id": "INV-LOCKLIST-FROZEN"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-BLOCKING-WORLDGEN-IN-UI"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 1,
+      "id": "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-FLOAT-SMOOTHING"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-IDENTITY-OVERRIDE"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 1,
+      "id": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-SILENT-DEGRADE"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-NO-TRUTH-LEAK-IN-SCANS"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-OVERLAY-CONFLICT-POLICY-DECLARED"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-REFINEMENT-BUDGETED"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 1,
+      "id": "INV-REPOX-RULESET-MISSING"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-REPRO-BUNDLE-DETERMINISTIC"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-REPRO-BUNDLE-NO-SECRETS"
+    },
+    {
+      "classification": "remaining_repo_policy_blocker",
+      "count": 1,
+      "id": "INV-SHADOW-BOUNDED"
+    },
+    {
+      "classification": "retired_domain_path_policy_check",
+      "count": 1,
+      "id": "INV-TERRAIN-EDITS-PROCESS-ONLY"
+    }
+  ],
+  "schema_version": "dominium.post_converge_10j.before_after.v1",
+  "task_id": "POST-CONVERGE-10J"
+}

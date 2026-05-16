@@ -1,5 +1,7 @@
 Status: DERIVED
 Last Reviewed: 2026-03-30
+Supersedes: none
+Superseded By: none
 Stability: stable
 Future Series: XI-8
 Replacement Target: superseded only by a later explicit repository-structure lock revision

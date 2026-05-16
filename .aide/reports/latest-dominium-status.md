@@ -7,8 +7,8 @@ Superseded By: none
 
 ## Current Position
 
-POST-CONVERGE-10I completed as PARTIAL. Focused RepoX improved to 71 failures and 5 warnings. `INV-CANON-NO-HIST-REF` is reduced from 81 to 0; POST-CONVERGE-11 remains blocked.
+POST-CONVERGE-10J completed as PARTIAL. Focused RepoX improved to 60 failures and 5 warnings. `INV-DOC-STATUS-HEADER` is reduced from 12 to 0; POST-CONVERGE-11 remains blocked.
 
 ## Next Recommended Task
 
-`POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.
+`POST-CONVERGE-10K - Contract Registry Acceptance Backlog Remediation`.

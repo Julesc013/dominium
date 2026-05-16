@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10I and confirm that historical/archive reference debt was reduced without weakening RepoX or deleting audit history.
+Review POST-CONVERGE-10J and confirm that authority-sensitive doc status remediation reduced RepoX without changing doctrine or promoting unclear docs.
 
 ## Decision Requested
 
@@ -26,38 +26,37 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10I-status.md`
-- `.aide/reports/POST-CONVERGE-10I-validation.md`
-- `.aide/reports/POST-CONVERGE-10I-blockers.md`
-- `.aide/reports/POST-CONVERGE-10I-historical-reference-findings.md`
-- `.aide/reports/POST-CONVERGE-10I-historical-reference-findings.json`
-- `.aide/reports/POST-CONVERGE-10I-repox-before-after.json`
-- `docs/repo/audits/POST_CONVERGE_10I_HISTORICAL_REFERENCE_REMEDIATION.md`
-- `scripts/ci/check_repox_rules.py`
+- `.aide/reports/POST-CONVERGE-10J-status.md`
+- `.aide/reports/POST-CONVERGE-10J-validation.md`
+- `.aide/reports/POST-CONVERGE-10J-blockers.md`
+- `.aide/reports/POST-CONVERGE-10J-authority-doc-findings.md`
+- `.aide/reports/POST-CONVERGE-10J-authority-doc-findings.json`
+- `.aide/reports/POST-CONVERGE-10J-repox-before-after.json`
+- `docs/repo/audits/POST_CONVERGE_10J_AUTHORITY_DOC_STATUS.md`
 
 ## Changed Files Summary
 
-- Updated RepoX historical-reference rule scope to canonical docs by status header or CANON_INDEX membership.
-- Preserved DERIVED quarantine/archive evidence references without rewriting historical docs.
-- Added POST-CONVERGE-10I reports and status updates.
+- Completed RepoX top-of-file status headers for 12 deferred authority-sensitive docs.
+- Added seven architecture docs to the DERIVED canon index bucket.
+- Added POST-CONVERGE-10J reports and status updates.
 - No roots were moved, deleted, renamed, mapped, aliased, or exception-retired.
 
 ## Validation Summary
 
-Focused RepoX reduced from the 10H baseline of 153 failures and 5 warnings to 71 failures and 5 warnings. `INV-CANON-NO-HIST-REF` is reduced from 81 to 0. Focused tuple `inv_repox_rules` still fails and remains a product-boot blocker.
+Focused RepoX reduced from 71 failures and 5 warnings to 60 failures and 5 warnings. `INV-DOC-STATUS-HEADER` is reduced from 12 to 0. Focused tuple `inv_repox_rules` still fails and remains a product-boot blocker.
 
 ## Token Summary
 
-This packet is compact and references evidence by path rather than inlining raw RepoX logs or the 81 finding records.
+This packet is compact and references evidence by path rather than inlining raw RepoX logs or all 12 finding records.
 
 ## Risk Summary
 
-POST-CONVERGE-11 remains blocked. The next largest family is the deferred authority-sensitive documentation status backlog.
+POST-CONVERGE-11 remains blocked. The next largest family is contract registry acceptance backlog.
 
 ## Non-Goals / Scope Guard
 
-Do not start product boot proof, full CTest, package proof, portable projection proof, move planning, move application, broad root cleanup, or feature work from this packet.
+Do not start product boot proof, full CTest, package proof, portable projection proof, move planning, move application, broad root cleanup, doctrine rewrite, or feature work from this packet.
 
 ## Reviewer Instructions
 
-Confirm whether `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review` is the correct next task before product boot proof.
+Confirm whether `POST-CONVERGE-10K - Contract Registry Acceptance Backlog Remediation` is the correct next task before product boot proof.

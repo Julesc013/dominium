@@ -1,0 +1,275 @@
+{
+  "blocked": [],
+  "checked_docs": 12,
+  "deferred": [],
+  "findings": [
+    {
+      "authority_basis": "Existing metadata declared DERIVED; machine-readable architecture graph remains under data/architecture/architecture_graph.v1.json and related contract registry evidence.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md",
+      "reason": "Completed the missing Supersedes/Superseded By header fields and listed the architecture doc in the DERIVED canon index bucket required by RepoX.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "AIDE-MOVE-01 moved the human-readable IDE projection note; projection manifests remain machine-readable under ide/manifests/**.",
+      "classification": "derived_explanatory",
+      "current_status": null,
+      "in_canon_index": true,
+      "path": "docs/architecture/IDE_PROJECTIONS.md",
+      "reason": "Added a DERIVED top-of-file header while preserving the body text, including the existing binding scope note.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED; the document states the canonical per-module rule matrix lives in data/architecture/module_boundary_rules.v1.json.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/MODULE_BOUNDARIES_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and records frozen module counts rather than changing module authority.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/MODULE_INDEX_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED; current layout authority remains contracts/repo layout contracts and root allowlist/exceptions per CANON_INDEX layout note.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the document describes future shim removal prerequisites without retiring exceptions now.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/SHIM_SUNSET_PLAN.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file is an Xi source-pocket policy explanation from convergence evidence.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/SOURCE_POCKET_POLICY_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "The file is a human-readable target-surface note for domain documentation and explicitly distinguishes contracts, implementation, content, and tests from docs/domains/.",
+      "classification": "derived_explanatory",
+      "current_status": "PROVISIONAL",
+      "in_canon_index": false,
+      "path": "docs/domains/README.md",
+      "reason": "Added a DERIVED top-of-file RepoX header without changing the existing body Phase/Status note.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and CANON_INDEX already lists the file in the DERIVED bucket.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md",
+      "reason": "Completed the required four-line header while preserving the existing DERIVED authority level.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "The file records POST-CONVERGE runtime proof state and remains a blocked runbook/evidence document, not a product-proof artifact.",
+      "classification": "derived_explanatory",
+      "current_status": "blocked",
+      "in_canon_index": false,
+      "path": "docs/runtime/CANONICAL_LOCAL_PLAYTEST.md",
+      "reason": "Added a DERIVED top-of-file RepoX header without modifying the body status block.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file explains XStack architecture-drift process rather than changing canon doctrine.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": false,
+      "path": "docs/xstack/ARCH_DRIFT_POLICY.md",
+      "reason": "Completed the required four-line header.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file explains Xi CI guardrails without altering policy source authority.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": false,
+      "path": "docs/xstack/CI_GUARDRAILS.md",
+      "reason": "Completed the required four-line header.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    }
+  ],
+  "safe_fixes": [
+    {
+      "authority_basis": "Existing metadata declared DERIVED; machine-readable architecture graph remains under data/architecture/architecture_graph.v1.json and related contract registry evidence.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md",
+      "reason": "Completed the missing Supersedes/Superseded By header fields and listed the architecture doc in the DERIVED canon index bucket required by RepoX.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "AIDE-MOVE-01 moved the human-readable IDE projection note; projection manifests remain machine-readable under ide/manifests/**.",
+      "classification": "derived_explanatory",
+      "current_status": null,
+      "in_canon_index": true,
+      "path": "docs/architecture/IDE_PROJECTIONS.md",
+      "reason": "Added a DERIVED top-of-file header while preserving the body text, including the existing binding scope note.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED; the document states the canonical per-module rule matrix lives in data/architecture/module_boundary_rules.v1.json.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/MODULE_BOUNDARIES_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and records frozen module counts rather than changing module authority.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/MODULE_INDEX_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED; current layout authority remains contracts/repo layout contracts and root allowlist/exceptions per CANON_INDEX layout note.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the document describes future shim removal prerequisites without retiring exceptions now.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/SHIM_SUNSET_PLAN.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file is an Xi source-pocket policy explanation from convergence evidence.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/architecture/SOURCE_POCKET_POLICY_v1.md",
+      "reason": "Completed the required four-line header and added the architecture doc to CANON_INDEX as DERIVED.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "The file is a human-readable target-surface note for domain documentation and explicitly distinguishes contracts, implementation, content, and tests from docs/domains/.",
+      "classification": "derived_explanatory",
+      "current_status": "PROVISIONAL",
+      "in_canon_index": false,
+      "path": "docs/domains/README.md",
+      "reason": "Added a DERIVED top-of-file RepoX header without changing the existing body Phase/Status note.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and CANON_INDEX already lists the file in the DERIVED bucket.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": true,
+      "path": "docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md",
+      "reason": "Completed the required four-line header while preserving the existing DERIVED authority level.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "The file records POST-CONVERGE runtime proof state and remains a blocked runbook/evidence document, not a product-proof artifact.",
+      "classification": "derived_explanatory",
+      "current_status": "blocked",
+      "in_canon_index": false,
+      "path": "docs/runtime/CANONICAL_LOCAL_PLAYTEST.md",
+      "reason": "Added a DERIVED top-of-file RepoX header without modifying the body status block.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file explains XStack architecture-drift process rather than changing canon doctrine.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": false,
+      "path": "docs/xstack/ARCH_DRIFT_POLICY.md",
+      "reason": "Completed the required four-line header.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Existing metadata declared DERIVED and the file explains Xi CI guardrails without altering policy source authority.",
+      "classification": "derived_explanatory",
+      "current_status": "DERIVED",
+      "in_canon_index": false,
+      "path": "docs/xstack/CI_GUARDRAILS.md",
+      "reason": "Completed the required four-line header.",
+      "recommended_action": "add_status",
+      "recommended_status": "DERIVED",
+      "safe_to_fix_now": true
+    }
+  ],
+  "schema_version": "dominium.post_converge_10j.authority_doc_findings.v1",
+  "task_id": "POST-CONVERGE-10J"
+}

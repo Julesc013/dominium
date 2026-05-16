@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: ide/README.md
+Superseded By: none
+
 # IDE Projections
 
 Status: binding.
