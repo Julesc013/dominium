@@ -2,6 +2,10 @@
 
 ## Accepted Warnings
 
+- AIDE-GATE-03 passes with warnings because remaining old-path references are historical, audit, generated review, or root-recycling evidence.
+- AIDE-GATE-03 accepts that `ide/` remains transitional because `ide/manifests/**` remains deferred.
+- AIDE-GATE-03 accepts local `main` equal to `origin/main` at the AIDE-MOVE-01-APPLY commit as a valid synced state.
+- Strict validators temporarily rewrote generated migration metadata headers during AIDE-GATE-03; those timestamp/SHA-only side effects were removed because the gate cannot write `tools/migration/**`.
 - AIDE-MOVE-01-APPLY passes with warnings because local `origin/main` already matched the AIDE-GATE-02 commit rather than the older SHA expected by the prompt.
 - Strict validators run through `python` emitted non-blocking `tomllib` fallback warnings while returning pass.
 - Generated architecture registry and graph references to `ide/README.md` remain deferred review/regeneration items.
@@ -19,3 +23,4 @@
 - Plan parsing confirmed `apply_allowed = false` and `approval_status = not_approved`.
 - Strict validators and supplemental docs/build/UI/ABI checks passed.
 - AIDE-MOVE-01-APPLY moved the README, applied exactly six planned reference rewrites, and kept `ide/manifests/**` untouched.
+- AIDE-GATE-03 verified the post-move state and authorizes only AIDE-MOVE-02 planning.

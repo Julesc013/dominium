@@ -27,3 +27,7 @@ AIDE-GATE-02 passed with warnings and authorizes only `AIDE-MOVE-01-APPLY` for `
 ## AIDE-MOVE-01-APPLY Result
 
 AIDE-MOVE-01-APPLY moved `ide/README.md` to `docs/architecture/IDE_PROJECTIONS.md` and applied only the six planned reference rewrites. `ide/manifests/**` remains deferred and untouched, the `ide/` root exception was not retired, and the next recommended task is `AIDE-GATE-03`.
+
+## AIDE-GATE-03 Result
+
+AIDE-GATE-03 passed with warnings and verified the first move wave post-state. `AIDE-MOVE-02-PLAN` may proceed, but no move application is authorized.

@@ -2,15 +2,15 @@
 
 ## PHASE
 
-AIDE-MOVE-01-APPLY - first low-risk move application
+AIDE-GATE-03 - post-move proof and next wave readiness gate
 
 ## GOAL
 
-Apply the single gated move from the former ide README to `docs/architecture/IDE_PROJECTIONS.md`, apply only the six planned reference rewrites, and record validation and rollback evidence.
+Verify the first AIDE-controlled move after apply and decide whether the next move-planning task may proceed.
 
 ## WHY
 
-This is the first controlled AIDE move proof. It demonstrates that a small docs-only cleanup can move through plan, gate, apply, reference rewrite, validation, evidence, and rollback recording without broader root cleanup.
+Dominium should not plan another move wave until the first applied move is proven scoped, reference-aware, validator-backed, and reversible.
 
 ## CONTEXT_REFS
 
@@ -23,6 +23,8 @@ This is the first controlled AIDE move proof. It demonstrates that a small docs-
 - `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
 - `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
 - `.aide/reports/AIDE-MOVE-01-APPLY-rollback.md`
+- `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
+- `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
 - `docs/repo/root-recycling/AIDE_MOVE_01_FIRST_LOW_RISK_MOVE_PLAN.md`
 - `docs/repo/root-recycling/AIDE_MOVE_01_APPLY_RESULT.md`
 
@@ -32,8 +34,6 @@ This is the first controlled AIDE move proof. It demonstrates that a small docs-
 - `.aide/context/**`
 - `.aide/ledgers/**`
 - `docs/repo/root-recycling/**`
-- `docs/architecture/IDE_PROJECTIONS.md`
-- planned reference rewrite files
 
 ## FORBIDDEN_PATHS
 
@@ -47,33 +47,32 @@ This is the first controlled AIDE move proof. It demonstrates that a small docs-
 - `release/**`
 - ide manifests subtree
 - product/version root files
-- any move other than the approved README-to-architecture-doc move
-- any reference rewrite outside the six planned apply-phase rewrites
+- any file move, delete, rename, or reference rewrite
 - path alias activation, salvage application, move-map application, or exception retirement
 
 ## IMPLEMENTATION
 
-- Move the former ide README to `docs/architecture/IDE_PROJECTIONS.md` with `git mv`.
-- Apply exactly the six apply-phase rewrites from the reference rewrite plan.
-- Do not modify `ide/manifests/**`.
-- Do not retire the `ide/` root exception.
+- Inspect sync state, move evidence, moved-path state, deferred manifests, reference state, exception state, and changed-file scope.
+- Run required AIDE, strict validator, supplemental, and git checks.
+- Do not modify moved source/target files, manifests, product/source/runtime/build files, maps, aliases, shims, or exception ledgers.
 
 ## VALIDATION
 
-Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale reference search, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-01-APPLY-validation.md`.
+Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale reference classification, and git diff checks. Record results in `.aide/reports/AIDE-GATE-03-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
-- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
-- `.aide/reports/AIDE-MOVE-01-APPLY-validation.md`
-- `.aide/reports/AIDE-MOVE-01-APPLY-blockers.md`
+- `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
+- `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
+- `.aide/reports/AIDE-GATE-03-validation.md`
+- `.aide/reports/AIDE-GATE-03-blockers.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
 
 ## NON_GOALS
 
-- Do not start another move.
+- Do not start another move plan.
+- Do not apply another move.
 - Do not delete files.
 - Do not approve or apply move maps or salvage maps.
 - Do not create active aliases or compatibility shims.
@@ -82,17 +81,18 @@ Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale refere
 
 ## ACCEPTANCE
 
-- Apply reports and JSON exist.
+- Gate reports and JSON exist.
 - The former ide README is absent and `docs/architecture/IDE_PROJECTIONS.md` is present.
-- Exactly six planned reference rewrites were applied.
+- Six planned reference rewrites are verified.
 - ide manifests remain untouched.
 - Validation passes or only non-blocking known warnings remain.
 - No unauthorized move, delete, rename, alias, shim, or exception retirement occurred.
+- If passing, only AIDE-MOVE-02 planning is authorized.
 
 ## OUTPUT_SCHEMA
 
-Apply outputs are Markdown and JSON reports under `.aide/reports/**`, plus a root-recycling result doc and optional narrow context/ledger/status updates.
+Gate outputs are Markdown and JSON reports under `.aide/reports/**`, plus optional narrow context, ledger, status, and first-wave doc updates.
 
 ## TOKEN_ESTIMATE
 
-Approximate task packet tokens: 690. No raw source bodies are embedded beyond short path references.
+Approximate task packet tokens: 620. No raw source bodies are embedded beyond short path references.

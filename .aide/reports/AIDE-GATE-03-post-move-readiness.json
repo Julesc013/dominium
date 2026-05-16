@@ -1,0 +1,86 @@
+{
+  "schema_version": "dominium.aide.gate.post_move.v1",
+  "task_id": "AIDE-GATE-03",
+  "gate_result": "PASS_WITH_WARNINGS",
+  "head": "9a05800601809463ea596a84e2c8bdc9fcffdbad",
+  "origin_main": "9a05800601809463ea596a84e2c8bdc9fcffdbad",
+  "sync_state": "equal",
+  "move_verified": {
+    "source_absent": true,
+    "target_present": true,
+    "source": "ide/README.md",
+    "target": "docs/architecture/IDE_PROJECTIONS.md"
+  },
+  "deferred": {
+    "ide_manifests_untouched": true
+  },
+  "reference_rewrites": {
+    "planned": 6,
+    "applied": 6,
+    "remaining_stale_references": [
+      {
+        "path": "data/architecture/module_registry.json",
+        "classification": "generated architecture registry review item"
+      },
+      {
+        "path": "data/architecture/module_registry.v1.json",
+        "classification": "generated architecture registry review item"
+      },
+      {
+        "path": "data/architecture/architecture_graph.json",
+        "classification": "generated architecture graph review item"
+      },
+      {
+        "path": "data/architecture/architecture_graph.v1.json",
+        "classification": "generated architecture graph review item"
+      },
+      {
+        "path": "docs/audit/REPO_STRUCTURE_AUDIT.json",
+        "classification": "historical audit evidence"
+      },
+      {
+        "path": "docs/repo/root-recycling/**",
+        "classification": "root-recycling history and planning evidence"
+      }
+    ],
+    "remaining_allowed": true
+  },
+  "exception_state": {
+    "ide_exception_retired": false,
+    "notes": "ide/manifests remains deferred; contracts/repo/layout_exceptions.toml was not changed by the apply commit."
+  },
+  "unauthorized_changes": false,
+  "validation": [
+    {"command": "git fetch --all --prune", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py doctor", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py test", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py selftest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS"},
+    {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_component_matrices.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python scripts/verify_docs_sanity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_build_target_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_ui_shell_purity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_abi_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "git diff --check", "result": "PASS"},
+    {"command": "git diff --cached --check", "result": "PASS"}
+  ],
+  "known_warnings": [
+    "origin/main equals local HEAD at the AIDE-MOVE-01-APPLY commit; this is an accepted synced state.",
+    "Remaining old-path references are historical, audit, generated review, or root-recycling evidence.",
+    "ide remains because ide/manifests remains deferred.",
+    "Python strict validators emitted non-blocking tomllib fallback warnings.",
+    "Validator-generated migration metadata header side effects were reverted because this gate cannot write those paths."
+  ],
+  "blockers": [],
+  "authorized_next": [
+    "AIDE-MOVE-02-PLAN"
+  ],
+  "move_apply_authorized": false
+}
