@@ -35,6 +35,11 @@
 | `ctest --preset verify -R inv_repox_rules --output-on-failure` | PASS | first run failed on missing RELEASE-00 audit status header; header was fixed and rerun passed |
 | `ctest --preset verify -L smoke --output-on-failure --timeout 300` | PASS | 57/57 smoke tests passed |
 | `git diff --check` | PASS | no whitespace errors |
+| `git diff --cached --check` | PASS | no staged whitespace errors before RELEASE-00 proof commit |
+
+## Post-Commit Message Check
+
+The first RELEASE-00 proof commit `ad8397221fbb97638da7249febbfa42ad70f1616` was created with valid scoped content but failed `py -3 .aide/scripts/aide_lite.py commit check --latest` because its `## Changelog` bullets used lowercase category prefixes. The commit was not amended because this task forbids amend/rewrite operations. This follow-up evidence update records that disposition and uses a policy-compliant `## Changelog` category prefix.
 
 ## Not Run
 
