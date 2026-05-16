@@ -70,10 +70,11 @@ No projection commands were run. The task requires POST-CONVERGE-12 to stop when
 | `git status --short --branch` | PASS | Shows only scoped POST-CONVERGE-12 evidence/status changes before staging. |
 | `git diff --check` | PASS | No whitespace errors before staging. |
 | `git diff --cached --check` | PASS | No staged whitespace errors. |
+| `py -3 .aide/scripts/aide_lite.py commit check --latest` after first POST-CONVERGE-12 commit | FAIL_EXPECTED | The first commit landed but its changelog category prefix did not satisfy AIDE policy; history was not amended. |
 
 ## Final Validation
 
-Staged diff checks passed before commit.
+Staged diff checks passed before the first commit. A follow-up validation-note commit records the commit-policy correction without amending history.
 
 ## Not Run
 
