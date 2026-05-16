@@ -1,0 +1,83 @@
+{
+  "schema_version": "dominium.aide.move_plan.v1",
+  "task_id": "AIDE-MOVE-02-PLAN",
+  "plan": {
+    "id": "AIDE-MOVE-02",
+    "title": "Second Low-Risk Move Plan",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "created_by": "AIDE-MOVE-02-PLAN",
+    "purpose": "Plan the second low-risk move wave. No application authorized."
+  },
+  "candidate": {
+    "selected": false,
+    "root": null,
+    "subtree": null,
+    "reason": "No remaining preferred-root candidate is small, docs-only or evidence-only, low-risk, and reference-simple enough for a second move plan after AIDE-MOVE-01.",
+    "risk": "unknown",
+    "value": "low",
+    "reference_complexity": "high",
+    "reversibility": "unknown"
+  },
+  "considered_candidates": [
+    {
+      "root": "ide",
+      "subtree": "ide/manifests/**",
+      "decision": "defer",
+      "reason": "Remaining IDE material is machine-readable projection metadata explicitly deferred by prior gates.",
+      "risk": "medium",
+      "reference_complexity": "high"
+    },
+    {
+      "root": "performance",
+      "subtree": "performance/*.py",
+      "decision": "defer",
+      "reason": "All tracked files are Python modules; product/client imports and AuditX references make this an active tooling/source move, not a docs-only plan.",
+      "risk": "medium",
+      "reference_complexity": "medium"
+    },
+    {
+      "root": "validation",
+      "subtree": "validation/*.py",
+      "decision": "defer",
+      "reason": "Validation root contains active validation modules and broad XStack references.",
+      "risk": "medium",
+      "reference_complexity": "high"
+    },
+    {
+      "root": "governance",
+      "subtree": "governance/*.py",
+      "decision": "defer",
+      "reason": "Governance root contains policy/governance Python modules, not docs-only evidence.",
+      "risk": "medium",
+      "reference_complexity": "high"
+    },
+    {
+      "root": "meta",
+      "subtree": "meta/**",
+      "decision": "defer",
+      "reason": "Meta root contains many policy/governance Python modules and high reference volume.",
+      "risk": "unknown",
+      "reference_complexity": "high"
+    }
+  ],
+  "moves": [],
+  "rewrites": [],
+  "validators": [
+    ".aide/refactors/AIDE-MOVE-02.validation_plan.json"
+  ],
+  "rollback": ".aide/refactors/AIDE-MOVE-02.rollback_plan.json",
+  "exception_update_plan": ".aide/refactors/AIDE-MOVE-02.exception_update_plan.json",
+  "blockers": [
+    "No preferred-root docs-only or evidence-only candidate remains after the IDE README move.",
+    "Remaining preferred-root candidates are machine-readable metadata or active Python/tooling modules.",
+    "Reference complexity is too high for a second low-risk move plan without refinement."
+  ],
+  "next_gate": null,
+  "next_recommended_task": "AIDE-MOVE-02-REFINE - Identify Second Low-Risk Candidate",
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false
+}

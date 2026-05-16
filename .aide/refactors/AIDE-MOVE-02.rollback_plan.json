@@ -1,0 +1,18 @@
+{
+  "schema_version": "dominium.aide.rollback_plan.v1",
+  "task_id": "AIDE-MOVE-02-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "candidate_selected": false,
+  "rollback_strategy": "No files are planned for movement. Abandoning the draft plan requires no reverse move or reference rewrite.",
+  "reverse_moves": [],
+  "reverse_reference_rewrites": [],
+  "shim_removal": [],
+  "exception_ledger_rollback": [],
+  "validation_after_rollback": [
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "git diff --check"
+  ],
+  "abandon_plan": "Leave the draft evidence in place or supersede it with a later refinement task; do not apply it."
+}

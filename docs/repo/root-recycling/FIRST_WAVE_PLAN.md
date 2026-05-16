@@ -31,3 +31,7 @@ AIDE-MOVE-01-APPLY moved `ide/README.md` to `docs/architecture/IDE_PROJECTIONS.m
 ## AIDE-GATE-03 Result
 
 AIDE-GATE-03 passed with warnings and verified the first move wave post-state. `AIDE-MOVE-02-PLAN` may proceed, but no move application is authorized.
+
+## AIDE-MOVE-02-PLAN Result
+
+AIDE-MOVE-02-PLAN reviewed the next preferred roots and did not select a second move candidate. After the IDE README move, the remaining preferred-root material is deferred machine-readable IDE metadata or active Python/tooling code. The draft plan is not approved, apply remains false, and the recommended next task is candidate refinement rather than an apply gate.

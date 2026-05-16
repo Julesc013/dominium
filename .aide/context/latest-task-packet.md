@@ -2,34 +2,32 @@
 
 ## PHASE
 
-AIDE-GATE-03 - post-move proof and next wave readiness gate
+AIDE-MOVE-02-PLAN - second low-risk move planning
 
 ## GOAL
 
-Verify the first AIDE-controlled move after apply and decide whether the next move-planning task may proceed.
+Select the next low-risk move candidate from AIDE root recycling evidence, or record that no safe candidate is available. This is no-apply planning evidence only.
 
 ## WHY
 
-Dominium should not plan another move wave until the first applied move is proven scoped, reference-aware, validator-backed, and reversible.
+AIDE-MOVE-01 proved one small docs move. The second wave should not force active tooling, source, or machine-readable metadata into a move plan just to keep moving.
 
 ## CONTEXT_REFS
 
-- `.aide/refactors/AIDE-MOVE-01.plan.json`
-- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
-- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
-- `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
-- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
-- `.aide/reports/AIDE-MOVE-01-APPLY-rollback.md`
 - `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
 - `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
-- `docs/repo/root-recycling/AIDE_MOVE_01_FIRST_LOW_RISK_MOVE_PLAN.md`
-- `docs/repo/root-recycling/AIDE_MOVE_01_APPLY_RESULT.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
+- `.aide/reports/roots/AIDE-ROOT-06-reconciliation.json`
+- `.aide/reports/roots/AIDE-ROOT-06-move-wave-candidates.json`
+- `.aide/reports/roots/ide.inventory.json`
+- `.aide/reports/roots/performance.inventory.json`
+- `.aide/reports/roots/validation.inventory.json`
+- `.aide/reports/roots/governance.inventory.json`
+- `.aide/reports/roots/meta.inventory.json`
 
 ## ALLOWED_PATHS
 
+- `.aide/refactors/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -45,6 +43,7 @@ Dominium should not plan another move wave until the first applied move is prove
 - `tests/**`
 - `cmake/**`
 - `release/**`
+- candidate source files
 - ide manifests subtree
 - product/version root files
 - any file move, delete, rename, or reference rewrite
@@ -52,26 +51,33 @@ Dominium should not plan another move wave until the first applied move is prove
 
 ## IMPLEMENTATION
 
-- Inspect sync state, move evidence, moved-path state, deferred manifests, reference state, exception state, and changed-file scope.
-- Run required AIDE, strict validator, supplemental, and git checks.
-- Do not modify moved source/target files, manifests, product/source/runtime/build files, maps, aliases, shims, or exception ledgers.
+- Inspect AIDE-GATE-03, AIDE-MOVE-01, AIDE-ROOT-06, and candidate root evidence.
+- Select a safe second candidate only if evidence supports it.
+- If no safe candidate exists, record a blocked no-candidate plan with refinement next steps.
+- Run required AIDE, strict validator, supplemental, plan parsing, and git checks.
+- Do not modify candidate source files, manifests, product/source/runtime/build files, maps, aliases, shims, or exception ledgers.
 
 ## VALIDATION
 
-Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale reference classification, and git diff checks. Record results in `.aide/reports/AIDE-GATE-03-validation.md`.
+Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, plan parsing, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-02-PLAN-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
-- `.aide/reports/AIDE-GATE-03-validation.md`
-- `.aide/reports/AIDE-GATE-03-blockers.md`
-- `.aide/reports/latest-dominium-status.md`
-- `.aide/reports/latest-warning-disposition.md`
+- `.aide/refactors/AIDE-MOVE-02.plan.toml`
+- `.aide/refactors/AIDE-MOVE-02.plan.json`
+- `.aide/refactors/AIDE-MOVE-02.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.validation_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.rollback_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.exception_update_plan.json`
+- `.aide/reports/AIDE-MOVE-02-PLAN-status.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-validation.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-blockers.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-review.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-summary.json`
+- `docs/repo/root-recycling/AIDE_MOVE_02_SECOND_LOW_RISK_MOVE_PLAN.md`
 
 ## NON_GOALS
 
-- Do not start another move plan.
 - Do not apply another move.
 - Do not delete files.
 - Do not approve or apply move maps or salvage maps.
@@ -81,18 +87,16 @@ Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale refere
 
 ## ACCEPTANCE
 
-- Gate reports and JSON exist.
-- The former ide README is absent and `docs/architecture/IDE_PROJECTIONS.md` is present.
-- Six planned reference rewrites are verified.
-- ide manifests remain untouched.
+- Draft plan and support JSON/Markdown exist.
+- Candidate selection is evidence-backed.
+- If no candidate is selected, blockers and refinement path are explicit.
 - Validation passes or only non-blocking known warnings remain.
-- No unauthorized move, delete, rename, alias, shim, or exception retirement occurred.
-- If passing, only AIDE-MOVE-02 planning is authorized.
+- No move, delete, rename, reference rewrite, alias, shim, map apply, or exception retirement occurred.
 
 ## OUTPUT_SCHEMA
 
-Gate outputs are Markdown and JSON reports under `.aide/reports/**`, plus optional narrow context, ledger, status, and first-wave doc updates.
+Move-plan outputs are TOML/JSON under `.aide/refactors/**`, Markdown/JSON reports under `.aide/reports/**`, and a narrow repo doc under `docs/repo/root-recycling/**`.
 
 ## TOKEN_ESTIMATE
 
-Approximate task packet tokens: 620. No raw source bodies are embedded beyond short path references.
+Approximate task packet tokens: 760. No raw source bodies are embedded beyond short path references.

@@ -1,0 +1,46 @@
+[plan]
+id = "AIDE-MOVE-02"
+title = "Second Low-Risk Move Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "AIDE-MOVE-02-PLAN"
+purpose = "Plan the second low-risk move wave. No application authorized."
+
+[selection]
+root = "none"
+subtree = "none"
+recommended = false
+reason = "No remaining preferred-root candidate is small, docs-only or evidence-only, low-risk, and reference-simple enough for a second move plan after AIDE-MOVE-01."
+risk = "unknown"
+value = "low"
+reference_complexity = "high"
+reversibility = "unknown"
+
+[constraints]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+reference_rewrites_allowed = false
+path_aliases_allowed = false
+exception_retirement_allowed = false
+
+[artifacts]
+reference_rewrite_plan = ".aide/refactors/AIDE-MOVE-02.reference_rewrite_plan.json"
+validation_plan = ".aide/refactors/AIDE-MOVE-02.validation_plan.json"
+rollback_plan = ".aide/refactors/AIDE-MOVE-02.rollback_plan.json"
+exception_update_plan = ".aide/refactors/AIDE-MOVE-02.exception_update_plan.json"
+
+[blockers]
+items = [
+  "ide remaining material is machine-readable projection metadata under ide/manifests/** and remains explicitly deferred.",
+  "performance contains Python modules with active product and tooling imports/references, not docs-only evidence.",
+  "validation contains active validation Python modules and broad XStack references, not low-risk docs-only evidence.",
+  "governance contains policy/governance Python modules with semantic sensitivity, not docs-only evidence.",
+  "meta contains many Python modules and high reference volume, making it unsuitable for a small second move.",
+  "A second move requires additional candidate refinement or a narrower docs/evidence inventory before gate review."
+]
+
+[notes]
+summary = "This is planning evidence only. No files are moved, no references are rewritten, and no move application is authorized."
+next_recommended_task = "AIDE-MOVE-02-REFINE - Identify Second Low-Risk Candidate"

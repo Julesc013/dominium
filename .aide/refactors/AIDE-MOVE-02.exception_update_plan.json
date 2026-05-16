@@ -1,0 +1,17 @@
+{
+  "schema_version": "dominium.aide.exception_update_plan.v1",
+  "task_id": "AIDE-MOVE-02-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "candidate_selected": false,
+  "exceptions": [],
+  "summary": {
+    "exception_updates_planned": 0,
+    "exception_retirements_planned": 0,
+    "notes": "No second move candidate was selected. No layout exception update or retirement is authorized."
+  },
+  "blockers": [
+    "No root exception should be retired from this plan."
+  ]
+}

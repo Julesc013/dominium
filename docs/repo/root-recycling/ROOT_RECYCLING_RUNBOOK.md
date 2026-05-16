@@ -18,3 +18,5 @@ First inventories and reconciliation are evidence only. Move-wave selection is s
 AIDE-MOVE-01-PLAN note: move planning is still no-apply. The first draft plan may name exact source and target paths, reference rewrites, validation, rollback, and exception updates, but only a later gate can authorize an apply task. AIDE-MOVE-01-PLAN selects `ide/README.md` only; `ide/manifests/**` remains deferred.
 
 AIDE-MOVE-01-APPLY note: apply tasks must consume a gate-scoped authorization and perform only the named move and named reference rewrites. The first apply moved `ide/README.md` to `docs/architecture/IDE_PROJECTIONS.md`, kept `ide/manifests/**` untouched, and left root exception retirement for a later explicitly approved task.
+
+AIDE-MOVE-02-PLAN note: move planning may legitimately stop with no selected candidate. After the first move, the next preferred roots must not be forced into an apply plan if they contain active tooling, Python modules, machine-readable metadata, or high-reference surfaces instead of docs-only/evidence-only material.

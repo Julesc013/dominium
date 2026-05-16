@@ -1,0 +1,19 @@
+{
+  "schema_version": "dominium.aide.reference_rewrite_plan.v1",
+  "task_id": "AIDE-MOVE-02-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "candidate_selected": false,
+  "reference_rewrites": [],
+  "summary": {
+    "planned_rewrite_count": 0,
+    "apply_phase_rewrite_count": 0,
+    "historical_or_review_count": 0
+  },
+  "blockers": [
+    "No second move candidate was selected.",
+    "No reference rewrites are authorized by this plan.",
+    "Potential candidates in performance, validation, governance, and meta require additional reference audit before any move plan."
+  ]
+}

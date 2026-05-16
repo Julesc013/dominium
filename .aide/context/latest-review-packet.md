@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review AIDE-GATE-03 and confirm the first controlled move remains proven after apply, with only next move planning authorized.
+Review AIDE-MOVE-02-PLAN and confirm the no-candidate decision is evidence-backed, draft-only, and no-apply.
 
 ## Decision Requested
 
@@ -26,24 +26,27 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
-- `.aide/reports/AIDE-GATE-03-validation.md`
-- `.aide/reports/AIDE-GATE-03-blockers.md`
-- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
-- `.aide/reports/AIDE-MOVE-01-APPLY-rollback.md`
-- `.aide/refactors/AIDE-MOVE-01.plan.json`
-- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.plan.json`
+- `.aide/refactors/AIDE-MOVE-02.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.validation_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.rollback_plan.json`
+- `.aide/refactors/AIDE-MOVE-02.exception_update_plan.json`
+- `.aide/reports/AIDE-MOVE-02-PLAN-status.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-validation.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-blockers.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-review.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-summary.json`
 
 ## Changed Files Summary
 
-- Added AIDE-GATE-03 post-move readiness, validation, and blocker reports.
-- Updated latest AIDE context, status, warning disposition, ledger, and first-wave note.
-- No moved document, manifest, product/runtime/source/build, map, alias, shim, or exception ledger files changed.
+- Added draft AIDE-MOVE-02 no-candidate planning files and reports.
+- Added the second low-risk move plan repo doc.
+- Updated latest AIDE context, status, warning disposition, ledger, first-wave note, and runbook.
+- No source, product/runtime/build, candidate root, map, alias, shim, or exception ledger files changed.
 
 ## Validation Summary
 
-AIDE, strict repo/root/distribution/component validators, docs sanity, build boundary, UI shell, ABI boundary, stale reference classification, and git diff checks pass or pass with known non-blocking warnings.
+AIDE, plan parsing, strict repo/root/distribution/component validators, docs sanity, build boundary, UI shell, ABI boundary, and git diff checks pass or pass with known non-blocking warnings.
 
 ## Token Summary
 
@@ -51,12 +54,12 @@ This packet is compact and references evidence by path rather than inlining raw 
 
 ## Risk Summary
 
-The gate passes with warnings because historical/generated old-path references remain by design, ide manifests remain deferred, and Python validator `tomllib` fallback warnings remain.
+The plan passes with warnings because no safe second docs-only/evidence-only candidate was selected. Remaining preferred roots are deferred machine-readable metadata or active Python/tooling code.
 
 ## Non-Goals / Scope Guard
 
-Do not start another move plan, apply moves, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
+Do not apply moves, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
 
 ## Reviewer Instructions
 
-Confirm that the first move is verified, ide manifests remain untouched, remaining old-path references are allowed evidence, and the next task may be AIDE-MOVE-02-PLAN only.
+Confirm that the no-candidate decision is justified by evidence and that the next task should refine candidate selection rather than gate an apply task.

@@ -2,6 +2,9 @@
 
 ## Accepted Warnings
 
+- AIDE-MOVE-02-PLAN passes with warnings because no second low-risk docs-only/evidence-only candidate was selected.
+- Remaining `ide/` material is machine-readable projection metadata and remains deferred.
+- `performance/`, `validation`, `governance`, and `meta` contain active Python/tooling or high-reference surfaces that require refinement before a move plan.
 - AIDE-GATE-03 passes with warnings because remaining old-path references are historical, audit, generated review, or root-recycling evidence.
 - AIDE-GATE-03 accepts that `ide/` remains transitional because `ide/manifests/**` remains deferred.
 - AIDE-GATE-03 accepts local `main` equal to `origin/main` at the AIDE-MOVE-01-APPLY commit as a valid synced state.

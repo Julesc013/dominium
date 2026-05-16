@@ -1,0 +1,49 @@
+{
+  "schema_version": "dominium.aide.validation_plan.v1",
+  "task_id": "AIDE-MOVE-02-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "candidate_selected": false,
+  "tiers": [
+    {
+      "tier": 0,
+      "name": "always",
+      "commands": [
+        {"command": "py -3 .aide/scripts/aide_lite.py doctor", "reason": "AIDE health check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py validate", "reason": "AIDE evidence validation", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py test", "reason": "AIDE lightweight tests", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py selftest", "reason": "AIDE selftest", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "reason": "AIDE tool validation", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "reason": "AIDE root evidence validation", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "reason": "AIDE repo validation", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "reason": "Latest commit policy check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "warn if unrelated to draft planning"},
+        {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "reason": "Strict repo layout check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "reason": "Strict root allowlist check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "reason": "Strict distribution layout check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python tools/validators/check_component_matrices.py --repo-root . --strict", "reason": "Strict component matrix check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python scripts/verify_docs_sanity.py --repo-root .", "reason": "Docs sanity", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python scripts/verify_build_target_boundaries.py --repo-root .", "reason": "Build target boundary proof", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python scripts/verify_ui_shell_purity.py --repo-root .", "reason": "UI shell purity proof", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "python scripts/verify_abi_boundaries.py --repo-root .", "reason": "ABI boundary proof", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block unexpected failures"},
+        {"command": "git diff --check", "reason": "Whitespace diff check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block"},
+        {"command": "git diff --cached --check", "reason": "Staged whitespace diff check", "required_before_apply": true, "required_after_apply": true, "failure_policy": "block if staged"}
+      ]
+    },
+    {
+      "tier": 1,
+      "name": "if active tooling or docs references are rewritten",
+      "commands": [],
+      "reason": "No move candidate or reference rewrites were selected."
+    },
+    {
+      "tier": 2,
+      "name": "if build or source paths are touched",
+      "commands": [],
+      "reason": "No build or source paths are planned for movement."
+    }
+  ],
+  "blockers": [
+    "No apply task should run from this plan because no second move candidate was selected."
+  ]
+}
