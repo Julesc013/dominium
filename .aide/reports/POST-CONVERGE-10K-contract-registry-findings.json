@@ -1,0 +1,302 @@
+{
+  "blocked": [
+    {
+      "count": 7,
+      "family": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 5,
+      "family": "INV-NO-ADHOC-MAIN",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 5,
+      "family": "INV-TOOLS-REQUIRE-ENTITLEMENT",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 4,
+      "family": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 2,
+      "family": "INV-CACHE-KEY-INCLUDES-CONTRACTS",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 2,
+      "family": "INV-REPOX-RULESET-MISSING",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 2,
+      "family": "INV-TOOL-VERSION-MISMATCH",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 2,
+      "family": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-BODY-MOTION-PROCESS-ONLY",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-CAMERA-SMOOTH-RENDER-ONLY",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-CANON-NO-SUPERSEDED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-COLLISION-DETERMINISTIC",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-CONFLICTS-NOT-SILENT-IN-STRICT",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-IDENTITY-FINGERPRINT",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-JUMP-PROFILE-GATED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-LENS-PROFILED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-ASSET-DEPENDENCY-FOR-EMB",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-BLOCKING-WORLDGEN-IN-UI",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-FLOAT-SMOOTHING",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-IDENTITY-OVERRIDE",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-SILENT-DEGRADE",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-TRUTH-LEAK-IN-SCANS",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-OVERLAY-CONFLICT-POLICY-DECLARED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-REFINEMENT-BUDGETED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-REPRO-BUNDLE-DETERMINISTIC",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-REPRO-BUNDLE-NO-SECRETS",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-SHADOW-BOUNDED",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    },
+    {
+      "count": 1,
+      "family": "INV-TERRAIN-EDITS-PROCESS-ONLY",
+      "reason": "Outside POST-CONVERGE-10K contract registry acceptance scope."
+    }
+  ],
+  "checked_failures": 9,
+  "deferred": [],
+  "findings": [
+    {
+      "authority_basis": "Declared by architecture_graph.v1.json, ARCHITECTURE_GRAPH_SPEC_v1.md, and Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.graph.v1",
+      "path": "data/architecture/architecture_graph.v1.json",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by architecture_graph.v1.json, ARCHITECTURE_GRAPH_SPEC_v1.md, and Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.graph.v1",
+      "path": "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by architecture_graph.v1.json, ARCHITECTURE_GRAPH_SPEC_v1.md, and Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.graph.v1",
+      "path": "tools/review/xi6_common.py",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by module_boundary_rules.v1.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.module_boundaries.v1",
+      "path": "data/architecture/module_boundary_rules.v1.json",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by module_boundary_rules.v1.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.module_boundaries.v1",
+      "path": "tools/review/xi6_common.py",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by module_registry.v1.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.module_registry.v1",
+      "path": "data/architecture/module_registry.v1.json",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by module_registry.v1.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.module_registry.v1",
+      "path": "tools/review/xi6_common.py",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by single_engine_registry.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.single_engine_registry.v1",
+      "path": "data/architecture/single_engine_registry.json",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Declared by single_engine_registry.json and consumed by Xi architecture review tooling.",
+      "classification": "accepted_current_missing_metadata",
+      "contract_id": "contract.arch.single_engine_registry.v1",
+      "path": "tools/review/xi6_common.py",
+      "reason": "The token is already current architecture evidence; only the semantic contract registry acceptance row was missing.",
+      "recommended_action": "add_acceptance_metadata",
+      "registry": "data/registries/semantic_contract_registry.json",
+      "rule_id": "INV-NEW-CONTRACT-REQUIRES-ENTRY",
+      "safe_to_fix_now": true
+    }
+  ],
+  "safe_fixes": [
+    {
+      "action": "add_acceptance_metadata",
+      "authority_basis": "Declared by architecture_graph.v1.json, ARCHITECTURE_GRAPH_SPEC_v1.md, and Xi architecture review tooling.",
+      "contract_id": "contract.arch.graph.v1",
+      "paths": [
+        "data/architecture/architecture_graph.v1.json",
+        "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md",
+        "tools/review/xi6_common.py"
+      ],
+      "registry": "data/registries/semantic_contract_registry.json"
+    },
+    {
+      "action": "add_acceptance_metadata",
+      "authority_basis": "Declared by module_boundary_rules.v1.json and consumed by Xi architecture review tooling.",
+      "contract_id": "contract.arch.module_boundaries.v1",
+      "paths": [
+        "data/architecture/module_boundary_rules.v1.json",
+        "tools/review/xi6_common.py"
+      ],
+      "registry": "data/registries/semantic_contract_registry.json"
+    },
+    {
+      "action": "add_acceptance_metadata",
+      "authority_basis": "Declared by module_registry.v1.json and consumed by Xi architecture review tooling.",
+      "contract_id": "contract.arch.module_registry.v1",
+      "paths": [
+        "data/architecture/module_registry.v1.json",
+        "tools/review/xi6_common.py"
+      ],
+      "registry": "data/registries/semantic_contract_registry.json"
+    },
+    {
+      "action": "add_acceptance_metadata",
+      "authority_basis": "Declared by single_engine_registry.json and consumed by Xi architecture review tooling.",
+      "contract_id": "contract.arch.single_engine_registry.v1",
+      "paths": [
+        "data/architecture/single_engine_registry.json",
+        "tools/review/xi6_common.py"
+      ],
+      "registry": "data/registries/semantic_contract_registry.json"
+    }
+  ],
+  "schema_version": "dominium.post_converge_10k.contract_registry_findings.v1",
+  "task_id": "POST-CONVERGE-10K"
+}

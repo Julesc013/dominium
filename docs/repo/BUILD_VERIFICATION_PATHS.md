@@ -157,3 +157,12 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - Canonical `ctest --preset verify -N` still discovers 0 tests, so tuple CTest remains the effective focused lane.
 - No configure/build rerun was required because changes were documentation metadata, canon index, and evidence updates only.
 - POST-CONVERGE-11 remains blocked.
+
+## POST-CONVERGE-10K Update - Contract Registry Acceptance
+
+- Result: PARTIAL.
+- Focused RepoX actual local state improved from 59 failures / 5 warnings to 51 failures / 5 warnings.
+- The prior 10J-reported 60th failure was `INV-LOCKLIST-FROZEN`, which was absent at 10K start because `origin/main` equaled local HEAD.
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
+- POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
+- Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.

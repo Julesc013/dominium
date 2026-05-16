@@ -43,6 +43,130 @@
           "regression lock update",
           "release notes"
         ],
+        "contract_id": "contract.arch.graph.v1",
+        "description": "Architecture graph baseline semantics for Xi-6 module, concept, edge, and fingerprint review surfaces.",
+        "deterministic_fingerprint": "8c4248d430a3fed1cd688afd01ad419d3b2dd73396940c80c41166d4b1369476",
+        "guaranteed_invariants": [
+          "same architecture graph contract yields identical graph identity interpretation",
+          "architecture graph hashes remain canonical and deterministic",
+          "architecture graph meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.arch.graph.v1",
+          "deterministic_fingerprint": "9fb5976e48c383196f3fde085e57326d645dc01d3adefcab6ad7f0f025bf8206",
+          "extensions": {},
+          "future_series": "XI-6",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.arch.module_boundaries.v1",
+        "description": "Module boundary rule semantics for Xi-6 architecture review and cross-module dependency constraints.",
+        "deterministic_fingerprint": "f5afe8c5b0f45e364c25b04258415d8e71741920bf8b75721753f9c880ee067d",
+        "guaranteed_invariants": [
+          "same module boundary contract yields identical boundary rule interpretation",
+          "module boundary violations remain deterministic and reviewable",
+          "module boundary meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.arch.module_boundaries.v1",
+          "deterministic_fingerprint": "44c1cfa9a148780367583bcb98702181b677b64c91f2be87ac5a31ac1bfc7b66",
+          "extensions": {},
+          "future_series": "XI-6",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.arch.module_registry.v1",
+        "description": "Module registry semantics for Xi-6 module roots, ownership, domain classification, and deterministic module inventory.",
+        "deterministic_fingerprint": "245c905400edc5ddb58612ec573e02acda339df12e8bd28dd24959ca8bd969d3",
+        "guaranteed_invariants": [
+          "same module registry contract yields identical module identity interpretation",
+          "module ownership and domain classifications remain explicit",
+          "module registry meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.arch.module_registry.v1",
+          "deterministic_fingerprint": "db573a5f6852c65267beaf1e576daeb99d248d1532bcb8ad5a6c829d15e99b68",
+          "extensions": {},
+          "future_series": "XI-6",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
+        "contract_id": "contract.arch.single_engine_registry.v1",
+        "description": "Single-engine registry semantics for Xi-6 architecture consolidation and engine ownership review.",
+        "deterministic_fingerprint": "ba314f086762bd4cd064c69b4e7892c70fbc4d424713b40c31368f76d5c6db24",
+        "guaranteed_invariants": [
+          "same single-engine registry contract yields identical engine-candidate interpretation",
+          "engine consolidation candidates remain explicit and deterministic",
+          "single-engine registry meaning changes require explicit versioning"
+        ],
+        "stability": {
+          "contract_id": "contract.arch.single_engine_registry.v1",
+          "deterministic_fingerprint": "a8705cf8924b34f5f90ff8d1d76fb29d237a1fb002da538f931d15641c111770",
+          "extensions": {},
+          "future_series": "XI-6",
+          "rationale": "Semantic contract meaning is frozen under its versioned contract entry.",
+          "replacement_target": "",
+          "schema_version": "1.0.0",
+          "stability_class_id": "stable"
+        },
+        "version": "1.0.0"
+      },
+      {
+        "allowed_evolution": [
+          "additive proof surface metadata only",
+          "new versioned contract entry for any behavior change"
+        ],
+        "breaking_change_requires": [
+          "CompatX migration descriptor",
+          "explicit migration tool or explicit refusal path",
+          "regression lock update",
+          "release notes"
+        ],
         "contract_id": "contract.cap_neg.negotiation.v1",
         "description": "Compatibility negotiation, degrade selection, and explicit fallback meaning for MVP CAP-NEG surfaces.",
         "deterministic_fingerprint": "7bf8fafcd6760a1d44406ec48e4342c016b47e270cd8a83ddc3827cc7405ec1d",

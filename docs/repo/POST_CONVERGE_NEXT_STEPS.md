@@ -216,3 +216,12 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - `INV-CANON-NO-HIST-REF` reduced from 81 to 0 by aligning RepoX enforcement to canonical-doc scope and preserving DERIVED quarantine/archive evidence references.
 - POST-CONVERGE-11 remains blocked.
 - Next recommended task: `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.
+
+## POST-CONVERGE-10K Update - Contract Registry Acceptance
+
+- Result: PARTIAL.
+- Focused RepoX actual local state improved from 59 failures / 5 warnings to 51 failures / 5 warnings.
+- The prior 10J-reported 60th failure was `INV-LOCKLIST-FROZEN`, which was absent at 10K start because `origin/main` equaled local HEAD.
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
+- POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
+- Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.

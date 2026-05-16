@@ -1,3 +1,4 @@
+
 # Latest Warning Disposition
 
 Status: DERIVED
@@ -5,10 +6,10 @@ Last Reviewed: 2026-05-16
 Supersedes: none
 Superseded By: none
 
-## POST-CONVERGE-10J
+## POST-CONVERGE-10K
 
-- Focused RepoX still fails with 60 failures and 5 warnings.
-- `INV-DOC-STATUS-HEADER` is no longer a failing family after authority-sensitive status remediation.
-- `INV-LOCKLIST-FROZEN` remains as a local baseline acceptance effect because `docs/architecture/CANON_INDEX.md` changed against `origin/main`.
+- Focused tuple RepoX still fails with 51 failures and 5 warnings.
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY` is no longer a failing family after semantic contract registry acceptance metadata was added for four current architecture contracts.
+- The 10J `INV-LOCKLIST-FROZEN` local acceptance failure was absent at 10K start because `origin/main` equaled local HEAD.
 - Canonical `ctest --preset verify` still discovers 0 tests in this checkout.
-- Full CTest and product boot proof remain not run by scope.
+- Full CTest, product boot proof, package proof, and portable projection proof remain not run by scope.

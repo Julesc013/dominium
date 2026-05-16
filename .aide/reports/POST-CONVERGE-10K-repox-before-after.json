@@ -1,0 +1,148 @@
+{
+  "after": {
+    "failures": 51,
+    "warnings": 5
+  },
+  "before": {
+    "failures": 59,
+    "note": "Actual local before count was 59 because origin/main was synced to the 10J commit and the transient INV-LOCKLIST-FROZEN failure disappeared.",
+    "warnings": 5
+  },
+  "fixed_families": [
+    {
+      "after": 0,
+      "before": 9,
+      "classification": "accepted_current_missing_metadata",
+      "id": "INV-NEW-CONTRACT-REQUIRES-ENTRY"
+    }
+  ],
+  "ready_for_post_converge_11": false,
+  "remaining_families": [
+    {
+      "count": 7,
+      "id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR"
+    },
+    {
+      "count": 5,
+      "id": "INV-NO-ADHOC-MAIN"
+    },
+    {
+      "count": 5,
+      "id": "INV-TOOLS-REQUIRE-ENTITLEMENT"
+    },
+    {
+      "count": 4,
+      "id": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH"
+    },
+    {
+      "count": 2,
+      "id": "INV-CACHE-KEY-INCLUDES-CONTRACTS"
+    },
+    {
+      "count": 2,
+      "id": "INV-REPOX-RULESET-MISSING"
+    },
+    {
+      "count": 2,
+      "id": "INV-TOOL-VERSION-MISMATCH"
+    },
+    {
+      "count": 2,
+      "id": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE"
+    },
+    {
+      "count": 1,
+      "id": "INV-BODY-MOTION-PROCESS-ONLY"
+    },
+    {
+      "count": 1,
+      "id": "INV-CAMERA-SMOOTH-RENDER-ONLY"
+    },
+    {
+      "count": 1,
+      "id": "INV-CANON-NO-SUPERSEDED"
+    },
+    {
+      "count": 1,
+      "id": "INV-COLLISION-DETERMINISTIC"
+    },
+    {
+      "count": 1,
+      "id": "INV-CONFLICTS-NOT-SILENT-IN-STRICT"
+    },
+    {
+      "count": 1,
+      "id": "INV-IDENTITY-FINGERPRINT"
+    },
+    {
+      "count": 1,
+      "id": "INV-JUMP-PROFILE-GATED"
+    },
+    {
+      "count": 1,
+      "id": "INV-LENS-PROFILED"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-BLOCKING-WORLDGEN-IN-UI"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-FLOAT-SMOOTHING"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-IDENTITY-OVERRIDE"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-SILENT-DEGRADE"
+    },
+    {
+      "count": 1,
+      "id": "INV-NO-TRUTH-LEAK-IN-SCANS"
+    },
+    {
+      "count": 1,
+      "id": "INV-OVERLAY-CONFLICT-POLICY-DECLARED"
+    },
+    {
+      "count": 1,
+      "id": "INV-REFINEMENT-BUDGETED"
+    },
+    {
+      "count": 1,
+      "id": "INV-REPRO-BUNDLE-DETERMINISTIC"
+    },
+    {
+      "count": 1,
+      "id": "INV-REPRO-BUNDLE-NO-SECRETS"
+    },
+    {
+      "count": 1,
+      "id": "INV-SHADOW-BOUNDED"
+    },
+    {
+      "count": 1,
+      "id": "INV-TERRAIN-EDITS-PROCESS-ONLY"
+    }
+  ],
+  "reported_from_10j": {
+    "failures": 60,
+    "warnings": 5
+  },
+  "schema_version": "dominium.post_converge_10k.before_after.v1",
+  "task_id": "POST-CONVERGE-10K"
+}
