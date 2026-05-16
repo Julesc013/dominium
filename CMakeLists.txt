@@ -1176,6 +1176,33 @@ dom_add_existing_deps(all_apps
 
 add_custom_target(all_tools)
 dom_add_existing_deps(all_tools
+    dominium-tools
+    dom_tool_artifactmeta
+    dom_tool_terrain
+    dom_tool_geology
+    dom_tool_climate
+    dom_tool_weather
+    dom_tool_energy
+    dom_tool_heat
+    dom_tool_fluid
+    dom_tool_network
+    dom_tool_hazard
+    dom_tool_risk
+    dom_tool_trust
+    dom_tool_institution
+    dom_tool_economy
+    dom_tool_conflict
+    dom_tool_history
+    dom_tool_standard
+    dom_tool_autonomy
+    dom_tool_srz
+    dom_tool_knowledge
+    dom_tool_vegetation
+    dom_tool_animal
+    dom_tool_structure
+    dom_tool_travel
+    dom_tool_mining
+    dom_tool_crafting
     tool_ui_bind
     domui_validate
     tool_ui_doc_annotate
@@ -1496,9 +1523,13 @@ add_dependencies(verify_fast
     check_abi_boundaries
     check_ui_shell_purity
     smoke_run_apps
+    all_tools
 )
 if(WIN32 AND TARGET ui_bind_phase)
     add_dependencies(verify_fast ui_bind_phase)
+endif()
+if(TARGET ui_accessibility_tests)
+    add_dependencies(verify_fast ui_accessibility_tests)
 endif()
 
 add_custom_target(verify_full DEPENDS verify_fast testx_all)
