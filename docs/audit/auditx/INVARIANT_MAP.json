@@ -250,6 +250,44 @@
         "WARN": 1032
       }
     },
+    "INV-CAPABILITY-GATED-RUNTIME": {
+      "finding_count": 140,
+      "recommended_actions": {
+        "ADD_RULE": 60,
+        "ADD_TEST": 80
+      },
+      "sample_findings": [
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0001",
+          "location": "apps/client/app/main_client.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0002",
+          "location": "apps/client/gui/client_app_win32.cpp"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0003",
+          "location": "apps/client/shell/client_shell.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0004",
+          "location": "apps/launcher/cli/launcher_cli_main.c"
+        },
+        {
+          "category": "capability_misuse",
+          "finding_id": "A5_CAPABILITY_MISUSE:0005",
+          "location": "apps/launcher/cli/launcher_ui_shell.c"
+        }
+      ],
+      "severities": {
+        "INFO": 80,
+        "WARN": 60
+      }
+    },
     "INV-CAPABILITY-SCOPE": {
       "finding_count": 5,
       "recommended_actions": {
@@ -286,22 +324,6 @@
         "WARN": 5
       }
     },
-    "INV-CHANGE-MUST-REFERENCE-DEMAND": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "planning.orphan_feature_smell",
-          "finding_id": "E300_ORPHAN_FEATURE_SMELL:0001",
-          "location": "data/registries/extension_interpretation_registry.json"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-CHEM-BUDGETED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -332,6 +354,45 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-CLI-CANONICAL-UI": {
+      "finding_count": 232,
+      "recommended_actions": {
+        "ADD_RULE": 123,
+        "ADD_TEST": 109
+      },
+      "sample_findings": [
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0001",
+          "location": "apps/client/gui/client_app_win32.cpp"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0002",
+          "location": "apps/client/ui/inspect_panels.py"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0003",
+          "location": "apps/client/ui/inspect_panels.py"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0004",
+          "location": "apps/client/ui/inspect_panels.py"
+        },
+        {
+          "category": "ui_parity",
+          "finding_id": "A6_UI_PARITY_BYPASS:0005",
+          "location": "apps/client/ui/inspect_panels.py"
+        }
+      ],
+      "severities": {
+        "INFO": 49,
+        "RISK": 146,
+        "WARN": 37
       }
     },
     "INV-COMMAND-CAPABILITY-DECLARED": {
@@ -403,9 +464,9 @@
       }
     },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 12,
+      "finding_count": 131,
       "recommended_actions": {
-        "ADD_RULE": 12
+        "ADD_RULE": 131
       },
       "sample_findings": [
         {
@@ -435,7 +496,7 @@
         }
       ],
       "severities": {
-        "INFO": 1,
+        "INFO": 120,
         "RISK": 11
       }
     },
@@ -575,6 +636,22 @@
         "RISK": 1
       }
     },
+    "INV-GLOSSARY-TERM-CANON": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "DOC_FIX": 1
+      },
+      "sample_findings": [
+        {
+          "category": "terminology_misuse",
+          "finding_id": "C4_TERMINOLOGY_MISUSE:0001",
+          "location": "docs/architecture/TERMINOLOGY_GLOSSARY.md"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-INSPECTION-BUDGETED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -661,19 +738,39 @@
       }
     },
     "INV-LEGACY-CODE-QUARANTINED": {
-      "finding_count": 1,
+      "finding_count": 23,
       "recommended_actions": {
-        "ADD_TEST": 1
+        "ADD_TEST": 23
       },
       "sample_findings": [
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0001",
-          "location": "tools/xstack/repox/check.py"
+          "location": "apps/setup/packages/scripts/packaging/pipeline.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0002",
+          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0003",
+          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0004",
+          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
+        },
+        {
+          "category": "legacy_contamination",
+          "finding_id": "A7_LEGACY_CONTAMINATION:0005",
+          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
         }
       ],
       "severities": {
-        "RISK": 1
+        "RISK": 23
       }
     },
     "INV-LIB-DETERMINISTIC": {
@@ -738,6 +835,42 @@
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-MODE-AS-PROFILES": {
+      "finding_count": 52,
+      "recommended_actions": {
+        "ADD_RULE": 52
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": ".aide/reports/roots/bundles.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": ".aide/reports/roots/net.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": ".aide/reports/roots/security.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": ".dominium.local/ctest/repox/proof_manifest_10i_after_rule_uncached.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": ".dominium.local/ctest/repox/proof_manifest_10j_after.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 52
       }
     },
     "INV-MODULE-BOUNDARIES-RESPECTED": {
@@ -826,6 +959,37 @@
       ],
       "severities": {
         "RISK": 2
+      }
+    },
+    "INV-MVP-PACKS-MINIMAL": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
+          "location": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
+          "location": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
+          "location": "tools/auditx/analyzers/e364_identity_override_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
+          "location": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py"
+        }
+      ],
+      "severities": {
+        "RISK": 4
       }
     },
     "INV-MVP-SMOKE-MUST-PASS-BEFORE-RELEASE": {
@@ -943,6 +1107,42 @@
       ],
       "severities": {
         "RISK": 2
+      }
+    },
+    "INV-NO-ADHOC-SPATIAL-KEYS": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "REWRITE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
+          "location": "game/domains/worldgen/earth/climate_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
+          "location": "game/domains/worldgen/earth/material/material_proxy_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
+          "location": "game/domains/worldgen/earth/tide_field_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
+          "location": "game/domains/worldgen/earth/water/water_view_engine.py"
+        },
+        {
+          "category": "geometry.adhoc_spatial_key_smell",
+          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
+          "location": "game/domains/worldgen/earth/wind/wind_field_engine.py"
+        }
+      ],
+      "severities": {
+        "RISK": 6
       }
     },
     "INV-NO-ADHOC-VEHICLE-CABIN-LOGIC": {
@@ -1070,6 +1270,42 @@
         "VIOLATION": 2
       }
     },
+    "INV-NO-HARDCODED-MODE-BRANCH": {
+      "finding_count": 52,
+      "recommended_actions": {
+        "ADD_RULE": 52
+      },
+      "sample_findings": [
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0001",
+          "location": ".aide/reports/roots/bundles.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0002",
+          "location": ".aide/reports/roots/net.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0003",
+          "location": ".aide/reports/roots/security.references.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0004",
+          "location": ".dominium.local/ctest/repox/proof_manifest_10i_after_rule_uncached.json"
+        },
+        {
+          "category": "mode_flag_smell",
+          "finding_id": "C2_MODE_FLAG_SMELL:0005",
+          "location": ".dominium.local/ctest/repox/proof_manifest_10j_after.json"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 52
+      }
+    },
     "INV-NO-HARDCODED-PLAYER": {
       "finding_count": 2,
       "recommended_actions": {
@@ -1092,39 +1328,39 @@
       }
     },
     "INV-NO-HARDCODED-STRUCTURES": {
-      "finding_count": 7,
+      "finding_count": 6,
       "recommended_actions": {
-        "REWRITE": 7
+        "REWRITE": 6
       },
       "sample_findings": [
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "tools/materials/tool_blueprint_compile.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "tools/materials/tool_blueprint_compile.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "tools/materials/tool_blueprint_compile.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "tools/materials/tool_blueprint_compile.py"
         },
         {
           "category": "materials.hardcoded_blueprint_smell",
           "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
-          "location": "scripts/ci/check_repox_rules.py"
+          "location": "tools/materials/tool_blueprint_compile.py"
         }
       ],
       "severities": {
-        "VIOLATION": 7
+        "VIOLATION": 6
       }
     },
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
@@ -1358,6 +1594,37 @@
         "RISK": 1
       }
     },
+    "INV-PACK-LOCK-REQUIRED": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "REWRITE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
+          "location": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
+          "location": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
+          "location": "tools/auditx/analyzers/e364_identity_override_smell.py"
+        },
+        {
+          "category": "architecture.hardcoded_pack_path_smell",
+          "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
+          "location": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
     "INV-PHASE-CHANGE-MODEL-ONLY": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1504,6 +1771,63 @@
         "WARN": 120
       }
     },
+    "INV-SECUREX-PRIVILEGE-MODEL": {
+      "finding_count": 9,
+      "recommended_actions": {
+        "ADD_TEST": 9
+      },
+      "sample_findings": [
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0001",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0002",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0003",
+          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0004",
+          "location": "tools/securex/core/boundary_validator.py"
+        },
+        {
+          "category": "security.privilege_bypass",
+          "finding_id": "C1:0005",
+          "location": "tools/securex/core/boundary_validator.py"
+        }
+      ],
+      "severities": {
+        "VIOLATION": 9
+      }
+    },
+    "INV-SETTINGS-OWNERSHIP": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "ADD_RULE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
+          "location": "apps/client/app/main_client.c"
+        },
+        {
+          "category": "ownership_boundary",
+          "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
+          "location": "apps/client/shell/client_shell.c"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
     "INV-SHADOW-BOUNDED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1530,6 +1854,22 @@
           "category": "architecture.direct_message_smell",
           "finding_id": "E164_DIRECT_MESSAGE_SMELL:0001",
           "location": "tools/xstack/sessionx/net_handshake.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-SYSTEM-INSTANTIATION-VIA-WORLDGEN": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "worldgen.direct_system_spawn_smell",
+          "finding_id": "E357_DIRECT_SYSTEM_SPAWN_SMELL:0001",
+          "location": "game/domains/worldgen/mw/sol_anchor.py"
         }
       ],
       "severities": {
@@ -1674,63 +2014,79 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 2,
+      "finding_count": 80,
       "recommended_actions": {
-        "RETIRE": 2
+        "RETIRE": 80
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "game/domains/embodiment/__init__.py"
+          "location": "apps/server/authority/dom_server_authority.cpp"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
+          "location": "apps/server/authority/dom_server_authority.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
+          "location": "apps/server/net/dom_server_protocol.cpp"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
+          "location": "apps/server/net/dom_server_protocol.h"
+        },
+        {
+          "category": "reachability",
+          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
+          "location": "apps/server/net/dom_server_runtime.cpp"
         }
       ],
       "severities": {
-        "RISK": 2
+        "RISK": 5,
+        "WARN": 75
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 169,
+      "finding_count": 280,
       "recommended_actions": {
-        "ADD_RULE": 48,
-        "ADD_TEST": 1,
+        "ADD_RULE": 80,
+        "ADD_TEST": 80,
         "DOC_FIX": 120
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
+          "location": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
+          "location": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
+          "location": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
+          "location": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
+          "location": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py"
         }
       ],
       "severities": {
-        "RISK": 48,
-        "WARN": 121
+        "RISK": 80,
+        "WARN": 200
       }
     }
   },
