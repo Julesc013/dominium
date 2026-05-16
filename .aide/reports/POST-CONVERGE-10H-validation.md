@@ -34,6 +34,10 @@ Status: PARTIAL
 | `python scripts/verify_ui_shell_purity.py --repo-root .` | pass | UI shell purity OK. |
 | `python scripts/verify_abi_boundaries.py --repo-root .` | pass | ABI boundary check OK. |
 
+## Post-Commit Check Disposition
+
+After the main 10H remediation commit, `py -3 .aide/scripts/aide_lite.py commit check --latest` reported one commit-message formatting failure: the `## Changelog` bullets lacked machine-readable category prefixes. The task forbids amend/reset, so the original commit was preserved and this narrow evidence follow-up records the disposition. The follow-up commit uses prefixed changelog bullets so the latest-commit policy can pass without rewriting history.
+
 ## Generated Side Effects
 
 Strict validators rewrote `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json` timestamp/HEAD fields during validation. Those generated metadata side effects are outside 10H scope and were removed before staging.
