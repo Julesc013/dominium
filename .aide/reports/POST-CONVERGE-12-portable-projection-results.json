@@ -1,0 +1,52 @@
+{
+  "schema_version": "dominium.post_converge_12.portable_projection.v1",
+  "task_id": "POST-CONVERGE-12",
+  "head": "7b9068bd421d1fa4ae872fdda598d412313548fe",
+  "projection_root": null,
+  "product_boot_input": {
+    "status": "BLOCKED",
+    "accepted": false,
+    "source": ".aide/reports/POST-CONVERGE-11-product-boot-results.json",
+    "reason": "POST-CONVERGE-11 stopped at the RepoX readiness gate; product commands run: 0"
+  },
+  "native_binaries": [],
+  "required_roots": [],
+  "required_manifests": [],
+  "present_roots": [],
+  "present_manifests": [],
+  "validation": [
+    {
+      "command": "read .aide/reports/POST-CONVERGE-11-product-boot-results.json",
+      "result": "BLOCKED",
+      "notes": "overall.status is BLOCKED and ready_for_post_converge_12 is false"
+    },
+    {
+      "command": "projection generation",
+      "result": "NOT_RUN",
+      "notes": "blocked by missing accepted product boot proof"
+    },
+    {
+      "command": "portable projection validator",
+      "result": "NOT_RUN",
+      "notes": "no projection root exists"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "product_boot_blocked",
+      "classification": "BLOCKED",
+      "reason": "POST-CONVERGE-11 product boot proof is BLOCKED and not accepted",
+      "required_action": "POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation"
+    },
+    {
+      "id": "repox_semantic_blocker",
+      "classification": "BLOCKED",
+      "reason": "Focused inv_repox_rules remains failing at 20 failures and 5 warnings in POST-CONVERGE-11 evidence",
+      "required_action": "Resolve or explicitly accept the remaining non-proof RepoX governance/source-policy failures"
+    }
+  ],
+  "overall": {
+    "status": "BLOCKED",
+    "ready_for_release_00": false
+  }
+}

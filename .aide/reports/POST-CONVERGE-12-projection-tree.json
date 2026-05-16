@@ -1,0 +1,11 @@
+{
+  "schema_version": "dominium.post_converge_12.projection_tree.v1",
+  "task_id": "POST-CONVERGE-12",
+  "projection_root": null,
+  "generated": false,
+  "omitted_reason": "POST-CONVERGE-11 product boot proof is blocked and not accepted as sufficient input for portable projection",
+  "directories": [],
+  "files": [],
+  "manifests": [],
+  "binaries": []
+}

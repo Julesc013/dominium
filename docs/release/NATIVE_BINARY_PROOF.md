@@ -141,3 +141,11 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - Native product binaries previously proven by build remain local build outputs and were not committed or refreshed by 11.
 - POST-CONVERGE-12 is not ready.
 - Next recommended task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.
+
+## POST-CONVERGE-12 Update - Portable Projection Gate
+
+- POST-CONVERGE-12 does not refresh native binary proof.
+- Product boot proof remains blocked, so native binaries were not inspected, copied, refreshed, or executed.
+- No portable projection root was generated.
+- RELEASE-00 internal pilot release is not ready.
+- Next recommended task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.

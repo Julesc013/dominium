@@ -1,0 +1,57 @@
+Status: DERIVED
+Last Reviewed: 2026-05-17
+Supersedes: none
+Superseded By: none
+
+# Portable Projection Proof
+
+## Current Status
+
+Portable projection proof is blocked.
+
+POST-CONVERGE-12 did not generate or assemble a projection root because POST-CONVERGE-11 product boot proof is blocked at the RepoX readiness gate. Product boot commands were not run, and no accepted-warning ledger authorizes portable projection proof to proceed without that prerequisite.
+
+## Proof Input Status
+
+| Input | Status | Notes |
+| --- | --- | --- |
+| Native build proof | historical partial | Native binaries were previously produced locally but were not refreshed by POST-CONVERGE-11 or POST-CONVERGE-12. |
+| Product boot proof | blocked | POST-CONVERGE-11 stopped before binary inspection or execution. |
+| RepoX gate | blocked | Focused `inv_repox_rules` remains 20 failures / 5 warnings. |
+| Portable projection output | not generated | No local projection root was created. |
+| Release readiness | blocked | RELEASE-00 must not proceed. |
+
+## Intended Local Proof Root
+
+Future retries should use an ignored local proof root such as:
+
+```text
+.dominium.local/projections/post-converge-12/
+```
+
+Generated projection output must remain ignored/local and must not be committed.
+
+## Required Inputs For Retry
+
+- Focused RepoX pass or reviewed accepted-warning ledger.
+- POST-CONVERGE-11 product boot proof with native binaries.
+- Current native binary root.
+- Distribution layout contract.
+- Required install, release, semantic contract, component, profile, and verification manifests.
+- Portable projection validator or equivalent manifest/structure verification.
+
+## Current Blockers
+
+- `product_boot_blocked`
+- `repox_semantic_blocker`
+- `no_accepted_warning_ledger`
+
+## How To Retry
+
+1. Complete `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation` or a reviewed acceptance gate.
+2. Rerun POST-CONVERGE-11 and prove native product boot/help/status surfaces.
+3. Rerun POST-CONVERGE-12 only after POST-CONVERGE-11 reports `PASS`, `PASS_WITH_WARNINGS`, or an explicit accepted sufficient status.
+
+## Relationship To RELEASE-00
+
+RELEASE-00 internal pilot release is not ready. A portable, self-describing projection root has not been generated or validated.

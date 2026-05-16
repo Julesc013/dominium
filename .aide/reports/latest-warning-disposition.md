@@ -48,3 +48,10 @@ Superseded By: none
 - Product binaries were not inspected or executed because the RepoX readiness gate failed.
 - POST-CONVERGE-12 remains blocked because product boot proof did not run.
 - Product boot proof, package proof, release proof, portable projection proof, build, and full CTest were not run by scope.
+
+## POST-CONVERGE-12
+
+- Product boot proof remains blocked and was not accepted as sufficient portable projection input.
+- No projection root was generated and no projection validator was run.
+- The remaining RepoX hard failures were not accepted as warnings.
+- RELEASE-00 remains blocked until RepoX/product boot/projection gates are resolved or explicitly accepted.

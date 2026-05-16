@@ -286,3 +286,12 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No build, product boot proof, portable projection proof, package proof, or release proof was run.
 - POST-CONVERGE-12 is not ready.
 - Next recommended task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.
+
+## POST-CONVERGE-12 Update - Portable Projection Gate
+
+- Result: BLOCKED.
+- POST-CONVERGE-12 stopped at the prerequisite product boot readiness gate.
+- POST-CONVERGE-11 product boot proof remains blocked and records `ready_for_post_converge_12=false`.
+- No projection tooling was executed, no portable projection root was generated, and no native binaries were inspected, copied, refreshed, or executed.
+- RELEASE-00 internal pilot release is not ready.
+- Next recommended task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.

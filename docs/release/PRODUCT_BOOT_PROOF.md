@@ -99,3 +99,9 @@ Current product boot status remains blocked:
 | tools | `tools.exe` | not run | RepoX semantic blocker |
 
 The next required task is `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. Product boot proof should be retried only after focused RepoX passes or a reviewed accepted-warning ledger explicitly authorizes boot despite remaining findings.
+
+## POST-CONVERGE-12 Update - Portable Projection Gate
+
+POST-CONVERGE-12 did not proceed to projection generation because this product boot proof remains blocked. No portable projection root was generated, no native binaries were inspected or copied, and no release readiness was claimed.
+
+The next required task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. After that gate is resolved or explicitly accepted, POST-CONVERGE-11 must be rerun before POST-CONVERGE-12 can provide a real portable projection proof.

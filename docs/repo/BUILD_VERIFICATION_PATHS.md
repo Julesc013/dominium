@@ -219,3 +219,10 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - Product binary discovery and execution were not performed because focused RepoX remains a semantic blocker.
 - No configure/build rerun was performed by POST-CONVERGE-11.
 - Build and product boot should be retried only after the RepoX readiness gate passes or is explicitly accepted.
+
+## POST-CONVERGE-12 Update - Portable Projection Gate
+
+- POST-CONVERGE-12 did not run configure, build, product boot, package, release, or projection generation.
+- The task stopped because POST-CONVERGE-11 product boot proof is blocked and not accepted as portable projection input.
+- No generated projection root exists under `.dominium.local/projections/post-converge-12/`.
+- Build and projection proof should be retried only after focused RepoX is pass or accepted-warning and POST-CONVERGE-11 product boot proof succeeds or is explicitly accepted.
