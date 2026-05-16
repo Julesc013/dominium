@@ -1,0 +1,21 @@
+{
+  "after": {
+    "canonical_verify_discovery": 493,
+    "ctest_smoke_discovery": 57,
+    "has_impacted_selector": true,
+    "has_tier_manifest": true,
+    "has_tier_runner": true,
+    "has_timing_sampler": true
+  },
+  "before": {
+    "canonical_verify_discovery": 0,
+    "ctest_smoke_discovery": 0,
+    "has_impacted_selector": false,
+    "has_tier_manifest": false,
+    "has_tier_runner": false,
+    "has_timing_sampler": false
+  },
+  "full_ctest_preserved_as_promotion_gate": true,
+  "schema_version": "dominium.test_perf_00.before_after.v1",
+  "task_id": "TEST-PERF-00"
+}

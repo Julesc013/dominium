@@ -3081,7 +3081,7 @@ def write_text_if_changed(path: Path, text: str) -> WriteResult:
     if path.exists() and normalize_text(read_text(path)) == normalized:
         return WriteResult(path, "unchanged")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(normalized, encoding="utf-8", newline="\n")
+    path.write_text(normalized, encoding="utf-8")
     return WriteResult(path, "written")
 
 

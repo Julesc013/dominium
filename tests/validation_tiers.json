@@ -1,0 +1,282 @@
+{
+  "schema_version": "dominium.validation_tiers.v1",
+  "default_impacted_tiers": [
+    "t0"
+  ],
+  "builds": {
+    "canonical_verify": {
+      "preset": "verify",
+      "config": "Debug",
+      "configure_command": [
+        "cmake",
+        "--preset",
+        "verify"
+      ],
+      "build_command": [
+        "cmake",
+        "--build",
+        "--preset",
+        "verify"
+      ],
+      "promotion_gate": true
+    },
+    "tuple_verify_msvc_debug": {
+      "test_dir": ".dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug",
+      "config": "Debug",
+      "local_fallback": true
+    }
+  },
+  "tiers": {
+    "t0": {
+      "description": "Fast repo and AIDE validation for normal post-task feedback.",
+      "max_seconds": 300,
+      "commands": [
+        [
+          "py",
+          "-3",
+          ".aide/scripts/aide_lite.py",
+          "validate"
+        ],
+        [
+          "py",
+          "-3",
+          ".aide/scripts/aide_lite.py",
+          "doctor"
+        ],
+        [
+          "py",
+          "-3",
+          ".aide/scripts/aide_lite.py",
+          "test"
+        ],
+        [
+          "py",
+          "-3",
+          ".aide/scripts/aide_lite.py",
+          "selftest"
+        ],
+        [
+          "{python}",
+          "scripts/verify_docs_sanity.py",
+          "--repo-root",
+          "."
+        ],
+        [
+          "{python}",
+          "scripts/verify_build_target_boundaries.py",
+          "--repo-root",
+          "."
+        ],
+        [
+          "{python}",
+          "scripts/verify_ui_shell_purity.py",
+          "--repo-root",
+          "."
+        ],
+        [
+          "{python}",
+          "scripts/verify_abi_boundaries.py",
+          "--repo-root",
+          "."
+        ]
+      ]
+    },
+    "ctest-smoke": {
+      "description": "CTest tests explicitly labeled smoke after canonical verify is configured.",
+      "max_seconds": 300,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "label_regex": "smoke",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "focused-repox": {
+      "description": "Focused RepoX semantic governance blocker.",
+      "max_seconds": 180,
+      "ctest": [
+        {
+          "test_dir": ".dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug",
+          "config": "Debug",
+          "regex": "inv_repox_rules",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "component-contracts": {
+      "description": "Contract, schema, invariant, and registry-facing tests.",
+      "max_seconds": 900,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "regex": "^(schema_|const_|invariant_|inv_|compat_|capability_|semantic_|pack_scope|compliance_|public_header_|test_manifest_|test_canonical_|test_no_timestamp)",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "component-distribution": {
+      "description": "Distribution, setup, launcher, release, and product-proof-adjacent tests.",
+      "max_seconds": 900,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "regex": "^(distribution_|setup_|install_|launcher_|repox_release|build_identity|build_matrix|universe_complexity)",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "component-tools": {
+      "description": "Tooling and governance tool tests.",
+      "max_seconds": 900,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "regex": "^(tools_|test_tool_|test_auditx|controlx_|performx_|compatx_|securex_|ai_tools|bugreport_|share_|signal_)",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "component-runtime": {
+      "description": "Runtime/platform/integration smoke and determinism tests.",
+      "max_seconds": 1200,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "regex": "^(engine_|kernel_|execution_|dominium_|determinism_|client_|server_|world_|terrain_|geology_|climate_|weather_|energy_|heat_|fluid_|network_|hazard_|risk_|trust_|institution_|economy_|conflict_|history_|standard_|knowledge_|autonomy_|srz_|vegetation_|animal_|structure_|travel_|mining_|crafting_|platform_|renderer_)",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "timing-sample": {
+      "description": "Small timing sample for test-cost evidence; not a replacement for full timing.",
+      "max_seconds": 300,
+      "commands": [
+        [
+          "{python}",
+          "scripts/test_timing_report.py",
+          "--preset",
+          "verify",
+          "--config",
+          "Debug",
+          "--regex",
+          "invariant_units_present",
+          "--limit",
+          "1",
+          "--out",
+          ".dominium.local/test-perf-00/timing-sample.json",
+          "--md-out",
+          ".dominium.local/test-perf-00/timing-sample.md"
+        ]
+      ]
+    },
+    "full-promotion": {
+      "description": "Full canonical CTest lane; promotion gate only, not normal post-change feedback.",
+      "max_seconds": 3600,
+      "promotion_gate": true,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    }
+  },
+  "path_map": [
+    {
+      "paths": [
+        ".aide/**",
+        "AGENTS.md"
+      ],
+      "tiers": [
+        "t0",
+        "component-tools"
+      ]
+    },
+    {
+      "paths": [
+        "cmake/**",
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "tests/**"
+      ],
+      "tiers": [
+        "t0",
+        "ctest-smoke"
+      ]
+    },
+    {
+      "paths": [
+        "scripts/ci/check_repox_rules.py",
+        "tools/xstack/**",
+        "docs/repo/**",
+        "docs/architecture/**",
+        "data/registries/**",
+        "contracts/**"
+      ],
+      "tiers": [
+        "t0",
+        "focused-repox",
+        "component-contracts"
+      ]
+    },
+    {
+      "paths": [
+        "docs/release/**",
+        "release/**",
+        "apps/setup/**",
+        "apps/launcher/**",
+        "setup/**",
+        "launcher/**"
+      ],
+      "tiers": [
+        "t0",
+        "component-distribution"
+      ]
+    },
+    {
+      "paths": [
+        "engine/**",
+        "game/**",
+        "runtime/**",
+        "apps/client/**",
+        "apps/server/**"
+      ],
+      "tiers": [
+        "t0",
+        "component-runtime"
+      ]
+    },
+    {
+      "paths": [
+        "tools/**",
+        "scripts/**"
+      ],
+      "tiers": [
+        "t0",
+        "component-tools"
+      ]
+    },
+    {
+      "paths": [
+        "docs/**"
+      ],
+      "tiers": [
+        "t0"
+      ]
+    }
+  ]
+}

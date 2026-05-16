@@ -166,3 +166,16 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
+
+## TEST-PERF-00 Update - CTest Discovery and Tiers
+
+- `ctest --preset verify -N` reported 0 tests before the local verify build tree was refreshed.
+- `cmake --preset verify` passed and restored canonical discovery to 493 tests.
+- `dom_add_testx` now writes CTest labels directly, so label-filtered tiers are usable after reconfigure.
+- `ctest --preset verify -N -L smoke` reports 57 tests after the label repair and reconfigure.
+- Tiered validation helpers are available:
+  - `python scripts/test_tier.py --list`
+  - `python scripts/test_tier.py --tier t0`
+  - `python scripts/test_impacted.py --from HEAD~1`
+  - `python scripts/test_timing_report.py --preset verify --config Debug --regex invariant_units_present --limit 1 --out .dominium.local/test-perf-00/timing-sample.json`
+- Full CTest remains the promotion gate and was not run by TEST-PERF-00.

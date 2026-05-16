@@ -8,8 +8,8 @@ Superseded By: none
 
 ## Current Position
 
-POST-CONVERGE-10K completed as PARTIAL. Focused RepoX improved from 59 failures / 5 warnings to 51 failures / 5 warnings. `INV-NEW-CONTRACT-REQUIRES-ENTRY` is reduced from 9 to 0; POST-CONVERGE-11 remains blocked.
+TEST-PERF-00 completed as PASS_WITH_WARNINGS. Dominium now has tiered validation manifesting, impacted tier selection, bounded timing sampling, and repaired CTest label metadata. Canonical `verify` CTest discovery is 493 tests after `cmake --preset verify`; smoke label discovery is 57 tests after reconfigure. Focused RepoX remains at the POST-CONVERGE-10K blocker state, so POST-CONVERGE-11 remains blocked.
 
 ## Next Recommended Task
 
-`POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
+`POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification` for remaining RepoX semantics, or `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline` if wall-time reduction is prioritized next.

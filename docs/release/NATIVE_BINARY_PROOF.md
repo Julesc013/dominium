@@ -93,3 +93,11 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
+
+## TEST-PERF-00 Update - Validation Tiers
+
+- TEST-PERF-00 does not add product boot proof.
+- Canonical CTest discovery is repaired locally after `cmake --preset verify`, with 493 tests discovered.
+- CTest smoke label discovery now reports 57 tests after label metadata repair and reconfigure.
+- Tiered and impacted validation tooling was added so product proof tasks can select focused tests before promotion gates.
+- Full CTest, product boot proof, portable projection proof, package proof, and release proof remain not run by TEST-PERF-00.

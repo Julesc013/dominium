@@ -6,11 +6,10 @@ Last Reviewed: 2026-05-16
 Supersedes: none
 Superseded By: none
 
-## POST-CONVERGE-10K
+## TEST-PERF-00
 
 - Focused tuple RepoX still fails with 51 failures and 5 warnings.
-- `INV-NEW-CONTRACT-REQUIRES-ENTRY` is no longer a failing family after semantic contract registry acceptance metadata was added for four current architecture contracts.
-- The 10J `INV-LOCKLIST-FROZEN` local acceptance failure was absent at 10K start because `origin/main` equaled local HEAD.
-- The first 10K commit has a classified AIDE commit-message policy issue in its changelog category prefixes; amend is forbidden, so the latest follow-up commit records the issue instead of rewriting history.
-- Canonical `ctest --preset verify` still discovers 0 tests in this checkout.
+- Canonical `ctest --preset verify -N` discovered 0 tests before configure refresh, then 493 tests after `cmake --preset verify`.
+- CTest smoke labels now discover 57 tests after `dom_add_testx` label repair and reconfigure.
 - Full CTest, product boot proof, package proof, and portable projection proof remain not run by scope.
+- Full CTest remains a promotion gate rather than the normal post-change feedback path.

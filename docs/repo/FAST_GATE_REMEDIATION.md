@@ -102,3 +102,12 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
+
+## TEST-PERF-00 Update - Fast Validation Tiers
+
+- Result: PASS_WITH_WARNINGS.
+- Fast validation is now represented by `tests/validation_tiers.json` and `python scripts/test_tier.py --tier t0`.
+- Impacted validation can be selected with `python scripts/test_impacted.py --from HEAD~1`.
+- Canonical CTest discovery is not inherently broken; it requires a configured verify build tree. `cmake --preset verify` restored `ctest --preset verify -N` to 493 tests locally.
+- CTest smoke labels now work after reconfigure; `ctest --preset verify -N -L smoke` reports 57 tests.
+- FAST remains blocked as a promotion signal because focused RepoX still fails, but normal task feedback no longer needs to default to full CTest.

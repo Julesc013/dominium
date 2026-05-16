@@ -1,0 +1,17 @@
+{
+  "after_configure": {
+    "canonical_verify_total_tests": 493,
+    "smoke_label_total_tests": 57
+  },
+  "before_configure": {
+    "canonical_verify_total_tests": 0
+  },
+  "configure_command": "cmake --preset verify",
+  "ctest_label_repair": {
+    "file": "cmake/DomIntegration.cmake",
+    "status": "dom_add_testx now writes labels directly"
+  },
+  "full_ctest_run": false,
+  "schema_version": "dominium.test_perf_00.ctest_discovery.v1",
+  "task_id": "TEST-PERF-00"
+}

@@ -225,3 +225,13 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
+
+## TEST-PERF-00 Update - Tiered Validation
+
+- Result: PASS_WITH_WARNINGS.
+- Canonical `verify` CTest discovery was repaired locally by running `cmake --preset verify`; `ctest --preset verify -N` now discovers 493 tests in this checkout.
+- CTest label metadata was repaired so `ctest --preset verify -N -L smoke` discovers 57 smoke tests after reconfigure.
+- Added `tests/validation_tiers.json`, `scripts/test_tier.py`, `scripts/test_impacted.py`, and `scripts/test_timing_report.py`.
+- Full CTest remains the promotion gate, not the default post-change gate.
+- Focused RepoX semantic failures remain from POST-CONVERGE-10K, so POST-CONVERGE-11 remains blocked until those failures are resolved or explicitly accepted by a later gate.
+- Next recommended semantic task remains `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`; next test-performance task is `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.
