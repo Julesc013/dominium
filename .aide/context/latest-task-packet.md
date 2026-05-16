@@ -2,38 +2,38 @@
 
 ## PHASE
 
-POST-CONVERGE-10O - RepoX Closeout and Product Boot Readiness Gate
+POST-CONVERGE-11 - Product Boot Proof With Native Binaries
 
 ## GOAL
 
-Review POST-CONVERGE-10F through POST-CONVERGE-10N RepoX remediation evidence, reproduce current focused RepoX, and decide whether POST-CONVERGE-11 may proceed.
+Prove native product boot/help/status surfaces only if the RepoX readiness gate permits it; otherwise stop and record blocked evidence.
 
 ## WHY
 
-After POST-CONVERGE-10N, focused RepoX is much smaller but still failing. The next step must be selected from evidence: product boot proof, warning acceptance, test discovery/performance work, or one more targeted RepoX remediation.
+Native build proof exists historically, but product boot proof is only allowed after focused RepoX passes or a reviewed accepted-warning ledger authorizes the remaining findings.
 
 ## CURRENT RESULT
 
-PARTIAL. Focused `inv_repox_rules` remains expected-failing at 20 failures / 5 warnings. Canonical `ctest --preset verify -N` reports 493 tests. POST-CONVERGE-11 is not ready because real non-proof governance/source-policy failures remain.
+BLOCKED. Focused `inv_repox_rules` remains expected-failing at 20 failures / 5 warnings. Product binaries were not inspected or executed because no accepted-warning ledger authorizes POST-CONVERGE-11 past the RepoX gate.
 
 ## CONTEXT_REFS
 
+- `docs/repo/audits/POST_CONVERGE_11_PRODUCT_BOOT_PROOF.md`
+- `docs/release/PRODUCT_BOOT_PROOF.md`
+- `.aide/reports/POST-CONVERGE-11-product-boot-results.json`
+- `.aide/reports/POST-CONVERGE-11-next-readiness.json`
+- `.aide/reports/POST-CONVERGE-11-blockers.md`
 - `docs/repo/audits/POST_CONVERGE_10O_REPOX_CLOSEOUT_GATE.md`
-- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
-- `.aide/reports/POST-CONVERGE-10O-repox-closeout.md`
-- `.aide/reports/POST-CONVERGE-10O-post-converge-11-readiness.md`
-- `.aide/reports/POST-CONVERGE-10O-next-task-decision.md`
-- `.aide/reports/POST-CONVERGE-10N-repox-before-after.json`
 
 ## IMPLEMENTATION
 
-POST-CONVERGE-10O is evidence-only. It creates closeout reports, updates status docs, and records the next task decision without changing RepoX rules or product/runtime/source behavior.
+POST-CONVERGE-11 stopped at the required readiness gate. It creates blocked product-boot evidence and status docs without running binaries, changing product behavior, or generating artifacts.
 
 ## EVIDENCE
 
 - `ctest --preset verify -N` reports 493 tests.
 - Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` reports 20 failures / 5 warnings.
-- Tuple fallback was not required because canonical verify discovery found and ran `inv_repox_rules`.
+- Product boot commands run: 0.
 
 ## NON_GOALS
 
@@ -47,8 +47,8 @@ POST-CONVERGE-10O is evidence-only. It creates closeout reports, updates status 
 ## ACCEPTANCE
 
 - focused RepoX status is reproduced
-- remaining failures and warnings are classified
-- POST-CONVERGE-11 readiness is explicit
+- product boot is blocked before binary execution
+- POST-CONVERGE-12 readiness is explicit
 - exact next task is recommended
 - no product proof or broad remediation is performed
 
@@ -56,7 +56,8 @@ POST-CONVERGE-10O is evidence-only. It creates closeout reports, updates status 
 
 Human-readable reports plus JSON evidence:
 
-- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
+- `.aide/reports/POST-CONVERGE-11-product-boot-results.json`
+- `.aide/reports/POST-CONVERGE-11-next-readiness.json`
 
 ## TOKEN_ESTIMATE
 
@@ -66,7 +67,7 @@ Latest packet is intended to stay below the AIDE compact-context budget.
 
 - AIDE reports/context/ledger
 - post-converge and release status docs
-- closeout audit evidence
+- blocked product boot evidence
 
 ## FORBIDDEN_PATHS
 
@@ -78,8 +79,8 @@ Latest packet is intended to stay below the AIDE compact-context budget.
 
 ## VALIDATION
 
-Focused RepoX was rerun for the closeout gate and remains expected-failing at 20 failures / 5 warnings. Final command details are recorded in `.aide/reports/POST-CONVERGE-10O-validation.md`.
+Focused RepoX was rerun for the product boot gate and remains expected-failing at 20 failures / 5 warnings. Final command details are recorded in `.aide/reports/POST-CONVERGE-11-validation.md`.
 
 ## NEXT
 
-Recommended semantic task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. TEST-PERF follow-up remains appropriate for validation speed, but it is not the semantic gate blocker.
+Recommended semantic task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. Retry POST-CONVERGE-11 only after the RepoX gate passes or is explicitly accepted.

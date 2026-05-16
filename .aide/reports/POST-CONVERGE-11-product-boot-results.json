@@ -1,0 +1,68 @@
+{
+  "schema_version": "dominium.post_converge_11.product_boot.v1",
+  "task_id": "POST-CONVERGE-11",
+  "head": "933a17ce80044a3dceb38f6c737ad22f73a7b643",
+  "binary_root": null,
+  "repo_readiness": {
+    "repox_status": "blocked",
+    "allowed_to_run": false,
+    "reason": "focused inv_repox_rules fails with 20 failures and 5 warnings; no accepted-warning ledger authorizes product boot proof"
+  },
+  "products": [
+    {
+      "product": "setup",
+      "binary": null,
+      "exists": null,
+      "commands": [],
+      "status": "BLOCKED",
+      "blockers": [
+        "repox_semantic_blocker"
+      ]
+    },
+    {
+      "product": "launcher",
+      "binary": null,
+      "exists": null,
+      "commands": [],
+      "status": "BLOCKED",
+      "blockers": [
+        "repox_semantic_blocker"
+      ]
+    },
+    {
+      "product": "client",
+      "binary": null,
+      "exists": null,
+      "commands": [],
+      "status": "BLOCKED",
+      "blockers": [
+        "repox_semantic_blocker"
+      ]
+    },
+    {
+      "product": "server",
+      "binary": null,
+      "exists": null,
+      "commands": [],
+      "status": "BLOCKED",
+      "blockers": [
+        "repox_semantic_blocker"
+      ]
+    },
+    {
+      "product": "tools",
+      "binary": null,
+      "exists": null,
+      "commands": [],
+      "status": "BLOCKED",
+      "blockers": [
+        "repox_semantic_blocker"
+      ]
+    }
+  ],
+  "overall": {
+    "status": "BLOCKED",
+    "ready_for_post_converge_12": false,
+    "product_commands_run": 0
+  }
+}

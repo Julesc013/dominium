@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-17
 Supersedes: none
 Superseded By: none
 
@@ -7,9 +7,9 @@ Superseded By: none
 
 ## Status
 
-- Phase: POST-CONVERGE-08
-- Status: partial
-- Date: 2026-05-12
+- Phase: POST-CONVERGE-11 readiness gate
+- Status: blocked
+- Date: 2026-05-17
 
 ## Purpose
 
@@ -83,3 +83,19 @@ Product boot proof does not mean public release support. Planned, stub, provisio
 ## Readiness For Portable Projection Smoke
 
 POST-CONVERGE-09 should not proceed yet. The next work should provide a valid build proof or accepted CI lane, fix or classify the setup Python entrypoint compatibility failure, repair or retire the missing `dist/bin/dom` wrapper target, and rerun product boot proof.
+
+## POST-CONVERGE-11 Update - Native Product Boot Gate
+
+POST-CONVERGE-11 did not run product binaries. The task stopped at the required RepoX readiness gate because focused `inv_repox_rules` still fails with 20 failures and 5 warnings, and no accepted-warning ledger authorizes product boot proof.
+
+Current product boot status remains blocked:
+
+| Product | Native Command Surface | POST-CONVERGE-11 Result | Blocker |
+| --- | --- | --- | --- |
+| setup | `setup.exe` | not run | RepoX semantic blocker |
+| launcher | `launcher.exe` | not run | RepoX semantic blocker |
+| client | `client.exe` | not run | RepoX semantic blocker |
+| server | `server.exe` | not run | RepoX semantic blocker |
+| tools | `tools.exe` | not run | RepoX semantic blocker |
+
+The next required task is `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. Product boot proof should be retried only after focused RepoX passes or a reviewed accepted-warning ledger explicitly authorizes boot despite remaining findings.

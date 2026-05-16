@@ -40,3 +40,11 @@ Superseded By: none
 - POST-CONVERGE-11 remains blocked because real non-proof governance/source-policy failures remain.
 - The warning candidates are still `INV-AUDITX-OUTPUT-STALE` and four generated/historical glossary warnings.
 - Product boot proof, package proof, release proof, portable projection proof, build, and full CTest were not run by scope.
+
+## POST-CONVERGE-11
+
+- Focused RepoX remains expected-failing at 20 failures / 5 warnings.
+- The remaining hard failures were not accepted as warnings.
+- Product binaries were not inspected or executed because the RepoX readiness gate failed.
+- POST-CONVERGE-12 remains blocked because product boot proof did not run.
+- Product boot proof, package proof, release proof, portable projection proof, build, and full CTest were not run by scope.

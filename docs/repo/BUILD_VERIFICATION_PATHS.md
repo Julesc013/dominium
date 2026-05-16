@@ -211,3 +211,11 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing at 20 failures / 5 warnings.
 - Full CTest remains a promotion gate and was not run because focused RepoX still has hard semantic failures.
 - POST-CONVERGE-11 remains blocked until non-proof RepoX governance/source-policy failures are remediated or explicitly accepted.
+
+## POST-CONVERGE-11 Update - Product Boot Gate
+
+- `ctest --preset verify -N` reports 493 tests.
+- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing at 20 failures / 5 warnings.
+- Product binary discovery and execution were not performed because focused RepoX remains a semantic blocker.
+- No configure/build rerun was performed by POST-CONVERGE-11.
+- Build and product boot should be retried only after the RepoX readiness gate passes or is explicitly accepted.

@@ -7,9 +7,9 @@ Superseded By: none
 
 ## Current Position
 
-POST-CONVERGE-10O completed as PARTIAL. Focused RepoX remains expected-failing at 20 failures / 5 warnings after closeout reproduction.
+POST-CONVERGE-11 completed as BLOCKED at the RepoX readiness gate. Focused RepoX remains expected-failing at 20 failures / 5 warnings.
 
-POST-CONVERGE-11 remains blocked because focused RepoX still has real non-proof governance/source-policy failures in addition to product/projection proof blockers. Canonical `ctest --preset verify -N` currently reports 493 tests, so CTest discovery is not the primary blocker.
+Product binaries were not inspected or executed. POST-CONVERGE-12 is not ready because product boot proof did not run. Canonical `ctest --preset verify -N` currently reports 493 tests, so CTest discovery is not the primary blocker.
 
 ## Next Recommended Task
 

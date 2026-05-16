@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10O and confirm that the RepoX closeout gate accurately classifies remaining failures, blocks POST-CONVERGE-11 for real non-proof governance/source-policy blockers, and performs no product proof or broad remediation.
+Review POST-CONVERGE-11 and confirm that product boot proof correctly stopped at the RepoX readiness gate, ran no product binaries, and recorded blocked evidence without product/runtime/source changes.
 
 ## Decision Requested
 
@@ -23,30 +23,31 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10O-status.md`
-- `.aide/reports/POST-CONVERGE-10O-validation.md`
-- `.aide/reports/POST-CONVERGE-10O-blockers.md`
-- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
-- `.aide/reports/POST-CONVERGE-10O-repox-closeout.md`
-- `.aide/reports/POST-CONVERGE-10O-post-converge-11-readiness.md`
-- `.aide/reports/POST-CONVERGE-10O-next-task-decision.md`
-- `docs/repo/audits/POST_CONVERGE_10O_REPOX_CLOSEOUT_GATE.md`
+- `.aide/reports/POST-CONVERGE-11-status.md`
+- `.aide/reports/POST-CONVERGE-11-validation.md`
+- `.aide/reports/POST-CONVERGE-11-blockers.md`
+- `.aide/reports/POST-CONVERGE-11-product-boot-results.json`
+- `.aide/reports/POST-CONVERGE-11-product-boot-results.md`
+- `.aide/reports/POST-CONVERGE-11-next-readiness.json`
+- `.aide/reports/POST-CONVERGE-11-next-readiness.md`
+- `docs/repo/audits/POST_CONVERGE_11_PRODUCT_BOOT_PROOF.md`
+- `docs/release/PRODUCT_BOOT_PROOF.md`
 
 ## Changed Files Summary
 
-- Added POST-CONVERGE-10O closeout reports and audit evidence.
-- Classified remaining 20 focused RepoX failures and 5 warnings.
-- Recorded that POST-CONVERGE-11 is not ready.
+- Added POST-CONVERGE-11 blocked product boot reports and audit evidence.
+- Recorded that product boot commands were not allowed by the RepoX gate.
+- Recorded that POST-CONVERGE-12 is not ready.
 - Updated post-converge and release status docs.
 - Updated AIDE latest packets, latest status, warning disposition, and migration ledger.
 
 ## Validation Summary
 
-`ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 20 failures / 5 warnings. Tuple fallback was not required.
+`ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 20 failures / 5 warnings. Product boot commands run: 0.
 
 ## Risk Summary
 
-Focused RepoX still has real non-proof governance/source-policy failures, so POST-CONVERGE-11 remains blocked. Product/projection proof, package proof, release proof, build, and full CTest were not run.
+Focused RepoX still has real non-proof governance/source-policy failures, so POST-CONVERGE-11 remains blocked at the readiness gate. Product/projection proof, package proof, release proof, build, and full CTest were not run.
 
 ## Token Summary
 
@@ -63,4 +64,4 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Reviewer Instructions
 
-Check that the closeout decision follows the reproduced failure set, that product proof was not started, and that real non-proof failures were not converted into warnings.
+Check that the blocked decision follows the reproduced failure set, that product binaries were not executed, and that real non-proof failures were not converted into warnings.

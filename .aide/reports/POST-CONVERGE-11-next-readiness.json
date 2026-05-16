@@ -1,0 +1,20 @@
+{
+  "schema_version": "dominium.post_converge_11.next_readiness.v1",
+  "task_id": "POST-CONVERGE-11",
+  "ready_for_post_converge_12": false,
+  "ready_for_product_boot_retry": false,
+  "blockers": [
+    {
+      "id": "repox_semantic_blocker",
+      "failures": 20,
+      "warnings": 5,
+      "required_action": "POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation"
+    }
+  ],
+  "required_fixes": [
+    "Resolve or explicitly accept non-proof RepoX governance/source-policy failures.",
+    "Rerun POST-CONVERGE-11 product boot proof only after the RepoX gate is pass or accepted-warning."
+  ],
+  "warning_acceptance_status": "not_present",
+  "recommended_next_task": "POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation"
+}
