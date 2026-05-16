@@ -2,12 +2,15 @@
 
 ## Accepted Warnings
 
-- AIDE-MOVE-01-PLAN intentionally leaves move application unauthorized.
-- `ide/README.md` has high raw reference complexity because AIDE evidence, generated architecture registries, and historical audit files mention it.
+- AIDE-GATE-02 passes with warnings because the reference plan has high raw reference complexity from generated AIDE/repo evidence and historical audit artifacts.
+- Generated architecture registry references must be reviewed or regenerated during the apply task rather than blindly hand-edited.
+- The original AIDE-MOVE-01 plan remains draft, not-approved, and no-apply; the gate report authorizes only the next scoped apply task.
 - `ide/manifests/**` remains deferred because it is authoritative machine-readable projection metadata.
-- Full CTest, CMake configure/build, package generation, release generation, and product binaries remain out of scope for this no-apply plan.
+- The required `python` validator commands emitted non-blocking `tomllib` fallback warnings while returning pass.
+- Full eval, full CTest, CMake configure/build, package generation, release generation, and product binaries remain out of scope for this gate.
 
 ## Cleared Warnings
 
-- Repo validation reports 0 unknown tracked file classifications from the prior green pass.
-- The current plan has no path collision at `docs/architecture/IDE_PROJECTIONS.md`.
+- AIDE-GATE-02 found no target path collision at `docs/architecture/IDE_PROJECTIONS.md`.
+- Plan parsing confirmed `apply_allowed = false` and `approval_status = not_approved`.
+- Strict validators and supplemental docs/build/UI/ABI checks passed.

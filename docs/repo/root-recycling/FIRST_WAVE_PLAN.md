@@ -19,3 +19,7 @@ AIDE-GATE-01 may authorize `AIDE-MOVE-01-PLAN` only. Move application remains un
 ## AIDE-MOVE-01-PLAN Result
 
 AIDE-MOVE-01-PLAN narrowed the first candidate to `ide/README.md` -> `docs/architecture/IDE_PROJECTIONS.md`. The manifest schema/examples under `ide/manifests/**` remain deferred. The plan is draft, not approved, and no-apply. `AIDE-GATE-02` may inspect the plan; move application remains unauthorized.
+
+## AIDE-GATE-02 Result
+
+AIDE-GATE-02 passed with warnings and authorizes only `AIDE-MOVE-01-APPLY` for `ide/README.md` -> `docs/architecture/IDE_PROJECTIONS.md`. All other moves remain unauthorized, and `ide/manifests/**` remains deferred.

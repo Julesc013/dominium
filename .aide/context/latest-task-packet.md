@@ -2,28 +2,28 @@
 
 ## PHASE
 
-AIDE-MOVE-01-PLAN - first low-risk root move planning
+AIDE-GATE-02 - move plan apply readiness gate
 
 ## GOAL
 
-Create a concrete no-apply move plan for the first low-risk root recycling wave.
+Inspect the draft AIDE-MOVE-01 plan and decide whether the next task may apply the single planned move.
 
 ## WHY
 
-AIDE-GATE-01 authorized move planning only. The next step is a reviewable plan with exact source and target paths, reference rewrites, validation, rollback, and exception-update expectations before any apply task can be considered.
+Even a one-file move needs gate review before apply. This gate checks source and target paths, reference rewrites, validation, rollback, exception handling, deferred manifest metadata, and no-apply invariants.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/AIDE-GATE-01-root-move-planning-readiness.md`
-- `.aide/reports/roots/AIDE-ROOT-06-first-move-recommendation.md`
-- `.aide/reports/roots/AIDE-ROOT-06-move-wave-candidates.md`
-- `.aide/refactors/draft_move_wave_AIDE-MOVE-01.json`
 - `.aide/refactors/AIDE-MOVE-01.plan.json`
+- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
+- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
+- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
 - `docs/repo/root-recycling/AIDE_MOVE_01_FIRST_LOW_RISK_MOVE_PLAN.md`
 
 ## ALLOWED_PATHS
 
-- `.aide/refactors/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -39,50 +39,52 @@ AIDE-GATE-01 authorized move planning only. The next step is a reviewable plan w
 - `tests/**`
 - `cmake/**`
 - `release/**`
-- `ide/**`
+- `ide/README.md`
+- `docs/architecture/IDE_PROJECTIONS.md`
+- `ide/manifests/**`
 - product/version root files
 - root move, delete, rename, reference rewrite, path alias activation, salvage application, move-map application, or exception retirement
 
 ## IMPLEMENTATION
 
-- Select `ide/README.md` as a draft plan only.
-- Defer `ide/manifests/**`.
-- Do not modify source root files.
-- Do not apply references, maps, shims, aliases, or exceptions.
+- Verify the plan only.
+- Authorize only `AIDE-MOVE-01-APPLY` if gate criteria pass.
+- Do not mutate the original move plan to approved.
+- Do not modify source, target, manifest, product, runtime, source, build, or generated behavior files.
 
 ## VALIDATION
 
-Run AIDE, plan parse, strict validators, supplemental docs/build/UI/ABI checks, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-01-PLAN-validation.md`.
+Run AIDE, plan parse, strict validators, supplemental docs/build/UI/ABI checks, and git diff checks. Record results in `.aide/reports/AIDE-GATE-02-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/refactors/AIDE-MOVE-01.plan.toml`
-- `.aide/refactors/AIDE-MOVE-01.plan.json`
-- `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
-- `.aide/reports/AIDE-MOVE-01-PLAN-review.md`
+- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
+- `.aide/reports/AIDE-GATE-02-move-apply-readiness.json`
+- `.aide/reports/AIDE-GATE-02-validation.md`
+- `.aide/reports/AIDE-GATE-02-blockers.md`
+- `.aide/reports/latest-dominium-status.md`
+- `.aide/reports/latest-warning-disposition.md`
 
 ## NON_GOALS
 
+- Do not apply the move.
 - Do not move, delete, rename, or rewrite files.
 - Do not approve or apply move maps or salvage maps.
 - Do not create active aliases or compatibility shims.
-- Do not change product/source/runtime/build behavior.
-- Do not start AIDE-GATE-02 or an apply task.
+- Do not retire exceptions.
+- Do not authorize any move other than AIDE-MOVE-01-APPLY.
 
 ## ACCEPTANCE
 
-- Plan artifacts are parseable.
-- All plans remain draft, not-approved, and no-apply.
-- Exactly one planned move is selected.
-- Required reference rewrites, validation, rollback, and exception-update plans exist.
-- Validation passes or only known no-apply warnings remain.
+- Gate report and JSON exist.
+- Gate result is PASS, PASS_WITH_WARNINGS, or BLOCKED.
+- If passing, authorization is limited to `ide/README.md -> docs/architecture/IDE_PROJECTIONS.md`.
+- Validation passes or only non-blocking known warnings remain.
+- No apply action occurred.
 
 ## OUTPUT_SCHEMA
 
-Expected artifacts are Markdown, JSON, and TOML planning evidence under the allowed paths. Machine-readable files must include `status`, `approval_status`, and `apply_allowed` fields where applicable.
+Gate outputs are Markdown and JSON reports under `.aide/reports/**`, with optional narrow context, ledger, and root-recycling doc updates.
 
 ## TOKEN_ESTIMATE
 

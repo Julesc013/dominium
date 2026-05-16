@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review AIDE-MOVE-01-PLAN and decide whether the draft first move plan is ready for AIDE-GATE-02 inspection.
+Review AIDE-GATE-02 and confirm the gate limits apply authorization to the single planned README move.
 
 ## Decision Requested
 
@@ -26,25 +26,23 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/refactors/AIDE-MOVE-01.plan.toml`
+- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
+- `.aide/reports/AIDE-GATE-02-move-apply-readiness.json`
+- `.aide/reports/AIDE-GATE-02-validation.md`
+- `.aide/reports/AIDE-GATE-02-blockers.md`
 - `.aide/refactors/AIDE-MOVE-01.plan.json`
 - `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.validation_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
-- `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
-- `.aide/reports/AIDE-MOVE-01-PLAN-review.md`
 
 ## Changed Files Summary
 
-- Added draft no-apply move plan artifacts under `.aide/refactors/`.
-- Added AIDE-MOVE-01-PLAN reports under `.aide/reports/`.
-- Added root-recycling docs under `docs/repo/root-recycling/`.
-- Updated latest AIDE context, ledger, status, and warning disposition.
-- No candidate source root files changed.
+- Added AIDE-GATE-02 readiness, validation, and blockers reports.
+- Updated latest AIDE context, status, warning disposition, and ledger surfaces.
+- Added a narrow first-wave plan note if applicable.
+- No source, target, manifest, product, runtime, source, build, map, alias, or exception files changed.
 
 ## Validation Summary
 
-Validation is run by the active task and recorded in `.aide/reports/AIDE-MOVE-01-PLAN-validation.md`.
+AIDE, plan parsing, strict repo/root/distribution/component validators, docs sanity, build boundary, UI shell, ABI boundary, and git diff checks pass.
 
 ## Token Summary
 
@@ -52,12 +50,12 @@ This packet is compact and references evidence by path rather than inlining raw 
 
 ## Risk Summary
 
-The planned move is one documentation file from the IDE projection root. Manifest schema/examples remain deferred. Apply-phase reference rewrites require gate review, and move application remains unauthorized.
+The gate passes with warnings because raw references are high and generated architecture registry references need apply-task review. The authorized scope remains one docs-only move.
 
 ## Non-Goals / Scope Guard
 
-Do not move files, rewrite references, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
+Do not apply the move, rewrite references, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
 
 ## Reviewer Instructions
 
-Check that every plan remains draft, not-approved, and no-apply. Confirm the selected candidate is narrow enough for AIDE-GATE-02 inspection and that deferred manifest metadata remains untouched.
+Confirm that the authorization is limited to `AIDE-MOVE-01-APPLY` for `ide/README.md -> docs/architecture/IDE_PROJECTIONS.md`, and that all other moves remain unauthorized.

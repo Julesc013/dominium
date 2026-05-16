@@ -1,0 +1,174 @@
+{
+  "schema_version": "dominium.aide.gate.move_apply.v1",
+  "task_id": "AIDE-GATE-02",
+  "gate_result": "PASS_WITH_WARNINGS",
+  "head": "eac1ada70adb20a1f5640d7fe79a8f5a2f93c991",
+  "origin_main": "ab7362987bcff405cac69d947efb1950cb2f2295",
+  "planned_move": {
+    "source": "ide/README.md",
+    "target": "docs/architecture/IDE_PROJECTIONS.md",
+    "action": "move",
+    "apply_allowed_for_next_task": false
+  },
+  "deferred": [
+    "ide/manifests/**"
+  ],
+  "plan_artifacts": [
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.plan.toml",
+      "present": true,
+      "valid": true,
+      "notes": "draft/not-approved/no-apply"
+    },
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.plan.json",
+      "present": true,
+      "valid": true,
+      "notes": "one planned move"
+    },
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json",
+      "present": true,
+      "valid": true,
+      "notes": "six apply-phase rewrites"
+    },
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.validation_plan.json",
+      "present": true,
+      "valid": true,
+      "notes": "Tier 0 validators present"
+    },
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.rollback_plan.json",
+      "present": true,
+      "valid": true,
+      "notes": "reverse move and rewrite rollback present"
+    },
+    {
+      "path": ".aide/refactors/AIDE-MOVE-01.exception_update_plan.json",
+      "present": true,
+      "valid": true,
+      "notes": "no exception retirement"
+    }
+  ],
+  "reference_rewrite_count": 6,
+  "target_collision": false,
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "references_rewritten": false,
+    "active_aliases": false,
+    "exceptions_retired": false,
+    "product_source_runtime_build_changed": false
+  },
+  "validation": [
+    {
+      "command": "Plan JSON/TOML inspection",
+      "result": "PASS",
+      "notes": "All plan files parse and remain draft/not-approved/no-apply."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py doctor",
+      "result": "PASS",
+      "notes": "AIDE doctor passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py validate",
+      "result": "PASS",
+      "notes": "AIDE validate passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py test",
+      "result": "PASS",
+      "notes": "AIDE focused tests passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py selftest",
+      "result": "PASS",
+      "notes": "AIDE selftest passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py tools validate",
+      "result": "PASS",
+      "notes": "AIDE tools validate passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py roots validate",
+      "result": "PASS",
+      "notes": "AIDE roots validate passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py repo validate",
+      "result": "PASS",
+      "notes": "AIDE repo validate passed."
+    },
+    {
+      "command": "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "result": "PASS",
+      "notes": "Latest commit check passed."
+    },
+    {
+      "command": "python tools/validators/check_repo_layout.py --repo-root . --strict",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Strict repo layout passed; this Python emitted a non-blocking tomllib fallback warning."
+    },
+    {
+      "command": "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Strict root allowlist passed; this Python emitted a non-blocking tomllib fallback warning."
+    },
+    {
+      "command": "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Distribution layout passed; this Python emitted a non-blocking tomllib fallback warning."
+    },
+    {
+      "command": "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Component matrices passed; this Python emitted a non-blocking tomllib fallback warning."
+    },
+    {
+      "command": "python scripts/verify_docs_sanity.py --repo-root .",
+      "result": "PASS",
+      "notes": "Docs sanity passed."
+    },
+    {
+      "command": "python scripts/verify_build_target_boundaries.py --repo-root .",
+      "result": "PASS",
+      "notes": "Build boundary check passed."
+    },
+    {
+      "command": "python scripts/verify_ui_shell_purity.py --repo-root .",
+      "result": "PASS",
+      "notes": "UI shell purity passed."
+    },
+    {
+      "command": "python scripts/verify_abi_boundaries.py --repo-root .",
+      "result": "PASS",
+      "notes": "ABI boundary check passed."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "notes": "No whitespace errors."
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "PASS",
+      "notes": "No staged whitespace errors."
+    }
+  ],
+  "known_warnings": [
+    "Reference complexity is high because generated AIDE/repo evidence and historical audit artifacts mention ide/README.md.",
+    "Generated architecture registry entries require review or regeneration during apply rather than automatic hand editing.",
+    "The original move plan remains draft/not-approved/no-apply; authorization is represented by this gate report.",
+    "The python executable used for required validator commands emitted non-blocking tomllib fallback warnings while returning pass."
+  ],
+  "blockers": [],
+  "authorized_next": [
+    "AIDE-MOVE-01-APPLY"
+  ],
+  "authorized_scope": "ide/README.md -> docs/architecture/IDE_PROJECTIONS.md",
+  "move_apply_authorized": true
+}
