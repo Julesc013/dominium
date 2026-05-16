@@ -1,0 +1,1094 @@
+{
+  "blocked": [],
+  "checked_failures": 81,
+  "deferred": [],
+  "findings": [
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.0a8e71d06f3c5f95.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.2ad6dcaf8a83f1ff.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 100,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.3b31f4cda90f9694.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 118,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.43cad5630622e0a2.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.553e99146b46226a.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 38,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.73f5830efa7cb7fd.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/build/APR5_BUILD_INVENTORY.md",
+      "references_found": [
+        "docs/archive/build/APR5_BUILD_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 40,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.81c79f8e9d8f5146.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.82553b122a55adbd.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.8fe4908d15fa74a8.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/repox/APRX_INVENTORY.md",
+      "references_found": [
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.aa541b06cf37f8ec.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 40,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.ae5bc131a9a3fcb9.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE6_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE6_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 36,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.bae1b293eeca4235.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 42,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.bb0b696492f863fb.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/repox/APRX_INVENTORY.md",
+      "references_found": [
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 38,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.c5ddd63f7fcaacc0.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE2_5_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.d1b0f06fa7aa0a39.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+      "references_found": [
+        "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.d377814b66f72f86.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE6_AUDIT_REPORT.md",
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 52,
+      "path": "docs/refactor/QUARANTINE_duplicate.cluster.e59272c82ecc9d9e.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+      "references_found": [
+        "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.007e9883c1313885.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/COREDATA_CONSISTENCY_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/COREDATA_CONSISTENCY_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.017f3fd1fa751e29.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 38,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.03b6e9358e8b4b84.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE6_AUDIT_REPORT.md",
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.0451292e28f6617d.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE1_ENFORCEMENT_SUMMARY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.09b9455e4c23fe02.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.0cb12b4a7accda98.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.175aaa9840e7c31c.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.18d39b60e4adbdb9.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/platform/APR2_EXTENSION_AUDIT.md",
+      "references_found": [
+        "docs/archive/platform/APR2_EXTENSION_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 122,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.1b11eb30a15feba7.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.23340052113a1169.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.24e67205c99e8ba5.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.351f5c8dd35abf8e.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 114,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.3d73ce66e079e576.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.40d68870c15a4c93.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.41cf60ee6b7145cc.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+        "docs/archive/platform/APR2_EXTENSION_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.438653261bc2ec1a.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.43f79996edfc3f8a.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.4a80e009b7a66369.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR1_RUNTIME_AUDIT.md",
+      "references_found": [
+        "docs/archive/app/APR1_RUNTIME_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.5127dbfe27fb00d6.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/ARCH_GLOSSARY.md",
+      "references_found": [
+        "docs/archive/architecture/ARCH_GLOSSARY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.5c8d37138d5df335.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.5ee7645ff1b29f3a.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 52,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.6954590dd2dacbfc.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.6f11bb261ff879e7.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.726fca9fd3652f0e.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+        "docs/archive/build/APR5_BUILD_INVENTORY.md",
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE6_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.764854ea1f96e934.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.799623cd10a4b4d8.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/build/APR5_BUILD_INVENTORY.md",
+      "references_found": [
+        "docs/archive/build/APR5_BUILD_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.79d4e43731fcf139.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR1_RUNTIME_AUDIT.md",
+      "references_found": [
+        "docs/archive/app/APR1_RUNTIME_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.808c9c7b6367fbb6.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/guides/LAUNCHER_AUDIT.md",
+      "references_found": [
+        "docs/archive/guides/LAUNCHER_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.8124291c772ce583.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 36,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.83c26439ad43ad35.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/stray_root_docs/CI_ENFORCEMENT_MATRIX.md",
+      "references_found": [
+        "docs/archive/stray_root_docs/CI_ENFORCEMENT_MATRIX.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.849bcf350c2163cc.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE6_SEALED.md",
+      "references_found": [
+        "docs/archive/ci/PHASE6_SEALED.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.87c7d933269b8bbf.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.8803eb5c6e24ba70.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.8bc4a3f045c595d4.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.9214fb4d734b48dc.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/stray_root_docs/MODDING.md",
+      "references_found": [
+        "docs/archive/stray_root_docs/MODDING.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.98fb6c61613352c7.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.9e91914354329fc8.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.9f3acba561ab7a43.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.a49eb7d8013e7ff3.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b076206dc78ad041.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/INVARIANTS.md",
+      "references_found": [
+        "docs/archive/architecture/INVARIANTS.md",
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 96,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b2a0a3b6857bc6b2.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/COREDATA_CONSISTENCY_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/COREDATA_CONSISTENCY_REPORT.md",
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 52,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b2cbf2d469709a05.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+      "references_found": [
+        "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 38,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b3ecb089496e17cf.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/ci/PHASE2_5_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b612c577343c9b70.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.b87f4de161f9c5ad.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.ba30ba0401c9833c.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/repox/APRX_INVENTORY.md",
+      "references_found": [
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.be9229bb6dd9cd77.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/platform/APR2_EXTENSION_AUDIT.md",
+      "references_found": [
+        "docs/archive/platform/APR2_EXTENSION_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.c3bcb8da3696c497.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+        "docs/archive/stray_root_docs/PERF_BUDGETS.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.c85ecb86ee4bd8cf.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.c97b165bb85eee07.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+      "references_found": [
+        "docs/archive/architecture/COMPATIBILITY_PHILOSOPHY.md",
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.ca9b006bd8e6b28a.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.cb821de1e7e6c169.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.cd31acbfa8c0ae62.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.d7674415b467917f.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR1_RUNTIME_AUDIT.md",
+      "references_found": [
+        "docs/archive/app/APR1_RUNTIME_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.d89f2696a87e05ff.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 36,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.da1c4e164085d3c7.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md",
+        "docs/archive/repox/APRX_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.dbba70b90fb008ce.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/platform/APR2_EXTENSION_AUDIT.md",
+      "references_found": [
+        "docs/archive/platform/APR2_EXTENSION_AUDIT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+      "references_found": [
+        "docs/archive/ci/DOCS_VALIDATION_REPORT.md",
+        "docs/archive/stray_root_docs/PERF_BUDGETS.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 34,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.e51fd45ca403e4bb.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.e66c58617f321701.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/architecture/TERMINOLOGY.md",
+      "references_found": [
+        "docs/archive/architecture/TERMINOLOGY.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 38,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.e8b0cfc851a4f519.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+        "docs/archive/ci/PHASE1_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.f6a061a4133b9c50.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+        "docs/archive/ci/PHASE6_AUDIT_REPORT.md"
+      ],
+      "safe_to_fix_now": true
+    },
+    {
+      "authority_basis": "Document is a docs/refactor/QUARANTINE_* DERIVED evidence packet; 10H added DERIVED status headers, and docs/architecture/VALIDATION_RULES.md scopes INV-CANON-NO-HIST-REF to canonical docs.",
+      "classification": "generated_evidence_reference",
+      "line": 32,
+      "path": "docs/refactor/QUARANTINE_duplicate.sig.f6b54689bb3490b4.md",
+      "reason": "The archive citation records historical duplicate/quarantine evidence. Rewriting it would erase audit context; the safe remediation is to make RepoX enforce archive-reference prohibition only for canonical docs.",
+      "recommended_action": "allow_specific_evidence",
+      "reference": "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md",
+      "references_found": [
+        "docs/archive/app/APR4_ENGINE_GAME_INTERFACE_INVENTORY.md"
+      ],
+      "safe_to_fix_now": true
+    }
+  ],
+  "safe_fixes": [
+    {
+      "authority_basis": "docs/architecture/VALIDATION_RULES.md defines INV-CANON-NO-HIST-REF scope as canonical docs; 10H evidence classified the triggering docs/refactor packets as DERIVED.",
+      "change": "check_doc_references now treats docs/archive references as INV-CANON-NO-HIST-REF only when the referencing document is canonical by status header or CANON_INDEX membership.",
+      "file": "scripts/ci/check_repox_rules.py",
+      "id": "repox_canonical_scope_for_archive_refs"
+    }
+  ],
+  "schema_version": "dominium.post_converge_10i.historical_reference_findings.v1",
+  "task_id": "POST-CONVERGE-10I"
+}

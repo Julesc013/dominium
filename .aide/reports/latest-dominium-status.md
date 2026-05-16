@@ -1,23 +1,14 @@
-# Latest Dominium AIDE Status
+# Latest Dominium Status
 
-## Status
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
 
-- POST-CONVERGE-10G: PARTIAL, RepoX reduced from 1844 to 1769 failures
-- POST-CONVERGE-10H: PARTIAL, RepoX reduced from 1769 to 153 failures
-- `INV-DOC-STATUS-HEADER`: 1545 -> 12
-- `INV-CANON-INDEX`: 84 -> 0
-- Move planning authorized: false
-- Move application authorized: false
-- Product boot proof authorized: false
+## Current Position
 
-## Current Blocker
+POST-CONVERGE-10I completed as PARTIAL. Focused RepoX improved to 71 failures and 5 warnings. `INV-CANON-NO-HIST-REF` is reduced from 81 to 0; POST-CONVERGE-11 remains blocked.
 
-Focused tuple `inv_repox_rules` still fails with 153 failures and 5 warnings. The largest remaining family is `INV-CANON-NO-HIST-REF` with 81 failures.
+## Next Recommended Task
 
-## No-Move Confirmation
-
-POST-CONVERGE-10H did not move, delete, rename, rewrite broad references, apply maps, create aliases, retire exceptions, or change product/runtime/source behavior.
-
-## Next Task
-
-`POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation`.
+`POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.

@@ -1,0 +1,154 @@
+{
+  "after": {
+    "failures": 71,
+    "warnings": 5
+  },
+  "before": {
+    "failure_rows_observed": 152,
+    "failures": 153,
+    "warnings": 5
+  },
+  "fixed_families": [
+    {
+      "after": 0,
+      "before": 81,
+      "change": "RepoX now respects canonical-doc scope for archive-reference enforcement.",
+      "family": "INV-CANON-NO-HIST-REF"
+    }
+  ],
+  "head": "978818004c435ad2ca53355e065a888800fe2a94",
+  "origin_main": "978818004c435ad2ca53355e065a888800fe2a94",
+  "ready_for_post_converge_11": false,
+  "remaining_families": [
+    {
+      "count": 12,
+      "family": "INV-DOC-STATUS-HEADER"
+    },
+    {
+      "count": 9,
+      "family": "INV-NEW-CONTRACT-REQUIRES-ENTRY"
+    },
+    {
+      "count": 7,
+      "family": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR"
+    },
+    {
+      "count": 5,
+      "family": "INV-NO-ADHOC-MAIN"
+    },
+    {
+      "count": 5,
+      "family": "INV-TOOLS-REQUIRE-ENTITLEMENT"
+    },
+    {
+      "count": 4,
+      "family": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH"
+    },
+    {
+      "count": 2,
+      "family": "INV-CACHE-KEY-INCLUDES-CONTRACTS"
+    },
+    {
+      "count": 2,
+      "family": "INV-TOOL-VERSION-MISMATCH"
+    },
+    {
+      "count": 2,
+      "family": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE"
+    },
+    {
+      "count": 1,
+      "family": "INV-BODY-MOTION-PROCESS-ONLY"
+    },
+    {
+      "count": 1,
+      "family": "INV-CAMERA-SMOOTH-RENDER-ONLY"
+    },
+    {
+      "count": 1,
+      "family": "INV-CANON-NO-SUPERSEDED"
+    },
+    {
+      "count": 1,
+      "family": "INV-COLLISION-DETERMINISTIC"
+    },
+    {
+      "count": 1,
+      "family": "INV-CONFLICTS-NOT-SILENT-IN-STRICT"
+    },
+    {
+      "count": 1,
+      "family": "INV-IDENTITY-FINGERPRINT"
+    },
+    {
+      "count": 1,
+      "family": "INV-JUMP-PROFILE-GATED"
+    },
+    {
+      "count": 1,
+      "family": "INV-LENS-PROFILED"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-ASSET-DEPENDENCY-FOR-EMB"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-BLOCKING-WORLDGEN-IN-UI"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-FLOAT-SMOOTHING"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-IDENTITY-OVERRIDE"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-SILENT-DEGRADE"
+    },
+    {
+      "count": 1,
+      "family": "INV-NO-TRUTH-LEAK-IN-SCANS"
+    },
+    {
+      "count": 1,
+      "family": "INV-OVERLAY-CONFLICT-POLICY-DECLARED"
+    },
+    {
+      "count": 1,
+      "family": "INV-REFINEMENT-BUDGETED"
+    },
+    {
+      "count": 1,
+      "family": "INV-REPOX-RULESET-MISSING"
+    },
+    {
+      "count": 1,
+      "family": "INV-REPRO-BUNDLE-DETERMINISTIC"
+    },
+    {
+      "count": 1,
+      "family": "INV-REPRO-BUNDLE-NO-SECRETS"
+    },
+    {
+      "count": 1,
+      "family": "INV-SHADOW-BOUNDED"
+    },
+    {
+      "count": 1,
+      "family": "INV-TERRAIN-EDITS-PROCESS-ONLY"
+    }
+  ],
+  "schema_version": "dominium.post_converge_10i.before_after.v1",
+  "task_id": "POST-CONVERGE-10I"
+}

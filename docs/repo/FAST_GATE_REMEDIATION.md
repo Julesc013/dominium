@@ -77,3 +77,11 @@ FAST is still not green. The remaining blocker is broad canonical documentation/
 ## POST-CONVERGE-10H Update
 
 POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing safe documentation status metadata and canon-index drift. FAST remains blocked because focused RepoX still fails, now dominated by historical/archive reference debt and smaller policy-specific families.
+
+## POST-CONVERGE-10I Update - Historical Reference Remediation
+
+- Result: PARTIAL.
+- Focused RepoX improved from 153 failures / 5 warnings to 71 failures / 5 warnings.
+- `INV-CANON-NO-HIST-REF` reduced from 81 to 0 by aligning RepoX enforcement to canonical-doc scope and preserving DERIVED quarantine/archive evidence references.
+- POST-CONVERGE-11 remains blocked.
+- Next recommended task: `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.

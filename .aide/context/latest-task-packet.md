@@ -2,32 +2,32 @@
 
 ## PHASE
 
-POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation
+POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation
 
 ## GOAL
 
-Reduce focused `inv_repox_rules` documentation status and canon-index drift without weakening RepoX or altering doctrine.
+Reduce focused `inv_repox_rules` historical/archive reference debt without weakening RepoX or rewriting audit history.
 
 ## WHY
 
-POST-CONVERGE-10G left documentation status headers and canon-index drift as the next safe RepoX families. POST-CONVERGE-10H repairs only clear metadata/index drift and leaves authority-sensitive files deferred.
+POST-CONVERGE-10H left `INV-CANON-NO-HIST-REF` as the largest focused RepoX family. POST-CONVERGE-10I distinguishes stale current references from legitimate DERIVED quarantine/archive evidence and preserves historical citations.
 
 ## CURRENT RESULT
 
-PARTIAL. RepoX was reduced from 1769 failures and 5 warnings to 153 failures and 5 warnings. POST-CONVERGE-11 remains blocked.
+PARTIAL. Focused RepoX was reduced to 71 failures and 5 warnings. `INV-CANON-NO-HIST-REF` was reduced from 81 to 0. POST-CONVERGE-11 remains blocked.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/POST-CONVERGE-10H-status.md`
-- `.aide/reports/POST-CONVERGE-10H-doc-status-findings.json`
-- `.aide/reports/POST-CONVERGE-10H-canon-index-findings.json`
-- `.aide/reports/POST-CONVERGE-10H-repox-before-after.json`
-- `docs/repo/audits/POST_CONVERGE_10H_DOC_STATUS_CANON_INDEX.md`
+- `.aide/reports/POST-CONVERGE-10I-status.md`
+- `.aide/reports/POST-CONVERGE-10I-historical-reference-findings.json`
+- `.aide/reports/POST-CONVERGE-10I-repox-before-after.json`
+- `docs/repo/audits/POST_CONVERGE_10I_HISTORICAL_REFERENCE_REMEDIATION.md`
+- `scripts/ci/check_repox_rules.py`
 
 ## ALLOWED_PATHS
 
-- documentation files directly missing or repairing required status headers
-- `docs/architecture/CANON_INDEX.md`
+- RepoX historical-reference rule/check files directly implicated by the failure
+- documentation files directly implicated by historical reference failures
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/migration_ledger.jsonl`
@@ -41,9 +41,9 @@ PARTIAL. RepoX was reduced from 1769 failures and 5 warnings to 153 failures and
 
 ## IMPLEMENTATION
 
-- Repair only metadata headers for evidence/reference docs with clear DERIVED role.
-- Add canon-index entries only for docs that already declared `Status: CANONICAL`.
-- Defer ambiguous architecture/runtime/xstack/performance/domain status headers.
+- Preserve DERIVED quarantine/archive evidence references.
+- Align `INV-CANON-NO-HIST-REF` enforcement to canonical documents by header or CANON_INDEX membership.
+- Record remaining RepoX blocker families without accepting them.
 
 ## VALIDATION
 
@@ -55,32 +55,33 @@ PARTIAL. RepoX was reduced from 1769 failures and 5 warnings to 153 failures and
 
 ## EVIDENCE
 
-- `.aide/reports/POST-CONVERGE-10H-*`
-- `docs/repo/audits/POST_CONVERGE_10H_DOC_STATUS_CANON_INDEX.md`
+- `.aide/reports/POST-CONVERGE-10I-*`
+- `docs/repo/audits/POST_CONVERGE_10I_HISTORICAL_REFERENCE_REMEDIATION.md`
 
 ## NON_GOALS
 
-No doctrine rewrite, broad docs rewrite, product proof, package proof, release proof, root moves, or feature work.
+No doctrine rewrite, broad docs rewrite, product proof, package proof, release proof, root moves, historical evidence deletion, or feature work.
 
 ## ACCEPTANCE
 
-- RepoX doc status and canon-index families are reduced or cleared.
+- Historical-reference failures are reduced or classified.
+- Legitimate audit/generated/root-recycling history is preserved.
 - Remaining failures are classified.
 - Product boot readiness is explicitly decided.
 - No generated local/cache/build files are committed.
 
 ## OUTPUT_SCHEMA
 
-Return branch, HEAD before/after, origin/main, focused RepoX before/after, doc status fixes, canon index fixes, remaining families, validation, readiness, commit, worktree, and next task.
+Return branch, HEAD before/after, origin/main, focused RepoX before/after, historical reference fixes, preserved references, remaining families, validation, readiness, commit, worktree, and next task.
 
 ## TOKEN_ESTIMATE
 
 - method: concise packet by evidence refs
-- approx_tokens: 800
+- approx_tokens: 760
 - budget_status: PASS
 - warnings:
   - focused RepoX remains blocking
 
 ## NEXT
 
-Recommended next task: `POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation`.
+Recommended next task: `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.

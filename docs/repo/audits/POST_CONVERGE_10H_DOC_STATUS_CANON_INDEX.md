@@ -104,3 +104,11 @@ POST-CONVERGE-11 is not ready. Focused RepoX still has real governance failures.
 | `python scripts/ci/check_repox_rules.py --repo-root . --proof-manifest-out .dominium.local/ctest/repox/proof_manifest.json --profile-out .dominium.local/ctest/repox/REPOX_PROFILE.json` | fail_expected | Direct RepoX after 10H reports 153 failures and 5 warnings. |
 
 Final AIDE and strict validator results are recorded in `.aide/reports/POST-CONVERGE-10H-validation.md`.
+
+## POST-CONVERGE-10I Update - Historical Reference Remediation
+
+- Result: PARTIAL.
+- Focused RepoX improved from 153 failures / 5 warnings to 71 failures / 5 warnings.
+- `INV-CANON-NO-HIST-REF` reduced from 81 to 0 by aligning RepoX enforcement to canonical-doc scope and preserving DERIVED quarantine/archive evidence references.
+- POST-CONVERGE-11 remains blocked.
+- Next recommended task: `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review`.

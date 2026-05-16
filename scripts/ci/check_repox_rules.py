@@ -1721,12 +1721,15 @@ def check_doc_references(repo_root, canon_index):
     for path in iter_files([os.path.join(repo_root, DOCS_ROOT)], DEFAULT_EXCLUDES, DOC_EXTS):
         rel = repo_rel(repo_root, path)
         text = read_text(path) or ""
+        header = parse_doc_header(text) or {}
+        status = header.get("status", "")
+        is_canonical_doc = status == "CANONICAL" or rel in canon.get("CANONICAL", set())
         refs = extract_doc_refs(text)
         for ref in refs:
             if ref.startswith("docs/archive/") and not rel.startswith("docs/archive/"):
-                if rel != CANON_INDEX_PATH:
+                if rel != CANON_INDEX_PATH and is_canonical_doc:
                     violations.append("INV-CANON-NO-HIST-REF: archived doc referenced by {}".format(rel))
-            if rel != CANON_INDEX_PATH and rel in canon.get("CANONICAL", set()) and ref in historical:
+            if rel != CANON_INDEX_PATH and is_canonical_doc and ref in historical:
                 violations.append("INV-CANON-NO-HIST-REF: canonical doc references historical: {} -> {}".format(rel, ref))
     return violations
 

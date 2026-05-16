@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10H and confirm that documentation status and canon-index drift were reduced without broad doctrine changes.
+Review POST-CONVERGE-10I and confirm that historical/archive reference debt was reduced without weakening RepoX or deleting audit history.
 
 ## Decision Requested
 
@@ -26,34 +26,33 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10H-status.md`
-- `.aide/reports/POST-CONVERGE-10H-validation.md`
-- `.aide/reports/POST-CONVERGE-10H-blockers.md`
-- `.aide/reports/POST-CONVERGE-10H-doc-status-findings.md`
-- `.aide/reports/POST-CONVERGE-10H-doc-status-findings.json`
-- `.aide/reports/POST-CONVERGE-10H-canon-index-findings.md`
-- `.aide/reports/POST-CONVERGE-10H-canon-index-findings.json`
-- `.aide/reports/POST-CONVERGE-10H-repox-before-after.json`
-- `docs/repo/audits/POST_CONVERGE_10H_DOC_STATUS_CANON_INDEX.md`
+- `.aide/reports/POST-CONVERGE-10I-status.md`
+- `.aide/reports/POST-CONVERGE-10I-validation.md`
+- `.aide/reports/POST-CONVERGE-10I-blockers.md`
+- `.aide/reports/POST-CONVERGE-10I-historical-reference-findings.md`
+- `.aide/reports/POST-CONVERGE-10I-historical-reference-findings.json`
+- `.aide/reports/POST-CONVERGE-10I-repox-before-after.json`
+- `docs/repo/audits/POST_CONVERGE_10I_HISTORICAL_REFERENCE_REMEDIATION.md`
+- `scripts/ci/check_repox_rules.py`
 
 ## Changed Files Summary
 
-- Added DERIVED status headers to clear evidence/reference docs.
-- Added missing canon-index entries for existing CANONICAL docs.
-- Added POST-CONVERGE-10H reports and status updates.
+- Updated RepoX historical-reference rule scope to canonical docs by status header or CANON_INDEX membership.
+- Preserved DERIVED quarantine/archive evidence references without rewriting historical docs.
+- Added POST-CONVERGE-10I reports and status updates.
 - No roots were moved, deleted, renamed, mapped, aliased, or exception-retired.
 
 ## Validation Summary
 
-Focused RepoX reduced from 1769 failures to 153 failures. Focused tuple `inv_repox_rules` still fails and remains a product-boot blocker. Final AIDE, strict validator, supplemental validator, JSON parse, and git diff checks are recorded in the validation report.
+Focused RepoX reduced from the 10H baseline of 153 failures and 5 warnings to 71 failures and 5 warnings. `INV-CANON-NO-HIST-REF` is reduced from 81 to 0. Focused tuple `inv_repox_rules` still fails and remains a product-boot blocker.
 
 ## Token Summary
 
-This packet is compact and references evidence by path rather than inlining raw RepoX logs or the large doc-header fix set.
+This packet is compact and references evidence by path rather than inlining raw RepoX logs or the 81 finding records.
 
 ## Risk Summary
 
-POST-CONVERGE-11 remains blocked. The next risk family is historical/archive reference handling.
+POST-CONVERGE-11 remains blocked. The next largest family is the deferred authority-sensitive documentation status backlog.
 
 ## Non-Goals / Scope Guard
 
@@ -61,4 +60,4 @@ Do not start product boot proof, full CTest, package proof, portable projection 
 
 ## Reviewer Instructions
 
-Confirm whether `POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation` is the correct next task before product boot proof.
+Confirm whether `POST-CONVERGE-10J - Authority-Sensitive Documentation Status Review` is the correct next task before product boot proof.
