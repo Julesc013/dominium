@@ -51,7 +51,6 @@ CMakeUserPresets.json
 # ---------------------------------------------------------------------
 /ide/**
 !/ide/
-!/ide/README.md
 !/ide/manifests/
 !/ide/manifests/**
 

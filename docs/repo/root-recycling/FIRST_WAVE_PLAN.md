@@ -7,7 +7,7 @@ The root recycling framework and five inventory waves were generated as no-apply
 ## Recommended First Planning Candidate
 
 - Root: `ide`
-- Subtree: ide/README.md and ide/manifests projection docs/examples
+- Subtree: `docs/architecture/IDE_PROJECTIONS.md` moved from `ide/README.md`; `ide/manifests/**` remains deferred
 - Risk: low
 - Apply allowed: false
 - Approval status: not_approved
@@ -23,3 +23,7 @@ AIDE-MOVE-01-PLAN narrowed the first candidate to `ide/README.md` -> `docs/archi
 ## AIDE-GATE-02 Result
 
 AIDE-GATE-02 passed with warnings and authorizes only `AIDE-MOVE-01-APPLY` for `ide/README.md` -> `docs/architecture/IDE_PROJECTIONS.md`. All other moves remain unauthorized, and `ide/manifests/**` remains deferred.
+
+## AIDE-MOVE-01-APPLY Result
+
+AIDE-MOVE-01-APPLY moved `ide/README.md` to `docs/architecture/IDE_PROJECTIONS.md` and applied only the six planned reference rewrites. `ide/manifests/**` remains deferred and untouched, the `ide/` root exception was not retired, and the next recommended task is `AIDE-GATE-03`.

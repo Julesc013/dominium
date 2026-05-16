@@ -86,7 +86,7 @@ def select(reconciliation):
         sensitivity = "docs/tooling" if root["root"] in PREFERRED else "protected_or_unknown"
         if root["root"] == "ide":
             risk = "low"
-            subtree = "ide/README.md and ide/manifests projection docs/examples"
+            subtree = "docs/architecture/IDE_PROJECTIONS.md only; keep ide/manifests deferred"
             sensitivity = "docs/projection"
         elif root["root"] == "performance":
             subtree = "performance docs/evidence subset only; Python helpers deferred"

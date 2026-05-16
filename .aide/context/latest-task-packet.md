@@ -2,15 +2,15 @@
 
 ## PHASE
 
-AIDE-GATE-02 - move plan apply readiness gate
+AIDE-MOVE-01-APPLY - first low-risk move application
 
 ## GOAL
 
-Inspect the draft AIDE-MOVE-01 plan and decide whether the next task may apply the single planned move.
+Apply the single gated move from the former ide README to `docs/architecture/IDE_PROJECTIONS.md`, apply only the six planned reference rewrites, and record validation and rollback evidence.
 
 ## WHY
 
-Even a one-file move needs gate review before apply. This gate checks source and target paths, reference rewrites, validation, rollback, exception handling, deferred manifest metadata, and no-apply invariants.
+This is the first controlled AIDE move proof. It demonstrates that a small docs-only cleanup can move through plan, gate, apply, reference rewrite, validation, evidence, and rollback recording without broader root cleanup.
 
 ## CONTEXT_REFS
 
@@ -20,7 +20,11 @@ Even a one-file move needs gate review before apply. This gate checks source and
 - `.aide/refactors/AIDE-MOVE-01.rollback_plan.json`
 - `.aide/refactors/AIDE-MOVE-01.exception_update_plan.json`
 - `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
+- `.aide/reports/AIDE-MOVE-01-APPLY-rollback.md`
 - `docs/repo/root-recycling/AIDE_MOVE_01_FIRST_LOW_RISK_MOVE_PLAN.md`
+- `docs/repo/root-recycling/AIDE_MOVE_01_APPLY_RESULT.md`
 
 ## ALLOWED_PATHS
 
@@ -28,6 +32,8 @@ Even a one-file move needs gate review before apply. This gate checks source and
 - `.aide/context/**`
 - `.aide/ledgers/**`
 - `docs/repo/root-recycling/**`
+- `docs/architecture/IDE_PROJECTIONS.md`
+- planned reference rewrite files
 
 ## FORBIDDEN_PATHS
 
@@ -39,53 +45,54 @@ Even a one-file move needs gate review before apply. This gate checks source and
 - `tests/**`
 - `cmake/**`
 - `release/**`
-- `ide/README.md`
-- `docs/architecture/IDE_PROJECTIONS.md`
-- `ide/manifests/**`
+- ide manifests subtree
 - product/version root files
-- root move, delete, rename, reference rewrite, path alias activation, salvage application, move-map application, or exception retirement
+- any move other than the approved README-to-architecture-doc move
+- any reference rewrite outside the six planned apply-phase rewrites
+- path alias activation, salvage application, move-map application, or exception retirement
 
 ## IMPLEMENTATION
 
-- Verify the plan only.
-- Authorize only `AIDE-MOVE-01-APPLY` if gate criteria pass.
-- Do not mutate the original move plan to approved.
-- Do not modify source, target, manifest, product, runtime, source, build, or generated behavior files.
+- Move the former ide README to `docs/architecture/IDE_PROJECTIONS.md` with `git mv`.
+- Apply exactly the six apply-phase rewrites from the reference rewrite plan.
+- Do not modify `ide/manifests/**`.
+- Do not retire the `ide/` root exception.
 
 ## VALIDATION
 
-Run AIDE, plan parse, strict validators, supplemental docs/build/UI/ABI checks, and git diff checks. Record results in `.aide/reports/AIDE-GATE-02-validation.md`.
+Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, stale reference search, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-01-APPLY-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
-- `.aide/reports/AIDE-GATE-02-move-apply-readiness.json`
-- `.aide/reports/AIDE-GATE-02-validation.md`
-- `.aide/reports/AIDE-GATE-02-blockers.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
+- `.aide/reports/AIDE-MOVE-01-APPLY-validation.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-blockers.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
 
 ## NON_GOALS
 
-- Do not apply the move.
-- Do not move, delete, rename, or rewrite files.
+- Do not start another move.
+- Do not delete files.
 - Do not approve or apply move maps or salvage maps.
 - Do not create active aliases or compatibility shims.
 - Do not retire exceptions.
-- Do not authorize any move other than AIDE-MOVE-01-APPLY.
+- Do not change product/source/runtime/build behavior.
 
 ## ACCEPTANCE
 
-- Gate report and JSON exist.
-- Gate result is PASS, PASS_WITH_WARNINGS, or BLOCKED.
-- If passing, authorization is limited to `ide/README.md -> docs/architecture/IDE_PROJECTIONS.md`.
+- Apply reports and JSON exist.
+- The former ide README is absent and `docs/architecture/IDE_PROJECTIONS.md` is present.
+- Exactly six planned reference rewrites were applied.
+- ide manifests remain untouched.
 - Validation passes or only non-blocking known warnings remain.
-- No apply action occurred.
+- No unauthorized move, delete, rename, alias, shim, or exception retirement occurred.
 
 ## OUTPUT_SCHEMA
 
-Gate outputs are Markdown and JSON reports under `.aide/reports/**`, with optional narrow context, ledger, and root-recycling doc updates.
+Apply outputs are Markdown and JSON reports under `.aide/reports/**`, plus a root-recycling result doc and optional narrow context/ledger/status updates.
 
 ## TOKEN_ESTIMATE
 
-Approximate task packet tokens: 650. No raw source bodies are embedded beyond short path references.
+Approximate task packet tokens: 690. No raw source bodies are embedded beyond short path references.

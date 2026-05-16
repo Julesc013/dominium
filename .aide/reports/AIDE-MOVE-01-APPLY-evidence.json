@@ -1,0 +1,64 @@
+{
+  "schema_version": "dominium.aide.move_apply.v1",
+  "task_id": "AIDE-MOVE-01-APPLY",
+  "result": "PASS_WITH_WARNINGS",
+  "branch": "main",
+  "head_before": "8e03222fa4ed11ea3cf95429f361507745ea7bb0",
+  "origin_main_observed_before": "8e03222fa4ed11ea3cf95429f361507745ea7bb0",
+  "origin_main_expected_by_prompt": "ab7362987bcff405cac69d947efb1950cb2f2295",
+  "move_applied": {
+    "source": "ide/README.md",
+    "target": "docs/architecture/IDE_PROJECTIONS.md",
+    "status": "applied",
+    "method": "git mv"
+  },
+  "reference_rewrites": {
+    "planned": 6,
+    "applied": 6,
+    "warnings": [
+      "Generated architecture registry and graph references remain review/regeneration items.",
+      "Historical root-recycling and audit references were preserved."
+    ],
+    "applied_items": [
+      ".gitignore",
+      "scripts/verify_docs_sanity.py",
+      "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
+      "docs/architecture/IDE_PROJECTIONS.md:title",
+      "docs/architecture/IDE_PROJECTIONS.md:self-reference",
+      "tools/aide/select_move_wave.py"
+    ]
+  },
+  "deferred": [
+    "ide/manifests/**"
+  ],
+  "exceptions": {
+    "updated": false,
+    "notes": "The .gitignore README exception was removed as planned. The layout exception ledger was not changed; ide/ remains because ide/manifests/** remains."
+  },
+  "validation": [
+    {"command": "py -3 .aide/scripts/aide_lite.py doctor", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py test", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py selftest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --message-file .git/AIDE_MOVE_01_APPLY_COMMIT_MSG.txt", "result": "PASS"},
+    {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python tools/validators/check_component_matrices.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS"},
+    {"command": "python scripts/verify_docs_sanity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_build_target_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_ui_shell_purity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_abi_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "python -m py_compile scripts/verify_docs_sanity.py tools/aide/select_move_wave.py", "result": "PASS"},
+    {"command": "git diff --check", "result": "PASS"}
+  ],
+  "blockers": [],
+  "moves_applied_count": 1,
+  "deletes_applied_count": 0,
+  "renames_applied_count": 0,
+  "unauthorized_changes": false
+}

@@ -69,7 +69,7 @@ Scope: repository sovereignty, authoritative sources, and IDE projections.
 | `/ide/**` | GENERATED / PROJECTION | Disposable IDE outputs. |
 
 
-| `/ide/README.md`, `/ide/manifests/**` | AUTHORITATIVE metadata | Projection policy + manifest schema/examples. |
+| `/docs/architecture/IDE_PROJECTIONS.md`, `/ide/manifests/**` | AUTHORITATIVE metadata | Projection policy + manifest schema/examples. |
 
 
 | `/setup/**/package/**/vs/**` | FROZEN PACKAGING INPUT | No current first-class paths; see legacy grandfathered archival inputs below. |

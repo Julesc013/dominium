@@ -1,11 +1,11 @@
-# IDE Projections (/ide)
+# IDE Projections
 
 Status: binding.
 Scope: IDE project projections and projection manifests.
 
 This directory is the only permitted location for IDE project outputs.
 Everything under `/ide` is disposable and regenerated, except:
-- `/ide/README.md`
+- `/docs/architecture/IDE_PROJECTIONS.md`
 - `/ide/manifests/**` (schema + examples)
 
 Generated layout (created by scripts, not edited by hand):

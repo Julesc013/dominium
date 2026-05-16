@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review AIDE-GATE-02 and confirm the gate limits apply authorization to the single planned README move.
+Review AIDE-MOVE-01-APPLY and confirm the first controlled move applied only the gated README move and planned reference rewrites.
 
 ## Decision Requested
 
@@ -26,23 +26,26 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/AIDE-GATE-02-move-apply-readiness.md`
-- `.aide/reports/AIDE-GATE-02-move-apply-readiness.json`
-- `.aide/reports/AIDE-GATE-02-validation.md`
-- `.aide/reports/AIDE-GATE-02-blockers.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-status.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
+- `.aide/reports/AIDE-MOVE-01-APPLY-validation.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-blockers.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-rollback.md`
+- `.aide/reports/AIDE-MOVE-01-APPLY-reference-rewrites.md`
 - `.aide/refactors/AIDE-MOVE-01.plan.json`
 - `.aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json`
 
 ## Changed Files Summary
 
-- Added AIDE-GATE-02 readiness, validation, and blockers reports.
-- Updated latest AIDE context, status, warning disposition, and ledger surfaces.
-- Added a narrow first-wave plan note if applicable.
-- No source, target, manifest, product, runtime, source, build, map, alias, or exception files changed.
+- Moved the former ide README to `docs/architecture/IDE_PROJECTIONS.md`.
+- Applied six planned reference rewrites.
+- Added AIDE-MOVE-01-APPLY status, validation, blocker, evidence, rollback, reference rewrite, and post-state reports.
+- Added the AIDE-MOVE-01 apply result doc and narrow status/context/ledger updates.
+- ide manifests, product/runtime/source/build files, aliases, shims, move maps, salvage maps, and exception ledgers remain untouched.
 
 ## Validation Summary
 
-AIDE, plan parsing, strict repo/root/distribution/component validators, docs sanity, build boundary, UI shell, ABI boundary, and git diff checks pass.
+AIDE, strict repo/root/distribution/component validators, docs sanity, build boundary, UI shell, ABI boundary, stale reference search, and git diff checks pass or pass with known non-blocking warnings.
 
 ## Token Summary
 
@@ -50,12 +53,12 @@ This packet is compact and references evidence by path rather than inlining raw 
 
 ## Risk Summary
 
-The gate passes with warnings because raw references are high and generated architecture registry references need apply-task review. The authorized scope remains one docs-only move.
+The apply passes with warnings because origin/main already matched the local gate commit, Python validator `tomllib` fallback warnings remain, and generated architecture registry references are deferred review items.
 
 ## Non-Goals / Scope Guard
 
-Do not apply the move, rewrite references, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
+Do not start another move, approve maps, apply maps, create aliases, create shims, retire exceptions, or change product/source/runtime/build behavior during review.
 
 ## Reviewer Instructions
 
-Confirm that the authorization is limited to `AIDE-MOVE-01-APPLY` for `ide/README.md -> docs/architecture/IDE_PROJECTIONS.md`, and that all other moves remain unauthorized.
+Confirm that only the approved README-to-architecture-doc move occurred, exactly six planned reference rewrites were applied, ide manifests remained untouched, and the next task should be AIDE-GATE-03.

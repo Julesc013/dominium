@@ -15,7 +15,7 @@ REQUIRED_PATHS = (
     "docs/architecture/LEGACY_SUPPORT_STRATEGY.md",
     "docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md",
     "docs/policies/IDE_CONTRIBUTION_RULES.md",
-    "ide/README.md",
+    "docs/architecture/IDE_PROJECTIONS.md",
     "ide/manifests/projection_manifest.schema.json",
 )
 PATH_PREFIXES = ("docs/", "contracts/schemas/", "ide/", "scripts/")
