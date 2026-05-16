@@ -235,3 +235,10 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - `ctest --preset verify -L smoke --output-on-failure --timeout 300` passes 57/57.
 - `ctest --preset verify -R inv_repox_rules --output-on-failure` passes.
 - Full CTest remains a promotion gate and still needs sharding/wall-time work before it should be used as the normal feedback path.
+
+## Closeout Remediation Update - Portable Projection
+
+- `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel post-converge-12 --output-root .dominium.local/projections/post-converge-12 ...` completes.
+- The generated projection root is `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- The projection includes native `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` copied from `out/build/vs2026/verify/bin/`.
+- `python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium` reports `proof_status: proven`.

@@ -63,3 +63,10 @@ Superseded By: none
 - Native product command smoke passes for `setup`, `launcher`, `client`, `server`, and `tools` on `--help`, `--version`, `--status`, and `--smoke`.
 - CTest smoke passes 57/57.
 - Remaining warnings are operational, not semantic RepoX failures: full `cmake --build --preset verify` was not completed because the verification phase timed out, and portable projection proof has not yet been generated.
+
+## Portable Projection Closeout
+
+- Local ignored portable projection generation now completes under `.dominium.local/projections/post-converge-12/`.
+- Portable projection validation reports `proof_status: proven` with no blockers.
+- The projection tree includes the required portable roots/manifests and native `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` binaries.
+- Remaining warnings are release-process scope: no public package, installer, tag, GitHub release, or full promotion CTest was run.

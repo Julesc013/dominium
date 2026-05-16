@@ -304,6 +304,8 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Native product command smoke passes for `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` under `out/build/vs2026/verify/bin/`.
 - `ctest --preset verify -L smoke --output-on-failure --timeout 300` passes 57/57.
 - Canonical `ctest --preset verify -N` discovers 493 tests, but full promotion verification still needs TEST-PERF follow-up because `cmake --build --preset verify` timed out during verification after producing the binaries.
-- No package, installer, release, or portable projection output was generated.
-- Next recommended proof task: `POST-CONVERGE-12 - Portable Projection Proof`.
+- Local ignored portable projection generation now completes under `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- `python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium` reports `proof_status: proven`.
+- No package, installer, public release, tag, or GitHub release was generated.
+- Next recommended release task: `RELEASE-00 - Internal Pilot Release 0`.
 - Next recommended validation-speed task: `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.

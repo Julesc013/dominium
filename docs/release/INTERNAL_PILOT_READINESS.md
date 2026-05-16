@@ -44,3 +44,24 @@ RepoX and native command-surface readiness have improved since the blocked POST-
 - CTest smoke now passes 57/57.
 
 RELEASE-00 remains blocked because portable projection proof has not yet produced or validated a local projection root. The next release-readiness task is `POST-CONVERGE-12 - Portable Projection Proof`; TEST-PERF sharding remains a separate validation-speed follow-up.
+
+## Portable Projection Closeout Update
+
+RELEASE-00 internal pilot preparation may now proceed with warnings:
+
+- Focused RepoX passes.
+- Native product command smoke passes for the five product binaries.
+- Local ignored portable projection proof passes with `proof_status: proven`.
+- The projection root includes required portable roots/manifests and the five native product binaries.
+
+Remaining warnings:
+
+- Full promotion CTest was not run.
+- `cmake --build --preset verify` timed out during verification after producing the binaries.
+- No public package, installer, tag, GitHub release, or release publication was generated.
+
+Recommended next task:
+
+```text
+RELEASE-00 - Internal Pilot Release 0
+```

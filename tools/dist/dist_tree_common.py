@@ -83,6 +83,13 @@ PRODUCT_SPECS = (
     {"product_id": "launcher", "module": "tools.launcher.launch", "callable": "main", "prefix": []},
 )
 PRODUCT_IDS = tuple(str(row["product_id"]) for row in PRODUCT_SPECS)
+NATIVE_PRODUCT_OUTPUTS = ("setup", "launcher", "client", "server", "tools")
+NATIVE_BUILD_BIN_DIRS = (
+    os.path.join("out", "build", "vs2026", "verify", "bin"),
+    os.path.join("out", "build", "vs2026", "verify-win-vs2026", "bin"),
+    os.path.join(".dominium.local", "build", "tuple.verify.winnt10.x64.msvc143.mt.debug", "bin"),
+    os.path.join("build", "verify", "bin"),
+)
 
 DEFAULT_RUNTIME_SOURCE_ROOTS = ("src", "tools", "apps", "game")
 EXCLUDED_RUNTIME_TOP_LEVEL = {"app", "attic", "build", "data", "dist", "docs", "legacy", "libs", "schema", "schemas", "scripts", "tests", "tmp"}
@@ -651,6 +658,31 @@ def _write_product_wrappers(bundle_root: str, component_plan: Mapping[str, objec
     return {"products": product_rows}
 
 
+def _copy_native_product_binaries(repo_root: str, bundle_root: str) -> dict:
+    copied: list[dict[str, str]] = []
+    repo_root_abs = _repo_root(repo_root)
+    for product_id in NATIVE_PRODUCT_OUTPUTS:
+        source_path = ""
+        for rel_dir in NATIVE_BUILD_BIN_DIRS:
+            candidate = os.path.join(repo_root_abs, rel_dir.replace("/", os.sep), product_id + ".exe")
+            if os.path.isfile(candidate):
+                source_path = candidate
+                break
+        if not source_path:
+            continue
+        target_path = os.path.join(bundle_root, "bin", product_id + ".exe")
+        _copy_file(source_path, target_path)
+        copied.append(
+            {
+                "product_id": product_id,
+                "source": _norm(os.path.relpath(source_path, repo_root_abs)),
+                "target": _norm(os.path.relpath(target_path, bundle_root)),
+                "sha256": sha256_file(target_path),
+            }
+        )
+    return {"products": copied}
+
+
 def _run_wrapper(bundle_root: str, product_id: str, args: Sequence[str]) -> dict:
     wrapper_path = os.path.join(bundle_root, "bin", _token(product_id))
     proc = subprocess.run(
@@ -945,6 +977,59 @@ def _write_filelist(bundle_root: str, *, exclude_paths: Sequence[str] | None = N
     }
 
 
+def _write_portable_contract_surface(bundle_root: str) -> dict:
+    """Materialize contract-required portable roots without adding host paths."""
+    required_dirs = (
+        "descriptors",
+        "exports",
+        "logs",
+        "runtime/ipc",
+        "runtime/locks",
+        "runtime/temp",
+        "cache",
+        "ops/transactions",
+        "LICENSES",
+    )
+    created_dirs: list[str] = []
+    for rel_dir in required_dirs:
+        path = os.path.join(bundle_root, rel_dir.replace("/", os.sep))
+        os.makedirs(path, exist_ok=True)
+        created_dirs.append(_norm(rel_dir))
+
+    manifest_copies: list[str] = []
+    semantic_registry_source = os.path.join(bundle_root, "data", "registries", "semantic_contract_registry.json")
+    if os.path.isfile(semantic_registry_source):
+        _copy_file(semantic_registry_source, os.path.join(bundle_root, "semantic_contract_registry.json"))
+        manifest_copies.append("semantic_contract_registry.json")
+
+    release_manifest_source = os.path.join(bundle_root, DEFAULT_RELEASE_MANIFEST_REL.replace("/", os.sep))
+    if os.path.isfile(release_manifest_source):
+        _copy_file(release_manifest_source, os.path.join(bundle_root, "release.manifest.json"))
+        manifest_copies.append("release.manifest.json")
+
+    license_source = os.path.join(bundle_root, "LICENSE")
+    if os.path.isfile(license_source):
+        _copy_file(license_source, os.path.join(bundle_root, "LICENSES", "LICENSE"))
+
+    descriptor_copies: list[str] = []
+    bin_root = os.path.join(bundle_root, "bin")
+    descriptor_root = os.path.join(bundle_root, "descriptors")
+    if os.path.isdir(bin_root):
+        for name in sorted(os.listdir(bin_root)):
+            if not name.endswith(".descriptor.json"):
+                continue
+            source = os.path.join(bin_root, name)
+            target = os.path.join(descriptor_root, name)
+            _copy_file(source, target)
+            descriptor_copies.append(_norm(os.path.join("descriptors", name)))
+
+    return {
+        "created_dirs": created_dirs,
+        "manifest_copies": manifest_copies,
+        "descriptor_copies": descriptor_copies,
+    }
+
+
 def _run_smoke_checks(bundle_root: str, component_plan: Mapping[str, object] | None = None) -> dict:
     selected_products = {str(row.get("product_id", "")).strip() for row in _selected_product_specs(component_plan)}
     selected_ids = _selected_component_ids(component_plan)
@@ -1048,6 +1133,7 @@ def build_dist_tree(
     runtime_row = _compile_runtime_tree(repo_root_abs, bundle_root)
     runtime_data_row = _copy_runtime_data(repo_root_abs, bundle_root)
     wrapper_row = _write_product_wrappers(bundle_root, component_plan)
+    native_binary_row = _copy_native_product_binaries(repo_root_abs, bundle_root)
     store_row = _write_store_artifacts(repo_root_abs, bundle_root, component_plan)
     install_row = _build_install_manifest(bundle_root, repo_root_abs, platform_tag, component_plan)
     install_payload = dict(install_row.get("install_manifest") or {})
@@ -1132,6 +1218,7 @@ def build_dist_tree(
     verify_row = verify_release_manifest(bundle_root, release_manifest_path, repo_root=repo_root_abs)
     if _token(verify_row.get("result")) != "complete":
         raise RuntimeError("release manifest verification failed")
+    portable_contract_row = _write_portable_contract_surface(bundle_root)
     filelist_row = _write_filelist(
         bundle_root,
         exclude_paths=(DEFAULT_FILELIST_REL,),
@@ -1152,6 +1239,8 @@ def build_dist_tree(
         "runtime": runtime_row,
         "runtime_data": runtime_data_row,
         "wrappers": wrapper_row,
+        "native_binaries": native_binary_row,
+        "portable_contract_surface": portable_contract_row,
         "store": {
             "pack_paths": list(store_row.get("pack_paths") or []),
             "profile_bundle_path": _token(store_row.get("profile_bundle_path")),

@@ -127,3 +127,7 @@ Commands run:
 | tools | `--help`, `--version`, `--status`, `--smoke` | pass |
 
 This is command-surface boot smoke only. It does not create a package, release, installer, portable projection, or gameplay proof.
+
+## Portable Projection Input Update
+
+The command-surface proof above was used as input for a local portable projection proof. The generated ignored projection root includes the five native product binaries and validates with `proof_status: proven`.

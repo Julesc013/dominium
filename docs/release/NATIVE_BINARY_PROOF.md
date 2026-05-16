@@ -157,3 +157,4 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - `cmake --preset verify` passes.
 - A full `cmake --build --preset verify` run was not completed because it timed out during verification after producing the binaries; this remains a TEST-PERF/partitioning follow-up rather than a product command-surface failure.
 - No binaries, build outputs, package outputs, release outputs, or projection outputs were committed.
+- The local portable projection proof copies these five native binaries into `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium/bin/`.

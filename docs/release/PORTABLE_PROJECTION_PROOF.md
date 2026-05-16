@@ -63,4 +63,12 @@ The prerequisite RepoX and native command-surface blockers have improved:
 - Focused RepoX now passes with zero recorded warnings and failures.
 - Native product command smoke passes for the five product binaries under `out/build/vs2026/verify/bin/`.
 
-Portable projection proof is still not complete. No projection root was generated during closeout remediation, and RELEASE-00 remains blocked until a local ignored projection root is assembled or the exact projection tooling blocker is classified.
+Portable projection proof is now locally proven:
+
+- Projection root: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Assembler: `tools/dist/tool_assemble_dist_tree.py`.
+- Validator: `tools/validators/check_portable_projection.py`.
+- Validator status: `proof_status: proven`, blockers: none.
+- Native binaries included in projection `bin/`: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, `tools.exe`.
+
+The generated projection root is ignored/local and was not committed. This is not a public package, installer, tag, GitHub release, or release artifact publication.
