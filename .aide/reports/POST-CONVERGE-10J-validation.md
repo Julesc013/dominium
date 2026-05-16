@@ -23,6 +23,7 @@
 | `py -3 .aide/scripts/aide_lite.py repo validate` | PASS | Passed. |
 | `py -3 .aide/scripts/aide_lite.py commit check --latest` | PASS | Latest committed message passed; final post-commit check still required after this task commit. |
 | `py -3 .aide/scripts/aide_lite.py commit check --latest` after first task commit | FAIL_CLASSIFIED | The first task commit message file contained a UTF-8 BOM in the subject. The commit was not amended because this task forbids amend/squash; this follow-up evidence commit records the issue and restores latest-commit policy compliance. |
+| `py -3 .aide/scripts/aide_lite.py commit check --latest` after second evidence commit | FAIL_CLASSIFIED | The second evidence commit used repeated `git commit -m` arguments, which inserted blank lines between trailers. It was not amended because this task forbids amend/squash; the final evidence commit uses a no-BOM message file with contiguous trailers. |
 
 ## Strict Validators
 
