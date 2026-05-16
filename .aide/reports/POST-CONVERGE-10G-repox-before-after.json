@@ -1,0 +1,29 @@
+{
+  "after": {
+    "failures": 1769,
+    "warnings": 5
+  },
+  "before": {
+    "failures": 1844,
+    "warnings": 5
+  },
+  "fixed_families": [
+    "safe_stale_root_and_appshell_paths",
+    "repox_rule_cache_dependency"
+  ],
+  "head": "ae0ded5997b8c496ea992166913e8857ca9a8372",
+  "origin_main": "ae0ded5997b8c496ea992166913e8857ca9a8372",
+  "ready_for_post_converge_11": false,
+  "remaining_families": [
+    "doc_status_header_backlog",
+    "canon_index_backlog",
+    "historical_reference_backlog",
+    "contract_registry_acceptance_backlog",
+    "distribution_descriptor_backlog",
+    "retired_domain_path_backlog",
+    "tool_hash_and_audit_staleness",
+    "other_policy_backlog"
+  ],
+  "schema_version": "dominium.post_converge_10g.before_after.v1",
+  "task_id": "POST-CONVERGE-10G"
+}

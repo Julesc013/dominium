@@ -182,3 +182,9 @@ Future domain work must use the split model:
 Future platform/render/native/toolchain/package work must update `contracts/release/component_matrix.contract.toml` and relevant `docs/release/*_MATRIX.md` docs when status changes.
 
 Planned, stub, and research rows are not supported implementations.
+
+## POST-CONVERGE-10G Update
+
+POST-CONVERGE-10G reduced focused tuple `inv_repox_rules` from 1844 failures and 5 warnings to 1769 failures and 5 warnings. Safe stale path/root assumptions were fixed for the RepoX top-level root check and retired AppShell root checks. RepoX cache keys now include the rule implementation file, so rule edits invalidate stale group output.
+
+POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation`, focused on the `INV-DOC-STATUS-HEADER`, `INV-CANON-INDEX`, and `INV-CANON-NO-HIST-REF` families. Product boot, package proof, portable projection proof, and additional moves remain unauthorized.

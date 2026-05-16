@@ -2,133 +2,103 @@
 
 ## PHASE
 
-UNSPECIFIED - POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation
+POST-CONVERGE-10G - RepoX Rule and Canonical Evidence Drift Remediation
 
 ## GOAL
 
-POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation
+Reduce or classify the remaining focused `inv_repox_rules` blocker without weakening RepoX or starting product proof.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+POST-CONVERGE-10F fixed `invariant_units_present` but left RepoX as the focused semantic blocker. POST-CONVERGE-10G reduces safe stale-path and cache-dependency drift, then records the remaining RepoX families honestly.
+
+## CURRENT RESULT
+
+PARTIAL. RepoX was reduced from 1844 failures and 5 warnings to 1769 failures and 5 warnings. POST-CONVERGE-11 remains blocked.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `.aide/context/latest-context-packet.md`
+- `.aide/context/repo-map.json`
+- `.aide/context/test-map.json`
+- `.aide/context/context-index.json`
+- `.aide/reports/POST-CONVERGE-10F-repox-findings.json`
+- `.aide/reports/POST-CONVERGE-10G-repox-failure-families.json`
+- `docs/repo/audits/POST_CONVERGE_10G_REPOX_DRIFT_REMEDIATION.md`
 
 ## ALLOWED_PATHS
 
-- `data/registries/unit_registry.json`
-- `tests/contract/unit_annotation_validation.py`
-- `tests/invariant/repox_rules_tests.py`
+- `scripts/ci/check_repox_rules.py`
 - `.aide/reports/**`
-- `.aide/context/**`
-- `.aide/ledgers/**`
+- `.aide/context/latest-task-packet.md`
+- `.aide/context/latest-review-packet.md`
+- `.aide/ledgers/migration_ledger.jsonl`
 - `docs/repo/audits/**`
 - `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
-- `docs/repo/BUILD_VERIFICATION_PATHS.md`
 - `docs/repo/FAST_GATE_REMEDIATION.md`
+- `docs/repo/BUILD_VERIFICATION_PATHS.md`
 - `docs/release/NATIVE_BINARY_PROOF.md`
-- `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
-- `.git/**`
-- `.env`
-- `secrets/**`
-- `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- product/runtime/engine/game/source behavior changes beyond the scoped RepoX rule implementation
+- root moves, deletes, renames, active aliases, move maps, salvage maps, or exception retirement
+- product boot proof, package proof, release proof, portable projection proof, full eval, or full CTest
+- generated local/cache/build outputs
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
-- Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Preserve POST-CONVERGE-10F and AIDE root/move evidence.
+- Fix only safe RepoX stale path/root assumptions and stale rule-cache dependency behavior.
+- Keep real RepoX failures blocking.
+- Record before/after counts and remaining families.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
-- `git diff --check`
-
-## COMMITS
-
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
+- `ctest --preset verify -N`
+- `ctest --preset verify -R inv_repox_rules --output-on-failure`
+- `python scripts/ci/check_repox_rules.py --repo-root . --proof-manifest-out .dominium.local/ctest/repox/proof_manifest.json --profile-out .dominium.local/ctest/repox/REPOX_PROFILE.json`
+- `ctest --test-dir .dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug -C Debug -R inv_repox_rules --output-on-failure`
+- AIDE doctor/validate/test/selftest/tools/roots/repo/commit checks
+- strict repo/root/distribution/component validators
+- docs/build/UI/ABI validators
+- JSON parsing and git diff checks
 
 ## EVIDENCE
 
-- changed files
-- validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
+- `.aide/reports/POST-CONVERGE-10G-status.md`
+- `.aide/reports/POST-CONVERGE-10G-validation.md`
+- `.aide/reports/POST-CONVERGE-10G-blockers.md`
+- `.aide/reports/POST-CONVERGE-10G-repox-failure-families.md`
+- `.aide/reports/POST-CONVERGE-10G-repox-failure-families.json`
+- `.aide/reports/POST-CONVERGE-10G-repox-before-after.json`
+- `.aide/reports/POST-CONVERGE-10G-product-boot-readiness.md`
+- `docs/repo/audits/POST_CONVERGE_10G_REPOX_DRIFT_REMEDIATION.md`
 
 ## NON_GOALS
 
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+No root moves, deletes, renames, move maps, salvage maps, path aliases, product boot proof, package proof, release proof, full CTest, or feature work.
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
-- `invariant_units_present` is fixed or classified.
-- `inv_repox_rules` is fixed or precisely classified.
-- Product boot proof readiness is recorded.
+- Safe RepoX drift is fixed without weakening rules.
+- Remaining RepoX failures are grouped and left blocking.
+- POST-CONVERGE-11 readiness is explicitly decided.
+- Validation commands and known warnings are recorded.
+- No generated local/cache/build files are committed.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+Return branch, HEAD before/after, origin/main, focused RepoX before/after, fixed and remaining families, files changed, validation results, readiness for POST-CONVERGE-11, known warnings, commit status, worktree status, and next task.
 
 ## TOKEN_ESTIMATE
 
-- method: chars / 4, rounded up
-- chars: 4186
-- approx_tokens: 1047
+- method: concise packet by evidence refs
+- approx_tokens: 950
 - budget_status: PASS
 - warnings:
-  - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`
+  - focused RepoX remains blocking
+
+## NEXT
+
+Recommended next task: `POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation`.

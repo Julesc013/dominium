@@ -1,0 +1,139 @@
+{
+  "after": {
+    "failures": 1769,
+    "warnings": 5
+  },
+  "before": {
+    "failures": 1844,
+    "warnings": 5
+  },
+  "families": [
+    {
+      "action_taken": "RepoX now uses runtime/appshell for AppShell source checks and consumes the current root allowlist plus active layout exceptions for top-level structure checks.",
+      "after_count": 0,
+      "before_count": 75,
+      "classification": "stale_path",
+      "count": 75,
+      "example": "Legacy RepoX checks expected retired root paths such as appshell/... and a pre-contract top-level root list.",
+      "id": "safe_stale_root_and_appshell_paths",
+      "recommended_action": "fix_now",
+      "safe_to_fix_now": true,
+      "source": "scripts/ci/check_repox_rules.py, contracts/repo/root_allowlist.toml, contracts/repo/layout_exceptions.toml"
+    },
+    {
+      "action_taken": "The rule implementation path is now included in every group cache dependency hash.",
+      "after_count": 0,
+      "before_count": 0,
+      "classification": "stale_canonical_evidence",
+      "count": 0,
+      "example": "RepoX group cache reused old violation payloads after check_repox_rules.py changed because the rule implementation was not part of the dependency hash.",
+      "id": "repox_rule_cache_dependency",
+      "recommended_action": "fix_now",
+      "safe_to_fix_now": true,
+      "source": "scripts/ci/check_repox_rules.py"
+    },
+    {
+      "action_taken": "Classified as broad documentation status migration, not safe to mass-edit under 10G.",
+      "after_count": 1545,
+      "before_count": 1545,
+      "classification": "stale_canonical_evidence",
+      "count": 1545,
+      "example": "INV-DOC-STATUS-HEADER: invalid status 'PROVISIONAL' in docs/repo/audits/CONVERGE_00_BASELINE.md",
+      "id": "doc_status_header_backlog",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "source": "docs/** status headers and RepoX docs.canon group"
+    },
+    {
+      "action_taken": "Classified as canonical-index migration work requiring a source-of-truth review or generator path.",
+      "after_count": 84,
+      "before_count": 84,
+      "classification": "missing_canonical_acceptance",
+      "count": 84,
+      "example": "INV-CANON-INDEX: canonical doc not listed in CANON_INDEX: docs/agents/AGENT_MIRROR_POLICY.md",
+      "id": "canon_index_backlog",
+      "recommended_action": "needs_generator",
+      "safe_to_fix_now": false,
+      "source": "docs/architecture/CANON_INDEX.md and canonical documentation inventory"
+    },
+    {
+      "action_taken": "Preserved as historical/generated-reference debt pending a quarantine/archive policy task.",
+      "after_count": 81,
+      "before_count": 81,
+      "classification": "duplicate_cascade",
+      "count": 81,
+      "example": "INV-CANON-NO-HIST-REF: archived doc referenced by docs/refactor/QUARANTINE_duplicate.cluster.0a8e71d06f3c5f95.md",
+      "id": "historical_reference_backlog",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "source": "docs/refactor/QUARANTINE_duplicate* and historical audit references"
+    },
+    {
+      "action_taken": "Deferred because adding semantic contract entries is authority-sensitive.",
+      "after_count": 9,
+      "before_count": 9,
+      "classification": "missing_canonical_acceptance",
+      "count": 9,
+      "example": "INV-NEW-CONTRACT-REQUIRES-ENTRY: semantic contract token missing registry entry contract.arch.graph.v1 (data/architecture/architecture_graph.v1.json)",
+      "id": "contract_registry_acceptance_backlog",
+      "recommended_action": "document_blocker",
+      "safe_to_fix_now": false,
+      "source": "architecture contract tokens and semantic contract registry"
+    },
+    {
+      "action_taken": "Kept blocking; product/distribution proof is outside 10G.",
+      "after_count": 12,
+      "before_count": 12,
+      "classification": "real_policy_violation",
+      "count": 12,
+      "example": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR: missing dist/bin/client",
+      "id": "distribution_descriptor_backlog",
+      "recommended_action": "document_blocker",
+      "safe_to_fix_now": false,
+      "source": "dist/bin product descriptor expectations"
+    },
+    {
+      "action_taken": "Classified but not remapped broadly; requires domain-owner path review.",
+      "after_count": 23,
+      "before_count": null,
+      "classification": "stale_path",
+      "count": 23,
+      "example": "INV-BODY-MOTION-PROCESS-ONLY: missing embodiment/body/body_system.py",
+      "id": "retired_domain_path_backlog",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "source": "RepoX runtime policy checks for retired domain roots such as embodiment, geo, universe, worldgen, and diag"
+    },
+    {
+      "action_taken": "Deferred until a tool-version/audit-output refresh task can identify the canonical generator and acceptance rule.",
+      "after_count": 3,
+      "before_count": null,
+      "classification": "stale_canonical_evidence",
+      "count": 3,
+      "example": "INV-TOOL-VERSION-MISMATCH: hash mismatch for tools/compatx/compatx.py (expected 14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a, got 684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c)",
+      "id": "tool_hash_and_audit_staleness",
+      "recommended_action": "needs_generator",
+      "safe_to_fix_now": false,
+      "source": "tool version registry and docs/audit/auditx generated evidence"
+    },
+    {
+      "action_taken": "Kept blocking until a narrower owner-specific remediation task can prove each rule family.",
+      "after_count": 31,
+      "before_count": null,
+      "classification": "real_policy_violation",
+      "count": 31,
+      "example": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH: universe\\universe_contract_enforcer.py missing token Replay requires SessionSpec.semantic_contract_registry_hash",
+      "id": "other_policy_backlog",
+      "recommended_action": "document_blocker",
+      "safe_to_fix_now": false,
+      "source": "remaining RepoX policy checks"
+    }
+  ],
+  "generated_utc": "2026-05-16T08:35:29Z",
+  "head": "ae0ded5997b8c496ea992166913e8857ca9a8372",
+  "no_candidate_reason": "Remaining RepoX families are broad docs/canon status, contract acceptance, distribution descriptor, or domain-path policy work rather than a safe single 10G fix.",
+  "origin_main": "ae0ded5997b8c496ea992166913e8857ca9a8372",
+  "recommended_candidate": null,
+  "schema_version": "dominium.repox.failure_families.v1",
+  "task_id": "POST-CONVERGE-10G"
+}

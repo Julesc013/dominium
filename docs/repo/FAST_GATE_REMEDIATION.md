@@ -2,8 +2,8 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10F
-- Current status: partial
+- Phase: POST-CONVERGE-10G
+- Current status: partial, RepoX reduced but still blocking
 
 ## Command
 
@@ -62,3 +62,9 @@ Run a targeted RepoX drift remediation task after build toolchain status is reso
 - real invariant regressions that require product/runtime review
 - canonical `verify` CTest discovery currently reporting 0 tests while the tuple verify build reports 493 tests
 - full CTest wall-time after RepoX semantic failures are clear
+
+## POST-CONVERGE-10G Update
+
+POST-CONVERGE-10G reduced direct/focused RepoX from 1844 failures to 1769 failures while keeping the 5 known warnings. The safe fixes were limited to stale top-level root allowlist handling, stale root-level AppShell paths, and RepoX cache invalidation for rule implementation changes.
+
+FAST is still not green. The remaining blocker is broad canonical documentation/status/index and policy evidence drift rather than the retired AppShell or root-structure families fixed here.

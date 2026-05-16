@@ -264,6 +264,7 @@ RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
 PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
 REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
+REPOX_RULE_IMPL_REL = "scripts/ci/check_repox_rules.py"
 GATE_TOUCHED_MANIFEST_REL = os.path.join(".xstack_cache", "gate", "TOUCHED_FILES_MANIFEST.json")
 STRUCTURE_SCOPE_EXCLUDED_PREFIXES = (
     "docs/audit",
@@ -820,9 +821,76 @@ def repo_rel(repo_root, path):
     return os.path.relpath(path, repo_root).replace("\\", "/")
 
 
+APPSHELL_ROOT_REL = os.path.join("runtime", "appshell")
+
+
+def appshell_rel(*parts):
+    return os.path.join(APPSHELL_ROOT_REL, *parts)
+
+
+def _strip_toml_string(value):
+    return value.split("#", 1)[0].strip().strip('"').strip("'")
+
+
+def _load_active_layout_exception_roots(repo_root):
+    path = os.path.join(repo_root, "contracts", "repo", "layout_exceptions.toml")
+    if not os.path.isfile(path):
+        return set()
+    roots = set()
+    in_exception = False
+    record = {}
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if line.startswith("["):
+                if in_exception and record.get("active", "false").lower() == "true":
+                    exception_path = normalize_path(record.get("path", ""))
+                    if exception_path and "/" not in exception_path:
+                        roots.add(exception_path)
+                in_exception = line.startswith("[exceptions.")
+                record = {}
+                continue
+            if not in_exception or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            if key in ("path", "active"):
+                record[key] = _strip_toml_string(value)
+    if in_exception and record.get("active", "false").lower() == "true":
+        exception_path = normalize_path(record.get("path", ""))
+        if exception_path and "/" not in exception_path:
+            roots.add(exception_path)
+    return roots
+
+
+def _load_root_allowlist_roots(repo_root):
+    path = os.path.join(repo_root, "contracts", "repo", "root_allowlist.toml")
+    if not os.path.isfile(path):
+        return set()
+    roots = set()
+    current_section = None
+    accepted_sections = {"canonical_directories", "optional_directories", "metadata_directories"}
+    with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("[") and line.endswith("]"):
+                current_section = line.strip("[]")
+                continue
+            if current_section not in accepted_sections or "=" not in line:
+                continue
+            key = line.split("=", 1)[0].strip().strip('"').strip("'")
+            if key:
+                roots.add(normalize_path(key))
+    return roots
+
+
 def load_allowed_top_level(repo_root):
     path = os.path.join(repo_root, "docs", "architecture", "REPO_INTENT.md")
     allowed = set()
+    allowed.update(_load_root_allowlist_roots(repo_root))
+    allowed.update(_load_active_layout_exception_roots(repo_root))
     if not os.path.isfile(path):
         return allowed
     with open(path, "r", encoding="utf-8", errors="ignore") as handle:
@@ -839,7 +907,10 @@ def load_allowed_top_level(repo_root):
 
 def check_top_level(repo_root, allowed):
     violations = []
+    ignored_local_roots = set(DEFAULT_EXCLUDES) | {"__pycache__", ".dominium.local", ".aide.local", ".xstack_cache"}
     for entry in os.listdir(repo_root):
+        if entry in ignored_local_roots:
+            continue
         if entry.startswith(".") and entry not in allowed:
             if entry in (".git",):
                 continue
@@ -5252,7 +5323,7 @@ def check_products_must_use_appshell(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "APPSHELL_CONSTITUTION.md")
-    bootstrap_rel = os.path.join("appshell", "bootstrap.py")
+    bootstrap_rel = appshell_rel("bootstrap.py")
     wrapper_stub_rel = os.path.join("tools", "appshell", "product_stub_cli.py")
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
     server_main_rel = os.path.join("apps", "server", "server_main.py")
@@ -5390,29 +5461,29 @@ def check_offline_boot_ok(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "APPSHELL_CONSTITUTION.md")
-    bootstrap_rel = os.path.join("appshell", "bootstrap.py")
-    command_engine_rel = os.path.join("appshell", "commands", "command_engine.py")
+    bootstrap_rel = appshell_rel("bootstrap.py")
+    command_engine_rel = appshell_rel("commands", "command_engine.py")
     offline_rels = (
-        os.path.join("appshell", "__init__.py"),
-        os.path.join("appshell", "args_parser.py"),
-        os.path.join("appshell", "bootstrap.py"),
-        os.path.join("appshell", "command_registry.py"),
-        os.path.join("appshell", "commands", "__init__.py"),
-        os.path.join("appshell", "commands", "command_engine.py"),
-        os.path.join("appshell", "compat_adapter.py"),
-        os.path.join("appshell", "config_loader.py"),
-        os.path.join("appshell", "console_repl.py"),
-        os.path.join("appshell", "diag", "__init__.py"),
-        os.path.join("appshell", "diag", "diag_snapshot.py"),
-        os.path.join("appshell", "logging", "__init__.py"),
-        os.path.join("appshell", "logging", "log_engine.py"),
-        os.path.join("appshell", "logging_sink.py"),
-        os.path.join("appshell", "mode_dispatcher.py"),
-        os.path.join("appshell", "pack_verifier_adapter.py"),
-        os.path.join("appshell", "rendered_stub.py"),
-        os.path.join("appshell", "tui", "__init__.py"),
-        os.path.join("appshell", "tui", "tui_engine.py"),
-        os.path.join("appshell", "tui_stub.py"),
+        appshell_rel("__init__.py"),
+        appshell_rel("args_parser.py"),
+        appshell_rel("bootstrap.py"),
+        appshell_rel("command_registry.py"),
+        appshell_rel("commands", "__init__.py"),
+        appshell_rel("commands", "command_engine.py"),
+        appshell_rel("compat_adapter.py"),
+        appshell_rel("config_loader.py"),
+        appshell_rel("console_repl.py"),
+        appshell_rel("diag", "__init__.py"),
+        appshell_rel("diag", "diag_snapshot.py"),
+        appshell_rel("logging", "__init__.py"),
+        appshell_rel("logging", "log_engine.py"),
+        appshell_rel("logging_sink.py"),
+        appshell_rel("mode_dispatcher.py"),
+        appshell_rel("pack_verifier_adapter.py"),
+        appshell_rel("rendered_stub.py"),
+        appshell_rel("tui", "__init__.py"),
+        appshell_rel("tui", "tui_engine.py"),
+        appshell_rel("tui_stub.py"),
         os.path.join("tools", "appshell", "product_stub_cli.py"),
     )
 
@@ -5469,8 +5540,8 @@ def check_commands_registered(repo_root):
 
     doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
     registry_rel = os.path.join("data", "registries", "command_registry.json")
-    engine_rel = os.path.join("appshell", "commands", "command_engine.py")
-    registry_loader_rel = os.path.join("appshell", "command_registry.py")
+    engine_rel = appshell_rel("commands", "command_engine.py")
+    registry_loader_rel = appshell_rel("command_registry.py")
     docs_tool_rel = os.path.join("tools", "appshell", "tool_generate_command_docs.py")
 
     violations = []
@@ -5606,9 +5677,9 @@ def check_no_adhoc_arg_parsing(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    bootstrap_rel = os.path.join("appshell", "bootstrap.py")
-    parser_rel = os.path.join("appshell", "args_parser.py")
-    engine_rel = os.path.join("appshell", "commands", "command_engine.py")
+    bootstrap_rel = appshell_rel("bootstrap.py")
+    parser_rel = appshell_rel("args_parser.py")
+    engine_rel = appshell_rel("commands", "command_engine.py")
     command_doc_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
 
     violations = []
@@ -5674,7 +5745,7 @@ def check_refusal_codes_stable(repo_root):
     doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
     registry_rel = os.path.join("data", "registries", "refusal_to_exit_registry.json")
     refusal_registry_rel = os.path.join("data", "registries", "refusal_code_registry.json")
-    engine_rel = os.path.join("appshell", "commands", "command_engine.py")
+    engine_rel = appshell_rel("commands", "command_engine.py")
 
     violations = []
     doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
@@ -5776,12 +5847,12 @@ def check_no_printf_logging(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "LOGGING_AND_TRACING.md")
-    log_engine_rel = os.path.join("appshell", "logging", "log_engine.py")
-    sink_rel = os.path.join("appshell", "logging_sink.py")
+    log_engine_rel = appshell_rel("logging", "log_engine.py")
+    sink_rel = appshell_rel("logging_sink.py")
     guarded_rels = (
         os.path.join("apps", "server", "net", "loopback_transport.py"),
         os.path.join("apps", "server", "runtime", "tick_loop.py"),
-        os.path.join("appshell", "diag", "diag_snapshot.py"),
+        appshell_rel("diag", "diag_snapshot.py"),
     )
     violations = []
     doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
@@ -5808,12 +5879,12 @@ def check_log_engine_only(repo_root):
         return []
 
     required_tokens = {
-        os.path.join("appshell", "bootstrap.py"): (
+        appshell_rel("bootstrap.py"): (
             "create_log_engine(",
             "set_current_log_engine(",
             "log_emit(",
         ),
-        os.path.join("appshell", "commands", "command_engine.py"): (
+        appshell_rel("commands", "command_engine.py"): (
             "from runtime.appshell.logging import get_current_log_engine, log_emit",
             "message_key",
             "diag snapshot",
@@ -5853,8 +5924,8 @@ def check_no_wallclock_in_sim(repo_root):
     rel_paths = (
         os.path.join("apps", "server", "net", "loopback_transport.py"),
         os.path.join("apps", "server", "runtime", "tick_loop.py"),
-        os.path.join("appshell", "logging", "log_engine.py"),
-        os.path.join("appshell", "diag", "diag_snapshot.py"),
+        appshell_rel("logging", "log_engine.py"),
+        appshell_rel("diag", "diag_snapshot.py"),
     )
     forbidden_tokens = (
         "datetime.utcnow(",
@@ -5883,7 +5954,7 @@ def check_tui_no_truth_read(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
-    engine_rel = os.path.join("appshell", "tui", "tui_engine.py")
+    engine_rel = appshell_rel("tui", "tui_engine.py")
     violations = []
 
     doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
@@ -5937,7 +6008,7 @@ def check_tui_deterministic_order(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
-    engine_rel = os.path.join("appshell", "tui", "tui_engine.py")
+    engine_rel = appshell_rel("tui", "tui_engine.py")
     violations = []
 
     doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
@@ -5987,7 +6058,7 @@ def check_tui_fallback_declared(repo_root):
 
     doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
     fallback_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
-    engine_rel = os.path.join("appshell", "tui", "tui_engine.py")
+    engine_rel = appshell_rel("tui", "tui_engine.py")
     violations = []
 
     doctrine_text = read_text(os.path.join(repo_root, doctrine_rel.replace("/", os.sep))) or ""
@@ -10130,9 +10201,9 @@ def check_ipc_attach_negotiated(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "IPC_ATTACH_CONSOLES.md")
-    endpoint_server_rel = os.path.join("appshell", "ipc", "ipc_endpoint_server.py")
-    ipc_client_rel = os.path.join("appshell", "ipc", "ipc_client.py")
-    command_engine_rel = os.path.join("appshell", "commands", "command_engine.py")
+    endpoint_server_rel = appshell_rel("ipc", "ipc_endpoint_server.py")
+    ipc_client_rel = appshell_rel("ipc", "ipc_client.py")
+    command_engine_rel = appshell_rel("commands", "command_engine.py")
 
     violations = []
     required_tokens = {
@@ -10183,8 +10254,8 @@ def check_ipc_seq_no_monotonic(repo_root):
         return []
 
     schema_rel = os.path.join("contracts", "schemas", "ipc", "ipc_frame.schema")
-    transport_rel = os.path.join("appshell", "ipc", "ipc_transport.py")
-    endpoint_server_rel = os.path.join("appshell", "ipc", "ipc_endpoint_server.py")
+    transport_rel = appshell_rel("ipc", "ipc_transport.py")
+    endpoint_server_rel = appshell_rel("ipc", "ipc_endpoint_server.py")
     replay_tool_rel = os.path.join("tools", "appshell", "tool_replay_ipc_attach.py")
 
     violations = []
@@ -10233,8 +10304,8 @@ def check_no_privilege_escalation(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "IPC_ATTACH_CONSOLES.md")
-    endpoint_server_rel = os.path.join("appshell", "ipc", "ipc_endpoint_server.py")
-    ipc_client_rel = os.path.join("appshell", "ipc", "ipc_client.py")
+    endpoint_server_rel = appshell_rel("ipc", "ipc_endpoint_server.py")
+    ipc_client_rel = appshell_rel("ipc", "ipc_client.py")
 
     violations = []
     doctrine_path = os.path.join(repo_root, doctrine_rel.replace("/", os.sep))
@@ -10387,7 +10458,7 @@ def check_supervisor_deterministic(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
-    engine_rel = os.path.join("appshell", "supervisor", "supervisor_engine.py")
+    engine_rel = appshell_rel("supervisor", "supervisor_engine.py")
     service_rel = os.path.join("tools", "appshell", "supervisor_service.py")
     replay_rel = os.path.join("tools", "appshell", "tool_replay_supervisor.py")
     probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
@@ -10460,7 +10531,7 @@ def check_no_wallclock_polling(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
-    engine_rel = os.path.join("appshell", "supervisor", "supervisor_engine.py")
+    engine_rel = appshell_rel("supervisor", "supervisor_engine.py")
     probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
 
     violations = []
@@ -10518,7 +10589,7 @@ def check_log_merge_stable(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "SUPERVISOR_MODEL.md")
-    engine_rel = os.path.join("appshell", "supervisor", "supervisor_engine.py")
+    engine_rel = appshell_rel("supervisor", "supervisor_engine.py")
     probe_rel = os.path.join("tools", "appshell", "appshell6_probe.py")
     test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_log_merge_stable.py")
 
@@ -13783,7 +13854,8 @@ def _run_check_group(
     roots,
     checks,
 ):
-    input_hash = _group_dep_hash(roots, scope_subtrees)
+    dep_subtrees = tuple(scope_subtrees) + (REPOX_RULE_IMPL_REL,)
+    input_hash = _group_dep_hash(roots, dep_subtrees)
     cache_key = _sha256_text(json.dumps({"group_id": group_id, "input_hash": input_hash}, sort_keys=True))
 
     should_execute = True

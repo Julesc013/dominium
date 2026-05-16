@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10F and confirm that the unit invariant fix is narrow and that the remaining RepoX blocker is correctly classified rather than hidden.
+Review POST-CONVERGE-10G and confirm that RepoX was reduced without weakening rules or hiding semantic failures.
 
 ## Decision Requested
 
@@ -26,38 +26,38 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10F-status.md`
-- `.aide/reports/POST-CONVERGE-10F-validation.md`
-- `.aide/reports/POST-CONVERGE-10F-blockers.md`
-- `.aide/reports/POST-CONVERGE-10F-ctest-classification.json`
-- `.aide/reports/POST-CONVERGE-10F-unit-invariant-findings.json`
-- `.aide/reports/POST-CONVERGE-10F-repox-findings.json`
-- `docs/repo/audits/POST_CONVERGE_10F_UNIT_REPOX_REMEDIATION.md`
+- `.aide/reports/POST-CONVERGE-10G-status.md`
+- `.aide/reports/POST-CONVERGE-10G-validation.md`
+- `.aide/reports/POST-CONVERGE-10G-blockers.md`
+- `.aide/reports/POST-CONVERGE-10G-repox-failure-families.md`
+- `.aide/reports/POST-CONVERGE-10G-repox-failure-families.json`
+- `.aide/reports/POST-CONVERGE-10G-repox-before-after.json`
+- `.aide/reports/POST-CONVERGE-10G-product-boot-readiness.md`
+- `docs/repo/audits/POST_CONVERGE_10G_REPOX_DRIFT_REMEDIATION.md`
 
 ## Changed Files Summary
 
-- Added the missing `unit.mass_energy.stub` registry entry.
-- Updated unit annotation validation to read `data/registries/unit_registry.json` and ignore path-fragment false positives.
-- Updated RepoX CTest wrapper output paths to ignored local state.
-- Added POST-CONVERGE-10F evidence and status docs.
+- Updated RepoX root/AppShell path assumptions and cache-key dependency behavior in `scripts/ci/check_repox_rules.py`.
+- Added POST-CONVERGE-10G evidence and status docs.
+- Updated post-converge next-step and warning/status surfaces.
 - No roots were moved, deleted, renamed, mapped, aliased, or exception-retired.
 
 ## Validation Summary
 
-Validation passes or is explicitly classified: AIDE and strict validators pass, focused tuple `invariant_units_present` passes, and focused tuple `inv_repox_rules` remains failing with broad RepoX drift.
+Direct RepoX reduced from 1844 failures to 1769 failures. Focused tuple `inv_repox_rules` still fails and remains a product-boot blocker. Final AIDE, strict validator, supplemental validator, JSON parse, and git diff checks are recorded in the validation report.
 
 ## Token Summary
 
-This packet is compact and references evidence by path rather than inlining raw source or generated reports.
+This packet is compact and references evidence by path rather than inlining raw RepoX logs.
 
 ## Risk Summary
 
-RepoX remains a product-boot blocker. Canonical CTest discovery currently reports zero tests, while tuple CTest discovery reports 493 tests.
+POST-CONVERGE-11 remains blocked until the remaining RepoX semantic families are remediated or formally dispositioned.
 
 ## Non-Goals / Scope Guard
 
-Do not start product boot proof, broad RepoX remediation, move application, package proof, release proof, or feature work from this packet.
+Do not start product boot proof, full CTest, package proof, portable projection proof, move planning, move application, broad root cleanup, or feature work from this packet.
 
 ## Reviewer Instructions
 
-Confirm that `POST-CONVERGE-10G - RepoX Rule and Canonical Evidence Drift Remediation` is the correct next task before product boot proof.
+Confirm whether `POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation` is the correct next task before product boot proof.

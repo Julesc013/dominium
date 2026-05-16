@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10F
+- Phase: POST-CONVERGE-10G
 - Status: partial
 
 ## Build Tuple
@@ -54,3 +54,7 @@ CTest remains blocked after build proof:
 - canonical `ctest --preset verify -N` currently discovers 0 tests, while the tuple verify build discovers 493 tests
 - canonical `ctest --preset verify --output-on-failure` previously exceeded a 40-minute shell timeout; full CTest was not rerun in POST-CONVERGE-10F because focused RepoX still fails
 - no generated binaries were committed
+
+## POST-CONVERGE-10G Update
+
+POST-CONVERGE-10G does not add product boot proof. It reduces focused RepoX from 1844 failures to 1769 failures, but focused tuple `inv_repox_rules` remains a semantic blocker. Native product boot proof remains deferred until RepoX is green or a reviewed gate explicitly accepts the remaining semantic failures.

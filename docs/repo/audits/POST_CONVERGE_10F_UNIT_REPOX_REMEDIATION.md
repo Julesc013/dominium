@@ -99,3 +99,7 @@ The focused unit invariant now passes. The focused RepoX invariant remains red b
 - reason: product boot proof should not proceed while `inv_repox_rules` remains a real semantic governance failure and the canonical CTest preset discovery is not coherent.
 
 Recommended next task: `POST-CONVERGE-10G - RepoX Rule and Canonical Evidence Drift Remediation`.
+
+## POST-CONVERGE-10G Follow-Up
+
+POST-CONVERGE-10G reduced the RepoX blocker from 1844 failures and 5 warnings to 1769 failures and 5 warnings. Safe remediation covered stale top-level root handling, retired root-level AppShell path assumptions, and RepoX group-cache invalidation. The remaining blockers are broad canonical documentation/status/index and policy evidence drift, so POST-CONVERGE-11 remains blocked.

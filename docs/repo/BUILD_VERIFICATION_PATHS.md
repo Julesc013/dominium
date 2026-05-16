@@ -2,8 +2,8 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10F
-- Current status: build proven, targeted AuditX fixed, unit invariant fixed, CTest blocked by RepoX and discovery/wall-time gates
+- Phase: POST-CONVERGE-10G
+- Current status: build proven, targeted AuditX fixed, unit invariant fixed, RepoX reduced but CTest still blocked by RepoX and discovery/wall-time gates
 
 POST-CONVERGE-06 confirmed that repository layout and supplemental validators can run locally, while the canonical CMake verify lane was blocked by this machine's missing Visual Studio toolchain at that time. POST-CONVERGE-07 confirmed that no local product runtime proof could proceed without build output or an accepted equivalent CI proof.
 
@@ -132,3 +132,7 @@ ctest --preset verify
 - POST-CONVERGE-07 could not run product binaries or prove local playtest/session/status/save/load/resume.
 - POST-CONVERGE-08 could not run native product binaries; only partial script/wrapper help surfaces were proven.
 - The Python server AppShell script can be invoked, but direct script execution currently ignores CLI args, so it is not a canonical product command proof.
+
+## POST-CONVERGE-10G RepoX Update
+
+Focused tuple `inv_repox_rules` still fails after safe 10G remediation, but the failure count dropped from 1844 to 1769. Canonical `ctest --preset verify -N` still discovers 0 tests, so tuple CTest remains the effective focused lane for this blocker. No configure/build rerun was required because only RepoX governance code and evidence docs changed.
