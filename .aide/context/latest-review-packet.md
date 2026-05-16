@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review TEST-PERF-00 and confirm that tiered validation, impacted test selection, CTest discovery repair evidence, and timing-sample tooling were added without deleting tests, skipping tests to force green, changing product behavior, or weakening RepoX/AuditX/TestX.
+Review POST-CONVERGE-10L and confirm that distribution/product proof failures were classified without fabricating proof, generating artifacts, changing product identities, or weakening RepoX.
 
 ## Decision Requested
 
@@ -23,30 +23,28 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/TEST-PERF-00-status.md`
-- `.aide/reports/TEST-PERF-00-validation.md`
-- `.aide/reports/TEST-PERF-00-blockers.md`
-- `.aide/reports/TEST-PERF-00-ctest-discovery.json`
-- `.aide/reports/TEST-PERF-00-before-after.json`
-- `.aide/reports/TEST-PERF-00-ctest-tiers.md`
-- `docs/repo/audits/TEST_PERF_00_CTEST_PARTITION_POLICY.md`
-- `docs/repo/TEST_VALIDATION_STRATEGY.md`
+- `.aide/reports/POST-CONVERGE-10L-status.md`
+- `.aide/reports/POST-CONVERGE-10L-validation.md`
+- `.aide/reports/POST-CONVERGE-10L-blockers.md`
+- `.aide/reports/POST-CONVERGE-10L-distribution-product-findings.json`
+- `.aide/reports/POST-CONVERGE-10L-repox-before-after.json`
+- `.aide/reports/POST-CONVERGE-10L-post-converge-11-readiness.md`
+- `docs/repo/audits/POST_CONVERGE_10L_DISTRIBUTION_PRODUCT_PROOF.md`
 
 ## Changed Files Summary
 
-- Added `tests/validation_tiers.json`.
-- Added `scripts/test_tier.py`, `scripts/test_impacted.py`, and `scripts/test_timing_report.py`.
-- Repaired CTest label attachment in `cmake/DomIntegration.cmake`.
-- Repaired AIDE Lite text writing compatibility for the fast tier.
-- Added TEST-PERF-00 reports and status updates.
+- Added POST-CONVERGE-10L reports and audit evidence.
+- Added DERIVED status metadata to the POST-CONVERGE-10K audit report.
+- Updated post-converge and release status docs.
+- Updated AIDE latest packets, latest status, warning disposition, and migration ledger.
 
 ## Validation Summary
 
-Canonical `ctest --preset verify -N` moved from 0 tests before configure refresh to 493 tests after `cmake --preset verify`. `ctest --preset verify -N -L smoke` reports 57 tests after label repair and reconfigure. Manifest JSON parsing, script compilation, tier listing, impacted dry-run selection, timing sample, and T0 passed.
+Focused `ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 51 failures / 5 warnings after the safe header fix. The target distribution/product family is classified, not passed.
 
 ## Risk Summary
 
-Focused RepoX remains failing from POST-CONVERGE-10K. Full CTest and product proof were not run. Timing evidence is bounded and should be expanded in TEST-PERF-01 if wall-time reduction is prioritized.
+Missing distribution projection wrapper surfaces remain real blockers. Non-proof RepoX governance failures still block POST-CONVERGE-11. No product boot proof, portable projection proof, package proof, release proof, or full CTest was run.
 
 ## Token Summary
 
@@ -54,12 +52,13 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-- no product behavior changes
-- no test deletion
-- no skipped tests to force green
+- no product boot proof
+- no portable projection proof
+- no package or release generation
+- no dummy dist wrappers
+- no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
-- no full CTest, product boot proof, package proof, release proof, or portable projection proof
 
 ## Reviewer Instructions
 
-Check that tiered validation works, CTest labels are repaired, and full CTest remains a promotion gate rather than a skipped or weakened requirement.
+Check that the classification is evidence-backed, that missing proof remains blocking, and that POST-CONVERGE-11 readiness is not claimed while non-proof RepoX failures remain.

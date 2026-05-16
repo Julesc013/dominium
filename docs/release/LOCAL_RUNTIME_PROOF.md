@@ -56,3 +56,7 @@ No runtime log bundle, screenshot, save artifact, or proof bundle was produced b
 ## Readiness For Product Boot Matrix
 
 POST-CONVERGE-08 was attempted at the user's request and recorded partial script/wrapper help proof. It did not produce native product binary proof. POST-CONVERGE-09 should not proceed until the build lane and product boot blockers in `docs/release/PRODUCT_BOOT_PROOF.md` are resolved or explicitly accepted.
+
+## POST-CONVERGE-10L Update
+
+POST-CONVERGE-10L did not run product boot proof. It classified the focused RepoX distribution/product family as missing `dist/bin` wrapper/projection proof, including the absent `dist/bin/tool_attach_console_stub` target used by `dist/bin/dom`. Native product boot proof remains a separate POST-CONVERGE-11 task, and portable projection wrapper proof remains a POST-CONVERGE-12 or targeted dist wrapper task.

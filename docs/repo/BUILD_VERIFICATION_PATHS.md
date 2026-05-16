@@ -179,3 +179,11 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
   - `python scripts/test_impacted.py --from HEAD~1`
   - `python scripts/test_timing_report.py --preset verify --config Debug --regex invariant_units_present --limit 1 --out .dominium.local/test-perf-00/timing-sample.json`
 - Full CTest remains the promotion gate and was not run by TEST-PERF-00.
+
+## POST-CONVERGE-10L Update - Distribution/Product Proof Classification
+
+- `ctest --preset verify -N` reports 493 tests in the refreshed local verify build tree.
+- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing at 51 failures / 5 warnings after the safe audit status-header fix.
+- The 12 distribution/product target failures are missing `dist/bin` wrapper/projection surfaces, not build-output proof that can be faked in a governance classification task.
+- No configure/build rerun was required because POST-CONVERGE-10L changed evidence/status files only.
+- POST-CONVERGE-11 remains blocked by non-proof RepoX governance failures.

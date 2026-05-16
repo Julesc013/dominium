@@ -111,3 +111,11 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - Canonical CTest discovery is not inherently broken; it requires a configured verify build tree. `cmake --preset verify` restored `ctest --preset verify -N` to 493 tests locally.
 - CTest smoke labels now work after reconfigure; `ctest --preset verify -N -L smoke` reports 57 tests.
 - FAST remains blocked as a promotion signal because focused RepoX still fails, but normal task feedback no longer needs to default to full CTest.
+
+## POST-CONVERGE-10L Update - Distribution/Product Proof Classification
+
+- Result: PARTIAL.
+- Focused RepoX is 51 failures / 5 warnings after repairing a transient missing status header in the POST-CONVERGE-10K audit report.
+- The target distribution/product proof failures are classified, not fixed: missing `dist/bin` wrapper/projection surfaces remain for product descriptor emission and AppShell-owned delegation.
+- FAST remains blocked because non-proof RepoX failures still exist, including retired-domain path policy checks, tool hash/audit staleness, and ruleset mapping gaps.
+- Next recommended semantic task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.

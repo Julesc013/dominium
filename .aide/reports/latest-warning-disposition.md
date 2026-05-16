@@ -14,3 +14,11 @@ Superseded By: none
 - Full CTest, product boot proof, package proof, and portable projection proof remain not run by scope.
 - Full CTest remains a promotion gate rather than the normal post-change feedback path.
 - The first TEST-PERF-00 commit has a classified AIDE commit-message policy issue in its changelog category prefixes; amend is avoided and the issue is recorded by a follow-up evidence commit.
+
+## POST-CONVERGE-10L
+
+- Focused RepoX remains 51 failures / 5 warnings.
+- The 12 distribution/product target failures are classified as missing portable projection wrapper/proof surfaces under `dist/bin`.
+- Missing product/projection proof remains blocking and was not converted into a warning.
+- POST-CONVERGE-11 remains blocked because non-proof RepoX failures remain.
+- Full CTest, product boot proof, package proof, release proof, and portable projection proof were not run by scope.

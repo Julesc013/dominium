@@ -235,3 +235,13 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Full CTest remains the promotion gate, not the default post-change gate.
 - Focused RepoX semantic failures remain from POST-CONVERGE-10K, so POST-CONVERGE-11 remains blocked until those failures are resolved or explicitly accepted by a later gate.
 - Next recommended semantic task remains `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`; next test-performance task is `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.
+
+## POST-CONVERGE-10L Update - Distribution/Product Proof Classification
+
+- Result: PARTIAL.
+- Focused RepoX baseline from POST-CONVERGE-10K remains 51 failures / 5 warnings after a transient 10K audit status-header failure was repaired.
+- `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` remains 7 failures and `INV-NO-ADHOC-MAIN` remains 5 failures.
+- All 12 target distribution/product failures were classified as missing portable projection wrapper/proof surfaces under `dist/bin/`.
+- No product boot proof, portable projection proof, package proof, release proof, dummy wrapper, or generated artifact was created.
+- POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance failures outside the product/projection family.
+- Next recommended task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.

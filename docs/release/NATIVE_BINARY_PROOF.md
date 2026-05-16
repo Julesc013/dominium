@@ -101,3 +101,11 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - CTest smoke label discovery now reports 57 tests after label metadata repair and reconfigure.
 - Tiered and impacted validation tooling was added so product proof tasks can select focused tests before promotion gates.
 - Full CTest, product boot proof, portable projection proof, package proof, and release proof remain not run by TEST-PERF-00.
+
+## POST-CONVERGE-10L Update - Distribution/Product Proof Classification
+
+- POST-CONVERGE-10L does not add product boot proof.
+- Focused RepoX remains at 51 failures / 5 warnings after repairing a transient audit status-header issue.
+- The remaining distribution/product target failures are missing `dist/bin` wrapper/projection surfaces for descriptor emission and AppShell-owned delegation.
+- Native product binaries previously proven by build remain local build outputs and were not committed.
+- POST-CONVERGE-11 remains blocked until non-proof RepoX failures are remediated or explicitly accepted by a reviewed gate.

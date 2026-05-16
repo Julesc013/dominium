@@ -1,0 +1,70 @@
+{
+  "schema_version": "dominium.post_converge_10l.before_after.v1",
+  "task_id": "POST-CONVERGE-10L",
+  "before": {
+    "failures": 51,
+    "warnings": 5,
+    "note": "POST-CONVERGE-10K after-state. The first 10L reproduction saw 52 failures because the 10K audit report itself was missing a status header."
+  },
+  "after": {
+    "failures": 51,
+    "warnings": 5
+  },
+  "fixed_families": [
+    {
+      "id": "INV-DOC-STATUS-HEADER",
+      "before": 1,
+      "after": 0,
+      "scope": "transient 10K audit metadata hygiene"
+    }
+  ],
+  "remaining_families": [
+    {
+      "id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "count": 7,
+      "classification": "portable_projection_proof_missing"
+    },
+    {
+      "id": "INV-NO-ADHOC-MAIN",
+      "count": 5,
+      "classification": "portable_projection_proof_missing"
+    },
+    {
+      "id": "INV-TOOLS-REQUIRE-ENTITLEMENT",
+      "count": 5,
+      "classification": "retired_domain_path_policy_check"
+    },
+    {
+      "id": "INV-REPLAY-REFUSES-CONTRACT-MISMATCH",
+      "count": 4,
+      "classification": "retired_domain_or_contract_bundle_policy_check"
+    },
+    {
+      "id": "INV-CACHE-KEY-INCLUDES-CONTRACTS",
+      "count": 2,
+      "classification": "retired_domain_path_policy_check"
+    },
+    {
+      "id": "INV-REPOX-RULESET-MISSING",
+      "count": 2,
+      "classification": "ruleset_mapping_backlog"
+    },
+    {
+      "id": "INV-TOOL-VERSION-MISMATCH",
+      "count": 2,
+      "classification": "tool_hash_audit_staleness"
+    },
+    {
+      "id": "INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE",
+      "count": 2,
+      "classification": "retired_domain_or_contract_bundle_policy_check"
+    },
+    {
+      "id": "single_count_misc",
+      "count": 22,
+      "classification": "mixed_retired_domain_policy_and_audit_staleness"
+    }
+  ],
+  "remaining_are_product_proof_blockers": false,
+  "ready_for_post_converge_11": false
+}

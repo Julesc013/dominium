@@ -1,0 +1,134 @@
+{
+  "schema_version": "dominium.post_converge_10l.distribution_product_findings.v1",
+  "task_id": "POST-CONVERGE-10L",
+  "checked_failures": 12,
+  "findings": [
+    {
+      "path": "dist/bin/client",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for client as client and dominium_client; docs/compat/ENDPOINT_DESCRIPTORS.md requires shipped products to emit descriptors; the dist/bin/client surface is absent.",
+      "reason": "Adding a dummy wrapper or removing the product alias would create or change a distribution surface without proof. This task records the missing projection wrapper rather than fabricating it."
+    },
+    {
+      "path": "dist/bin/engine",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for engine as engine; RepoX expects a product_stub_cli-backed descriptor wrapper; the wrapper is absent.",
+      "reason": "The missing wrapper is a projection/distribution surface, not metadata drift. It must be produced or reviewed by the portable projection/wrapper proof path."
+    },
+    {
+      "path": "dist/bin/game",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for game as game; RepoX expects a product_stub_cli-backed descriptor wrapper; the wrapper is absent.",
+      "reason": "No current authority permits adding a placeholder distribution wrapper in this classification task."
+    },
+    {
+      "path": "dist/bin/launcher",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for launcher as launcher; docs/release/PRODUCT_BOOT_PROOF.md records only partial script-level launcher proof.",
+      "reason": "The launcher wrapper remains absent from dist/bin. Native launcher boot proof belongs to POST-CONVERGE-11, while the shipped wrapper/projection surface belongs to projection proof."
+    },
+    {
+      "path": "dist/bin/server",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for server as server and dominium_server; dist/bin/dominium_server exists but the server alias is absent.",
+      "reason": "Removing the alias would change product/distribution naming semantics, and adding the alias without projection proof is out of scope."
+    },
+    {
+      "path": "dist/bin/setup",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for setup as setup; docs/release/PRODUCT_BOOT_PROOF.md records setup boot proof as blocked in the previous product proof.",
+      "reason": "The setup wrapper is absent and setup boot/projection proof has not been rerun after native build recovery."
+    },
+    {
+      "path": "dist/bin/tool_attach_console_stub",
+      "rule_id": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "data/registries/product_registry.json declares official.dist_bin_names for tool.attach_console_stub as tool_attach_console_stub; docs/release/PRODUCT_BOOT_PROOF.md records dist/bin/dom failing because this target is absent.",
+      "reason": "This is an existing product/projection blocker. The correct fix is a reviewed wrapper/projection proof, not a dummy target."
+    },
+    {
+      "path": "dist/bin/engine",
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "scripts/ci/check_repox_rules.py requires dist/bin/engine to exist and delegate through product_stub_cli.py.",
+      "reason": "The no-adhoc-main rule cannot validate delegation because the wrapper is absent."
+    },
+    {
+      "path": "dist/bin/game",
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "scripts/ci/check_repox_rules.py requires dist/bin/game to exist and delegate through product_stub_cli.py.",
+      "reason": "The absence is a real missing wrapper/projection surface."
+    },
+    {
+      "path": "dist/bin/launcher",
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "scripts/ci/check_repox_rules.py requires dist/bin/launcher to exist and delegate through an AppShell-owned entrypoint.",
+      "reason": "A launcher wrapper cannot be claimed without creating or proving the distribution command surface."
+    },
+    {
+      "path": "dist/bin/setup",
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "scripts/ci/check_repox_rules.py requires dist/bin/setup to exist and delegate through an AppShell-owned entrypoint.",
+      "reason": "Setup wrapper proof remains absent and must not be fabricated."
+    },
+    {
+      "path": "dist/bin/tool_attach_console_stub",
+      "rule_id": "INV-NO-ADHOC-MAIN",
+      "classification": "portable_projection_proof_missing",
+      "recommended_action": "defer_to_post_converge_12",
+      "safe_to_fix_now": false,
+      "authority_basis": "scripts/ci/check_repox_rules.py requires dist/bin/tool_attach_console_stub to exist and delegate through product_stub_cli.py; dist/bin/dom currently points at this absent target.",
+      "reason": "The missing target is a real blocker for the tracked dist/bin/dom wrapper and should be handled by a wrapper/projection task."
+    }
+  ],
+  "safe_fixes": [
+    {
+      "path": "docs/repo/audits/POST_CONVERGE_10K_CONTRACT_REGISTRY_ACCEPTANCE.md",
+      "rule_id": "INV-DOC-STATUS-HEADER",
+      "classification": "descriptor_metadata_stale",
+      "recommended_action": "update_descriptor_metadata",
+      "safe_to_fix_now": true,
+      "authority_basis": "Existing POST-CONVERGE audit reports use DERIVED status headers; the file is an evidence report, not canonical doctrine.",
+      "reason": "The current focused RepoX reproduction found a transient status-header failure introduced by the 10K audit document."
+    }
+  ],
+  "deferred": [
+    "POST-CONVERGE-11 should rerun product boot proof with native binaries but should not be treated as blocked solely by proof it is meant to produce.",
+    "POST-CONVERGE-12 or a targeted dist wrapper remediation should produce or validate the missing dist/bin wrapper/projection surfaces."
+  ],
+  "blocked": [
+    "No descriptor/product proof blocker was safe to mark passed in this task.",
+    "POST-CONVERGE-11 is still blocked by non-proof RepoX failures unrelated to the distribution/product family."
+  ]
+}
