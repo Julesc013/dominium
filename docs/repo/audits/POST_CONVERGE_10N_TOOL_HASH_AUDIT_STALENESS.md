@@ -85,4 +85,5 @@ POST-CONVERGE-11 is not ready. Product/projection proof failures should not circ
 - `ctest --preset verify -R inv_repox_rules --output-on-failure`: FAIL_EXPECTED, 20 failures / 5 warnings after safe fixes.
 - `python tools/ci/tool_identity_fingerprint.py --repo-root . --check`: PASS.
 - `python tools/securex/securex.py integrity-manifest --repo-root . --output .dominium.local/securex-integrity-10n-after.json` plus `git diff --no-index`: PASS.
+- `py -3 .aide/scripts/aide_lite.py commit check --latest` after initial 10N commit `e80dc704c`: FAIL due changelog category prefix formatting; recorded without amend in a follow-up evidence commit.
 - Final command details are recorded in `.aide/reports/POST-CONVERGE-10N-validation.md`.

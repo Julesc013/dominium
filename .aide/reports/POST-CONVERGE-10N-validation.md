@@ -32,6 +32,7 @@ Last Reviewed: 2026-05-17
 | `py -3 .aide/scripts/aide_lite.py roots validate` | PASS | Root validation passes; generated timestamp/head churn in `tools/migration/*` was not kept. |
 | `py -3 .aide/scripts/aide_lite.py repo validate` | PASS | Repo intelligence validation passes. |
 | `py -3 .aide/scripts/aide_lite.py commit check --latest` | PASS | Pre-commit latest commit policy check passed. |
+| `py -3 .aide/scripts/aide_lite.py commit check --latest` after initial 10N commit | FAIL | Initial 10N implementation commit `e80dc704c` used lowercase changelog bullets instead of the required machine-readable category prefixes. No amend was used; this validation note is recorded in a follow-up commit. |
 
 ## Existing Validators
 
