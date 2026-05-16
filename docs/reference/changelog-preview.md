@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Changelog Preview
 
 This reference summarizes the portable AIDE changelog preview workflow. The

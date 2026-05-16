@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # ULTRA REPO AUDIT ENTRYPOINTS AND RUNPATHS
 
 Live entrypoints identified from the current repository plus direct audit execution.

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # FAST Gate Remediation
 
 ## Status
@@ -68,3 +73,7 @@ Run a targeted RepoX drift remediation task after build toolchain status is reso
 POST-CONVERGE-10G reduced direct/focused RepoX from 1844 failures to 1769 failures while keeping the 5 known warnings. The safe fixes were limited to stale top-level root allowlist handling, stale root-level AppShell paths, and RepoX cache invalidation for rule implementation changes.
 
 FAST is still not green. The remaining blocker is broad canonical documentation/status/index and policy evidence drift rather than the retired AppShell or root-structure families fixed here.
+
+## POST-CONVERGE-10H Update
+
+POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing safe documentation status metadata and canon-index drift. FAST remains blocked because focused RepoX still fails, now dominated by historical/archive reference debt and smaller policy-specific families.

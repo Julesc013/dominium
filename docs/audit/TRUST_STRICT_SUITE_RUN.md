@@ -1,4 +1,8 @@
 Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 Stability: stable
 Future Series: OMEGA
 Replacement Target: Frozen strict trust baseline and offline commercialization hook for v0.0.0-mock distribution gating.

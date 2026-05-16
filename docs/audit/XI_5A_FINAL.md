@@ -1,5 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-28
+Supersedes: none
+Superseded By: none
+
 Stability: provisional
 Future Series: XI-5
 Replacement Target: XI-6 freeze report after Xi-5b/Xi-5c

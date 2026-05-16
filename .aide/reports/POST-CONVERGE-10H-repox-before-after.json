@@ -1,0 +1,28 @@
+{
+  "after": {
+    "failures": 153,
+    "warnings": 5
+  },
+  "before": {
+    "failures": 1769,
+    "warnings": 5
+  },
+  "fixed_families": [
+    "doc_status_header_metadata_repair",
+    "canon_index_missing_entries"
+  ],
+  "head": "0d0f409c9f799524719e9b9d0afd1fa4b7def947",
+  "origin_main": "0d0f409c9f799524719e9b9d0afd1fa4b7def947",
+  "ready_for_post_converge_11": false,
+  "remaining_families": [
+    "historical_reference_debt",
+    "deferred_doc_status_headers",
+    "contract_registry_acceptance_backlog",
+    "distribution_descriptor_product_proof_blockers",
+    "retired_domain_path_policy_checks",
+    "tool_hash_and_audit_staleness",
+    "other_policy_backlog"
+  ],
+  "schema_version": "dominium.post_converge_10h.before_after.v1",
+  "task_id": "POST-CONVERGE-10H"
+}

@@ -136,3 +136,7 @@ ctest --preset verify
 ## POST-CONVERGE-10G RepoX Update
 
 Focused tuple `inv_repox_rules` still fails after safe 10G remediation, but the failure count dropped from 1844 to 1769. Canonical `ctest --preset verify -N` still discovers 0 tests, so tuple CTest remains the effective focused lane for this blocker. No configure/build rerun was required because only RepoX governance code and evidence docs changed.
+
+## POST-CONVERGE-10H RepoX Update
+
+Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count is now 153. Canonical `ctest --preset verify -N` still discovers 0 tests. No configure/build rerun was required because changes were documentation metadata/index/evidence only.

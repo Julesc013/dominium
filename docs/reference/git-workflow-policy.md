@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Git Workflow Policy
 
 This reference summarizes the portable Git workflow policy. The canonical

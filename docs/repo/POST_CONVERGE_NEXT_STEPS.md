@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # Post-CONVERGE Next Steps
 
 Status: PROVISIONAL
@@ -188,3 +193,9 @@ Planned, stub, and research rows are not supported implementations.
 POST-CONVERGE-10G reduced focused tuple `inv_repox_rules` from 1844 failures and 5 warnings to 1769 failures and 5 warnings. Safe stale path/root assumptions were fixed for the RepoX top-level root check and retired AppShell root checks. RepoX cache keys now include the rule implementation file, so rule edits invalidate stale group output.
 
 POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation`, focused on the `INV-DOC-STATUS-HEADER`, `INV-CANON-INDEX`, and `INV-CANON-NO-HIST-REF` families. Product boot, package proof, portable projection proof, and additional moves remain unauthorized.
+
+## POST-CONVERGE-10H Update
+
+POST-CONVERGE-10H reduced focused tuple `inv_repox_rules` from 1769 failures and 5 warnings to 153 failures and 5 warnings. It repaired 1533 clear DERIVED documentation status/header cases and added 84 missing canonical index entries for documents that already declared `Status: CANONICAL`.
+
+POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation`, focused on `INV-CANON-NO-HIST-REF`.

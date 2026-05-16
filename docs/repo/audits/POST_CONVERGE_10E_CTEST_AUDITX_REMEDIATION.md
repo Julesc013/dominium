@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # POST-CONVERGE-10E CTest / AuditX Remediation Audit
 
 ## Status

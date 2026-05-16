@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # CONVERGE-12 Final Audit
 
 Status: PROVISIONAL

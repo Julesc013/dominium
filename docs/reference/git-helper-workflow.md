@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Git Helper Workflow
 
 This reference summarizes portable Git helper behavior. The canonical policy is

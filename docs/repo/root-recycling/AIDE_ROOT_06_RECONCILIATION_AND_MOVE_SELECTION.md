@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE-ROOT-06 Reconciliation And Move Selection
 
 ## Status

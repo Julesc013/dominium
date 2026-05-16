@@ -1,5 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-26
+Supersedes: none
+Superseded By: none
+
 Stability: provisional
 Future Series: XI-5 or later
 Replacement Target: final deprecation registry once convergence is complete

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # Deterministic Convergence Plan
 
 - Generated: 2026-03-26

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Workunit Idempotency
 
 This reference summarizes portable task recovery and workunit idempotency. The

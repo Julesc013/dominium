@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # First Wave Plan
 
 ## AIDE-ROOT-00 Through AIDE-ROOT-06 Result

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # Native Binary Proof
 
 ## Status
@@ -58,3 +63,7 @@ CTest remains blocked after build proof:
 ## POST-CONVERGE-10G Update
 
 POST-CONVERGE-10G does not add product boot proof. It reduces focused RepoX from 1844 failures to 1769 failures, but focused tuple `inv_repox_rules` remains a semantic blocker. Native product boot proof remains deferred until RepoX is green or a reviewed gate explicitly accepts the remaining semantic failures.
+
+## POST-CONVERGE-10H Update
+
+POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 153 failures and 5 warnings, but product boot proof remains deferred until focused RepoX passes or receives reviewed disposition.

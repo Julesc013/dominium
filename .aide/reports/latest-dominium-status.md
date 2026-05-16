@@ -2,25 +2,22 @@
 
 ## Status
 
-- AIDE structure gates: PASS
-- AIDE root inventory waves: PASS
-- AIDE root reconciliation: PASS
-- AIDE-MOVE-01-APPLY: PASS_WITH_WARNINGS
-- AIDE-MOVE-02-REFINE: PASS_WITH_WARNINGS
-- POST-CONVERGE-10F: PARTIAL, unit invariant fixed and RepoX classified
 - POST-CONVERGE-10G: PARTIAL, RepoX reduced from 1844 to 1769 failures
+- POST-CONVERGE-10H: PARTIAL, RepoX reduced from 1769 to 153 failures
+- `INV-DOC-STATUS-HEADER`: 1545 -> 12
+- `INV-CANON-INDEX`: 84 -> 0
 - Move planning authorized: false
 - Move application authorized: false
 - Product boot proof authorized: false
 
 ## Current Blocker
 
-Focused tuple `inv_repox_rules` still fails with 1769 failures and 5 warnings. The safe stale root/AppShell path subset is fixed, but broad canonical documentation status/index drift, historical-reference debt, contract acceptance, distribution descriptor proof, and retired-domain policy checks remain.
+Focused tuple `inv_repox_rules` still fails with 153 failures and 5 warnings. The largest remaining family is `INV-CANON-NO-HIST-REF` with 81 failures.
 
 ## No-Move Confirmation
 
-POST-CONVERGE-10G did not move, delete, rename, rewrite broad references, apply maps, create aliases, or retire exceptions.
+POST-CONVERGE-10H did not move, delete, rename, rewrite broad references, apply maps, create aliases, retire exceptions, or change product/runtime/source behavior.
 
 ## Next Task
 
-`POST-CONVERGE-10H - Canonical Documentation Status and Canon Index Remediation`.
+`POST-CONVERGE-10I - Historical Reference and Archive Citation Remediation`.

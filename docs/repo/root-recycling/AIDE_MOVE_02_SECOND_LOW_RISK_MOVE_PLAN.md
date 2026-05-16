@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE-MOVE-02 Second Low-Risk Move Plan
 
 ## Status

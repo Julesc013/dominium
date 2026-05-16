@@ -1,7 +1,8 @@
-Status: PROVISIONAL
+Status: DERIVED
 Last Reviewed: 2026-05-12
 Supersedes: prior CONVERGE-00 baseline text merged in `b3d1e62bafbcf48b9760d15ea820c70215b80e41`
 Superseded By: none
+
 Stability: provisional
 Future Series: REPO-CONVERGENCE
 Replacement Target: CONVERGE-01 machine-readable layout contract and generated root inventory

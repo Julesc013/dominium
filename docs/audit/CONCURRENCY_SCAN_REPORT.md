@@ -1,4 +1,8 @@
 Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: Release-pinned concurrency policy baseline and shard-merge execution contracts.

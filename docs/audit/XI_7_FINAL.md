@@ -1,5 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-30
+Supersedes: none
+Superseded By: none
+
 Stability: stable
 Future Series: XI-7
 Replacement Target: superseded by a later explicit Xi-7 profile revision only

@@ -1,5 +1,8 @@
-Status: Quarantine
+Status: DERIVED
 Last Reviewed: 2026-03-26
+Supersedes: none
+Superseded By: none
+
 Stability: provisional
 Replacement Target: XI-4b manual review resolution
 

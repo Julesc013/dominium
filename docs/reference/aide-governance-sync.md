@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Governance Sync
 
 Dominium uses the local `.aide/` import for compact task packets, evidence,

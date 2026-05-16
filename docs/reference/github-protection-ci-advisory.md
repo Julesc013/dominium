@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE GitHub Protection And CI Advisory
 
 This reference summarizes portable GitHub protection and CI advisory guidance.

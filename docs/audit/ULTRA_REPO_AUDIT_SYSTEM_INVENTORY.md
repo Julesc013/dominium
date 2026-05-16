@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # ULTRA REPO AUDIT SYSTEM INVENTORY
 
 Implementation-first ledger of the live repo state as inspected on 2026-04-06.

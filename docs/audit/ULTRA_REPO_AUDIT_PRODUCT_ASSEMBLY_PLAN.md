@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # ULTRA REPO AUDIT PRODUCT ASSEMBLY PLAN
 
 Recommended near-term product target: Repo-local TUI/headless baseline using the verify build, default profile bundle, default pack lock, loopback authority only, and AppShell launcher/setup control surfaces.

@@ -1,4 +1,8 @@
 Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 Version: 1.0.0
 
 # System Topology Map

@@ -87,3 +87,7 @@ POST-CONVERGE-11 is not ready. Focused RepoX still has semantic failures, so pro
 | `python -m py_compile scripts/ci/check_repox_rules.py` | pass | RepoX rule implementation compiles. |
 
 Final AIDE, strict validator, supplemental validator, JSON parse, and git diff checks are recorded in `.aide/reports/POST-CONVERGE-10G-validation.md` after final validation.
+
+## POST-CONVERGE-10H Follow-Up
+
+POST-CONVERGE-10H reduced the RepoX blocker from 1769 failures and 5 warnings to 153 failures and 5 warnings. It cleared the `INV-CANON-INDEX` family and reduced `INV-DOC-STATUS-HEADER` from 1545 to 12 by applying metadata-only DERIVED headers to evidence/reference docs. POST-CONVERGE-11 remains blocked.

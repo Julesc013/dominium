@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Promotion Policy
 
 This reference summarizes portable promotion discipline. The canonical policy

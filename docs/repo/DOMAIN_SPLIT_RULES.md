@@ -1,4 +1,8 @@
-Status: PROVISIONAL
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 Phase: CONVERGE-07
 Supersedes: none
 Superseded By: none

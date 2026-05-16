@@ -1,5 +1,8 @@
 Status: DERIVED
 Last Reviewed: 2026-03-28
+Supersedes: none
+Superseded By: none
+
 Stability: provisional
 Future Series: XI
 Replacement Target: XI-5a-v3 final execution report

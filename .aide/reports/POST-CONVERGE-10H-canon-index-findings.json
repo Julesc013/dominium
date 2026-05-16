@@ -1,0 +1,1695 @@
+{
+  "ambiguous_entries": [],
+  "deferred": [],
+  "generated_utc": "2026-05-16T09:22:52Z",
+  "index_files": [
+    "docs/architecture/CANON_INDEX.md"
+  ],
+  "missing_entries": [
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/AGENT_MIRROR_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/AGENT_MIRROR_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/AGENT_SAFETY_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/AGENT_SAFETY_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/MCP_INTERFACE_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/MCP_INTERFACE_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/XSTACK_TASK_CATALOG.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/XSTACK_TASK_CATALOG.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/DOMAIN_CONSTITUTION_EXECUTION_PLAN.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/DOMAIN_CONSTITUTION_EXECUTION_PLAN.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_EXECUTION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YD.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YD.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB3.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB3.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_BLOCKER_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_EXECUTION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_EXECUTION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_CONTRACT_PROFILE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/VERSIONING_CONSTITUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/VERSIONING_CONSTITUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/COMPONENT_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/COMPONENT_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/HOTSWAP_BOUNDARIES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/LIFECYCLE_MANAGER.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/LIFECYCLE_MANAGER.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/RUNTIME_KERNEL_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/RUNTIME_SERVICES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/RUNTIME_SERVICES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/security/TRUST_STRICT_MODEL_v0_0_0.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/security/TRUST_STRICT_MODEL_v0_0_0.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_ADAPTER_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_SCOPE_FREEZE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
+    }
+  ],
+  "safe_fixes": [
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/AGENT_MIRROR_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/AGENT_MIRROR_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/AGENT_SAFETY_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/AGENT_SAFETY_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/MCP_INTERFACE_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/MCP_INTERFACE_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/agents/XSTACK_TASK_CATALOG.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/agents/XSTACK_TASK_CATALOG.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_LATER_WAVE_ZETA_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_POST_ZETA_B3_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/CROSS_DOMAIN_BRIDGE_TEMPLATE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/DOMAIN_CONSTITUTION_EXECUTION_PLAN.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/DOMAIN_CONSTITUTION_EXECUTION_PLAN.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_EXECUTION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_YD.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_YD.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB3.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZB3.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MATRIX.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/POST_ZETA_FRONTIER_RECONCILIATION_AND_HANDOFF.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/VERIFICATION_AND_EQUIVALENCE_DOCTRINE_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_BLOCKER_RECONCILIATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_EXECUTION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_EXECUTION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_CONTRACT_PROFILE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_CONTRACT_PROFILE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/release/VERSIONING_CONSTITUTION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/release/VERSIONING_CONSTITUTION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/COMPONENT_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/COMPONENT_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/HOTSWAP_BOUNDARIES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/HOTSWAP_BOUNDARIES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/LIFECYCLE_MANAGER.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/LIFECYCLE_MANAGER.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/MULTI_VERSION_COEXISTENCE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/MULTI_VERSION_COEXISTENCE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/RUNTIME_KERNEL_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/RUNTIME_KERNEL_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/RUNTIME_SERVICES.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/RUNTIME_SERVICES.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/security/TRUST_STRICT_MODEL_v0_0_0.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/security/TRUST_STRICT_MODEL_v0_0_0.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_ADAPTER_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_SCOPE_FREEZE.md"
+    },
+    {
+      "authority_basis": "target document already declared Status: CANONICAL before 10H",
+      "entry": "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
+      "index_file": "docs/architecture/CANON_INDEX.md",
+      "issue": "canonical_status_header_missing_from_index",
+      "reason": "Index evidence was stale relative to document status metadata.",
+      "recommended_action": "added_to_canonical_index",
+      "safe_to_fix_now": true,
+      "target_path": "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
+    }
+  ],
+  "schema_version": "dominium.post_converge_10h.canon_index_findings.v1",
+  "stale_entries": [],
+  "task_id": "POST-CONVERGE-10H"
+}

@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # ULTRA REPO AUDIT DOC VS CODE MISMATCHES
 
 Implementation evidence outranked prose when the two disagreed.

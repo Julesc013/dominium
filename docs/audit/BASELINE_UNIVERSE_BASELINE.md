@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # Baseline Universe Baseline
 
 - Seed: `DOMINIUM_MVP_BASELINE_SEED_0`

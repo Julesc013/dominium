@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # ULTRA REPO AUDIT REUSE AND CONSOLIDATION PLAN
 
 Reuse-first recommendations grounded in the live repo rather than idealized redesign.

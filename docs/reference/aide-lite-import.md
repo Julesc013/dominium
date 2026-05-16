@@ -1,3 +1,8 @@
+Status: DERIVED
+Last Reviewed: 2026-05-16
+Supersedes: none
+Superseded By: none
+
 # AIDE Lite Import
 
 Dominium has a local AIDE Lite import under `.aide/` for compact
