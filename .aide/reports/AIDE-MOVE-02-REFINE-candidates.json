@@ -1,0 +1,140 @@
+{
+  "schema_version": "dominium.aide.move_refine_candidates.v1",
+  "task_id": "AIDE-MOVE-02-REFINE",
+  "candidates": [
+    {
+      "path": "ide/manifests/**",
+      "root": "ide",
+      "file_count": 3,
+      "candidate_type": "machine_readable_projection_metadata",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": "high",
+      "target_path": null,
+      "reason": "Remaining IDE material is machine-readable projection metadata explicitly deferred by prior gates.",
+      "blockers": ["machine_readable", "ide_projection", "manifest_or_schema", "deferred_by_AIDE_GATE_03"]
+    },
+    {
+      "path": "performance/*.py",
+      "root": "performance",
+      "file_count": 3,
+      "candidate_type": "python_tooling",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": 116,
+      "target_path": null,
+      "reason": "All tracked files are active Python helpers with product/client imports and tooling references.",
+      "blockers": ["python_module", "active_tooling", "product_reference", "not_docs_only"]
+    },
+    {
+      "path": "validation/*.py",
+      "root": "validation",
+      "file_count": 2,
+      "candidate_type": "python_tooling",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": 1998,
+      "target_path": null,
+      "reason": "Validation root contains active validation modules and broad XStack references.",
+      "blockers": ["python_module", "validation_tooling", "high_reference_surface", "not_docs_only"]
+    },
+    {
+      "path": "governance/*.py",
+      "root": "governance",
+      "file_count": 2,
+      "candidate_type": "python_policy_tooling",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": 1399,
+      "target_path": null,
+      "reason": "Governance root contains policy/governance Python helpers, not docs-only evidence.",
+      "blockers": ["python_module", "policy_or_governance", "high_reference_surface", "not_docs_only"]
+    },
+    {
+      "path": "meta/**",
+      "root": "meta",
+      "file_count": 26,
+      "candidate_type": "python_policy_tooling",
+      "accepted": false,
+      "risk": "unknown",
+      "reference_count": 1345,
+      "target_path": null,
+      "reason": "Meta root is broad, Python-heavy, policy/governance-sensitive, and high-reference.",
+      "blockers": ["python_module", "policy_or_governance", "too_many_files", "high_reference_surface"]
+    },
+    {
+      "path": "templates/adapter_template.md",
+      "root": "templates",
+      "file_count": 1,
+      "candidate_type": "template_scaffold",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": 5,
+      "target_path": null,
+      "reason": "This is human-readable but is classified convert/template_scaffold and referenced by XStack contract/audit/generated evidence.",
+      "blockers": ["template_scaffold", "convert_not_move", "xstack_reference", "not_historical_evidence"]
+    },
+    {
+      "path": "templates/domain_contract_template.md",
+      "root": "templates",
+      "file_count": 1,
+      "candidate_type": "template_scaffold",
+      "accepted": false,
+      "risk": "medium",
+      "reference_count": 1,
+      "target_path": null,
+      "reason": "This is human-readable but is a domain contract template referenced by protected specs/reality material.",
+      "blockers": ["template_scaffold", "convert_not_move", "spec_reference", "contract_template"]
+    },
+    {
+      "path": "data/**/*.md and data/**/*.txt",
+      "root": "data",
+      "file_count": "many",
+      "candidate_type": "content_or_identity_docs",
+      "accepted": false,
+      "risk": "high",
+      "reference_count": "unknown",
+      "target_path": null,
+      "reason": "Data docs and pack docs are identity-sensitive content/package material.",
+      "blockers": ["identity_sensitive", "content_or_pack_scope", "not_low_risk"]
+    },
+    {
+      "path": "packs/README.md and bundles/README.md",
+      "root": "packs,bundles",
+      "file_count": 2,
+      "candidate_type": "package_identity_docs",
+      "accepted": false,
+      "risk": "high",
+      "reference_count": "unknown",
+      "target_path": null,
+      "reason": "Package and bundle README files are identity-sensitive.",
+      "blockers": ["pack_identity", "bundle_identity", "identity_sensitive"]
+    },
+    {
+      "path": "specs/reality/*.md and updates/README.md",
+      "root": "specs,updates",
+      "file_count": "many",
+      "candidate_type": "authority_docs",
+      "accepted": false,
+      "risk": "protected",
+      "reference_count": "unknown",
+      "target_path": null,
+      "reason": "Specs and updates documentation are authority-sensitive and out of scope for a low-risk move.",
+      "blockers": ["authority_sensitive", "spec_sensitive", "update_sensitive"]
+    },
+    {
+      "path": "libs/**/CMakeLists.txt",
+      "root": "libs",
+      "file_count": 5,
+      "candidate_type": "build_input",
+      "accepted": false,
+      "risk": "protected",
+      "reference_count": "unknown",
+      "target_path": null,
+      "reason": "CMake files are build-sensitive and ABI-sensitive.",
+      "blockers": ["build_sensitive", "ABI_sensitive", "cmake_sensitive"]
+    }
+  ],
+  "recommended_candidate": null,
+  "no_candidate_reason": "No candidate passed the refinement filter. Preferred roots contain active Python/tooling or deferred machine-readable metadata; broader docs-like roots are identity-, authority-, build-, or template-contract-sensitive."
+}

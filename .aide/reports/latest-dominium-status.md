@@ -11,6 +11,7 @@
 - AIDE-MOVE-01-APPLY: PASS_WITH_WARNINGS
 - AIDE-GATE-03: PASS_WITH_WARNINGS
 - AIDE-MOVE-02-PLAN: PASS_WITH_WARNINGS
+- AIDE-MOVE-02-REFINE: PASS_WITH_WARNINGS
 - Move planning completed: true
 - Move application completed: true, for AIDE-MOVE-01 only
 - Next move planning authorized: false pending candidate refinement
@@ -18,11 +19,11 @@
 
 ## Current Candidate
 
-The first applied move is verified. AIDE-MOVE-02-PLAN did not select a second move candidate because the remaining preferred-root material is deferred machine-readable metadata or active Python/tooling code.
+The first applied move is verified. AIDE-MOVE-02-REFINE confirmed that no second low-risk move candidate is available yet.
 
 ## No-Apply Confirmation
 
-AIDE-MOVE-02-PLAN did not move, delete, rename, rewrite references, create aliases or shims, apply maps, or retire exceptions.
+AIDE-MOVE-02-REFINE did not move, delete, rename, rewrite references, create aliases or shims, apply maps, or retire exceptions.
 
 ## Validation
 
@@ -30,4 +31,4 @@ AIDE doctor/validate/test/selftest, tools/roots/repo validate, strict layout/roo
 
 ## Next Task
 
-`AIDE-MOVE-02-REFINE - Identify Second Low-Risk Candidate`.
+`POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation`.

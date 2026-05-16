@@ -35,3 +35,7 @@ AIDE-GATE-03 passed with warnings and verified the first move wave post-state. `
 ## AIDE-MOVE-02-PLAN Result
 
 AIDE-MOVE-02-PLAN reviewed the next preferred roots and did not select a second move candidate. After the IDE README move, the remaining preferred-root material is deferred machine-readable IDE metadata or active Python/tooling code. The draft plan is not approved, apply remains false, and the recommended next task is candidate refinement rather than an apply gate.
+
+## AIDE-MOVE-02-REFINE Result
+
+AIDE-MOVE-02-REFINE narrowed the search to single-file docs, historical/evidence files, README-style files, template scaffolds, and generated review artifacts. No candidate passed the low-risk filter. `templates/` contained the closest near-misses, but both files are template scaffolds with protected spec/XStack references and conversion fates. The recommended next task is `POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation`, not `AIDE-GATE-04`.

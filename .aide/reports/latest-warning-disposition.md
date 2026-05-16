@@ -2,6 +2,8 @@
 
 ## Accepted Warnings
 
+- AIDE-MOVE-02-REFINE passes with warnings because no second low-risk candidate survived the stricter single-file/docs/evidence filter.
+- `templates/adapter_template.md` and `templates/domain_contract_template.md` are near-misses, but both are template scaffolds with conversion fates and protected spec/XStack references.
 - AIDE-MOVE-02-PLAN passes with warnings because no second low-risk docs-only/evidence-only candidate was selected.
 - Remaining `ide/` material is machine-readable projection metadata and remains deferred.
 - `performance/`, `validation`, `governance`, and `meta` contain active Python/tooling or high-reference surfaces that require refinement before a move plan.

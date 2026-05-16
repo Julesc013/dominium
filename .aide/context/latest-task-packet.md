@@ -2,28 +2,29 @@
 
 ## PHASE
 
-AIDE-MOVE-02-PLAN - second low-risk move planning
+AIDE-MOVE-02-REFINE - identify second low-risk candidate
 
 ## GOAL
 
-Select the next low-risk move candidate from AIDE root recycling evidence, or record that no safe candidate is available. This is no-apply planning evidence only.
+Refine the second move candidate search after AIDE-MOVE-02-PLAN found no safe candidate. This is no-apply refinement evidence only.
 
 ## WHY
 
-AIDE-MOVE-01 proved one small docs move. The second wave should not force active tooling, source, or machine-readable metadata into a move plan just to keep moving.
+AIDE should not force a second move wave if the remaining candidates are active tooling, policy-sensitive, authority-sensitive, build-sensitive, or machine-readable metadata.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.md`
-- `.aide/reports/AIDE-GATE-03-post-move-readiness.json`
-- `.aide/reports/AIDE-MOVE-01-APPLY-evidence.json`
-- `.aide/reports/roots/AIDE-ROOT-06-reconciliation.json`
-- `.aide/reports/roots/AIDE-ROOT-06-move-wave-candidates.json`
+- `.aide/reports/AIDE-MOVE-02-PLAN-status.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-blockers.md`
+- `.aide/reports/AIDE-MOVE-02-PLAN-summary.json`
+- `.aide/refactors/AIDE-MOVE-02.plan.json`
 - `.aide/reports/roots/ide.inventory.json`
 - `.aide/reports/roots/performance.inventory.json`
 - `.aide/reports/roots/validation.inventory.json`
 - `.aide/reports/roots/governance.inventory.json`
 - `.aide/reports/roots/meta.inventory.json`
+- `.aide/reports/roots/templates.inventory.json`
+- `.aide/reports/roots/templates.classification.json`
 
 ## ALLOWED_PATHS
 
@@ -44,59 +45,55 @@ AIDE-MOVE-01 proved one small docs move. The second wave should not force active
 - `cmake/**`
 - `release/**`
 - candidate source files
-- ide manifests subtree
 - product/version root files
 - any file move, delete, rename, or reference rewrite
 - path alias activation, salvage application, move-map application, or exception retirement
 
 ## IMPLEMENTATION
 
-- Inspect AIDE-GATE-03, AIDE-MOVE-01, AIDE-ROOT-06, and candidate root evidence.
-- Select a safe second candidate only if evidence supports it.
-- If no safe candidate exists, record a blocked no-candidate plan with refinement next steps.
-- Run required AIDE, strict validator, supplemental, plan parsing, and git checks.
-- Do not modify candidate source files, manifests, product/source/runtime/build files, maps, aliases, shims, or exception ledgers.
+- Re-read AIDE-MOVE-02 blocker evidence and root reports.
+- Search for single-file docs-only, README, historical/evidence, or generated review candidates.
+- Reject active Python/tooling, machine-readable metadata, identity-sensitive content, authority-sensitive specs, build-sensitive inputs, and template scaffolds with protected references.
+- Create candidate/refinement reports and no-candidate JSON if no candidate survives.
 
 ## VALIDATION
 
-Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, plan parsing, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-02-PLAN-validation.md`.
+Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, JSON parsing, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-02-REFINE-validation.md`.
 
 ## EVIDENCE
 
-- `.aide/refactors/AIDE-MOVE-02.plan.toml`
-- `.aide/refactors/AIDE-MOVE-02.plan.json`
-- `.aide/refactors/AIDE-MOVE-02.reference_rewrite_plan.json`
-- `.aide/refactors/AIDE-MOVE-02.validation_plan.json`
-- `.aide/refactors/AIDE-MOVE-02.rollback_plan.json`
-- `.aide/refactors/AIDE-MOVE-02.exception_update_plan.json`
-- `.aide/reports/AIDE-MOVE-02-PLAN-status.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-validation.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-blockers.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-review.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-summary.json`
-- `docs/repo/root-recycling/AIDE_MOVE_02_SECOND_LOW_RISK_MOVE_PLAN.md`
+- `.aide/reports/AIDE-MOVE-02-REFINE-status.md`
+- `.aide/reports/AIDE-MOVE-02-REFINE-candidates.md`
+- `.aide/reports/AIDE-MOVE-02-REFINE-candidates.json`
+- `.aide/reports/AIDE-MOVE-02-REFINE-decision.md`
+- `.aide/reports/AIDE-MOVE-02-REFINE-validation.md`
+- `.aide/reports/AIDE-MOVE-02-REFINE-blockers.md`
+- `.aide/refactors/AIDE-MOVE-02.no_candidate.json`
+- `docs/repo/root-recycling/AIDE_MOVE_02_REFINEMENT.md`
 
 ## NON_GOALS
 
-- Do not apply another move.
+- Do not move files.
 - Do not delete files.
+- Do not rename files.
+- Do not rewrite references.
 - Do not approve or apply move maps or salvage maps.
-- Do not create active aliases or compatibility shims.
+- Do not create aliases or shims.
 - Do not retire exceptions.
 - Do not change product/source/runtime/build behavior.
 
 ## ACCEPTANCE
 
-- Draft plan and support JSON/Markdown exist.
-- Candidate selection is evidence-backed.
-- If no candidate is selected, blockers and refinement path are explicit.
-- Validation passes or only non-blocking known warnings remain.
-- No move, delete, rename, reference rewrite, alias, shim, map apply, or exception retirement occurred.
+- Candidate report and decision report exist.
+- No-candidate JSON exists if no safe candidate survives.
+- Next task recommendation is explicit.
+- Validation passes or only known warnings remain.
+- No move/delete/rename/reference rewrite/alias/shim/map application/exception retirement occurred.
 
 ## OUTPUT_SCHEMA
 
-Move-plan outputs are TOML/JSON under `.aide/refactors/**`, Markdown/JSON reports under `.aide/reports/**`, and a narrow repo doc under `docs/repo/root-recycling/**`.
+Refinement outputs are Markdown and JSON reports under `.aide/reports/**`, a no-candidate JSON artifact under `.aide/refactors/**`, and narrow root-recycling documentation under `docs/repo/root-recycling/**`.
 
 ## TOKEN_ESTIMATE
 
-Approximate task packet tokens: 760. No raw source bodies are embedded beyond short path references.
+Approximate task packet tokens: 850. No raw source bodies are embedded beyond short path references.
