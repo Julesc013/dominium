@@ -2,6 +2,10 @@ import argparse
 
 
 
+import json
+
+
+
 import os
 
 
@@ -103,6 +107,117 @@ def read_text(path: str) -> str:
 
 
         return handle.read()
+
+
+def iter_unit_references(text: str) -> Iterable[str]:
+
+
+
+    for match in UNIT_ID_RE.finditer(text):
+
+
+
+        # Schema files commonly name paths such as materials/unit.schema. Those
+        # are not unit identifiers and must not be treated as registry refs.
+
+
+
+        if match.start() > 0 and text[match.start() - 1] in ("/", "\\"):
+
+
+
+            continue
+
+
+
+        yield match.group(0)
+
+
+def load_registry_units(repo_root: str, violations: List[str]) -> List[str]:
+
+
+
+    registry_path = os.path.join(repo_root, "data", "registries", "unit_registry.json")
+
+
+
+    if not os.path.isfile(registry_path):
+
+
+
+        return []
+
+
+
+    try:
+
+
+
+        with open(registry_path, "r", encoding="utf-8") as handle:
+
+
+
+            payload = json.load(handle)
+
+
+
+    except (OSError, ValueError) as exc:
+
+
+
+        violations.append("unable to read data/registries/unit_registry.json: {}".format(exc))
+
+
+
+        return []
+
+
+
+    units = payload.get("record", {}).get("units", [])
+
+
+
+    if not isinstance(units, list):
+
+
+
+        violations.append("data/registries/unit_registry.json has no record.units list")
+
+
+
+        return []
+
+
+
+    unit_ids: List[str] = []
+
+
+
+    for entry in units:
+
+
+
+        if not isinstance(entry, dict):
+
+
+
+            continue
+
+
+
+        unit_id = str(entry.get("unit_id", "")).strip()
+
+
+
+        if unit_id:
+
+
+
+            unit_ids.append(unit_id)
+
+
+
+    return unit_ids
 
 
 
@@ -458,11 +573,16 @@ def main() -> int:
 
 
 
-    # Any declared unit identifiers must exist in the canonical table.
+    # Any declared unit identifiers must exist in the canonical table or the
+    # machine-readable unit registry.
 
 
 
     declared_units = set(unit_map.keys())
+
+
+
+    declared_units.update(load_registry_units(repo_root, violations))
 
 
 
@@ -490,11 +610,11 @@ def main() -> int:
 
 
 
-            for match in UNIT_ID_RE.findall(text):
+            for unit_id in iter_unit_references(text):
 
 
 
-                referenced_units.add(match)
+                referenced_units.add(unit_id)
 
 
 

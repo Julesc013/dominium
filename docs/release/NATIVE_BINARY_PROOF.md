@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10E
+- Phase: POST-CONVERGE-10F
 - Status: partial
 
 ## Build Tuple
@@ -15,7 +15,7 @@
 | config | `debug` |
 | platform | `win32` |
 | renderer | `software` |
-| proof level | build; focused AuditX CTest fixed; full CTest blocked by unit/RepoX gates |
+| proof level | build; focused AuditX and unit invariant CTest fixed; full CTest blocked by RepoX/discovery/wall-time gates |
 
 ## Product Binaries
 
@@ -35,6 +35,7 @@
 - The VS2022/v143 tuple build passes and emits native product binaries.
 - The canonical `verify` build passes and bounded product smoke checks pass.
 - Focused AuditX CTest cases pass after targeted path and generated-projection fixes.
+- Focused tuple `invariant_units_present` passes after unit registry remediation.
 
 ## What This Does Not Prove
 
@@ -48,6 +49,8 @@
 
 CTest remains blocked after build proof:
 
-- full tuple CTest timed out after 20 minutes; CTest reached `invariant_units_present`, which fails on undeclared `unit.mass_energy.stub` and `unit.schema`
-- canonical `ctest --preset verify --output-on-failure` exceeded a 40-minute shell timeout; focused logs show `inv_repox_rules` fails on broad RepoX drift while AuditX cases now pass
+- `invariant_units_present` is fixed: `unit.mass_energy.stub` is declared in `data/registries/unit_registry.json`, and `unit.schema` path fragments are no longer treated as unit IDs
+- focused tuple `inv_repox_rules` still fails on broad RepoX/canonical-evidence drift
+- canonical `ctest --preset verify -N` currently discovers 0 tests, while the tuple verify build discovers 493 tests
+- canonical `ctest --preset verify --output-on-failure` previously exceeded a 40-minute shell timeout; full CTest was not rerun in POST-CONVERGE-10F because focused RepoX still fails
 - no generated binaries were committed

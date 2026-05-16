@@ -82,15 +82,26 @@ POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers:
 - `cmake --preset verify` and `cmake --build --preset verify` still pass
 - full CTest remains blocked by `invariant_units_present`, `inv_repox_rules`, and local wall-time
 
+POST-CONVERGE-10F remediated and classified the remaining unit/RepoX blockers:
+
+- `invariant_units_present` now passes in the tuple verify CTest lane
+- `unit.mass_energy.stub` is declared in `data/registries/unit_registry.json`
+- the unit validator no longer treats path fragments such as `materials/unit.schema` as unit identifiers
+- `inv_repox_rules` still fails with broad RepoX/canonical-evidence drift
+- the RepoX CTest wrapper now writes generated proof/profile output to ignored `.dominium.local/ctest/repox/`
+- canonical `ctest --preset verify -N` currently discovers 0 tests, while the tuple verify build discovers 493 tests
+- full CTest remains blocked by RepoX semantic failures and wall-time/discovery concerns
+
 Current priority order:
 
-1. remediate or explicitly classify `invariant_units_present`
-2. remediate or explicitly accept remaining RepoX FAST/CTest drift findings
-3. decide whether POST-CONVERGE-11 may proceed with build-green/CTest-warning status
-4. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
-5. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
-6. add or prove a real portable projection assembly path that emits required manifests and roots
-7. rerun product boot and portable projection proof only after build, product command, and projection blockers are accepted or resolved
+1. remediate `inv_repox_rules` broad RepoX/canonical-evidence drift
+2. repair or regenerate canonical `verify` CTest discovery so `ctest --preset verify` sees the expected tests
+3. partition or classify full CTest wall-time after semantic RepoX failures are resolved
+4. decide whether POST-CONVERGE-11 may proceed with build-green/CTest-warning status
+5. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
+6. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
+7. add or prove a real portable projection assembly path that emits required manifests and roots
+8. rerun product boot and portable projection proof only after build, product command, and projection blockers are accepted or resolved
 
 Planning references:
 
@@ -102,6 +113,7 @@ Planning references:
 - `docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_10_BUILD_BINARY_PROOF.md`
 - `docs/repo/audits/POST_CONVERGE_10E_CTEST_AUDITX_REMEDIATION.md`
+- `docs/repo/audits/POST_CONVERGE_10F_UNIT_REPOX_REMEDIATION.md`
 - `docs/repo/EXCEPTION_RETIREMENT_QUEUE.md`
 - `docs/repo/BUILD_ENVIRONMENT_REMEDIATION.md`
 - `docs/repo/BUILD_VERIFICATION_PATHS.md`
@@ -144,10 +156,10 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 
 ## Suggested Sequence
 
-1. Fix `invariant_units_present` unit registry drift after build proof.
-2. Rerun `tools/build/probe_toolchains.py` and generate ignored local preset data.
-3. Rerun CTest through `verify.winnt10.x64.msvc143.mt.debug` or the canonical `verify` lane.
-4. Address remaining RepoX FAST/CTest drift findings in a targeted remediation task.
+1. Address remaining RepoX FAST/CTest drift findings in a targeted remediation task.
+2. Repair or regenerate canonical `verify` CTest discovery.
+3. Rerun CTest through `verify.winnt10.x64.msvc143.mt.debug` and the canonical `verify` lane.
+4. Run TEST-PERF-00 if semantic failures are clear but full CTest still exceeds local wall-time.
 5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
 6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
 7. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.

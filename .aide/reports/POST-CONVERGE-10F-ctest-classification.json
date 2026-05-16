@@ -1,0 +1,24 @@
+{
+  "schema_version": "dominium.post_converge.ctest_classification.v1",
+  "task_id": "POST-CONVERGE-10F",
+  "head": "28602fabe9a0759c542e7c6f202eb1df2f703a73",
+  "canonical_preset": {
+    "command": "ctest --preset verify -N",
+    "result": "pass_with_warning",
+    "tests_discovered": 0,
+    "classification": "canonical_verify_test_discovery_gap"
+  },
+  "tuple_preset": {
+    "test_dir": ".dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug",
+    "tests_discovered": 493,
+    "unit_invariant": "pass",
+    "repox_rules": "fail"
+  },
+  "semantic_failures_remaining": true,
+  "wall_time_blocker": true,
+  "wall_time_primary": false,
+  "full_ctest_run": false,
+  "ready_for_product_boot_with_warning": false,
+  "needs_TEST_PERF_00": true,
+  "recommended_before_test_perf": "POST-CONVERGE-10G - RepoX Rule and Canonical Evidence Drift Remediation"
+}

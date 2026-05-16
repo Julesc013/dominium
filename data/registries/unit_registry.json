@@ -29,6 +29,28 @@
       },
       {
         "schema_version": "1.0.0",
+        "unit_id": "unit.mass_energy.stub",
+        "dimension_id": "dim.mass_energy",
+        "scale_factor_to_canonical": 16777216,
+        "display_symbol": "mass-energy",
+        "description": "Provisional combined mass-energy accounting unit.",
+        "version_introduced": "1.0.0",
+        "deprecated": false,
+        "extensions": {},
+        "stability": {
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional",
+          "rationale": "MVP stub or first implementation",
+          "future_series": "DOMAIN",
+          "replacement_target": "Replace MVP domain and solver scaffolds with release-pinned domain foundation contracts and solver declarations.",
+          "contract_id": "",
+          "deterministic_fingerprint": "a436b4abb0e6ccc793614baaebfd358a4ce287dfb86fbb55ec57e0c8169956d6",
+          "extensions": {},
+          "deprecated": false
+        }
+      },
+      {
+        "schema_version": "1.0.0",
         "unit_id": "unit.m",
         "dimension_id": "dim.length",
         "scale_factor_to_canonical": 16777216,

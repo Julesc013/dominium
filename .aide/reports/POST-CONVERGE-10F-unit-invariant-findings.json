@@ -1,0 +1,37 @@
+{
+  "schema_version": "dominium.post_converge.unit_invariant_findings.v1",
+  "task_id": "POST-CONVERGE-10F",
+  "head": "28602fabe9a0759c542e7c6f202eb1df2f703a73",
+  "tests_run": [
+    {
+      "command": "python tests/contract/unit_annotation_validation.py --repo-root .",
+      "result": "pass",
+      "notes": "Unit annotation validation OK. units=59"
+    },
+    {
+      "command": "ctest --test-dir .dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug -C Debug -R invariant_units_present --output-on-failure",
+      "result": "pass",
+      "notes": "1/1 passed"
+    }
+  ],
+  "failures_before": [
+    {
+      "unit_or_token": "unit.mass_energy.stub",
+      "classification": "valid_unit_missing_registry_declaration",
+      "source": "contracts/schemas/quantity.schema.json"
+    },
+    {
+      "unit_or_token": "unit.schema",
+      "classification": "false_positive_path_fragment",
+      "source": "contracts/schemas/materials/unit.schema"
+    }
+  ],
+  "changes_made": [
+    "Added unit.mass_energy.stub to data/registries/unit_registry.json",
+    "Loaded data/registries/unit_registry.json in tests/contract/unit_annotation_validation.py",
+    "Ignored unit-like matches immediately preceded by slash or backslash"
+  ],
+  "failures_after": [],
+  "blockers": [],
+  "readiness": "unit_invariant_cleared"
+}

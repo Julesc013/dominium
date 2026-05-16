@@ -2,98 +2,133 @@
 
 ## PHASE
 
-AIDE-MOVE-02-REFINE - identify second low-risk candidate
+UNSPECIFIED - POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation
 
 ## GOAL
 
-Refine the second move candidate search after AIDE-MOVE-02-PLAN found no safe candidate. This is no-apply refinement evidence only.
+POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation
 
 ## WHY
 
-AIDE should not force a second move wave if the remaining candidates are active tooling, policy-sensitive, authority-sensitive, build-sensitive, or machine-readable metadata.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/AIDE-MOVE-02-PLAN-status.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-blockers.md`
-- `.aide/reports/AIDE-MOVE-02-PLAN-summary.json`
-- `.aide/refactors/AIDE-MOVE-02.plan.json`
-- `.aide/reports/roots/ide.inventory.json`
-- `.aide/reports/roots/performance.inventory.json`
-- `.aide/reports/roots/validation.inventory.json`
-- `.aide/reports/roots/governance.inventory.json`
-- `.aide/reports/roots/meta.inventory.json`
-- `.aide/reports/roots/templates.inventory.json`
-- `.aide/reports/roots/templates.classification.json`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- `.aide/refactors/**`
+- `data/registries/unit_registry.json`
+- `tests/contract/unit_annotation_validation.py`
+- `tests/invariant/repox_rules_tests.py`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
-- `docs/repo/root-recycling/**`
+- `docs/repo/audits/**`
+- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
+- `docs/repo/BUILD_VERIFICATION_PATHS.md`
+- `docs/repo/FAST_GATE_REMEDIATION.md`
+- `docs/release/NATIVE_BINARY_PROOF.md`
+- `.aide/context/**`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
-- `apps/**`
-- `engine/**`
-- `game/**`
-- `runtime/**`
-- `content/**`
-- `tests/**`
-- `cmake/**`
-- `release/**`
-- candidate source files
-- product/version root files
-- any file move, delete, rename, or reference rewrite
-- path alias activation, salvage application, move-map application, or exception retirement
+- `.git/**`
+- `.env`
+- `secrets/**`
+- `.aide.local/**`
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-- Re-read AIDE-MOVE-02 blocker evidence and root reports.
-- Search for single-file docs-only, README, historical/evidence, or generated review candidates.
-- Reject active Python/tooling, machine-readable metadata, identity-sensitive content, authority-sensitive specs, build-sensitive inputs, and template scaffolds with protected references.
-- Create candidate/refinement reports and no-candidate JSON if no candidate survives.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-Run AIDE, strict validators, supplemental docs/build/UI/ABI checks, JSON parsing, and git diff checks. Record results in `.aide/reports/AIDE-MOVE-02-REFINE-validation.md`.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
+
+## COMMITS
+
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
-- `.aide/reports/AIDE-MOVE-02-REFINE-status.md`
-- `.aide/reports/AIDE-MOVE-02-REFINE-candidates.md`
-- `.aide/reports/AIDE-MOVE-02-REFINE-candidates.json`
-- `.aide/reports/AIDE-MOVE-02-REFINE-decision.md`
-- `.aide/reports/AIDE-MOVE-02-REFINE-validation.md`
-- `.aide/reports/AIDE-MOVE-02-REFINE-blockers.md`
-- `.aide/refactors/AIDE-MOVE-02.no_candidate.json`
-- `docs/repo/root-recycling/AIDE_MOVE_02_REFINEMENT.md`
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-- Do not move files.
-- Do not delete files.
-- Do not rename files.
-- Do not rewrite references.
-- Do not approve or apply move maps or salvage maps.
-- Do not create aliases or shims.
-- Do not retire exceptions.
-- Do not change product/source/runtime/build behavior.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-- Candidate report and decision report exist.
-- No-candidate JSON exists if no safe candidate survives.
-- Next task recommendation is explicit.
-- Validation passes or only known warnings remain.
-- No move/delete/rename/reference rewrite/alias/shim/map application/exception retirement occurred.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- `invariant_units_present` is fixed or classified.
+- `inv_repox_rules` is fixed or precisely classified.
+- Product boot proof readiness is recorded.
 
 ## OUTPUT_SCHEMA
 
-Refinement outputs are Markdown and JSON reports under `.aide/reports/**`, a no-candidate JSON artifact under `.aide/refactors/**`, and narrow root-recycling documentation under `docs/repo/root-recycling/**`.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
-Approximate task packet tokens: 850. No raw source bodies are embedded beyond short path references.
+- method: chars / 4, rounded up
+- chars: 4186
+- approx_tokens: 1047
+- budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

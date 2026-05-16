@@ -2,7 +2,7 @@
 
 ## Status
 
-- Phase: POST-CONVERGE-10E
+- Phase: POST-CONVERGE-10F
 - Current status: partial
 
 ## Command
@@ -48,6 +48,8 @@ Remaining:
 - POST-CONVERGE-10E fixed targeted AuditX path assumptions exposed by CTest, but it did not fix broad RepoX drift.
 - Canonical CTest now exposes the same drift through `inv_repox_rules`.
 - FAST pass is not claimed because `python scripts/dev/gate.py verify --repo-root .` was not rerun to completion and RepoX drift remains active.
+- POST-CONVERGE-10F fixed the separate `invariant_units_present` blocker and classified the current RepoX proof manifest: 1,844 failures and 5 warnings remain, dominated by doc status headers, canon index drift, historical-reference drift, offline boot/AppShell gaps, and top-level structure drift.
+- The focused RepoX CTest wrapper now writes generated proof/profile output to `.dominium.local/ctest/repox/` so remediation runs do not dirty tracked audit evidence.
 
 ## Follow-up
 
@@ -58,4 +60,5 @@ Run a targeted RepoX drift remediation task after build toolchain status is reso
 - stale audit evidence
 - intentionally absent roots that need updated RepoX rules or exemptions
 - real invariant regressions that require product/runtime review
-- the current CTest `invariant_units_present` failure, which is separate from FAST but blocks native CTest proof
+- canonical `verify` CTest discovery currently reporting 0 tests while the tuple verify build reports 493 tests
+- full CTest wall-time after RepoX semantic failures are clear

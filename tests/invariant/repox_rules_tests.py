@@ -18,7 +18,18 @@ def main() -> int:
         return 0
 
     script = os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py")
-    cmd = [sys.executable, script, "--repo-root", repo_root]
+    out_dir = os.path.join(repo_root, ".dominium.local", "ctest", "repox")
+    os.makedirs(out_dir, exist_ok=True)
+    cmd = [
+        sys.executable,
+        script,
+        "--repo-root",
+        repo_root,
+        "--proof-manifest-out",
+        os.path.join(out_dir, "proof_manifest.json"),
+        "--profile-out",
+        os.path.join(out_dir, "REPOX_PROFILE.json"),
+    ]
     return subprocess.call(cmd)
 
 

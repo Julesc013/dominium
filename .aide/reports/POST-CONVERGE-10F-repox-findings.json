@@ -1,0 +1,31 @@
+{
+  "schema_version": "dominium.post_converge.repox_findings.v1",
+  "task_id": "POST-CONVERGE-10F",
+  "head": "28602fabe9a0759c542e7c6f202eb1df2f703a73",
+  "tests_run": [
+    {
+      "command": "ctest --test-dir .dominium.local/build/tuple.verify.winnt10.x64.msvc143.mt.debug -C Debug -R inv_repox_rules --output-on-failure",
+      "result": "fail",
+      "notes": "1,844 failures and 5 warnings in .dominium.local/ctest/repox/proof_manifest.json"
+    }
+  ],
+  "changes_made": [
+    "Redirected RepoX CTest generated proof/profile outputs to .dominium.local/ctest/repox/"
+  ],
+  "failure_counts": {
+    "INV-DOC-STATUS-HEADER": 1545,
+    "INV-CANON-INDEX": 84,
+    "INV-CANON-NO-HIST-REF": 81,
+    "INV-OFFLINE-BOOT-OK": 22,
+    "INV-REPOX-STRUCTURE": 22,
+    "INV-NEW-CONTRACT-REQUIRES-ENTRY": 9,
+    "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR": 7
+  },
+  "warnings": 5,
+  "classification": "broad_repox_canonical_evidence_drift",
+  "blockers": [
+    "RepoX drift is too broad for POST-CONVERGE-10F narrow remediation",
+    "Product boot proof should wait until RepoX drift is remediated or explicitly dispositioned"
+  ],
+  "readiness": "blocked_for_product_boot"
+}

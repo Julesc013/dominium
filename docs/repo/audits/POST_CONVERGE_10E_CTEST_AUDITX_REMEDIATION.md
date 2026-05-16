@@ -162,3 +162,9 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 
 - ready_for_POST_CONVERGE_11: no
 - reason: native build and targeted AuditX tests pass, but CTest still has real failing gates (`invariant_units_present`, `inv_repox_rules`) and full canonical CTest exceeds the local timeout.
+
+## POST-CONVERGE-10F Follow-Up Note
+
+POST-CONVERGE-10F cleared the `invariant_units_present` blocker by declaring `unit.mass_energy.stub` in `data/registries/unit_registry.json` and avoiding false-positive unit parsing from `materials/unit.schema` path fragments.
+
+`inv_repox_rules` remains a real broad RepoX/canonical-evidence drift blocker. POST-CONVERGE-10F also found that canonical `ctest --preset verify -N` currently discovers 0 tests while the tuple verify build discovers 493 tests. Product boot proof remains deferred until RepoX drift and canonical CTest discovery are remediated or explicitly dispositioned.

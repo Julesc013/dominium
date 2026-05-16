@@ -2,6 +2,10 @@
 
 ## Accepted Warnings
 
+- POST-CONVERGE-10F is PARTIAL because `inv_repox_rules` still reports broad RepoX/canonical-evidence drift.
+- POST-CONVERGE-10F accepts that full CTest wall-time remains unproven while focused RepoX still fails.
+- Canonical `ctest --preset verify -N` currently discovers 0 tests; tuple verify CTest discovery finds 493 tests.
+- RepoX generated CTest proof/profile output is redirected to ignored `.dominium.local/ctest/repox/`.
 - AIDE-MOVE-02-REFINE passes with warnings because no second low-risk candidate survived the stricter single-file/docs/evidence filter.
 - `templates/adapter_template.md` and `templates/domain_contract_template.md` are near-misses, but both are template scaffolds with conversion fates and protected spec/XStack references.
 - AIDE-MOVE-02-PLAN passes with warnings because no second low-risk docs-only/evidence-only candidate was selected.
@@ -24,6 +28,8 @@
 
 ## Cleared Warnings
 
+- `invariant_units_present` is cleared by adding `unit.mass_energy.stub` to `data/registries/unit_registry.json`.
+- `unit.schema` is cleared as a false-positive unit token from the path fragment `materials/unit.schema`.
 - AIDE-GATE-02 found no target path collision at `docs/architecture/IDE_PROJECTIONS.md`.
 - Plan parsing confirmed `apply_allowed = false` and `approval_status = not_approved`.
 - Strict validators and supplemental docs/build/UI/ABI checks passed.
