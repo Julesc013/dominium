@@ -31,3 +31,7 @@
 ## Focused RepoX Result
 
 Focused tuple `inv_repox_rules` remains failing by design for this partial remediation. Contract registry failures are eliminated, but remaining non-contract RepoX families still block POST-CONVERGE-11.
+
+## Post-Commit Commit Policy Note
+
+The first POST-CONVERGE-10K commit, `2f11713db05e6c9e2afcbc6aac9ba5532b349f8d`, failed the post-commit AIDE commit check because the `## Changelog` bullets used lower-case category prefixes. The task forbids amend/squash, so this follow-up evidence update records the policy issue without rewriting history.
