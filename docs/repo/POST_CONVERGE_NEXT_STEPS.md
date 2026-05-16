@@ -245,3 +245,13 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No product boot proof, portable projection proof, package proof, release proof, dummy wrapper, or generated artifact was created.
 - POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance failures outside the product/projection family.
 - Next recommended task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.
+
+## POST-CONVERGE-10M Update - Retired-Domain Path Policy
+
+- Result: PARTIAL.
+- Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings.
+- Safe stale RepoX rule paths for retired embodiment, geology, worldgen-refinement, universe, and diagnostics roots were updated to exact current locations.
+- RepoX group cache file-dependency hashing was repaired so rule edits invalidate stale cached group output.
+- Two retired-domain failures remain because `game.domains.embodiment` lazily imports retired `embodiment.*` modules during MW-4 fixture evaluation; fixing that would change product/runtime source behavior and was not authorized by 10M.
+- POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance failures.
+- Next recommended task: `POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`.

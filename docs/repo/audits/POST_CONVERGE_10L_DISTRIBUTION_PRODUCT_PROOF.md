@@ -93,3 +93,7 @@ POST-CONVERGE-11 is not ready yet. Product proof failures alone should not circu
 - JSON reports and JSONL ledger parse: PASS.
 - Full CTest, build, product boot proof, portable projection proof, package proof, and release proof: NOT RUN by scope.
 - Final command details are recorded in `.aide/reports/POST-CONVERGE-10L-validation.md`.
+
+## POST-CONVERGE-10M Follow-Up
+
+POST-CONVERGE-10M reduced focused RepoX from 51 failures / 5 warnings to 23 failures / 5 warnings by fixing stale retired-domain path assumptions in RepoX rule code and repairing file-dependency cache invalidation for rule edits. It did not change the distribution/product proof classification from 10L and did not generate product boot proof, portable projection proof, package proof, release proof, or distribution wrapper artifacts.

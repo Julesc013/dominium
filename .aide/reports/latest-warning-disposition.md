@@ -22,3 +22,11 @@ Superseded By: none
 - Missing product/projection proof remains blocking and was not converted into a warning.
 - POST-CONVERGE-11 remains blocked because non-proof RepoX failures remain.
 - Full CTest, product boot proof, package proof, release proof, and portable projection proof were not run by scope.
+
+## POST-CONVERGE-10M
+
+- Focused RepoX remains expected-failing but improved to 23 failures / 5 warnings.
+- The safe retired-domain stale rule path family was fixed, not converted into warnings.
+- Two source import blockers remain for MW-4 fixture evaluation through stale `embodiment.*` lazy imports.
+- Product/runtime source behavior was not changed by scope.
+- Full CTest, product boot proof, package proof, release proof, and portable projection proof were not run by scope.

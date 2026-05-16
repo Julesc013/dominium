@@ -1,0 +1,64 @@
+{
+  "schema_version": "dominium.post_converge_10m.before_after.v1",
+  "task_id": "POST-CONVERGE-10M",
+  "before": {
+    "failures": 51,
+    "warnings": 5
+  },
+  "after": {
+    "failures": 23,
+    "warnings": 5
+  },
+  "fixed_families": [
+    {
+      "id": "retired_domain_rule_paths",
+      "before": 28,
+      "after": 0,
+      "classification": "stale_current_reference"
+    }
+  ],
+  "remaining_families": [
+    {
+      "id": "distribution_product_proof",
+      "count": 12,
+      "classification": "product_or_projection_proof_blocked"
+    },
+    {
+      "id": "retired_domain_lazy_import",
+      "count": 2,
+      "classification": "real_current_policy_violation"
+    },
+    {
+      "id": "tool_hash_audit_staleness",
+      "count": 3,
+      "classification": "unknown"
+    },
+    {
+      "id": "ruleset_mapping_gaps",
+      "count": 2,
+      "classification": "unknown"
+    },
+    {
+      "id": "canon_superseded_doc",
+      "count": 1,
+      "classification": "unknown"
+    },
+    {
+      "id": "extension_registry_gap",
+      "count": 1,
+      "classification": "unknown"
+    },
+    {
+      "id": "worldgen_retry_loop_policy",
+      "count": 1,
+      "classification": "unknown"
+    },
+    {
+      "id": "shadow_bounded_policy",
+      "count": 1,
+      "classification": "unknown"
+    }
+  ],
+  "remaining_are_product_proof_blockers": false,
+  "ready_for_post_converge_11": false
+}

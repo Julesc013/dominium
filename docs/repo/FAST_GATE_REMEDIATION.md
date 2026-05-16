@@ -119,3 +119,11 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - The target distribution/product proof failures are classified, not fixed: missing `dist/bin` wrapper/projection surfaces remain for product descriptor emission and AppShell-owned delegation.
 - FAST remains blocked because non-proof RepoX failures still exist, including retired-domain path policy checks, tool hash/audit staleness, and ruleset mapping gaps.
 - Next recommended semantic task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.
+
+## POST-CONVERGE-10M Update - Retired-Domain Path Policy
+
+- Result: PARTIAL.
+- Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings.
+- The stale missing-file failures for retired `embodiment/`, `geo/`, `worldgen/refinement/`, `universe/`, and `diag/` RepoX rule paths are fixed.
+- FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, a current `game.domains.embodiment` lazy import blocker, tool hash/audit staleness, ruleset mapping gaps, and smaller policy failures.
+- Next recommended semantic task: `POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`.

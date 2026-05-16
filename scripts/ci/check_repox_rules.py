@@ -94,8 +94,8 @@ UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", 
 UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_identity.schema.json")
 SESSION_SPEC_SCHEMA_REL = os.path.join("contracts", "schemas", "session", "session_spec.schema")
 SESSION_SPEC_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "session_spec.schema.json")
-UNIVERSE_IDENTITY_BUILDER_REL = os.path.join("universe", "universe_identity_builder.py")
-UNIVERSE_CONTRACT_ENFORCER_REL = os.path.join("universe", "universe_contract_enforcer.py")
+UNIVERSE_IDENTITY_BUILDER_REL = os.path.join("game", "domains", "universe", "universe_identity_builder.py")
+UNIVERSE_CONTRACT_ENFORCER_REL = os.path.join("game", "domains", "universe", "universe_contract_enforcer.py")
 SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "runner.py")
 SESSION_SCRIPT_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
 SEMANTIC_CONTRACT_VALIDATOR_REL = os.path.join("tools", "compatx", "core", "semantic_contract_validator.py")
@@ -534,17 +534,17 @@ EMB_BASELINE_DOC_REL = os.path.join("docs", "embodiment", "EMBODIMENT_BASELINE.m
 EARTH6_COLLISION_DOC_REL = os.path.join("docs", "embodiment", "TERRAIN_COLLISION_MODEL.md")
 EMB1_TOOLBELT_DOC_REL = os.path.join("docs", "embodiment", "MVP_TOOLBELT_MODEL.md")
 EMB2_LOCOMOTION_DOC_REL = os.path.join("docs", "embodiment", "LOCOMOTION_POLISH_MODEL.md")
-EMB_BODY_SYSTEM_REL = os.path.join("embodiment", "body", "body_system.py")
-EARTH6_COLLISION_PROVIDER_REL = os.path.join("embodiment", "collision", "macro_heightfield_provider.py")
-EMB_LENS_ENGINE_REL = os.path.join("embodiment", "lens", "lens_engine.py")
-EMB2_CAMERA_SMOOTHING_REL = os.path.join("embodiment", "lens", "camera_smoothing.py")
-EMB2_JUMP_PROCESS_REL = os.path.join("embodiment", "movement", "jump_process.py")
-EMB2_FRICTION_MODEL_REL = os.path.join("embodiment", "movement", "friction_model.py")
-EMB1_TERRAIN_TOOL_REL = os.path.join("embodiment", "tools", "terrain_edit_tool.py")
-EMB1_SCANNER_TOOL_REL = os.path.join("embodiment", "tools", "scanner_tool.py")
-EMB1_LOGIC_TOOL_REL = os.path.join("embodiment", "tools", "logic_tool.py")
-EMB1_TELEPORT_TOOL_REL = os.path.join("embodiment", "tools", "teleport_tool.py")
-EMB1_TOOLBELT_ENGINE_REL = os.path.join("embodiment", "tools", "toolbelt_engine.py")
+EMB_BODY_SYSTEM_REL = os.path.join("game", "domains", "embodiment", "body", "body_system.py")
+EARTH6_COLLISION_PROVIDER_REL = os.path.join("game", "domains", "embodiment", "collision", "macro_heightfield_provider.py")
+EMB_LENS_ENGINE_REL = os.path.join("game", "domains", "embodiment", "lens", "lens_engine.py")
+EMB2_CAMERA_SMOOTHING_REL = os.path.join("game", "domains", "embodiment", "lens", "camera_smoothing.py")
+EMB2_JUMP_PROCESS_REL = os.path.join("game", "domains", "embodiment", "movement", "jump_process.py")
+EMB2_FRICTION_MODEL_REL = os.path.join("game", "domains", "embodiment", "movement", "friction_model.py")
+EMB1_TERRAIN_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "terrain_edit_tool.py")
+EMB1_SCANNER_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "scanner_tool.py")
+EMB1_LOGIC_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "logic_tool.py")
+EMB1_TELEPORT_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "teleport_tool.py")
+EMB1_TOOLBELT_ENGINE_REL = os.path.join("game", "domains", "embodiment", "tools", "toolbelt_engine.py")
 EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_template_registry.json")
 EARTH6_COLLISION_PROVIDER_REGISTRY_REL = os.path.join("data", "registries", "collision_provider_registry.json")
 EARTH6_SLOPE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "movement_slope_params_registry.json")
@@ -4849,7 +4849,7 @@ def check_no_silent_degrade(repo_root):
     enforcer_rel = os.path.join("compat", "negotiation", "degrade_enforcer.py")
     local_controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
     server_console_rel = os.path.join("apps", "server", "server_console.py")
-    logic_tool_rel = os.path.join("embodiment", "tools", "logic_tool.py")
+    logic_tool_rel = os.path.join("game", "domains", "embodiment", "tools", "logic_tool.py")
 
     violations = []
     required_tokens = {
@@ -7110,7 +7110,7 @@ def check_no_identity_override(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    overlay_engine_rel = os.path.join("geo", "overlay", "overlay_merge_engine.py")
+    overlay_engine_rel = os.path.join("game", "domains", "geology", "overlay", "overlay_merge_engine.py")
     violations = []
     required_tokens = {
         SOL_PIN_DOC_REL: (
@@ -7178,7 +7178,7 @@ def check_overlay_conflict_policy_declared(repo_root):
     conflict_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_policy.schema")
     conflict_artifact_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_artifact.schema")
     overlay_policy_registry_rel = os.path.join("data", "registries", "overlay_policy_registry.json")
-    overlay_engine_rel = os.path.join("geo", "overlay", "overlay_merge_engine.py")
+    overlay_engine_rel = os.path.join("game", "domains", "geology", "overlay", "overlay_merge_engine.py")
     explain_registry_rel = os.path.join("data", "registries", "explain_contract_registry.json")
 
     violations = []
@@ -7269,7 +7269,7 @@ def check_conflicts_not_silent_in_strict(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    overlay_engine_rel = os.path.join("geo", "overlay", "overlay_merge_engine.py")
+    overlay_engine_rel = os.path.join("game", "domains", "geology", "overlay", "overlay_merge_engine.py")
     explain_tool_rel = os.path.join("tools", "geo", "tool_explain_property_origin.py")
     replay_tool_rel = os.path.join("tools", "geo", "tool_replay_overlay_merge.py")
     conflict_doc_rel = os.path.join("docs", "geo", "OVERLAY_CONFLICT_POLICIES.md")
@@ -10646,7 +10646,7 @@ def check_repro_bundle_deterministic(repo_root):
     doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
     baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
     schema_rel = os.path.join("contracts", "schemas", "diag", "repro_bundle_manifest.schema")
-    builder_rel = os.path.join("diag", "repro_bundle_builder.py")
+    builder_rel = os.path.join("runtime", "diagnostics", "repro_bundle_builder.py")
     replay_rel = os.path.join("tools", "diag", "tool_replay_bundle.py")
     probe_rel = os.path.join("tools", "diag", "diag0_probe.py")
     test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_bundle_hash_stable.py")
@@ -10732,7 +10732,7 @@ def check_repro_bundle_no_secrets(repo_root):
 
     doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
     baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
-    builder_rel = os.path.join("diag", "repro_bundle_builder.py")
+    builder_rel = os.path.join("runtime", "diagnostics", "repro_bundle_builder.py")
     test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_no_secrets_in_bundle.py")
 
     violations = []
@@ -10782,7 +10782,7 @@ def check_refinement_budgeted(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    scheduler_rel = os.path.join("worldgen", "refinement", "refinement_scheduler.py")
+    scheduler_rel = os.path.join("game", "domains", "worldgen", "refinement", "refinement_scheduler.py")
     runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
     doc_rel = os.path.join("docs", "worldgen", "REFINEMENT_PIPELINE_MODEL.md")
     stress_tool_rel = os.path.join("tools", "worldgen", "tool_run_refinement_stress.py")
@@ -10856,8 +10856,8 @@ def check_cache_key_includes_contracts(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    cache_rel = os.path.join("worldgen", "refinement", "refinement_cache.py")
-    worldgen_rel = os.path.join("geo", "worldgen", "worldgen_engine.py")
+    cache_rel = os.path.join("game", "domains", "worldgen", "refinement", "refinement_cache.py")
+    worldgen_rel = os.path.join("game", "domains", "geology", "worldgen", "worldgen_engine.py")
     runtime_rel = os.path.join("tools", "xstack", "sessionx", "process_runtime.py")
     runner_rel = os.path.join("tools", "xstack", "sessionx", "runner.py")
     script_runner_rel = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
@@ -13839,11 +13839,20 @@ def _store_group_cache(repo_root, group_id, cache_key, payload):
         handle.write("\n")
 
 
-def _group_dep_hash(roots, deps):
+def _group_dep_hash(repo_root, roots, deps):
     rows = []
     for dep in sorted(set(str(item).strip().lower() for item in deps if str(item).strip())):
         row = roots.get(dep, {})
-        rows.append("{}:{}".format(dep, str(row.get("hash", ""))))
+        dep_hash = str(row.get("hash", ""))
+        if not dep_hash:
+            dep_path = os.path.join(repo_root, dep.replace("/", os.sep))
+            if os.path.isfile(dep_path):
+                try:
+                    with open(dep_path, "rb") as handle:
+                        dep_hash = hashlib.sha256(handle.read()).hexdigest()
+                except OSError:
+                    dep_hash = ""
+        rows.append("{}:{}".format(dep, dep_hash))
     return _sha256_text("|".join(rows))
 
 
@@ -13858,7 +13867,7 @@ def _run_check_group(
     checks,
 ):
     dep_subtrees = tuple(scope_subtrees) + (REPOX_RULE_IMPL_REL,)
-    input_hash = _group_dep_hash(roots, dep_subtrees)
+    input_hash = _group_dep_hash(repo_root, roots, dep_subtrees)
     cache_key = _sha256_text(json.dumps({"group_id": group_id, "input_hash": input_hash}, sort_keys=True))
 
     should_execute = True

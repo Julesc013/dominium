@@ -187,3 +187,11 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - The 12 distribution/product target failures are missing `dist/bin` wrapper/projection surfaces, not build-output proof that can be faked in a governance classification task.
 - No configure/build rerun was required because POST-CONVERGE-10L changed evidence/status files only.
 - POST-CONVERGE-11 remains blocked by non-proof RepoX governance failures.
+
+## POST-CONVERGE-10M Update - Retired-Domain Path Policy
+
+- `ctest --preset verify -N` reports 493 tests in the refreshed local verify build tree.
+- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing, improved to 23 failures / 5 warnings after stale retired-domain RepoX paths were updated.
+- No configure/build rerun was required because POST-CONVERGE-10M changed RepoX governance code and evidence/status files only.
+- Full CTest remains a promotion gate and was not run because focused RepoX still has semantic failures.
+- POST-CONVERGE-11 remains blocked by non-proof RepoX governance failures.
