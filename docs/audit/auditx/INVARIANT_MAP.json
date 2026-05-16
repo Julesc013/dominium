@@ -73,77 +73,113 @@
         "RISK": 317
       }
     },
-    "INV-ALL-ELEC-ACTIONS-THROUGH-CONTROL": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "control.direct_breaker_toggle_smell",
-          "finding_id": "E191_DIRECT_BREAKER_TOGGLE_SMELL:0001",
-          "location": "src/thermal/network/thermal_network_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-ALL-REACTIONS-LEDGERED": {
-      "finding_count": 3,
+      "finding_count": 2,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 2
       },
       "sample_findings": [
         {
           "category": "reliability.silent_reaction_smell",
           "finding_id": "E248_SILENT_REACTION_SMELL:0001",
-          "location": "src/chem/process_run_engine.py"
-        },
-        {
-          "category": "reliability.silent_reaction_smell",
-          "finding_id": "E248_SILENT_REACTION_SMELL:0002",
           "location": "tools/chem/tool_replay_combustion_window.py"
         },
         {
           "category": "reliability.silent_reaction_smell",
-          "finding_id": "E248_SILENT_REACTION_SMELL:0003",
+          "finding_id": "E248_SILENT_REACTION_SMELL:0002",
           "location": "tools/chem/tool_replay_process_run.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 2
       }
     },
-    "INV-ALL-REGISTRIES-TAGGED": {
-      "finding_count": 4,
+    "INV-ARCH-AUDIT-MUST-PASS-BEFORE-RELEASE": {
+      "finding_count": 6,
       "recommended_actions": {
-        "ADD_RULE": 4
+        "REWRITE": 6
       },
       "sample_findings": [
         {
-          "category": "meta.missing_stability_marker_smell",
-          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0001",
-          "location": "data/registries/toolchain_test_profile_registry.json"
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0001",
+          "location": "astro/illumination/illumination_geometry_engine.py"
         },
         {
-          "category": "meta.missing_stability_marker_smell",
-          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0002",
-          "location": "data/registries/toolchain_test_profile_registry.json"
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0002",
+          "location": "geo/index/object_id_engine.py"
         },
         {
-          "category": "meta.missing_stability_marker_smell",
-          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0003",
-          "location": "data/registries/toolchain_test_profile_registry.json"
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0003",
+          "location": "geo/overlay/overlay_merge_engine.py"
         },
         {
-          "category": "meta.missing_stability_marker_smell",
-          "finding_id": "E449_MISSING_STABILITY_MARKER_SMELL:0004",
-          "location": "data/registries/toolchain_test_profile_registry.json"
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0004",
+          "location": "geo/overlay/overlay_merge_engine.py"
+        },
+        {
+          "category": "arch.duplicate_semantic_engine_smell",
+          "finding_id": "E455_DUPLICATE_SEMANTIC_ENGINE_SMELL:0005",
+          "location": "worldgen/earth/lighting/horizon_shadow_engine.py"
         }
       ],
       "severities": {
-        "RISK": 4
+        "RISK": 6
+      }
+    },
+    "INV-ARCH-GRAPH-MATCHES-REPO": {
+      "finding_count": 6,
+      "recommended_actions": {
+        "ADD_RULE": 6
+      },
+      "sample_findings": [
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0003",
+          "location": ".aide"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0005",
+          "location": ".aide.local.example"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0010",
+          "location": "apps"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0020",
+          "location": "content"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0022",
+          "location": "contracts"
+        }
+      ],
+      "severities": {
+        "RISK": 6
+      }
+    },
+    "INV-ARCH-GRAPH-V1-PRESENT": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "ADD_RULE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.architecture_drift_smell",
+          "finding_id": "E560_ARCHITECTURE_DRIFT_SMELL:0001",
+          "location": "data/architecture/architecture_graph.v1.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
       }
     },
     "INV-AUTHORITY-REQUIRED": {
@@ -155,42 +191,11 @@
         {
           "category": "server.intent_without_authority_smell",
           "finding_id": "E403_INTENT_WITHOUT_AUTHORITY_SMELL:0001",
-          "location": "src/server/server_boot.py"
+          "location": "apps/server/server_boot.py"
         }
       ],
       "severities": {
         "RISK": 1
-      }
-    },
-    "INV-BODY-MUTATION-PROCESS-ONLY": {
-      "finding_count": 4,
-      "recommended_actions": {
-        "REWRITE": 4
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0001",
-          "location": "src/client/ui/teleport_controller.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0002",
-          "location": "src/client/ui/viewer_shell.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0003",
-          "location": "src/embodiment/collision/macro_heightfield_provider.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0004",
-          "location": "src/field/field_boundary_exchange.py"
-        }
-      ],
-      "severities": {
-        "RISK": 4
       }
     },
     "INV-BUNDLES-DETERMINISTIC": {
@@ -210,9 +215,9 @@
       }
     },
     "INV-CANON-INDEX": {
-      "finding_count": 907,
+      "finding_count": 1032,
       "recommended_actions": {
-        "DOC_FIX": 907
+        "DOC_FIX": 1032
       },
       "sample_findings": [
         {
@@ -242,7 +247,7 @@
         }
       ],
       "severities": {
-        "WARN": 907
+        "WARN": 1032
       }
     },
     "INV-CAPABILITY-SCOPE": {
@@ -281,6 +286,22 @@
         "WARN": 5
       }
     },
+    "INV-CHANGE-MUST-REFERENCE-DEMAND": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "planning.orphan_feature_smell",
+          "finding_id": "E300_ORPHAN_FEATURE_SMELL:0001",
+          "location": "data/registries/extension_interpretation_registry.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
     "INV-CHEM-BUDGETED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -313,32 +334,6 @@
         "RISK": 1
       }
     },
-    "INV-COLLAPSE-ONLY-VIA-PROCESS": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "REWRITE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.implicit_system_collapse_smell",
-          "finding_id": "E258_IMPLICIT_SYSTEM_COLLAPSE_SMELL:0001",
-          "location": "src/reality/transitions/transition_controller.py"
-        },
-        {
-          "category": "architecture.implicit_system_collapse_smell",
-          "finding_id": "E258_IMPLICIT_SYSTEM_COLLAPSE_SMELL:0002",
-          "location": "src/system/macro/macro_capsule_engine.py"
-        },
-        {
-          "category": "architecture.implicit_system_collapse_smell",
-          "finding_id": "E258_IMPLICIT_SYSTEM_COLLAPSE_SMELL:0003",
-          "location": "src/system/roi/system_roi_scheduler.py"
-        }
-      ],
-      "severities": {
-        "RISK": 3
-      }
-    },
     "INV-COMMAND-CAPABILITY-DECLARED": {
       "finding_count": 1,
       "recommended_actions": {
@@ -348,7 +343,7 @@
         {
           "category": "capability_bypass_smell",
           "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
-          "location": "client/core/client_command_bridge.c"
+          "location": "apps/client/core/client_command_bridge.c"
         }
       ],
       "severities": {
@@ -371,110 +366,46 @@
         "RISK": 1
       }
     },
-    "INV-CONTROL-INTENT-REQUIRED": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "ADD_RULE": 1,
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "security.hidden_privilege_escalation_smell",
-          "finding_id": "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0001",
-          "location": "src/server/server_boot.py"
-        },
-        {
-          "category": "security.hidden_privilege_escalation_smell",
-          "finding_id": "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0002",
-          "location": "src/client/ui/viewer_shell.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1,
-        "VIOLATION": 1
-      }
-    },
-    "INV-CONTROL-PLANE-ONLY-DISPATCH": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "ADD_RULE": 1,
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "security.hidden_privilege_escalation_smell",
-          "finding_id": "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0001",
-          "location": "src/server/server_boot.py"
-        },
-        {
-          "category": "security.hidden_privilege_escalation_smell",
-          "finding_id": "E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0002",
-          "location": "src/client/ui/viewer_shell.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1,
-        "VIOLATION": 1
-      }
-    },
     "INV-DECISION-LOG-MANDATORY": {
-      "finding_count": 7,
+      "finding_count": 6,
       "recommended_actions": {
-        "ADD_RULE": 1,
         "REWRITE": 6
       },
       "sample_findings": [
         {
           "category": "architecture.unlogged_refusal_smell",
           "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0001",
-          "location": "src/control/control_plane_engine.py"
+          "location": "control/control_plane_engine.py"
         },
         {
           "category": "architecture.unlogged_refusal_smell",
           "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0002",
-          "location": "src/control/control_plane_engine.py"
+          "location": "control/control_plane_engine.py"
         },
         {
           "category": "architecture.unlogged_refusal_smell",
           "finding_id": "E119_UNLOGGED_REFUSAL_SMELL:0003",
-          "location": "src/control/control_plane_engine.py"
+          "location": "control/control_plane_engine.py"
         },
         {
           "category": "architecture.missing_decision_log_smell",
           "finding_id": "E132_MISSING_DECISION_LOG_SMELL:0001",
-          "location": "src/control/control_plane_engine.py"
+          "location": "control/control_plane_engine.py"
         },
         {
           "category": "architecture.missing_decision_log_smell",
           "finding_id": "E132_MISSING_DECISION_LOG_SMELL:0002",
-          "location": "src/control/control_plane_engine.py"
+          "location": "control/control_plane_engine.py"
         }
       ],
       "severities": {
-        "RISK": 1,
         "VIOLATION": 6
       }
     },
-    "INV-DERAILMENT-PROCESS-ONLY": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.derailment_bypass_smell",
-          "finding_id": "E154_DERAILMENT_BYPASS_SMELL:0001",
-          "location": "src/mobility/travel/reenactment.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-DERIVED-ARTIFACT-FRESHNESS": {
-      "finding_count": 11,
+      "finding_count": 12,
       "recommended_actions": {
-        "ADD_RULE": 11
+        "ADD_RULE": 12
       },
       "sample_findings": [
         {
@@ -504,6 +435,7 @@
         }
       ],
       "severities": {
+        "INFO": 1,
         "RISK": 11
       }
     },
@@ -541,68 +473,6 @@
       ],
       "severities": {
         "RISK": 6
-      }
-    },
-    "INV-ELEC-BUDGETED": {
-      "finding_count": 10,
-      "recommended_actions": {
-        "REWRITE": 10
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.silent_degrade_smell",
-          "finding_id": "E194_SILENT_DEGRADE_SMELL:0001",
-          "location": "src/core/constraints/constraint_engine.py"
-        },
-        {
-          "category": "architecture.silent_degrade_smell",
-          "finding_id": "E194_SILENT_DEGRADE_SMELL:0002",
-          "location": "src/electric/power_network_engine.py"
-        },
-        {
-          "category": "architecture.silent_degrade_smell",
-          "finding_id": "E194_SILENT_DEGRADE_SMELL:0003",
-          "location": "src/fluid/network/fluid_network_engine.py"
-        },
-        {
-          "category": "architecture.silent_degrade_smell",
-          "finding_id": "E194_SILENT_DEGRADE_SMELL:0004",
-          "location": "src/interior/compartment_flow_engine.py"
-        },
-        {
-          "category": "architecture.silent_degrade_smell",
-          "finding_id": "E194_SILENT_DEGRADE_SMELL:0005",
-          "location": "src/interior/interior_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 10
-      }
-    },
-    "INV-ELEC-PROTECTION-THROUGH-SAFETY": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "REWRITE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
-        },
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0002",
-          "location": "src/control/proof/control_proof_bundle.py"
-        },
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0003",
-          "location": "src/inspection/inspection_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 3
       }
     },
     "INV-ENERGY-TRANSFORM-REGISTERED": {
@@ -674,21 +544,11 @@
       }
     },
     "INV-FIELD-QUERIES-ONLY": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
-        {
-          "category": "architecture.inline_friction_smell",
-          "finding_id": "E139_INLINE_FRICTION_SMELL:0001",
-          "location": "src/mobility/micro/constrained_motion_solver.py"
-        },
-        {
-          "category": "architecture.inline_friction_smell",
-          "finding_id": "E139_INLINE_FRICTION_SMELL:0002",
-          "location": "src/mobility/micro/free_motion_solver.py"
-        },
         {
           "category": "architecture.weather_hack_smell",
           "finding_id": "E141_WEATHER_HACK_SMELL:0001",
@@ -696,33 +556,23 @@
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 1
       }
     },
     "INV-FLUID-SAFETY-THROUGH-PATTERNS": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.adhoc_valve_smell",
           "finding_id": "E220_ADHOC_VALVE_SMELL:0001",
-          "location": "src/fluid/network/fluid_network_engine.py"
-        },
-        {
-          "category": "architecture.adhoc_valve_smell",
-          "finding_id": "E220_ADHOC_VALVE_SMELL:0002",
-          "location": "src/interior/interior_engine.py"
-        },
-        {
-          "category": "architecture.adhoc_valve_smell",
-          "finding_id": "E220_ADHOC_VALVE_SMELL:0003",
           "location": "tools/xstack/sessionx/observation.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 1
       }
     },
     "INV-INSPECTION-BUDGETED": {
@@ -782,12 +632,12 @@
         {
           "category": "interaction.interaction_bypass_smell",
           "finding_id": "E52_INTERACTION_BYPASS_SMELL:0001",
-          "location": "src/client/interaction/interaction_dispatch.py"
+          "location": "apps/client/interaction/interaction_dispatch.py"
         },
         {
           "category": "interaction.interaction_bypass_smell",
           "finding_id": "E52_INTERACTION_BYPASS_SMELL:0002",
-          "location": "src/client/interaction/interaction_dispatch.py"
+          "location": "apps/client/interaction/interaction_dispatch.py"
         }
       ],
       "severities": {
@@ -842,373 +692,182 @@
         "RISK": 1
       }
     },
-    "INV-LOGIC-WIRING-USES-NETWORKGRAPH": {
-      "finding_count": 5,
-      "recommended_actions": {
-        "REWRITE": 5
-      },
-      "sample_findings": [
-        {
-          "category": "logic.adhoc_wiring_smell",
-          "finding_id": "E314_AD_HOC_WIRING_SMELL:0001",
-          "location": "src/logic/compile/logic_compiler.py"
-        },
-        {
-          "category": "logic.adhoc_wiring_smell",
-          "finding_id": "E314_AD_HOC_WIRING_SMELL:0002",
-          "location": "src/logic/eval/common.py"
-        },
-        {
-          "category": "logic.adhoc_wiring_smell",
-          "finding_id": "E314_AD_HOC_WIRING_SMELL:0003",
-          "location": "src/logic/eval/propagate_engine.py"
-        },
-        {
-          "category": "logic.adhoc_wiring_smell",
-          "finding_id": "E314_AD_HOC_WIRING_SMELL:0004",
-          "location": "src/logic/eval/sense_engine.py"
-        },
-        {
-          "category": "logic.adhoc_wiring_smell",
-          "finding_id": "E314_AD_HOC_WIRING_SMELL:0005",
-          "location": "src/logic/protocol/protocol_engine.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 5
-      }
-    },
-    "INV-LOSS-MAPPED-TO-HEAT": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "REWRITE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.heat_loss_bypass_smell",
-          "finding_id": "E195_HEAT_LOSS_BYPASS_SMELL:0001",
-          "location": "src/core/flow/flow_engine.py"
-        },
-        {
-          "category": "architecture.heat_loss_bypass_smell",
-          "finding_id": "E195_HEAT_LOSS_BYPASS_SMELL:0002",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.heat_loss_bypass_smell",
-          "finding_id": "E195_HEAT_LOSS_BYPASS_SMELL:0003",
-          "location": "src/signals/transport/transport_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 3
-      }
-    },
-    "INV-LOSS-POLICY-REGISTERED": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.adhoc_loss_smell",
-          "finding_id": "E170_ADHOC_LOSS_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
-    "INV-MICRO-MOTION-ROI-ONLY": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.derailment_bypass_smell",
-          "finding_id": "E154_DERAILMENT_BYPASS_SMELL:0001",
-          "location": "src/mobility/travel/reenactment.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
-    "INV-MOB-NETWORK-USES-NETWORKGRAPH": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.mobility_graph_duplication_smell",
-          "finding_id": "E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001",
-          "location": "src/pollution/dispersion_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-MOB-THROUGH-CONTROL": {
-      "finding_count": 6,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 6
+        "REWRITE": 1
       },
       "sample_findings": [
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0001",
-          "location": "src/client/ui/teleport_controller.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0002",
-          "location": "src/client/ui/viewer_shell.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0003",
-          "location": "src/embodiment/collision/macro_heightfield_provider.py"
-        },
-        {
-          "category": "architecture.direct_position_mutation_smell",
-          "finding_id": "E143_DIRECT_POSITION_MUTATION_SMELL:0004",
-          "location": "src/field/field_boundary_exchange.py"
-        },
         {
           "category": "architecture.adhoc_speed_limit_smell",
           "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0001",
-          "location": "src/mechanics/structural_graph_engine.py"
+          "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 6
+        "RISK": 1
       }
     },
     "INV-MOB-USES-GUIDEGEOMETRY": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
-          "location": "src/specs/spec_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 1
       }
     },
     "INV-MOB-USES-NETWORKGRAPH": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
-          "location": "src/specs/spec_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-MODULE-BOUNDARIES-RESPECTED": {
+      "finding_count": 1176,
+      "recommended_actions": {
+        "REWRITE": 1176
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0001",
+          "location": ".aide"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0002",
+          "location": ".aide.local.example"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0003",
+          "location": ".aide.local.example/cache"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0004",
+          "location": ".aide.local.example/ledgers"
+        },
+        {
+          "category": "architecture.forbidden_dependency_smell",
+          "finding_id": "E561_FORBIDDEN_DEPENDENCY_SMELL:0005",
+          "location": ".aide.local.example/traces"
+        }
+      ],
+      "severities": {
+        "RISK": 1176
+      }
+    },
+    "INV-MVP-CROSS-PLATFORM-MUST-PASS": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "release.platform_dependent_behavior_smell",
+          "finding_id": "E447_PLATFORM_DEPENDENT_BEHAVIOR_SMELL:0001",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        },
+        {
+          "category": "release.platform_dependent_behavior_smell",
+          "finding_id": "E447_PLATFORM_DEPENDENT_BEHAVIOR_SMELL:0002",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        },
+        {
+          "category": "release.non_canonical_serialization_smell",
+          "finding_id": "E448_NON_CANONICAL_SERIALIZATION_SMELL:0001",
+          "location": "build/mvp/mvp_cross_platform_hashes.json"
+        },
+        {
+          "category": "release.non_canonical_serialization_smell",
+          "finding_id": "E448_NON_CANONICAL_SERIALIZATION_SMELL:0002",
+          "location": "build/mvp/mvp_cross_platform_matrix.json"
+        }
+      ],
+      "severities": {
+        "RISK": 4
+      }
+    },
+    "INV-MVP-GAMEPLAY-HARNESS-REQUIRED": {
+      "finding_count": 2,
+      "recommended_actions": {
+        "REWRITE": 2
+      },
+      "sample_findings": [
+        {
+          "category": "gameplay_loop.nondeterministic_smell",
+          "finding_id": "E545_GAMEPLAY_NONDETERMINISTIC_SMELL:0001",
+          "location": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+        },
+        {
+          "category": "gameplay_loop.nondeterministic_smell",
+          "finding_id": "E545_GAMEPLAY_NONDETERMINISTIC_SMELL:0002",
+          "location": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+        }
+      ],
+      "severities": {
+        "RISK": 2
+      }
+    },
+    "INV-MVP-SMOKE-MUST-PASS-BEFORE-RELEASE": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0001",
+          "location": "build/mvp/mvp_smoke_hashes.json"
+        },
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0002",
+          "location": "build/mvp/mvp_smoke_report.json"
+        },
+        {
+          "category": "release.smoke_suite_missing_smell",
+          "finding_id": "E445_SMOKE_SUITE_MISSING_SMELL:0003",
+          "location": "build/mvp/mvp_smoke_report.json"
         }
       ],
       "severities": {
         "RISK": 3
       }
     },
-    "INV-MODE-AS-PROFILES": {
+    "INV-NO-ADHOC-BURN-LOGIC": {
       "finding_count": 1,
       "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
-        }
-      ],
-      "severities": {
-        "VIOLATION": 1
-      }
-    },
-    "INV-MODEL-OUTPUTS-PROCESS-ONLY": {
-      "finding_count": 7,
-      "recommended_actions": {
-        "REWRITE": 7
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.model_bypass_smell",
-          "finding_id": "E180_MODEL_BYPASS_SMELL:0001",
-          "location": "src/chem/degradation/degradation_engine.py"
-        },
-        {
-          "category": "architecture.model_bypass_smell",
-          "finding_id": "E180_MODEL_BYPASS_SMELL:0002",
-          "location": "src/electric/power_network_engine.py"
-        },
-        {
-          "category": "architecture.model_bypass_smell",
-          "finding_id": "E180_MODEL_BYPASS_SMELL:0003",
-          "location": "src/fluid/network/fluid_network_engine.py"
-        },
-        {
-          "category": "architecture.model_bypass_smell",
-          "finding_id": "E180_MODEL_BYPASS_SMELL:0004",
-          "location": "src/system/forensics/system_forensics_engine.py"
-        },
-        {
-          "category": "architecture.model_bypass_smell",
-          "finding_id": "E180_MODEL_BYPASS_SMELL:0005",
-          "location": "src/system/reliability/system_health_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 7
-      }
-    },
-    "INV-NO-ADHOC-BURN-LOGIC": {
-      "finding_count": 7,
-      "recommended_actions": {
-        "REWRITE": 7
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.unbounded_spread_smell",
           "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0001",
-          "location": "src/appshell/ipc/ipc_client.py"
-        },
-        {
-          "category": "architecture.unbounded_spread_smell",
-          "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0002",
-          "location": "src/appshell/tui/tui_engine.py"
-        },
-        {
-          "category": "architecture.unbounded_spread_smell",
-          "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0003",
-          "location": "src/client/local_server/local_server_controller.py"
-        },
-        {
-          "category": "architecture.unbounded_spread_smell",
-          "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0004",
-          "location": "src/release/component_graph_resolver.py"
-        },
-        {
-          "category": "architecture.unbounded_spread_smell",
-          "finding_id": "E202_UNBOUNDED_SPREAD_SMELL:0005",
-          "location": "src/server/net/loopback_transport.py"
-        }
-      ],
-      "severities": {
-        "RISK": 7
-      }
-    },
-    "INV-NO-ADHOC-CAPACITY-LOGIC": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.nondeterministic_queue_order_smell",
-          "finding_id": "E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL:0001",
-          "location": "src/signals/transport/transport_engine.py"
+          "location": "tools/xstack/sessionx/time_lineage.py"
         }
       ],
       "severities": {
         "RISK": 1
-      }
-    },
-    "INV-NO-ADHOC-CURE-LOGIC": {
-      "finding_count": 5,
-      "recommended_actions": {
-        "REWRITE": 5
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.inline_cure_smell",
-          "finding_id": "E198_INLINE_CURE_SMELL:0001",
-          "location": "src/chem/process_run_engine.py"
-        },
-        {
-          "category": "architecture.inline_cure_smell",
-          "finding_id": "E198_INLINE_CURE_SMELL:0002",
-          "location": "src/materials/materialization/materialization_engine.py"
-        },
-        {
-          "category": "architecture.inline_cure_smell",
-          "finding_id": "E198_INLINE_CURE_SMELL:0003",
-          "location": "src/process/capsules/capsule_executor.py"
-        },
-        {
-          "category": "architecture.inline_cure_smell",
-          "finding_id": "E198_INLINE_CURE_SMELL:0004",
-          "location": "src/process/process_run_engine.py"
-        },
-        {
-          "category": "architecture.inline_cure_smell",
-          "finding_id": "E198_INLINE_CURE_SMELL:0005",
-          "location": "src/process/software/pipeline_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 5
-      }
-    },
-    "INV-NO-ADHOC-FAULT-TRIP": {
-      "finding_count": 4,
-      "recommended_actions": {
-        "REWRITE": 4
-      },
-      "sample_findings": [
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
-        },
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0002",
-          "location": "src/control/proof/control_proof_bundle.py"
-        },
-        {
-          "category": "authority.fault_bypass_smell",
-          "finding_id": "E188_FAULT_BYPASS_SMELL:0003",
-          "location": "src/inspection/inspection_engine.py"
-        },
-        {
-          "category": "architecture.unlogged_trip_smell",
-          "finding_id": "E189_UNLOGGED_TRIP_SMELL:0001",
-          "location": "src/control/proof/control_proof_bundle.py"
-        }
-      ],
-      "severities": {
-        "RISK": 4
       }
     },
     "INV-NO-ADHOC-LOAD-CHECK": {
@@ -1249,41 +908,15 @@
       }
     },
     "INV-NO-ADHOC-PRESSURE-LOGIC": {
-      "finding_count": 3,
-      "recommended_actions": {
-        "REWRITE": 3
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.adhoc_valve_smell",
-          "finding_id": "E220_ADHOC_VALVE_SMELL:0001",
-          "location": "src/fluid/network/fluid_network_engine.py"
-        },
-        {
-          "category": "architecture.adhoc_valve_smell",
-          "finding_id": "E220_ADHOC_VALVE_SMELL:0002",
-          "location": "src/interior/interior_engine.py"
-        },
-        {
-          "category": "architecture.adhoc_valve_smell",
-          "finding_id": "E220_ADHOC_VALVE_SMELL:0003",
-          "location": "tools/xstack/sessionx/observation.py"
-        }
-      ],
-      "severities": {
-        "RISK": 3
-      }
-    },
-    "INV-NO-ADHOC-ROUTING": {
       "finding_count": 1,
       "recommended_actions": {
         "REWRITE": 1
       },
       "sample_findings": [
         {
-          "category": "architecture.mobility_graph_duplication_smell",
-          "finding_id": "E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001",
-          "location": "src/pollution/dispersion_engine.py"
+          "category": "architecture.adhoc_valve_smell",
+          "finding_id": "E220_ADHOC_VALVE_SMELL:0001",
+          "location": "tools/xstack/sessionx/observation.py"
         }
       ],
       "severities": {
@@ -1291,93 +924,21 @@
       }
     },
     "INV-NO-ADHOC-SAFETY-LOGIC": {
-      "finding_count": 18,
+      "finding_count": 2,
       "recommended_actions": {
         "ADD_RULE": 1,
-        "REWRITE": 17
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.inline_protection_smell",
           "finding_id": "E177_INLINE_PROTECTION_SMELL:0001",
-          "location": "src/appshell/bootstrap.py"
+          "location": "tools/xstack/sessionx/observation.py"
         },
         {
-          "category": "architecture.inline_protection_smell",
-          "finding_id": "E177_INLINE_PROTECTION_SMELL:0002",
-          "location": "src/core/state/state_machine_engine.py"
-        },
-        {
-          "category": "architecture.inline_protection_smell",
-          "finding_id": "E177_INLINE_PROTECTION_SMELL:0003",
-          "location": "src/fields/field_engine.py"
-        },
-        {
-          "category": "architecture.inline_protection_smell",
-          "finding_id": "E177_INLINE_PROTECTION_SMELL:0004",
-          "location": "src/geo/lens/lens_engine.py"
-        },
-        {
-          "category": "architecture.inline_protection_smell",
-          "finding_id": "E177_INLINE_PROTECTION_SMELL:0005",
-          "location": "src/geo/overlay/overlay_merge_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 18
-      }
-    },
-    "INV-NO-ADHOC-SPATIAL-KEYS": {
-      "finding_count": 6,
-      "recommended_actions": {
-        "REWRITE": 6
-      },
-      "sample_findings": [
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
-          "location": "src/worldgen/earth/climate_field_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
-          "location": "src/worldgen/earth/material/material_proxy_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
-          "location": "src/worldgen/earth/tide_field_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
-          "location": "src/worldgen/earth/water/water_view_engine.py"
-        },
-        {
-          "category": "geometry.adhoc_spatial_key_smell",
-          "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
-          "location": "src/worldgen/earth/wind/wind_field_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 6
-      }
-    },
-    "INV-NO-ADHOC-STATE-FLAGS": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "ADD_RULE": 2
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.adhoc_state_flag_smell",
-          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
-        },
-        {
-          "category": "architecture.adhoc_state_flag_smell",
-          "finding_id": "E93_ADHOC_STATE_FLAG_SMELL:0002",
-          "location": "src/machines/port_engine.py"
+          "category": "architecture.missing_failsafe_smell",
+          "finding_id": "E178_MISSING_FAILSAFE_SMELL:0001",
+          "location": "docs/safety/SAFETY_PATTERN_LIBRARY.md"
         }
       ],
       "severities": {
@@ -1401,21 +962,11 @@
       }
     },
     "INV-NO-ADHOC-WEATHER-FLAGS": {
-      "finding_count": 3,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 3
+        "REWRITE": 1
       },
       "sample_findings": [
-        {
-          "category": "architecture.inline_friction_smell",
-          "finding_id": "E139_INLINE_FRICTION_SMELL:0001",
-          "location": "src/mobility/micro/constrained_motion_solver.py"
-        },
-        {
-          "category": "architecture.inline_friction_smell",
-          "finding_id": "E139_INLINE_FRICTION_SMELL:0002",
-          "location": "src/mobility/micro/free_motion_solver.py"
-        },
         {
           "category": "architecture.weather_hack_smell",
           "finding_id": "E141_WEATHER_HACK_SMELL:0001",
@@ -1423,126 +974,43 @@
         }
       ],
       "severities": {
-        "RISK": 3
+        "RISK": 1
       }
     },
     "INV-NO-CARRIER-SEMANTIC-BIAS": {
-      "finding_count": 9,
+      "finding_count": 6,
       "recommended_actions": {
-        "REWRITE": 9
+        "REWRITE": 6
       },
       "sample_findings": [
         {
           "category": "logic.carrier_bias_smell",
           "finding_id": "E311_CARRIER_BIAS_SMELL:0001",
-          "location": "src/logic/element/logic_element_validator.py"
-        },
-        {
-          "category": "logic.carrier_bias_smell",
-          "finding_id": "E311_CARRIER_BIAS_SMELL:0002",
-          "location": "src/logic/eval/propagate_engine.py"
-        },
-        {
-          "category": "logic.carrier_bias_smell",
-          "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "logic.carrier_bias_smell",
-          "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
           "location": "tools/logic/logic10_stress_common.py"
         },
         {
           "category": "logic.carrier_bias_smell",
-          "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0002",
           "location": "tools/logic/tool_run_logic_debug_stress.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0003",
+          "location": "tools/logic/tool_run_logic_eval_stress.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0004",
+          "location": "tools/logic/tool_run_logic_fault_stress.py"
+        },
+        {
+          "category": "logic.carrier_bias_smell",
+          "finding_id": "E311_CARRIER_BIAS_SMELL:0005",
+          "location": "tools/logic/tool_run_logic_protocol_stress.py"
         }
       ],
       "severities": {
-        "RISK": 9
-      }
-    },
-    "INV-NO-DIRECT-ARTIFACT-DELIVERY": {
-      "finding_count": 5,
-      "recommended_actions": {
-        "REWRITE": 5
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.broadcast_bypass_smell",
-          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0001",
-          "location": "src/electric/protection/protection_engine.py"
-        },
-        {
-          "category": "architecture.broadcast_bypass_smell",
-          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0002",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.broadcast_bypass_smell",
-          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0003",
-          "location": "src/signals/institutions/bulletin_engine.py"
-        },
-        {
-          "category": "architecture.broadcast_bypass_smell",
-          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0004",
-          "location": "src/signals/institutions/dispatch_engine.py"
-        },
-        {
-          "category": "architecture.broadcast_bypass_smell",
-          "finding_id": "E169_BROADCAST_BYPASS_SMELL:0005",
-          "location": "src/signals/institutions/standards_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 5
-      }
-    },
-    "INV-NO-DIRECT-CAMERA-TOGGLE": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "control.camera_bypass_smell",
-          "finding_id": "E124_CAMERA_BYPASS_SMELL:0001",
-          "location": "src/net/srz/shard_coordinator.py"
-        }
-      ],
-      "severities": {
-        "WARN": 1
-      }
-    },
-    "INV-NO-DIRECT-MESSAGE-DROP": {
-      "finding_count": 4,
-      "recommended_actions": {
-        "REWRITE": 4
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.silent_corruption_smell",
-          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
-        },
-        {
-          "category": "architecture.silent_corruption_smell",
-          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0002",
-          "location": "src/lib/store/gc_engine.py"
-        },
-        {
-          "category": "architecture.silent_corruption_smell",
-          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0003",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.silent_corruption_smell",
-          "finding_id": "E171_SILENT_CORRUPTION_SMELL:0004",
-          "location": "src/logic/protocol/rows.py"
-        }
-      ],
-      "severities": {
-        "RISK": 4
+        "RISK": 6
       }
     },
     "INV-NO-DIRECT-MICRO-TO-PERCEIVED": {
@@ -1581,96 +1049,82 @@
         "RISK": 6
       }
     },
-    "INV-NO-DIRECT-TEMP-MUTATION": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "REWRITE": 1
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.thermal_bypass_smell",
-          "finding_id": "E196_THERMAL_BYPASS_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
     "INV-NO-DOMAIN-DOWNGRADE-LOGIC": {
-      "finding_count": 3,
+      "finding_count": 2,
       "recommended_actions": {
-        "ADD_RULE": 1,
         "REWRITE": 2
       },
       "sample_findings": [
         {
           "category": "architecture.silent_downgrade_smell",
           "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
+          "location": "game/domains/inspection/inspection_engine.py"
         },
         {
           "category": "architecture.silent_downgrade_smell",
           "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0002",
-          "location": "src/materials/materialization/materialization_engine.py"
-        },
-        {
-          "category": "architecture.silent_downgrade_smell",
-          "finding_id": "E131_SILENT_DOWNGRADE_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
+          "location": "game/domains/materials/materialization/materialization_engine.py"
         }
       ],
       "severities": {
-        "RISK": 1,
         "VIOLATION": 2
       }
     },
-    "INV-NO-DUPLICATE-SCHEDULERS": {
-      "finding_count": 1,
+    "INV-NO-HARDCODED-PLAYER": {
+      "finding_count": 2,
       "recommended_actions": {
-        "ADD_RULE": 1
+        "ADD_RULE": 2
       },
       "sample_findings": [
         {
-          "category": "architecture.adhoc_scheduler_smell",
-          "finding_id": "E85_ADHOC_SCHEDULER_SMELL:0001",
-          "location": "src/materials/maintenance/decay_engine.py"
+          "category": "control.player_special_case_smell",
+          "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0001",
+          "location": "game/domains/materials/performance/mat_scale_engine.py"
+        },
+        {
+          "category": "control.player_special_case_smell",
+          "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0002",
+          "location": "game/domains/materials/performance/mat_scale_engine.py"
         }
       ],
       "severities": {
-        "RISK": 1
+        "WARN": 2
       }
     },
-    "INV-NO-HARDCODED-GAUGE-WIDTH-SPECS": {
-      "finding_count": 1,
+    "INV-NO-HARDCODED-STRUCTURES": {
+      "finding_count": 7,
       "recommended_actions": {
-        "ADD_RULE": 1
+        "REWRITE": 7
       },
       "sample_findings": [
         {
-          "category": "architecture.spec_hardcode_smell",
-          "finding_id": "E133_SPEC_HARDCODE_SMELL:0001",
-          "location": "src/mobility/geometry/geometry_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 1
-      }
-    },
-    "INV-NO-HARDCODED-MODE-BRANCH": {
-      "finding_count": 1,
-      "recommended_actions": {
-        "ADD_RULE": 1
-      },
-      "sample_findings": [
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0001",
+          "location": "scripts/ci/check_repox_rules.py"
+        },
         {
-          "category": "mode_flag_smell",
-          "finding_id": "C2_MODE_FLAG_SMELL:0001",
-          "location": "tools/xstack/repox/check.py"
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0002",
+          "location": "scripts/ci/check_repox_rules.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0003",
+          "location": "scripts/ci/check_repox_rules.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0004",
+          "location": "scripts/ci/check_repox_rules.py"
+        },
+        {
+          "category": "materials.hardcoded_blueprint_smell",
+          "finding_id": "E60_HARDCODED_BLUEPRINT_SMELL:0005",
+          "location": "scripts/ci/check_repox_rules.py"
         }
       ],
       "severities": {
-        "VIOLATION": 1
+        "VIOLATION": 7
       }
     },
     "INV-NO-MACRO-BEHAVIOR-WITHOUT-IR": {
@@ -1682,12 +1136,12 @@
         {
           "category": "architecture.ir_nondeterminism_smell",
           "finding_id": "E117_IR_NONDETERMINISM_SMELL:0001",
-          "location": "src/control/ir/control_ir_multiplayer.py"
+          "location": "control/ir/control_ir_multiplayer.py"
         },
         {
           "category": "architecture.ir_nondeterminism_smell",
           "finding_id": "E117_IR_NONDETERMINISM_SMELL:0002",
-          "location": "src/control/ir/control_ir_multiplayer.py"
+          "location": "control/ir/control_ir_multiplayer.py"
         }
       ],
       "severities": {
@@ -1726,61 +1180,25 @@
         "RISK": 1
       }
     },
-    "INV-NO-SILENT-VIOLATIONS": {
+    "INV-NO-TRAIN-SPECIALCASE": {
       "finding_count": 2,
       "recommended_actions": {
         "REWRITE": 2
       },
       "sample_findings": [
         {
-          "category": "architecture.magic_silent_violation_smell",
-          "finding_id": "E207_MAGIC_SILENT_VIOLATION_SMELL:0001",
-          "location": "src/physics/energy/energy_ledger_engine.py"
-        },
-        {
-          "category": "architecture.magic_silent_violation_smell",
-          "finding_id": "E207_MAGIC_SILENT_VIOLATION_SMELL:0002",
-          "location": "src/reality/ledger/ledger_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 2
-      }
-    },
-    "INV-NO-TRAIN-SPECIALCASE": {
-      "finding_count": 5,
-      "recommended_actions": {
-        "REWRITE": 5
-      },
-      "sample_findings": [
-        {
           "category": "architecture.mobility_special_case_smell",
           "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0001",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0002",
-          "location": "src/specs/spec_engine.py"
-        },
-        {
-          "category": "architecture.mobility_special_case_smell",
-          "finding_id": "E142_MOBILITY_SPECIAL_CASE_SMELL:0003",
           "location": "tools/xstack/sessionx/process_runtime.py"
         },
         {
           "category": "architecture.adhoc_speed_limit_smell",
           "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0001",
-          "location": "src/mechanics/structural_graph_engine.py"
-        },
-        {
-          "category": "architecture.adhoc_speed_limit_smell",
-          "finding_id": "E144_ADHOC_SPEED_LIMIT_SMELL:0002",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 5
+        "RISK": 2
       }
     },
     "INV-NO-TRUTH-LEAK-VIA-INSPECTION": {
@@ -1792,7 +1210,7 @@
         {
           "category": "materials.inspection_leak_smell",
           "finding_id": "E72_INSPECTION_LEAK_SMELL:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
+          "location": "apps/client/interaction/inspection_overlays.py"
         }
       ],
       "severities": {
@@ -1844,7 +1262,7 @@
         {
           "category": "logic.random_failure_smell",
           "finding_id": "E323_RANDOM_FAILURE_SMELL:0001",
-          "location": "src/logic/noise/noise_engine.py"
+          "location": "game/domains/logic/noise/noise_engine.py"
         }
       ],
       "severities": {
@@ -1872,6 +1290,42 @@
         "RISK": 2
       }
     },
+    "INV-NO-UNDECLARED-SCHEMA": {
+      "finding_count": 1403,
+      "recommended_actions": {
+        "ADD_RULE": 1403
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
+          "location": "contracts/schemas/accessibility_preset.schema"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
+          "location": "contracts/schemas/action_family.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
+          "location": "contracts/schemas/action_surface.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
+          "location": "contracts/schemas/action_template.schema.json"
+        },
+        {
+          "category": "architecture.undeclared_schema_smell",
+          "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0005",
+          "location": "contracts/schemas/activation_policy.schema.json"
+        }
+      ],
+      "severities": {
+        "RISK": 1403
+      }
+    },
     "INV-NO-WALLCLOCK-IN-PERFORMANCE": {
       "finding_count": 1,
       "recommended_actions": {
@@ -1897,7 +1351,7 @@
         {
           "category": "materials.reenactment_leak_smell",
           "finding_id": "E71_REENACTMENT_LEAK_SMELL:0001",
-          "location": "src/client/interaction/inspection_overlays.py"
+          "location": "apps/client/interaction/inspection_overlays.py"
         }
       ],
       "severities": {
@@ -1905,72 +1359,15 @@
       }
     },
     "INV-PHASE-CHANGE-MODEL-ONLY": {
-      "finding_count": 13,
-      "recommended_actions": {
-        "REWRITE": 13
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.inline_phase_change_smell",
-          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0001",
-          "location": "src/client/ui/inspect_panels.py"
-        },
-        {
-          "category": "architecture.inline_phase_change_smell",
-          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0002",
-          "location": "src/control/fidelity/fidelity_engine.py"
-        },
-        {
-          "category": "architecture.inline_phase_change_smell",
-          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0003",
-          "location": "src/inspection/inspection_engine.py"
-        },
-        {
-          "category": "architecture.inline_phase_change_smell",
-          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0004",
-          "location": "src/logic/debug/compute_hooks.py"
-        },
-        {
-          "category": "architecture.inline_phase_change_smell",
-          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0005",
-          "location": "src/logic/debug/debug_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 13
-      }
-    },
-    "INV-PHYS-PROFILE-DECLARED": {
-      "finding_count": 2,
-      "recommended_actions": {
-        "REWRITE": 2
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.magic_silent_violation_smell",
-          "finding_id": "E207_MAGIC_SILENT_VIOLATION_SMELL:0001",
-          "location": "src/physics/energy/energy_ledger_engine.py"
-        },
-        {
-          "category": "architecture.magic_silent_violation_smell",
-          "finding_id": "E207_MAGIC_SILENT_VIOLATION_SMELL:0002",
-          "location": "src/reality/ledger/ledger_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 2
-      }
-    },
-    "INV-POWER-FLOW-THROUGH-BUNDLE": {
       "finding_count": 1,
       "recommended_actions": {
         "REWRITE": 1
       },
       "sample_findings": [
         {
-          "category": "architecture.inline_power_loss_smell",
-          "finding_id": "E185_INLINE_POWER_LOSS_SMELL:0001",
-          "location": "src/fluid/network/fluid_network_engine.py"
+          "category": "architecture.inline_phase_change_smell",
+          "finding_id": "E197_INLINE_PHASE_CHANGE_SMELL:0001",
+          "location": "tools/xstack/sessionx/scheduler.py"
         }
       ],
       "severities": {
@@ -2014,20 +1411,61 @@
         "RISK": 1
       }
     },
-    "INV-RECEIPT-REQUIRED-FOR-KNOWLEDGE": {
-      "finding_count": 1,
+    "INV-REPLAY-DETERMINISTIC": {
+      "finding_count": 2,
       "recommended_actions": {
-        "REWRITE": 1
+        "REWRITE": 2
       },
       "sample_findings": [
         {
-          "category": "architecture.direct_knowledge_mutation_smell",
-          "finding_id": "E168_DIRECT_KNOWLEDGE_MUTATION_SMELL:0001",
-          "location": "src/logic/protocol/protocol_engine.py"
+          "category": "gameplay_loop.nondeterministic_smell",
+          "finding_id": "E545_GAMEPLAY_NONDETERMINISTIC_SMELL:0001",
+          "location": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+        },
+        {
+          "category": "gameplay_loop.nondeterministic_smell",
+          "finding_id": "E545_GAMEPLAY_NONDETERMINISTIC_SMELL:0002",
+          "location": "data/baselines/gameplay/gameplay_loop_snapshot.json"
         }
       ],
       "severities": {
-        "VIOLATION": 1
+        "RISK": 2
+      }
+    },
+    "INV-REPO-STRUCTURE-LOCKED": {
+      "finding_count": 54,
+      "recommended_actions": {
+        "ADD_RULE": 54
+      },
+      "sample_findings": [
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0001",
+          "location": ".agentignore"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0002",
+          "location": ".aide"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0004",
+          "location": ".aide.local.example"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0006",
+          "location": "CLAUDE.md"
+        },
+        {
+          "category": "repo.repository_structure_drift_smell",
+          "finding_id": "E565_REPOSITORY_STRUCTURE_DRIFT_SMELL:0007",
+          "location": "__init__.py"
+        }
+      ],
+      "severities": {
+        "RISK": 54
       }
     },
     "INV-SCHEMA-SHADOWING-CONTROL": {
@@ -2083,91 +1521,92 @@
       }
     },
     "INV-SIGNAL-TRANSPORT-ONLY": {
-      "finding_count": 8,
-      "recommended_actions": {
-        "REWRITE": 8
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.direct_message_smell",
-          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0001",
-          "location": "src/client/net/loopback_client.py"
-        },
-        {
-          "category": "architecture.direct_message_smell",
-          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0002",
-          "location": "src/net/transport/interface.py"
-        },
-        {
-          "category": "architecture.direct_message_smell",
-          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0003",
-          "location": "src/net/transport/loopback.py"
-        },
-        {
-          "category": "architecture.direct_message_smell",
-          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0004",
-          "location": "src/net/transport/tcp_stub.py"
-        },
-        {
-          "category": "architecture.direct_message_smell",
-          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0005",
-          "location": "src/net/transport/udp_stub.py"
-        }
-      ],
-      "severities": {
-        "RISK": 8
-      }
-    },
-    "INV-THERM-DEGRADE-LOGGED": {
-      "finding_count": 6,
-      "recommended_actions": {
-        "REWRITE": 6
-      },
-      "sample_findings": [
-        {
-          "category": "architecture.silent_therm_degrade_smell",
-          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0001",
-          "location": "src/electric/degradation_policy.py"
-        },
-        {
-          "category": "architecture.silent_therm_degrade_smell",
-          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0002",
-          "location": "src/materials/materialization/materialization_engine.py"
-        },
-        {
-          "category": "architecture.silent_therm_degrade_smell",
-          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0003",
-          "location": "src/worldgen/earth/lighting/lighting_view_engine.py"
-        },
-        {
-          "category": "architecture.silent_therm_degrade_smell",
-          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0004",
-          "location": "src/worldgen/earth/sky/starfield_generator.py"
-        },
-        {
-          "category": "architecture.silent_therm_degrade_smell",
-          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0005",
-          "location": "src/worldgen/earth/wind/wind_field_engine.py"
-        }
-      ],
-      "severities": {
-        "RISK": 6
-      }
-    },
-    "INV-THERM-MODEL-ONLY": {
       "finding_count": 1,
       "recommended_actions": {
         "REWRITE": 1
       },
       "sample_findings": [
         {
-          "category": "architecture.thermal_bypass_smell",
-          "finding_id": "E196_THERMAL_BYPASS_SMELL:0001",
-          "location": "src/inspection/inspection_engine.py"
+          "category": "architecture.direct_message_smell",
+          "finding_id": "E164_DIRECT_MESSAGE_SMELL:0001",
+          "location": "tools/xstack/sessionx/net_handshake.py"
         }
       ],
       "severities": {
         "RISK": 1
+      }
+    },
+    "INV-THERM-DEGRADE-LOGGED": {
+      "finding_count": 1,
+      "recommended_actions": {
+        "REWRITE": 1
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.silent_therm_degrade_smell",
+          "finding_id": "E204_SILENT_THERM_DEGRADE_SMELL:0001",
+          "location": "tools/xstack/sessionx/process_runtime.py"
+        }
+      ],
+      "severities": {
+        "RISK": 1
+      }
+    },
+    "INV-TICK-TYPE-64BIT-ENFORCED": {
+      "finding_count": 3,
+      "recommended_actions": {
+        "ADD_RULE": 3
+      },
+      "sample_findings": [
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0001",
+          "location": "server/runtime/tick_loop.py"
+        },
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0002",
+          "location": "server/server_boot.py"
+        },
+        {
+          "category": "time.mixed_tick_width_smell",
+          "finding_id": "E452_MIXED_TICK_WIDTH_SMELL:0003",
+          "location": "server/server_console.py"
+        }
+      ],
+      "severities": {
+        "RISK": 3
+      }
+    },
+    "INV-TOPOLOGY-MAP-PRESENT": {
+      "finding_count": 4,
+      "recommended_actions": {
+        "ADD_RULE": 4
+      },
+      "sample_findings": [
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0001",
+          "location": "tools/aide"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0002",
+          "location": "tools/build"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0003",
+          "location": "tools/migration"
+        },
+        {
+          "category": "architecture.undeclared_subsystem_smell",
+          "finding_id": "E106_UNDECLARED_SUBSYSTEM_SMELL:0004",
+          "location": "tools/validators"
+        }
+      ],
+      "severities": {
+        "RISK": 4
       }
     },
     "INV-TRACE-BOUNDED": {
@@ -2195,7 +1634,7 @@
         {
           "category": "capability_bypass_smell",
           "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
-          "location": "client/core/client_command_bridge.c"
+          "location": "apps/client/core/client_command_bridge.c"
         }
       ],
       "severities": {
@@ -2203,39 +1642,19 @@
       }
     },
     "INV-VERIFICATION-PROCESS-ONLY": {
-      "finding_count": 5,
+      "finding_count": 1,
       "recommended_actions": {
-        "REWRITE": 5
+        "REWRITE": 1
       },
       "sample_findings": [
         {
           "category": "architecture.unlogged_trust_change_smell",
           "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0001",
-          "location": "src/geo/lens/cctv_engine.py"
-        },
-        {
-          "category": "architecture.unlogged_trust_change_smell",
-          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0002",
-          "location": "src/inspection/inspection_engine.py"
-        },
-        {
-          "category": "architecture.unlogged_trust_change_smell",
-          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0003",
-          "location": "src/logic/protocol/protocol_engine.py"
-        },
-        {
-          "category": "architecture.unlogged_trust_change_smell",
-          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0004",
-          "location": "src/signals/transport/transport_engine.py"
-        },
-        {
-          "category": "architecture.unlogged_trust_change_smell",
-          "finding_id": "E173_UNLOGGED_TRUST_CHANGE_SMELL:0005",
           "location": "tools/xstack/sessionx/process_runtime.py"
         }
       ],
       "severities": {
-        "RISK": 5
+        "RISK": 1
       }
     },
     "INV-WORKSPACE-ISOLATION": {
@@ -2255,77 +1674,63 @@
       }
     },
     "NO_SINGLE_USE_CODE_PATHS": {
-      "finding_count": 5,
+      "finding_count": 2,
       "recommended_actions": {
-        "RETIRE": 5
+        "RETIRE": 2
       },
       "sample_findings": [
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0001",
-          "location": "tools/auditx/analyzers/__init__.py"
+          "location": "game/domains/embodiment/__init__.py"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0002",
-          "location": "tools/auditx/analyzers/e558_toolchain_report_missing_smell.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "tools/mvp/tool_compare_toolchain_runs.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "tools/mvp/tool_run_toolchain_matrix.py"
-        },
-        {
-          "category": "reachability",
-          "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "tools/xstack/testx/tests/toolchain_matrix_testlib.py"
+          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
         }
       ],
       "severities": {
-        "WARN": 5
+        "RISK": 2
       }
     },
     "SCHEMA_ANCHOR_REQUIRED": {
-      "finding_count": 11,
+      "finding_count": 169,
       "recommended_actions": {
-        "ADD_RULE": 9,
-        "ADD_TEST": 2
+        "ADD_RULE": 48,
+        "ADD_TEST": 1,
+        "DOC_FIX": 120
       },
       "sample_findings": [
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0001",
-          "location": "tools/audit/arch_audit_common.py"
+          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0002",
-          "location": "tools/audit/arch_audit_common.py"
+          "location": "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0003",
-          "location": "tools/audit/arch_audit_common.py"
+          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0004",
-          "location": "tools/audit/arch_audit_common.py"
+          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
         },
         {
           "category": "schema_usage",
           "finding_id": "A4_SCHEMA_USAGE:0005",
-          "location": "tools/mvp/toolchain_matrix_common.py"
+          "location": "game/domains/worldgen/mw/mw_system_refiner_l2.py"
         }
       ],
       "severities": {
-        "RISK": 9,
-        "WARN": 2
+        "RISK": 48,
+        "WARN": 121
       }
     }
   },

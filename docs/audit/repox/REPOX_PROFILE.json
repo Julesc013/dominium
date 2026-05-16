@@ -1,42 +1,38 @@
 {
   "artifact_class": "RUN_META",
-  "cache_hits": 5,
-  "cache_misses": 11,
+  "cache_hits": 6,
+  "cache_misses": 10,
   "changed_files": [
     ".aide/context/latest-review-packet.md",
     ".aide/context/latest-task-packet.md",
     ".aide/ledgers/migration_ledger.jsonl",
-    ".aide/reports/POST-CONVERGE-10N-blockers.md",
-    ".aide/reports/POST-CONVERGE-10N-next-family-recommendation.md",
-    ".aide/reports/POST-CONVERGE-10N-post-converge-11-readiness.md",
-    ".aide/reports/POST-CONVERGE-10N-repox-before-after.json",
-    ".aide/reports/POST-CONVERGE-10N-status.md",
-    ".aide/reports/POST-CONVERGE-10N-tool-audit-findings.json",
-    ".aide/reports/POST-CONVERGE-10N-tool-audit-findings.md",
-    ".aide/reports/POST-CONVERGE-10N-validation.md",
+    ".aide/reports/POST-CONVERGE-12-blockers.md",
+    ".aide/reports/POST-CONVERGE-12-next-readiness.json",
+    ".aide/reports/POST-CONVERGE-12-next-readiness.md",
+    ".aide/reports/POST-CONVERGE-12-portable-projection-results.json",
+    ".aide/reports/POST-CONVERGE-12-portable-projection-results.md",
+    ".aide/reports/POST-CONVERGE-12-projection-tree.json",
+    ".aide/reports/POST-CONVERGE-12-status.md",
+    ".aide/reports/POST-CONVERGE-12-validation.md",
     ".aide/reports/latest-dominium-status.md",
     ".aide/reports/latest-warning-disposition.md",
-    "docs/audit/identity_fingerprint.json",
-    "docs/audit/proof_manifest.json",
-    "docs/audit/repox/REPOX_PROFILE.json",
-    "docs/audit/security/INTEGRITY_MANIFEST.json",
+    "docs/release/INTERNAL_PILOT_READINESS.md",
     "docs/release/NATIVE_BINARY_PROOF.md",
+    "docs/release/PORTABLE_PROJECTION_PROOF.md",
+    "docs/release/PRODUCT_BOOT_PROOF.md",
     "docs/repo/BUILD_VERIFICATION_PATHS.md",
-    "docs/repo/FAST_GATE_REMEDIATION.md",
     "docs/repo/POST_CONVERGE_NEXT_STEPS.md",
-    "docs/repo/audits/POST_CONVERGE_10M_RETIRED_DOMAIN_PATH_POLICY.md",
-    "docs/repo/audits/POST_CONVERGE_10N_TOOL_HASH_AUDIT_STALENESS.md",
-    "scripts/ci/check_repox_rules.py"
+    "docs/repo/audits/POST_CONVERGE_12_PORTABLE_PROJECTION_PROOF.md"
   ],
-  "generated_utc": "2026-05-16T14:39:16Z",
+  "generated_utc": "2026-05-16T16:44:11Z",
   "groups": [
     {
       "artifact_classes": [
         "CANONICAL"
       ],
       "cache_hit": true,
-      "dep_hash": "3992fa4a751320e06c46f29fc4c05a6e63dd4f11f46093001054f37cf592016f",
-      "duration_ms": 1913,
+      "dep_hash": "3587a4a69ae7da7dc8a809ecf5c08550ef7d99f677b9e107bc6f9fe66da502df",
+      "duration_ms": 1812,
       "group_id": "repox.structure.code",
       "scope_subtrees": [
         "client",
@@ -51,8 +47,8 @@
         "CANONICAL"
       ],
       "cache_hit": true,
-      "dep_hash": "efdb6391611f68beac93eb76f79e70c499e8fbf489c0647f999a63987f2f4ebe",
-      "duration_ms": 1,
+      "dep_hash": "38cb1fca98d2901f15325eec773a1a7cfb12af41e2567ec36c4ce8bb5004f5e0",
+      "duration_ms": 3,
       "group_id": "repox.structure.schema",
       "scope_subtrees": [
         "data",
@@ -65,9 +61,9 @@
       "artifact_classes": [
         "CANONICAL"
       ],
-      "cache_hit": false,
-      "dep_hash": "13ec04ed155cf690ee04aae621024745990c17dccda8b0e5e97858dbad743460",
-      "duration_ms": 2682,
+      "cache_hit": true,
+      "dep_hash": "7dba2c0bb017a8d6d1d884f5698e9dc5a5f8fef211024f8414e1ed6cdb492118",
+      "duration_ms": 1296,
       "group_id": "repox.structure.ruleset",
       "scope_subtrees": [
         "docs",
@@ -82,23 +78,23 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "b0f9aaa5ee47db0305d7c2352c55e854b257a1977cc2b68dee89ccbd04d24de1",
-      "duration_ms": 5713,
+      "dep_hash": "4583948e436759dc11cbbbc989cfa795f141dabe082b46073a1f27a2682fa313",
+      "duration_ms": 6474,
       "group_id": "repox.docs.canon",
       "scope_subtrees": [
         "docs",
         "repo"
       ],
-      "violation_count": 6
+      "violation_count": 1
     },
     {
       "artifact_classes": [
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": false,
-      "dep_hash": "6792f447e15e35b97afc3ba3c5c9ba9de2c908d6a808eb7d6af176db4f75c4db",
-      "duration_ms": 818,
+      "cache_hit": true,
+      "dep_hash": "dbf68c2894b950b1c23f900625c70619f281cd71d3a264226003feb16ef8992f",
+      "duration_ms": 484,
       "group_id": "repox.schema.compat",
       "scope_subtrees": [
         "data",
@@ -113,8 +109,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": true,
-      "dep_hash": "c6c7c07c5721d02911bc311a611a38ee15c3dee3b98f7c203b6fb8f06dafffa8",
-      "duration_ms": 863,
+      "dep_hash": "6bafec9dcb1cf0d5ea41b0615465063a218c288892d9d4356bf13ea10756eef0",
+      "duration_ms": 1500,
       "group_id": "repox.dist.platform",
       "scope_subtrees": [
         "data",
@@ -129,8 +125,8 @@
         "CANONICAL"
       ],
       "cache_hit": true,
-      "dep_hash": "f23abf93539033a4ec2cd7ea30d983e39e26f1608c1f8b4af1a2345c2a33e165",
-      "duration_ms": 6025,
+      "dep_hash": "ca32c49080e926daaf2982c72a9edccc36ff796e211bda5ec96120a73a5479cf",
+      "duration_ms": 10619,
       "group_id": "repox.runtime.policy",
       "scope_subtrees": [
         "client",
@@ -140,7 +136,7 @@
         "schema",
         "server"
       ],
-      "violation_count": 5
+      "violation_count": 0
     },
     {
       "artifact_classes": [
@@ -148,8 +144,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "75ed52b42954bdf9765a9b3448f3e175f381263d683be5b74b0b147af59a1ebc",
-      "duration_ms": 24295,
+      "dep_hash": "898a216493c6391c5770d6a5f361d2d31d4b7be60837819065eadbea58d1679d",
+      "duration_ms": 25682,
       "group_id": "repox.runtime.modding",
       "scope_subtrees": [
         "data",
@@ -167,8 +163,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "a6402de6451ee0647d096ab2ef346f9f95c6e3fd8deb1728289ca528154fbfb9",
-      "duration_ms": 6,
+      "dep_hash": "789b3508624ffe0660d174de57edaa25743fbefae55d879fa7690d82b8d3a9ef",
+      "duration_ms": 7,
       "group_id": "repox.runtime.server",
       "scope_subtrees": [
         "data",
@@ -185,8 +181,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "09a9951fd2bf27b05b68e89e811420679a603438e78cee5770d5d9db24193cb2",
-      "duration_ms": 18,
+      "dep_hash": "b91161aaa95ef674456b3b6d6fec360e2b9e8a9987e2b71c8b847f571f7b0b6a",
+      "duration_ms": 25,
       "group_id": "repox.runtime.compat",
       "scope_subtrees": [
         "data",
@@ -196,7 +192,7 @@
         "src",
         "tools"
       ],
-      "violation_count": 7
+      "violation_count": 0
     },
     {
       "artifact_classes": [
@@ -204,8 +200,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "3ff3b2561a5e6e22b996234dc7edc71c7bf6e49fe892816b82d94cf33e5571a1",
-      "duration_ms": 2,
+      "dep_hash": "6a7d8773f17511baadb643db1d916d61e3242bbec48d36582eb240c44e11142b",
+      "duration_ms": 3,
       "group_id": "repox.runtime.diag",
       "scope_subtrees": [
         "docs",
@@ -221,9 +217,9 @@
         "CANONICAL",
         "DERIVED_VIEW"
       ],
-      "cache_hit": true,
-      "dep_hash": "2c894abef313d89d0d8ae5768a67ea07bf263eaeab153697bfd9f72420faac68",
-      "duration_ms": 255,
+      "cache_hit": false,
+      "dep_hash": "d942d14fb731bb16bbd63bdef52df6e2d9cf63b45b411770fb2de1bf1cb0cc94",
+      "duration_ms": 259,
       "group_id": "repox.runtime.bundle",
       "scope_subtrees": [
         "data",
@@ -240,8 +236,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "a6402de6451ee0647d096ab2ef346f9f95c6e3fd8deb1728289ca528154fbfb9",
-      "duration_ms": 5295,
+      "dep_hash": "789b3508624ffe0660d174de57edaa25743fbefae55d879fa7690d82b8d3a9ef",
+      "duration_ms": 58981,
       "group_id": "repox.runtime.worldgen",
       "scope_subtrees": [
         "data",
@@ -250,7 +246,7 @@
         "src",
         "tools"
       ],
-      "violation_count": 6
+      "violation_count": 0
     },
     {
       "artifact_classes": [
@@ -258,8 +254,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "a6402de6451ee0647d096ab2ef346f9f95c6e3fd8deb1728289ca528154fbfb9",
-      "duration_ms": 41,
+      "dep_hash": "789b3508624ffe0660d174de57edaa25743fbefae55d879fa7690d82b8d3a9ef",
+      "duration_ms": 60,
       "group_id": "repox.runtime.embodiment",
       "scope_subtrees": [
         "data",
@@ -276,15 +272,15 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "eacc87f5c5c5264c1f2b4e902eb64ad9ef2f20b9b7ebc516baff07578b19db60",
-      "duration_ms": 25,
+      "dep_hash": "2e7616e7b5958e247b90b2872592f0054251a285839616e3f816c34aed036c3b",
+      "duration_ms": 63088,
       "group_id": "repox.runtime.viewer",
       "scope_subtrees": [
         "docs",
         "src",
         "tools"
       ],
-      "violation_count": 1
+      "violation_count": 0
     },
     {
       "artifact_classes": [
@@ -292,8 +288,8 @@
         "DERIVED_VIEW"
       ],
       "cache_hit": false,
-      "dep_hash": "818926140fe5b692d24af4e6944a94d9b0c4db98e526f20a3fa6efb41047ac0f",
-      "duration_ms": 31193,
+      "dep_hash": "1e0173c4b3e04266aa311fd967169d36de9c2718896beb47fa8df6a3e76b81fe",
+      "duration_ms": 54238,
       "group_id": "repox.runtime.heavy_scans",
       "scope_subtrees": [
         "client",
@@ -306,15 +302,14 @@
         "tests",
         "tools"
       ],
-      "violation_count": 1
+      "violation_count": 0
     }
   ],
   "impacted_roots": [
     "docs",
-    "repo",
-    "scripts"
+    "repo"
   ],
-  "profile": "STRICT",
+  "profile": "FAST",
   "status": "DERIVED",
-  "total_duration_ms": 85996
+  "total_duration_ms": 225958
 }

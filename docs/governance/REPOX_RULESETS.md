@@ -188,6 +188,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-NO-EAGER-SYSTEM-GENERATION`
 - `INV-L2-OBJECTS-ID-STABLE`
 - `INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN`
+- `INV-NO-UNNAMED-RNG`
 - `INV-SURFACE-GEN-ROUTED`
 - `INV-TILES-ON-DEMAND-ONLY`
 - `INV-NO-REAL-DATA-IN-EARTH-STUB`
@@ -208,6 +209,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - `INV-EARTH-VIEWS-DERIVED-ONLY`
 - `INV-NO-FLUID-SIM-IN-MVP`
 - `INV-NO-CATALOG-DEPENDENCY`
+- `INV-WORLDGEN-LOCK-REQUIRED`
 - `INV-NO-WALLCLOCK-SKY`
 - `INV-NO-ASSET-DEPENDENCY-FOR-EMB`
 - `INV-LENS-PROFILED`
@@ -921,6 +923,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when retry-loop tokens are introduced into the governed L2 refinement surface.
 - Preserves bounded deterministic orbital-spacing adjustment with no random retry behavior.
 
+### INV-NO-UNNAMED-RNG
+
+- Fails when governed worldgen surfaces introduce nondeterministic or unnamed RNG tokens.
+- Preserves named RNG stream discipline for replay-stable worldgen artifacts.
+- Keeps Milky Way and Earth refinement paths deterministic under the current worldgen contracts.
+
 ### INV-SURFACE-GEN-ROUTED
 
 - Fails when MW-3 surface generation loses the explicit routing and delegation markers from the governed runtime surface.
@@ -1022,6 +1030,12 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 - Fails when the governed EARTH-4 starfield surface loses the explicit procedural-starfield and Milky Way priors markers.
 - Fails when catalog imports, dataset references, or catalog-backed lookup tokens appear in the EARTH-4 runtime or replay tooling.
 - Preserves EARTH-4 as a data-light procedural sky surface that future catalog packs may overlay without becoming an MVP dependency.
+
+### INV-WORLDGEN-LOCK-REQUIRED
+
+- Fails when worldgen lock registry, baseline, generation, verification, or audit evidence is missing.
+- Preserves a concrete lock surface for deterministic worldgen replay and regression checks.
+- Keeps worldgen baseline acceptance explicit instead of implied by generated outputs.
 
 ### INV-NO-WALLCLOCK-SKY
 

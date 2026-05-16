@@ -92,7 +92,6 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/DETERMINISTIC_ORDERING_POLICY.md`
 - `docs/architecture/DETERMINISTIC_REDUCTION_RULES.md`
 - `docs/architecture/DEV_OPS_MODEL.md`
-- `docs/architecture/DIRECTORY_CONTEXT.md`
 - `docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md`
 - `docs/architecture/DISTRIBUTED_TIME_MODEL.md`
 - `docs/architecture/DISTRIBUTION_AND_STOREFRONTS.md`
@@ -579,6 +578,7 @@ This canon index remains a legacy reference surface for broad documentation disc
 - `docs/architecture/CORE_ABSTRACTIONS.md`
 - `docs/architecture/DEPRECATION_AND_QUARANTINE.md`
 - `docs/architecture/DEPRECATION_LIFECYCLE.md`
+- `docs/architecture/DIRECTORY_CONTEXT.md`
 - `docs/architecture/DIRECTORY_STRUCTURE.md`
 - `docs/architecture/DUPLICATION_DETECTION_RULES.md`
 - `docs/architecture/EXTENSION_MAP.md`

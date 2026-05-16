@@ -29,13 +29,14 @@ def _repo_root() -> str:
         os.path.join("data", "registries"),
         os.path.join("tools", "xstack"),
     )
-    while True:
+    for _ in range(16):
         if all(os.path.exists(os.path.join(current, marker)) for marker in markers):
             return current
         parent = os.path.dirname(current)
         if parent == current:
-            return os.path.normpath(os.path.join(here, "..", "..", ".."))
+            break
         current = parent
+    return os.path.normpath(os.path.join(here, "..", "..", ".."))
 
 
 @lru_cache(maxsize=None)

@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import sys
+
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
+SCRIPT = os.path.join(REPO_ROOT, "tools", "appshell", "product_stub_cli.py")
+raise SystemExit(subprocess.call([sys.executable, SCRIPT, "--product-id", "tool.attach_console_stub"] + sys.argv[1:]))

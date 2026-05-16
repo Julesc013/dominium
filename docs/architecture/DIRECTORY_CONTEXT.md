@@ -1,4 +1,4 @@
-Status: CANONICAL
+Status: DERIVED
 Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: `contracts/repo/layout.contract.toml` for current source repo layout convergence authority

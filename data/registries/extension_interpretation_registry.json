@@ -1208,6 +1208,229 @@
         "allowed_owners": [
           "*"
         ],
+        "deterministic_fingerprint": "9357a857e893c1b2b8af57bfd8bd20e3837e978e8d717883611b6e831e380664",
+        "extension_key": "mod.unknown.capability_overrides",
+        "extensions": {
+          "legacy_alias_for": "capability_overrides",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "map"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "aa2cd76d0141a22e43059886b0328678a7efb97d0fade968746d551fd646a467",
+        "extension_key": "mod.unknown.canonical_abi_id",
+        "extensions": {
+          "legacy_alias_for": "canonical_abi_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "9fe3abdcb2e1c87ad7f9dc7cdd798bef125a0357d5f80489c1a2822b3cf661c8",
+        "extension_key": "mod.unknown.canonical_arch_id",
+        "extensions": {
+          "legacy_alias_for": "canonical_arch_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "3c4dbac9ec04528dff9c4ea4edccccb8bcf97623e30a50e60431bd67a68a8e08",
+        "extension_key": "mod.unknown.canonical_os_id",
+        "extensions": {
+          "legacy_alias_for": "canonical_os_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "aff13090b7b607d8b1ab6a8daf678e9a7b1c95474e37bb6d2370da40deb607b1",
+        "extension_key": "mod.unknown.dist_root_rel",
+        "extensions": {
+          "legacy_alias_for": "dist_root_rel",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "8e5370bf396814d363a0e4b10ff93a12073adcf4fca10e833f529f86c5e3d418",
+        "extension_key": "mod.unknown.release_manifest_rel",
+        "extensions": {
+          "legacy_alias_for": "release_manifest_rel",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "610f3a4b0041681919b15ca36b27579a15da1e727b4877dc4f8243391a89977c",
+        "extension_key": "mod.unknown.target_matrix_target_id",
+        "extensions": {
+          "legacy_alias_for": "target_matrix_target_id",
+          "legacy_status": "legacy_bare_key",
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "string"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
+        "deterministic_fingerprint": "0e2fba1a1a6b9c967b3e55612e2aecf1d6ca6eb7c4bbb7931a18e5028b8b01b9",
+        "extension_key": "official.platform_capability_ids",
+        "extensions": {
+          "observed_paths": [
+            "tools/mvp/toolchain_matrix_common.py"
+          ],
+          "official.description": "Deterministic interpretation contract for toolchain platform capability lists.",
+          "official.source": "POST-CONVERGE-REPOX-CLOSEOUT"
+        },
+        "profile_gate_required": "extensions.default",
+        "semantic_contract_version_required": "contract.appshell.lifecycle.v1",
+        "stability": {
+          "contract_id": "",
+          "deterministic_fingerprint": "670275540f2734ebf482950b2aa09201a53ecfb4e5086fe44f6f2ad821a93a8c",
+          "extensions": {},
+          "future_series": "INF/TOOLING",
+          "rationale": "MVP stub or first implementation",
+          "replacement_target": "Replace MVP tooling and workflow scaffolds with release-pinned infrastructure and governance surfaces.",
+          "schema_version": "1.0.0",
+          "stability_class_id": "provisional"
+        },
+        "value_type": "list"
+      },
+      {
+        "allowed_owners": [
+          "*"
+        ],
         "deterministic_fingerprint": "b22041df7c30277c033514782de00655efb29595ee1a9f8c293918647d5c40fc",
         "extension_key": "mod.unknown.capacity_used_by_edge",
         "extensions": {

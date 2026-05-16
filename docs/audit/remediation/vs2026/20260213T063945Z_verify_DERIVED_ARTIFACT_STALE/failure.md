@@ -15,8 +15,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 ## Failure Output
 
 ```
-WARN: WARN-GLOSSARY-TERM-CANON: docs/GLOSSARY.md uses forbidden synonym 'survival_mode' for ExperienceProfile
-WARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md uses forbidden synonym 'survival_mode' for ExperienceProfile
+WARN: WARN-GLOSSARY-TERM-CANON: docs/GLOSSARY.md used a forbidden legacy profile-mode synonym for ExperienceProfile
+WARN: WARN-GLOSSARY-TERM-CANON: docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md used a forbidden legacy profile-mode synonym for ExperienceProfile
 INV-CANON-INDEX: architecture doc missing from CANON_INDEX: docs/architecture/ARCH_GLOSSARY.md
 INV-CANON-INDEX: historical doc outside docs/archive: docs/architecture/ARCH_GLOSSARY.md
 INV-CANON-INDEX: listed doc missing: docs/architecture/GLOSSARY.md

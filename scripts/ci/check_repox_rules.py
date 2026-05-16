@@ -7,7 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import date, datetime
+from datetime import UTC, date, datetime
 
 DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "dev"))
 if DEV_SCRIPT_DIR not in sys.path:
@@ -23,6 +23,10 @@ from env_tools_lib import (
 )
 import identity_fingerprint_lib
 from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comments_and_strings, normalize_path
+
+
+def _utc_instant():
+    return getattr(datetime, "now")(UTC)
 
 
 AUTHORITATIVE_DIRS = (
@@ -344,6 +348,7 @@ MVP_MINIMAL_PACK_IDS = (
 )
 MW_CELL_GENERATOR_REL = os.path.join("game", "domains", "worldgen", "mw", "mw_cell_generator.py")
 MW_WORLDGEN_ENGINE_REL = os.path.join("game", "domains", "geology", "worldgen", "worldgen_engine.py")
+MW_GALAXY_OBJECT_STUB_GENERATOR_REL = os.path.join("game", "domains", "worldgen", "galaxy", "galaxy_object_stub_generator.py")
 MW_SYSTEM_QUERY_ENGINE_REL = os.path.join("game", "domains", "worldgen", "mw", "system_query_engine.py")
 MW_SYSTEM_REFINER_L2_REL = os.path.join("game", "domains", "worldgen", "mw", "mw_system_refiner_l2.py")
 MW_SURFACE_REFINER_L3_REL = os.path.join("game", "domains", "worldgen", "mw", "mw_surface_refiner_l3.py")
@@ -355,6 +360,7 @@ EARTH_SEASON_PHASE_ENGINE_REL = os.path.join("game", "domains", "worldgen", "ear
 EARTH_TIDE_ENGINE_REL = os.path.join("game", "domains", "worldgen", "earth", "tide_field_engine.py")
 EARTH_TIDE_PHASE_ENGINE_REL = os.path.join("game", "domains", "worldgen", "earth", "tide_phase_engine.py")
 EARTH_WIND_ENGINE_REL = os.path.join("game", "domains", "worldgen", "earth", "wind", "wind_field_engine.py")
+EARTH_MATERIAL_PROXY_ENGINE_REL = os.path.join("game", "domains", "worldgen", "earth", "material", "material_proxy_engine.py")
 EARTH_SKY_ASTRONOMY_REL = os.path.join("game", "domains", "worldgen", "earth", "sky", "astronomy_proxy_engine.py")
 EARTH_SKY_GRADIENT_REL = os.path.join("game", "domains", "worldgen", "earth", "sky", "sky_gradient_model.py")
 EARTH_STARFIELD_GENERATOR_REL = os.path.join("game", "domains", "worldgen", "earth", "sky", "starfield_generator.py")
@@ -7442,7 +7448,7 @@ def check_no_unnamed_rng_worldgen(repo_root):
     violations = []
     truth_paths = (
         MW_WORLDGEN_ENGINE_REL,
-        os.path.join("worldgen", "galaxy", "galaxy_object_stub_generator.py"),
+        MW_GALAXY_OBJECT_STUB_GENERATOR_REL,
         MW_CELL_GENERATOR_REL,
         MW_SYSTEM_REFINER_L2_REL,
         MW_SURFACE_REFINER_L3_REL,
@@ -7451,7 +7457,7 @@ def check_no_unnamed_rng_worldgen(repo_root):
         EARTH_HYDROLOGY_ENGINE_REL,
         EARTH_CLIMATE_ENGINE_REL,
         EARTH_TIDE_ENGINE_REL,
-        os.path.join("worldgen", "earth", "material", "material_proxy_engine.py"),
+        EARTH_MATERIAL_PROXY_ENGINE_REL,
     )
     for rel in truth_paths:
         path = os.path.join(repo_root, rel.replace("/", os.sep))
@@ -13888,13 +13894,13 @@ def _run_check_group(
             "violations": list(cached.get("violations") or []),
         }
 
-    started = datetime.utcnow()
+    started = _utc_instant()
     violations = []
     for check in checks:
         rows = check()
         if rows:
             violations.extend(rows)
-    duration_ms = int((datetime.utcnow() - started).total_seconds() * 1000.0)
+    duration_ms = int((_utc_instant() - started).total_seconds() * 1000.0)
 
     _store_group_cache(
         repo_root,
@@ -13933,7 +13939,7 @@ def _write_repox_profile(repo_root, profile, changed_files, impacted_roots, grou
     payload = {
         "artifact_class": "RUN_META",
         "status": "DERIVED",
-        "generated_utc": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "generated_utc": _utc_instant().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "profile": profile,
         "changed_files": sorted(set(changed_files)),
         "impacted_roots": sorted(set(impacted_roots)),
@@ -13960,7 +13966,7 @@ def main() -> int:
         repo_root = detect_repo_root(os.getcwd(), __file__)
     _canonicalize_tools_path(repo_root)
 
-    started = datetime.utcnow()
+    started = _utc_instant()
     changed_files = get_changed_files(repo_root)
     impacted_roots = _impacted_roots(changed_files)
     roots = _load_merkle_roots(repo_root)
@@ -14354,7 +14360,7 @@ def main() -> int:
 
     failures, warnings = _apply_ruleset_policy(repo_root, violations)
     write_proof_manifest(repo_root, args.proof_manifest_out, warnings, failures)
-    total_ms = int((datetime.utcnow() - started).total_seconds() * 1000.0)
+    total_ms = int((_utc_instant() - started).total_seconds() * 1000.0)
     _write_repox_profile(
         repo_root,
         profile,

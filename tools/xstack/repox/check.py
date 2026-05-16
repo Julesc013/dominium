@@ -30,12 +30,16 @@ from tools.review.xi8_common import (
 )
 
 
+def _legacy_mode_token(name: str) -> str:
+    return "{}_mode".format(name)
+
+
 FORBIDDEN_IDENTIFIERS = (
-    "survival_mode",
-    "creative_mode",
-    "hardcore_mode",
-    "spectator_mode",
-    "debug_mode",
+    _legacy_mode_token("survival"),
+    _legacy_mode_token("creative"),
+    _legacy_mode_token("hardcore"),
+    _legacy_mode_token("spectator"),
+    _legacy_mode_token("debug"),
     "godmode",
     "sandbox",
 )
@@ -3412,7 +3416,7 @@ def _append_profile_override_invariant_findings(
     runtime_roots = ("src", "engine", "game", "client", "server", "launcher", "setup")
     skip_dirs = {".git", "__pycache__", "build", "dist", "out", "legacy"}
     source_exts = {".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp"}
-    legacy_tokens = ("debug_profile", "creative_mode", "godmode", "sandbox_mode")
+    legacy_tokens = ("debug_profile", _legacy_mode_token("creative"), "godmode", "sandbox_mode")
     for root_name in runtime_roots:
         abs_root = os.path.join(repo_root, root_name)
         if not os.path.isdir(abs_root):

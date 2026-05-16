@@ -1402,6 +1402,25 @@
       "exemption_policy": "deny"
     },
     {
+      "rule_id": "INV-NO-UNNAMED-RNG",
+      "severity": "FAIL",
+      "scope_paths": [
+        "game/domains/geology/worldgen/worldgen_engine.py",
+        "game/domains/worldgen/galaxy/galaxy_object_stub_generator.py",
+        "game/domains/worldgen/mw/mw_cell_generator.py",
+        "game/domains/worldgen/mw/mw_system_refiner_l2.py",
+        "game/domains/worldgen/mw/mw_surface_refiner_l3.py",
+        "game/domains/worldgen/mw/insolation_proxy.py",
+        "game/domains/worldgen/earth/earth_surface_generator.py",
+        "game/domains/worldgen/earth/hydrology_engine.py",
+        "game/domains/worldgen/earth/climate_field_engine.py",
+        "game/domains/worldgen/earth/tide_field_engine.py",
+        "game/domains/worldgen/earth/material/material_proxy_engine.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-unnamed-rng",
+      "exemption_policy": "deny"
+    },
+    {
       "rule_id": "INV-SURFACE-GEN-ROUTED",
       "severity": "FAIL",
       "scope_paths": [
@@ -1629,6 +1648,21 @@
         "docs/worldgen/EARTH_SKY_STARFIELD_MODEL.md"
       ],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-no-catalog-dependency",
+      "exemption_policy": "deny"
+    },
+    {
+      "rule_id": "INV-WORLDGEN-LOCK-REQUIRED",
+      "severity": "FAIL",
+      "scope_paths": [
+        "docs/worldgen/WORLDGEN_LOCK.md",
+        "docs/worldgen/WORLDGEN_LOCK_RETRO_AUDIT.md",
+        "data/registries/worldgen_lock_registry.json",
+        "data/baselines/worldgen_lock/seed.json",
+        "data/baselines/worldgen_lock/snapshot.json",
+        "tools/worldgen/tool_generate_worldgen_lock.py",
+        "tools/worldgen/tool_verify_worldgen_lock.py"
+      ],
+      "documentation": "docs/governance/REPOX_RULESETS.md#inv-worldgen-lock-required",
       "exemption_policy": "deny"
     },
     {

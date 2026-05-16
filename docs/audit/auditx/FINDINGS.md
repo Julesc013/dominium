@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-03-25
+Last Reviewed: 2026-05-16
 Supersedes: none
 Superseded By: none
 
@@ -8,87 +8,207 @@ Superseded By: none
 
 ## Summary
 
-- Total findings: 1610
-- Severities: RISK=549, VIOLATION=17, WARN=1044
-- Categories: appshell.ad_hoc_entry_point_smell=2, architecture.adhoc_loss_smell=1, architecture.adhoc_scheduler_smell=1, architecture.adhoc_speed_limit_smell=2, architecture.adhoc_state_flag_smell=2, architecture.adhoc_valve_smell=3, architecture.affordance_gap_smell=317, architecture.broadcast_bypass_smell=5, architecture.deprecated_usage_smell=1, architecture.derailment_bypass_smell=1, architecture.direct_knowledge_mutation_smell=1, architecture.direct_message_smell=8, architecture.direct_position_mutation_smell=4, architecture.direct_schedule_mutation_smell=1, architecture.heat_loss_bypass_smell=3, architecture.implicit_system_collapse_smell=3, architecture.inline_cure_smell=5, architecture.inline_friction_smell=2, architecture.inline_phase_change_smell=13, architecture.inline_power_loss_smell=1, architecture.inline_protection_smell=17, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.magic_silent_violation_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_graph_duplication_smell=1, architecture.mobility_special_case_smell=3, architecture.model_bypass_smell=7, architecture.nondeterministic_queue_order_smell=1, architecture.silent_corruption_smell=4, architecture.silent_degrade_smell=10, architecture.silent_downgrade_smell=3, architecture.silent_therm_degrade_smell=6, architecture.spec_hardcode_smell=1, architecture.substrate_bypass_smell=13, architecture.thermal_bypass_smell=1, architecture.unbounded_spread_smell=7, architecture.undeclared_registry_smell=2, architecture.unlogged_refusal_smell=3, architecture.unlogged_trip_smell=1, architecture.unlogged_trust_change_smell=5, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, authority.fault_bypass_smell=3, bundle.nondeterministic_bundle_smell=1, canon_drift=907, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.camera_bypass_smell=1, control.direct_breaker_toggle_smell=1, derived_freshness=17, epistemics.hidden_state_leak_smell=6, geometry.adhoc_spatial_key_smell=6, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, legacy_contamination=1, logic.adhoc_wiring_smell=5, logic.carrier_bias_smell=9, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, meta.missing_stability_marker_smell=4, mode_flag_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, reachability=5, reliability.silent_reaction_smell=3, schema_usage=11, security.hidden_privilege_escalation_smell=2, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, server.intent_without_authority_smell=1, worldgen.unbounded_shadow_sampling_smell=1
+- Total findings: 4423
+- Severities: INFO=1, RISK=3122, VIOLATION=16, WARN=1284
+- Categories: appshell.ad_hoc_entry_point_smell=2, arch.duplicate_semantic_engine_smell=6, architecture.adhoc_speed_limit_smell=1, architecture.adhoc_valve_smell=1, architecture.affordance_gap_smell=317, architecture.architecture_drift_smell=1, architecture.deprecated_usage_smell=1, architecture.direct_message_smell=1, architecture.direct_schedule_mutation_smell=1, architecture.forbidden_dependency_smell=1176, architecture.inline_phase_change_smell=1, architecture.inline_protection_smell=1, architecture.inline_strength_check_smell=1, architecture.ir_nondeterminism_smell=2, architecture.missing_decision_log_smell=3, architecture.missing_failsafe_smell=1, architecture.missing_ledger_entry_smell=4, architecture.mobility_special_case_smell=1, architecture.silent_downgrade_smell=2, architecture.silent_therm_degrade_smell=1, architecture.substrate_bypass_smell=13, architecture.unbounded_spread_smell=1, architecture.undeclared_registry_smell=2, architecture.undeclared_schema_smell=1403, architecture.undeclared_subsystem_smell=4, architecture.unlogged_refusal_smell=3, architecture.unlogged_trust_change_smell=1, architecture.vehicle_interior_special_case_smell=1, architecture.weather_hack_smell=1, bundle.nondeterministic_bundle_smell=1, canon_drift=1032, capability_bypass_smell=1, civilisation.nondeterministic_cohort_mapping_smell=1, compat.behavior_without_contract_smell=1, control.player_special_case_smell=2, derived_freshness=18, epistemics.hidden_state_leak_smell=6, gameplay_loop.nondeterministic_smell=2, install.path_dependent_install_smell=1, interaction.interaction_bypass_smell=2, legacy_contamination=1, logic.carrier_bias_smell=6, logic.protocol_security_bypass_smell=1, logic.random_failure_smell=1, logic.truth_leak_via_debug_smell=1, logic.unbounded_trace_smell=1, materials.hardcoded_blueprint_smell=7, materials.inspection_leak_smell=1, materials.reenactment_leak_smell=1, materials.unbounded_inspection_smell=1, net.precision_leak_smell=2, net.truth_over_net_smell=6, performance.performance_nondeterminism_smell=1, performance.unbudgeted_reaction_loop_smell=1, planning.orphan_feature_smell=1, reachability=2, release.non_canonical_serialization_smell=2, release.platform_dependent_behavior_smell=2, release.smoke_suite_missing_smell=3, reliability.silent_reaction_smell=2, repo.repository_structure_drift_smell=60, schema_usage=169, semantic.capability_drift=5, semantic.schema_shadowing=120, semantic.workspace_contamination=1, server.intent_without_authority_smell=1, time.mixed_tick_width_smell=3, worldgen.unbounded_shadow_sampling_smell=1
 
 ## Top Findings
 
-- `C2_MODE_FLAG_SMELL:0001` VIOLATION `C2_MODE_FLAG_SMELL` `mode_flag_smell` (tools/xstack/repox/check.py)
-  - Found hardcoded mode token 'survival_mode' in runtime-affecting source.
-  - Mode behavior must resolve from ExperienceProfile + LawProfile + ParameterBundle.
-- `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
+- `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domains/inspection/inspection_engine.py)
   - domain downgrade path missing negotiation downgrade surface
-- `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/materials/materialization/materialization_engine.py)
+- `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domains/materials/materialization/materialization_engine.py)
   - domain downgrade path missing negotiation downgrade surface
-- `E119_UNLOGGED_REFUSAL_SMELL:0001` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (src/control/control_plane_engine.py)
+- `E119_UNLOGGED_REFUSAL_SMELL:0001` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (control/control_plane_engine.py)
   - refused result path not obviously tied to decision log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E119_UNLOGGED_REFUSAL_SMELL:0002` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (src/control/control_plane_engine.py)
+- `E119_UNLOGGED_REFUSAL_SMELL:0002` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (control/control_plane_engine.py)
   - refused result path not obviously tied to decision log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E119_UNLOGGED_REFUSAL_SMELL:0003` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (src/control/control_plane_engine.py)
+- `E119_UNLOGGED_REFUSAL_SMELL:0003` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (control/control_plane_engine.py)
   - refused result path not obviously tied to decision log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0001` VIOLATION `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL` `security.hidden_privilege_escalation_smell` (src/server/server_boot.py)
-  - privilege escalation marker detected outside control subsystem
-  - "entitlement.control.admin",
-- `E132_MISSING_DECISION_LOG_SMELL:0001` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
+- `E132_MISSING_DECISION_LOG_SMELL:0001` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E132_MISSING_DECISION_LOG_SMELL:0002` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
+- `E132_MISSING_DECISION_LOG_SMELL:0002` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (src/control/control_plane_engine.py)
+- `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E168_DIRECT_KNOWLEDGE_MUTATION_SMELL:0001` VIOLATION `E168_DIRECT_KNOWLEDGE_MUTATION_SMELL` `architecture.direct_knowledge_mutation_smell` (src/logic/protocol/protocol_engine.py)
-  - knowledge mutation outside receipt process path
-  - state["knowledge_receipt_rows"] = normalize_knowledge_receipt_rows(transport.get("knowledge_receipt_rows"))
-- `E314_AD_HOC_WIRING_SMELL:0001` VIOLATION `E314_AD_HOC_WIRING_SMELL` `logic.adhoc_wiring_smell` (src/logic/compile/logic_compiler.py)
-  - logic topology payload appears outside sanctioned network modules
-  - src/logic/compile/logic_compiler.py
-- `E314_AD_HOC_WIRING_SMELL:0002` VIOLATION `E314_AD_HOC_WIRING_SMELL` `logic.adhoc_wiring_smell` (src/logic/eval/common.py)
-  - logic topology payload appears outside sanctioned network modules
-  - src/logic/eval/common.py
-- `E314_AD_HOC_WIRING_SMELL:0003` VIOLATION `E314_AD_HOC_WIRING_SMELL` `logic.adhoc_wiring_smell` (src/logic/eval/propagate_engine.py)
-  - logic topology payload appears outside sanctioned network modules
-  - src/logic/eval/propagate_engine.py
-- `E314_AD_HOC_WIRING_SMELL:0004` VIOLATION `E314_AD_HOC_WIRING_SMELL` `logic.adhoc_wiring_smell` (src/logic/eval/sense_engine.py)
-  - logic topology payload appears outside sanctioned network modules
-  - src/logic/eval/sense_engine.py
-- `E314_AD_HOC_WIRING_SMELL:0005` VIOLATION `E314_AD_HOC_WIRING_SMELL` `logic.adhoc_wiring_smell` (src/logic/protocol/protocol_engine.py)
-  - logic topology payload appears outside sanctioned network modules
-  - src/logic/protocol/protocol_engine.py
-- `E323_RANDOM_FAILURE_SMELL:0001` VIOLATION `E323_RANDOM_FAILURE_SMELL` `logic.random_failure_smell` (src/logic/noise/noise_engine.py)
+- `E323_RANDOM_FAILURE_SMELL:0001` VIOLATION `E323_RANDOM_FAILURE_SMELL` `logic.random_failure_smell` (game/domains/logic/noise/noise_engine.py)
   - logic noise engine missing deterministic-noise token
   - build_logic_noise_decision_row(
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/audit/arch_audit_common.py)
-  - Detected key access without obvious schema anchor: symbols
+- `E60_HARDCODED_BLUEPRINT_SMELL:0001` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "blueprint.preview": {
+- `E60_HARDCODED_BLUEPRINT_SMELL:0002` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "required_capabilities": ("ui.blueprint.preview",),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0003` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "blueprint.place": {
+- `E60_HARDCODED_BLUEPRINT_SMELL:0004` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "required_capabilities": ("ui.blueprint.place",),
+- `E60_HARDCODED_BLUEPRINT_SMELL:0005` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "const char* required_capability = preview ? \"ui.blueprint.preview\" : \"ui.blueprint.place\"",
+- `E60_HARDCODED_BLUEPRINT_SMELL:0006` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - line_blueprint_cap = _line_with_token(text, "const char* required_capability = preview ? \"ui.blueprint.preview\" : \"ui.blueprint.place\"")
+- `E60_HARDCODED_BLUEPRINT_SMELL:0007` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
+  - hardcoded blueprint token detected in non-data source
+  - "\"migration.blueprint.v1_to_v2\"",
+- `A1_REACHABILITY_ORPHANED:0001` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domains/embodiment/__init__.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A1_REACHABILITY_ORPHANED:0002` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+  - No non-test or non-doc incoming references found.
+  - Likely orphaned or prototype leakage candidate.
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/audit/arch_audit_common.py)
-  - Detected key access without obvious schema anchor: symbols
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/audit/arch_audit_common.py)
-  - Detected key access without obvious schema anchor: occurrences
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/audit/arch_audit_common.py)
-  - Detected key access without obvious schema anchor: baseline_path
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/toolchain_matrix_common.py)
-  - Detected key access without obvious schema anchor: run_manifest_path
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/toolchain_matrix_common.py)
-  - Detected key access without obvious schema anchor: results_path
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/toolchain_matrix_common.py)
-  - Detected key access without obvious schema anchor: env_report_path
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/mvp/toolchain_matrix_common.py)
-  - Detected key access without obvious schema anchor: hashes_path
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+  - Detected key access without obvious schema anchor: deterministic_fingerprint
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: body_assemblies
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0023` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: body_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0024` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: momentum_states
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0025` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: camera_assemblies
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0026` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: transform_mm
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0027` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: required_capabilities
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0028` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: epistemic_scope
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0029` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: epistemic_scope
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0030` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: failure_ref
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0031` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: failure_ref
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0032` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: view_mode_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0033` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: lens_id
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0034` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: force_application_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0035` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: tool.geo.explain_property_origin
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0036` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: restart_result
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0037` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: record
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0038` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
+  - Detected key access without obvious schema anchor: record
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0039` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
   - Detected key access without obvious schema anchor: process.earth_material_proxy_tick
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0040` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pose_slots
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0041` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: mount_points
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0042` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pose_mount_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0043` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: machine_ports
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0044` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: machine_port_connections
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0045` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: machine_assemblies
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0046` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: machine_provenance_events
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0047` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pollution_exposure_state_rows
+  - Best-effort heuristic; verify if schema declaration exists.
+- `A4_SCHEMA_USAGE:0048` RISK `A4_SCHEMA_USAGE` `schema_usage` (tools/xstack/repox/check.py)
+  - Detected key access without obvious schema anchor: pollution_health_risk_event_rows
   - Best-effort heuristic; verify if schema declaration exists.
 - `A7_LEGACY_CONTAMINATION:0001` RISK `A7_LEGACY_CONTAMINATION` `legacy_contamination` (tools/xstack/repox/check.py)
   - Canonical file contains direct legacy path token.
@@ -144,229 +264,76 @@ Superseded By: none
 - `A8_DERIVED_FRESHNESS_SMELL:0017` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.trust.json)
   - Derived pack JSON artifact has no provenance object.
   - Expected deterministic source->derived traceability header.
-- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (client/core/client_command_bridge.c)
+- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (apps/client/core/client_command_bridge.c)
   - Bridge is missing required capability/entitlement guard markers.
   - Missing markers: refuse.profile_not_selected
-- `E108_UNDECLARED_REGISTRY_SMELL:0001` RISK `E108_UNDECLARED_REGISTRY_SMELL` `architecture.undeclared_registry_smell` (data/registries/toolchain_matrix_registry.json)
-  - registry path missing from topology registry nodes
-- `E108_UNDECLARED_REGISTRY_SMELL:0002` RISK `E108_UNDECLARED_REGISTRY_SMELL` `architecture.undeclared_registry_smell` (data/registries/toolchain_test_profile_registry.json)
-  - registry path missing from topology registry nodes
-- `E113_DEPRECATED_USAGE_SMELL:0001` RISK `E113_DEPRECATED_USAGE_SMELL` `architecture.deprecated_usage_smell` (tools/xstack/repox/check.py)
-  - data/registries/deprecation_registry.json
-  - reference to deprecated/quarantined/removed identifier
-- `E117_IR_NONDETERMINISM_SMELL:0001` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - canonical_sha256(
-- `E117_IR_NONDETERMINISM_SMELL:0002` RISK `E117_IR_NONDETERMINISM_SMELL` `architecture.ir_nondeterminism_smell` (src/control/ir/control_ir_multiplayer.py)
-  - missing deterministic token
-  - sorted(
-- `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL:0002` RISK `E130_HIDDEN_PRIVILEGE_ESCALATION_SMELL` `security.hidden_privilege_escalation_smell` (src/client/ui/viewer_shell.py)
-  - privilege escalation marker detected outside control subsystem
-  - "entitlement.control.admin",
-- `E131_SILENT_DOWNGRADE_SMELL:0001` RISK `E131_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (src/inspection/inspection_engine.py)
-  - downgrade marker found outside control subsystem
-  - module_node_id=module:src/inspection
-- `E133_SPEC_HARDCODE_SMELL:0001` RISK `E133_SPEC_HARDCODE_SMELL` `architecture.spec_hardcode_smell` (src/mobility/geometry/geometry_engine.py)
-  - hardcoded infrastructure spec literal outside SpecSheet declarations
-  - clearance = {"width_mm": 3000, "height_mm": 4000}
-- `E138_INLINE_STRENGTH_CHECK_SMELL:0001` RISK `E138_INLINE_STRENGTH_CHECK_SMELL` `architecture.inline_strength_check_smell` (tools/xstack/sessionx/process_runtime.py)
-  - inline structural load/strength check outside mechanics substrate
-  - max_load=0 if bool(inputs.get("zero_max_load_on_fracture", True)) else int(max(0, _as_int(edge_row.get("max_load", 0), 0))),
-- `E139_INLINE_FRICTION_SMELL:0001` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/constrained_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - friction_permille=int(friction_permille),
-- `E139_INLINE_FRICTION_SMELL:0002` RISK `E139_INLINE_FRICTION_SMELL` `architecture.inline_friction_smell` (src/mobility/micro/free_motion_solver.py)
-  - inline friction/traction logic outside FIELD runtime
-  - traction_permille = int(max(1, _as_int(effects.get("traction_permille", 1000), 1000)))
-- `E141_WEATHER_HACK_SMELL:0001` RISK `E141_WEATHER_HACK_SMELL` `architecture.weather_hack_smell` (tools/xstack/sessionx/ui_host.py)
-  - possible direct weather/render hack outside FIELD process path
-  - if window_is_nondiegetic and not required_entitlements:
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0001` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/logic/protocol/protocol_engine.py)
-  - mobility special-case branch detected
-  - send = process_signal_send(current_tick=tick, channel_id=channel_id, from_node_id=source_node, artifact_id=_t(winner.get("frame_id")), sende
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0002` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (src/specs/spec_engine.py)
-  - mobility special-case branch detected
-  - if measured_derailment is not None and int(measured_derailment) >= 900 and grade == "pass":
-- `E142_MOBILITY_SPECIAL_CASE_SMELL:0003` RISK `E142_MOBILITY_SPECIAL_CASE_SMELL` `architecture.mobility_special_case_smell` (tools/xstack/sessionx/process_runtime.py)
-  - mobility special-case branch detected
-  - derail_risk_band = "high" if int(derail_risk_permille) >= 1000 else ("medium" if int(derail_risk_permille) >= 700 else "low")
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0001` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/teleport_controller.py)
-  - direct position/body mutation outside process runtime
-  - position_mm=_as_map(coords.get("position_mm")),
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0002` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/client/ui/viewer_shell.py)
-  - direct position/body mutation outside process runtime
-  - position_mm = _vector3_int(state.get("position_mm"))
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0003` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/embodiment/collision/macro_heightfield_provider.py)
-  - direct position/body mutation outside process runtime
-  - position_mm=position,
-- `E143_DIRECT_POSITION_MUTATION_SMELL:0004` RISK `E143_DIRECT_POSITION_MUTATION_SMELL` `architecture.direct_position_mutation_smell` (src/field/field_boundary_exchange.py)
-  - direct position/body mutation outside process runtime
-  - position_mm = _vector3_int(portal_ext.get("position_mm"))
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0001` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (src/mechanics/structural_graph_engine.py)
-  - ad-hoc speed limit logic detected
-  - recommended_speed_cap_permille = 1000
-- `E144_ADHOC_SPEED_LIMIT_SMELL:0002` RISK `E144_ADHOC_SPEED_LIMIT_SMELL` `architecture.adhoc_speed_limit_smell` (tools/xstack/sessionx/process_runtime.py)
-  - ad-hoc speed limit logic detected
-  - "recommended_speed_cap_permille": int(max(0, _as_int(mechanics_summary.get("recommended_speed_cap_permille", 1000), 1000))),
-- `E147_MOBILITY_GRAPH_DUPLICATION_SMELL:0001` RISK `E147_MOBILITY_GRAPH_DUPLICATION_SMELL` `architecture.mobility_graph_duplication_smell` (src/pollution/dispersion_engine.py)
-  - potential ad-hoc mobility graph duplication detected
-  - neighbor_map: Mapping[str, object],
-- `E154_DERAILMENT_BYPASS_SMELL:0001` RISK `E154_DERAILMENT_BYPASS_SMELL` `architecture.derailment_bypass_smell` (src/mobility/travel/reenactment.py)
-  - derailment signaling/state mutation outside process.mob_derail path
-  - if str(row.get("kind", "")).strip() == "incident_stub" and reason_code.startswith("incident.derailment."):
-- `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL:0001` RISK `E160_VEHICLE_INTERIOR_SPECIAL_CASE_SMELL` `architecture.vehicle_interior_special_case_smell` (tools/xstack/sessionx/observation.py)
-  - vehicle interior special-case detected
-  - if channel_id == "ch.diegetic.vehicle.pressure":
-- `E163_SUBSTRATE_BYPASS_SMELL:0001` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.close
-- `E163_SUBSTRATE_BYPASS_SMELL:0002` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.elec.panel.open
-- `E163_SUBSTRATE_BYPASS_SMELL:0003` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.isolate_section
-- `E163_SUBSTRATE_BYPASS_SMELL:0004` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.fluid.open_valve
-- `E163_SUBSTRATE_BYPASS_SMELL:0005` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.accept
-- `E163_SUBSTRATE_BYPASS_SMELL:0006` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.promote_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0007` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.formalize.revert
-- `E163_SUBSTRATE_BYPASS_SMELL:0008` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - action.mobility.network_create_from_formalization
-- `E163_SUBSTRATE_BYPASS_SMELL:0009` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_commitments
-- `E163_SUBSTRATE_BYPASS_SMELL:0010` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.inspect_mobility_edge
-- `E163_SUBSTRATE_BYPASS_SMELL:0011` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.promote_to_network
-- `E163_SUBSTRATE_BYPASS_SMELL:0012` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - interaction.schedule_maintenance
-- `E163_SUBSTRATE_BYPASS_SMELL:0013` RISK `E163_SUBSTRATE_BYPASS_SMELL` `architecture.substrate_bypass_smell` (data/registries/action_template_registry.json)
-  - template likely touches substrate(s) not declared
-  - process.on_planet.maintenance.inspect_condition
-- `E164_DIRECT_MESSAGE_SMELL:0001` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/client/net/loopback_client.py)
-  - possible direct message propagation outside SIG transport path
-  - return transport.send(encode_proto_message(message))
-- `E164_DIRECT_MESSAGE_SMELL:0002` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/interface.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0003` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/loopback.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0004` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/tcp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0005` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/net/transport/udp_stub.py)
-  - possible direct message propagation outside SIG transport path
-  - def send(self, message_bytes: bytes) -> Dict[str, object]:
-- `E164_DIRECT_MESSAGE_SMELL:0006` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/server/net/loopback_transport.py)
-  - possible direct message propagation outside SIG transport path
-  - sent = transport.send(encode_proto_message(proto))
-- `E164_DIRECT_MESSAGE_SMELL:0007` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (src/server/runtime/tick_loop.py)
-  - possible direct message propagation outside SIG transport path
-  - tick_stream = broadcast_tick_stream(
-- `E164_DIRECT_MESSAGE_SMELL:0008` RISK `E164_DIRECT_MESSAGE_SMELL` `architecture.direct_message_smell` (tools/xstack/sessionx/net_handshake.py)
-  - possible direct message propagation outside SIG transport path
-  - sent = client.send(encode_proto_message(request_message))
-- `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL:0001` RISK `E167_NON_DETERMINISTIC_QUEUE_ORDER_SMELL` `architecture.nondeterministic_queue_order_smell` (src/signals/transport/transport_engine.py)
-  - queue processing appears unsorted
-  - for queue_row in queue_rows:
-- `E169_BROADCAST_BYPASS_SMELL:0001` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/electric/protection/protection_engine.py)
-  - broadcast/group semantics outside address engine
-  - group_id = str(row.get("coordination_group_id", "")).strip() or "coord.group.default"
-- `E169_BROADCAST_BYPASS_SMELL:0002` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/logic/protocol/protocol_engine.py)
-  - broadcast/group semantics outside address engine
-  - "broadcast_subject_ids": [slot["subject_id"]],
-- `E169_BROADCAST_BYPASS_SMELL:0003` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/bulletin_engine.py)
-  - broadcast/group semantics outside address engine
-  - return {"kind": "broadcast", "broadcast_scope": target_id, "to_node_id": str(row.get("to_node_id", "node.unknown")).strip() or "node.unknown
-- `E169_BROADCAST_BYPASS_SMELL:0004` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/dispatch_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("dispatch_report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E169_BROADCAST_BYPASS_SMELL:0005` RISK `E169_BROADCAST_BYPASS_SMELL` `architecture.broadcast_bypass_smell` (src/signals/institutions/standards_engine.py)
-  - broadcast/group semantics outside address engine
-  - "group_id": str(policy_ext.get("report_group_id", "group.dispatch.default")).strip() or "group.dispatch.default",
-- `E170_ADHOC_LOSS_SMELL:0001` RISK `E170_ADHOC_LOSS_SMELL` `architecture.adhoc_loss_smell` (src/inspection/inspection_engine.py)
-  - loss logic appears outside SIG transport quality layer
-  - int(max(0, _as_int(ext.get("field_loss_modifier_permille", 0), 0)))
-- `E171_SILENT_CORRUPTION_SMELL:0001` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/inspection/inspection_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - elif state_token == "corrupted":
-- `E171_SILENT_CORRUPTION_SMELL:0002` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/lib/store/gc_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - "remediation": "Run `python tools/lib/tool_store_verify.py --store-root {}` and repair the reported corruption before retrying GC.".format(_
-- `E171_SILENT_CORRUPTION_SMELL:0003` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/logic/protocol/protocol_engine.py)
-  - possible corruption handling outside SIG transport event path
-  - protocol_result = {"delivered": "delivered", "corrupted": "corrupted"}.get(delivery_state, "dropped")
-- `E171_SILENT_CORRUPTION_SMELL:0004` RISK `E171_SILENT_CORRUPTION_SMELL` `architecture.silent_corruption_smell` (src/logic/protocol/rows.py)
-  - possible corruption handling outside SIG transport event path
-  - if result_token not in {"delivered", "dropped", "blocked", "corrupted"}:
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0001` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/geo/lens/cctv_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight=1.0,
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0002` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/inspection/inspection_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(row.get("trust_weight", 1.0))
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0003` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/logic/protocol/protocol_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_edge_rows=state["signal_trust_edge_rows"],
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0004` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (src/signals/transport/transport_engine.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight=float(row.get("trust_weight", 1.0)),
-- `E173_UNLOGGED_TRUST_CHANGE_SMELL:0005` RISK `E173_UNLOGGED_TRUST_CHANGE_SMELL` `architecture.unlogged_trust_change_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible trust mutation path outside logged trust engine process
-  - trust_weight = float(_as_float(receipt_row.get("trust_weight", 1.0), 1.0))
-- `E174_DIRECT_SCHEDULE_MUTATION_SMELL:0001` RISK `E174_DIRECT_SCHEDULE_MUTATION_SMELL` `architecture.direct_schedule_mutation_smell` (tools/xstack/sessionx/process_runtime.py)
-  - possible direct travel schedule mutation outside dispatch control path
-  - rows = state.get("travel_schedules")
-- `E176_AFFORDANCE_GAP_SMELL:0001` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.admin.meta_override
-- `E176_AFFORDANCE_GAP_SMELL:0002` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0003` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0004` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.reset
-- `E176_AFFORDANCE_GAP_SMELL:0005` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0006` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0007` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.breaker.toggle
-- `E176_AFFORDANCE_GAP_SMELL:0008` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0009` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0010` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connect_wire
-- `E176_AFFORDANCE_GAP_SMELL:0011` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0012` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
-- `E176_AFFORDANCE_GAP_SMELL:0013` RISK `E176_AFFORDANCE_GAP_SMELL` `architecture.affordance_gap_smell` (data/registries/action_template_registry.json)
-  - action template touches substrate missing from RWAM
-  - action.elec.connector.plug
+- `E106_UNDECLARED_SUBSYSTEM_SMELL:0001` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/aide)
+  - subsystem 'aide' is present in repository but missing from topology owner_subsystem declarations
+- `E106_UNDECLARED_SUBSYSTEM_SMELL:0002` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/build)
+  - subsystem 'build' is present in repository but missing from topology owner_subsystem declarations
+- `E106_UNDECLARED_SUBSYSTEM_SMELL:0003` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/migration)
+  - subsystem 'migration' is present in repository but missing from topology owner_subsystem declarations
+- `E106_UNDECLARED_SUBSYSTEM_SMELL:0004` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/validators)
+  - subsystem 'validators' is present in repository but missing from topology owner_subsystem declarations
+- `E107_UNDECLARED_SCHEMA_SMELL:0001` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/accessibility_preset.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0002` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_family.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0003` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_surface.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0004` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_template.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0005` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/activation_policy.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0006` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/activation_policy_registry.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0007` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affiliation.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0008` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affordance.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0009` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affordance_list.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0010` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ag_edge.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0011` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ag_node.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0012` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.autonomy_budget.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0013` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.delegation.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0014` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.goal.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0015` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent_move_intent.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0016` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent_rotate_intent.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0017` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ai.profile.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0018` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ambient_boundary.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0019` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/animal.agent.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0020` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/animal.species.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0021` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/anti_cheat_module_registry.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0022` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/anti_cheat_policy_registry.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0023` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/app_mode.schema.json)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0024` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/app_mode.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0025` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/command_descriptor.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0026` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/exit_code_registry.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0027` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_category_registry.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0028` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_event.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0029` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_sink_config.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0030` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/message_key_registry.schema)
+  - schema path missing from topology schema nodes
+- `E107_UNDECLARED_SCHEMA_SMELL:0031` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/refusal_code_registry.schema)
+  - schema path missing from topology schema nodes
