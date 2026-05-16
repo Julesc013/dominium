@@ -7,7 +7,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import UTC, date, datetime
+from datetime import date, datetime, timezone
 
 DEV_SCRIPT_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "dev"))
 if DEV_SCRIPT_DIR not in sys.path:
@@ -26,7 +26,7 @@ from hygiene_utils import DEFAULT_EXCLUDES, iter_files, read_text, strip_c_comme
 
 
 def _utc_instant():
-    return getattr(datetime, "now")(UTC)
+    return getattr(datetime, "now")(timezone.utc)
 
 
 AUTHORITATIVE_DIRS = (

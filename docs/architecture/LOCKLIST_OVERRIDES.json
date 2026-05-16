@@ -215,6 +215,12 @@
       "invariant": "INV-LOCKLIST-FROZEN",
       "reason": "Register the APPSHELL-4 IPC attach doctrine and audit surfaces in CANON_INDEX and refresh dependent governance artifacts without changing runtime semantics.",
       "expires": "2026-04-11"
+    },
+    {
+      "id": "OVR-2026-05-17-POST-CONVERGE-CLOSEOUT-CANON",
+      "invariant": "INV-LOCKLIST-FROZEN",
+      "reason": "Accept POST-CONVERGE closeout CANON_INDEX maintenance for DIRECTORY_CONTEXT derived-status correction; no doctrine, runtime, or product semantics changed.",
+      "expires": "2026-06-17"
     }
   ]
 }
