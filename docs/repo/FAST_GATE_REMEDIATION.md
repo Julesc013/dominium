@@ -136,3 +136,11 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, MW-4 lazy import source-policy failures, ruleset mapping gaps, canon supersession, extension registry, worldgen retry-loop, and shadow-bound policy failures.
 - The AuditX stale-output warning remains because broad AuditX regeneration was out of scope.
 - Next recommended semantic task: focused residual RepoX governance/source-policy remediation or explicit RepoX acceptance gate. TEST-PERF follow-up remains appropriate for validation speed.
+
+## POST-CONVERGE-10O Update - Closeout Gate
+
+- Result: PARTIAL.
+- Focused RepoX remains 20 failures / 5 warnings.
+- Canonical `ctest --preset verify -N` reports 493 tests, so CTest discovery is not the immediate FAST blocker.
+- FAST remains blocked as a promotion signal because real non-proof RepoX governance/source-policy failures remain.
+- The next semantic task is `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.

@@ -266,3 +266,13 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - `INV-AUDITX-OUTPUT-STALE` and four glossary warnings in generated/historical audit evidence remain warnings.
 - POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance/source-policy failures.
 - Next recommended semantic task: residual RepoX governance/source-policy remediation or an explicit RepoX acceptance gate; TEST-PERF follow-up remains useful for validation speed.
+
+## POST-CONVERGE-10O Update - RepoX Closeout Gate
+
+- Result: PARTIAL.
+- Fresh focused RepoX reproduction remains 20 failures / 5 warnings.
+- Canonical `ctest --preset verify -N` now discovers 493 tests in this checkout; CTest discovery is not the primary blocker.
+- The tuple fallback was not required for POST-CONVERGE-10O because canonical `verify` discovered and ran `inv_repox_rules`.
+- POST-CONVERGE-11 remains blocked because the remaining set is not only product/projection proof blockers and not warning-only.
+- Real non-proof blockers remain in MW-4 embodiment fixture imports, ruleset mappings, canon supersession, extension registry coverage, worldgen retry-loop policy, and shadow bounded policy.
+- Next recommended task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.

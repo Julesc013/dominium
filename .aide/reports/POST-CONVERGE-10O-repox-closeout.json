@@ -1,0 +1,105 @@
+{
+  "schema_version": "dominium.post_converge_10o.repox_closeout.v1",
+  "task_id": "POST-CONVERGE-10O",
+  "focused_repox": {
+    "passes": false,
+    "failures": 20,
+    "warnings": 5
+  },
+  "canonical_ctest_discovery": {
+    "tests_discovered": 493,
+    "status": "pass_with_missing_executable_notices"
+  },
+  "tuple_ctest": {
+    "used": false,
+    "status": "not_required_canonical_preset_discovered_inv_repox_rules"
+  },
+  "remaining_families": [
+    {
+      "id": "distribution_product_proof",
+      "rule_ids": [
+        "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR",
+        "INV-NO-ADHOC-MAIN"
+      ],
+      "count": 12,
+      "classification": "product_boot_or_projection_proof_blocker",
+      "next_action": "defer_until_non_proof_repox_blockers_are_resolved_or_accepted"
+    },
+    {
+      "id": "mw4_embodiment_import",
+      "rule_ids": [
+        "INV-NO-BLOCKING-WORLDGEN-IN-UI",
+        "INV-REFINEMENT-BUDGETED"
+      ],
+      "count": 2,
+      "classification": "real_governance_blocker",
+      "next_action": "residual_repox_governance_source_policy_remediation"
+    },
+    {
+      "id": "ruleset_mapping_gaps",
+      "rule_ids": [
+        "INV-REPOX-RULESET-MISSING"
+      ],
+      "count": 2,
+      "classification": "real_governance_blocker",
+      "next_action": "add_or_classify_missing_ruleset_mappings"
+    },
+    {
+      "id": "canon_superseded_doc",
+      "rule_ids": [
+        "INV-CANON-NO-SUPERSEDED"
+      ],
+      "count": 1,
+      "classification": "real_governance_blocker",
+      "next_action": "review_directory_context_canon_status"
+    },
+    {
+      "id": "extension_registry_gap",
+      "rule_ids": [
+        "INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY"
+      ],
+      "count": 1,
+      "classification": "real_governance_blocker",
+      "next_action": "add_or_classify_capability_overrides_registry_entry"
+    },
+    {
+      "id": "worldgen_retry_loop_policy",
+      "rule_ids": [
+        "INV-NO-RANDOM-RETRY-LOOPS-IN-WORLDGEN"
+      ],
+      "count": 1,
+      "classification": "real_governance_blocker",
+      "next_action": "review_worldgen_retry_loop_policy_or_implementation"
+    },
+    {
+      "id": "shadow_bounded_policy",
+      "rule_ids": [
+        "INV-SHADOW-BOUNDED"
+      ],
+      "count": 1,
+      "classification": "real_governance_blocker",
+      "next_action": "review_shadow_bounded_loop_policy_or_implementation"
+    },
+    {
+      "id": "auditx_output_staleness_warning",
+      "rule_ids": [
+        "INV-AUDITX-OUTPUT-STALE"
+      ],
+      "count": 1,
+      "classification": "nonsemantic_warning_candidate",
+      "next_action": "scoped_auditx_refresh_or_warning_acceptance_ledger"
+    },
+    {
+      "id": "audit_glossary_warnings",
+      "rule_ids": [
+        "WARN-GLOSSARY-TERM-CANON"
+      ],
+      "count": 4,
+      "classification": "nonsemantic_warning_candidate",
+      "next_action": "preserve_generated_historical_evidence_or_accept_warning"
+    }
+  ],
+  "decision": "real_governance_blocker",
+  "ready_for_post_converge_11": false,
+  "recommended_next_task": "POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation"
+}

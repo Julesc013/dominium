@@ -7,10 +7,10 @@ Superseded By: none
 
 ## Current Position
 
-POST-CONVERGE-10N completed as PARTIAL. Focused RepoX improved from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing canonical identity and SecureX integrity evidence and repairing RepoX cache dependencies for tracked docs/audit evidence.
+POST-CONVERGE-10O completed as PARTIAL. Focused RepoX remains expected-failing at 20 failures / 5 warnings after closeout reproduction.
 
-POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance/source-policy failures in addition to product/projection proof blockers.
+POST-CONVERGE-11 remains blocked because focused RepoX still has real non-proof governance/source-policy failures in addition to product/projection proof blockers. Canonical `ctest --preset verify -N` currently reports 493 tests, so CTest discovery is not the primary blocker.
 
 ## Next Recommended Task
 
-Residual RepoX governance/source-policy remediation or an explicit RepoX acceptance gate. TEST-PERF follow-up remains appropriate for faster validation, but it does not replace semantic RepoX disposition.
+`POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.

@@ -2,44 +2,41 @@
 
 ## PHASE
 
-POST-CONVERGE-10N - Tool Hash and Audit Staleness Remediation
+POST-CONVERGE-10O - RepoX Closeout and Product Boot Readiness Gate
 
 ## GOAL
 
-Reduce or classify focused RepoX tool hash, identity fingerprint, audit evidence, and generated proof staleness without broad audit regeneration or product/projection proof.
+Review POST-CONVERGE-10F through POST-CONVERGE-10N RepoX remediation evidence, reproduce current focused RepoX, and decide whether POST-CONVERGE-11 may proceed.
 
 ## WHY
 
-After POST-CONVERGE-10M, focused RepoX still contained stale SecureX tool hash evidence, a stale identity fingerprint, and audit evidence warnings. These are integrity/evidence issues and must be distinguished from real policy failures.
+After POST-CONVERGE-10N, focused RepoX is much smaller but still failing. The next step must be selected from evidence: product boot proof, warning acceptance, test discovery/performance work, or one more targeted RepoX remediation.
 
 ## CURRENT RESULT
 
-PARTIAL. Focused `inv_repox_rules` improved from 23 failures / 5 warnings to 20 failures / 5 warnings. Safe canonical evidence refreshes fixed `INV-IDENTITY-FINGERPRINT` and `INV-TOOL-VERSION-MISMATCH`. AuditX stale-output and glossary warnings remain.
+PARTIAL. Focused `inv_repox_rules` remains expected-failing at 20 failures / 5 warnings. Canonical `ctest --preset verify -N` reports 493 tests. POST-CONVERGE-11 is not ready because real non-proof governance/source-policy failures remain.
 
 ## CONTEXT_REFS
 
-- `docs/repo/audits/POST_CONVERGE_10N_TOOL_HASH_AUDIT_STALENESS.md`
-- `.aide/reports/POST-CONVERGE-10N-tool-audit-findings.json`
+- `docs/repo/audits/POST_CONVERGE_10O_REPOX_CLOSEOUT_GATE.md`
+- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
+- `.aide/reports/POST-CONVERGE-10O-repox-closeout.md`
+- `.aide/reports/POST-CONVERGE-10O-post-converge-11-readiness.md`
+- `.aide/reports/POST-CONVERGE-10O-next-task-decision.md`
 - `.aide/reports/POST-CONVERGE-10N-repox-before-after.json`
-- `.aide/reports/POST-CONVERGE-10N-post-converge-11-readiness.md`
-- `scripts/ci/check_repox_rules.py`
-- `docs/audit/identity_fingerprint.json`
-- `docs/audit/security/INTEGRITY_MANIFEST.json`
 
 ## IMPLEMENTATION
 
-POST-CONVERGE-10N refreshed only canonical tracked evidence with explicit generators and updated RepoX group cache dependencies so tracked docs/audit evidence read by cached groups invalidates correctly.
+POST-CONVERGE-10O is evidence-only. It creates closeout reports, updates status docs, and records the next task decision without changing RepoX rules or product/runtime/source behavior.
 
 ## EVIDENCE
 
 - `ctest --preset verify -N` reports 493 tests.
-- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` reports 20 failures / 5 warnings after the safe fixes.
-- `python tools/ci/tool_identity_fingerprint.py --repo-root . --check` passes.
-- A local SecureX integrity-manifest generation matches the tracked manifest.
+- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` reports 20 failures / 5 warnings.
+- Tuple fallback was not required because canonical verify discovery found and ran `inv_repox_rules`.
 
 ## NON_GOALS
 
-- no broad AuditX regeneration
 - no root moves, deletes, renames, aliases, move maps, or salvage maps
 - no product boot proof
 - no portable projection proof
@@ -49,19 +46,17 @@ POST-CONVERGE-10N refreshed only canonical tracked evidence with explicit genera
 
 ## ACCEPTANCE
 
-- tool/audit failures are classified by evidence family
-- safe canonical hash/evidence refreshes are applied
-- generated/historical audit warnings are preserved
-- focused RepoX before/after counts are recorded
+- focused RepoX status is reproduced
+- remaining failures and warnings are classified
 - POST-CONVERGE-11 readiness is explicit
-- next family or acceptance gate is recommended
+- exact next task is recommended
+- no product proof or broad remediation is performed
 
 ## OUTPUT_SCHEMA
 
 Human-readable reports plus JSON evidence:
 
-- `.aide/reports/POST-CONVERGE-10N-tool-audit-findings.json`
-- `.aide/reports/POST-CONVERGE-10N-repox-before-after.json`
+- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
 
 ## TOKEN_ESTIMATE
 
@@ -71,8 +66,7 @@ Latest packet is intended to stay below the AIDE compact-context budget.
 
 - AIDE reports/context/ledger
 - post-converge and release status docs
-- direct audit evidence
-- RepoX rule/check implementation directly implicated by tool/audit evidence caching
+- closeout audit evidence
 
 ## FORBIDDEN_PATHS
 
@@ -84,8 +78,8 @@ Latest packet is intended to stay below the AIDE compact-context budget.
 
 ## VALIDATION
 
-Focused RepoX was rerun after the safe fixes and remains expected-failing at 20 failures / 5 warnings. Final command details are recorded in `.aide/reports/POST-CONVERGE-10N-validation.md`.
+Focused RepoX was rerun for the closeout gate and remains expected-failing at 20 failures / 5 warnings. Final command details are recorded in `.aide/reports/POST-CONVERGE-10O-validation.md`.
 
 ## NEXT
 
-Recommended semantic task: residual RepoX governance/source-policy remediation or explicit RepoX acceptance gate. TEST-PERF follow-up remains appropriate for validation speed.
+Recommended semantic task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. TEST-PERF follow-up remains appropriate for validation speed, but it is not the semantic gate blocker.

@@ -32,3 +32,11 @@ Superseded By: none
 - `INV-AUDITX-OUTPUT-STALE` remains a warning because broad AuditX output regeneration was out of scope.
 - Four `WARN-GLOSSARY-TERM-CANON` warnings in generated/historical audit evidence remain warnings and were not rewritten.
 - Product boot proof, package proof, release proof, portable projection proof, build, and full CTest were not run by scope.
+
+## POST-CONVERGE-10O
+
+- Focused RepoX remains expected-failing at 20 failures / 5 warnings.
+- The remaining hard failures were not accepted as warnings.
+- POST-CONVERGE-11 remains blocked because real non-proof governance/source-policy failures remain.
+- The warning candidates are still `INV-AUDITX-OUTPUT-STALE` and four generated/historical glossary warnings.
+- Product boot proof, package proof, release proof, portable projection proof, build, and full CTest were not run by scope.

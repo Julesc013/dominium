@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10N and confirm that stale tool hash and audit evidence failures were reduced without broad audit regeneration, product/projection proof, runtime behavior changes, or weakened RepoX rules.
+Review POST-CONVERGE-10O and confirm that the RepoX closeout gate accurately classifies remaining failures, blocks POST-CONVERGE-11 for real non-proof governance/source-policy blockers, and performs no product proof or broad remediation.
 
 ## Decision Requested
 
@@ -23,31 +23,30 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10N-status.md`
-- `.aide/reports/POST-CONVERGE-10N-validation.md`
-- `.aide/reports/POST-CONVERGE-10N-blockers.md`
-- `.aide/reports/POST-CONVERGE-10N-tool-audit-findings.json`
-- `.aide/reports/POST-CONVERGE-10N-repox-before-after.json`
-- `.aide/reports/POST-CONVERGE-10N-post-converge-11-readiness.md`
-- `docs/repo/audits/POST_CONVERGE_10N_TOOL_HASH_AUDIT_STALENESS.md`
+- `.aide/reports/POST-CONVERGE-10O-status.md`
+- `.aide/reports/POST-CONVERGE-10O-validation.md`
+- `.aide/reports/POST-CONVERGE-10O-blockers.md`
+- `.aide/reports/POST-CONVERGE-10O-repox-closeout.json`
+- `.aide/reports/POST-CONVERGE-10O-repox-closeout.md`
+- `.aide/reports/POST-CONVERGE-10O-post-converge-11-readiness.md`
+- `.aide/reports/POST-CONVERGE-10O-next-task-decision.md`
+- `docs/repo/audits/POST_CONVERGE_10O_REPOX_CLOSEOUT_GATE.md`
 
 ## Changed Files Summary
 
-- Refreshed identity fingerprint evidence.
-- Refreshed SecureX integrity manifest evidence.
-- Updated RepoX cache dependency paths for docs/audit evidence read by cached groups.
-- Refreshed tracked RepoX proof/profile evidence.
-- Added POST-CONVERGE-10N reports and audit evidence.
+- Added POST-CONVERGE-10O closeout reports and audit evidence.
+- Classified remaining 20 focused RepoX failures and 5 warnings.
+- Recorded that POST-CONVERGE-11 is not ready.
 - Updated post-converge and release status docs.
 - Updated AIDE latest packets, latest status, warning disposition, and migration ledger.
 
 ## Validation Summary
 
-Focused `ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 20 failures / 5 warnings after safe fixes. The target identity/tool-hash hard failures are reduced from 3 to 0.
+`ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 20 failures / 5 warnings. Tuple fallback was not required.
 
 ## Risk Summary
 
-AuditX stale-output and generated/historical glossary warnings remain. Focused RepoX still has non-proof governance/source-policy failures, so POST-CONVERGE-11 remains blocked. Product/projection proof, package proof, release proof, build, and full CTest were not run.
+Focused RepoX still has real non-proof governance/source-policy failures, so POST-CONVERGE-11 remains blocked. Product/projection proof, package proof, release proof, build, and full CTest were not run.
 
 ## Token Summary
 
@@ -59,10 +58,9 @@ This review packet is intentionally compact and references repo evidence by path
 - no product boot proof
 - no portable projection proof
 - no package or release generation
-- no broad AuditX regeneration
 - no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
 
 ## Reviewer Instructions
 
-Check that only scoped evidence was refreshed, that the generators are explicit, that audit warnings were preserved rather than hidden, and that remaining blockers are accurately classified.
+Check that the closeout decision follows the reproduced failure set, that product proof was not started, and that real non-proof failures were not converted into warnings.
