@@ -65,3 +65,23 @@ Recommended next task:
 ```text
 RELEASE-00 - Internal Pilot Release 0
 ```
+
+## RELEASE-00 Update
+
+Operating-environment MVP spine work may proceed with warnings:
+
+- Internal Pilot Release 0 is staged under `.dominium.local/releases/internal-pilot-0`.
+- The staging root includes the portable projection tree, release manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes.
+- The strict internal pilot validator passes with no blockers and verifies 4718 checksum entries.
+- The generated release staging root is ignored/local and was not committed.
+
+Remaining warnings:
+
+- Full promotion CTest was not run.
+- No public package, installer, tag, GitHub release, upload, or release publication was created.
+
+Recommended next task:
+
+```text
+DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan
+```

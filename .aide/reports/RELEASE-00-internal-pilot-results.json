@@ -1,0 +1,108 @@
+{
+  "schema_version": "dominium.release_00.internal_pilot.v1",
+  "task_id": "RELEASE-00",
+  "head": "c7d0a1a1b4d92a127bfb58cb740d4d177131f213",
+  "release_root": ".dominium.local/releases/internal-pilot-0",
+  "portable_projection_input": {
+    "status": "PASS_WITH_WARNINGS",
+    "accepted": true,
+    "path": ".dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium"
+  },
+  "manifests": [
+    {
+      "path": "manifest/internal_pilot_release.manifest.json",
+      "present": true
+    },
+    {
+      "path": "manifest/provenance.json",
+      "present": true
+    },
+    {
+      "path": "projection/install.manifest.json",
+      "present": true
+    },
+    {
+      "path": "projection/semantic_contract_registry.json",
+      "present": true
+    },
+    {
+      "path": "projection/release.manifest.json",
+      "present": true
+    }
+  ],
+  "proof_reports": [
+    {
+      "path": "proof/native_binary_proof.md",
+      "present": true
+    },
+    {
+      "path": "proof/product_boot_proof.md",
+      "present": true
+    },
+    {
+      "path": "proof/portable_projection_proof.md",
+      "present": true
+    },
+    {
+      "path": "proof/warning_ledger.md",
+      "present": true
+    },
+    {
+      "path": "proof/latest_dominium_status.md",
+      "present": true
+    },
+    {
+      "path": "proof/validation_report.json",
+      "present": true
+    }
+  ],
+  "checksums": [
+    {
+      "path": "manifest/checksums.sha256",
+      "present": true,
+      "entries": 4718
+    }
+  ],
+  "validation": [
+    {
+      "command": "python tools/release/stage_internal_pilot.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium --release-root .dominium.local/releases/internal-pilot-0",
+      "result": "PASS",
+      "notes": "staged local ignored internal pilot release proof tree"
+    },
+    {
+      "command": "python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0",
+      "result": "PASS",
+      "notes": "non-strict validator pass with strict-not-requested informational warning"
+    },
+    {
+      "command": "python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict",
+      "result": "PASS",
+      "notes": "strict validator pass; blockers none; checksum entries 4718"
+    },
+    {
+      "command": "ctest --preset verify -N",
+      "result": "PASS",
+      "notes": "493 tests discovered; CTest listing still prints missing-executable notices for some compiled tests"
+    },
+    {
+      "command": "ctest --preset verify -R inv_repox_rules --output-on-failure",
+      "result": "PASS",
+      "notes": "first run exposed a missing status header in RELEASE_00 audit; header was added and rerun passed"
+    },
+    {
+      "command": "ctest --preset verify -L smoke --output-on-failure --timeout 300",
+      "result": "PASS",
+      "notes": "57/57 smoke tests passed"
+    }
+  ],
+  "blockers": [],
+  "warnings": [
+    "full promotion CTest was not run for RELEASE-00",
+    "no public release, installer, tag, upload, or package publication was created",
+    "release staging root is local ignored proof evidence only"
+  ],
+  "overall": {
+    "status": "PASS_WITH_WARNINGS",
+    "ready_for_operating_environment_mvp": true
+  }
+}

@@ -21,8 +21,16 @@ A local ignored portable projection root has been generated and validated:
 
 `tools/validators/check_portable_projection.py` reports `proof_status: proven` with no blockers. The generated projection `bin/` contains the five native product binaries and portable wrappers.
 
-RELEASE-00 internal pilot preparation may proceed with warnings. Public package/release generation, installer generation, and full promotion CTest remain not run.
+RELEASE-00 internal pilot staging now passes with warnings. The local ignored internal pilot root is:
+
+```text
+.dominium.local/releases/internal-pilot-0
+```
+
+The staging root contains the portable projection, internal pilot manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes. The strict internal pilot validator passes with no blockers and verifies 4718 checksum entries.
+
+Public package/release generation, installer generation, tag creation, upload, and full promotion CTest remain not run.
 
 ## Next Recommended Task
 
-`RELEASE-00 - Internal Pilot Release 0`, with `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline` as the parallel validation-speed follow-up.
+`DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan`, with `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline` as the parallel validation-speed follow-up.

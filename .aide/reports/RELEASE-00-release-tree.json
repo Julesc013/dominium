@@ -1,0 +1,52 @@
+{
+  "schema_version": "dominium.release_00.release_tree.v1",
+  "task_id": "RELEASE-00",
+  "release_root": ".dominium.local/releases/internal-pilot-0",
+  "directories": [
+    "docs",
+    "manifest",
+    "projection",
+    "projection/bin",
+    "projection/docs",
+    "projection/runtime",
+    "projection/store",
+    "proof"
+  ],
+  "files": {
+    "total_files": 4719,
+    "full_file_list_omitted": true,
+    "omission_reason": "generated local proof tree is large; manifests, proofs, binaries, and checksum summary are recorded"
+  },
+  "manifests": [
+    "manifest/internal_pilot_release.manifest.json",
+    "manifest/provenance.json",
+    "projection/install.manifest.json",
+    "projection/semantic_contract_registry.json",
+    "projection/release.manifest.json"
+  ],
+  "checksums": [
+    {
+      "path": "manifest/checksums.sha256",
+      "entries": 4718
+    }
+  ],
+  "proof_reports": [
+    "proof/native_binary_proof.md",
+    "proof/product_boot_proof.md",
+    "proof/portable_projection_proof.md",
+    "proof/warning_ledger.md",
+    "proof/latest_dominium_status.md",
+    "proof/validation_report.json"
+  ],
+  "binaries": [
+    "projection/bin/setup.exe",
+    "projection/bin/launcher.exe",
+    "projection/bin/client.exe",
+    "projection/bin/server.exe",
+    "projection/bin/tools.exe"
+  ],
+  "generated_output_status": {
+    "ignored_by_git": true,
+    "committed": false
+  }
+}

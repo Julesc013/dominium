@@ -72,3 +72,13 @@ Portable projection proof is now locally proven:
 - Native binaries included in projection `bin/`: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, `tools.exe`.
 
 The generated projection root is ignored/local and was not committed. This is not a public package, installer, tag, GitHub release, or release artifact publication.
+
+## RELEASE-00 Consumer Update
+
+The proven portable projection root was consumed by RELEASE-00 as the input for local internal pilot staging:
+
+```text
+.dominium.local/releases/internal-pilot-0/projection
+```
+
+The internal pilot validator confirms that the staged projection still contains the required install, release, and semantic contract manifests and the five native product binaries. The generated release staging root is local/ignored and was not committed.

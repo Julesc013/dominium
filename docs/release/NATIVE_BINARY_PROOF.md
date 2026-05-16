@@ -158,3 +158,13 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - A full `cmake --build --preset verify` run was not completed because it timed out during verification after producing the binaries; this remains a TEST-PERF/partitioning follow-up rather than a product command-surface failure.
 - No binaries, build outputs, package outputs, release outputs, or projection outputs were committed.
 - The local portable projection proof copies these five native binaries into `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium/bin/`.
+
+## RELEASE-00 Consumer Update
+
+Internal Pilot Release 0 consumes the portable projection copy of the five native binaries. The staged release proof root is:
+
+```text
+.dominium.local/releases/internal-pilot-0
+```
+
+The strict internal pilot validator confirms the staged projection contains all five native binaries and that generated release staging remains ignored/local and uncommitted.

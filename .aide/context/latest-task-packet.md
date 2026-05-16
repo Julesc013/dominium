@@ -2,66 +2,67 @@
 
 ## PHASE
 
-POST-CONVERGE-12 - Portable Projection Proof
+RELEASE-00 - Internal Pilot Release 0
 
 ## GOAL
 
-Generate a portable projection proof only if POST-CONVERGE-11 product boot proof is pass, pass-with-warnings, or explicitly accepted; otherwise stop and record blocked projection evidence.
+Stage and validate a local-only internal pilot release proof tree from the proven portable projection. Preserve generated release bytes under `.dominium.local/` and commit only proof evidence, docs, and narrow local tooling.
 
 ## WHY
 
-A portable projection requires a valid product boot input. POST-CONVERGE-11 is blocked at the RepoX readiness gate, so projection generation would not be a valid proof.
+Dominium needs one self-describing internal proof artifact before moving into operating-environment MVP spine work. RELEASE-00 collects the proven projection, manifests, checksums, proof reports, warning ledger, runbook, and rollback notes without publishing a release.
 
 ## CURRENT RESULT
 
-BLOCKED. POST-CONVERGE-11 records `ready_for_post_converge_12=false`, product commands run `0`, and focused RepoX remains expected-failing at 20 failures / 5 warnings.
+PASS_WITH_WARNINGS. Internal Pilot Release 0 is staged under `.dominium.local/releases/internal-pilot-0`; strict validation passes with no blockers and verifies 4718 checksum entries.
 
 ## CONTEXT_REFS
 
-- `docs/repo/audits/POST_CONVERGE_12_PORTABLE_PROJECTION_PROOF.md`
+- `docs/repo/audits/RELEASE_00_INTERNAL_PILOT_RELEASE.md`
+- `docs/release/INTERNAL_PILOT_RELEASE_0.md`
 - `docs/release/PORTABLE_PROJECTION_PROOF.md`
 - `docs/release/INTERNAL_PILOT_READINESS.md`
-- `.aide/reports/POST-CONVERGE-12-portable-projection-results.json`
-- `.aide/reports/POST-CONVERGE-12-next-readiness.json`
-- `.aide/reports/POST-CONVERGE-12-blockers.md`
-- `.aide/reports/POST-CONVERGE-11-product-boot-results.json`
-- `.aide/reports/POST-CONVERGE-11-next-readiness.json`
+- `.aide/reports/RELEASE-00-internal-pilot-results.json`
+- `.aide/reports/RELEASE-00-release-tree.json`
+- `.aide/reports/RELEASE-00-next-readiness.json`
+- `.aide/reports/RELEASE-00-validation.md`
+- `.aide/reports/RELEASE-00-blockers.md`
 
 ## IMPLEMENTATION
 
-POST-CONVERGE-12 stopped at the required product boot prerequisite gate. It creates blocked portable-projection evidence and status docs without generating projection output, changing product behavior, or running binaries.
+RELEASE-00 adds a narrow local-only stager and read-only validator, stages `.dominium.local/releases/internal-pilot-0`, validates manifests/checksums/proofs/binaries, and records readiness for DOE-00.
 
 ## EVIDENCE
 
-- POST-CONVERGE-11 product boot proof status: BLOCKED.
-- POST-CONVERGE-11 `ready_for_post_converge_12`: false.
-- Product boot commands run: 0.
-- Projection outputs generated: 0.
+- Portable projection input: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Internal release root: `.dominium.local/releases/internal-pilot-0`.
+- Validator: `python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict`.
+- Result: PASS, blockers none, checksum entries 4718.
 
 ## NON_GOALS
 
 - no root moves, deletes, renames, aliases, move maps, or salvage maps
-- no product boot proof
-- no portable projection generation
-- no package, installer, or release generation
+- no public release, GitHub release, tag, upload, installer, or package publication
+- no committed generated release/projection/build output
 - no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
 
 ## ACCEPTANCE
 
-- POST-CONVERGE-11 readiness input is read
-- projection proof is blocked before output generation
-- RELEASE-00 readiness is explicit
+- portable projection input is read and accepted
+- local release staging root is generated under ignored `.dominium.local/`
+- internal pilot manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes exist
+- strict internal pilot validator passes
+- generated release staging remains uncommitted
 - exact next task is recommended
-- no generated projection output is committed
 
 ## OUTPUT_SCHEMA
 
 Human-readable reports plus JSON evidence:
 
-- `.aide/reports/POST-CONVERGE-12-portable-projection-results.json`
-- `.aide/reports/POST-CONVERGE-12-projection-tree.json`
-- `.aide/reports/POST-CONVERGE-12-next-readiness.json`
+- `.aide/reports/RELEASE-00-internal-pilot-results.json`
+- `.aide/reports/RELEASE-00-release-tree.json`
+- `.aide/reports/RELEASE-00-next-readiness.json`
 
 ## TOKEN_ESTIMATE
 
@@ -71,20 +72,22 @@ Latest packet is intended to stay below the AIDE compact-context budget.
 
 - AIDE reports/context/ledger
 - post-converge and release status docs
-- blocked portable projection evidence
+- release audit evidence
+- local-only release stager and read-only validator
 
 ## FORBIDDEN_PATHS
 
 - product/runtime/source behavior changes
-- generated product/projection/package/release artifacts
+- committed generated product/projection/package/release artifacts
+- public release, GitHub release, tag, upload, installer, or package publication
 - root moves, deletes, renames, aliases, or move maps
 - broad AuditX output regeneration
 - RepoX/AuditX/TestX weakening
 
 ## VALIDATION
 
-POST-CONVERGE-12 validates the blocked readiness evidence and scoped documentation/report consistency. Projection generation and projection validators are not run because product boot proof is blocked.
+RELEASE-00 validates the stager, read-only validator, release root checksum/provenance/proof structure, JSON reports, AIDE checks, repo/layout/distribution/component validators, docs/build/UI/ABI checks, and git diff hygiene.
 
 ## NEXT
 
-Recommended semantic task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. Retry POST-CONVERGE-11 and then POST-CONVERGE-12 only after the RepoX gate passes or is explicitly accepted.
+Recommended next task: `DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan`. Validation-speed follow-up remains `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.

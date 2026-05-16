@@ -131,3 +131,15 @@ This is command-surface boot smoke only. It does not create a package, release, 
 ## Portable Projection Input Update
 
 The command-surface proof above was used as input for a local portable projection proof. The generated ignored projection root includes the five native product binaries and validates with `proof_status: proven`.
+
+## RELEASE-00 Consumer Update
+
+The portable projection that includes the native command-surface binaries was staged into Internal Pilot Release 0. The release validator confirms the staged `projection/bin/` contains:
+
+- `setup.exe`
+- `launcher.exe`
+- `client.exe`
+- `server.exe`
+- `tools.exe`
+
+RELEASE-00 does not add gameplay proof. It preserves the command/help/status/smoke level established by the product boot closeout evidence.

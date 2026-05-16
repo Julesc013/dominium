@@ -70,3 +70,11 @@ Superseded By: none
 - Portable projection validation reports `proof_status: proven` with no blockers.
 - The projection tree includes the required portable roots/manifests and native `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` binaries.
 - Remaining warnings are release-process scope: no public package, installer, tag, GitHub release, or full promotion CTest was run.
+
+## RELEASE-00
+
+- Internal Pilot Release 0 local staging passes validation under `.dominium.local/releases/internal-pilot-0`.
+- The staging root includes the projection tree, internal pilot manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes.
+- The strict validator reports no blockers and verifies 4718 checksum entries.
+- Remaining warnings are operational release scope: no public package, installer, tag, GitHub release, upload, or full promotion CTest was run.
+- The generated release staging root is ignored/local and was not committed.

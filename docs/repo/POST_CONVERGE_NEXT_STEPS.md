@@ -309,3 +309,14 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No package, installer, public release, tag, or GitHub release was generated.
 - Next recommended release task: `RELEASE-00 - Internal Pilot Release 0`.
 - Next recommended validation-speed task: `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.
+
+## RELEASE-00 Update - Internal Pilot Release 0
+
+- Result: PASS_WITH_WARNINGS.
+- Local ignored internal pilot release staging now completes under `.dominium.local/releases/internal-pilot-0`.
+- The staging root contains the portable projection tree, internal pilot manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes.
+- `python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict` passes with no blockers and verifies 4718 checksum entries.
+- No public release, GitHub release, tag, upload, installer, package publication, source-root move, rename, delete, alias, move map, or salvage map was created.
+- Generated release staging remains local ignored proof evidence and was not committed.
+- Next recommended task: `DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan`.
+- Validation-speed follow-up remains `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.

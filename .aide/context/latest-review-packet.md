@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-12 and confirm that portable projection proof correctly stopped at the POST-CONVERGE-11 readiness gate, generated no projection output, and recorded blocked evidence without product/runtime/source changes.
+Review RELEASE-00 and confirm that internal pilot release staging is local-only, ignored, validated, and recorded without creating a public release, tag, upload, installer, package publication, source move, or product/runtime behavior change.
 
 ## Decision Requested
 
@@ -23,33 +23,34 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-12-status.md`
-- `.aide/reports/POST-CONVERGE-12-validation.md`
-- `.aide/reports/POST-CONVERGE-12-blockers.md`
-- `.aide/reports/POST-CONVERGE-12-portable-projection-results.json`
-- `.aide/reports/POST-CONVERGE-12-portable-projection-results.md`
-- `.aide/reports/POST-CONVERGE-12-projection-tree.json`
-- `.aide/reports/POST-CONVERGE-12-next-readiness.json`
-- `.aide/reports/POST-CONVERGE-12-next-readiness.md`
-- `docs/repo/audits/POST_CONVERGE_12_PORTABLE_PROJECTION_PROOF.md`
+- `.aide/reports/RELEASE-00-status.md`
+- `.aide/reports/RELEASE-00-validation.md`
+- `.aide/reports/RELEASE-00-blockers.md`
+- `.aide/reports/RELEASE-00-internal-pilot-results.json`
+- `.aide/reports/RELEASE-00-internal-pilot-results.md`
+- `.aide/reports/RELEASE-00-release-tree.json`
+- `.aide/reports/RELEASE-00-next-readiness.json`
+- `.aide/reports/RELEASE-00-next-readiness.md`
+- `docs/repo/audits/RELEASE_00_INTERNAL_PILOT_RELEASE.md`
+- `docs/release/INTERNAL_PILOT_RELEASE_0.md`
 - `docs/release/PORTABLE_PROJECTION_PROOF.md`
 - `docs/release/INTERNAL_PILOT_READINESS.md`
 
 ## Changed Files Summary
 
-- Added POST-CONVERGE-12 blocked portable projection reports and audit evidence.
-- Recorded that projection generation is not allowed because POST-CONVERGE-11 is blocked.
-- Recorded that RELEASE-00 is not ready.
-- Updated post-converge and release status docs.
-- Updated AIDE latest packets, latest status, warning disposition, and migration ledger.
+- Added RELEASE-00 internal pilot reports and audit evidence.
+- Added local-only internal pilot release staging and validation tooling.
+- Staged `.dominium.local/releases/internal-pilot-0` as ignored generated proof output.
+- Recorded DOE-00 readiness with operational warnings.
+- Updated post-converge and release status docs, latest packets, latest status, warning disposition, and migration ledger.
 
 ## Validation Summary
 
-POST-CONVERGE-11 readiness evidence reports product boot `BLOCKED`, `ready_for_post_converge_12=false`, and product commands run `0`. POST-CONVERGE-12 generated no projection output.
+Internal pilot staging validates with no blockers. The strict validator verifies required manifests, proof reports, native binaries, provenance, ignored-root status, no absolute host paths in checked manifests, and 4718 checksum entries.
 
 ## Risk Summary
 
-Focused RepoX still has real non-proof governance/source-policy failures, so POST-CONVERGE-11 and POST-CONVERGE-12 remain blocked at their readiness gates. Projection proof, package proof, release proof, build, and full CTest were not run.
+Remaining risks are operational warnings: no public release, tag, upload, installer, package publication, or full promotion CTest was run. Generated release staging is local ignored evidence and must not be committed.
 
 ## Token Summary
 
@@ -58,12 +59,11 @@ This review packet is intentionally compact and references repo evidence by path
 ## Non-Goals / Scope Guard
 
 - no root moves, deletes, renames, aliases, or move maps
-- no product boot proof
-- no portable projection generation
-- no package or release generation
+- no public release, GitHub release, tag, upload, installer, or package publication
+- no committed generated release/projection/build output
 - no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
 
 ## Reviewer Instructions
 
-Check that the blocked decision follows the POST-CONVERGE-11 readiness evidence, that no projection output was generated, and that real non-proof failures were not converted into warnings.
+Check that the committed changes are limited to proof evidence, docs, the local-only stager, and the read-only validator; generated release output stays ignored; and the DOE-00 readiness decision follows the validator evidence.

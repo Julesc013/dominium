@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.release_00.next_readiness.v1",
+  "task_id": "RELEASE-00",
+  "ready_for_operating_environment_mvp": true,
+  "readiness": "yes_with_warnings",
+  "blockers": [],
+  "required_fixes": [],
+  "warning_acceptance_status": "operational warnings recorded; no semantic release blocker remains for DOE-00",
+  "warnings": [
+    "full promotion CTest was not run for RELEASE-00",
+    "no public package, installer, tag, upload, or GitHub release was created",
+    "generated release staging remains local and ignored"
+  ],
+  "recommended_next_task": "DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan"
+}
