@@ -55,3 +55,12 @@ Generated projection output must remain ignored/local and must not be committed.
 ## Relationship To RELEASE-00
 
 RELEASE-00 internal pilot release is not ready. A portable, self-describing projection root has not been generated or validated.
+
+## Closeout Remediation Update
+
+The prerequisite RepoX and native command-surface blockers have improved:
+
+- Focused RepoX now passes with zero recorded warnings and failures.
+- Native product command smoke passes for the five product binaries under `out/build/vs2026/verify/bin/`.
+
+Portable projection proof is still not complete. No projection root was generated during closeout remediation, and RELEASE-00 remains blocked until a local ignored projection root is assembled or the exact projection tooling blocker is classified.

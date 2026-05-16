@@ -149,3 +149,11 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - No portable projection root was generated.
 - RELEASE-00 internal pilot release is not ready.
 - Next recommended task: `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.
+
+## Closeout Remediation Update - Native Binary Command Smoke
+
+- Native binaries exist under `out/build/vs2026/verify/bin/`.
+- `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` each returned exit code 0 for `--help`, `--version`, `--status`, and `--smoke`.
+- `cmake --preset verify` passes.
+- A full `cmake --build --preset verify` run was not completed because it timed out during verification after producing the binaries; this remains a TEST-PERF/partitioning follow-up rather than a product command-surface failure.
+- No binaries, build outputs, package outputs, release outputs, or projection outputs were committed.

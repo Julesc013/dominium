@@ -152,3 +152,12 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - No product binaries were run and no command-surface fixes were attempted.
 - FAST remains blocked by real non-proof RepoX governance/source-policy failures.
 - The next semantic task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.
+
+## Closeout Remediation Update
+
+- Result: PASS_WITH_WARNINGS.
+- Focused RepoX is no longer the FAST blocker: direct RepoX and CTest focused `inv_repox_rules` pass.
+- CTest smoke is green at 57/57 after `verify_fast` was wired to build the required product/tool binaries.
+- Native product smoke is green for the five product shells on help/version/status/smoke commands.
+- Remaining FAST concern is wall-time/process-control, not semantic RepoX: the full `cmake --build --preset verify` lane timed out during verification and needs TEST-PERF sharding/partition work.
+- Portable projection proof remains unrun and is the next release-readiness gate.

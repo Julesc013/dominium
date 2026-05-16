@@ -34,3 +34,13 @@ Recommended next task:
 ```text
 POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation
 ```
+
+## Closeout Remediation Update
+
+RepoX and native command-surface readiness have improved since the blocked POST-CONVERGE-12 gate:
+
+- Focused RepoX now passes.
+- Native product command smoke now passes for `setup`, `launcher`, `client`, `server`, and `tools`.
+- CTest smoke now passes 57/57.
+
+RELEASE-00 remains blocked because portable projection proof has not yet produced or validated a local projection root. The next release-readiness task is `POST-CONVERGE-12 - Portable Projection Proof`; TEST-PERF sharding remains a separate validation-speed follow-up.

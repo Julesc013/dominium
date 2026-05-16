@@ -295,3 +295,15 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No projection tooling was executed, no portable projection root was generated, and no native binaries were inspected, copied, refreshed, or executed.
 - RELEASE-00 internal pilot release is not ready.
 - Next recommended task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`.
+
+## Closeout Remediation Update
+
+- Result: PASS_WITH_WARNINGS.
+- Focused RepoX now passes: direct RepoX reports OK, and `ctest --preset verify -R inv_repox_rules --output-on-failure` passes.
+- Tracked RepoX proof/profile evidence has zero warnings and zero failures after the closeout refresh.
+- Native product command smoke passes for `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` under `out/build/vs2026/verify/bin/`.
+- `ctest --preset verify -L smoke --output-on-failure --timeout 300` passes 57/57.
+- Canonical `ctest --preset verify -N` discovers 493 tests, but full promotion verification still needs TEST-PERF follow-up because `cmake --build --preset verify` timed out during verification after producing the binaries.
+- No package, installer, release, or portable projection output was generated.
+- Next recommended proof task: `POST-CONVERGE-12 - Portable Projection Proof`.
+- Next recommended validation-speed task: `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.

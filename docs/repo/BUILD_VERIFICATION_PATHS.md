@@ -226,3 +226,12 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - The task stopped because POST-CONVERGE-11 product boot proof is blocked and not accepted as portable projection input.
 - No generated projection root exists under `.dominium.local/projections/post-converge-12/`.
 - Build and projection proof should be retried only after focused RepoX is pass or accepted-warning and POST-CONVERGE-11 product boot proof succeeds or is explicitly accepted.
+
+## Closeout Remediation Update - Verify Fast Lane
+
+- `cmake --preset verify` passes locally.
+- `cmake --build --preset verify` was started but not completed; it timed out during verification after producing native product/tool binaries in `out/build/vs2026/verify/bin/`.
+- Missing smoke executable blockers for the fast lane were remediated by adding the product tool host, field tools, and UI accessibility test dependencies to `verify_fast`.
+- `ctest --preset verify -L smoke --output-on-failure --timeout 300` passes 57/57.
+- `ctest --preset verify -R inv_repox_rules --output-on-failure` passes.
+- Full CTest remains a promotion gate and still needs sharding/wall-time work before it should be used as the normal feedback path.

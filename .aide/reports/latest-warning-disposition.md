@@ -55,3 +55,11 @@ Superseded By: none
 - No projection root was generated and no projection validator was run.
 - The remaining RepoX hard failures were not accepted as warnings.
 - RELEASE-00 remains blocked until RepoX/product boot/projection gates are resolved or explicitly accepted.
+
+## Closeout Remediation
+
+- Focused RepoX now passes through both direct RepoX and canonical CTest focused `inv_repox_rules`.
+- Tracked RepoX proof/profile evidence records zero warnings and zero failures.
+- Native product command smoke passes for `setup`, `launcher`, `client`, `server`, and `tools` on `--help`, `--version`, `--status`, and `--smoke`.
+- CTest smoke passes 57/57.
+- Remaining warnings are operational, not semantic RepoX failures: full `cmake --build --preset verify` was not completed because the verification phase timed out, and portable projection proof has not yet been generated.

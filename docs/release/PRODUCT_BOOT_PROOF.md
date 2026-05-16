@@ -105,3 +105,25 @@ The next required task is `POST-CONVERGE-10P - Residual RepoX Governance and Sou
 POST-CONVERGE-12 did not proceed to projection generation because this product boot proof remains blocked. No portable projection root was generated, no native binaries were inspected or copied, and no release readiness was claimed.
 
 The next required task remains `POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation`. After that gate is resolved or explicitly accepted, POST-CONVERGE-11 must be rerun before POST-CONVERGE-12 can provide a real portable projection proof.
+
+## Closeout Remediation Update - Native Command Smoke
+
+Focused RepoX now passes, so the native command smoke blocker recorded above has been superseded by local closeout evidence.
+
+Local binary root:
+
+```text
+out/build/vs2026/verify/bin/
+```
+
+Commands run:
+
+| Product | Commands | Result |
+| --- | --- | --- |
+| setup | `--help`, `--version`, `--status`, `--smoke` | pass |
+| launcher | `--help`, `--version`, `--status`, `--smoke` | pass |
+| client | `--help`, `--version`, `--status`, `--smoke` | pass |
+| server | `--help`, `--version`, `--status`, `--smoke` | pass |
+| tools | `--help`, `--version`, `--status`, `--smoke` | pass |
+
+This is command-surface boot smoke only. It does not create a package, release, installer, portable projection, or gameplay proof.
