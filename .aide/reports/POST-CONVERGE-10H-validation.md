@@ -36,7 +36,7 @@ Status: PARTIAL
 
 ## Post-Commit Check Disposition
 
-After the main 10H remediation commit, `py -3 .aide/scripts/aide_lite.py commit check --latest` reported one commit-message formatting failure: the `## Changelog` bullets lacked machine-readable category prefixes. The task forbids amend/reset, so the original commit was preserved and this narrow evidence follow-up records the disposition. The follow-up commit uses prefixed changelog bullets so the latest-commit policy can pass without rewriting history.
+After the main 10H remediation commit, `py -3 .aide/scripts/aide_lite.py commit check --latest` reported one commit-message formatting failure: the `## Changelog` bullets lacked machine-readable category prefixes. The task forbids amend/reset, so the original commit was preserved and this narrow evidence follow-up records the disposition. An initial follow-up also used a non-policy prefix; this final evidence note uses the policy-defined `Internal:` / `Docs:` changelog categories so the latest-commit policy can pass without rewriting history.
 
 ## Generated Side Effects
 
