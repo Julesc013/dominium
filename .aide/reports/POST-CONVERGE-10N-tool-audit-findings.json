@@ -1,0 +1,124 @@
+{
+  "schema_version": "dominium.post_converge_10n.tool_audit_findings.v1",
+  "task_id": "POST-CONVERGE-10N",
+  "checked_failures": 8,
+  "findings": [
+    {
+      "path": "docs/audit/security/INTEGRITY_MANIFEST.json",
+      "rule_id": "INV-TOOL-VERSION-MISMATCH",
+      "classification": "stale_tool_hash_safe_refresh",
+      "recommended_action": "refresh_hash",
+      "safe_to_fix_now": true,
+      "generator_or_source": "python tools/securex/securex.py integrity-manifest --repo-root . --output docs/audit/security/INTEGRITY_MANIFEST.json",
+      "authority_basis": "RepoX checks record.tool_hashes in the canonical SecureX integrity manifest; SecureX exposes a scoped integrity-manifest generator for this tracked evidence file.",
+      "reason": "The reviewed committed tool files tools/compatx/compatx.py and tools/securex/securex.py had current hashes that no longer matched the tracked integrity manifest."
+    },
+    {
+      "path": "docs/audit/identity_fingerprint.json",
+      "rule_id": "INV-IDENTITY-FINGERPRINT",
+      "classification": "stale_audit_manifest_safe_refresh",
+      "recommended_action": "refresh_manifest",
+      "safe_to_fix_now": true,
+      "generator_or_source": "python tools/ci/tool_identity_fingerprint.py --repo-root . --output docs/audit/identity_fingerprint.json",
+      "authority_basis": "RepoX imports scripts/dev/identity_fingerprint_lib.py and compares docs/audit/identity_fingerprint.json against that deterministic payload.",
+      "reason": "The tracked identity fingerprint lagged current canon index, ruleset, status snapshot, test suite, and doctrine hashes."
+    },
+    {
+      "path": "scripts/ci/check_repox_rules.py",
+      "rule_id": "RepoX group cache",
+      "classification": "rule_false_positive",
+      "recommended_action": "update_evidence_path",
+      "safe_to_fix_now": true,
+      "generator_or_source": "RepoX group cache dependency hash",
+      "authority_basis": "RepoX Merkle roots intentionally skip docs/audit/**, but the docs.canon and schema.compat groups read tracked evidence under docs/audit/**.",
+      "reason": "Focused RepoX reused stale cached identity/tool-hash violations until explicit evidence paths were added as group dependencies."
+    },
+    {
+      "path": "docs/audit/auditx/FINDINGS.json",
+      "rule_id": "INV-AUDITX-OUTPUT-STALE",
+      "classification": "unknown",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "generator_or_source": "tools/auditx/auditx.py",
+      "authority_basis": "RepoX warns when the tracked AuditX findings artifact is more than 30 commits behind HEAD.",
+      "reason": "The generator exists, but refreshing the AuditX findings set would regenerate a broader audit output family and is not a narrow safe 10N refresh."
+    },
+    {
+      "path": "docs/audit/auditx/FINDINGS.md",
+      "rule_id": "WARN-GLOSSARY-TERM-CANON",
+      "classification": "generated_tracked_output_stale",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "generator_or_source": "AuditX generated markdown evidence",
+      "authority_basis": "The warning points at tracked AuditX evidence containing a forbidden glossary synonym.",
+      "reason": "The file is generated audit evidence; rewriting it by hand or broadly regenerating AuditX is outside this task."
+    },
+    {
+      "path": "docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/failure.md",
+      "rule_id": "WARN-GLOSSARY-TERM-CANON",
+      "classification": "generated_tracked_output_stale",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "generator_or_source": "historical remediation evidence",
+      "authority_basis": "The warning points at dated remediation evidence, not current source authority.",
+      "reason": "Historical generated evidence should not be rewritten blindly in a tool-hash refresh task."
+    },
+    {
+      "path": "docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
+      "rule_id": "WARN-GLOSSARY-TERM-CANON",
+      "classification": "generated_tracked_output_stale",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "generator_or_source": "historical remediation evidence",
+      "authority_basis": "The warning points at dated remediation evidence, not current source authority.",
+      "reason": "Historical generated evidence should not be rewritten blindly in a tool-hash refresh task."
+    },
+    {
+      "path": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
+      "rule_id": "WARN-GLOSSARY-TERM-CANON",
+      "classification": "generated_tracked_output_stale",
+      "recommended_action": "defer",
+      "safe_to_fix_now": false,
+      "generator_or_source": "historical remediation evidence",
+      "authority_basis": "The warning points at dated remediation evidence, not current source authority.",
+      "reason": "Historical generated evidence should not be rewritten blindly in a tool-hash refresh task."
+    }
+  ],
+  "safe_fixes": [
+    {
+      "path": "docs/audit/identity_fingerprint.json",
+      "action": "refreshed deterministic identity fingerprint with its canonical generator",
+      "fixed_failures": 1
+    },
+    {
+      "path": "docs/audit/security/INTEGRITY_MANIFEST.json",
+      "action": "refreshed SecureX integrity manifest with its canonical scoped generator",
+      "fixed_failures": 2
+    },
+    {
+      "path": "scripts/ci/check_repox_rules.py",
+      "action": "added explicit docs/audit evidence dependencies to RepoX cached groups",
+      "fixed_failures": 0
+    }
+  ],
+  "deferred": [
+    {
+      "path": "docs/audit/auditx/FINDINGS.json",
+      "reason": "AuditX output freshness warning requires a dedicated scoped AuditX refresh or acceptance gate."
+    },
+    {
+      "path": "docs/audit/auditx/FINDINGS.md",
+      "reason": "Generated AuditX markdown glossary warning is outside narrow hash/evidence refresh."
+    },
+    {
+      "path": "docs/audit/remediation/**/failure.md",
+      "reason": "Historical remediation evidence warnings were preserved."
+    }
+  ],
+  "blocked": [
+    {
+      "rule_id": "INV-AUDITX-OUTPUT-STALE",
+      "reason": "Tracked AuditX findings are 199 commits behind HEAD; broad AuditX regeneration is out of scope."
+    }
+  ]
+}

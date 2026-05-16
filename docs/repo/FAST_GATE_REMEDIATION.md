@@ -127,3 +127,12 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - The stale missing-file failures for retired `embodiment/`, `geo/`, `worldgen/refinement/`, `universe/`, and `diag/` RepoX rule paths are fixed.
 - FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, a current `game.domains.embodiment` lazy import blocker, tool hash/audit staleness, ruleset mapping gaps, and smaller policy failures.
 - Next recommended semantic task: `POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`.
+
+## POST-CONVERGE-10N Update - Tool Hash and Audit Staleness
+
+- Result: PARTIAL.
+- Focused RepoX improved from 23 failures / 5 warnings to 20 failures / 5 warnings.
+- Stale identity fingerprint and SecureX tool-hash evidence are fixed.
+- FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, MW-4 lazy import source-policy failures, ruleset mapping gaps, canon supersession, extension registry, worldgen retry-loop, and shadow-bound policy failures.
+- The AuditX stale-output warning remains because broad AuditX regeneration was out of scope.
+- Next recommended semantic task: focused residual RepoX governance/source-policy remediation or explicit RepoX acceptance gate. TEST-PERF follow-up remains appropriate for validation speed.

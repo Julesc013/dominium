@@ -116,3 +116,10 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings by updating stale retired-domain RepoX rule paths to current source locations.
 - Native product binaries previously proven by build remain local build outputs and were not committed.
 - POST-CONVERGE-11 remains blocked until the remaining non-proof RepoX failures are remediated or explicitly accepted by a reviewed gate.
+
+## POST-CONVERGE-10N Update - Tool Hash and Audit Staleness
+
+- POST-CONVERGE-10N does not add product boot proof.
+- Focused RepoX improved from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing stale identity and SecureX integrity evidence.
+- Native product binaries previously proven by build remain local build outputs and were not committed.
+- POST-CONVERGE-11 remains blocked until the remaining non-proof RepoX governance/source-policy failures are remediated or explicitly accepted by a reviewed gate.

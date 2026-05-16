@@ -13865,8 +13865,9 @@ def _run_check_group(
     impacted_roots,
     roots,
     checks,
+    extra_deps=(),
 ):
-    dep_subtrees = tuple(scope_subtrees) + (REPOX_RULE_IMPL_REL,)
+    dep_subtrees = tuple(scope_subtrees) + tuple(extra_deps or ()) + (REPOX_RULE_IMPL_REL,)
     input_hash = _group_dep_hash(repo_root, roots, dep_subtrees)
     cache_key = _sha256_text(json.dumps({"group_id": group_id, "input_hash": input_hash}, sort_keys=True))
 
@@ -14016,6 +14017,11 @@ def main() -> int:
                 lambda: check_auditx_promotion_candidates(repo_root),
                 lambda: check_auditx_output_staleness(repo_root),
             ],
+            "extra_deps": (
+                IDENTITY_FINGERPRINT_REL,
+                IDENTITY_EXPLANATION_REL,
+                AUDITX_RUN_META_ARTIFACT,
+            ) + AUDITX_CANONICAL_ARTIFACTS,
         },
         {
             "group_id": "repox.schema.compat",
@@ -14036,6 +14042,9 @@ def main() -> int:
                 lambda: check_tool_version_mismatch(repo_root),
                 lambda: check_derived_artifact_contract(repo_root),
             ],
+            "extra_deps": (
+                SECUREX_INTEGRITY_MANIFEST_REL,
+            ),
         },
         {
             "group_id": "repox.dist.platform",
@@ -14302,6 +14311,7 @@ def main() -> int:
         scope_subtrees = tuple(group.get("scope_subtrees") or ())
         artifact_classes = tuple(group.get("artifact_classes") or ())
         checks = list(group.get("checks") or [])
+        extra_deps = tuple(group.get("extra_deps") or ())
         group_roots = roots
         if group_id.startswith("repox.structure."):
             cache_key = (
@@ -14327,6 +14337,7 @@ def main() -> int:
             impacted_roots=impacted_roots,
             roots=group_roots,
             checks=checks,
+            extra_deps=extra_deps,
         )
         group_rows.append(
             {

@@ -1,17 +1,16 @@
-
 # Latest Dominium Status
 
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-17
 Supersedes: none
 Superseded By: none
 
 ## Current Position
 
-POST-CONVERGE-10M completed as PARTIAL. Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings by fixing safe stale retired-domain RepoX rule paths and rule-file cache invalidation.
+POST-CONVERGE-10N completed as PARTIAL. Focused RepoX improved from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing canonical identity and SecureX integrity evidence and repairing RepoX cache dependencies for tracked docs/audit evidence.
 
-Two current MW-4 fixture failures remain because `game.domains.embodiment` lazily imports retired `embodiment.*` modules. POST-CONVERGE-11 remains blocked because additional non-proof RepoX governance failures remain.
+POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance/source-policy failures in addition to product/projection proof blockers.
 
 ## Next Recommended Task
 
-`POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`, or `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline` if wall-time reduction is prioritized next.
+Residual RepoX governance/source-policy remediation or an explicit RepoX acceptance gate. TEST-PERF follow-up remains appropriate for faster validation, but it does not replace semantic RepoX disposition.

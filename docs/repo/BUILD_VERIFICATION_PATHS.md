@@ -195,3 +195,11 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 - No configure/build rerun was required because POST-CONVERGE-10M changed RepoX governance code and evidence/status files only.
 - Full CTest remains a promotion gate and was not run because focused RepoX still has semantic failures.
 - POST-CONVERGE-11 remains blocked by non-proof RepoX governance failures.
+
+## POST-CONVERGE-10N Update - Tool Hash and Audit Staleness
+
+- `ctest --preset verify -N` reports 493 tests in the refreshed local verify build tree.
+- Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing, improved to 20 failures / 5 warnings after stale identity and SecureX integrity evidence were refreshed.
+- No configure/build rerun was required because POST-CONVERGE-10N changed RepoX governance code and evidence/status files only.
+- Full CTest remains a promotion gate and was not run because focused RepoX still has semantic failures.
+- POST-CONVERGE-11 remains blocked by non-proof RepoX governance/source-policy failures.

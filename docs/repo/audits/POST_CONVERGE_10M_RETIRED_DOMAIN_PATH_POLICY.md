@@ -74,3 +74,7 @@ POST-CONVERGE-11 is not ready. Product/projection proof failures should not circ
 - `ctest --preset verify -R inv_repox_rules --output-on-failure`: FAIL_EXPECTED, 23 failures / 5 warnings after safe fixes.
 - `python -m py_compile scripts/ci/check_repox_rules.py`: PASS.
 - Final command details are recorded in `.aide/reports/POST-CONVERGE-10M-validation.md`.
+
+## POST-CONVERGE-10N Follow-up
+
+POST-CONVERGE-10N reduced focused RepoX from 23 failures / 5 warnings to 20 failures / 5 warnings by refreshing canonical identity and SecureX integrity evidence and by adding explicit docs/audit evidence dependencies to cached RepoX groups. It did not run product boot proof, portable projection proof, package proof, or release proof. POST-CONVERGE-11 remains blocked because non-proof RepoX governance/source-policy failures remain.

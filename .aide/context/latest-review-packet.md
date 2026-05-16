@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-CONVERGE-10M and confirm that retired-domain path policy failures were reduced without moving roots, rewriting history, creating aliases, changing product/runtime source behavior, or weakening RepoX.
+Review POST-CONVERGE-10N and confirm that stale tool hash and audit evidence failures were reduced without broad audit regeneration, product/projection proof, runtime behavior changes, or weakened RepoX rules.
 
 ## Decision Requested
 
@@ -23,29 +23,31 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-CONVERGE-10M-status.md`
-- `.aide/reports/POST-CONVERGE-10M-validation.md`
-- `.aide/reports/POST-CONVERGE-10M-blockers.md`
-- `.aide/reports/POST-CONVERGE-10M-retired-domain-findings.json`
-- `.aide/reports/POST-CONVERGE-10M-repox-before-after.json`
-- `.aide/reports/POST-CONVERGE-10M-post-converge-11-readiness.md`
-- `docs/repo/audits/POST_CONVERGE_10M_RETIRED_DOMAIN_PATH_POLICY.md`
+- `.aide/reports/POST-CONVERGE-10N-status.md`
+- `.aide/reports/POST-CONVERGE-10N-validation.md`
+- `.aide/reports/POST-CONVERGE-10N-blockers.md`
+- `.aide/reports/POST-CONVERGE-10N-tool-audit-findings.json`
+- `.aide/reports/POST-CONVERGE-10N-repox-before-after.json`
+- `.aide/reports/POST-CONVERGE-10N-post-converge-11-readiness.md`
+- `docs/repo/audits/POST_CONVERGE_10N_TOOL_HASH_AUDIT_STALENESS.md`
 
 ## Changed Files Summary
 
-- Updated RepoX rule/check paths for current converged source locations.
-- Updated RepoX group cache hashing for direct file dependencies.
-- Added POST-CONVERGE-10M reports and audit evidence.
+- Refreshed identity fingerprint evidence.
+- Refreshed SecureX integrity manifest evidence.
+- Updated RepoX cache dependency paths for docs/audit evidence read by cached groups.
+- Refreshed tracked RepoX proof/profile evidence.
+- Added POST-CONVERGE-10N reports and audit evidence.
 - Updated post-converge and release status docs.
 - Updated AIDE latest packets, latest status, warning disposition, and migration ledger.
 
 ## Validation Summary
 
-Focused `ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 23 failures / 5 warnings after the safe fixes. The target retired-domain stale rule path family is reduced from 28 failures to 0.
+Focused `ctest --preset verify -N` reports 493 tests. Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains expected-failing at 20 failures / 5 warnings after safe fixes. The target identity/tool-hash hard failures are reduced from 3 to 0.
 
 ## Risk Summary
 
-Two current MW-4 fixture failures remain because `game.domains.embodiment` lazily imports retired `embodiment.*` modules. That is a real current source blocker and was not fixed because 10M forbids product/runtime source behavior changes. Product/projection proof, package proof, release proof, build, and full CTest were not run.
+AuditX stale-output and generated/historical glossary warnings remain. Focused RepoX still has non-proof governance/source-policy failures, so POST-CONVERGE-11 remains blocked. Product/projection proof, package proof, release proof, build, and full CTest were not run.
 
 ## Token Summary
 
@@ -57,9 +59,10 @@ This review packet is intentionally compact and references repo evidence by path
 - no product boot proof
 - no portable projection proof
 - no package or release generation
-- no product/runtime source behavior changes
+- no broad AuditX regeneration
+- no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
 
 ## Reviewer Instructions
 
-Check that the path fixes are exact, that historical evidence was not rewritten, and that the remaining source import blockers are preserved rather than hidden.
+Check that only scoped evidence was refreshed, that the generators are explicit, that audit warnings were preserved rather than hidden, and that remaining blockers are accurately classified.
