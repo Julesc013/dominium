@@ -69,7 +69,7 @@
     {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
     {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
     {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "PASS"},
-    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS_WITH_WARNINGS", "notes": "Pre-commit latest check passed; first apply commit check failed on trailer parsing and is recorded by a follow-up evidence commit"},
     {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warnings"},
     {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warnings"},
     {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warning"},

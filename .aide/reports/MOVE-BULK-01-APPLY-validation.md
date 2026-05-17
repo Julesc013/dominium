@@ -15,7 +15,7 @@ Validation passed after applying the 26-file safe subset and repairing the lates
 | `py -3 .aide/scripts/aide_lite.py tools validate` | PASS | AIDE Tier 0 |
 | `py -3 .aide/scripts/aide_lite.py roots validate` | PASS | AIDE Tier 0 |
 | `py -3 .aide/scripts/aide_lite.py repo validate` | PASS | AIDE Tier 0 |
-| `py -3 .aide/scripts/aide_lite.py commit check --latest` | PASS | Latest committed task check |
+| `py -3 .aide/scripts/aide_lite.py commit check --latest` | PASS_WITH_WARNINGS | Pre-commit latest check passed; first apply commit check failed on trailer parsing because trailers were separated by blank paragraphs |
 | `python tools/validators/check_repo_layout.py --repo-root . --strict` | PASS_WITH_WARNINGS | Known `tomllib` fallback-parser warnings |
 | `python tools/validators/check_root_allowlist.py --repo-root . --strict` | PASS_WITH_WARNINGS | Known `tomllib` fallback-parser warnings |
 | `python tools/validators/check_distribution_layout.py --repo-root . --strict` | PASS_WITH_WARNINGS | Known `tomllib` fallback-parser warning |
@@ -32,3 +32,7 @@ Validation passed after applying the 26-file safe subset and repairing the lates
 | `git diff --cached --check` | PASS | Staged whitespace |
 
 Focused RepoX is not required by MOVE-BULK-00-GATE for Batch A Tier 0 and was not run unless validation evidence later requires it.
+
+## Post-Commit Trailer Disposition
+
+The first apply commit `6e3dfd6f0e6b24f25a8747e8d5c1b8677f80f23a` used the requested subject and complete trailer text, but the local AIDE commit checker recognized only the final trailer because each trailer was passed as a separate `git commit -m` paragraph. Because amend/rebase/reset are forbidden, this is recorded as a warning and corrected with a narrow follow-up evidence commit using a message file with contiguous trailers.

@@ -183,4 +183,5 @@ Superseded By: none
 - Batch A was partially applied by safe subset.
 - 283 planned files were skipped because exact active/current references remain.
 - Skipped references were not accepted as stale; skipped files remain at their old paths.
+- The first apply commit included the required trailer text, but AIDE commit check parsed only the final trailer because the trailers were separated by blank `git commit -m` paragraphs. A follow-up evidence commit records the disposition because amend is forbidden.
 - No reference rewrites, import rewrites, shims, exception retirements, full CTest, full eval, CMake build, package/release generation, projection generation, or product binaries were run by scope.
