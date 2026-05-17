@@ -50,3 +50,14 @@ Batch H may run only after prior batches finish and must prove:
 - layout exceptions are retired or still justified.
 - temporary shims have either been retired or are still explicitly allowlisted.
 - strict validators, focused/full proof lanes, portable projection proof, product boot proof, and internal pilot release proof meet the required tier.
+
+## MOVE-BULK-01 Outcome
+
+`MOVE-BULK-01-APPLY-DOCS-ARCHIVE` applied only the safe subset of Batch A.
+
+- Applied: 26 files.
+- Skipped: 283 files with active/current exact references.
+- Reference rewrites: 0.
+- Exception retirements: 0.
+
+The next batch remains gated. Do not treat this partial Batch A apply as authorization for Batch B, C, D, E, F, G, or H.

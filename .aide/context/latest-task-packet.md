@@ -2,34 +2,27 @@
 
 ## PHASE
 
-MOVE-BULK-00-GATE - Global Bad-Root Migration Gate
+MOVE-BULK-01-APPLY-DOCS-ARCHIVE - Apply Docs, Evidence, and Archive-Only Cleanup Batch
 
 ## GOAL
 
-Review the MOVE-BULK-00 global bad-root migration plan and authorize only specific safe apply batches.
+Apply only the MOVE-BULK Batch A safe subset authorized by MOVE-BULK-00-GATE.
 
 ## WHY
 
-The global plan is intentionally aggressive. The gate limits apply authorization to the safest scope so cleanup can move quickly without bypassing BASELINE-00 regression requirements.
+Batch A reduces passive root clutter without touching active code, tools, identity, ABI, product, runtime, build, or feature surfaces.
 
 ## CONTEXT_REFS
 
-- `.aide/refactors/MOVE-BULK-00.global_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_salvage_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_move_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_import_rewrite_map.json`
+- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
+- `.aide/refactors/MOVE-BULK-00.batch_A_docs_archive.json`
 - `.aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_shim_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_exception_retirement_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_validation_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_rollback_plan.json`
-- `.aide/refactors/MOVE-BULK-00.batch_*.json`
-- `.aide/reports/MOVE-BULK-00-GATE-*`
-- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
-- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-*`
+- `docs/repo/root-recycling/MOVE_BULK_01_DOCS_ARCHIVE_APPLY_RESULT.md`
 
 ## ALLOWED_PATHS
 
+- Batch A safe-subset source and target paths
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -40,57 +33,47 @@ The global plan is intentionally aggressive. The gate limits apply authorization
 
 ## FORBIDDEN_PATHS
 
-- target bad-root files
-- `apps/**`, `engine/**`, `game/**`, `runtime/**`, `content/**`, `tests/**`, `tools/**`, `contracts/**`, `cmake/**`, `release/**`
-- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map approvals outside gate scope, salvage-map approvals outside gate scope, map applications, or exception retirements
+- Active code, active tools, product/runtime/build files, identity-sensitive files, ABI-sensitive files, imports, compatibility shims, active path aliases, unauthorized maps, and unauthorized layout exceptions.
 
 ## IMPLEMENTATION
 
-- Global and batch artifacts parse and remain draft/not-approved/no-apply.
-- Batch A is authorized as `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
-- Batches B-G are deferred.
-- Batch H is blocked until prior apply/proof tasks complete.
+- Applied 26 safe-subset moves.
+- Skipped 283 planned files with active/current exact references.
+- Applied 0 reference rewrites.
+- Retired or narrowed 0 exceptions.
 
 ## VALIDATION
 
-- AIDE doctor/validate/test/selftest/tools/roots/repo validation.
-- AIDE latest commit check.
-- MOVE-BULK plan and gate JSON parsing.
-- TOML parse if available; otherwise manual inspection.
-- Strict repo/root/distribution/component validators.
-- Docs/build/UI/ABI checks.
-- Git diff checks.
+Tier 0 validation, stale-reference scan, and git diff checks are required before commit.
 
 ## EVIDENCE
 
-- `.aide/reports/MOVE-BULK-00-GATE-readiness.md`
-- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
-- `.aide/reports/MOVE-BULK-00-GATE-validation.md`
-- `.aide/reports/MOVE-BULK-00-GATE-blockers.md`
-- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.md`
-- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
-- `.aide/reports/MOVE-BULK-00-GATE-deferred-batches.md`
-- `.aide/reports/MOVE-BULK-00-GATE-summary.json`
+- `.aide/reports/MOVE-BULK-01-APPLY-status.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-validation.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-blockers.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
+- `.aide/reports/MOVE-BULK-01-APPLY-moved-items.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-skipped-items.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-reference-rewrites.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-post-state.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-rollback.md`
 
 ## NON_GOALS
 
-- No apply work, file moves, deletion, renames, import rewrites, reference rewrites, shim creation, exception retirement, product proof, build, package generation, release generation, or feature work.
+No broad cleanup, no feature work, no build/product proof, no package/release generation, no CMake build, no full CTest, no import rewrites, no shims, and no exception retirement.
 
 ## ACCEPTANCE
 
-- Authorized batches are explicit.
-- Safe-subset apply behavior is mandatory.
-- Validation evidence records pass/warn/fail honestly.
-- Next task is the first authorized apply task.
+- Batch A authorization is present.
+- Only safe-subset moves are applied.
+- Skipped files are recorded with exact reasons.
+- No active code, active tools, imports, shims, aliases, exception retirements, product/runtime/build behavior, identity files, or ABI-sensitive files are changed.
+- Tier 0 validation and git diff checks are recorded.
 
 ## OUTPUT_SCHEMA
 
-Gate JSON outputs use `dominium.move_bulk_00.gate_*.v1` schemas.
+Evidence is Markdown plus `.aide/reports/MOVE-BULK-01-APPLY-evidence.json` using schema `dominium.move_bulk_01.apply_docs_archive.v1`.
 
 ## TOKEN_ESTIMATE
 
-Compact packet target: under 1,600 tokens.
-
-## NEXT
-
-`MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+Compact task packet, under 1,600 tokens.

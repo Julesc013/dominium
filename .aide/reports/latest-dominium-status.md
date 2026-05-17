@@ -183,3 +183,16 @@ MOVE-BULK-00-GATE passed with warnings and authorizes only Batch A.
 - Blocked batch: H until prior batches apply and prove cleanly.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 - Feature work remains blocked.
+
+## MOVE-BULK-01-APPLY Update
+
+MOVE-BULK-01 applied the Batch A docs/archive safe subset with warnings.
+
+- Applied safe-subset moves: 26.
+- Skipped Batch A files: 283 with active/current exact references.
+- Reference rewrites applied: 0.
+- Layout exceptions retired or narrowed: 0.
+- `data/` remains tracked with 1,253 files.
+- Tier 0 validation passed with known TOML fallback-parser warnings.
+- Feature work remains blocked.
+- Next recommended task: `MOVE-BULK-02-APPLY-TEMPLATES-MODELS-MODDING` only if gate authorization exists; otherwise run Batch A skipped-reference refinement.

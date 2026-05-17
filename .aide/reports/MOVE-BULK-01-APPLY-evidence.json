@@ -1,0 +1,89 @@
+{
+  "schema_version": "dominium.move_bulk_01.apply_docs_archive.v1",
+  "task_id": "MOVE-BULK-01-APPLY-DOCS-ARCHIVE",
+  "batch": "A",
+  "status": "pass_with_warnings",
+  "head_before": "03af871e4f8f0e9b9ec9c567deefb4cede3b78b0",
+  "origin_main_before": "03af871e4f8f0e9b9ec9c567deefb4cede3b78b0",
+  "moves": {
+    "planned": 309,
+    "applied": 26,
+    "skipped": 283
+  },
+  "applied_items": [
+    {"source": "data/audit/ultra_repo_audit_doc_code_mismatches.json", "target": "archive/audits/data/ultra_repo_audit_doc_code_mismatches.json"},
+    {"source": "data/planning/checkpoints/checkpoint_c_phib1_y0.json", "target": "docs/planning/generated-data/checkpoints/checkpoint_c_phib1_y0.json"},
+    {"source": "data/planning/checkpoints/checkpoint_c_phib3_yb_safe_review.json", "target": "docs/planning/generated-data/checkpoints/checkpoint_c_phib3_yb_safe_review.json"},
+    {"source": "data/planning/checkpoints/checkpoint_c_sigma0_phia1.json", "target": "docs/planning/generated-data/checkpoints/checkpoint_c_sigma0_phia1.json"},
+    {"source": "data/planning/checkpoints/checkpoint_c_sigmaa1_phia2.json", "target": "docs/planning/generated-data/checkpoints/checkpoint_c_sigmaa1_phia2.json"},
+    {"source": "data/planning/cross_domain_bridge_template.json", "target": "docs/planning/generated-data/cross_domain_bridge_template.json"},
+    {"source": "data/planning/domain_constitution_execution_plan.json", "target": "docs/planning/generated-data/domain_constitution_execution_plan.json"},
+    {"source": "data/planning/next_execution_order_post_phib1.json", "target": "docs/planning/generated-data/next_execution_order_post_phib1.json"},
+    {"source": "data/planning/next_execution_order_post_phib3_yb.json", "target": "docs/planning/generated-data/next_execution_order_post_phib3_yb.json"},
+    {"source": "data/planning/next_execution_order_post_phib4.json", "target": "docs/planning/generated-data/next_execution_order_post_phib4.json"},
+    {"source": "data/planning/next_execution_order_post_ya.json", "target": "docs/planning/generated-data/next_execution_order_post_ya.json"},
+    {"source": "data/planning/next_execution_order_post_yc.json", "target": "docs/planning/generated-data/next_execution_order_post_yc.json"},
+    {"source": "data/planning/next_execution_order_post_yd.json", "target": "docs/planning/generated-data/next_execution_order_post_yd.json"},
+    {"source": "data/planning/next_execution_order_post_zb.json", "target": "docs/planning/generated-data/next_execution_order_post_zb.json"},
+    {"source": "data/planning/next_execution_order_post_zb3.json", "target": "docs/planning/generated-data/next_execution_order_post_zb3.json"},
+    {"source": "data/planning/player_desire_acceptance_matrix.json", "target": "docs/planning/generated-data/player_desire_acceptance_matrix.json"},
+    {"source": "data/planning/post_zeta_frontier_reconciliation_and_handoff.json", "target": "docs/planning/generated-data/post_zeta_frontier_reconciliation_and_handoff.json"},
+    {"source": "data/planning/semantic_ownership_registry.json", "target": "docs/planning/generated-data/semantic_ownership_registry.json"},
+    {"source": "data/planning/universal_domain_constitution_template.json", "target": "docs/planning/generated-data/universal_domain_constitution_template.json"},
+    {"source": "data/planning/universal_reality_framework_reconciliation.json", "target": "docs/planning/generated-data/universal_reality_framework_reconciliation.json"},
+    {"source": "data/planning/verification_and_equivalence_doctrine_reconciliation.json", "target": "docs/planning/generated-data/verification_and_equivalence_doctrine_reconciliation.json"},
+    {"source": "data/agents/agent_mirror_registry.json", "target": "docs/repo/data/agent_mirror_registry.json"},
+    {"source": "data/agents/agent_safety_policy.json", "target": "docs/repo/data/agent_safety_policy.json"},
+    {"source": "data/agents/mcp_surface_registry.json", "target": "docs/repo/data/mcp_surface_registry.json"},
+    {"source": "data/repo/next_execution_order_post_repo_structure_review.json", "target": "docs/repo/data/next_execution_order_post_repo_structure_review.json"},
+    {"source": "data/agents/xstack_task_catalog.json", "target": "docs/repo/data/xstack_task_catalog.json"}
+  ],
+  "skipped_items": [
+    {"group": "A-DATA-AUDIT", "planned": 86, "applied": 1, "skipped": 85, "reason": "active/current exact references remain"},
+    {"group": "A-DATA-PLANNING", "planned": 64, "applied": 20, "skipped": 44, "reason": "active/current exact references remain"},
+    {"group": "A-DATA-HISTORY", "planned": 131, "applied": 0, "skipped": 131, "reason": "active/current exact references remain"},
+    {"group": "A-DATA-DOCS", "planned": 25, "applied": 5, "skipped": 20, "reason": "active/current exact references remain"},
+    {"group": "A-DATA-META", "planned": 2, "applied": 0, "skipped": 2, "reason": "active/current exact references remain"},
+    {"group": "A-DATA-LOGS", "planned": 1, "applied": 0, "skipped": 1, "reason": "active/current exact references remain"}
+  ],
+  "reference_rewrites": {
+    "planned": 0,
+    "applied": 0,
+    "skipped": 0,
+    "notes": "No rewrites were needed for the 26 applied files because exact old-path matches were zero before reports were written."
+  },
+  "exceptions": {
+    "retired": [],
+    "narrowed": [],
+    "unchanged": ["data"]
+  },
+  "post_state": {
+    "git_ls_files_data_count_after_moves": 1253,
+    "applied_old_path_matches_before_reports": 0
+  },
+  "validation": [
+    {"command": "py -3 .aide/scripts/aide_lite.py doctor", "result": "PASS", "notes": "Initial packet-section failure corrected; rerun passed"},
+    {"command": "py -3 .aide/scripts/aide_lite.py validate", "result": "PASS", "notes": "Initial packet-section failure corrected; rerun passed"},
+    {"command": "py -3 .aide/scripts/aide_lite.py test", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py selftest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS"},
+    {"command": "python tools/validators/check_repo_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warnings"},
+    {"command": "python tools/validators/check_root_allowlist.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warnings"},
+    {"command": "python tools/validators/check_distribution_layout.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warning"},
+    {"command": "python tools/validators/check_component_matrices.py --repo-root . --strict", "result": "PASS_WITH_WARNINGS", "notes": "Known tomllib fallback-parser warning"},
+    {"command": "python scripts/verify_docs_sanity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_build_target_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_ui_shell_purity.py --repo-root .", "result": "PASS"},
+    {"command": "python scripts/verify_abi_boundaries.py --repo-root .", "result": "PASS"},
+    {"command": "gate/batch/evidence JSON parse", "result": "PASS"},
+    {"command": "moved JSON parse", "result": "PASS"},
+    {"command": "applied old-path scan", "result": "PASS", "notes": "0 exact matches before report generation"},
+    {"command": "git diff --check", "result": "PASS"},
+    {"command": "git diff --cached --check", "result": "PASS"}
+  ],
+  "blockers": [],
+  "unauthorized_changes": false
+}

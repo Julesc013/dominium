@@ -88,3 +88,16 @@ MOVE-BULK-00-GATE passed with warnings and authorizes only Batch A for the next 
 - Feature work remains unauthorized.
 
 The gate did not move files, rewrite references, create shims, apply maps, or retire exceptions.
+
+## MOVE-BULK-01-APPLY Result
+
+MOVE-BULK-01 applied the Batch A safe subset with warnings.
+
+- Planned Batch A files: 309.
+- Applied safe-subset moves: 26.
+- Skipped files: 283.
+- Reference rewrites applied: 0.
+- Exceptions retired or narrowed: 0.
+- `data/` remains tracked, with 1,253 files after the safe-subset move.
+
+The skipped files had exact active/current references in tools, policy surfaces, protected governance, current docs, or unknown active roots. They remain in place and require a reference-aware follow-up before moving.

@@ -177,3 +177,10 @@ Superseded By: none
 - Commit-policy correction commits use the local `audit(...)` type and `Changed:` changelog category required by AIDE policy.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by planning scope.
 - No files were moved, deleted, renamed, import-rewritten, reference-rewritten, or shimmed by the plan.
+
+## MOVE-BULK-01-APPLY
+
+- Batch A was partially applied by safe subset.
+- 283 planned files were skipped because exact active/current references remain.
+- Skipped references were not accepted as stale; skipped files remain at their old paths.
+- No reference rewrites, import rewrites, shims, exception retirements, full CTest, full eval, CMake build, package/release generation, projection generation, or product binaries were run by scope.

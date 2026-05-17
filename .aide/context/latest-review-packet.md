@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-BULK-00-GATE and confirm it authorizes only Batch A safe-subset apply while preserving all no-apply invariants in the gate task.
+Review MOVE-BULK-01-APPLY-DOCS-ARCHIVE and confirm it applied only the Batch A safe subset.
 
 ## Decision Requested
 
@@ -23,29 +23,30 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/MOVE-BULK-00-GATE-readiness.md`
-- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
-- `.aide/reports/MOVE-BULK-00-GATE-validation.md`
-- `.aide/reports/MOVE-BULK-00-GATE-blockers.md`
-- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.md`
-- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
-- `.aide/reports/MOVE-BULK-00-GATE-deferred-batches.md`
-- `.aide/reports/MOVE-BULK-00-GATE-summary.json`
-- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
-- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-status.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-validation.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-blockers.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
+- `.aide/reports/MOVE-BULK-01-APPLY-moved-items.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-skipped-items.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-reference-rewrites.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-post-state.md`
+- `.aide/reports/MOVE-BULK-01-APPLY-rollback.md`
+- `docs/repo/root-recycling/MOVE_BULK_01_DOCS_ARCHIVE_APPLY_RESULT.md`
 
 ## Changed Files Summary
 
-- Added MOVE-BULK-00-GATE readiness, authorization, deferred, blocker, validation, and summary evidence.
-- Updated root-recycling, regression, POST-CONVERGE, AIDE context/status/warning, and migration ledger surfaces.
+- Moved 26 docs/evidence/archive-only files.
+- Added MOVE-BULK-01 apply evidence.
+- Updated bulk migration, runbook, regression, POST-CONVERGE, AIDE context, status, warning, and ledger surfaces.
 
 ## Validation Summary
 
-Validation records AIDE checks, plan and gate JSON parsing, TOML fallback/manual inspection, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, and git diff checks. Full eval, full CTest, build, product, package, release, and projection generation are out of scope.
+Validation is recorded in `.aide/reports/MOVE-BULK-01-APPLY-validation.md`.
 
 ## Risk Summary
 
-Batch A is authorized with safe-subset behavior only. Batches B-G remain deferred, Batch H remains blocked, and feature work remains unauthorized.
+283 Batch A files were skipped because active/current exact references remain. No imports, active tools, source behavior, shims, exception ledgers, or identity/ABI-sensitive files were changed.
 
 ## Token Summary
 
@@ -53,10 +54,8 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-- no file moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, map applications, or exception retirements in this gate
-- no edits under target bad roots or product/runtime/source behavior paths
-- no generated release/projection/build/local output commits
+No apply authorization is granted for other MOVE-BULK batches by this task.
 
 ## Reviewer Instructions
 
-Check that only Batch A is authorized, safe-subset behavior is mandatory, all higher-risk batches remain deferred or blocked, and no apply work occurred.
+Confirm that only 26 safe-subset moves were applied, 283 files were skipped due active/current references, reference rewrites are zero, and no other batch or feature work was authorized.

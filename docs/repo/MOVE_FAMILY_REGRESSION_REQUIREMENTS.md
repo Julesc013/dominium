@@ -100,6 +100,19 @@ Until then, the immediate next task is:
 MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan
 ```
 
+## MOVE-BULK-01 Regression Note
+
+MOVE-BULK-01 applied a Batch A safe subset only.
+
+- Applied moves: 26 docs/evidence/archive-only files.
+- Skipped files: 283 files with active/current exact references.
+- Reference rewrites: 0.
+- Import rewrites: 0.
+- Exception retirements: 0.
+- `data/` remains a tracked root, so its exception remains justified.
+
+The result preserves the BASELINE-00 rule that apply tasks must skip unsafe paths instead of forcing broad rewrites outside their gate.
+
 ## MOVE-FAMILY-00-PLAN Outcome
 
 MOVE-FAMILY-00-PLAN produced a blocked draft rather than an apply-ready gate package.
