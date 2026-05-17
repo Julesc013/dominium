@@ -1,0 +1,64 @@
+{
+  "schema_version": "dominium.move_family_00c_a.target_namespace_map.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "target_policy": {
+    "active_python_under_contracts": false,
+    "target_owner": "tools/validators",
+    "target_owner_basis": [
+      "contracts/repo/root_constitution.toml stable_roots.tools",
+      "contracts/repo/ownership_slots.toml slots.validator",
+      "MOVE-FAMILY-00C ownership map"
+    ],
+    "package_marker_needed": "tools/validators/__init__.py if the apply task needs regular package semantics"
+  },
+  "mappings": [
+    {
+      "old_package": "validation",
+      "current_path": "validation/",
+      "target_package": "tools.validators.validation",
+      "target_path": "tools/validators/validation/",
+      "target_owner": "tools/validators",
+      "rationale": "The current validation package is an active unified validator implementation and belongs in the validator ownership slot rather than a top-level transitional root.",
+      "files_included": [
+        "validation/__init__.py",
+        "validation/validation_engine.py"
+      ],
+      "files_deferred": [],
+      "risk": "high"
+    },
+    {
+      "old_package": "meta.identity",
+      "current_path": "meta/identity/",
+      "target_package": "tools.validators.identity",
+      "target_path": "tools/validators/identity/",
+      "target_owner": "tools/validators",
+      "rationale": "The files are active identity validator code. They are not contract records and must not move under contracts.",
+      "files_included": [
+        "meta/identity/__init__.py",
+        "meta/identity/identity_validator.py"
+      ],
+      "files_deferred": [],
+      "risk": "high"
+    },
+    {
+      "old_package": "meta.stability",
+      "current_path": "meta/stability/",
+      "target_package": "tools.validators.stability",
+      "target_path": "tools/validators/stability/",
+      "target_owner": "tools/validators",
+      "rationale": "The files are active stability registry validator code. Registry data remains in data/contracts ownership; active Python implementation belongs in tools.",
+      "files_included": [
+        "meta/stability/__init__.py",
+        "meta/stability/stability_scope.py",
+        "meta/stability/stability_validator.py"
+      ],
+      "files_deferred": [],
+      "risk": "high"
+    }
+  ],
+  "no_apply": true
+}

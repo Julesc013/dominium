@@ -1,0 +1,115 @@
+{
+  "schema_version": "dominium.move_family_00c_a.import_rewrite_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "summary": {
+    "total_import_consumers": 44,
+    "apply_rewrites": 34,
+    "later_rewrites": 10,
+    "historical_rewrites": 0,
+    "review_rewrites": 0
+  },
+  "rewrite_rules": [
+    {
+      "old_import": "from validation import",
+      "new_import": "from tools.validators.validation import",
+      "default_phase": "apply",
+      "exceptions": [
+        "compat/shims/validation_shims.py",
+        "runtime/appshell/commands/command_engine.py"
+      ]
+    },
+    {
+      "old_import": "from meta.identity import",
+      "new_import": "from tools.validators.identity import",
+      "default_phase": "apply",
+      "exceptions": [
+        "lib/install/install_validator.py",
+        "lib/instance/instance_validator.py",
+        "lib/save/save_validator.py",
+        "release/release_manifest_engine.py",
+        "release/update_resolver.py",
+        "security/trust/license_capability.py"
+      ]
+    },
+    {
+      "old_import": "from meta.identity.identity_validator import",
+      "new_import": "from tools.validators.identity.identity_validator import",
+      "default_phase": "apply",
+      "exceptions": []
+    },
+    {
+      "old_import": "from meta.stability import",
+      "new_import": "from tools.validators.stability import",
+      "default_phase": "apply",
+      "exceptions": [
+        "compat/shims/common.py",
+        "tools/governance/governance_model_common.py"
+      ]
+    },
+    {
+      "old_import": "from meta.stability.stability_validator import",
+      "new_import": "from tools.validators.stability.stability_validator import",
+      "default_phase": "apply",
+      "exceptions": []
+    }
+  ],
+  "apply_rewrite_files": [
+    "tools/auditx/analyzers/e473_duplicate_validation_surface_smell.py",
+    "tools/convergence/convergence_gate_common.py",
+    "tools/release/shim_coverage_common.py",
+    "tools/validation/tool_run_validation.py",
+    "tools/xstack/repox/check.py",
+    "tools/xstack/testx/tests/validation_unify_testlib.py",
+    "tools/dist/dist_tree_common.py",
+    "tools/meta/identity_common.py",
+    "tools/meta/tool_diff_identity.py",
+    "tools/meta/tool_print_identity.py",
+    "tools/mvp/baseline_universe_common.py",
+    "tools/mvp/disaster_suite_common.py",
+    "tools/mvp/ecosystem_verify_common.py",
+    "tools/mvp/runtime_bundle.py",
+    "tools/mvp/update_sim_common.py",
+    "tools/release/update_model_common.py",
+    "tools/setup/setup_cli.py",
+    "tools/xstack/testx/tests/identity_testlib.py",
+    "tools/xstack/testx/tests/test_instance_manifest_contains_identity_block.py",
+    "tools/audit/arch_audit_common.py",
+    "tools/auditx/analyzers/e449_missing_stability_marker_smell.py",
+    "tools/auditx/analyzers/e451_provisional_without_replacement_smell.py",
+    "tools/auditx/analyzers/e467_stable_without_contract_id_smell.py",
+    "tools/auditx/analyzers/e468_feature_creep_smell.py",
+    "tools/meta/observability_common.py",
+    "tools/release/scope_freeze_common.py",
+    "tools/review/repo_inventory_common.py",
+    "tools/security/trust_strict_common.py",
+    "tools/xstack/testx/tests/scope_freeze_testlib.py",
+    "tools/xstack/testx/tests/stability_classification_testlib.py",
+    "validation/validation_engine.py"
+  ],
+  "temporary_old_import_allowlist": [
+    "compat/shims/validation_shims.py",
+    "runtime/appshell/commands/command_engine.py",
+    "lib/install/install_validator.py",
+    "lib/instance/instance_validator.py",
+    "lib/save/save_validator.py",
+    "release/release_manifest_engine.py",
+    "release/update_resolver.py",
+    "security/trust/license_capability.py",
+    "compat/shims/common.py",
+    "tools/governance/governance_model_common.py"
+  ],
+  "path_reference_rewrites": [
+    {
+      "scope": "moved validation metadata strings",
+      "phase": "review",
+      "reason": "validation_engine.py contains legacy replacement_target strings that mention old paths; apply must review whether they describe historical surfaces or current target metadata before rewriting."
+    }
+  ],
+  "imports_rewritten": false,
+  "references_rewritten": false,
+  "no_apply": true
+}

@@ -128,3 +128,15 @@ MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
 - `validation/**`, `meta/identity/**`, `meta/stability/**`, and `governance/**` require temporary shim policy and consumer proof before any apply.
 - semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
 - Recommended next task: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.
+
+## MOVE-FAMILY-00C-A Plan Follow-up
+
+`MOVE-FAMILY-00C-A-PLAN` defined the compatibility shim and import rewrite contract for `validation`, `meta.identity`, and `meta.stability`.
+
+- Planned target owner: `tools/validators/**`.
+- Future implementation moves planned: 7.
+- Future temporary shims planned: 7.
+- Apply-phase import rewrites planned: 34.
+- Temporary old-import callers allowed: 10.
+- Ready for `MOVE-FAMILY-00C-A-GATE`: true.
+- `governance`, `performance`, and broader semantic/runtime `meta/**` remain out of scope.

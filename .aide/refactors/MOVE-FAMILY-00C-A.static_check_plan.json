@@ -1,0 +1,60 @@
+{
+  "schema_version": "dominium.move_family_00c_a.static_check_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "planned_check": {
+    "name": "legacy_validator_import_shim_allowlist",
+    "future_path": "tools/validators/check_legacy_validator_imports.py",
+    "introduced_by": "future approved apply or proof task",
+    "implementation_status": "not_created",
+    "purpose": "Prevent new active code from importing old validation/meta shim paths after implementation moves."
+  },
+  "scan_patterns": [
+    "^\\s*import\\s+validation(\\.|\\s|$)",
+    "^\\s*from\\s+validation(\\.|\\s|$)",
+    "^\\s*import\\s+meta\\.identity(\\.|\\s|$)",
+    "^\\s*from\\s+meta\\.identity(\\.|\\s|$)",
+    "^\\s*import\\s+meta\\.stability(\\.|\\s|$)",
+    "^\\s*from\\s+meta\\.stability(\\.|\\s|$)"
+  ],
+  "allowed_old_import_files_after_apply": [
+    "validation/__init__.py",
+    "validation/validation_engine.py",
+    "meta/identity/__init__.py",
+    "meta/identity/identity_validator.py",
+    "meta/stability/__init__.py",
+    "meta/stability/stability_scope.py",
+    "meta/stability/stability_validator.py",
+    "compat/shims/validation_shims.py",
+    "runtime/appshell/commands/command_engine.py",
+    "lib/install/install_validator.py",
+    "lib/instance/instance_validator.py",
+    "lib/save/save_validator.py",
+    "release/release_manifest_engine.py",
+    "release/update_resolver.py",
+    "security/trust/license_capability.py",
+    "compat/shims/common.py",
+    "tools/governance/governance_model_common.py"
+  ],
+  "forbidden_after_apply": [
+    "new active imports from validation outside the shim files and explicit allowlist",
+    "new active imports from meta.identity outside the shim files and explicit allowlist",
+    "new active imports from meta.stability outside the shim files and explicit allowlist"
+  ],
+  "historical_exemptions": [
+    "docs/repo/root-recycling/**",
+    "docs/repo/audits/**",
+    ".aide/reports/**",
+    ".aide/refactors/**",
+    ".aide/context/**",
+    "archive/**"
+  ],
+  "required_outputs": [
+    "machine-readable stale import report",
+    "blocker list for active old imports outside allowlist",
+    "warning list for historical old-path references"
+  ],
+  "no_apply": true
+}

@@ -149,3 +149,13 @@ Superseded By: none
 - semantic/runtime `meta/**` remains preserve-current until a separate runtime/domain ownership plan exists.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by planning scope.
 - No files were moved, deleted, renamed, import-rewritten, reference-rewritten, or shimmed by the plan.
+
+## MOVE-FAMILY-00C-A-PLAN
+
+- Result is PASS_WITH_WARNINGS, not BLOCKED.
+- Future apply remains high risk because it will move active Python implementations and create temporary shims.
+- Temporary old-import callers remain warning-only when they are exactly the allowlisted runtime, compatibility, release/security/lib, or deferred governance consumers.
+- New old-import usage after apply must be blocking once the planned static check exists.
+- `validation` and `meta` exceptions cannot retire after the first shim apply because shim files and broader `meta/**` material remain.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by planning scope.
+- No files were moved, deleted, renamed, import-rewritten, reference-rewritten, or shimmed by the plan.

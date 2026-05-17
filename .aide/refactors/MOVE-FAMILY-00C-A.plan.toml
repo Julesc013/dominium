@@ -1,0 +1,71 @@
+[plan]
+id = "MOVE-FAMILY-00C-A"
+title = "Validation, Identity, and Stability Shim Contract Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "MOVE-FAMILY-00C-A-PLAN"
+baseline = "BASELINE-00"
+
+[scope]
+roots = ["validation", "meta"]
+groups = ["validation", "meta.identity", "meta.stability"]
+excluded_groups = ["governance", "performance", "meta semantic/runtime"]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+import_rewrites_allowed = false
+reference_rewrites_allowed = false
+shim_creation_allowed = false
+exception_retirement_allowed = false
+
+[summary]
+planned_move_count = 7
+planned_shim_file_count = 7
+apply_import_rewrite_count = 34
+temporary_old_import_allowlist_count = 10
+risk = "high"
+ready_for_gate = true
+next_gate = "MOVE-FAMILY-00C-A-GATE"
+
+[[target_namespaces]]
+old_package = "validation"
+new_package = "tools.validators.validation"
+target_path = "tools/validators/validation/"
+shim_required = true
+
+[[target_namespaces]]
+old_package = "meta.identity"
+new_package = "tools.validators.identity"
+target_path = "tools/validators/identity/"
+shim_required = true
+
+[[target_namespaces]]
+old_package = "meta.stability"
+new_package = "tools.validators.stability"
+target_path = "tools/validators/stability/"
+shim_required = true
+
+[[move_batches]]
+id = "00C-A1"
+title = "Create validator target namespaces and move implementations"
+phase = "future_apply"
+risk = "high"
+
+[[move_batches]]
+id = "00C-A2"
+title = "Create temporary old-path import shims"
+phase = "future_apply"
+risk = "high"
+
+[[move_batches]]
+id = "00C-A3"
+title = "Rewrite apply-phase imports"
+phase = "future_apply"
+risk = "high"
+
+[[move_batches]]
+id = "00C-A4"
+title = "Add or run stale old-import static check"
+phase = "future_apply_or_proof"
+risk = "medium"

@@ -1,0 +1,131 @@
+{
+  "schema_version": "dominium.move_family_00c_a.package_inventory.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "groups": [
+    "validation",
+    "meta.identity",
+    "meta.stability"
+  ],
+  "summary": {
+    "tracked_files": 7,
+    "python_files": 7,
+    "package_init_files": 3,
+    "direct_cli_entrypoints": 0,
+    "ignored_pycache_directories_seen": 3,
+    "implementation_move_candidates": 7,
+    "shim_required_groups": 3,
+    "governance_excluded": true
+  },
+  "items": [
+    {
+      "path": "validation/__init__.py",
+      "group": "validation",
+      "module_name": "validation",
+      "file_type": "python",
+      "package_init": true,
+      "size_bytes": 949,
+      "likely_role": "public validation package export surface",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/validation/__init__.py",
+      "shim_path_after_move": "validation/__init__.py",
+      "risk": "high"
+    },
+    {
+      "path": "validation/validation_engine.py",
+      "group": "validation",
+      "module_name": "validation.validation_engine",
+      "file_type": "python",
+      "package_init": false,
+      "size_bytes": 78377,
+      "likely_role": "unified validation pipeline implementation",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/validation/validation_engine.py",
+      "shim_path_after_move": "validation/validation_engine.py",
+      "risk": "high"
+    },
+    {
+      "path": "meta/identity/__init__.py",
+      "group": "meta.identity",
+      "module_name": "meta.identity",
+      "file_type": "python",
+      "package_init": true,
+      "size_bytes": 1667,
+      "likely_role": "public universal identity validation export surface",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/identity/__init__.py",
+      "shim_path_after_move": "meta/identity/__init__.py",
+      "risk": "high"
+    },
+    {
+      "path": "meta/identity/identity_validator.py",
+      "group": "meta.identity",
+      "module_name": "meta.identity.identity_validator",
+      "file_type": "python",
+      "package_init": false,
+      "size_bytes": 31239,
+      "likely_role": "universal identity validation implementation",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/identity/identity_validator.py",
+      "shim_path_after_move": "meta/identity/identity_validator.py",
+      "risk": "high"
+    },
+    {
+      "path": "meta/stability/__init__.py",
+      "group": "meta.stability",
+      "module_name": "meta.stability",
+      "file_type": "python",
+      "package_init": true,
+      "size_bytes": 1141,
+      "likely_role": "public stability validation export surface",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/stability/__init__.py",
+      "shim_path_after_move": "meta/stability/__init__.py",
+      "risk": "high"
+    },
+    {
+      "path": "meta/stability/stability_scope.py",
+      "group": "meta.stability",
+      "module_name": "meta.stability.stability_scope",
+      "file_type": "python",
+      "package_init": false,
+      "size_bytes": 4826,
+      "likely_role": "stability registry scope inventory",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/stability/stability_scope.py",
+      "shim_path_after_move": "meta/stability/stability_scope.py",
+      "risk": "high"
+    },
+    {
+      "path": "meta/stability/stability_validator.py",
+      "group": "meta.stability",
+      "module_name": "meta.stability.stability_validator",
+      "file_type": "python",
+      "package_init": false,
+      "size_bytes": 26384,
+      "likely_role": "stability registry and pack compatibility validator implementation",
+      "target_owner_candidate": "tools/validators",
+      "target_path_candidate": "tools/validators/stability/stability_validator.py",
+      "shim_path_after_move": "meta/stability/stability_validator.py",
+      "risk": "high"
+    }
+  ],
+  "excluded": [
+    {
+      "group": "governance",
+      "reason": "Governance is explicitly out of scope for MOVE-FAMILY-00C-A and remains deferred to a separate governance shim plan."
+    },
+    {
+      "group": "performance",
+      "reason": "Performance is preserve-current from MOVE-FAMILY-00C and is out of scope."
+    },
+    {
+      "group": "meta semantic/runtime",
+      "reason": "Broader meta semantics remain preserve-current and out of scope."
+    }
+  ],
+  "no_apply": true
+}

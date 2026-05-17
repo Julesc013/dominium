@@ -1,0 +1,49 @@
+{
+  "schema_version": "dominium.move_family_00c_a.plan_summary.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "result": "PASS_WITH_WARNINGS",
+  "head": "c94c8f970ac9b8fed9f4294fc6d7e0b377f85db5",
+  "origin_main": "c94c8f970ac9b8fed9f4294fc6d7e0b377f85db5",
+  "groups": [
+    "validation",
+    "meta.identity",
+    "meta.stability"
+  ],
+  "packages_inventoried": 3,
+  "tracked_files": 7,
+  "python_import_consumers": {
+    "validation": 8,
+    "meta.identity": 20,
+    "meta.stability": 16
+  },
+  "planned_move_count": 7,
+  "planned_shim_file_count": 7,
+  "apply_import_rewrite_count": 34,
+  "temporary_old_import_allowlist_count": 10,
+  "target_namespaces": [
+    "tools.validators.validation",
+    "tools.validators.identity",
+    "tools.validators.stability"
+  ],
+  "ready_for_gate": true,
+  "recommended_next_task": "MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate",
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "imports_rewritten": false,
+    "references_rewritten": false,
+    "shims_created": false,
+    "exceptions_retired": false
+  },
+  "known_warnings": [
+    "Plan is high risk because future apply touches active Python import surfaces.",
+    "Temporary old import allowlist remains for runtime, compatibility, release/security/lib, and governance-deferred callers.",
+    "validation and meta root exceptions cannot retire after the planned apply because shims and broader meta material remain.",
+    "AIDE validate reports a compact task packet size warning and an existing review-packet referenced-path warning.",
+    "TOML validation used manual fallback key inspection because the Python environment lacks tomllib.",
+    "Strict validators pass with known fallback TOML parser warnings.",
+    "Full CTest, full eval, CMake configure/build, package/release generation, and product binaries are out of scope."
+  ],
+  "blockers": []
+}

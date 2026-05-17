@@ -133,3 +133,26 @@ Check that the diff is limited to scoped planning evidence and documentation, ap
 - Reviewed state: 33 active Python files remain across validation/meta/governance/performance; no direct CLI entrypoints; no apply-ready batch.
 - Gate readiness: false.
 - Next review target: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.
+
+## MOVE-FAMILY-00C-A-PLAN REVIEW UPDATE
+
+- Plan result: PASS_WITH_WARNINGS.
+- Evidence:
+  - `.aide/refactors/MOVE-FAMILY-00C-A.plan.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.package_inventory.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.import_consumers.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.target_namespace_map.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.shim_contract.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.import_rewrite_plan.json`
+  - `.aide/refactors/MOVE-FAMILY-00C-A.static_check_plan.json`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-status.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-validation.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-blockers.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-review.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-shim-contract.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-import-consumers.md`
+  - `.aide/reports/MOVE-FAMILY-00C-A-PLAN-summary.json`
+  - `docs/repo/root-recycling/MOVE_FAMILY_00C_A_VALIDATION_IDENTITY_STABILITY_SHIM_PLAN.md`
+- Reviewed state: 7 implementation files planned for a later apply, 7 temporary shim files planned, 34 import rewrites planned, and 10 old-import callers temporarily allowlisted.
+- Gate readiness: true.
+- Next review target: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.

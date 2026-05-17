@@ -1,0 +1,98 @@
+{
+  "schema_version": "dominium.move_family_00c_a.plan.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "title": "Validation, Identity, and Stability Shim Contract Plan",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "roots": [
+    "validation",
+    "meta"
+  ],
+  "groups": [
+    "validation",
+    "meta.identity",
+    "meta.stability"
+  ],
+  "excluded_groups": [
+    "governance",
+    "performance",
+    "meta semantic/runtime"
+  ],
+  "summary": {
+    "ready_for_gate": true,
+    "planned_move_count": 7,
+    "planned_shim_file_count": 7,
+    "apply_import_rewrite_count": 34,
+    "temporary_old_import_allowlist_count": 10,
+    "risk": "high",
+    "result": "PASS_WITH_WARNINGS"
+  },
+  "target_namespaces": [
+    {
+      "old_package": "validation",
+      "new_package": "tools.validators.validation",
+      "target_path": "tools/validators/validation/"
+    },
+    {
+      "old_package": "meta.identity",
+      "new_package": "tools.validators.identity",
+      "target_path": "tools/validators/identity/"
+    },
+    {
+      "old_package": "meta.stability",
+      "new_package": "tools.validators.stability",
+      "target_path": "tools/validators/stability/"
+    }
+  ],
+  "move_batches": [
+    {
+      "id": "00C-A1",
+      "title": "Create validator target namespaces and move implementations",
+      "phase": "future_apply",
+      "moves": [
+        {"source":"validation/__init__.py","target":"tools/validators/validation/__init__.py"},
+        {"source":"validation/validation_engine.py","target":"tools/validators/validation/validation_engine.py"},
+        {"source":"meta/identity/__init__.py","target":"tools/validators/identity/__init__.py"},
+        {"source":"meta/identity/identity_validator.py","target":"tools/validators/identity/identity_validator.py"},
+        {"source":"meta/stability/__init__.py","target":"tools/validators/stability/__init__.py"},
+        {"source":"meta/stability/stability_scope.py","target":"tools/validators/stability/stability_scope.py"},
+        {"source":"meta/stability/stability_validator.py","target":"tools/validators/stability/stability_validator.py"}
+      ],
+      "create_if_needed": [
+        "tools/validators/__init__.py",
+        "tools/validators/validation/",
+        "tools/validators/identity/",
+        "tools/validators/stability/"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "00C-A2",
+      "title": "Create temporary old-path import shims",
+      "phase": "future_apply",
+      "shim_contract": ".aide/refactors/MOVE-FAMILY-00C-A.shim_contract.json",
+      "risk": "high"
+    },
+    {
+      "id": "00C-A3",
+      "title": "Rewrite apply-phase imports",
+      "phase": "future_apply",
+      "rewrite_plan": ".aide/refactors/MOVE-FAMILY-00C-A.import_rewrite_plan.json",
+      "risk": "high"
+    },
+    {
+      "id": "00C-A4",
+      "title": "Add or run stale old-import static check",
+      "phase": "future_apply_or_proof",
+      "static_check_plan": ".aide/refactors/MOVE-FAMILY-00C-A.static_check_plan.json",
+      "risk": "medium"
+    }
+  ],
+  "validators": ".aide/refactors/MOVE-FAMILY-00C-A.validation_plan.json",
+  "rollback": ".aide/refactors/MOVE-FAMILY-00C-A.rollback_plan.json",
+  "exception_updates": ".aide/refactors/MOVE-FAMILY-00C-A.exception_update_plan.json",
+  "next_gate": "MOVE-FAMILY-00C-A-GATE",
+  "no_apply": true
+}

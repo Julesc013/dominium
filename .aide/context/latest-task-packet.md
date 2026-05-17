@@ -167,3 +167,18 @@ Return a compact final report with `STATUS`, `SUMMARY`, `CHANGED_FILES`, `VALIDA
 - Move apply authorized: false.
 - Feature work authorized: false.
 - Next recommended task: MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan.
+
+## MOVE-FAMILY-00C-A-PLAN TASK UPDATE
+
+- Phase: MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan.
+- Result: PASS_WITH_WARNINGS.
+- Groups planned: `validation`, `meta.identity`, and `meta.stability`.
+- Target namespaces: `tools.validators.validation`, `tools.validators.identity`, and `tools.validators.stability`.
+- Planned future implementation moves: 7.
+- Planned future temporary shims: 7.
+- Apply-phase import rewrites planned: 34.
+- Temporary old-import allowlist entries: 10.
+- Move apply authorized: false.
+- Feature work authorized: false.
+- Ready for gate: true.
+- Next recommended task: MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate.

@@ -1,0 +1,50 @@
+{
+  "schema_version": "dominium.move_family_00c_a.exception_update_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "roots": [
+    {
+      "root": "validation",
+      "current_status": "active transitional root exception",
+      "after_apply_expected_status": "narrowed to temporary shim root only",
+      "can_retire_after_apply": false,
+      "reason": "Old-path shim files remain by design until runtime and compatibility callers are rewritten or wrapped.",
+      "evidence_required": [
+        "git ls-files validation shows only planned shim files",
+        "legacy import static check passes with allowlist",
+        "strict validators pass"
+      ]
+    },
+    {
+      "root": "meta",
+      "current_status": "active transitional root exception",
+      "after_apply_expected_status": "unchanged root exception; identity/stability subtrees narrow to temporary shim subtrees",
+      "can_retire_after_apply": false,
+      "reason": "Broader semantic/runtime meta material remains preserve-current and identity/stability shims remain.",
+      "evidence_required": [
+        "git ls-files meta/identity shows only planned shim files",
+        "git ls-files meta/stability shows only planned shim files",
+        "legacy import static check passes with allowlist",
+        "strict validators pass"
+      ]
+    },
+    {
+      "root": "governance",
+      "current_status": "deferred",
+      "after_apply_expected_status": "unchanged",
+      "can_retire_after_apply": false,
+      "reason": "Governance is out of scope for MOVE-FAMILY-00C-A."
+    },
+    {
+      "root": "performance",
+      "current_status": "preserve-current",
+      "after_apply_expected_status": "unchanged",
+      "can_retire_after_apply": false,
+      "reason": "Performance is out of scope for MOVE-FAMILY-00C-A."
+    }
+  ],
+  "exceptions_retired": false,
+  "no_apply": true
+}

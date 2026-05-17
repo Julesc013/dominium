@@ -118,3 +118,14 @@ MOVE-FAMILY-00C-PLAN blocked direct apply for active validation/meta/governance/
 - `validation/**`, `meta/identity/**`, `meta/stability/**`, and `governance/**` need temporary shim and consumer-proof planning.
 - semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
 - Recommended next task: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.
+
+## MOVE-FAMILY-00C-A-PLAN Result
+
+MOVE-FAMILY-00C-A-PLAN produced a gate-ready shim contract plan for `validation`, `meta.identity`, and `meta.stability`.
+
+- Planned implementation moves for later apply: 7.
+- Planned temporary shim files for later apply: 7.
+- Apply-phase import rewrites planned: 34.
+- Temporary old-import allowlist entries: 10.
+- Root exceptions do not retire after the first shim apply.
+- Next recommended task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.

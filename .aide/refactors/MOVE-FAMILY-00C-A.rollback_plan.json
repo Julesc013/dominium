@@ -1,0 +1,43 @@
+{
+  "schema_version": "dominium.move_family_00c_a.rollback_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "rollback_policy": {
+    "destructive_git_reset_allowed": false,
+    "reverse_moves_required": true,
+    "reverse_import_rewrites_required": true,
+    "remove_shims_required": true,
+    "restore_exceptions_if_changed": true
+  },
+  "reverse_moves": [
+    {"from":"tools/validators/validation/__init__.py","to":"validation/__init__.py"},
+    {"from":"tools/validators/validation/validation_engine.py","to":"validation/validation_engine.py"},
+    {"from":"tools/validators/identity/__init__.py","to":"meta/identity/__init__.py"},
+    {"from":"tools/validators/identity/identity_validator.py","to":"meta/identity/identity_validator.py"},
+    {"from":"tools/validators/stability/__init__.py","to":"meta/stability/__init__.py"},
+    {"from":"tools/validators/stability/stability_scope.py","to":"meta/stability/stability_scope.py"},
+    {"from":"tools/validators/stability/stability_validator.py","to":"meta/stability/stability_validator.py"}
+  ],
+  "reverse_import_rewrites": [
+    "Restore apply-phase imports from tools.validators.validation back to validation only if the whole apply is rolled back.",
+    "Restore apply-phase imports from tools.validators.identity back to meta.identity only if the whole apply is rolled back.",
+    "Restore apply-phase imports from tools.validators.stability back to meta.stability only if the whole apply is rolled back."
+  ],
+  "remove_shims": [
+    "Remove shim-only old-path files after restoring original implementations.",
+    "Remove tools/validators/validation, tools/validators/identity, and tools/validators/stability directories if empty and created by apply.",
+    "Remove tools/validators/__init__.py only if apply created it and no other new package depends on it."
+  ],
+  "validation_after_rollback": [
+    "AIDE doctor/validate/test/selftest/tools/roots/repo validate",
+    "strict repo/root/distribution/component validators",
+    "docs/build/UI/ABI checks",
+    "py_compile restored packages",
+    "import smoke old package imports",
+    "focused RepoX",
+    "git diff checks"
+  ],
+  "no_apply": true
+}

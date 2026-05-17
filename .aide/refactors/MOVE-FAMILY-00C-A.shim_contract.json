@@ -1,0 +1,109 @@
+{
+  "schema_version": "dominium.move_family_00c_a.shim_contract.v1",
+  "task_id": "MOVE-FAMILY-00C-A-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "contract_policy": {
+    "shim_is_temporary": true,
+    "shim_behavior": "import/re-export only",
+    "side_effects_allowed": false,
+    "behavior_mutation_allowed": false,
+    "runtime_warning_allowed": false,
+    "deprecation_comment_allowed": true,
+    "new_old_imports_forbidden": true,
+    "static_check_required": true
+  },
+  "shims": [
+    {
+      "old_import": "validation",
+      "new_import": "tools.validators.validation",
+      "shim_required": true,
+      "shim_locations": [
+        "validation/__init__.py",
+        "validation/validation_engine.py"
+      ],
+      "shim_behavior": [
+        "validation/__init__.py re-exports the public API from tools.validators.validation",
+        "validation/validation_engine.py re-exports from tools.validators.validation.validation_engine",
+        "no file writes, subprocess calls, environment mutation, warnings emission, or behavior changes"
+      ],
+      "allowed_callers": [
+        "compat/shims/validation_shims.py",
+        "runtime/appshell/commands/command_engine.py"
+      ],
+      "forbidden_new_references": [
+        "import validation",
+        "from validation import ...",
+        "from validation.validation_engine import ..."
+      ],
+      "retirement_condition": "All active repo consumers are rewritten to tools.validators.validation or a non-tools runtime wrapper, then stale-import check reports no old validation imports outside historical evidence.",
+      "retirement_task": "MOVE-FAMILY-00C-A-SHIM-RETIRE-VALIDATION",
+      "static_check": "MOVE-FAMILY-00C-A legacy import static check allowlists only shim files plus the listed temporary callers.",
+      "risk": "high"
+    },
+    {
+      "old_import": "meta.identity",
+      "new_import": "tools.validators.identity",
+      "shim_required": true,
+      "shim_locations": [
+        "meta/identity/__init__.py",
+        "meta/identity/identity_validator.py"
+      ],
+      "shim_behavior": [
+        "meta/identity/__init__.py re-exports the public API from tools.validators.identity",
+        "meta/identity/identity_validator.py re-exports from tools.validators.identity.identity_validator",
+        "no behavior changes to identity block canonicalization or validation"
+      ],
+      "allowed_callers": [
+        "lib/install/install_validator.py",
+        "lib/instance/instance_validator.py",
+        "lib/save/save_validator.py",
+        "release/release_manifest_engine.py",
+        "release/update_resolver.py",
+        "security/trust/license_capability.py"
+      ],
+      "forbidden_new_references": [
+        "import meta.identity",
+        "from meta.identity import ...",
+        "from meta.identity.identity_validator import ..."
+      ],
+      "retirement_condition": "Release, security, and lib consumers have an approved owner-specific rewrite or wrapper, then stale-import check reports no old meta.identity imports outside historical evidence.",
+      "retirement_task": "MOVE-FAMILY-00C-A-SHIM-RETIRE-IDENTITY",
+      "static_check": "MOVE-FAMILY-00C-A legacy import static check allowlists only shim files plus the listed release/security/lib callers.",
+      "risk": "high"
+    },
+    {
+      "old_import": "meta.stability",
+      "new_import": "tools.validators.stability",
+      "shim_required": true,
+      "shim_locations": [
+        "meta/stability/__init__.py",
+        "meta/stability/stability_scope.py",
+        "meta/stability/stability_validator.py"
+      ],
+      "shim_behavior": [
+        "meta/stability/__init__.py re-exports the public API from tools.validators.stability",
+        "meta/stability/stability_scope.py re-exports from tools.validators.stability.stability_scope",
+        "meta/stability/stability_validator.py re-exports from tools.validators.stability.stability_validator",
+        "no behavior changes to registry stability validation"
+      ],
+      "allowed_callers": [
+        "compat/shims/common.py",
+        "tools/governance/governance_model_common.py"
+      ],
+      "forbidden_new_references": [
+        "import meta.stability",
+        "from meta.stability import ...",
+        "from meta.stability.stability_scope import ...",
+        "from meta.stability.stability_validator import ..."
+      ],
+      "retirement_condition": "Compatibility and governance consumers have approved rewrites or wrapper plans, then stale-import check reports no old meta.stability imports outside historical evidence.",
+      "retirement_task": "MOVE-FAMILY-00C-A-SHIM-RETIRE-STABILITY",
+      "static_check": "MOVE-FAMILY-00C-A legacy import static check allowlists only shim files plus the listed compatibility/governance callers.",
+      "risk": "high"
+    }
+  ],
+  "no_apply": true
+}

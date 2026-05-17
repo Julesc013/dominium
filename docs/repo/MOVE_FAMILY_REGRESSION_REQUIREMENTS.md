@@ -200,3 +200,30 @@ Next recommended task:
 ```text
 MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan
 ```
+
+## MOVE-FAMILY-00C-A-PLAN Outcome
+
+MOVE-FAMILY-00C-A-PLAN produced a gate-ready shim contract plan for `validation`, `meta.identity`, and `meta.stability`.
+
+- Planned future implementation moves: 7.
+- Planned future temporary shim files: 7.
+- Apply-phase import rewrites: 34.
+- Temporary old-import allowlist entries: 10.
+- Target namespaces: `tools.validators.validation`, `tools.validators.identity`, and `tools.validators.stability`.
+- Ready for `MOVE-FAMILY-00C-A-GATE`: true.
+
+Any future 00C-A apply must additionally run:
+
+- py_compile for moved modules and shim files;
+- old-import shim smoke checks;
+- new-import target namespace smoke checks;
+- affected validator smoke checks;
+- stale old-import static check;
+- focused RepoX;
+- smoke CTest if active validator or AppShell import paths are changed.
+
+Next recommended task:
+
+```text
+MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate
+```

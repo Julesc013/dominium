@@ -144,3 +144,16 @@ MOVE-FAMILY-00B-PROOF proved the IDE root retirement.
 - semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 - Next recommended task: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.
+
+## MOVE-FAMILY-00C-A-PLAN Update - Validation Shim Contract Planning
+
+- Result: PASS_WITH_WARNINGS.
+- Groups planned: `validation`, `meta.identity`, and `meta.stability`.
+- Target namespaces: `tools.validators.validation`, `tools.validators.identity`, and `tools.validators.stability`.
+- Planned future implementation moves: 7.
+- Planned future temporary shim files: 7.
+- Apply-phase import rewrites planned: 34.
+- Temporary old-import allowlist entries: 10.
+- Ready for `MOVE-FAMILY-00C-A-GATE`: true.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
+- Next recommended task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.

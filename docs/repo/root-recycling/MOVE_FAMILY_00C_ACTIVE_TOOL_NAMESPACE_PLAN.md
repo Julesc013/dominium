@@ -110,3 +110,16 @@ MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan
 ## No Moves/Deletes/Renames Confirmation
 
 MOVE-FAMILY-00C-PLAN made no source-root moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map applications, salvage-map applications, or exception retirements.
+
+## MOVE-FAMILY-00C-A Plan Follow-up
+
+`MOVE-FAMILY-00C-A-PLAN` produced a gate-ready shim contract plan for the validator-like subset of 00C.
+
+- Groups planned: `validation`, `meta.identity`, and `meta.stability`.
+- Files planned for a later apply: 7 implementation files.
+- Temporary shim files planned for a later apply: 7.
+- Apply-phase import rewrites planned: 34.
+- Temporary old-import allowlist entries: 10.
+- Target namespaces: `tools.validators.validation`, `tools.validators.identity`, and `tools.validators.stability`.
+- Governance, performance, and broader semantic/runtime `meta/**` remain deferred.
+- Recommended next task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.
