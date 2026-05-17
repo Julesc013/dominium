@@ -1,0 +1,28 @@
+{
+  "schema_version": "dominium.move_bulk_00.gate_summary.v1",
+  "task_id": "MOVE-BULK-00-GATE",
+  "result": "PASS_WITH_WARNINGS",
+  "authorized_batches": ["Batch A"],
+  "deferred_batches": ["Batch B", "Batch C", "Batch D", "Batch E", "Batch F", "Batch G"],
+  "blocked_batches": ["Batch H"],
+  "first_authorized_apply_task": "MOVE-BULK-01-APPLY-DOCS-ARCHIVE",
+  "authorized_file_count": 309,
+  "move_apply_authorized": true,
+  "feature_work_authorized": false,
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "imports_rewritten": false,
+    "references_rewritten": false,
+    "shims_created": false,
+    "exceptions_retired": false
+  },
+  "validation_status": "PASS_WITH_WARNINGS",
+  "known_warnings": [
+    "Only Batch A is authorized.",
+    "Batches B-G are deferred and Batch H is blocked until prior proof.",
+    "Local TOML parser modules are unavailable; TOML was manually inspected.",
+    "Full CTest/full eval/build/product/package/release/projection regeneration were out of scope."
+  ]
+}

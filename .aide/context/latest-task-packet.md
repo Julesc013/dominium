@@ -2,22 +2,18 @@
 
 ## PHASE
 
-MOVE-BULK-00-PLAN - Global Bad-Root Migration Plan
+MOVE-BULK-00-GATE - Global Bad-Root Migration Gate
 
 ## GOAL
 
-Produce one global no-apply migration plan for all remaining tracked bad roots, replacing the remaining micro MOVE-FAMILY planning cadence with batched cleanup waves.
+Review the MOVE-BULK-00 global bad-root migration plan and authorize only specific safe apply batches.
 
 ## WHY
 
-The repo has BASELINE-00, RELEASE-00, IDE root retirement proof, and active-tool shim planning evidence. The remaining cleanup needs larger gateable batches so safe docs/evidence/archive material can move quickly while active imports, identity files, authority contracts, runtime/source paths, and ABI/build surfaces remain gated.
+The global plan is intentionally aggressive. The gate limits apply authorization to the safest scope so cleanup can move quickly without bypassing BASELINE-00 regression requirements.
 
 ## CONTEXT_REFS
 
-- `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md`
-- `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
-- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
-- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
 - `.aide/refactors/MOVE-BULK-00.global_plan.json`
 - `.aide/refactors/MOVE-BULK-00.global_salvage_map.json`
 - `.aide/refactors/MOVE-BULK-00.global_move_map.json`
@@ -28,10 +24,12 @@ The repo has BASELINE-00, RELEASE-00, IDE root retirement proof, and active-tool
 - `.aide/refactors/MOVE-BULK-00.global_validation_plan.json`
 - `.aide/refactors/MOVE-BULK-00.global_rollback_plan.json`
 - `.aide/refactors/MOVE-BULK-00.batch_*.json`
+- `.aide/reports/MOVE-BULK-00-GATE-*`
+- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
+- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
 
 ## ALLOWED_PATHS
 
-- `.aide/refactors/**`
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -42,55 +40,52 @@ The repo has BASELINE-00, RELEASE-00, IDE root retirement proof, and active-tool
 
 ## FORBIDDEN_PATHS
 
-- Remaining bad roots
+- target bad-root files
 - `apps/**`, `engine/**`, `game/**`, `runtime/**`, `content/**`, `tests/**`, `tools/**`, `contracts/**`, `cmake/**`, `release/**`
-- product/runtime/source behavior paths
-- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, approved move maps, approved salvage maps, map applications, or exception retirements
+- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map approvals outside gate scope, salvage-map approvals outside gate scope, map applications, or exception retirements
 
 ## IMPLEMENTATION
 
-- 23 remaining tracked bad roots inspected.
-- 1,790 tracked files classified through grouped salvage entries.
-- Batch A docs/evidence/archive-only is ready for gate with 309 files.
-- Batches B-G are staged behind owner/import/identity/authority/runtime/ABI gates.
-- Batch H is final exception/shim closure and proof.
-- `ide/` remains retired and excluded.
+- Global and batch artifacts parse and remain draft/not-approved/no-apply.
+- Batch A is authorized as `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+- Batches B-G are deferred.
+- Batch H is blocked until prior apply/proof tasks complete.
 
 ## VALIDATION
 
 - AIDE doctor/validate/test/selftest/tools/roots/repo validation.
 - AIDE latest commit check.
-- JSON/TOML parsing for MOVE-BULK artifacts.
+- MOVE-BULK plan and gate JSON parsing.
+- TOML parse if available; otherwise manual inspection.
 - Strict repo/root/distribution/component validators.
 - Docs/build/UI/ABI checks.
-- Git diff checks and generated-output staging checks.
+- Git diff checks.
 
 ## EVIDENCE
 
-- `.aide/reports/MOVE-BULK-00-PLAN-status.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-validation.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-blockers.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-review.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-root-summary.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-batch-summary.md`
-- `.aide/reports/MOVE-BULK-00-PLAN-summary.json`
-- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
-- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
+- `.aide/reports/MOVE-BULK-00-GATE-readiness.md`
+- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
+- `.aide/reports/MOVE-BULK-00-GATE-validation.md`
+- `.aide/reports/MOVE-BULK-00-GATE-blockers.md`
+- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.md`
+- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
+- `.aide/reports/MOVE-BULK-00-GATE-deferred-batches.md`
+- `.aide/reports/MOVE-BULK-00-GATE-summary.json`
 
 ## NON_GOALS
 
-- No apply task, move operation, source edit, import rewrite, reference rewrite, shim creation, exception retirement, product proof, build, package generation, release generation, or feature work.
+- No apply work, file moves, deletion, renames, import rewrites, reference rewrites, shim creation, exception retirement, product proof, build, package generation, release generation, or feature work.
 
 ## ACCEPTANCE
 
-- All MOVE-BULK-00 plans are draft, not approved, and no-apply.
-- Batch/file counts reconcile to 1,790 tracked files.
-- Validation evidence records pass/fail/warn outcomes honestly.
-- Next task is `MOVE-BULK-00-GATE`.
+- Authorized batches are explicit.
+- Safe-subset apply behavior is mandatory.
+- Validation evidence records pass/warn/fail honestly.
+- Next task is the first authorized apply task.
 
 ## OUTPUT_SCHEMA
 
-Primary machine-readable outputs use `dominium.move_bulk_00.*.v1` schemas and plain JSON/TOML.
+Gate JSON outputs use `dominium.move_bulk_00.gate_*.v1` schemas.
 
 ## TOKEN_ESTIMATE
 
@@ -98,4 +93,4 @@ Compact packet target: under 1,600 tokens.
 
 ## NEXT
 
-`MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.
+`MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.

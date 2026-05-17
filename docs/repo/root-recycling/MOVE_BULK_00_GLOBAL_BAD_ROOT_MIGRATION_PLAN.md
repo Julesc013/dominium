@@ -75,3 +75,16 @@ Every batch has a rollback plan covering reverse moves, reverse imports, reverse
 ## No-Apply Confirmation
 
 MOVE-BULK-00-PLAN moved no files, deleted no files, renamed no files, rewrote no imports or references, created no shims, applied no maps, and retired no exceptions.
+
+## MOVE-BULK-00-GATE Result
+
+MOVE-BULK-00-GATE passed with warnings and authorizes only Batch A for the next apply task.
+
+- Authorized next task: `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+- Authorized scope: Batch A docs/evidence/archive-only safe subset under `data/`.
+- Authorized file count: 309 planned files.
+- Deferred batches: B, C, D, E, F, and G.
+- Blocked batch: H until prior batches apply and prove cleanly.
+- Feature work remains unauthorized.
+
+The gate did not move files, rewrite references, create shims, apply maps, or retire exceptions.

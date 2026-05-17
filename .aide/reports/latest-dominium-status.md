@@ -171,3 +171,15 @@ MOVE-BULK-00-PLAN creates one global no-apply migration plan for all remaining t
 - `ide/` remains retired and excluded from remaining bad-root planning.
 - Apply remains unauthorized and feature work remains blocked.
 - Next recommended task: `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.
+
+## MOVE-BULK-00-GATE Update
+
+MOVE-BULK-00-GATE passed with warnings and authorizes only Batch A.
+
+- Authorized batch: Batch A docs/evidence/archive-only.
+- Authorized next task: `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+- Authorized planned file count: 309.
+- Deferred batches: B, C, D, E, F, and G.
+- Blocked batch: H until prior batches apply and prove cleanly.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
+- Feature work remains blocked.

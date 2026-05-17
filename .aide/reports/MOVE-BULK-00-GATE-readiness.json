@@ -1,0 +1,57 @@
+{
+  "schema_version": "dominium.move_bulk_00.gate_readiness.v1",
+  "task_id": "MOVE-BULK-00-GATE",
+  "gate_result": "PASS_WITH_WARNINGS",
+  "status": "gate_completed",
+  "baseline": "BASELINE-00",
+  "head": "414c5150630c47b7233e489d7bb86581207c5400",
+  "origin_main": "d84d4442165f1e80d00584a966487814a540a8c1",
+  "global_plan": {
+    "present": true,
+    "parsed": true,
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "tracked_files_under_bad_roots": 1790,
+    "salvage_file_count": 1790
+  },
+  "batch_review": [
+    {"batch_id": "A", "title": "docs/evidence/archive-only", "planned_file_count": 309, "ready_for_gate": true, "authorization": "authorize_safe_subset", "validation_tier": "Tier 0"},
+    {"batch_id": "B", "title": "templates/models/modding", "planned_file_count": 6, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 1"},
+    {"batch_id": "C", "title": "content identity", "planned_file_count": 1230, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 2"},
+    {"batch_id": "D", "title": "authority/policy/spec/update", "planned_file_count": 50, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 2"},
+    {"batch_id": "E", "title": "active tools/modules", "planned_file_count": 33, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 1"},
+    {"batch_id": "F", "title": "runtime/core/net", "planned_file_count": 54, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 3"},
+    {"batch_id": "G", "title": "libraries/ABI", "planned_file_count": 108, "ready_for_gate": false, "authorization": "defer", "validation_tier": "Tier 3"},
+    {"batch_id": "H", "title": "final exception/shim closure", "planned_file_count": 0, "ready_for_gate": false, "authorization": "block_until_prior_proof", "validation_tier": "Tier 4"}
+  ],
+  "authorized_next": ["MOVE-BULK-01-APPLY-DOCS-ARCHIVE"],
+  "validation": [
+    {"command": "py -3 .aide/scripts/aide_lite.py doctor", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py test", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py selftest", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py tools validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py roots validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py repo validate", "result": "PASS"},
+    {"command": "py -3 .aide/scripts/aide_lite.py commit check --latest", "result": "PASS"},
+    {"command": "MOVE-BULK JSON parse", "result": "PASS", "notes": "20 JSON artifacts parsed"},
+    {"command": "MOVE-BULK TOML inspection", "result": "WARN", "notes": "tomllib/tomli unavailable; manual required-field inspection passed"},
+    {"command": "strict repo layout", "result": "PASS"},
+    {"command": "strict root allowlist", "result": "PASS"},
+    {"command": "strict distribution layout", "result": "PASS"},
+    {"command": "strict component matrices", "result": "PASS"},
+    {"command": "docs sanity", "result": "PASS"},
+    {"command": "build target boundaries", "result": "PASS"},
+    {"command": "UI shell purity", "result": "PASS"},
+    {"command": "ABI boundaries", "result": "PASS"}
+  ],
+  "known_warnings": [
+    "Only Batch A is authorized.",
+    "Batches B-G are deferred for stronger gates.",
+    "Batch H is blocked until prior batches are applied/proven.",
+    "Full CTest/full eval/build/product/package/release/projection regeneration are out of scope."
+  ],
+  "blockers": [],
+  "feature_work_authorized": false
+}

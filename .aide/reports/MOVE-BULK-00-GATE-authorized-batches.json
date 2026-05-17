@@ -1,0 +1,53 @@
+{
+  "schema_version": "dominium.move_bulk_00.gate_authorization.v1",
+  "task_id": "MOVE-BULK-00-GATE",
+  "gate_result": "PASS_WITH_WARNINGS",
+  "baseline": "BASELINE-00",
+  "head": "414c5150630c47b7233e489d7bb86581207c5400",
+  "origin_main": "d84d4442165f1e80d00584a966487814a540a8c1",
+  "authorized_batches": [
+    {
+      "batch_id": "A",
+      "next_task": "MOVE-BULK-01-APPLY-DOCS-ARCHIVE",
+      "authorization": "authorize_safe_subset",
+      "scope_summary": "Batch A docs/evidence/archive-only moves under data/: audit evidence, generated planning data, historical/restructure/regression/refactor/analysis data, docs-like data, meta-data notes, and tracked logs.",
+      "safe_subset_required": true,
+      "validation_tier": "Tier 0",
+      "included_salvage_ids": [
+        "A-DATA-AUDIT",
+        "A-DATA-PLANNING",
+        "A-DATA-HISTORY",
+        "A-DATA-DOCS",
+        "A-DATA-META",
+        "A-DATA-LOGS"
+      ],
+      "planned_file_count": 309,
+      "blocked_items": []
+    }
+  ],
+  "deferred_batches": [
+    {"batch_id": "B", "reason": "templates/models/modding need content-vs-tool-vs-contract owner review"},
+    {"batch_id": "C", "reason": "content identity, pack/profile/bundle IDs, registries, and manifests need Tier 2 identity/projection validation gates"},
+    {"batch_id": "D", "reason": "authority, policy, specs, security, and update surfaces need contract-owner and policy-demotion review"},
+    {"batch_id": "E", "reason": "active tool modules need shim/import migration gate and stale-import static check"},
+    {"batch_id": "F", "reason": "runtime/core/control/net surfaces require runtime ownership, build, CTest, and product proof gate"},
+    {"batch_id": "G", "reason": "lib/libs surfaces are ABI/build sensitive and include a CMakeLists blocker"}
+  ],
+  "blocked_batches": [
+    {"batch_id": "H", "reason": "final exception/shim closure cannot run until prior batches are applied and proven"}
+  ],
+  "move_apply_authorized": true,
+  "authorized_scope": "Batch A only; apply safe subset behavior is mandatory",
+  "feature_work_authorized": false,
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "imports_rewritten": false,
+    "references_rewritten": false,
+    "shims_created": false,
+    "exceptions_retired": false,
+    "move_maps_applied": false,
+    "salvage_maps_applied": false
+  }
+}

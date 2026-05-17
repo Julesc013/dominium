@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-BULK-00-PLAN and confirm that it creates only a draft no-apply global migration plan for the remaining tracked bad roots.
+Review MOVE-BULK-00-GATE and confirm it authorizes only Batch A safe-subset apply while preserving all no-apply invariants in the gate task.
 
 ## Decision Requested
 
@@ -23,36 +23,29 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/refactors/MOVE-BULK-00.global_plan.toml`
-- `.aide/refactors/MOVE-BULK-00.global_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_salvage_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_move_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_import_rewrite_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json`
-- `.aide/refactors/MOVE-BULK-00.global_shim_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_exception_retirement_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_validation_plan.json`
-- `.aide/refactors/MOVE-BULK-00.global_rollback_plan.json`
-- `.aide/refactors/MOVE-BULK-00.batch_*.json`
-- `.aide/reports/MOVE-BULK-00-PLAN-*`
+- `.aide/reports/MOVE-BULK-00-GATE-readiness.md`
+- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
+- `.aide/reports/MOVE-BULK-00-GATE-validation.md`
+- `.aide/reports/MOVE-BULK-00-GATE-blockers.md`
+- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.md`
+- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
+- `.aide/reports/MOVE-BULK-00-GATE-deferred-batches.md`
+- `.aide/reports/MOVE-BULK-00-GATE-summary.json`
 - `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
 - `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
 
 ## Changed Files Summary
 
-- Added MOVE-BULK-00 global planning artifacts.
-- Added one batch JSON plan for each bulk batch A through H.
-- Added reviewer-facing status, blocker, root, batch, review, validation, and summary reports.
-- Added root-recycling docs for the global plan and batch sequence.
+- Added MOVE-BULK-00-GATE readiness, authorization, deferred, blocker, validation, and summary evidence.
 - Updated root-recycling, regression, POST-CONVERGE, AIDE context/status/warning, and migration ledger surfaces.
 
 ## Validation Summary
 
-Validation records AIDE checks, JSON/TOML parsing, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, and git diff checks. Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, and projection regeneration remain out of scope.
+Validation records AIDE checks, plan and gate JSON parsing, TOML fallback/manual inspection, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, and git diff checks. Full eval, full CTest, build, product, package, release, and projection generation are out of scope.
 
 ## Risk Summary
 
-Batch A is gate-ready. Batches B-G remain gated due to identity, authority, import, runtime, or ABI/build sensitivity. Batch H is a final proof/closure batch. The plan is not approved and apply remains disabled.
+Batch A is authorized with safe-subset behavior only. Batches B-G remain deferred, Batch H remains blocked, and feature work remains unauthorized.
 
 ## Token Summary
 
@@ -60,10 +53,10 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-- no moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map approvals, salvage-map approvals, map applications, or exception retirements
+- no file moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, map applications, or exception retirements in this gate
 - no edits under target bad roots or product/runtime/source behavior paths
 - no generated release/projection/build/local output commits
 
 ## Reviewer Instructions
 
-Check that all generated plans remain draft/not-approved/no-apply, grouped file counts cover the 1,790 tracked bad-root files, no apply action occurred, and the next task is `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.
+Check that only Batch A is authorized, safe-subset behavior is mandatory, all higher-risk batches remain deferred or blocked, and no apply work occurred.

@@ -28,6 +28,16 @@ Batch A is the first candidate because it contains only docs, audit/evidence, hi
 
 Batch A must still pass a gate before apply. The gate should verify no active source/tool references depend on the old paths selected for the safe subset.
 
+## MOVE-BULK-00-GATE Authorization
+
+MOVE-BULK-00-GATE authorizes:
+
+```text
+MOVE-BULK-01-APPLY-DOCS-ARCHIVE
+```
+
+Scope is limited to Batch A docs/evidence/archive-only safe-subset handling. Batches B through G remain deferred, and Batch H remains blocked until prior batches apply and prove cleanly.
+
 ## Batch Safety Rule
 
 No batch may fail wholesale because one file is unsafe. Apply prompts must apply safe subsets, skip unsafe items, and report skipped paths exactly.

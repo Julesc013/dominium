@@ -409,3 +409,14 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, move-map applications, salvage-map applications, or exception retirements occurred.
 - Feature work remains blocked.
 - Next recommended task: `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.
+
+## MOVE-BULK-00-GATE Update - Global Bad-Root Migration Gate
+
+- Result: PASS_WITH_WARNINGS.
+- Authorized batch: Batch A docs/evidence/archive-only.
+- Authorized next task: `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+- Authorized planned file count: 309.
+- Deferred batches: B, C, D, E, F, and G.
+- Blocked batch: H until prior batches apply and prove cleanly.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
+- Feature work remains blocked.

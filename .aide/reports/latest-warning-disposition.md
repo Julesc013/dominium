@@ -87,6 +87,14 @@ Superseded By: none
 - No full CTest, full eval, CMake configure/build, product binary execution, package/release generation, or projection regeneration was run by scope.
 - Apply remains unauthorized until `MOVE-BULK-00-GATE`.
 
+## MOVE-BULK-00-GATE
+
+- Batch A is authorized with mandatory safe-subset apply behavior.
+- Batches B-G remain deferred for ownership, identity, authority, import, runtime, ABI, or build gates.
+- Batch H remains blocked until prior apply/proof completion.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, and projection regeneration remain out of scope for the gate.
+- Feature work remains blocked.
+
 ## BASELINE-00
 
 - RELEASE-00 is frozen as the structural regression baseline at HEAD `0b631fc5f09f3d927a54e8312976b926d111a72e`.

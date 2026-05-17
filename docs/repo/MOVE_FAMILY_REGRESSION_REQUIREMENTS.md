@@ -252,3 +252,16 @@ Next recommended task:
 ```text
 MOVE-BULK-00-GATE - Global Bad-Root Migration Gate
 ```
+
+## MOVE-BULK-00-GATE Outcome
+
+MOVE-BULK-00-GATE passed with warnings.
+
+- Authorized batch: Batch A docs/evidence/archive-only.
+- Authorized next task: `MOVE-BULK-01-APPLY-DOCS-ARCHIVE`.
+- Deferred batches: B, C, D, E, F, and G.
+- Blocked batch: H until prior apply/proof completion.
+- Feature work remains unauthorized.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
+
+Batch A apply must run Tier 0 validation plus stale-reference classification. Higher-risk batches remain subject to the stronger tiers defined above.
