@@ -1,0 +1,12 @@
+{
+  "schema_version": "dominium.move_bulk_00.move_map.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "moves_planned_file_count": 1790,
+  "source": ".aide/refactors/MOVE-BULK-00.global_salvage_map.json",
+  "move_groups": "Use the salvage-map entries as the authoritative grouped move/convert/archive plan. Batch gates must expand each grouped entry to exact file moves before apply.",
+  "blocked_groups": ["G-LIBS-CMAKE-BLOCKER"],
+  "ready_initial_groups": ["A-DATA-AUDIT", "A-DATA-PLANNING", "A-DATA-HISTORY", "A-DATA-DOCS", "A-DATA-META"]
+}

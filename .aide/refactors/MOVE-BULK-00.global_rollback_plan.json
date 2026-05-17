@@ -1,0 +1,18 @@
+{
+  "schema_version": "dominium.move_bulk_00.rollback_plan.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "batches": [
+    {"batch":"Batch A","reverse_moves":"move archive/docs targets back to data subtrees for applied entries only","reverse_import_rewrites":"none expected","reverse_reference_rewrites":"restore old data paths from batch rewrite ledger","remove_shims":"none expected","restore_exceptions":"restore or widen data exception if narrowed","validation_after_rollback":"Tier 0"},
+    {"batch":"Batch B","reverse_moves":"move templates/models/modding targets back","reverse_import_rewrites":"restore old imports","reverse_reference_rewrites":"restore old paths","remove_shims":"remove created model/modding shims","restore_exceptions":"restore affected root exceptions","validation_after_rollback":"Tier 1"},
+    {"batch":"Batch C","reverse_moves":"move content/contracts/release/runtime/test/tool targets back to data/packs/profiles/bundles","reverse_import_rewrites":"restore packs.compat imports","reverse_reference_rewrites":"restore old paths","remove_shims":"remove pack shims","restore_exceptions":"restore affected content identity exceptions","validation_after_rollback":"Tier 2"},
+    {"batch":"Batch D","reverse_moves":"move authority/policy/spec/update targets back","reverse_import_rewrites":"restore compat/safety/security/specs imports","reverse_reference_rewrites":"restore old paths","remove_shims":"remove created authority shims","restore_exceptions":"restore affected exceptions","validation_after_rollback":"Tier 2"},
+    {"batch":"Batch E","reverse_moves":"move validator/meta/governance/performance targets back","reverse_import_rewrites":"restore old imports","reverse_reference_rewrites":"restore old paths","remove_shims":"remove created E shims","restore_exceptions":"restore validation/meta/governance/performance exceptions","validation_after_rollback":"Tier 1"},
+    {"batch":"Batch F","reverse_moves":"move engine/runtime targets back to core/control/net","reverse_import_rewrites":"restore old imports","reverse_reference_rewrites":"restore old paths","remove_shims":"remove created runtime/core/net shims","restore_exceptions":"restore core/control/net exceptions","validation_after_rollback":"Tier 3"},
+    {"batch":"Batch G","reverse_moves":"move runtime/contracts/cmake targets back to lib/libs","reverse_import_rewrites":"restore lib imports","reverse_reference_rewrites":"restore include/CMake paths","remove_shims":"remove created lib shims","restore_exceptions":"restore lib/libs exceptions","validation_after_rollback":"Tier 3"},
+    {"batch":"Batch H","reverse_moves":"restore shims or exception ledger entries removed during closure","reverse_import_rewrites":"restore only if closure rewrote remaining callers","reverse_reference_rewrites":"restore only active refs changed by closure","remove_shims":"not applicable","restore_exceptions":"restore exceptions for any root with remaining tracked files or callers","validation_after_rollback":"Tier 4"}
+  ],
+  "global_stop_conditions": ["unexpected product/runtime/source behavior change", "generated output staged", "identity/hash mismatch for packs/profiles/bundles/locks", "strict validators fail after rollback"]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch B",
+    "title": "templates/models/modding",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 1",
+    "risk": "high"
+  },
+  "roots": ["templates", "models", "modding"],
+  "included_moves": [
+    {"salvage_id": "B-TEMPLATES", "source_path": "templates/**", "target_path": "content/templates/ or docs/templates/", "action": "move_with_reference_rewrites", "file_count": 2},
+    {"salvage_id": "B-MODELS", "source_path": "models/**", "target_path": "content/models/ or contracts/models/", "action": "move_with_import_rewrites", "file_count": 2},
+    {"salvage_id": "B-MODDING", "source_path": "modding/**", "target_path": "content/modding/ or tools/modding/", "action": "move_with_import_rewrites", "file_count": 2}
+  ],
+  "deferred_items": ["all included items require semantic owner review before gate"],
+  "blocked_items": [],
+  "import_rewrites": [{"old_imports": ["models", "modding"], "phase": "batch_gate_expansion", "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion"},
+  "shims": [{"old_import": "models", "new_import": "content.models or tools models namespace", "required": true}, {"old_import": "modding", "new_import": "tools.modding or content.modding", "required": true}],
+  "exception_effects": [{"root": "templates", "effect": "retire_if_empty"}, {"root": "models", "effect": "retire_if_empty"}, {"root": "modding", "effect": "retire_if_empty"}],
+  "validation": ["Tier 0", "Tier 1 py_compile/import smoke for moved modules"],
+  "rollback": "Reverse Batch B moves/import rewrites/reference rewrites/shims; restore affected root exceptions.",
+  "apply_strategy": "Gate and apply only files with resolved content-vs-tool ownership; defer unclear model/modding Python surfaces."
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch C",
+    "title": "content identity",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 2",
+    "risk": "high"
+  },
+  "roots": ["data", "packs", "profiles", "bundles"],
+  "included_moves": [
+    {"salvage_id": "C-DATA-REGISTRIES", "source_path": "data/registries/**", "target_path": "contracts/registries/data/", "action": "convert_to_contract", "file_count": 412},
+    {"salvage_id": "C-DATA-CONTENT", "source_path": "data/packs/** data/world/** data/worldgen/** data/profiles/** data/blueprint/** data/reality/** data/defaults/** data/modules/** data/session_templates/** data/*.template.basic", "target_path": "content/", "action": "move_with_reference_rewrites", "file_count": 489},
+    {"salvage_id": "C-DATA-RELEASE-RUNTIME-TEST", "source_path": "data/release/** data/runtime/** data/baselines/** data/xstack/** data/perf/**", "target_path": "release/data/ runtime/data/ tests/golden/ tools/xstack/data/ tools/performance/data/", "action": "move_with_reference_rewrites", "file_count": 65},
+    {"salvage_id": "C-DATA-CONTRACTS", "source_path": "data/capabilities/** data/law/** data/standards/**", "target_path": "contracts/", "action": "convert_to_contract", "file_count": 4},
+    {"salvage_id": "C-PACKS", "source_path": "packs/**", "target_path": "content/packs/ plus tools/validators/pack_compat/ plus docs/content/packs/", "action": "move_with_temporary_shim", "file_count": 256},
+    {"salvage_id": "C-PROFILES-BUNDLES", "source_path": "profiles/** bundles/**", "target_path": "content/profiles/ and content/bundles/", "action": "move_with_reference_rewrites", "file_count": 4}
+  ],
+  "deferred_items": ["pack identity/hash and registry contract conversion need batch gate expansion"],
+  "blocked_items": [],
+  "import_rewrites": [{"old_import": "packs", "new_import": "tools.validators.pack_compat", "reference_count": 14, "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion", "large_reference_sets": ["data/", "packs/", "profiles/", "bundles/"]},
+  "shims": [{"old_import": "packs", "new_import": "tools.validators.pack_compat", "retirement_condition": "all active imports rewritten and static old-import check passes"}],
+  "exception_effects": [{"root": "data", "effect": "retire_if_empty"}, {"root": "packs", "effect": "retire_if_empty"}, {"root": "profiles", "effect": "retire_if_empty"}, {"root": "bundles", "effect": "retire_if_empty"}],
+  "validation": ["Tier 0", "Tier 2 content/pack/profile/bundle identity validators", "portable projection validator if available"],
+  "rollback": "Reverse content/contract/release/runtime/test/tool split, reference rewrites, pack import rewrites, shims, and root exception changes.",
+  "apply_strategy": "Split into identity-preserving subwaves; apply safe content/docs splits even if pack Python compatibility remains deferred."
+}

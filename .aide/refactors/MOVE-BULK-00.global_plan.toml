@@ -1,0 +1,78 @@
+[plan]
+id = "MOVE-BULK-00"
+title = "Global Bad-Root Migration Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "MOVE-BULK-00-PLAN"
+baseline = "BASELINE-00"
+
+[summary]
+roots_inspected = 23
+tracked_files_under_bad_roots = 1790
+planned_eventual_file_count = 1790
+initial_gate_ready_file_count = 309
+deferred_until_batch_gate_file_count = 1481
+blocked_file_count = 1
+risk = "mixed"
+ready_for_gate = true
+next_task = "MOVE-BULK-00-GATE"
+
+[scope]
+apply_allowed = false
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+import_rewrites_allowed = false
+reference_rewrites_allowed = false
+shims_allowed = false
+exception_retirement_allowed = false
+roots = ["core", "control", "data", "packs", "profiles", "bundles", "compat", "lib", "libs", "locks", "repo", "safety", "security", "specs", "updates", "meta", "governance", "performance", "validation", "modding", "models", "templates", "net"]
+
+[[batches]]
+id = "A"
+title = "docs/evidence/archive-only"
+ready_for_gate = true
+validation_tier = "Tier 0"
+
+[[batches]]
+id = "B"
+title = "templates/models/modding"
+ready_for_gate = false
+validation_tier = "Tier 1"
+
+[[batches]]
+id = "C"
+title = "content identity"
+ready_for_gate = false
+validation_tier = "Tier 2"
+
+[[batches]]
+id = "D"
+title = "authority/policy/spec/update"
+ready_for_gate = false
+validation_tier = "Tier 2"
+
+[[batches]]
+id = "E"
+title = "active tools/modules"
+ready_for_gate = false
+validation_tier = "Tier 1"
+
+[[batches]]
+id = "F"
+title = "runtime/core/net"
+ready_for_gate = false
+validation_tier = "Tier 3"
+
+[[batches]]
+id = "G"
+title = "libraries/ABI"
+ready_for_gate = false
+validation_tier = "Tier 3"
+
+[[batches]]
+id = "H"
+title = "final exception/shim closure"
+ready_for_gate = false
+validation_tier = "Tier 4"

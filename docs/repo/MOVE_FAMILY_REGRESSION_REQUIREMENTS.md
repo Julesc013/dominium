@@ -227,3 +227,28 @@ Next recommended task:
 ```text
 MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate
 ```
+
+## MOVE-BULK-00-PLAN Outcome
+
+MOVE-BULK-00-PLAN replaces the remaining MOVE-FAMILY micro-plan queue with one global no-apply migration plan.
+
+- Remaining tracked bad-root files: 1,790.
+- Initial gate-ready subset: 309 files in Batch A docs/evidence/archive-only.
+- Deferred until batch gates: 1,481 files.
+- Explicit blocked action: `libs/CMakeLists.txt` until a CMake/build-focused ABI gate approves target rewiring.
+- `ide/` remains retired and excluded from remaining tracked bad-root planning.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
+
+Batch validation floors:
+
+- Batch A: Tier 0.
+- Batch B and E: Tier 0 plus Tier 1 import/static checks where active Python moves are involved.
+- Batch C and D: Tier 0 plus Tier 2 content, identity, contract, projection, release, or authority validators as applicable.
+- Batch F and G: Tier 0 plus Tier 3 build, ABI, CTest, product boot, and projection proof as applicable.
+- Batch H: Tier 4 post-restructure proof.
+
+Next recommended task:
+
+```text
+MOVE-BULK-00-GATE - Global Bad-Root Migration Gate
+```

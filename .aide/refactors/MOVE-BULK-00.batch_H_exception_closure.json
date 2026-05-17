@@ -1,0 +1,25 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch H",
+    "title": "final exception/shim closure",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 4",
+    "risk": "protected"
+  },
+  "roots": ["all remaining bad roots"],
+  "included_moves": [],
+  "deferred_items": ["all temporary shims and remaining layout exceptions from prior batches"],
+  "blocked_items": ["cannot start until B-G apply batches complete and old-import checks are clean"],
+  "import_rewrites": [{"phase": "closure", "requirement": "no active old imports outside explicit temporary shims"}],
+  "reference_rewrites": {"required": true, "phase": "closure", "requirement": "no active current bad-root path references remain"},
+  "shims": [{"action": "retire", "condition": "all active callers use new imports and static check passes"}],
+  "exception_effects": [{"root": "all bad roots", "effect": "retire_if_empty"}],
+  "validation": ["Tier 0", "Tier 4 post-restructure full proof"],
+  "rollback": "Restore any required shims/exceptions and reverse closure-only reference changes if post-restructure proof fails.",
+  "apply_strategy": "Run only after all prior apply batches finish; prove root inventory, move map, release baseline, portable projection, internal pilot, and product boot."
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch A",
+    "title": "docs/evidence/archive-only",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": true,
+    "validation_tier": "Tier 0",
+    "risk": "low"
+  },
+  "roots": ["data"],
+  "included_moves": [
+    {"salvage_id": "A-DATA-AUDIT", "source_path": "data/audit/**", "target_path": "archive/audits/data/", "action": "archive", "file_count": 86},
+    {"salvage_id": "A-DATA-PLANNING", "source_path": "data/planning/**", "target_path": "docs/planning/generated-data/", "action": "move_with_reference_rewrites", "file_count": 64},
+    {"salvage_id": "A-DATA-HISTORY", "source_path": "data/archive/** data/restructure/** data/regression/** data/refactor/** data/analysis/**", "target_path": "archive/repo/data/", "action": "archive", "file_count": 131},
+    {"salvage_id": "A-DATA-DOCS", "source_path": "data/architecture/** data/repo/** data/agents/** data/governance/** data/CONTENT_AUDIT.md", "target_path": "docs/repo/data/", "action": "move_with_reference_rewrites", "file_count": 25},
+    {"salvage_id": "A-DATA-META", "source_path": "data/meta/**", "target_path": "docs/repo/meta-data/", "action": "move_with_reference_rewrites", "file_count": 2},
+    {"salvage_id": "A-DATA-LOGS", "source_path": "data/logs/**", "target_path": "archive/generated/logs/", "action": "archive", "file_count": 1}
+  ],
+  "deferred_items": [],
+  "blocked_items": [],
+  "import_rewrites": [],
+  "reference_rewrites": {"required": true, "phase": "batch_apply", "scope": "current docs/status references only; historical/audit references remain by classification"},
+  "shims": [],
+  "exception_effects": [{"root": "data", "effect": "narrow", "retire_if_empty": false}],
+  "validation": ["Tier 0", "stale old-path search for Batch A sources"],
+  "rollback": "Reverse Batch A moves and reference rewrites; restore data layout exception scope if narrowed.",
+  "apply_strategy": "Apply safe docs/evidence/archive subset first; skip any file with unexpected active references and record it as deferred without blocking the rest of the batch."
+}

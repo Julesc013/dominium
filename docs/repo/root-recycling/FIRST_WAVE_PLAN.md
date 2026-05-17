@@ -129,3 +129,18 @@ MOVE-FAMILY-00C-A-PLAN produced a gate-ready shim contract plan for `validation`
 - Temporary old-import allowlist entries: 10.
 - Root exceptions do not retire after the first shim apply.
 - Next recommended task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.
+
+## MOVE-BULK-00-PLAN Result
+
+MOVE-BULK-00-PLAN replaces the remaining micro-plan sequence with one global no-apply bad-root migration plan.
+
+- Remaining bad roots inspected: 23.
+- Tracked files under bad roots: 1,790.
+- Initial gate-ready file count: 309.
+- Deferred until batch gates: 1,481.
+- Explicit blocked file count: 1.
+- First ready batch: Batch A docs/evidence/archive-only.
+- `ide/` remains retired and is not part of the remaining bad-root set.
+- Apply allowed: false.
+- Approval status: not_approved.
+- Next recommended task: `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.

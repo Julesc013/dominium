@@ -79,6 +79,14 @@ Superseded By: none
 - Remaining warnings are operational release scope: no public package, installer, tag, GitHub release, upload, or full promotion CTest was run.
 - The generated release staging root is ignored/local and was not committed.
 
+## MOVE-BULK-00-PLAN
+
+- Batch A is the only gate-ready subset in the global bad-root migration plan.
+- Batches B-G remain warning/deferred because they require ownership, identity, authority, import, runtime, ABI, or build gates.
+- `libs/CMakeLists.txt` is explicitly blocked from direct movement until CMake/build target rewiring is approved.
+- No full CTest, full eval, CMake configure/build, product binary execution, package/release generation, or projection regeneration was run by scope.
+- Apply remains unauthorized until `MOVE-BULK-00-GATE`.
+
 ## BASELINE-00
 
 - RELEASE-00 is frozen as the structural regression baseline at HEAD `0b631fc5f09f3d927a54e8312976b926d111a72e`.

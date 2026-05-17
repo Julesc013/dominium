@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch D",
+    "title": "authority/policy/spec/update",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 2",
+    "risk": "high"
+  },
+  "roots": ["compat", "locks", "repo", "safety", "security", "specs", "updates"],
+  "included_moves": [
+    {"salvage_id": "D-COMPAT", "source_path": "compat/**", "target_path": "contracts/compat/ plus tools/compat/", "action": "move_with_temporary_shim", "file_count": 17},
+    {"salvage_id": "D-LOCKS-REPO-UPDATES", "source_path": "locks/** repo/** updates/**", "target_path": "contracts/repo/ release/updates/ tools/repo/", "action": "move_with_reference_rewrites", "file_count": 18},
+    {"salvage_id": "D-SAFETY-SECURITY-SPECS", "source_path": "safety/** security/** specs/**", "target_path": "contracts/safety/ contracts/security/ contracts/specs/ docs/specs/", "action": "convert_to_contract", "file_count": 15}
+  ],
+  "deferred_items": ["authority-sensitive compatibility/spec/security surfaces need contract owner confirmation"],
+  "blocked_items": [],
+  "import_rewrites": [{"old_imports": ["compat", "safety", "security", "specs"], "phase": "batch_gate_expansion", "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion"},
+  "shims": [{"old_import": "compat", "new_import": "contracts.compat or tools.compat", "required": true}],
+  "exception_effects": [{"root": "compat", "effect": "retire_if_empty"}, {"root": "locks", "effect": "retire_if_empty"}, {"root": "repo", "effect": "retire_if_empty"}, {"root": "safety", "effect": "retire_if_empty"}, {"root": "security", "effect": "retire_if_empty"}, {"root": "specs", "effect": "retire_if_empty"}, {"root": "updates", "effect": "retire_if_empty"}],
+  "validation": ["Tier 0", "Tier 2 contract/schema/security/release/update validators"],
+  "rollback": "Reverse Batch D moves/imports/references/shims and restore affected exceptions.",
+  "apply_strategy": "Do not apply broad authority conversion until contract ownership slots and compatibility import strategy are gated."
+}

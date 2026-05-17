@@ -157,3 +157,17 @@ MOVE-FAMILY-00B-PROOF proved the IDE root retirement.
 - Ready for `MOVE-FAMILY-00C-A-GATE`: true.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 - Next recommended task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.
+
+## MOVE-BULK-00-PLAN Update
+
+MOVE-BULK-00-PLAN creates one global no-apply migration plan for all remaining tracked bad roots.
+
+- Remaining bad roots inspected: 23.
+- Tracked files under bad roots: 1,790.
+- Initial gate-ready file count: 309.
+- Deferred until batch gates: 1,481.
+- Explicit blocked file count: 1.
+- First ready batch: Batch A docs/evidence/archive-only.
+- `ide/` remains retired and excluded from remaining bad-root planning.
+- Apply remains unauthorized and feature work remains blocked.
+- Next recommended task: `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.

@@ -1,0 +1,25 @@
+{
+  "schema_version": "dominium.move_bulk_00.validation_plan.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "tiers": {
+    "Tier 0": ["AIDE doctor", "AIDE validate", "AIDE test", "AIDE selftest", "AIDE tools validate", "AIDE roots validate", "AIDE repo validate", "AIDE commit check --latest", "strict repo layout", "strict root allowlist", "strict distribution layout", "strict component matrices", "docs sanity", "build target boundaries", "UI shell purity", "ABI boundaries", "git diff checks", "generated-output ignored/staging checks"],
+    "Tier 1": ["Tier 0", "focused RepoX", "affected validator commands", "py_compile/import smoke for moved Python packages", "static old-import check when shims exist"],
+    "Tier 2": ["Tier 1", "content/pack/profile/bundle validators", "portable projection validator if available", "internal pilot validator if release/projection roots exist"],
+    "Tier 3": ["Tier 2", "CMake configure/build for affected build graph", "focused CTest", "smoke CTest", "product boot proof", "portable projection proof", "internal pilot proof"],
+    "Tier 4": ["Tier 3", "post-restructure native build proof", "full or accepted-sharded CTest", "product boot proof", "portable projection proof", "internal pilot rebuild/staging validation", "final root layout proof"]
+  },
+  "batch_requirements": [
+    {"batch":"Batch A","validation_tier":"Tier 0","additional_checks":["docs sanity","archive provenance note"]},
+    {"batch":"Batch B","validation_tier":"Tier 1","additional_checks":["py_compile/import smoke for models and modding","template reference review"]},
+    {"batch":"Batch C","validation_tier":"Tier 2","additional_checks":["pack/profile/bundle identity validation","portable projection validator when available"]},
+    {"batch":"Batch D","validation_tier":"Tier 2","additional_checks":["contract parse","release/update validator","compat/safety/security/spec import smoke"]},
+    {"batch":"Batch E","validation_tier":"Tier 1","additional_checks":["MOVE-FAMILY-00C-A checks","legacy import static check","focused RepoX"]},
+    {"batch":"Batch F","validation_tier":"Tier 3","additional_checks":["runtime/network/control import smoke","focused CTest","product boot proof"]},
+    {"batch":"Batch G","validation_tier":"Tier 3","additional_checks":["CMake configure/build","ABI checks","include path checks","smoke CTest"]},
+    {"batch":"Batch H","validation_tier":"Tier 4","additional_checks":["final root inventory","final exception ledger proof","post-restructure proof"]}
+  ],
+  "not_run_by_plan_task": ["full eval", "full CTest", "CMake configure/build", "package/release generation", "product binaries", "move/apply commands", "unknown XStack/AuditX/RepoX/TestX execution"]
+}

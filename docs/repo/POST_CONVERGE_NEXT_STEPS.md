@@ -396,3 +396,16 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Ready for `MOVE-FAMILY-00C-A-GATE`: true.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 - Next recommended task: `MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate`.
+
+## MOVE-BULK-00-PLAN Update - Global Bad-Root Migration Planning
+
+- Result: PASS_WITH_WARNINGS.
+- Remaining bad roots inspected: 23.
+- Tracked files under remaining bad roots: 1,790.
+- Initial gate-ready subset: 309 docs/evidence/archive files in Batch A.
+- Deferred until batch gates: 1,481 files.
+- Explicit blocked file action: `libs/CMakeLists.txt` until CMake/build-focused ABI gate approval.
+- `ide/` remains retired and excluded from remaining bad-root planning.
+- No moves, deletes, renames, shims, import rewrites, reference rewrites, move-map applications, salvage-map applications, or exception retirements occurred.
+- Feature work remains blocked.
+- Next recommended task: `MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.

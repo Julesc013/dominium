@@ -1,0 +1,29 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch G",
+    "title": "libraries/ABI",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 3",
+    "risk": "protected"
+  },
+  "roots": ["lib", "libs"],
+  "included_moves": [
+    {"salvage_id": "G-LIB", "source_path": "lib/**", "target_path": "runtime/storage/", "action": "move_with_temporary_shim", "file_count": 22},
+    {"salvage_id": "G-LIBS", "source_path": "libs/** except libs/CMakeLists.txt", "target_path": "contracts/abi/dom_contracts/ runtime/appcore/ runtime/ui/backends/ contracts/build/identity/ cmake/libs/", "action": "move_with_reference_rewrites", "file_count": 85},
+    {"salvage_id": "G-LIBS-CMAKE-BLOCKER", "source_path": "libs/CMakeLists.txt", "target_path": "cmake/libs/CMakeLists.txt", "action": "block", "file_count": 1}
+  ],
+  "deferred_items": ["all ABI/build material requires build-focused gate"],
+  "blocked_items": ["libs/CMakeLists.txt cannot move until CMake target rewiring plan is approved"],
+  "import_rewrites": [{"old_import": "lib", "new_import": "runtime.storage", "reference_count": 88, "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion", "build_sensitive": true},
+  "shims": [{"old_import": "lib", "new_import": "runtime.storage", "required": true}],
+  "exception_effects": [{"root": "lib", "effect": "retire_if_empty"}, {"root": "libs", "effect": "preserve_until_cmake_blocker_resolved"}],
+  "validation": ["Tier 0", "Tier 3 CMake configure/build", "ABI checks", "smoke CTest"],
+  "rollback": "Reverse lib/libs moves/imports/references/shims/CMake rewrites and restore exceptions.",
+  "apply_strategy": "Split Python lib migration from C/C++ ABI move only after build graph proof gate; do not strand CMakeLists."
+}

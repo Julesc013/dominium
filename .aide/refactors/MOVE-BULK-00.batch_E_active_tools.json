@@ -1,0 +1,28 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch E",
+    "title": "active tools/modules",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 1",
+    "risk": "high"
+  },
+  "roots": ["validation", "meta", "governance", "performance"],
+  "included_moves": [
+    {"salvage_id": "E-00C-A", "source_path": "validation/** meta/identity/** meta/stability/**", "target_path": "tools/validators/validation/ tools/validators/identity/ tools/validators/stability/", "action": "move_with_temporary_shim", "file_count": 7},
+    {"salvage_id": "E-META-GOV-PERF", "source_path": "meta/** governance/** performance/** excluding meta/identity and meta/stability", "target_path": "tools/repo/ tools/governance/ tools/performance/ contracts/ docs/ archive/", "action": "preserve_defer", "file_count": 26}
+  ],
+  "deferred_items": ["governance, broader meta semantics, and performance surfaces need separate namespace gates"],
+  "blocked_items": ["direct apply of active imports without shim/static check policy"],
+  "import_rewrites": [{"old_imports": ["validation", "meta.identity", "meta.stability"], "planned_apply_rewrite_count": 34, "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion"},
+  "shims": [{"source_plan": ".aide/refactors/MOVE-FAMILY-00C-A.shim_contract.json", "planned_shim_file_count": 7, "retirement_condition": "all active imports rewritten and old-import static check passes"}],
+  "exception_effects": [{"root": "validation", "effect": "retire_if_empty"}, {"root": "meta", "effect": "narrow"}, {"root": "governance", "effect": "preserve"}, {"root": "performance", "effect": "preserve"}],
+  "validation": ["Tier 0", "Tier 1 py_compile/import smoke", "affected validators", "focused RepoX"],
+  "rollback": "Reverse active-tool moves/import rewrites/references/shims and restore validation/meta exceptions.",
+  "apply_strategy": "Use MOVE-FAMILY-00C-A as the first subwave; defer governance/performance until wrappers are planned."
+}

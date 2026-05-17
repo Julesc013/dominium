@@ -2,32 +2,32 @@
 
 ## PHASE
 
-MOVE-FAMILY-00B-PLAN - IDE Manifest Contract and Projection Ownership Plan
+MOVE-BULK-00-PLAN - Global Bad-Root Migration Plan
 
 ## GOAL
 
-Produce a no-apply migration plan for tracked `ide/manifests/**` source metadata and decide whether the files can move to `contracts/projections/ide/**` under a later gate.
+Produce one global no-apply migration plan for all remaining tracked bad roots, replacing the remaining micro MOVE-FAMILY planning cadence with batched cleanup waves.
 
 ## WHY
 
-MOVE-FAMILY-00-REFINE found that `ide/manifests/**` is the smallest remaining root-family group with a clear owner. The `ide` source root cannot retire until tracked manifest source metadata has a contract/projection home, consumer rewrites are known, generated-output behavior is separated, and exception retirement conditions are explicit.
+The repo has BASELINE-00, RELEASE-00, IDE root retirement proof, and active-tool shim planning evidence. The remaining cleanup needs larger gateable batches so safe docs/evidence/archive material can move quickly while active imports, identity files, authority contracts, runtime/source paths, and ABI/build surfaces remain gated.
 
 ## CONTEXT_REFS
 
-- `.aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-ide-manifest-boundaries.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-next-plan.md`
-- `docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md`
-- `docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md`
-- `contracts/repo/root_constitution.toml`
-- `contracts/repo/ownership_slots.toml`
-- `contracts/repo/layout_exceptions.toml`
-- `contracts/README.md`
-- `contracts/MANIFEST.md`
-- `docs/architecture/IDE_PROJECTIONS.md`
-- `docs/architecture/PROJECTION_LIFECYCLE.md`
-- `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md`
+- `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md`
+- `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
+- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
+- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
+- `.aide/refactors/MOVE-BULK-00.global_plan.json`
+- `.aide/refactors/MOVE-BULK-00.global_salvage_map.json`
+- `.aide/refactors/MOVE-BULK-00.global_move_map.json`
+- `.aide/refactors/MOVE-BULK-00.global_import_rewrite_map.json`
+- `.aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json`
+- `.aide/refactors/MOVE-BULK-00.global_shim_plan.json`
+- `.aide/refactors/MOVE-BULK-00.global_exception_retirement_plan.json`
+- `.aide/refactors/MOVE-BULK-00.global_validation_plan.json`
+- `.aide/refactors/MOVE-BULK-00.global_rollback_plan.json`
+- `.aide/refactors/MOVE-BULK-00.batch_*.json`
 
 ## ALLOWED_PATHS
 
@@ -42,143 +42,60 @@ MOVE-FAMILY-00-REFINE found that `ide/manifests/**` is the smallest remaining ro
 
 ## FORBIDDEN_PATHS
 
-- `ide/**`
-- `contracts/**`
-- `tools/**`
-- product/runtime/engine/game/source behavior paths
-- moves, deletes, renames, reference rewrites, active aliases, compatibility shims, move map approvals, salvage map approvals, map applications, or exception retirements
-- generated build/package/release/projection/local output commits
+- Remaining bad roots
+- `apps/**`, `engine/**`, `game/**`, `runtime/**`, `content/**`, `tests/**`, `tools/**`, `contracts/**`, `cmake/**`, `release/**`
+- product/runtime/source behavior paths
+- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, approved move maps, approved salvage maps, map applications, or exception retirements
 
 ## IMPLEMENTATION
 
-- Inspect current tracked `ide/manifests/**` files.
-- Classify schema/examples as contract metadata, tooling input, generated evidence, historical metadata, or unknown.
-- Produce inventory, ownership, move, reference rewrite, validation, rollback, and exception update plans.
-- Keep every plan draft/not-approved/no-apply.
+- 23 remaining tracked bad roots inspected.
+- 1,790 tracked files classified through grouped salvage entries.
+- Batch A docs/evidence/archive-only is ready for gate with 309 files.
+- Batches B-G are staged behind owner/import/identity/authority/runtime/ABI gates.
+- Batch H is final exception/shim closure and proof.
+- `ide/` remains retired and excluded.
 
 ## VALIDATION
 
 - AIDE doctor/validate/test/selftest/tools/roots/repo validation.
 - AIDE latest commit check.
-- JSON and TOML parsing for new artifacts.
+- JSON/TOML parsing for MOVE-BULK artifacts.
 - Strict repo/root/distribution/component validators.
 - Docs/build/UI/ABI checks.
 - Git diff checks and generated-output staging checks.
 
 ## EVIDENCE
 
-- `.aide/refactors/MOVE-FAMILY-00B.plan.toml`
-- `.aide/refactors/MOVE-FAMILY-00B.plan.json`
-- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json`
-- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00B.validation_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00B.rollback_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00B.exception_update_plan.json`
-- `.aide/reports/MOVE-FAMILY-00B-PLAN-*`
-- `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_MANIFEST_CONTRACT_PROJECTION_PLAN.md`
-
-## MOVE-FAMILY-00B-PROOF TASK UPDATE
-
-Current proof task:
-
-```text
-MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof
-```
-
-Proof target:
-
-- prove `git ls-files ide` is empty;
-- prove filesystem `ide/` is absent or empty;
-- prove `ide_root` exception retirement remains valid;
-- prove moved manifests under `contracts/projections/ide/**` parse;
-- classify old `ide/manifests/**` references;
-- run Tier 0 plus focused RepoX validation.
-
-Next recommended task after proof:
-
-```text
-MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
-```
+- `.aide/reports/MOVE-BULK-00-PLAN-status.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-validation.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-blockers.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-review.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-root-summary.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-batch-summary.md`
+- `.aide/reports/MOVE-BULK-00-PLAN-summary.json`
+- `docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md`
+- `docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md`
 
 ## NON_GOALS
 
-- No move application.
-- No file delete or rename.
-- No reference rewrite.
-- No compatibility shim or active path alias.
-- No root exception retirement.
-- No feature/domain/product/runtime implementation.
-- No full CTest, full eval, CMake configure/build, product binary execution, package generation, or release generation.
+- No apply task, move operation, source edit, import rewrite, reference rewrite, shim creation, exception retirement, product proof, build, package generation, release generation, or feature work.
 
 ## ACCEPTANCE
 
-- Required plan artifacts exist and parse.
-- Apply remains unauthorized.
-- The plan names exact target paths, rewrites, validation, rollback, and exception effects.
-- Validation is run and recorded.
-- Only scoped planning evidence and docs are committed.
+- All MOVE-BULK-00 plans are draft, not approved, and no-apply.
+- Batch/file counts reconcile to 1,790 tracked files.
+- Validation evidence records pass/fail/warn outcomes honestly.
+- Next task is `MOVE-BULK-00-GATE`.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `CHANGED_FILES`, `VALIDATION`, `RISKS`, and `NEXT`.
+Primary machine-readable outputs use `dominium.move_bulk_00.*.v1` schemas and plain JSON/TOML.
 
 ## TOKEN_ESTIMATE
 
-- method: chars / 4, rounded up
-- budget_status: PASS
+Compact packet target: under 1,600 tokens.
 
-## MOVE-FAMILY-00B-GATE UPDATE
+## NEXT
 
-- Phase: MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate
-- Goal: review the draft MOVE-FAMILY-00B plan and decide whether the next apply task may move only the three tracked IDE manifest files.
-- Result: PASS_WITH_WARNINGS
-- Authorized next task: MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration
-- Authorized scope: `ide/manifests/**` to `contracts/projections/ide/**` for the three planned tracked files only.
-- Move apply authorized: true, limited to MOVE-FAMILY-00B-APPLY only.
-- Feature work authorized: false.
-- No moves, deletes, renames, reference rewrites, aliases, maps, or exception retirements were applied by the gate.
-
-## MOVE-FAMILY-00B-APPLY UPDATE
-
-- Phase: MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration
-- Result: PASS_WITH_WARNINGS.
-- Moves applied: 3 tracked files from `ide/manifests/**` to `contracts/projections/ide/**`.
-- Reference rewrite groups applied: 5.
-- `git ls-files ide`: empty.
-- `ide_root` exception retired after strict validators passed.
-- Authorized scope consumed: true.
-- Additional moves authorized: false.
-- Feature work authorized: false.
-- Next recommended task: MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof.
-
-## MOVE-FAMILY-00C-PLAN TASK UPDATE
-
-- Phase: MOVE-FAMILY-00C-PLAN - Active Validation, Meta, and Governance Tool Namespace Plan.
-- Result: BLOCKED.
-- Target roots inspected: `validation/`, `meta/`, `governance/`, and `performance/`.
-- Active Python files found: 33.
-- Package init files: 14.
-- Direct CLI entrypoints under target roots: 0.
-- Active Python import files: validation 8, meta 104, governance 9, performance 4.
-- Planned move count: 0.
-- Shim-required public surfaces: `validation`, `meta.identity`, `meta.stability`, and `governance`.
-- Preserve-current groups: semantic/runtime `meta/**` and product/runtime `performance/**`.
-- Move apply authorized: false.
-- Feature work authorized: false.
-- Next recommended task: MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan.
-
-## MOVE-FAMILY-00C-A-PLAN TASK UPDATE
-
-- Phase: MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan.
-- Result: PASS_WITH_WARNINGS.
-- Groups planned: `validation`, `meta.identity`, and `meta.stability`.
-- Target namespaces: `tools.validators.validation`, `tools.validators.identity`, and `tools.validators.stability`.
-- Planned future implementation moves: 7.
-- Planned future temporary shims: 7.
-- Apply-phase import rewrites planned: 34.
-- Temporary old-import allowlist entries: 10.
-- Move apply authorized: false.
-- Feature work authorized: false.
-- Ready for gate: true.
-- Next recommended task: MOVE-FAMILY-00C-A-GATE - Validation, Identity, and Stability Shim Migration Gate.
+`MOVE-BULK-00-GATE - Global Bad-Root Migration Gate`.

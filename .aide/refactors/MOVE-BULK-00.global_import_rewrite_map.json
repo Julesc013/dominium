@@ -1,0 +1,25 @@
+{
+  "schema_version": "dominium.move_bulk_00.import_rewrite_map.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "notes": "Counts are AST import references from tracked Python files. Batch gates must expand each row to exact file/line rewrites before apply.",
+  "imports": [
+    {"old_import":"compat","new_import":"runtime.compat","reference_count":95,"apply_batch":"Batch D","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"control","new_import":"runtime.control","reference_count":72,"apply_batch":"Batch F","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"core","new_import":"engine.core","reference_count":62,"apply_batch":"Batch F","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"governance","new_import":"tools.governance.profile","reference_count":9,"apply_batch":"Batch E","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"lib","new_import":"runtime.storage","reference_count":88,"apply_batch":"Batch G","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"meta","new_import":"tools.meta","reference_count":126,"apply_batch":"Batch E","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"protected"},
+    {"old_import":"modding","new_import":"tools.modding.policy","reference_count":10,"apply_batch":"Batch B","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"models","new_import":"engine.models","reference_count":28,"apply_batch":"Batch B","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"net","new_import":"runtime.network","reference_count":46,"apply_batch":"Batch F","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"packs","new_import":"tools.validators.pack_compat","reference_count":14,"apply_batch":"Batch C","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"performance","new_import":"tools.performance.runtime","reference_count":7,"apply_batch":"Batch E","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"protected"},
+    {"old_import":"safety","new_import":"game.safety","reference_count":6,"apply_batch":"Batch D","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"security","new_import":"runtime.security.trust","reference_count":15,"apply_batch":"Batch D","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"specs","new_import":"tools.specs","reference_count":5,"apply_batch":"Batch D","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"},
+    {"old_import":"validation","new_import":"tools.validators.validation","reference_count":8,"apply_batch":"Batch E","shim_needed":true,"rewrite_phase":"batch_apply_or_review","risk":"high"}
+  ]
+}

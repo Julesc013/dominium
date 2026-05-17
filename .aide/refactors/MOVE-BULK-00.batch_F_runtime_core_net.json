@@ -1,0 +1,27 @@
+{
+  "schema_version": "dominium.move_bulk_00.batch.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "batch": {
+    "id": "Batch F",
+    "title": "runtime/core/net",
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false,
+    "ready_for_gate": false,
+    "validation_tier": "Tier 3",
+    "risk": "protected"
+  },
+  "roots": ["core", "control", "net"],
+  "included_moves": [
+    {"salvage_id": "F-CORE-CONTROL-NET", "source_path": "core/** control/** net/**", "target_path": "engine/ runtime/ contracts/protocols/ contracts/capabilities/ tools/ tests/", "action": "move_with_temporary_shim", "file_count": 54}
+  ],
+  "deferred_items": ["runtime/source semantics require ownership review and build/product proof gate"],
+  "blocked_items": ["cannot move deterministic substrate or protocol surfaces in a docs-only cleanup gate"],
+  "import_rewrites": [{"old_imports": ["core", "control", "net"], "reference_count": 180, "shim_required": true}],
+  "reference_rewrites": {"required": true, "phase": "batch_gate_expansion"},
+  "shims": [{"old_imports": ["core", "control", "net"], "required": true, "retirement_condition": "all runtime/import callers migrated and product proof passes"}],
+  "exception_effects": [{"root": "core", "effect": "retire_if_empty"}, {"root": "control", "effect": "retire_if_empty"}, {"root": "net", "effect": "retire_if_empty"}],
+  "validation": ["Tier 0", "Tier 1 import smoke", "Tier 3 CMake configure/build", "focused CTest", "product boot proof"],
+  "rollback": "Reverse runtime/source moves/imports/references/shims and restore core/control/net exceptions.",
+  "apply_strategy": "Defer until runtime ownership and build/product proof scope are accepted."
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "dominium.move_bulk_00.exception_retirement_plan.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "policy": {
+    "retire_only_if_git_ls_files_root_empty": true,
+    "retire_only_if_strict_validators_pass": true,
+    "retire_only_if_no_active_old_imports_or_refs": true,
+    "retire_only_if_shims_retired_or_explicitly_deferred": true
+  },
+  "exceptions": [
+    {"root":"core","current_exception_active":true,"planned_batch":"Batch F","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"control","current_exception_active":true,"planned_batch":"Batch F","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"data","current_exception_active":true,"planned_batch":"Batch C","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"packs","current_exception_active":true,"planned_batch":"Batch C","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"profiles","current_exception_active":true,"planned_batch":"Batch C","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"bundles","current_exception_active":true,"planned_batch":"Batch C","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"compat","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"lib","current_exception_active":true,"planned_batch":"Batch G","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"libs","current_exception_active":true,"planned_batch":"Batch G","expected_effect":"retire_if_empty","risk":"protected"},
+    {"root":"locks","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"repo","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"safety","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"security","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"specs","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"protected"},
+    {"root":"updates","current_exception_active":true,"planned_batch":"Batch D","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"meta","current_exception_active":true,"planned_batch":"Batch E","expected_effect":"narrow_then_retire_if_empty","risk":"protected"},
+    {"root":"governance","current_exception_active":true,"planned_batch":"Batch E","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"performance","current_exception_active":true,"planned_batch":"Batch E","expected_effect":"retire_if_empty","risk":"protected"},
+    {"root":"validation","current_exception_active":true,"planned_batch":"Batch E","expected_effect":"narrow_then_retire_if_empty","risk":"high"},
+    {"root":"modding","current_exception_active":true,"planned_batch":"Batch B","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"models","current_exception_active":true,"planned_batch":"Batch B","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"templates","current_exception_active":true,"planned_batch":"Batch B","expected_effect":"retire_if_empty","risk":"medium"},
+    {"root":"net","current_exception_active":true,"planned_batch":"Batch F","expected_effect":"retire_if_empty","risk":"high"},
+    {"root":"ide","current_exception_active":false,"planned_batch":"retired","expected_effect":"none","risk":"retired"}
+  ],
+  "condition_template": ["git ls-files <root> returns empty", "strict repo/root validators pass", "no active imports or current refs remain", "temporary shims are retired or explicitly deferred"]
+}

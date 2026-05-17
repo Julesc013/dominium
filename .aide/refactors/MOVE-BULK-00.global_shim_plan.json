@@ -1,0 +1,32 @@
+{
+  "schema_version": "dominium.move_bulk_00.shim_plan.v1",
+  "task_id": "MOVE-BULK-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "policy": {
+    "temporary_only": true,
+    "re_export_only": true,
+    "no_side_effects": true,
+    "new_old_imports_forbidden": true,
+    "retire_in_batch_H": true
+  },
+  "shims": [
+    {"old_import":"validation","new_import":"tools.validators.validation","shim_needed":true,"shim_file_path":"validation/__init__.py and validation/validation_engine.py","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"meta.identity","new_import":"tools.validators.identity","shim_needed":true,"shim_file_path":"meta/identity/__init__.py and meta/identity/identity_validator.py","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"meta.stability","new_import":"tools.validators.stability","shim_needed":true,"shim_file_path":"meta/stability/__init__.py, meta/stability/stability_scope.py, meta/stability/stability_validator.py","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"governance","new_import":"tools.governance.profile","shim_needed":true,"shim_file_path":"governance/__init__.py and governance/governance_profile.py","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"compat","new_import":"runtime.compat","shim_needed":true,"shim_file_path":"compat/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"core","new_import":"engine.core","shim_needed":true,"shim_file_path":"core/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"control","new_import":"runtime.control","shim_needed":true,"shim_file_path":"control/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"net","new_import":"runtime.network","shim_needed":true,"shim_file_path":"net/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"lib","new_import":"runtime.storage","shim_needed":true,"shim_file_path":"lib/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"packs.compat","new_import":"tools.validators.pack_compat","shim_needed":true,"shim_file_path":"packs/compat/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"models","new_import":"engine.models","shim_needed":true,"shim_file_path":"models/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"modding","new_import":"tools.modding.policy","shim_needed":true,"shim_file_path":"modding/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"safety","new_import":"game.safety","shim_needed":true,"shim_file_path":"safety/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"security.trust","new_import":"runtime.security.trust","shim_needed":true,"shim_file_path":"security/trust/** old package re-export files","retirement_batch":"Batch H","risk":"high"},
+    {"old_import":"specs","new_import":"tools.specs","shim_needed":true,"shim_file_path":"specs/__init__.py and specs/spec_engine.py","retirement_batch":"Batch H","risk":"high"}
+  ],
+  "static_check": "Future tools/validators/check_legacy_bad_root_imports.py or equivalent must allow old imports only in shim files and historical/audit evidence."
+}
