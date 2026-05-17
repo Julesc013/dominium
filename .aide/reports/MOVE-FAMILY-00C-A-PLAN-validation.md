@@ -49,3 +49,4 @@ Superseded By: none
 - The first task commit used the prompt-specified subject `aide(move): plan validation shim migration`.
 - Local AIDE commit policy rejected `aide` as a commit type during post-commit `commit check --latest`.
 - The task forbids amend/rebase/reset, so the policy mismatch is recorded by a follow-up `audit(...)` evidence commit rather than rewriting history.
+- A second narrow evidence correction records the accepted `Changed:` changelog category required by local commit policy.

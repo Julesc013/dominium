@@ -158,5 +158,6 @@ Superseded By: none
 - New old-import usage after apply must be blocking once the planned static check exists.
 - `validation` and `meta` exceptions cannot retire after the first shim apply because shim files and broader `meta/**` material remain.
 - The prompt-specified `aide(move)` commit subject is not accepted by local AIDE commit policy. Because amend/rebase/reset are forbidden, the policy mismatch is handled by a follow-up `audit(...)` evidence commit.
+- Commit-policy correction commits use the local `audit(...)` type and `Changed:` changelog category required by AIDE policy.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by planning scope.
 - No files were moved, deleted, renamed, import-rewritten, reference-rewritten, or shimmed by the plan.
