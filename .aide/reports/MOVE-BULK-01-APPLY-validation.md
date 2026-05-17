@@ -35,4 +35,6 @@ Focused RepoX is not required by MOVE-BULK-00-GATE for Batch A Tier 0 and was no
 
 ## Post-Commit Trailer Disposition
 
-The first apply commit `6e3dfd6f0e6b24f25a8747e8d5c1b8677f80f23a` used the requested subject and complete trailer text, but the local AIDE commit checker recognized only the final trailer because each trailer was passed as a separate `git commit -m` paragraph. Because amend/rebase/reset are forbidden, this is recorded as a warning and corrected with a narrow follow-up evidence commit using a message file with contiguous trailers.
+The first apply commit `6e3dfd6f0e6b24f25a8747e8d5c1b8677f80f23a` used the requested subject and complete trailer text, but the local AIDE commit checker recognized only the final trailer because each trailer was passed as a separate `git commit -m` paragraph. Because amend/rebase/reset are forbidden, this is recorded as a warning and corrected with narrow follow-up evidence.
+
+The first follow-up commit used a UTF-8 BOM in the message file, so AIDE rejected the subject format even though trailers were contiguous. A second follow-up uses an explicit BOM-free message file.
