@@ -18,6 +18,7 @@ Current task: `RESTRUCTURE-REPAIR-00`.
 
 ## Blocking Warnings
 
+- Commit `51257dfdb` failed AIDE commit-message policy because required Markdown headings and `AIDE-Token-Impact` were missing; it was not amended.
 - Full CTest is failing/incomplete and cannot be marked green.
 - Frozen contract hash drift needs a review-gated hash refresh or doc rollback decision.
 - Expired override entries need explicit policy review.

@@ -33,6 +33,7 @@ After repairs, this focused set passed 6/6:
 
 ## Remaining Failing Gates
 
+- `py -3 .aide/scripts/aide_lite.py commit check --latest` after commit `51257dfdb`: FAIL because the commit body used plain section labels instead of required `##` headings and omitted `AIDE-Token-Impact`.
 - Full `ctest --preset verify --output-on-failure --timeout 300`: incomplete and failing. It was stopped after repeated 300-second AuditX timeouts.
 - `slice0_hardcoded_ids`: still fails on hardcoded current domain identifiers, now with deterministic diagnostic output.
 - `slice1_hardcoded_constants`: still fails on atmosphere/gravity/oxygen assumptions.
@@ -44,3 +45,7 @@ After repairs, this focused set passed 6/6:
 ## Build Note
 
 The default `cmake --build --preset verify` target invokes broad verification and failed after validation/test timeouts. The build-only target `ALL_BUILD` completed successfully and produced the expected native binaries.
+
+## Post-Commit Policy Note
+
+The first repair commit is retained without amendment to preserve history. A follow-up evidence commit records the policy failure and uses the required commit-message schema.

@@ -22,5 +22,6 @@ Exact next root remediation: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, followe
 - No replay hashes were accepted.
 - No root exception was retired or narrowed.
 - No `.aide/reports/file-quality-ledger.json` storage-policy change was made.
+- Commit `51257dfdb` was not amended after AIDE commit policy flagged missing Markdown headings and `AIDE-Token-Impact`; this is recorded and followed by a compliant evidence commit.
 
 These are deliberate non-actions because each would require policy or semantic approval beyond safe repair.
