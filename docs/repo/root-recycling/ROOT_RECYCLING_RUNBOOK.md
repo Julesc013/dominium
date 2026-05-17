@@ -47,3 +47,17 @@ MOVE-BULK-00-PLAN note: global migration planning may group all remaining bad ro
 MOVE-BULK-00-GATE note: the global gate authorizes only `MOVE-BULK-01-APPLY-DOCS-ARCHIVE` for Batch A. Apply must use safe-subset behavior and must defer any Batch A item that shows unexpected active-current references. Batches B-G require later gates, and Batch H remains blocked until prior apply/proof tasks complete.
 
 MOVE-BULK-01-APPLY note: safe-subset apply is mandatory in practice, not just in planning. The first Batch A apply moved 26 files with zero exact old-path references and skipped 283 files that still had active/current references. Do not move skipped docs/evidence/archive candidates until a later task explicitly authorizes the required reference rewrites or proves the references historical.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Final Exception Closure
+
+MOVE-BULK-08 records a partial closure snapshot rather than a clean final closeout.
+
+- Remaining tracked bad-root files: 1764.
+- Roots still tracked: 23.
+- Roots retired or empty: ide.
+- Exceptions retired or narrowed by closure: 0.
+- New shims created by closure: 0.
+- Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
+- Recommended next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or the next explicit batch gate.

@@ -2,27 +2,27 @@
 
 ## PHASE
 
-MOVE-BULK-01-APPLY-DOCS-ARCHIVE - Apply Docs, Evidence, and Archive-Only Cleanup Batch
+MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE - Final Root Exception, Shim, and Bad-Root Closure
 
 ## GOAL
 
-Apply only the MOVE-BULK Batch A safe subset authorized by MOVE-BULK-00-GATE.
+Classify the current MOVE-BULK closure state after completed apply evidence and determine readiness for post-restructure proof.
 
 ## WHY
 
-Batch A reduces passive root clutter without touching active code, tools, identity, ABI, product, runtime, build, or feature surfaces.
+The repo must not move to feature work or full proof with ambiguous bad-root, exception, reference, or shim debt.
 
 ## CONTEXT_REFS
 
 - `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
-- `.aide/refactors/MOVE-BULK-00.batch_A_docs_archive.json`
-- `.aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json`
-- `.aide/reports/MOVE-BULK-01-APPLY-*`
-- `docs/repo/root-recycling/MOVE_BULK_01_DOCS_ARCHIVE_APPLY_RESULT.md`
+- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
+- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-remaining-debt.json`
+- `docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md`
 
 ## ALLOWED_PATHS
 
-- Batch A safe-subset source and target paths
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
@@ -33,47 +33,45 @@ Batch A reduces passive root clutter without touching active code, tools, identi
 
 ## FORBIDDEN_PATHS
 
-- Active code, active tools, product/runtime/build files, identity-sensitive files, ABI-sensitive files, imports, compatibility shims, active path aliases, unauthorized maps, and unauthorized layout exceptions.
+- Product/runtime/engine/game/source behavior
+- Bad-root file moves, deletes, renames, imports, active references, compatibility shims, active path aliases, unauthorized maps, and feature/domain files
 
 ## IMPLEMENTATION
 
-- Applied 26 safe-subset moves.
-- Skipped 283 planned files with active/current exact references.
-- Applied 0 reference rewrites.
+- Inspected 24 formerly bad roots.
+- Classified `ide/` as retired/empty.
+- Classified 23 former bad roots as remaining tracked debt.
 - Retired or narrowed 0 exceptions.
+- Created closure matrix, exception actions, reference debt, shim debt, remaining debt, and readiness reports.
 
 ## VALIDATION
 
-Tier 0 validation, stale-reference scan, and git diff checks are required before commit.
+Run AIDE doctor/validate/test/selftest, AIDE tools/roots/repo/commit checks, closure JSON parsing, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, focused RepoX, and git diff checks.
 
 ## EVIDENCE
 
-- `.aide/reports/MOVE-BULK-01-APPLY-status.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-validation.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-blockers.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
-- `.aide/reports/MOVE-BULK-01-APPLY-moved-items.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-skipped-items.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-reference-rewrites.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-post-state.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-rollback.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-status.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-blockers.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json`
 
 ## NON_GOALS
 
-No broad cleanup, no feature work, no build/product proof, no package/release generation, no CMake build, no full CTest, no import rewrites, no shims, and no exception retirement.
+No moves, deletes, renames, import rewrites, active reference rewrites, shims, map applications, feature work, full CTest, CMake build, product execution, or release generation.
 
 ## ACCEPTANCE
 
-- Batch A authorization is present.
-- Only safe-subset moves are applied.
-- Skipped files are recorded with exact reasons.
-- No active code, active tools, imports, shims, aliases, exception retirements, product/runtime/build behavior, identity files, or ABI-sensitive files are changed.
-- Tier 0 validation and git diff checks are recorded.
+- MOVE-BULK-00-GATE evidence exists.
+- Every former bad root has a closure state.
+- Remaining roots, shims, references, and exception debt are recorded.
+- POST-RESTRUCTURE readiness decision is explicit.
+- No apply actions occurred.
 
 ## OUTPUT_SCHEMA
 
-Evidence is Markdown plus `.aide/reports/MOVE-BULK-01-APPLY-evidence.json` using schema `dominium.move_bulk_01.apply_docs_archive.v1`.
+Evidence is Markdown plus JSON reports under schema prefix `dominium.move_bulk_08.*.v1`.
 
 ## TOKEN_ESTIMATE
 
-Compact task packet, under 1,600 tokens.
+Compact task packet, under 1,200 tokens.

@@ -185,3 +185,12 @@ Superseded By: none
 - Skipped references were not accepted as stale; skipped files remain at their old paths.
 - The first apply commit included the required trailer text, but AIDE commit check parsed only the final trailer because the trailers were separated by blank `git commit -m` paragraphs. The first follow-up fixed trailer contiguity but used a BOM-prefixed message file, so a second follow-up records the BOM-free commit-message disposition because amend is forbidden.
 - No reference rewrites, import rewrites, shims, exception retirements, full CTest, full eval, CMake build, package/release generation, projection generation, or product binaries were run by scope.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Warning Disposition
+
+- Batches B-G remain deferred by MOVE-BULK-00-GATE.
+- Batch H remains blocked until prior batches apply and prove cleanly.
+- 1,764 tracked files remain under formerly bad roots.
+- POST-RESTRUCTURE-00-FULL-PROOF remains blocked.

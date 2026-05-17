@@ -1,0 +1,500 @@
+{
+  "schema_version": "dominium.move_bulk_08.remaining_debt.v1",
+  "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "generated_at_utc": "2026-05-17T15:40:20Z",
+  "remaining_bad_roots": [
+    {
+      "root": "core",
+      "tracked_file_count": 16,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "control",
+      "tracked_file_count": 21,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "data",
+      "tracked_file_count": 1253,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "packs",
+      "tracked_file_count": 256,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "profiles",
+      "tracked_file_count": 1,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "bundles",
+      "tracked_file_count": 3,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "compat",
+      "tracked_file_count": 17,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "lib",
+      "tracked_file_count": 22,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "libs",
+      "tracked_file_count": 86,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "locks",
+      "tracked_file_count": 1,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "repo",
+      "tracked_file_count": 11,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "safety",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "security",
+      "tracked_file_count": 4,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "specs",
+      "tracked_file_count": 9,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "updates",
+      "tracked_file_count": 6,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "meta",
+      "tracked_file_count": 26,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "governance",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "performance",
+      "tracked_file_count": 3,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "validation",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "modding",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "models",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "templates",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "net",
+      "tracked_file_count": 17,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    }
+  ],
+  "retired_roots": [
+    "ide"
+  ],
+  "active_exceptions": [
+    {
+      "root": "core",
+      "exception_name": "core_root",
+      "tracked_file_count": 16
+    },
+    {
+      "root": "control",
+      "exception_name": "control_root",
+      "tracked_file_count": 21
+    },
+    {
+      "root": "data",
+      "exception_name": "data_root",
+      "tracked_file_count": 1253
+    },
+    {
+      "root": "packs",
+      "exception_name": "packs_root",
+      "tracked_file_count": 256
+    },
+    {
+      "root": "profiles",
+      "exception_name": "profiles_root",
+      "tracked_file_count": 1
+    },
+    {
+      "root": "bundles",
+      "exception_name": "bundles_root",
+      "tracked_file_count": 3
+    },
+    {
+      "root": "compat",
+      "exception_name": "compat_root",
+      "tracked_file_count": 17
+    },
+    {
+      "root": "lib",
+      "exception_name": "lib_root",
+      "tracked_file_count": 22
+    },
+    {
+      "root": "libs",
+      "exception_name": "libs_root",
+      "tracked_file_count": 86
+    },
+    {
+      "root": "locks",
+      "exception_name": "locks_root",
+      "tracked_file_count": 1
+    },
+    {
+      "root": "repo",
+      "exception_name": "repo_root",
+      "tracked_file_count": 11
+    },
+    {
+      "root": "safety",
+      "exception_name": "safety_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "security",
+      "exception_name": "security_root",
+      "tracked_file_count": 4
+    },
+    {
+      "root": "specs",
+      "exception_name": "specs_root",
+      "tracked_file_count": 9
+    },
+    {
+      "root": "updates",
+      "exception_name": "updates_root",
+      "tracked_file_count": 6
+    },
+    {
+      "root": "meta",
+      "exception_name": "meta_root",
+      "tracked_file_count": 26
+    },
+    {
+      "root": "governance",
+      "exception_name": "governance_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "performance",
+      "exception_name": "performance_root",
+      "tracked_file_count": 3
+    },
+    {
+      "root": "validation",
+      "exception_name": "validation_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "modding",
+      "exception_name": "modding_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "models",
+      "exception_name": "models_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "templates",
+      "exception_name": "templates_root",
+      "tracked_file_count": 2
+    },
+    {
+      "root": "net",
+      "exception_name": "net_root",
+      "tracked_file_count": 17
+    }
+  ],
+  "shim_debts": [
+    {
+      "shim_path": "compat/shims/__init__.py",
+      "old_import_or_path": "compat.shims",
+      "new_import_or_path": null,
+      "allowed_callers": [],
+      "retirement_task": "MOVE-BULK-04-GATE then MOVE-BULK-04-APPLY-AUTHORITY-POLICY if authorized",
+      "validator_coverage": "deferred with compat root",
+      "state": "deferred_with_root"
+    },
+    {
+      "shim_path": "compat/shims/common.py",
+      "old_import_or_path": "compat.shims",
+      "new_import_or_path": null,
+      "allowed_callers": [],
+      "retirement_task": "MOVE-BULK-04-GATE then MOVE-BULK-04-APPLY-AUTHORITY-POLICY if authorized",
+      "validator_coverage": "deferred with compat root",
+      "state": "deferred_with_root"
+    },
+    {
+      "shim_path": "tool_ui_bind.cmd",
+      "old_import_or_path": "tool_ui_bind.cmd",
+      "new_import_or_path": "scripts/dev/tool_shim.py -> canonical tools",
+      "allowed_callers": [
+        "documented developer workflow",
+        ".github/CMake/docs references recorded in layout exception"
+      ],
+      "retirement_task": "root wrapper retirement review after documented workflow replacement",
+      "validator_coverage": "contracts/repo/layout_exceptions.toml active compatibility_shim exception",
+      "state": "valid_temporary"
+    },
+    {
+      "shim_path": "tool_ui_doc_annotate.cmd",
+      "old_import_or_path": "tool_ui_doc_annotate.cmd",
+      "new_import_or_path": "scripts/dev/tool_shim.py -> canonical tools",
+      "allowed_callers": [
+        "documented developer workflow",
+        ".github/CMake/docs references recorded in layout exception"
+      ],
+      "retirement_task": "root wrapper retirement review after documented workflow replacement",
+      "validator_coverage": "contracts/repo/layout_exceptions.toml active compatibility_shim exception",
+      "state": "valid_temporary"
+    },
+    {
+      "shim_path": "tool_ui_validate.cmd",
+      "old_import_or_path": "tool_ui_validate.cmd",
+      "new_import_or_path": "scripts/dev/tool_shim.py -> canonical tools",
+      "allowed_callers": [
+        "documented developer workflow",
+        ".github/CMake/docs references recorded in layout exception"
+      ],
+      "retirement_task": "root wrapper retirement review after documented workflow replacement",
+      "validator_coverage": "contracts/repo/layout_exceptions.toml active compatibility_shim exception",
+      "state": "valid_temporary"
+    }
+  ],
+  "reference_debts": {
+    "ide": {
+      "counts": {
+        "generated_evidence": 1635,
+        "audit_evidence": 97,
+        "docs_historical": 94
+      },
+      "samples": [
+        {
+          "path": ".aide/changelog/changelog.preview.json",
+          "line": 37,
+          "category": "generated_evidence",
+          "text": "        \"follow_up\": \"- Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence.\\n\\nAIDE-Task: DOMINIUM-AIDE-TOOL-ABSORPTION-01\\nAIDE-Phase: Q51\\nAIDE-Result: PASS_WITH_WARNINGS\\nAIDE-Scope: "
+        },
+        {
+          "path": ".aide/changelog/changelog.preview.json",
+          "line": 609,
+          "category": "generated_evidence",
+          "text": "      \"follow_up\": \"- Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence.\\n\\nAIDE-Task: DOMINIUM-AIDE-TOOL-ABSORPTION-01\\nAIDE-Phase: Q51\\nAIDE-Result: PASS_WITH_WARNINGS\\nAIDE-Scope: .a"
+        },
+        {
+          "path": ".aide/changelog/release-notes.preview.json",
+          "line": 49,
+          "category": "generated_evidence",
+          "text": "      \"summary\": \"Run Q52 Dominium Root Recycling Pilot on `ide/` first, using Q51 outputs as evidence.\""
+        },
+        {
+          "path": ".aide/context/latest-task-packet.md",
+          "line": 42,
+          "category": "generated_evidence",
+          "text": "- Classified `ide/` as retired/empty."
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 47757,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"ide/manifests/projection_manifest.schema.json\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 47769,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 47781,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 82917,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"docs/guides/ui_editor/ide/vscode/launch.json\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 82929,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"docs/guides/ui_editor/ide/vscode/tasks.json\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 82941,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"docs/guides/ui_editor/ide/xcode/README.md\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 111129,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"ide/README.md\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175881,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeCommon.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175893,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeGenerateCodeWarrior.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175905,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeGenerateLegacyVc6.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175917,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeGenerateLegacyVc71.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175929,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeGenerateVs.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175941,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeGenerateXcode.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175953,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeProjectionManifest.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175965,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/IdeToolchainMatrix.cmake\","
+        },
+        {
+          "path": ".aide/context/repo-map.json",
+          "line": 175977,
+          "category": "generated_evidence",
+          "text": "      \"path\": \"cmake/ide/templates/codewarrior/codewarrior_project.mcp.in\","
+        }
+      ]
+    }
+  },
+  "deferred_batches": [
+    {
+      "batch_id": "B",
+      "reason": "templates/models/modding need content-vs-tool-vs-contract owner review"
+    },
+    {
+      "batch_id": "C",
+      "reason": "content identity, pack/profile/bundle IDs, registries, and manifests need Tier 2 identity/projection validation gates"
+    },
+    {
+      "batch_id": "D",
+      "reason": "authority, policy, specs, security, and update surfaces need contract-owner and policy-demotion review"
+    },
+    {
+      "batch_id": "E",
+      "reason": "active tool modules need shim/import migration gate and stale-import static check"
+    },
+    {
+      "batch_id": "F",
+      "reason": "runtime/core/control/net surfaces require runtime ownership, build, CTest, and product proof gate"
+    },
+    {
+      "batch_id": "G",
+      "reason": "lib/libs surfaces are ABI/build sensitive and include a CMakeLists blocker"
+    }
+  ],
+  "blocked_batches": [
+    {
+      "batch_id": "H",
+      "reason": "final exception/shim closure cannot run until prior batches are applied and proven"
+    }
+  ],
+  "required_remediation_tasks": [
+    "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT or equivalent Batch A skipped-reference gate",
+    "MOVE-BULK-02-GATE - Templates/Models/Modding Migration Gate",
+    "MOVE-BULK-03-GATE - Content Identity Migration Gate",
+    "MOVE-BULK-04-GATE - Authority/Policy Migration Gate",
+    "MOVE-BULK-05-GATE - Active Tool Module Migration Gate",
+    "MOVE-BULK-06-GATE - Runtime/Core/Network Migration Gate",
+    "MOVE-BULK-07-GATE - Libs/ABI Migration Gate"
+  ],
+  "ready_for_post_restructure_full_proof": false,
+  "reasons_not_ready": [
+    "1764 tracked files remain under formerly bad roots",
+    "MOVE-BULK gate deferred Batches B-G and blocked Batch H",
+    "only Batch A has apply evidence, and Batch A still skipped 283 files",
+    "strict post-restructure full proof has not run"
+  ]
+}

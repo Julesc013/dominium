@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-BULK-01-APPLY-DOCS-ARCHIVE and confirm it applied only the Batch A safe subset.
+Review MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE and confirm it is a partial closure snapshot with no apply actions.
 
 ## Decision Requested
 
@@ -23,30 +23,27 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/MOVE-BULK-01-APPLY-status.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-validation.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-blockers.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
-- `.aide/reports/MOVE-BULK-01-APPLY-moved-items.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-skipped-items.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-reference-rewrites.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-post-state.md`
-- `.aide/reports/MOVE-BULK-01-APPLY-rollback.md`
-- `docs/repo/root-recycling/MOVE_BULK_01_DOCS_ARCHIVE_APPLY_RESULT.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-status.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-blockers.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.md`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.md`
+- `docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md`
 
 ## Changed Files Summary
 
-- Moved 26 docs/evidence/archive-only files.
-- Added MOVE-BULK-01 apply evidence.
-- Updated bulk migration, runbook, regression, POST-CONVERGE, AIDE context, status, warning, and ledger surfaces.
+- Added MOVE-BULK-08 closure evidence and docs.
+- Updated root-recycling/regression/POST-CONVERGE docs.
+- Updated AIDE context, status, warning, and ledger surfaces.
+- Applied no moves, rewrites, shims, or exception retirements.
 
 ## Validation Summary
 
-Validation is recorded in `.aide/reports/MOVE-BULK-01-APPLY-validation.md`.
+Validation is recorded in `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`.
 
 ## Risk Summary
 
-283 Batch A files were skipped because active/current exact references remain. No imports, active tools, source behavior, shims, exception ledgers, or identity/ABI-sensitive files were changed.
+The closure is partial: 23 formerly bad roots still contain tracked files, Batches B-G remain deferred, and Batch H remains blocked.
 
 ## Token Summary
 
@@ -54,8 +51,8 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-No apply authorization is granted for other MOVE-BULK batches by this task.
+No apply authorization is granted by this closure task.
 
 ## Reviewer Instructions
 
-Confirm that only 26 safe-subset moves were applied, 283 files were skipped due active/current references, reference rewrites are zero, and no other batch or feature work was authorized.
+Confirm that `POST-RESTRUCTURE-00-FULL-PROOF` and feature work remain blocked, and that remaining debt is explicit.

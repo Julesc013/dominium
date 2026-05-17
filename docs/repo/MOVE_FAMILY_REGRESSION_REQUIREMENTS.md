@@ -278,3 +278,17 @@ MOVE-BULK-00-GATE passed with warnings.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 
 Batch A apply must run Tier 0 validation plus stale-reference classification. Higher-risk batches remain subject to the stronger tiers defined above.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Final Exception Closure
+
+MOVE-BULK-08 records a partial closure snapshot rather than a clean final closeout.
+
+- Remaining tracked bad-root files: 1764.
+- Roots still tracked: 23.
+- Roots retired or empty: ide.
+- Exceptions retired or narrowed by closure: 0.
+- New shims created by closure: 0.
+- Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
+- Recommended next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or the next explicit batch gate.

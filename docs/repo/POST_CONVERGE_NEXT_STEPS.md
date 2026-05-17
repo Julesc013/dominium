@@ -433,3 +433,17 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Tier 0 validation passed with known TOML fallback-parser warnings.
 - Feature work remains blocked.
 - Next recommended task: next authorized MOVE-BULK apply batch, or Batch A skipped-reference refinement if no later batch is authorized.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Final Exception Closure
+
+MOVE-BULK-08 records a partial closure snapshot rather than a clean final closeout.
+
+- Remaining tracked bad-root files: 1764.
+- Roots still tracked: 23.
+- Roots retired or empty: ide.
+- Exceptions retired or narrowed by closure: 0.
+- New shims created by closure: 0.
+- Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
+- Recommended next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or the next explicit batch gate.

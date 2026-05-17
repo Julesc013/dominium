@@ -1,0 +1,44 @@
+{
+  "schema_version": "dominium.move_bulk_08.next_readiness.v1",
+  "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "generated_at_utc": "2026-05-17T15:40:20Z",
+  "ready_for_post_restructure_full_proof": false,
+  "feature_work_authorized": false,
+  "next_recommended_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+  "alternate_gated_tasks": [
+    "MOVE-BULK-02-GATE - Templates/Models/Modding Migration Gate",
+    "MOVE-BULK-03-GATE - Content Identity Migration Gate",
+    "MOVE-BULK-04-GATE - Authority/Policy Migration Gate",
+    "MOVE-BULK-05-GATE - Active Tool Module Migration Gate",
+    "MOVE-BULK-06-GATE - Runtime/Core/Network Migration Gate",
+    "MOVE-BULK-07-GATE - Libs/ABI Migration Gate"
+  ],
+  "reasons": [
+    "1764 tracked files remain under formerly bad roots",
+    "MOVE-BULK gate deferred Batches B-G and blocked Batch H",
+    "only Batch A has apply evidence, and Batch A still skipped 283 files",
+    "strict post-restructure full proof has not run"
+  ],
+  "validation_status": "validation_failures",
+  "validation_failures": [
+    {
+      "label": "AIDE doctor",
+      "exit_code": 1,
+      "timeout": false
+    },
+    {
+      "label": "AIDE validate",
+      "exit_code": 1,
+      "timeout": false
+    },
+    {
+      "label": "focused RepoX",
+      "exit_code": 8,
+      "timeout": false
+    }
+  ],
+  "validation_rerun_status": "pass_after_second_repox_rerun",
+  "validation_rerun_failures": [],
+  "focused_repox_second_rerun_status": "pass",
+  "focused_repox_second_rerun_exit_code": 0
+}

@@ -1,0 +1,176 @@
+{
+  "schema_version": "dominium.move_bulk_08.exception_actions.v1",
+  "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "generated_at_utc": "2026-05-17T15:40:20Z",
+  "actions_applied": [],
+  "actions": [
+    {
+      "root": "core",
+      "exception_status": "active",
+      "tracked_file_count": 16,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "control",
+      "exception_status": "active",
+      "tracked_file_count": 21,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "data",
+      "exception_status": "active",
+      "tracked_file_count": 1253,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "packs",
+      "exception_status": "active",
+      "tracked_file_count": 256,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "profiles",
+      "exception_status": "active",
+      "tracked_file_count": 1,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "bundles",
+      "exception_status": "active",
+      "tracked_file_count": 3,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "compat",
+      "exception_status": "active",
+      "tracked_file_count": 17,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "lib",
+      "exception_status": "active",
+      "tracked_file_count": 22,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "libs",
+      "exception_status": "active",
+      "tracked_file_count": 86,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "locks",
+      "exception_status": "active",
+      "tracked_file_count": 1,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "repo",
+      "exception_status": "active",
+      "tracked_file_count": 11,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "safety",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "security",
+      "exception_status": "active",
+      "tracked_file_count": 4,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "specs",
+      "exception_status": "active",
+      "tracked_file_count": 9,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "updates",
+      "exception_status": "active",
+      "tracked_file_count": 6,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "meta",
+      "exception_status": "active",
+      "tracked_file_count": 26,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "governance",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "performance",
+      "exception_status": "active",
+      "tracked_file_count": 3,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "validation",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "modding",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "models",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "templates",
+      "exception_status": "active",
+      "tracked_file_count": 2,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "net",
+      "exception_status": "active",
+      "tracked_file_count": 17,
+      "action": "preserve",
+      "reason": "tracked files remain under root; retirement conditions are not met"
+    },
+    {
+      "root": "ide",
+      "exception_status": "retired",
+      "tracked_file_count": 0,
+      "action": "none",
+      "reason": "already retired or no active exception"
+    }
+  ]
+}

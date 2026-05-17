@@ -196,3 +196,15 @@ MOVE-BULK-01 applied the Batch A docs/archive safe subset with warnings.
 - Tier 0 validation passed with known TOML fallback-parser warnings.
 - Feature work remains blocked.
 - Next recommended task: `MOVE-BULK-02-APPLY-TEMPLATES-MODELS-MODDING` only if gate authorization exists; otherwise run Batch A skipped-reference refinement.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Closure Update
+
+- Result: PARTIAL.
+- Former bad roots inspected: 24.
+- Retired/empty root: `ide/`.
+- Remaining former bad roots: 23 with 1,764 tracked files.
+- Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
+- Feature work authorized: no.
+- Next: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or a deferred batch gate.

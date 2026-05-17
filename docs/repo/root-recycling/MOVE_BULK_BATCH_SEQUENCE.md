@@ -1,4 +1,4 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-05-18
 Supersedes: none
 Superseded By: none
@@ -61,3 +61,17 @@ Batch H may run only after prior batches finish and must prove:
 - Exception retirements: 0.
 
 The next batch remains gated. Do not treat this partial Batch A apply as authorization for Batch B, C, D, E, F, G, or H.
+
+<!-- MOVE-BULK-08-CLOSURE -->
+
+## MOVE-BULK-08 Final Exception Closure
+
+MOVE-BULK-08 records a partial closure snapshot rather than a clean final closeout.
+
+- Remaining tracked bad-root files: 1764.
+- Roots still tracked: 23.
+- Roots retired or empty: ide.
+- Exceptions retired or narrowed by closure: 0.
+- New shims created by closure: 0.
+- Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
+- Recommended next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or the next explicit batch gate.
