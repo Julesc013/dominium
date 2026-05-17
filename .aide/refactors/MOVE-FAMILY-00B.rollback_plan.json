@@ -1,0 +1,62 @@
+{
+  "schema_version": "dominium.move_family_00b.rollback_plan.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "rollback_steps_after_apply": [
+    {
+      "step": "reverse_moves",
+      "actions": [
+        {
+          "from": "contracts/projections/ide/projection_manifest.schema.json",
+          "to": "ide/manifests/projection_manifest.schema.json"
+        },
+        {
+          "from": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+          "to": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json"
+        },
+        {
+          "from": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+          "to": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
+        }
+      ]
+    },
+    {
+      "step": "reverse_reference_rewrites",
+      "actions": [
+        "restore docs sanity required path to ide/manifests/projection_manifest.schema.json",
+        "restore architecture docs to previous IDE manifest source location",
+        "restore .gitignore unignore rules if tracked manifests return to ide/manifests"
+      ]
+    },
+    {
+      "step": "reverse_exception_updates",
+      "actions": [
+        "reactivate or preserve contracts/repo/layout_exceptions.toml exceptions.ide_root if rollback returns tracked files under ide"
+      ]
+    },
+    {
+      "step": "remove_empty_target_dirs",
+      "actions": [
+        "remove contracts/projections/ide/examples if empty",
+        "remove contracts/projections/ide if empty",
+        "remove contracts/projections if it was created only for this apply and is empty"
+      ]
+    },
+    {
+      "step": "validate_rollback",
+      "actions": [
+        "AIDE doctor/validate/test/selftest/tools/roots/repo",
+        "strict repo/root/distribution/component validators",
+        "docs sanity",
+        "git diff --check",
+        "generated-output ignored/staging proof"
+      ]
+    }
+  ],
+  "abandon_before_apply": "Delete or supersede these draft MOVE-FAMILY-00B planning artifacts only in a later approved planning cleanup task; do not alter tracked manifests as part of abandonment.",
+  "moves_applied": false,
+  "references_rewritten": false
+}

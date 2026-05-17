@@ -1,0 +1,65 @@
+[plan]
+id = "MOVE-FAMILY-00B"
+title = "IDE Manifest Contract and Projection Ownership Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "MOVE-FAMILY-00B-PLAN"
+baseline = "BASELINE-00"
+result = "PASS_WITH_WARNINGS"
+
+[scope]
+roots = ["ide"]
+subtree = "ide/manifests"
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+reference_rewrites_allowed = false
+exception_retirement_allowed = false
+
+[summary]
+included_count = 3
+deferred_count = 0
+blocked_count = 0
+risk = "medium"
+ready_for_gate = true
+next_gate = "MOVE-FAMILY-00B-GATE"
+
+[[moves]]
+source_path = "ide/manifests/projection_manifest.schema.json"
+target_path = "contracts/projections/ide/projection_manifest.schema.json"
+action = "move"
+reason = "Move tracked IDE projection manifest schema from transitional ide source root to scoped projection contract ownership."
+risk = "medium"
+ownership_slot = "contracts/projections/ide"
+shim_required = false
+rollback = "Move contracts/projections/ide/projection_manifest.schema.json back to ide/manifests/projection_manifest.schema.json and restore references."
+
+[[moves]]
+source_path = "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json"
+target_path = "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json"
+action = "move"
+reason = "Move tracked Linux clang IDE projection manifest example from transitional ide source root to scoped projection contract examples."
+risk = "medium"
+ownership_slot = "contracts/projections/ide"
+shim_required = false
+rollback = "Move contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json and restore references."
+
+[[moves]]
+source_path = "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
+target_path = "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json"
+action = "move"
+reason = "Move tracked Win9x VC6 IDE projection manifest example from transitional ide source root to scoped projection contract examples."
+risk = "medium"
+ownership_slot = "contracts/projections/ide"
+shim_required = false
+rollback = "Move contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json and restore references."
+
+[[deferred]]
+path = "ide/manifests/*.projection.json"
+reason = "Generated projection manifests may still be emitted under ide/manifests by CMake/scripts; they are generated output, not tracked source authority."
+owner = "generated_output"
+
+[[blocked]]
+id = "none"
+reason = "No file-level blocker remains for gate review; apply still requires an explicit gate because this plan is draft and not approved."

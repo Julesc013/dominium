@@ -1,0 +1,52 @@
+{
+  "schema_version": "dominium.move_family_00b.validation_plan.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "risk_tier": "Tier 0 plus focused RepoX and manifest parse/schema checks",
+  "required_after_apply": [
+    "py -3 .aide/scripts/aide_lite.py doctor",
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "py -3 .aide/scripts/aide_lite.py test",
+    "py -3 .aide/scripts/aide_lite.py selftest",
+    "py -3 .aide/scripts/aide_lite.py tools validate",
+    "py -3 .aide/scripts/aide_lite.py roots validate",
+    "py -3 .aide/scripts/aide_lite.py repo validate",
+    "py -3 .aide/scripts/aide_lite.py commit check --latest",
+    "python tools/validators/check_repo_layout.py --repo-root . --strict",
+    "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+    "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+    "python tools/validators/check_component_matrices.py --repo-root . --strict",
+    "python scripts/verify_docs_sanity.py --repo-root .",
+    "python scripts/verify_build_target_boundaries.py --repo-root .",
+    "python scripts/verify_ui_shell_purity.py --repo-root .",
+    "python scripts/verify_abi_boundaries.py --repo-root .",
+    "focused RepoX or canonical focused CTest RepoX if available",
+    "parse contracts/projections/ide/projection_manifest.schema.json",
+    "parse contracts/projections/ide/examples/*.projection.json",
+    "validate example required fields against the moved schema or an equivalent structural check",
+    "git ls-files ide must return no tracked files",
+    "rg -n \"ide/manifests|projection_manifest.schema.json\" must show only allowed generated-output references, historical evidence, or updated contract paths",
+    "git status --short --ignored .dominium.local .aide.local",
+    "git diff --check",
+    "git diff --cached --check if staged"
+  ],
+  "not_required_by_this_apply_class": [
+    "full CTest",
+    "full eval",
+    "CMake configure/build",
+    "product binary execution",
+    "package/release generation",
+    "portable projection regeneration",
+    "internal pilot release regeneration"
+  ],
+  "escalation_conditions": [
+    "Run CMake configure or projection regeneration only if the apply task also changes generated manifest output paths in CMake/scripts.",
+    "Run portable projection or internal pilot validators only if projection/release staging inputs are changed beyond documentation and tracked source contract paths."
+  ],
+  "generated_output_policy": "No .dominium.local, .aide.local, build, package, release, or generated IDE output may be staged or committed.",
+  "moves_applied": false,
+  "references_rewritten": false
+}

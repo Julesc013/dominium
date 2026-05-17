@@ -1,0 +1,145 @@
+{
+  "schema_version": "dominium.move_family_00b.reference_rewrite_plan.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "summary": {
+    "reference_groups": 14,
+    "apply_rewrite_groups": 5,
+    "review_or_later_groups": 5,
+    "historical_never_rewrite_groups": 4,
+    "references_rewritten": false,
+    "allowed_remaining_ide_manifest_references_after_apply": "generated projection output paths under ide/manifests/*.projection.json may remain if documented as generated/local output, not tracked source authority"
+  },
+  "rewrites": [
+    {
+      "referencing_file": ".gitignore",
+      "current_reference": "/ide/** plus !/ide/, !/ide/manifests/, and !/ide/manifests/**",
+      "proposed_reference": "keep /ide/** ignored; remove tracked-source unignore rules for ide/manifests after moved files are staged at contracts/projections/ide",
+      "reference_kind": "tooling_config",
+      "rewrite_phase": "apply",
+      "risk": "medium",
+      "reason": "After the source schema/examples move, generated ide output should remain ignored and no tracked source under ide should be re-exposed."
+    },
+    {
+      "referencing_file": "scripts/verify_docs_sanity.py",
+      "current_reference": "ide/manifests/projection_manifest.schema.json",
+      "proposed_reference": "contracts/projections/ide/projection_manifest.schema.json",
+      "reference_kind": "active_validator",
+      "rewrite_phase": "apply",
+      "risk": "medium",
+      "reason": "Docs sanity currently requires the schema at the transitional root path."
+    },
+    {
+      "referencing_file": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
+      "current_reference": "/docs/architecture/IDE_PROJECTIONS.md, /ide/manifests/** as authoritative metadata",
+      "proposed_reference": "/docs/architecture/IDE_PROJECTIONS.md and /contracts/projections/ide/** as authoritative metadata; /ide/** remains generated projection output",
+      "reference_kind": "docs_current",
+      "rewrite_phase": "apply",
+      "risk": "low",
+      "reason": "Architecture ownership docs must stop naming ide/manifests as tracked source authority after the move."
+    },
+    {
+      "referencing_file": "docs/architecture/PROJECTION_LIFECYCLE.md",
+      "current_reference": "Schema: /ide/manifests/projection_manifest.schema.json",
+      "proposed_reference": "Schema: /contracts/projections/ide/projection_manifest.schema.json",
+      "reference_kind": "docs_current",
+      "rewrite_phase": "apply",
+      "risk": "low",
+      "reason": "The generated manifest output path can stay under /ide/manifests, but the schema authority moves."
+    },
+    {
+      "referencing_file": "docs/architecture/IDE_PROJECTIONS.md",
+      "current_reference": "/ide/manifests/** (schema + examples)",
+      "proposed_reference": "/contracts/projections/ide/** (schema + examples) and /ide/manifests/ for generated projection manifests",
+      "reference_kind": "docs_current",
+      "rewrite_phase": "apply",
+      "risk": "low",
+      "reason": "The former README-derived architecture doc is the user-facing explanation for this split."
+    },
+    {
+      "referencing_file": "scripts/ide_gen.sh",
+      "current_reference": "ide/manifests/${preset}.projection.json",
+      "proposed_reference": "ide/manifests/${preset}.projection.json",
+      "reference_kind": "active_tool",
+      "rewrite_phase": "review",
+      "risk": "medium",
+      "reason": "This path is generated output, not the tracked schema/example source. Keep unless a separate generated-output relocation is approved."
+    },
+    {
+      "referencing_file": "scripts/ide_gen.bat",
+      "current_reference": "ide\\manifests\\%P.projection.json",
+      "proposed_reference": "ide\\manifests\\%P.projection.json",
+      "reference_kind": "active_tool",
+      "rewrite_phase": "review",
+      "risk": "medium",
+      "reason": "This path is generated output, not the tracked schema/example source. Keep unless a separate generated-output relocation is approved."
+    },
+    {
+      "referencing_file": "cmake/ide/IdeProjectionManifest.cmake",
+      "current_reference": "${CMAKE_SOURCE_DIR}/ide/manifests/${DOM_PROJECTION_ID}.projection.json",
+      "proposed_reference": "${CMAKE_SOURCE_DIR}/ide/manifests/${DOM_PROJECTION_ID}.projection.json",
+      "reference_kind": "active_tool",
+      "rewrite_phase": "review",
+      "risk": "medium",
+      "reason": "The CMake generator writes generated projection manifests. This can remain even after tracked source manifests move."
+    },
+    {
+      "referencing_file": "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md",
+      "current_reference": "generated projection manifests under ide/manifests/*.projection.json",
+      "proposed_reference": "unchanged unless the apply task also changes generated manifest output policy",
+      "reference_kind": "docs_current",
+      "rewrite_phase": "later",
+      "risk": "low",
+      "reason": "The referenced surface is generated output, not the tracked schema/examples."
+    },
+    {
+      "referencing_file": "data/release/preset_and_toolchain_registry.json",
+      "current_reference": "ide/manifests/*.projection.json",
+      "proposed_reference": "unchanged unless the apply task also changes generated manifest output policy",
+      "reference_kind": "tooling_config",
+      "rewrite_phase": "review",
+      "risk": "medium",
+      "reason": "Registry entries describe generated projection outputs and should not be rewritten during source contract migration unless consumer review approves it."
+    },
+    {
+      "referencing_file": "tools/aide/select_move_wave.py",
+      "current_reference": "keep ide/manifests deferred",
+      "proposed_reference": "update only after MOVE-FAMILY-00B apply is complete, or leave as historical selector context if the tool is no longer used for this wave",
+      "reference_kind": "active_tool",
+      "rewrite_phase": "later",
+      "risk": "low",
+      "reason": "The text is planning guidance, not a runtime consumer of the manifest files."
+    },
+    {
+      "referencing_file": "docs/audit/REPO_STRUCTURE_AUDIT.json",
+      "current_reference": "ide/manifests/projection_manifest*.json",
+      "proposed_reference": "none",
+      "reference_kind": "generated_evidence",
+      "rewrite_phase": "never_historical",
+      "risk": "low",
+      "reason": "Historical audit evidence should not be rewritten by a path move plan."
+    },
+    {
+      "referencing_file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+      "current_reference": "ide.manifests -> ide/manifests",
+      "proposed_reference": "none",
+      "reference_kind": "docs_historical",
+      "rewrite_phase": "never_historical",
+      "risk": "low",
+      "reason": "Historical architecture graph bootstrap output should stay as produced."
+    },
+    {
+      "referencing_file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+      "current_reference": "ide.manifests and ide.manifests.projection_manifest_examples",
+      "proposed_reference": "none",
+      "reference_kind": "docs_historical",
+      "rewrite_phase": "never_historical",
+      "risk": "low",
+      "reason": "Historical module discovery output should stay as produced."
+    }
+  ],
+  "references_rewritten": false
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": "dominium.move_family_00b.exception_update_plan.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "current_exception": {
+    "path": "ide",
+    "source": "contracts/repo/layout_exceptions.toml",
+    "active": true,
+    "classification": "partial_review",
+    "risk": "medium",
+    "reason": "Root IDE projection boundary is intentionally referenced by generation and quarantine checks; tracked files are README, manifest schema, and examples.",
+    "current_tracked_files_under_ide": [
+      "ide/manifests/projection_manifest.schema.json",
+      "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
+    ]
+  },
+  "after_apply_expectation": {
+    "all_tracked_files_under_ide_removed": true,
+    "root_remains_as_source_root": false,
+    "root_may_exist_as_ignored_generated_output": true,
+    "exception_narrows": false,
+    "exception_retires": true,
+    "retirement_condition": "Retire exceptions.ide_root only after all three planned moves and required reference rewrites are applied, git ls-files ide is empty, .gitignore no longer exposes ide/manifests as tracked source, and strict root validators pass.",
+    "root_constitution_note": "Do not remove ide from transitional_roots in the same apply unless root constitution and validator review explicitly approve that broader contract update."
+  },
+  "evidence_required_before_retirement": [
+    "git ls-files ide returns no tracked files",
+    "git status --short --ignored ide shows only ignored generated projection output or no ide root",
+    "strict repo layout validator passes",
+    "strict root allowlist validator passes",
+    "docs sanity passes after schema path update",
+    "reference scan classifies remaining ide/manifests references as generated-output, historical, or intentionally preserved",
+    "generated outputs remain unstaged and ignored"
+  ],
+  "moves_applied": false,
+  "exception_retired": false
+}

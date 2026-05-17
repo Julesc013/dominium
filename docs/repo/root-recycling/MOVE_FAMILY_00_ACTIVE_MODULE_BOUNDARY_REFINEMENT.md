@@ -78,3 +78,14 @@ This is the smallest refined group and has the clearest target owner. It should 
 ## No Moves/Deletes/Renames Confirmation
 
 This refinement made no source-root moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map applications, salvage-map applications, or exception retirements.
+
+## MOVE-FAMILY-00B Plan Follow-up
+
+`MOVE-FAMILY-00B-PLAN` completed the IDE manifest contract/projection planning step.
+
+- Planned moves: 3 tracked manifest source files.
+- Target owner: `contracts/projections/ide/**`.
+- Ready for `MOVE-FAMILY-00B-GATE`: true.
+- Apply allowed: false.
+- Generated `ide/manifests/*.projection.json` output may remain under `ide/` as ignored generated output.
+- The `ide` source-layout exception may retire only after an approved apply moves all tracked files and `git ls-files ide` is empty.

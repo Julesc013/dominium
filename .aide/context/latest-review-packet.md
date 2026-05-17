@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES and confirm that it refined ownership boundaries only, without moving files, deleting files, renaming files, rewriting imports, rewriting references, creating shims, applying maps, or retiring exceptions.
+Review MOVE-FAMILY-00B-PLAN and confirm that it creates only a draft no-apply plan for `ide/manifests/**`, without moving files, deleting files, renaming files, rewriting references, creating shims, applying maps, or retiring exceptions.
 
 ## Decision Requested
 
@@ -23,26 +23,28 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/refactors/MOVE-FAMILY-00.active_module_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00.import_reference_map.json`
-- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json`
-- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.toml`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-status.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-validation.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-blockers.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-active-module-boundaries.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-ide-manifest-boundaries.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-next-plan.md`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-summary.json`
-- `docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md`
+- `.aide/refactors/MOVE-FAMILY-00B.plan.toml`
+- `.aide/refactors/MOVE-FAMILY-00B.plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json`
+- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json`
+- `.aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.validation_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.rollback_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.exception_update_plan.json`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-status.md`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-validation.md`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-blockers.md`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-review.md`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-manifest-boundaries.md`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-summary.json`
+- `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_MANIFEST_CONTRACT_PROJECTION_PLAN.md`
 
 ## Changed Files Summary
 
-- Added active module ownership, IDE manifest ownership, import/reference map, and refined cleanup strategy artifacts.
-- Added reviewer-facing MOVE-FAMILY-00-REFINE reports.
-- Updated root-recycling and regression docs.
-- Updated latest AIDE context, status, warning, and migration ledger surfaces.
+- Added MOVE-FAMILY-00B planning artifacts for inventory, ownership, reference rewrites, validation, rollback, exception updates, and plan JSON/TOML.
+- Added reviewer-facing MOVE-FAMILY-00B reports.
+- Added repo root-recycling plan doc for IDE manifest contract/projection ownership.
+- Updated root-recycling, regression, AIDE context, status, warning, and migration ledger surfaces.
 
 ## Validation Summary
 
@@ -50,7 +52,7 @@ Validation records AIDE checks, artifact JSON/TOML parsing, strict repo/root/dis
 
 ## Risk Summary
 
-No apply-ready move set exists yet. IDE manifests are ready for a contract/projection planning task; active Python roots require shim/import planning or semantic owner decisions before any physical move.
+The plan is gate-ready but not approved. `contracts/projections/ide/**` does not exist yet and must be introduced only during a later approved apply task. Generated projection manifest output under `ide/manifests/*.projection.json` remains a separate ignored-output policy concern.
 
 ## Token Summary
 
@@ -58,11 +60,11 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-- no source-root moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move-map approvals, salvage-map approvals, map applications, or exception retirements
-- no product/runtime/source behavior changes
+- no source-root moves, deletes, renames, reference rewrites, active aliases, compatibility shims, move-map approvals, salvage-map approvals, map applications, or exception retirements
+- no edits under `ide/**`, `contracts/**`, `tools/**`, or product/runtime/source behavior paths
 - no generated release/projection/build/local output commits
 - no full CTest, full eval, package generation, or release generation
 
 ## Reviewer Instructions
 
-Check that the diff is limited to scoped ownership refinement evidence and documentation, apply remains disabled, and the recommended next task is `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.
+Check that the diff is limited to scoped planning evidence and documentation, apply remains disabled, and the recommended next task is `MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate`.

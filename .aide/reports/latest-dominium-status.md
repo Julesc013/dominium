@@ -74,3 +74,16 @@ MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES refined the blocked plan into own
 - Preserve-current groups: semantic/runtime `meta/**` and product/runtime `performance/**`.
 - Ready for `MOVE-FAMILY-00-GATE`: false.
 - Next recommended task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.
+
+## MOVE-FAMILY-00B-PLAN Update
+
+MOVE-FAMILY-00B-PLAN planned the tracked IDE manifest source-metadata migration without applying moves.
+
+- Result: PASS_WITH_WARNINGS.
+- Manifest files inspected: 3.
+- Planned moves: 3.
+- Target owner: `contracts/projections/ide/**`.
+- Ready for `MOVE-FAMILY-00B-GATE`: true.
+- Apply remains unauthorized.
+- Generated IDE projection output under `ide/manifests/*.projection.json` remains generated/local output and must not be committed.
+- Next recommended task: `MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate`.

@@ -2,26 +2,32 @@
 
 ## PHASE
 
-MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Refine Governance, Meta, Performance, Validation, and IDE Active-Module Ownership
+MOVE-FAMILY-00B-PLAN - IDE Manifest Contract and Projection Ownership Plan
 
 ## GOAL
 
-Produce ownership boundary evidence for the blocked MOVE-FAMILY-00 plan without applying moves.
+Produce a no-apply migration plan for tracked `ide/manifests/**` source metadata and decide whether the files can move to `contracts/projections/ide/**` under a later gate.
 
 ## WHY
 
-MOVE-FAMILY-00-PLAN found no safe apply set because the remaining target-family files are active Python/tooling surfaces or machine-readable IDE projection metadata. The next cleanup step needs precise ownership destinations, consumer evidence, and a staged strategy before any move gate.
+MOVE-FAMILY-00-REFINE found that `ide/manifests/**` is the smallest remaining root-family group with a clear owner. The `ide` source root cannot retire until tracked manifest source metadata has a contract/projection home, consumer rewrites are known, generated-output behavior is separated, and exception retirement conditions are explicit.
 
 ## CONTEXT_REFS
 
-- `.aide/refactors/MOVE-FAMILY-00.plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.salvage_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json`
-- `.aide/reports/MOVE-FAMILY-00-PLAN-candidate-table.json`
+- `.aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json`
+- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json`
+- `.aide/reports/MOVE-FAMILY-00-REFINE-ide-manifest-boundaries.md`
+- `.aide/reports/MOVE-FAMILY-00-REFINE-next-plan.md`
+- `docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md`
 - `docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md`
 - `contracts/repo/root_constitution.toml`
 - `contracts/repo/ownership_slots.toml`
 - `contracts/repo/layout_exceptions.toml`
+- `contracts/README.md`
+- `contracts/MANIFEST.md`
+- `docs/architecture/IDE_PROJECTIONS.md`
+- `docs/architecture/PROJECTION_LIFECYCLE.md`
+- `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md`
 
 ## ALLOWED_PATHS
 
@@ -36,17 +42,19 @@ MOVE-FAMILY-00-PLAN found no safe apply set because the remaining target-family 
 
 ## FORBIDDEN_PATHS
 
-- target-root file edits under `governance/**`, `meta/**`, `performance/**`, `validation/**`, or `ide/**`
-- product/runtime/source behavior changes
-- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move map approvals, salvage map approvals, map applications, or exception retirements
+- `ide/**`
+- `contracts/**`
+- `tools/**`
+- product/runtime/engine/game/source behavior paths
+- moves, deletes, renames, reference rewrites, active aliases, compatibility shims, move map approvals, salvage map approvals, map applications, or exception retirements
 - generated build/package/release/projection/local output commits
 
 ## IMPLEMENTATION
 
-- Inspect current target-root file list.
-- Map active Python modules and machine-readable IDE manifests to ownership destinations.
-- Record import/reference consumers and future migration modes.
-- Produce a revised cleanup strategy and next planning task.
+- Inspect current tracked `ide/manifests/**` files.
+- Classify schema/examples as contract metadata, tooling input, generated evidence, historical metadata, or unknown.
+- Produce inventory, ownership, move, reference rewrite, validation, rollback, and exception update plans.
+- Keep every plan draft/not-approved/no-apply.
 
 ## VALIDATION
 
@@ -59,19 +67,22 @@ MOVE-FAMILY-00-PLAN found no safe apply set because the remaining target-family 
 
 ## EVIDENCE
 
-- `.aide/refactors/MOVE-FAMILY-00.active_module_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json`
-- `.aide/refactors/MOVE-FAMILY-00.import_reference_map.json`
-- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json`
-- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.toml`
-- `.aide/reports/MOVE-FAMILY-00-REFINE-*`
-- `docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md`
+- `.aide/refactors/MOVE-FAMILY-00B.plan.toml`
+- `.aide/refactors/MOVE-FAMILY-00B.plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json`
+- `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json`
+- `.aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.validation_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.rollback_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00B.exception_update_plan.json`
+- `.aide/reports/MOVE-FAMILY-00B-PLAN-*`
+- `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_MANIFEST_CONTRACT_PROJECTION_PLAN.md`
 
 ## NON_GOALS
 
 - No move application.
 - No file delete or rename.
-- No import or reference rewrite.
+- No reference rewrite.
 - No compatibility shim or active path alias.
 - No root exception retirement.
 - No feature/domain/product/runtime implementation.
@@ -79,11 +90,11 @@ MOVE-FAMILY-00-PLAN found no safe apply set because the remaining target-family 
 
 ## ACCEPTANCE
 
-- Required ownership/refinement artifacts exist and parse.
+- Required plan artifacts exist and parse.
 - Apply remains unauthorized.
-- The refined strategy names the next planning task.
+- The plan names exact target paths, rewrites, validation, rollback, and exception effects.
 - Validation is run and recorded.
-- Only scoped refinement evidence and docs are committed.
+- Only scoped planning evidence and docs are committed.
 
 ## OUTPUT_SCHEMA
 

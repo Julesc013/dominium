@@ -76,3 +76,14 @@ MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES produced ownership boundary evide
 - `performance/**` remains preserve-current because product/client/game code imports it.
 - Ready for `MOVE-FAMILY-00-GATE`: false.
 - Recommended next task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.
+
+## MOVE-FAMILY-00B-PLAN Result
+
+MOVE-FAMILY-00B-PLAN produced a no-apply draft plan for the remaining tracked IDE manifest source metadata.
+
+- Planned moves: 3 tracked files from `ide/manifests/**` to `contracts/projections/ide/**`.
+- Deferred tracked IDE manifest files: 0.
+- Blocked files: 0.
+- Ready for `MOVE-FAMILY-00B-GATE`: true.
+- Apply allowed: false.
+- The future apply task must keep generated IDE projection output ignored and may retire the `ide` source-layout exception only after `git ls-files ide` is empty and validators pass.

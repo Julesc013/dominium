@@ -1,0 +1,96 @@
+{
+  "schema_version": "dominium.move_family_00b.ide_manifest_ownership.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "summary": {
+    "manifest_files": 3,
+    "planned_moves": 3,
+    "deferred_files": 0,
+    "blocked_files": 0,
+    "target_owner": "contracts/projections/ide",
+    "target_owner_exists_now": false,
+    "target_owner_creation_planned_for_apply": true,
+    "ready_for_gate": true
+  },
+  "ownership_basis": {
+    "contracts_root_policy": "contracts/ owns machine-readable, version-pinned, compatibility-sensitive authority surfaces.",
+    "projection_doctrine": "IDE projects and generated manifests remain projections; source schema/examples are authoritative projection metadata, not generated output.",
+    "slot_gap": "contracts/projections/ide does not exist yet and ownership_slots.toml has no projection_contract slot. The later apply task must create the scoped contract path and record the slot decision without changing schema semantics."
+  },
+  "items": [
+    {
+      "path": "ide/manifests/projection_manifest.schema.json",
+      "ownership_kind": "projection_contract_metadata",
+      "secondary_roles": ["ide_manifest", "tooling_input"],
+      "target_owner": "contracts/projections/ide",
+      "proposed_target_path": "contracts/projections/ide/projection_manifest.schema.json",
+      "migration_mode": "move_with_reference_rewrites",
+      "shim_required": false,
+      "validator_required": true,
+      "schema_required": true,
+      "consumer_rewrites_required": true,
+      "exception_update_effect": "retire ide root exception if all planned moves apply and git ls-files ide is empty",
+      "risk": "medium",
+      "blocker": null
+    },
+    {
+      "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "ownership_kind": "projection_contract_metadata",
+      "secondary_roles": ["ide_manifest", "tooling_input", "contract_example"],
+      "target_owner": "contracts/projections/ide",
+      "proposed_target_path": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "migration_mode": "move_with_reference_rewrites",
+      "shim_required": false,
+      "validator_required": true,
+      "schema_required": true,
+      "consumer_rewrites_required": true,
+      "exception_update_effect": "retire ide root exception if all planned moves apply and git ls-files ide is empty",
+      "risk": "medium",
+      "blocker": null
+    },
+    {
+      "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "ownership_kind": "projection_contract_metadata",
+      "secondary_roles": ["ide_manifest", "tooling_input", "contract_example", "legacy_projection_example"],
+      "target_owner": "contracts/projections/ide",
+      "proposed_target_path": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "migration_mode": "move_with_reference_rewrites",
+      "shim_required": false,
+      "validator_required": true,
+      "schema_required": true,
+      "consumer_rewrites_required": true,
+      "exception_update_effect": "retire ide root exception if all planned moves apply and git ls-files ide is empty",
+      "risk": "medium",
+      "blocker": null
+    }
+  ],
+  "rejected_owners": [
+    {
+      "owner": "contracts/ide",
+      "reason": "IDE is the projection family qualifier, but projection contract meaning is the stronger owner."
+    },
+    {
+      "owner": "tools/ide",
+      "reason": "CMake and scripts consume and generate manifests, but the tracked schema/examples define metadata shape rather than tool implementation."
+    },
+    {
+      "owner": "docs/architecture",
+      "reason": "The files are machine-readable contract metadata, not explanatory prose."
+    },
+    {
+      "owner": "archive/generated/ide",
+      "reason": "The files are tracked source metadata and examples, not generated proof output."
+    },
+    {
+      "owner": "preserve_current",
+      "reason": "Preservation keeps the transitional ide root active even though a contract/projection owner can be planned."
+    }
+  ],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false
+}

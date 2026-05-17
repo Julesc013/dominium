@@ -126,3 +126,22 @@ No group is apply-ready. The immediate next planning task is:
 ```text
 MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan
 ```
+
+## MOVE-FAMILY-00B-PLAN Outcome
+
+MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the IDE manifest source metadata.
+
+- Planned moves: 3 tracked files.
+- Target owner: `contracts/projections/ide/**`.
+- Deferred tracked files: 0.
+- Blocked files: 0.
+- Ready for `MOVE-FAMILY-00B-GATE`: true.
+- Apply remains unauthorized until the gate approves exact moves and reference rewrites.
+
+The later apply task must run Tier 0 plus focused RepoX, manifest JSON/schema parsing, stale-reference scans, and generated-output ignored/staging proof. Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection proof, and internal pilot proof remain out of scope unless generated-output producers or release/projection inputs change.
+
+Immediate next task:
+
+```text
+MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate
+```

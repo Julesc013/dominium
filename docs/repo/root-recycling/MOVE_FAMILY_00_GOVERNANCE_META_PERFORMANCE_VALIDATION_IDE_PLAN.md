@@ -116,3 +116,14 @@ MOVE-FAMILY-00-PLAN made no source-root moves, deletes, renames, reference rewri
 - `governance/**` preferred future owner: `tools/repo` via `tools/governance/**`, but only with release/tool import proof.
 - most semantic/runtime `meta/**` and all `performance/**` remain preserve-current.
 - Next recommended task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.
+
+## MOVE-FAMILY-00B Plan Result
+
+MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the `ide/manifests/**` portion.
+
+- Planned moves: 3.
+- Target owner: `contracts/projections/ide/**`.
+- Deferred tracked IDE manifest files: 0.
+- Ready for `MOVE-FAMILY-00B-GATE`: true.
+- Apply remains unauthorized.
+- Required apply posture: move the tracked schema/examples only, update current references, keep generated IDE projection output ignored, and retire the `ide` exception only after validation proves no tracked files remain under `ide/`.

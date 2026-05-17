@@ -103,3 +103,12 @@ Superseded By: none
 - `validation/**`, `meta/identity/**`, `meta/stability/**`, and `governance/**` require temporary shim/import planning.
 - semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
 - No files were moved, deleted, renamed, or rewritten.
+
+## MOVE-FAMILY-00B-PLAN
+
+- The IDE manifest plan is gate-ready but warning-bearing because `contracts/projections/ide/**` is planned, not existing.
+- The plan includes 3 moves and no file-level blockers.
+- Apply remains unauthorized until `MOVE-FAMILY-00B-GATE`.
+- Generated `ide/manifests/*.projection.json` references are warning-only if they remain classified as generated-output references, not tracked source authority.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by scope.
+- No files were moved, deleted, renamed, or rewritten.

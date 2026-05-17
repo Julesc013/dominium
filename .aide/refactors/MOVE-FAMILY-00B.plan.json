@@ -1,0 +1,91 @@
+{
+  "schema_version": "dominium.move_family_00b.plan.v1",
+  "task_id": "MOVE-FAMILY-00B-PLAN",
+  "status": "draft",
+  "result": "PASS_WITH_WARNINGS",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "baseline_head": "0b631fc5f09f3d927a54e8312976b926d111a72e",
+  "planning_head": "18ca419fc22e623166f02fede283d2594951b29e",
+  "roots": ["ide"],
+  "subtree": "ide/manifests",
+  "scope": {
+    "moves_allowed": false,
+    "deletes_allowed": false,
+    "renames_allowed": false,
+    "reference_rewrites_allowed": false,
+    "exception_retirement_allowed": false,
+    "contracts_modified_now": false,
+    "ide_modified_now": false
+  },
+  "summary": {
+    "included_count": 3,
+    "deferred_count": 0,
+    "blocked_count": 0,
+    "risk": "medium",
+    "ready_for_gate": true,
+    "reason": "All tracked ide/manifests source files are projection contract metadata with a clear scoped target under contracts/projections/ide, but the target slot and rewrites require a later gate/apply task."
+  },
+  "target_owner": {
+    "path": "contracts/projections/ide",
+    "exists_now": false,
+    "create_during_apply": true,
+    "ownership_slot_status": "planned_scoped_contract_slot",
+    "notes": "contracts/projections is not present yet. The apply task should introduce it as a narrow contract/projection ownership path, not as a new top-level root."
+  },
+  "moves": [
+    {
+      "source_path": "ide/manifests/projection_manifest.schema.json",
+      "target_path": "contracts/projections/ide/projection_manifest.schema.json",
+      "action": "move",
+      "reason": "Tracked IDE projection manifest schema belongs with machine-readable projection contract metadata.",
+      "risk": "medium",
+      "ownership_slot": "contracts/projections/ide",
+      "shim_required": false,
+      "rollback": "Move target back to ide/manifests/projection_manifest.schema.json and restore references."
+    },
+    {
+      "source_path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "target_path": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "action": "move",
+      "reason": "Tracked Linux clang projection manifest example is contract example metadata.",
+      "risk": "medium",
+      "ownership_slot": "contracts/projections/ide",
+      "shim_required": false,
+      "rollback": "Move target back to ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json and restore references."
+    },
+    {
+      "source_path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target_path": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "action": "move",
+      "reason": "Tracked Win9x VC6 projection manifest example is contract example metadata.",
+      "risk": "medium",
+      "ownership_slot": "contracts/projections/ide",
+      "shim_required": false,
+      "rollback": "Move target back to ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json and restore references."
+    }
+  ],
+  "deferred": [
+    {
+      "path": "ide/manifests/*.projection.json",
+      "reason": "Generated projection manifests may continue to be written under ide/manifests by CMake/scripts as ignored generated output.",
+      "owner": "generated_output",
+      "apply_effect": "No tracked generated output is created or committed."
+    }
+  ],
+  "blocked": [],
+  "rewrites": ".aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json",
+  "validators": ".aide/refactors/MOVE-FAMILY-00B.validation_plan.json",
+  "rollback": ".aide/refactors/MOVE-FAMILY-00B.rollback_plan.json",
+  "exception_updates": ".aide/refactors/MOVE-FAMILY-00B.exception_update_plan.json",
+  "inventory": ".aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json",
+  "ownership": ".aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json",
+  "next_gate": "MOVE-FAMILY-00B-GATE",
+  "next_refinement": null,
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false,
+  "exception_retired": false
+}
