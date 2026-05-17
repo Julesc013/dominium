@@ -1,0 +1,31 @@
+{
+  "schema_version": "dominium.post_restructure_00.next_readiness.v1",
+  "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+  "generated_at_utc": "2026-05-17T16:04:44Z",
+  "status": "BLOCKED",
+  "head": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "origin_main": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "branch_status": "## main...origin/main",
+  "closure_task": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "closure_ready_for_post_restructure_full_proof": false,
+  "ready_for_doe_00": false,
+  "feature_work_authorized": false,
+  "next_recommended_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+  "blockers": [
+    "MOVE-BULK-08 did not authorize POST-RESTRUCTURE-00-FULL-PROOF.",
+    "1764 tracked files remain under formerly bad roots.",
+    "MOVE-BULK gate deferred Batches B-G and blocked Batch H.",
+    "Batch A applied only partially and still has 283 skipped files."
+  ],
+  "doe_planning_authorized": false,
+  "feature_implementation_authorized": false,
+  "recommended_remediation": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+  "alternate_gated_tasks": [
+    "MOVE-BULK-02-GATE - Templates/Models/Modding Migration Gate",
+    "MOVE-BULK-03-GATE - Content Identity Migration Gate",
+    "MOVE-BULK-04-GATE - Authority/Policy Migration Gate",
+    "MOVE-BULK-05-GATE - Active Tool Module Migration Gate",
+    "MOVE-BULK-06-GATE - Runtime/Core/Network Migration Gate",
+    "MOVE-BULK-07-GATE - Libs/ABI Migration Gate"
+  ]
+}

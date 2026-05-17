@@ -2,75 +2,67 @@
 
 ## PHASE
 
-MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE - Final Root Exception, Shim, and Bad-Root Closure
+POST-RESTRUCTURE-00-FULL-PROOF - Full Post-Restructure Proof
 
 ## GOAL
 
-Classify the current MOVE-BULK closure state after completed apply evidence and determine readiness for post-restructure proof.
+Run full post-restructure proof only if MOVE-BULK-08 authorizes it.
 
 ## WHY
 
-The repo must not move to feature work or full proof with ambiguous bad-root, exception, reference, or shim debt.
+Feature work and DOE-00 planning require a proven post-restructure baseline, but the proof must not run past a closure gate that says the repo is not ready.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/MOVE-BULK-00-GATE-authorized-batches.json`
-- `.aide/reports/MOVE-BULK-00-GATE-readiness.json`
-- `.aide/reports/MOVE-BULK-01-APPLY-evidence.json`
+- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json`
 - `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-remaining-debt.json`
-- `docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md`
+- `.aide/reports/POST-RESTRUCTURE-00-status.md`
+- `docs/repo/audits/POST_RESTRUCTURE_00_FULL_PROOF.md`
 
 ## ALLOWED_PATHS
 
 - `.aide/reports/**`
 - `.aide/context/**`
 - `.aide/ledgers/**`
-- `docs/repo/root-recycling/**`
 - `docs/repo/audits/**`
+- `docs/repo/root-recycling/**`
 - `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
 - `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
+- `docs/release/**` proof docs
 
 ## FORBIDDEN_PATHS
 
-- Product/runtime/engine/game/source behavior
-- Bad-root file moves, deletes, renames, imports, active references, compatibility shims, active path aliases, unauthorized maps, and feature/domain files
+Moves, deletes, renames, imports, references, shims, path aliases, feature/domain files, product/runtime behavior, public release artifacts, tags, GitHub releases, packages, and installers.
 
 ## IMPLEMENTATION
 
-- Inspected 24 formerly bad roots.
-- Classified `ide/` as retired/empty.
-- Classified 23 former bad roots as remaining tracked debt.
-- Retired or narrowed 0 exceptions.
-- Created closure matrix, exception actions, reference debt, shim debt, remaining debt, and readiness reports.
+Stopped before full proof because MOVE-BULK-08 says `ready_for_post_restructure_full_proof = false`. Wrote blocked proof evidence only.
 
 ## VALIDATION
 
-Run AIDE doctor/validate/test/selftest, AIDE tools/roots/repo/commit checks, closure JSON parsing, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, focused RepoX, and git diff checks.
+Initial git sync/ancestry checks passed. Full proof validation was not run because closure readiness blocked it.
 
 ## EVIDENCE
 
-- `.aide/reports/MOVE-BULK-08-CLOSURE-status.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-blockers.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json`
+- `.aide/reports/POST-RESTRUCTURE-00-status.md`
+- `.aide/reports/POST-RESTRUCTURE-00-blockers.md`
+- `.aide/reports/POST-RESTRUCTURE-00-next-readiness.json`
+- `docs/repo/POST_RESTRUCTURE_PROOF.md`
 
 ## NON_GOALS
 
-No moves, deletes, renames, import rewrites, active reference rewrites, shims, map applications, feature work, full CTest, CMake build, product execution, or release generation.
+No full proof execution, no build/test/product/projection/release proof, no feature work, and no root cleanup apply.
 
 ## ACCEPTANCE
 
-- MOVE-BULK-00-GATE evidence exists.
-- Every former bad root has a closure state.
-- Remaining roots, shims, references, and exception debt are recorded.
-- POST-RESTRUCTURE readiness decision is explicit.
-- No apply actions occurred.
+- Closure readiness was read.
+- Blocked status was recorded.
+- No proof commands past the closure gate were run.
+- Next remediation is exact.
 
 ## OUTPUT_SCHEMA
 
-Evidence is Markdown plus JSON reports under schema prefix `dominium.move_bulk_08.*.v1`.
+Evidence is Markdown plus JSON reports under schema prefix `dominium.post_restructure_00.*.v1`.
 
 ## TOKEN_ESTIMATE
 

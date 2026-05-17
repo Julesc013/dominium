@@ -447,3 +447,15 @@ MOVE-BULK-08 records a partial closure snapshot rather than a clean final closeo
 - New shims created by closure: 0.
 - Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
 - Recommended next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or the next explicit batch gate.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Blocked Proof Note
+
+POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closure says full proof is not ready.
+
+- Remaining former bad-root files: 1764.
+- Deferred batches: B-G.
+- Blocked batch: H.
+- Ready for DOE-00: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

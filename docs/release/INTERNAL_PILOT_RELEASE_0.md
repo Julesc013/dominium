@@ -78,3 +78,15 @@ BASELINE-00 freezes this local internal pilot release proof as the structural re
 - Generated release staging remains ignored/local and uncommitted.
 
 MOVE-FAMILY proof tasks must preserve or explicitly regenerate and revalidate this proof state. DOE-00 is deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Blocked Proof Note
+
+POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closure says full proof is not ready.
+
+- Remaining former bad-root files: 1764.
+- Deferred batches: B-G.
+- Blocked batch: H.
+- Ready for DOE-00: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

@@ -194,3 +194,11 @@ Superseded By: none
 - Batch H remains blocked until prior batches apply and prove cleanly.
 - 1,764 tracked files remain under formerly bad roots.
 - POST-RESTRUCTURE-00-FULL-PROOF remains blocked.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Warning Disposition
+
+- Full proof was not run because closure readiness is false.
+- Batches B-G remain deferred and Batch H remains blocked.
+- Next remediation: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

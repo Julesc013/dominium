@@ -1,0 +1,23 @@
+{
+  "schema_version": "dominium.post_restructure_00.projection_proof.v1",
+  "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+  "generated_at_utc": "2026-05-17T16:04:44Z",
+  "status": "BLOCKED",
+  "head": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "origin_main": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "branch_status": "## main...origin/main",
+  "closure_task": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "closure_ready_for_post_restructure_full_proof": false,
+  "ready_for_doe_00": false,
+  "feature_work_authorized": false,
+  "next_recommended_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+  "blockers": [
+    "MOVE-BULK-08 did not authorize POST-RESTRUCTURE-00-FULL-PROOF.",
+    "1764 tracked files remain under formerly bad roots.",
+    "MOVE-BULK gate deferred Batches B-G and blocked Batch H.",
+    "Batch A applied only partially and still has 283 skipped files."
+  ],
+  "result": "not_run_blocked_by_closure",
+  "projection_generated": false,
+  "projection_validator_run": false
+}

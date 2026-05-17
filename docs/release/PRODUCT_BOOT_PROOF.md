@@ -152,3 +152,15 @@ BASELINE-00 freezes the RELEASE-00 command-surface product boot posture as part 
 - Product command-surface baseline: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` present in the portable projection and internal pilot staging roots.
 - Proof level remains command/help/status/smoke; no gameplay, renderer, native GUI, or operating-environment MVP proof is added by BASELINE-00.
 - Future build-sensitive MOVE-FAMILY waves must preserve this proof level or rerun product boot proof before claiming success.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Blocked Proof Note
+
+POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closure says full proof is not ready.
+
+- Remaining former bad-root files: 1764.
+- Deferred batches: B-G.
+- Blocked batch: H.
+- Ready for DOE-00: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

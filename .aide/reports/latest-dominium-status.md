@@ -208,3 +208,14 @@ MOVE-BULK-01 applied the Batch A docs/archive safe subset with warnings.
 - Ready for `POST-RESTRUCTURE-00-FULL-PROOF`: no.
 - Feature work authorized: no.
 - Next: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`, or a deferred batch gate.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Status
+
+- Result: BLOCKED.
+- Reason: MOVE-BULK-08 did not authorize full proof.
+- Remaining formerly bad-root files: 1764.
+- Ready for DOE-00: no.
+- Feature work authorized: no.
+- Next: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

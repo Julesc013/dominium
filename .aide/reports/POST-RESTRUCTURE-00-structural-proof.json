@@ -1,0 +1,167 @@
+{
+  "schema_version": "dominium.post_restructure_00.structural_proof.v1",
+  "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+  "generated_at_utc": "2026-05-17T16:04:44Z",
+  "status": "BLOCKED",
+  "head": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "origin_main": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "branch_status": "## main...origin/main",
+  "closure_task": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+  "closure_ready_for_post_restructure_full_proof": false,
+  "ready_for_doe_00": false,
+  "feature_work_authorized": false,
+  "next_recommended_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+  "blockers": [
+    "MOVE-BULK-08 did not authorize POST-RESTRUCTURE-00-FULL-PROOF.",
+    "1764 tracked files remain under formerly bad roots.",
+    "MOVE-BULK gate deferred Batches B-G and blocked Batch H.",
+    "Batch A applied only partially and still has 283 skipped files."
+  ],
+  "result": "blocked_by_closure",
+  "former_bad_roots_inspected": 24,
+  "retired_roots": [
+    "ide"
+  ],
+  "remaining_bad_roots": [
+    {
+      "root": "core",
+      "tracked_file_count": 16,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "control",
+      "tracked_file_count": 21,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "data",
+      "tracked_file_count": 1253,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "packs",
+      "tracked_file_count": 256,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "profiles",
+      "tracked_file_count": 1,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "bundles",
+      "tracked_file_count": 3,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "compat",
+      "tracked_file_count": 17,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "lib",
+      "tracked_file_count": 22,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "libs",
+      "tracked_file_count": 86,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "locks",
+      "tracked_file_count": 1,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "repo",
+      "tracked_file_count": 11,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "safety",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "security",
+      "tracked_file_count": 4,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "specs",
+      "tracked_file_count": 9,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "updates",
+      "tracked_file_count": 6,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "meta",
+      "tracked_file_count": 26,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "governance",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "performance",
+      "tracked_file_count": 3,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "validation",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "modding",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "models",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "templates",
+      "tracked_file_count": 2,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    },
+    {
+      "root": "net",
+      "tracked_file_count": 17,
+      "state": "deferred_with_exception",
+      "next_action": "schedule_remediation"
+    }
+  ],
+  "remaining_bad_root_file_count": 1764,
+  "strict_validators": "not_run_blocked_by_closure"
+}

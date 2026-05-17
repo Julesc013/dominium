@@ -181,3 +181,15 @@ BASELINE-00 freezes the RELEASE-00 native binary proof state as part of the stru
 - Full promotion CTest and full eval remain not run.
 
 Future core, runtime, build, lib/libs, ABI, or UI-bind MOVE-FAMILY waves must rerun the build/product proof tier required by `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Blocked Proof Note
+
+POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closure says full proof is not ready.
+
+- Remaining former bad-root files: 1764.
+- Deferred batches: B-G.
+- Blocked batch: H.
+- Ready for DOE-00: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

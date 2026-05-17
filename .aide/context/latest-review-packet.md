@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE and confirm it is a partial closure snapshot with no apply actions.
+Review POST-RESTRUCTURE-00-FULL-PROOF and confirm it stopped correctly because MOVE-BULK-08 did not authorize full proof.
 
 ## Decision Requested
 
@@ -23,36 +23,34 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/MOVE-BULK-08-CLOSURE-status.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-blockers.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.md`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.md`
-- `docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md`
+- `.aide/reports/POST-RESTRUCTURE-00-status.md`
+- `.aide/reports/POST-RESTRUCTURE-00-validation.md`
+- `.aide/reports/POST-RESTRUCTURE-00-blockers.md`
+- `.aide/reports/POST-RESTRUCTURE-00-next-readiness.md`
+- `docs/repo/audits/POST_RESTRUCTURE_00_FULL_PROOF.md`
 
 ## Changed Files Summary
 
-- Added MOVE-BULK-08 closure evidence and docs.
-- Updated root-recycling/regression/POST-CONVERGE docs.
-- Updated AIDE context, status, warning, and ledger surfaces.
-- Applied no moves, rewrites, shims, or exception retirements.
+- Added blocked POST-RESTRUCTURE-00 proof evidence.
+- Updated status and proof docs with a narrow blocked note.
+- Applied no moves, rewrites, shims, build, product, projection, or release changes.
 
 ## Validation Summary
 
-Validation is recorded in `.aide/reports/MOVE-BULK-08-CLOSURE-validation.md`.
+Initial git sync/ancestry checks passed. Full proof validation was not run because MOVE-BULK-08 blocks it.
 
 ## Risk Summary
 
-The closure is partial: 23 formerly bad roots still contain tracked files, Batches B-G remain deferred, and Batch H remains blocked.
+1764 tracked files remain under former bad roots; DOE-00 and feature work remain blocked.
 
 ## Token Summary
 
-This review packet is intentionally compact and references repo evidence by path.
+This review packet is compact and references repo evidence by path.
 
 ## Non-Goals / Scope Guard
 
-No apply authorization is granted by this closure task.
+No full proof execution is authorized until closure readiness changes.
 
 ## Reviewer Instructions
 
-Confirm that `POST-RESTRUCTURE-00-FULL-PROOF` and feature work remain blocked, and that remaining debt is explicit.
+Confirm that the task stopped at the closure gate and named `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT` as the remediation.

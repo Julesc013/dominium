@@ -94,3 +94,15 @@ BASELINE-00 freezes this portable projection as part of the structural regressio
 - Generated projection output remains ignored/local and must not be committed.
 
 Future content, package, profile, bundle, distribution, release, or build-sensitive move waves must rerun the portable projection validator or regenerate the projection through documented tooling before claiming success.
+
+<!-- POST-RESTRUCTURE-00-BLOCKED -->
+
+## POST-RESTRUCTURE-00 Blocked Proof Note
+
+POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closure says full proof is not ready.
+
+- Remaining former bad-root files: 1764.
+- Deferred batches: B-G.
+- Blocked batch: H.
+- Ready for DOE-00: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
