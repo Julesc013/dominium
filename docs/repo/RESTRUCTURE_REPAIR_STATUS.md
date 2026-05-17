@@ -26,7 +26,7 @@ Result: PARTIAL.
 - Override policy entries are expired.
 - Replay hash invariance fails for performance profiles.
 - AuditX full CTest cases time out.
-- The first repair commit failed AIDE commit-message policy; it was not amended, and a compliant follow-up evidence commit records the warning.
+- The first two repair evidence commits failed AIDE commit-message policy and were not amended; a final compliant follow-up commit records the warnings.
 
 ## Next Task
 
