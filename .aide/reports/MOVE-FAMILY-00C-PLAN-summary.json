@@ -1,0 +1,47 @@
+{
+  "schema_version": "dominium.move_family_00c.plan_summary.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "result": "BLOCKED",
+  "head": "d5fddc8ea1ec67d4fe6bb9db48a9d19907718208",
+  "origin_main": "d5fddc8ea1ec67d4fe6bb9db48a9d19907718208",
+  "roots": ["validation", "meta", "governance", "performance"],
+  "active_modules_found": 33,
+  "package_init_files": 14,
+  "direct_cli_entrypoints": 0,
+  "python_import_reference_files": {
+    "validation": 8,
+    "meta": 104,
+    "governance": 9,
+    "performance": 4
+  },
+  "planned_move_count": 0,
+  "future_candidate_file_count": 9,
+  "deferred_file_count": 24,
+  "blocked_group_count": 4,
+  "shim_required_groups": 4,
+  "ready_for_gate": false,
+  "recommended_next_task": "MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan",
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "imports_rewritten": false,
+    "references_rewritten": false,
+    "shims_created": false,
+    "exceptions_retired": false
+  },
+  "known_warnings": [
+    "Ignored __pycache__ directories exist under target roots and remain untracked.",
+    "Path-reference counts include high-volume historical/AIDE/generated evidence.",
+    "AIDE validate emits an accepted review-packet path warning while passing.",
+    "Strict validators emit known fallback TOML parser warnings while passing.",
+    "Full CTest, full eval, CMake configure/build, package/release generation, and product binaries are out of scope."
+  ],
+  "blockers": [
+    "validation has runtime AppShell and compatibility consumers",
+    "meta.identity has release/security/lib/tool consumers",
+    "meta.stability has validation, governance, RepoX, AuditX, release, security, and TestX consumers",
+    "governance has release/setup/dist/tool consumers",
+    "meta semantic/runtime modules and performance modules are not tools namespace candidates"
+  ]
+}

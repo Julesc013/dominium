@@ -1,0 +1,76 @@
+{
+  "schema_version": "dominium.move_family_00c.shim_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "shims_created": false,
+  "summary": {
+    "shim_required_groups": 4,
+    "shim_free_move_groups": 0,
+    "preserve_defer_groups": 2,
+    "ready_to_create_shims": false
+  },
+  "shims": [
+    {
+      "old_import": "validation",
+      "new_import": "tools.validators.unified_validation",
+      "shim_needed": true,
+      "shim_path": "validation/__init__.py and validation/validation_engine.py",
+      "shim_lifetime": "one approved apply/proof cycle after all active consumers are rewritten",
+      "allowed_callers": ["existing runtime AppShell, compat, tools, RepoX, AuditX, TestX consumers only during migration"],
+      "forbidden_new_references": ["new imports from validation in product or tooling code after apply"],
+      "validator_to_prevent_new_old_imports": "future stale-import check for ^from validation|^import validation outside shim files",
+      "risk": "high",
+      "blocker": "Shim semantics need a gate because runtime currently imports validation."
+    },
+    {
+      "old_import": "meta.identity",
+      "new_import": "tools.validators.identity",
+      "shim_needed": true,
+      "shim_path": "meta/identity/__init__.py and meta/identity/identity_validator.py",
+      "shim_lifetime": "one approved apply/proof cycle after release/security/lib/tool consumers are rewritten",
+      "allowed_callers": ["existing release, security, lib, tools, validation, and TestX consumers only during migration"],
+      "forbidden_new_references": ["new imports from meta.identity after apply"],
+      "validator_to_prevent_new_old_imports": "future stale-import check for meta.identity outside shim files",
+      "risk": "high",
+      "blocker": "Identity semantics are release/security sensitive and require compatibility proof."
+    },
+    {
+      "old_import": "meta.stability",
+      "new_import": "tools.validators.stability",
+      "shim_needed": true,
+      "shim_path": "meta/stability/__init__.py, meta/stability/stability_scope.py, and meta/stability/stability_validator.py",
+      "shim_lifetime": "one approved apply/proof cycle after all active consumers are rewritten",
+      "allowed_callers": ["existing validation, governance, AuditX, RepoX, release, security, review, and TestX consumers only during migration"],
+      "forbidden_new_references": ["new imports from meta.stability after apply"],
+      "validator_to_prevent_new_old_imports": "future stale-import check for meta.stability outside shim files",
+      "risk": "high",
+      "blocker": "Stability API is broad and affects RepoX/AuditX checks."
+    },
+    {
+      "old_import": "governance",
+      "new_import": "tools.governance.profile",
+      "shim_needed": true,
+      "shim_path": "governance/__init__.py and governance/governance_profile.py",
+      "shim_lifetime": "one approved apply/proof cycle after release/setup/dist/tool consumers are rewritten",
+      "allowed_callers": ["existing release, setup, dist, governance tool, and TestX consumers only during migration"],
+      "forbidden_new_references": ["new imports from governance after apply"],
+      "validator_to_prevent_new_old_imports": "future stale-import check for ^from governance|^import governance outside shim files",
+      "risk": "high",
+      "blocker": "Release-control imports require proof before root governance can become a shim."
+    }
+  ],
+  "preserve_defer": [
+    {
+      "old_import": "meta.* semantic/runtime subpackages",
+      "shim_needed": false,
+      "reason": "Preserve current until domain/runtime ownership plans exist."
+    },
+    {
+      "old_import": "performance",
+      "shim_needed": false,
+      "reason": "Preserve current because product/client and game code import it."
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "dominium.move_family_00c.validation_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "planning_validation": [
+    "py -3 .aide/scripts/aide_lite.py doctor",
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "py -3 .aide/scripts/aide_lite.py test",
+    "py -3 .aide/scripts/aide_lite.py selftest",
+    "py -3 .aide/scripts/aide_lite.py tools validate",
+    "py -3 .aide/scripts/aide_lite.py roots validate",
+    "py -3 .aide/scripts/aide_lite.py repo validate",
+    "py -3 .aide/scripts/aide_lite.py commit check --latest",
+    "python tools/validators/check_repo_layout.py --repo-root . --strict",
+    "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+    "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+    "python tools/validators/check_component_matrices.py --repo-root . --strict",
+    "python scripts/verify_docs_sanity.py --repo-root .",
+    "python scripts/verify_build_target_boundaries.py --repo-root .",
+    "python scripts/verify_ui_shell_purity.py --repo-root .",
+    "python scripts/verify_abi_boundaries.py --repo-root .",
+    "parse MOVE-FAMILY-00C JSON artifacts",
+    "parse MOVE-FAMILY-00C TOML plan",
+    "git diff --check",
+    "git diff --cached --check if staged"
+  ],
+  "required_after_future_apply": [
+    "AIDE doctor/validate/test/selftest/tools/roots/repo validate",
+    "AIDE commit check --latest",
+    "strict repo/root/distribution/component validators",
+    "docs sanity",
+    "build target boundaries",
+    "UI shell purity",
+    "ABI boundaries",
+    "focused RepoX",
+    "affected validator commands",
+    "py_compile moved modules and modified import consumers",
+    "import smoke checks for old shim imports and new target imports",
+    "stale-import scan for forbidden new old imports",
+    "generated-output ignored/staging check",
+    "smoke CTest if apply touches active validators or AppShell import paths"
+  ],
+  "not_required_for_planning": [
+    "full CTest",
+    "full eval",
+    "CMake configure/build",
+    "package/release generation",
+    "product binaries"
+  ]
+}

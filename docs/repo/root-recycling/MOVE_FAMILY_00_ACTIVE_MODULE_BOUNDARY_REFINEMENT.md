@@ -117,3 +117,14 @@ The next family-00 task should now focus on active tooling/module ownership rath
 ```text
 MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
 ```
+
+## MOVE-FAMILY-00C Plan Follow-up
+
+`MOVE-FAMILY-00C-PLAN` inspected the remaining active Python/tooling roots after `ide/` retirement.
+
+- Tracked Python files inspected: 33.
+- Direct CLI entrypoints under target roots: 0.
+- Candidate validator/governance files: 9, but none are gate-ready.
+- `validation/**`, `meta/identity/**`, `meta/stability/**`, and `governance/**` require temporary shim policy and consumer proof before any apply.
+- semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
+- Recommended next task: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.

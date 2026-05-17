@@ -1,0 +1,18 @@
+{
+  "schema_version": "dominium.move_family_00c.rollback_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "rollback_required_if_future_apply_fails": true,
+  "rollback_steps": [
+    "Move any future moved files back to their original validation/, meta/, governance/, or performance/ paths.",
+    "Reverse import rewrites in active consumers.",
+    "Reverse path/reference rewrites in docs/config/tooling files.",
+    "Remove temporary shims only if the rollback restores original implementation files to the old import paths.",
+    "Restore active layout exceptions if a future apply narrowed or retired them.",
+    "Rerun AIDE checks, strict validators, affected import smoke checks, focused RepoX, and git diff checks."
+  ],
+  "pre_apply_abandonment": "Because this task is plan-only and apply_allowed=false, abandoning the plan requires no file moves or reference rollback.",
+  "no_apply": true
+}

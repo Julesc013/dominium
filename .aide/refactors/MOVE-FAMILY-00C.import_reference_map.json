@@ -1,0 +1,76 @@
+{
+  "schema_version": "dominium.move_family_00c.import_reference_map.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "scan_commands": [
+    "git ls-files validation meta governance performance",
+    "AST import scan over tracked *.py files",
+    "rg -n \"^\\\\s*(from|import)\\\\s+(validation|meta|governance|performance)(\\\\.|\\\\s|$)\" -g \"*.py\" .",
+    "tracked text scan for validation/, meta/, governance/, performance/ path strings"
+  ],
+  "summary": {
+    "direct_python_import_files": {
+      "validation": 8,
+      "meta": 104,
+      "governance": 9,
+      "performance": 4
+    },
+    "path_reference_files": {
+      "validation": 1662,
+      "meta": 482,
+      "governance": 679,
+      "performance": 137
+    },
+    "active_imports_require_rewrites_for_any_move": true,
+    "path_reference_bulk_is_mostly_AIDE_generated_or_historical": true
+  },
+  "references": [
+    {"referencing_file":"compat/shims/validation_shims.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"runtime/appshell/commands/command_engine.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/validation/tool_run_validation.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/convergence/convergence_gate_common.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/release/shim_coverage_common.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"},
+    {"referencing_file":"tools/auditx/analyzers/e473_duplicate_validation_surface_smell.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"},
+    {"referencing_file":"tools/xstack/repox/check.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/xstack/testx/tests/validation_unify_testlib.py","referenced_module_or_path":"validation","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"},
+    {"referencing_file":"release/update_resolver.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/dist/dist_tree_common.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/governance/governance_model_common.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/release/archive_policy_common.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/release/offline_archive_common.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/release/update_model_common.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/setup/setup_cli.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/xstack/testx/tests/governance_testlib.py","referenced_module_or_path":"governance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"},
+    {"referencing_file":"release/release_manifest_engine.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"release/update_resolver.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"security/trust/license_capability.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"lib/install/install_validator.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"lib/instance/instance_validator.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"lib/save/save_validator.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/dist/dist_tree_common.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/meta/identity_common.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"},
+    {"referencing_file":"tools/setup/setup_cli.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"validation/validation_engine.py","referenced_module_or_path":"meta.identity","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"compat/shims/common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/audit/arch_audit_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/convergence/convergence_gate_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/governance/governance_model_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/release/scope_freeze_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/review/repo_inventory_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/security/trust_strict_common.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/xstack/repox/check.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"validation/validation_engine.py","referenced_module_or_path":"meta.stability","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"apps/client/interaction/preview_generator.py","referenced_module_or_path":"performance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"apps/client/interaction/inspection_overlays.py","referenced_module_or_path":"performance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"game/domains/materials/performance/mat_scale_engine.py","referenced_module_or_path":"performance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"high"},
+    {"referencing_file":"tools/xstack/sessionx/process_runtime.py","referenced_module_or_path":"performance","reference_kind":"python_import","active":true,"rewrite_required_for_move":true,"risk":"medium"}
+  ],
+  "bulk_reference_policy": {
+    "path_strings": "Do not rewrite path strings in this planning task. Future apply plans must split active references from historical, AIDE-generated, and audit references before rewriting.",
+    "meta_semantic_imports": "The complete direct meta import surface is intentionally summarized because it spans 104 tracked Python files and is not a candidate for MOVE-FAMILY-00C apply."
+  },
+  "references_rewritten": false,
+  "imports_rewritten": false
+}

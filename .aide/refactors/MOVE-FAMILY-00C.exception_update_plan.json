@@ -1,0 +1,42 @@
+{
+  "schema_version": "dominium.move_family_00c.exception_update_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "exceptions_updated": false,
+  "roots": [
+    {
+      "root": "validation",
+      "current_status": "active exception",
+      "can_shrink_after_batch": "maybe",
+      "can_retire_after_batch": false,
+      "required_evidence": ["all implementation moved", "temporary shim lifecycle accepted", "runtime AppShell import proof", "strict validators pass"],
+      "current_blocker": "Future first validator batch would likely leave compatibility shims under validation/."
+    },
+    {
+      "root": "meta",
+      "current_status": "active exception",
+      "can_shrink_after_batch": "yes for identity/stability only",
+      "can_retire_after_batch": false,
+      "required_evidence": ["identity and stability consumer proof", "semantic/runtime meta subpackages still justified", "strict validators pass"],
+      "current_blocker": "Most meta subpackages are protected semantic/runtime behavior and must remain preserve-current."
+    },
+    {
+      "root": "governance",
+      "current_status": "active exception",
+      "can_shrink_after_batch": "maybe",
+      "can_retire_after_batch": false,
+      "required_evidence": ["release/setup/dist/tool import rewrites", "temporary shim lifecycle accepted", "strict validators pass"],
+      "current_blocker": "Future governance move would likely leave a temporary shim under governance/."
+    },
+    {
+      "root": "performance",
+      "current_status": "active exception",
+      "can_shrink_after_batch": false,
+      "can_retire_after_batch": false,
+      "required_evidence": ["separate product/runtime ownership plan"],
+      "current_blocker": "Current files are product/client and game behavior, not tools/performance material."
+    }
+  ]
+}

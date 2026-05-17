@@ -112,3 +112,24 @@ Check that the diff is limited to scoped planning evidence and documentation, ap
   - `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_ROOT_RETIREMENT_PROOF.md`
 - Reviewed state: `git ls-files ide` empty, filesystem `ide/` absent, `ide_root` retired, moved manifests parse, no active stale source/tool/validator blockers.
 - Next review target: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.
+
+## MOVE-FAMILY-00C-PLAN REVIEW UPDATE
+
+- Plan result: BLOCKED.
+- Evidence:
+  - `.aide/refactors/MOVE-FAMILY-00C.plan.json`
+  - `.aide/refactors/MOVE-FAMILY-00C.active_tool_inventory.json`
+  - `.aide/refactors/MOVE-FAMILY-00C.import_reference_map.json`
+  - `.aide/refactors/MOVE-FAMILY-00C.ownership_map.json`
+  - `.aide/refactors/MOVE-FAMILY-00C.shim_plan.json`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-status.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-validation.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-blockers.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-review.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-active-tool-boundaries.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-import-map.md`
+  - `.aide/reports/MOVE-FAMILY-00C-PLAN-summary.json`
+  - `docs/repo/root-recycling/MOVE_FAMILY_00C_ACTIVE_TOOL_NAMESPACE_PLAN.md`
+- Reviewed state: 33 active Python files remain across validation/meta/governance/performance; no direct CLI entrypoints; no apply-ready batch.
+- Gate readiness: false.
+- Next review target: `MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan`.

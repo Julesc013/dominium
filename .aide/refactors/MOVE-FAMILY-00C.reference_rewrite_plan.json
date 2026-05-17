@@ -1,0 +1,79 @@
+{
+  "schema_version": "dominium.move_family_00c.reference_rewrite_plan.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "summary": {
+    "apply_rewrite_groups": 0,
+    "later_or_review_groups": 6,
+    "never_historical_groups": 1,
+    "imports_rewritten": false,
+    "references_rewritten": false
+  },
+  "rewrites": [
+    {
+      "group_id": "validation_imports",
+      "current_reference": "from validation / import validation",
+      "proposed_reference": "from tools.validators.unified_validation ... after shim contract approval",
+      "reference_kind": "python_import",
+      "rewrite_phase": "later",
+      "risk": "high",
+      "reason": "Runtime AppShell, compat, tools, RepoX, AuditX, and TestX consumers require a shim-aware apply plan."
+    },
+    {
+      "group_id": "identity_imports",
+      "current_reference": "from meta.identity ...",
+      "proposed_reference": "from tools.validators.identity ... after release/security compatibility proof",
+      "reference_kind": "python_import",
+      "rewrite_phase": "later",
+      "risk": "high",
+      "reason": "Identity helpers are release/security/package sensitive."
+    },
+    {
+      "group_id": "stability_imports",
+      "current_reference": "from meta.stability ...",
+      "proposed_reference": "from tools.validators.stability ... after RepoX/AuditX compatibility proof",
+      "reference_kind": "python_import",
+      "rewrite_phase": "later",
+      "risk": "high",
+      "reason": "Stability API is broad and validator-sensitive."
+    },
+    {
+      "group_id": "governance_imports",
+      "current_reference": "from governance ...",
+      "proposed_reference": "from tools.governance.profile ... after release-control import proof",
+      "reference_kind": "python_import",
+      "rewrite_phase": "later",
+      "risk": "high",
+      "reason": "Release, setup, dist, tools, and TestX import governance directly."
+    },
+    {
+      "group_id": "meta_semantic_runtime_imports",
+      "current_reference": "from meta.compile/meta.compute/meta.explain/meta.numeric/etc.",
+      "proposed_reference": "none in MOVE-FAMILY-00C",
+      "reference_kind": "python_import",
+      "rewrite_phase": "review",
+      "risk": "protected",
+      "reason": "These imports are active domain/runtime behavior and are not tooling cleanup candidates."
+    },
+    {
+      "group_id": "performance_product_imports",
+      "current_reference": "from performance.cost_engine / performance.inspection_cache",
+      "proposed_reference": "none in MOVE-FAMILY-00C",
+      "reference_kind": "python_import",
+      "rewrite_phase": "review",
+      "risk": "protected",
+      "reason": "Product/client and game consumers make this a runtime/domain ownership problem."
+    },
+    {
+      "group_id": "historical_path_references",
+      "current_reference": "validation/, meta/, governance/, performance/ path strings in AIDE, planning, audit, and root-recycling evidence",
+      "proposed_reference": "none",
+      "reference_kind": "generated_evidence",
+      "rewrite_phase": "never_historical",
+      "risk": "low",
+      "reason": "Historical evidence should not be rewritten by a future apply task."
+    }
+  ]
+}

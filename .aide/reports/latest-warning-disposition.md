@@ -140,3 +140,12 @@ Superseded By: none
 - Strict validators emitted known TOML fallback-parser warnings while passing.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by proof scope.
 - No files were moved, deleted, renamed, or rewritten by the proof task.
+
+## MOVE-FAMILY-00C-PLAN
+
+- Result is BLOCKED by design, not an unexpected validator failure.
+- No active-tool batch is gate-ready because current public imports reach `validation`, `meta.identity`, `meta.stability`, and `governance` from release, runtime, AppShell, tools, AuditX, RepoX, TestX, and tests.
+- `performance/**` remains preserve-current because product/client/game/runtime consumers import it directly.
+- semantic/runtime `meta/**` remains preserve-current until a separate runtime/domain ownership plan exists.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by planning scope.
+- No files were moved, deleted, renamed, import-rewritten, reference-rewritten, or shimmed by the plan.

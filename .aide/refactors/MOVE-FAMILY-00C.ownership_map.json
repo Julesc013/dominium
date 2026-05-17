@@ -1,0 +1,93 @@
+{
+  "schema_version": "dominium.move_family_00c.ownership_map.v1",
+  "task_id": "MOVE-FAMILY-00C-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "groups": [
+    {
+      "id": "validation_unified_validator",
+      "current_paths": ["validation/__init__.py", "validation/validation_engine.py"],
+      "module_kind": "validator",
+      "target_owner": "tools/validators",
+      "proposed_target_path": "tools/validators/unified_validation/",
+      "migration_mode": "move_with_temporary_shim",
+      "shim_required": true,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "high",
+      "blocker": "Runtime AppShell imports validation, so moving it directly into tools/validators may create a runtime-to-tools dependency unless an explicit shim and wrapper policy is approved."
+    },
+    {
+      "id": "meta_identity_validator",
+      "current_paths": ["meta/identity/__init__.py", "meta/identity/identity_validator.py"],
+      "module_kind": "identity_validator",
+      "target_owner": "tools/validators",
+      "proposed_target_path": "tools/validators/identity/",
+      "migration_mode": "move_with_temporary_shim",
+      "shim_required": true,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "high",
+      "blocker": "Identity validation is consumed by release, security, lib validators, tools, validation, and TestX and needs explicit semantic compatibility proof."
+    },
+    {
+      "id": "meta_stability_validator",
+      "current_paths": ["meta/stability/__init__.py", "meta/stability/stability_scope.py", "meta/stability/stability_validator.py"],
+      "module_kind": "stability_validator",
+      "target_owner": "tools/validators",
+      "proposed_target_path": "tools/validators/stability/",
+      "migration_mode": "move_with_temporary_shim",
+      "shim_required": true,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "high",
+      "blocker": "Stability validation is consumed by validation, governance, AuditX, RepoX, release, security, and TestX and needs a public API shim policy."
+    },
+    {
+      "id": "governance_profile_tooling",
+      "current_paths": ["governance/__init__.py", "governance/governance_profile.py"],
+      "module_kind": "governance_tool",
+      "target_owner": "tools/governance",
+      "proposed_target_path": "tools/governance/profile/",
+      "migration_mode": "move_with_temporary_shim",
+      "shim_required": true,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "high",
+      "blocker": "Release and setup consumers import governance directly, so this needs release-control import proof and a shim expiry rule."
+    },
+    {
+      "id": "meta_semantic_runtime",
+      "current_paths": ["meta/compile/**", "meta/compute/**", "meta/explain/**", "meta/extensions/**", "meta/instrumentation/**", "meta/numeric.py", "meta/observability.py", "meta/profile/**", "meta/provenance/**", "meta/reference/**"],
+      "module_kind": "validation_library",
+      "target_owner": "preserve_current",
+      "proposed_target_path": null,
+      "migration_mode": "preserve_until_wrapper",
+      "shim_required": false,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "protected",
+      "blocker": "These modules are active domain/runtime behavior, not durable tools namespace candidates."
+    },
+    {
+      "id": "performance_product_runtime",
+      "current_paths": ["performance/__init__.py", "performance/cost_engine.py", "performance/inspection_cache.py"],
+      "module_kind": "performance_library",
+      "target_owner": "preserve_current",
+      "proposed_target_path": null,
+      "migration_mode": "preserve_until_ci_update",
+      "shim_required": false,
+      "import_rewrite_required": true,
+      "reference_rewrite_required": true,
+      "validator_required": true,
+      "risk": "protected",
+      "blocker": "Current consumers are product/client, game material, and session runtime surfaces; tools/performance would be the wrong owner without runtime/domain planning."
+    }
+  ]
+}

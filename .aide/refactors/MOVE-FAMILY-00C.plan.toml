@@ -1,0 +1,63 @@
+[plan]
+id = "MOVE-FAMILY-00C"
+title = "Active Validation, Meta, and Governance Tool Namespace Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "MOVE-FAMILY-00C-PLAN"
+baseline = "BASELINE-00"
+
+[scope]
+roots = ["validation", "meta", "governance", "performance"]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+import_rewrites_allowed = false
+reference_rewrites_allowed = false
+shim_creation_allowed = false
+exception_retirement_allowed = false
+
+[summary]
+ready_for_gate = false
+planned_move_count = 0
+future_candidate_file_count = 9
+deferred_file_count = 24
+blocked_group_count = 4
+risk = "high"
+next_task = "MOVE-FAMILY-00C-A-PLAN - Validation, Identity, and Stability Shim Contract Plan"
+
+[[batches]]
+id = "00C-A"
+title = "Validation, Identity, and Stability Validator Namespace Plan"
+files = ["validation/__init__.py", "validation/validation_engine.py", "meta/identity/__init__.py", "meta/identity/identity_validator.py", "meta/stability/__init__.py", "meta/stability/stability_scope.py", "meta/stability/stability_validator.py"]
+target_owner = "tools/validators"
+migration_mode = "move_with_temporary_shim"
+gate_ready = false
+risk = "high"
+
+[[batches]]
+id = "00C-B"
+title = "Governance Profile Tool Namespace Plan"
+files = ["governance/__init__.py", "governance/governance_profile.py"]
+target_owner = "tools/governance"
+migration_mode = "move_with_temporary_shim"
+gate_ready = false
+risk = "high"
+
+[[batches]]
+id = "00C-C"
+title = "Performance Runtime Ownership Review"
+files = ["performance/__init__.py", "performance/cost_engine.py", "performance/inspection_cache.py"]
+target_owner = "preserve_current"
+migration_mode = "preserve_until_ci_update"
+gate_ready = false
+risk = "protected"
+
+[[batches]]
+id = "00C-D"
+title = "Meta Semantic Runtime Preserve/Defer Review"
+files = ["meta/compile/**", "meta/compute/**", "meta/explain/**", "meta/extensions/**", "meta/instrumentation/**", "meta/numeric.py", "meta/observability.py", "meta/profile/**", "meta/provenance/**", "meta/reference/**"]
+target_owner = "preserve_current"
+migration_mode = "preserve_until_wrapper"
+gate_ready = false
+risk = "protected"
