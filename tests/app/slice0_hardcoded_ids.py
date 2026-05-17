@@ -88,6 +88,9 @@ def iter_files(repo_root):
 
 
 def main():
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
+
     parser = argparse.ArgumentParser(description="SLICE-0 hardcoded identifier lint.")
     parser.add_argument("--repo-root", default=".")
     args = parser.parse_args()

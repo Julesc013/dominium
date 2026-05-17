@@ -49,6 +49,12 @@ This proxy is used for budget gating and PerformX reporting.
 
 No silent overflow and no unbounded fallback.
 
+## Interest Admission Bounds
+- `defer_collapse` records deterministic refusal to collapse a region when doing so would violate active interest invariants.
+- `defer_expansion` records deterministic refusal to expand a region when budget admission would exceed configured limits.
+- `max active tier-2` is the policy-facing upper bound for simultaneously active tier-2 regions.
+- `max active tier-1` is the policy-facing upper bound for simultaneously active tier-1 regions.
+
 ## Run-Meta and Perceived Visibility
 Budget outcomes are emitted to:
 - `UniverseState.performance_state`

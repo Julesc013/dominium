@@ -459,3 +459,17 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Repair Update
+
+RESTRUCTURE-REPAIR-00 applied safe structural repairs and reran the strongest feasible proof lanes.
+
+- Result: PARTIAL.
+- Passing lanes: AIDE, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, and internal pilot.
+- Repaired lanes: stale app/client paths, integration metadata path, archive manifest paths, TestX path hygiene fixtures, ops compatibility JSON warning leakage, and doc contract references.
+- Remaining blockers: full CTest, root-debt exceptions, frozen hash drift, expired override policy, replay hash mismatches, and AuditX timeouts.
+- DOE-00 readiness: no.
+- Feature implementation authorized: no.
+- Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

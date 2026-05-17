@@ -6,8 +6,8 @@
       "status": "archived"
     },
     {
-      "path": "legacy",
-      "readme": "legacy/README.md",
+      "path": "archive/legacy",
+      "readme": "archive/legacy/README.md",
       "status": "archived"
     },
     {
@@ -16,8 +16,8 @@
       "status": "archived"
     },
     {
-      "path": "tmp",
-      "readme": "tmp/README.md",
+      "path": "archive/generated",
+      "readme": "archive/generated/README.md",
       "status": "quarantined"
     }
   ]

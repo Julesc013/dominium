@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-17
+Last Reviewed: 2026-05-18
 Supersedes: none
 Superseded By: none
 
@@ -7,9 +7,9 @@ Superseded By: none
 
 ## Status
 
-- Phase: POST-CONVERGE-11 readiness gate
-- Status: blocked
-- Date: 2026-05-17
+- Phase: RESTRUCTURE-REPAIR-00 command-surface proof
+- Status: pass
+- Date: 2026-05-18
 
 ## Purpose
 
@@ -19,13 +19,15 @@ This document records product boot evidence. It is not an implementation plan, s
 
 | Step | Command | Result | Notes |
 | --- | --- | --- | --- |
-| configure | `cmake --preset verify` | blocked | local Visual Studio 17 2022 generator instance is missing |
-| build | `cmake --build --preset verify` | not run | configure failed |
-| test | `ctest --preset verify` | not run | configure failed |
+| configure | `cmake --preset verify` | pass | existing SDL2/PkgConfig warnings only |
+| build | `cmake --build --preset verify --target ALL_BUILD` | pass | build-only proof; broad verify target remains partitioning debt |
+| test | `ctest --preset verify -L smoke --output-on-failure --timeout 300` | pass | smoke CTest 57/57 |
 
-Expected verify binary output remains `out/build/vs2026/verify/bin/`. No local built `setup`, `launcher`, `client`, `server`, or `tools` binary was available during this proof.
+Expected verify binary output remains `out/build/vs2026/verify/bin/`. Local built `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` were available and passed strict product boot matrix smoke during RESTRUCTURE-REPAIR-00.
 
-## Product Boot Matrix
+## Historical Product Boot Matrix
+
+The matrix below records the earlier POST-CONVERGE proof state. The latest RESTRUCTURE-REPAIR-00 status is the command-surface pass recorded above and in the closeout sections near the end of this file.
 
 | Product | Source Path | Binary/Entrypoint | Mode | Command | Result | Status | Evidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -164,3 +166,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Product Boot Update
+
+`python tools/validators/check_product_boot_matrix.py --repo-root . --json --strict --run-smoke --timeout 30` passed with `proof_status: proven` and no blockers.
+
+This remains command-surface boot proof only. It does not authorize gameplay, public release, installer, package publication, or feature work.

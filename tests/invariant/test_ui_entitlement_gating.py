@@ -5,8 +5,8 @@ import sys
 from invariant_utils import is_override_active
 
 
-REGISTRY_REL = os.path.join("client", "core", "client_commands_registry.c")
-BRIDGE_REL = os.path.join("client", "core", "client_command_bridge.c")
+REGISTRY_REL = os.path.join("apps", "client", "core", "client_commands_registry.c")
+BRIDGE_REL = os.path.join("apps", "client", "core", "client_command_bridge.c")
 
 
 def _read(path: str) -> str:
@@ -57,7 +57,7 @@ def main() -> int:
         if entitlement not in registry_text:
             violations.append("missing entitlement {}".format(entitlement))
 
-    for marker in ("entitlement_allowed(", "refuse.entitlement_required", "refuse.profile_not_selected"):
+    for marker in ("entitlement_allowed(", "refuse.entitlement_required", "refuse.authority_context_required"):
         if marker not in bridge_text:
             violations.append("missing bridge marker {}".format(marker))
 

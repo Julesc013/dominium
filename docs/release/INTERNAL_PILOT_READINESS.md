@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-17
+Last Reviewed: 2026-05-18
 Supersedes: none
 Superseded By: none
 
@@ -7,32 +7,32 @@ Superseded By: none
 
 ## Status
 
-RELEASE-00 internal pilot release is blocked.
+RELEASE-00 internal pilot staging is locally proven. DOE-00 remains blocked by broader restructure repair findings.
 
 ## Readiness Matrix
 
 | Gate | Status | Evidence | Notes |
 | --- | --- | --- | --- |
-| Native build proof | partial historical | `docs/release/NATIVE_BINARY_PROOF.md` | Binaries were previously produced locally, but this was not refreshed by POST-CONVERGE-11 or POST-CONVERGE-12. |
-| Product boot proof | blocked | `docs/release/PRODUCT_BOOT_PROOF.md` | POST-CONVERGE-11 stopped at the RepoX readiness gate; product commands run: 0. |
-| Portable projection proof | blocked | `docs/release/PORTABLE_PROJECTION_PROOF.md` | POST-CONVERGE-12 did not generate projection output. |
+| Native build proof | pass | `docs/release/NATIVE_BINARY_PROOF.md` | Build-only proof produced the expected native binaries. |
+| Product boot proof | pass | `docs/release/PRODUCT_BOOT_PROOF.md` | Strict product boot matrix smoke passed. |
+| Portable projection proof | pass | `docs/release/PORTABLE_PROJECTION_PROOF.md` | Ignored projection root validates with `proof_status: proven`. |
 | Package/release proof | not run | none | Public release, installer, and package generation remain out of scope. |
-| RepoX gate | blocked | `.aide/reports/POST-CONVERGE-11-blockers.md` | Focused RepoX remains 20 failures / 5 warnings. |
+| RepoX gate | pass | `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md` | Focused RepoX passed after archive allowlist repair. |
 
 ## Remaining Blockers
 
-- Resolve or explicitly accept the remaining non-proof RepoX governance/source-policy failures.
-- Rerun native product boot proof after the RepoX gate allows it.
-- Generate and validate a portable projection root after product boot proof succeeds or is explicitly accepted.
+- Full CTest remains failing/incomplete.
+- Root cleanup debt remains under active exceptions.
+- Frozen hash, override, replay, and AuditX remediation remain separate blockers.
 
 ## Release Decision
 
-RELEASE-00 must not proceed from the current state.
+Local internal pilot proof is valid for ignored staging only. Public release, installer, package publication, and DOE-00 remain out of scope for this proof.
 
 Recommended next task:
 
 ```text
-POST-CONVERGE-10P - Residual RepoX Governance and Source-Policy Remediation
+MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT
 ```
 
 ## Closeout Remediation Update
@@ -114,3 +114,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Internal Pilot Readiness Update
+
+The strict internal pilot validator passed against `.dominium.local/releases/internal-pilot-0` with no blockers or warnings. This preserves the local proof artifact only.
+
+DOE-00 still may not proceed because full CTest and root-debt blockers remain outside the internal pilot staging proof.

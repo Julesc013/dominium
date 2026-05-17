@@ -8,7 +8,7 @@ from invariant_utils import is_override_active
 
 LAW_REL = os.path.join("data", "registries", "law_profiles.json")
 MATRIX_REL = os.path.join("data", "registries", "presentation_matrix.json")
-BRIDGE_REL = os.path.join("client", "core", "client_command_bridge.c")
+BRIDGE_REL = os.path.join("apps", "client", "core", "client_command_bridge.c")
 
 
 def _load_json(path: str):

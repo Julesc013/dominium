@@ -90,3 +90,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Internal Pilot Release Update
+
+`python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict` passed.
+
+Release staging remains generated ignored output. No public release, tag, installer, upload, or GitHub release was created.

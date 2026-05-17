@@ -2,11 +2,11 @@
 
 ## Review Objective
 
-Review POST-RESTRUCTURE-00-FULL-PROOF and confirm it stopped correctly because MOVE-BULK-08 did not authorize full proof.
+Review RESTRUCTURE-REPAIR-00 and confirm the repair pass fixed safe stale structural issues while preserving real blockers.
 
 ## Decision Requested
 
-Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`.
+Return exactly one of `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`.
 
 ## Task Packet Reference
 
@@ -23,34 +23,37 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/POST-RESTRUCTURE-00-status.md`
-- `.aide/reports/POST-RESTRUCTURE-00-validation.md`
-- `.aide/reports/POST-RESTRUCTURE-00-blockers.md`
-- `.aide/reports/POST-RESTRUCTURE-00-next-readiness.md`
-- `docs/repo/audits/POST_RESTRUCTURE_00_FULL_PROOF.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-status.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-blockers.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-final-root-matrix.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
+- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
 
 ## Changed Files Summary
 
-- Added blocked POST-RESTRUCTURE-00 proof evidence.
-- Updated status and proof docs with a narrow blocked note.
-- Applied no moves, rewrites, shims, build, product, projection, or release changes.
+- Repaired stale path/test expectations.
+- Added final repair evidence and readiness reports.
+- Updated release, post-restructure, root-recycling, regression, AIDE status, and warning surfaces.
 
 ## Validation Summary
 
-Initial git sync/ancestry checks passed. Full proof validation was not run because MOVE-BULK-08 blocks it.
+Green: AIDE, strict structural validators, focused RepoX, smoke CTest, configure, build-only `ALL_BUILD`, product boot, portable projection, and internal pilot.
+
+Partial: full CTest remains failing/incomplete due semantic, policy, frozen-hash, replay, and AuditX timeout blockers.
 
 ## Risk Summary
 
-1764 tracked files remain under former bad roots; DOE-00 and feature work remain blocked.
+The remaining blockers are intentionally not repaired in this task because they require explicit semantic or policy review.
 
 ## Token Summary
 
-This review packet is compact and references repo evidence by path.
+This review packet is compact and references evidence by path.
 
 ## Non-Goals / Scope Guard
 
-No full proof execution is authorized until closure readiness changes.
+Do not approve feature work, DOE-00 execution, forced root moves, validator weakening, public release work, or hash/override/replay acceptance from this repair packet alone.
 
 ## Reviewer Instructions
 
-Confirm that the task stopped at the closure gate and named `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT` as the remediation.
+Check that safe repairs are scoped, remaining blockers are not hidden, generated outputs are uncommitted, and final readiness remains `PARTIAL`.

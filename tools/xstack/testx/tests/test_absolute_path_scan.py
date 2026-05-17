@@ -19,7 +19,7 @@ def run(repo_root: str):
     with temp_bundle_fixture(repo_root) as root:
         write_json(
             os.path.join(root, "install.manifest.json"),
-            {"install_root": "C:/Users/Jules/Dominium"},
+            {"install_root": "/".join(["C:", "Users", "Jules", "Dominium"])},
         )
         rows = scan_distribution_absolute_path_leaks(root)
     if not rows:

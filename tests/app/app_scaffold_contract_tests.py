@@ -5,10 +5,10 @@ import sys
 
 
 GUI_STUBS = [
-    ("launcher", "launcher/gui/launcher_app_win32.cpp"),
-    ("setup", "setup/gui/setup_app_win32.cpp"),
-    ("client", "client/gui/client_app_win32.cpp"),
-    ("server", "server/gui/server_app_win32.cpp"),
+    ("launcher", "apps/launcher/gui/launcher_app_win32.cpp"),
+    ("setup", "apps/setup/gui/setup_app_win32.cpp"),
+    ("client", "apps/client/gui/client_app_win32.cpp"),
+    ("server", "apps/server/gui/server_app_win32.cpp"),
     ("tools", "tools/gui/tools_app_win32.cpp"),
 ]
 

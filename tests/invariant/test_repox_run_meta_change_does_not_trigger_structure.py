@@ -85,7 +85,7 @@ def main() -> int:
             exclude_artifact_classes=("RUN_META", "DERIVED_VIEW"),
             extra_excluded_prefixes=repox.STRUCTURE_SCOPE_EXCLUDED_PREFIXES,  # pylint: disable=protected-access
         )
-        dep_before = repox._group_dep_hash(roots_before, scope)  # pylint: disable=protected-access
+        dep_before = repox._group_dep_hash(source_repo_root, roots_before, scope)  # pylint: disable=protected-access
         if not dep_before:
             print("missing baseline dep hash")
             return 1
@@ -112,7 +112,7 @@ def main() -> int:
             exclude_artifact_classes=("RUN_META", "DERIVED_VIEW"),
             extra_excluded_prefixes=repox.STRUCTURE_SCOPE_EXCLUDED_PREFIXES,  # pylint: disable=protected-access
         )
-        dep_after = repox._group_dep_hash(roots_after, scope)  # pylint: disable=protected-access
+        dep_after = repox._group_dep_hash(source_repo_root, roots_after, scope)  # pylint: disable=protected-access
         if dep_after != dep_before:
             print("run-meta change invalidated structure dep hash")
             return 1

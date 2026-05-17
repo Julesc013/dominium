@@ -1,0 +1,790 @@
+{
+  "schema_version": "dominium.restructure_repair_00.master_remediation_ledger.v1",
+  "task_id": "RESTRUCTURE-REPAIR-00",
+  "generated_at_utc": "2026-05-17T16:08:43Z",
+  "head": "0ddc1797c122d720c3cb9363a477c028d8413c49",
+  "origin_main": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "issue_count": 54,
+  "issues": [
+    {
+      "id": "RR00-0001",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "core/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0002",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "core/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0003",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "control/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0004",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "control/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0005",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "data/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0006",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "data/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0007",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "packs/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0008",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "packs/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0009",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "profiles/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0010",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "profiles/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0011",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "bundles/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0012",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "bundles/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0013",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "compat/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0014",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "compat/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0015",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "lib/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0016",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "lib/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0017",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "libs/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0018",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "libs/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0019",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "locks/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0020",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "locks/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0021",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "repo/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0022",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "repo/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0023",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "safety/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0024",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "safety/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0025",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "security/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0026",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "security/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0027",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "specs/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0028",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "specs/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0029",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "updates/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0030",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "updates/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0031",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "meta/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0032",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "meta/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0033",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "governance/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0034",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "governance/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0035",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "performance/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0036",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "performance/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0037",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "validation/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0038",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "validation/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0039",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "modding/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0040",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "modding/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0041",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "models/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0042",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "models/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0043",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "templates/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0044",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "templates/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0045",
+      "class": "root_remaining",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "affected_paths": [
+        "net/"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Run the specific deferred MOVE-BULK gate/apply path; do not force-move without owner proof.",
+      "validation_required": "Batch-specific gate plus strict validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0046",
+      "class": "root_exception_remaining",
+      "source_evidence": "contracts/repo/layout_exceptions.toml",
+      "affected_paths": [
+        "net/"
+      ],
+      "severity": "warning",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Preserve exception until tracked files leave root and validators pass; narrow only when shim-only evidence exists.",
+      "validation_required": "strict layout/root validators",
+      "status": "deferred"
+    },
+    {
+      "id": "RR00-0047",
+      "class": "validator_failure",
+      "source_evidence": ".aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json",
+      "affected_paths": [
+        "POST-RESTRUCTURE-00"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Complete skipped-reference refinement or next deferred batch gate before rerunning full proof.",
+      "validation_required": "full post-restructure proof",
+      "status": "blocked"
+    },
+    {
+      "id": "RR00-0048",
+      "class": "validator_failure",
+      "source_evidence": ".aide/reports/POST-RESTRUCTURE-00-next-readiness.json",
+      "affected_paths": [
+        "DOE-00"
+      ],
+      "severity": "blocker",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Do not authorize DOE-00 until post-restructure full proof passes.",
+      "validation_required": "POST-RESTRUCTURE-00 rerun",
+      "status": "blocked"
+    },
+    {
+      "id": "RR00-0049",
+      "class": "commit_policy_warning",
+      "source_evidence": "user prompt / tracked file size check",
+      "affected_paths": [
+        ".aide/reports/file-quality-ledger.json"
+      ],
+      "severity": "blocker",
+      "owner_surface": "AIDE",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Tracked evidence size is 67242988 bytes; keep unless repo policy approves split/compression.",
+      "validation_required": "git status and policy review",
+      "status": "pending"
+    },
+    {
+      "id": "RR00-0050",
+      "class": "untracked_generated_noise",
+      "source_evidence": "filesystem scan",
+      "affected_paths": [
+        ".dominium.local/"
+      ],
+      "severity": "informational",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Keep ignored and uncommitted; do not delete unless operator requests cleanup.",
+      "validation_required": "git status --ignored",
+      "status": "accepted_warning"
+    },
+    {
+      "id": "RR00-0051",
+      "class": "untracked_generated_noise",
+      "source_evidence": "filesystem scan",
+      "affected_paths": [
+        ".aide.local/"
+      ],
+      "severity": "informational",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Keep ignored and uncommitted; do not delete unless operator requests cleanup.",
+      "validation_required": "git status --ignored",
+      "status": "accepted_warning"
+    },
+    {
+      "id": "RR00-0052",
+      "class": "untracked_generated_noise",
+      "source_evidence": "filesystem scan",
+      "affected_paths": [
+        "build/"
+      ],
+      "severity": "informational",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Keep ignored and uncommitted; do not delete unless operator requests cleanup.",
+      "validation_required": "git status --ignored",
+      "status": "accepted_warning"
+    },
+    {
+      "id": "RR00-0053",
+      "class": "untracked_generated_noise",
+      "source_evidence": "filesystem scan",
+      "affected_paths": [
+        "out/"
+      ],
+      "severity": "informational",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Keep ignored and uncommitted; do not delete unless operator requests cleanup.",
+      "validation_required": "git status --ignored",
+      "status": "accepted_warning"
+    },
+    {
+      "id": "RR00-0054",
+      "class": "untracked_generated_noise",
+      "source_evidence": "filesystem scan",
+      "affected_paths": [
+        "dist/"
+      ],
+      "severity": "informational",
+      "owner_surface": "repo",
+      "safe_to_fix_now": false,
+      "fix_strategy": "Keep ignored and uncommitted; do not delete unless operator requests cleanup.",
+      "validation_required": "git status --ignored",
+      "status": "accepted_warning"
+    }
+  ],
+  "final_repair_status": {
+    "result": "PARTIAL",
+    "safe_repairs_applied": true,
+    "safe_repairs_summary": [
+      "stale app/client/runtime paths repaired",
+      "archive contract paths repaired",
+      "RepoX archive allowlist repaired",
+      "TestX path-hygiene fixtures repaired",
+      "ops JSON warning leakage repaired",
+      "targeted doc contract references repaired",
+      "slice0 diagnostic output repaired"
+    ],
+    "remaining_blocker_summary": [
+      "23 excepted former bad roots remain",
+      "full CTest failing/incomplete",
+      "frozen contract hash drift",
+      "expired override policy",
+      "replay hash mismatches",
+      "AuditX timeout cases"
+    ],
+    "ready_for_doe_00": false,
+    "feature_work_authorized": false,
+    "next_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT"
+  }
+}

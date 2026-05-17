@@ -1,0 +1,31 @@
+{
+  "schema_version": "dominium.restructure_repair_00.final_readiness.v1",
+  "task_id": "RESTRUCTURE-REPAIR-00",
+  "result": "PARTIAL",
+  "ready_for_doe_00": false,
+  "feature_work_authorized": false,
+  "push_recommended": false,
+  "structural_validators": "pass",
+  "aide": "pass",
+  "repox": "pass",
+  "smoke_ctest": "pass",
+  "full_ctest": "fail_incomplete_walltime",
+  "configure": "pass",
+  "build": "pass_all_build",
+  "product_boot": "pass",
+  "portable_projection": "pass",
+  "internal_pilot": "pass",
+  "generated_outputs": "ignored_uncommitted",
+  "remaining_blockers": [
+    "23 excepted former bad roots remain with 1764 tracked files",
+    "full CTest fails/incomplete",
+    "slice0_hardcoded_ids findings",
+    "slice1_hardcoded_constants findings",
+    "frozen contract hash drift",
+    "expired override policy entries",
+    "determinism replay hash mismatches",
+    "AuditX timeout cases",
+    "tracked large AIDE file-quality ledger policy remains unresolved"
+  ],
+  "next_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT"
+}

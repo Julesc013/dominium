@@ -15,6 +15,7 @@ Scope: deterministic capability and pack resolution artifacts.
 
 - Legacy adapter: `schema/capability_lockfile.schema`
 - LIB-0 canonical pack lock artifact: `schema/packs/pack_lock.schema`
+- Portable capability adapter artifact: `capabilities.lock`
 
 ## Storage Rules
 
@@ -27,6 +28,7 @@ Scope: deterministic capability and pack resolution artifacts.
 - Same pack set and policy inputs must produce the same `pack_lock_hash`.
 - `ordered_pack_ids` ordering is canonical.
 - Missing required packs must refuse or degrade explicitly according to declared missing-mode policy.
+- A missing capability must be reported as an explicit refusal/degradation condition, not as an implicit fallback.
 - No absolute host paths may appear in canonical lock payloads.
 
 ## Related Contracts

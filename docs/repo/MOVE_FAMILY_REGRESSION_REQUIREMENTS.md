@@ -304,3 +304,14 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Regression Update
+
+The repair pass establishes the current partial regression posture:
+
+- Required green before DOE-00: strict structural validators, AIDE, focused RepoX, smoke CTest, native configure/build, product boot, portable projection, internal pilot, and a resolved full CTest strategy.
+- Currently green: all lanes above except full CTest.
+- Currently blocking: full CTest semantic/policy failures, AuditX timeouts, frozen hash drift, expired overrides, replay hash mismatches, and remaining former bad-root debt.
+- Future repair tasks must not weaken validators or mark these failures warning-only without review.

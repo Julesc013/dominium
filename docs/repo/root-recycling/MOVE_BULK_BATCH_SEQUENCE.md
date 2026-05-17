@@ -87,3 +87,14 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Sequence Update
+
+The repair pass did not authorize Batch B-G movement. It fixed only safe stale-path and proof-surface issues. Batch sequencing remains:
+
+1. Refine Batch A skipped references.
+2. Gate any deferred Batch B-G work explicitly.
+3. Run final exception closure only after prior batches are applied and proven.
+4. Rerun full post-restructure proof only after closure says ready.

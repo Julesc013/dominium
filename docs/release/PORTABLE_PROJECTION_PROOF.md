@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-17
+Last Reviewed: 2026-05-18
 Supersedes: none
 Superseded By: none
 
@@ -7,19 +7,19 @@ Superseded By: none
 
 ## Current Status
 
-Portable projection proof is blocked.
+Portable projection proof is locally proven.
 
-POST-CONVERGE-12 did not generate or assemble a projection root because POST-CONVERGE-11 product boot proof is blocked at the RepoX readiness gate. Product boot commands were not run, and no accepted-warning ledger authorizes portable projection proof to proceed without that prerequisite.
+RESTRUCTURE-REPAIR-00 validated the ignored projection root at `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium` with `proof_status: proven` and no blockers. Historical POST-CONVERGE blocked notes are retained below for continuity.
 
 ## Proof Input Status
 
 | Input | Status | Notes |
 | --- | --- | --- |
-| Native build proof | historical partial | Native binaries were previously produced locally but were not refreshed by POST-CONVERGE-11 or POST-CONVERGE-12. |
-| Product boot proof | blocked | POST-CONVERGE-11 stopped before binary inspection or execution. |
-| RepoX gate | blocked | Focused `inv_repox_rules` remains 20 failures / 5 warnings. |
-| Portable projection output | not generated | No local projection root was created. |
-| Release readiness | blocked | RELEASE-00 must not proceed. |
+| Native build proof | pass | Build-only `ALL_BUILD` produced the expected native binaries. |
+| Product boot proof | pass | Strict product boot matrix smoke passed. |
+| RepoX gate | pass | Focused `inv_repox_rules` passed. |
+| Portable projection output | pass | Local ignored projection root validates with `proof_status: proven`. |
+| Release readiness | local proof pass | Internal pilot validator passes; public release remains out of scope. |
 
 ## Intended Local Proof Root
 
@@ -42,9 +42,7 @@ Generated projection output must remain ignored/local and must not be committed.
 
 ## Current Blockers
 
-- `product_boot_blocked`
-- `repox_semantic_blocker`
-- `no_accepted_warning_ledger`
+None for the portable projection validator. DOE-00 remains blocked by broader full CTest and root-debt findings recorded in `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`.
 
 ## How To Retry
 
@@ -106,3 +104,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Portable Projection Update
+
+`python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium --json --strict` passed with `proof_status: proven` and no blockers.
+
+Generated projection output remains ignored/local and uncommitted.

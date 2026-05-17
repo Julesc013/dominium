@@ -1,5 +1,5 @@
 Status: DERIVED
-Last Reviewed: 2026-05-16
+Last Reviewed: 2026-05-18
 Supersedes: none
 Superseded By: none
 
@@ -7,8 +7,8 @@ Superseded By: none
 
 ## Status
 
-- Phase: POST-CONVERGE-10G
-- Status: partial
+- Phase: RESTRUCTURE-REPAIR-00
+- Status: pass-with-warnings
 
 ## Build Tuple
 
@@ -193,3 +193,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Native Proof Update
+
+Native configure passed with existing SDL2/PkgConfig warnings. Build-only `ALL_BUILD` passed and produced the expected binaries under `out/build/vs2026/verify/bin/`.
+
+The default `cmake --build --preset verify` target remains unsuitable as a pure build proof because it enters broad verification and hit validation timeouts. Use build-only proof plus explicit validator/test lanes until the verification target is partitioned.

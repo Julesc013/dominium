@@ -4,7 +4,7 @@ import os
 import shutil
 import sys
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional, Dict, List, Tuple
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -58,7 +58,7 @@ NULL_UUID = "00000000-0000-0000-0000-000000000000"
 def now_timestamp(deterministic: bool) -> str:
     if deterministic or os.environ.get("OPS_DETERMINISTIC") == "1":
         return "2000-01-01T00:00:00Z"
-    return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def load_json(path: str) -> dict:

@@ -5,7 +5,7 @@ import sys
 from invariant_utils import is_override_active
 
 
-CLIENT_BRIDGE_REL = os.path.join("client", "core", "client_command_bridge.c")
+CLIENT_BRIDGE_REL = os.path.join("apps", "client", "core", "client_command_bridge.c")
 
 
 def _read(path: str) -> str:

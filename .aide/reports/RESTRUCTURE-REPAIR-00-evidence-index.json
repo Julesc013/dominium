@@ -1,0 +1,878 @@
+{
+  "schema_version": "dominium.restructure_repair_00.evidence_index.v1",
+  "task_id": "RESTRUCTURE-REPAIR-00",
+  "generated_at_utc": "2026-05-17T16:08:43Z",
+  "head": "0ddc1797c122d720c3cb9363a477c028d8413c49",
+  "origin_main": "a5e6138fdc44a5231808da43ada1659e97a649dd",
+  "branch_status": "## main...origin/main [ahead 1]",
+  "evidence": [
+    {
+      "path": ".aide/reports/latest-dominium-status.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 10530
+    },
+    {
+      "path": ".aide/reports/latest-warning-disposition.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 14167
+    },
+    {
+      "path": ".aide/context/latest-task-packet.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2014
+    },
+    {
+      "path": ".aide/context/latest-review-packet.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1650
+    },
+    {
+      "path": ".aide/queue/current.toml",
+      "exists": false
+    },
+    {
+      "path": ".aide/ledgers/migration_ledger.jsonl",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 15321
+    },
+    {
+      "path": "docs/repo/STRUCTURAL_REGRESSION_BASELINE.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 10742
+    },
+    {
+      "path": "docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 14576
+    },
+    {
+      "path": "docs/release/NATIVE_BINARY_PROOF.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 11240
+    },
+    {
+      "path": "docs/release/PRODUCT_BOOT_PROOF.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 10775
+    },
+    {
+      "path": "docs/release/PORTABLE_PROJECTION_PROOF.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 4761
+    },
+    {
+      "path": "docs/release/INTERNAL_PILOT_RELEASE_0.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3378
+    },
+    {
+      "path": "docs/release/INTERNAL_PILOT_READINESS.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 4738
+    },
+    {
+      "path": "docs/repo/audits/POST_RESTRUCTURE_00_FULL_PROOF.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2192
+    },
+    {
+      "path": "docs/repo/POST_RESTRUCTURE_PROOF.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 910
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1519,
+      "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 12627,
+      "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-remaining-debt.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 15676,
+      "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-next-readiness.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1432,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": "contracts/repo/layout.contract.toml",
+      "exists": true,
+      "kind": "toml",
+      "size_bytes": 49292
+    },
+    {
+      "path": "contracts/repo/root_allowlist.toml",
+      "exists": true,
+      "kind": "toml",
+      "size_bytes": 29911
+    },
+    {
+      "path": "contracts/repo/layout_exceptions.toml",
+      "exists": true,
+      "kind": "toml",
+      "size_bytes": 24311
+    },
+    {
+      "path": "tools/migration/root_inventory.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 54932,
+      "task_id": null,
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": "tools/migration/root_move_map.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 121813,
+      "task_id": null,
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-authorized-batches.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2400,
+      "task_id": "MOVE-BULK-00-GATE",
+      "status": "PASS_WITH_WARNINGS",
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-authorized-batches.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1164
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-blockers.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 985
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-deferred-batches.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1121
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-readiness.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3689,
+      "task_id": "MOVE-BULK-00-GATE",
+      "status": "gate_completed",
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-readiness.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3252
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-summary.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1069,
+      "task_id": "MOVE-BULK-00-GATE",
+      "status": "PASS_WITH_WARNINGS",
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-GATE-validation.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3132
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-batch-summary.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1188
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-blockers.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1374
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-review.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1930
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-root-summary.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1772
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-status.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2160
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-summary.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2832,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-00-PLAN-validation.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 4115
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-blockers.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1307
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-evidence.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 8000,
+      "task_id": "MOVE-BULK-01-APPLY-DOCS-ARCHIVE",
+      "status": "pass_with_warnings",
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-moved-items.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3418
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-post-state.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 650
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-reference-rewrites.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 577
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-rollback.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3599
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-skipped-items.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1064
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-status.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1933
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-01-APPLY-validation.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3291
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-blockers.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2604
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-exception-actions.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 5404,
+      "task_id": "MOVE-BULK-08-FINAL-EXCEPTION-CLOSURE",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 568
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-reference-debt.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1097
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2144
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-shim-debt.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 829
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-status.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1125
+    },
+    {
+      "path": ".aide/reports/MOVE-BULK-08-CLOSURE-validation.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 37951
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_A_docs_archive.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2201,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_B_templates_models_modding.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1959,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_C_content_identity.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3054,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_D_authority_policy.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2223,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_E_active_tools.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2147,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_F_runtime_core_net.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1708,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_G_libs_abi.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1918,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.batch_H_exception_closure.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1426,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": null,
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_exception_retirement_plan.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3843,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_import_rewrite_map.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3073,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_move_map.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 620,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_plan.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 7559,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_plan.toml",
+      "exists": true,
+      "kind": "toml",
+      "size_bytes": 1779
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 5089,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_rollback_plan.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3300,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_salvage_map.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 20022,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_shim_plan.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 3448,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": ".aide/refactors/MOVE-BULK-00.global_validation_plan.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 2792,
+      "task_id": "MOVE-BULK-00-PLAN",
+      "status": "draft",
+      "ready": null
+    },
+    {
+      "path": "docs/repo/root-recycling/MOVE_BULK_00_GLOBAL_BAD_ROOT_MIGRATION_PLAN.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 4996
+    },
+    {
+      "path": "docs/repo/root-recycling/MOVE_BULK_01_DOCS_ARCHIVE_APPLY_RESULT.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 2548
+    },
+    {
+      "path": "docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 793
+    },
+    {
+      "path": "docs/repo/root-recycling/MOVE_BULK_BATCH_SEQUENCE.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 3436
+    },
+    {
+      "path": "docs/repo/audits/MOVE_BULK_08_FINAL_ROOT_CLOSURE_AUDIT.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 799
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-blockers.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 1768
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-build-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1000,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-internal-pilot-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1011,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-next-readiness.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 355
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-product-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1044,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-projection-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 998,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-status.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 742
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-structural-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 4677,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-test-proof.json",
+      "exists": true,
+      "kind": "json",
+      "size_bytes": 1033,
+      "task_id": "POST-RESTRUCTURE-00-FULL-PROOF",
+      "status": "BLOCKED",
+      "ready": false
+    },
+    {
+      "path": ".aide/reports/POST-RESTRUCTURE-00-validation.md",
+      "exists": true,
+      "kind": "md",
+      "size_bytes": 886
+    }
+  ],
+  "closure_ready_for_post_restructure_full_proof": false,
+  "post_restructure_ready_for_doe_00": false,
+  "root_counts": [
+    {
+      "root": "core",
+      "tracked_file_count": 16,
+      "sample_files": [
+        "core/__init__.py",
+        "core/constraints/__init__.py",
+        "core/constraints/constraint_engine.py",
+        "core/flow/__init__.py",
+        "core/flow/flow_engine.py"
+      ]
+    },
+    {
+      "root": "control",
+      "tracked_file_count": 21,
+      "sample_files": [
+        "control/__init__.py",
+        "control/capability/__init__.py",
+        "control/capability/capability_engine.py",
+        "control/control_plane_engine.py",
+        "control/effects/__init__.py"
+      ]
+    },
+    {
+      "root": "data",
+      "tracked_file_count": 1253,
+      "sample_files": [
+        "data/CONTENT_AUDIT.md",
+        "data/agents/agent_context.json",
+        "data/agents/task_intent_map.json",
+        "data/analysis/duplicate_cluster_rankings.json",
+        "data/analysis/implementation_scores.json"
+      ]
+    },
+    {
+      "root": "packs",
+      "tracked_file_count": 256,
+      "sample_files": [
+        "packs/README.md",
+        "packs/__init__.py",
+        "packs/blueprints/blueprints.default.m1/data/blueprint.house.basic.json",
+        "packs/blueprints/blueprints.default.m1/data/blueprint.lathe.basic.json",
+        "packs/blueprints/blueprints.default.m1/data/blueprint.road.segment.basic.json"
+      ]
+    },
+    {
+      "root": "profiles",
+      "tracked_file_count": 1,
+      "sample_files": [
+        "profiles/bundles/bundle.mvp_default.json"
+      ]
+    },
+    {
+      "root": "bundles",
+      "tracked_file_count": 3,
+      "sample_files": [
+        "bundles/README.md",
+        "bundles/bundle.base.lab/bundle.json",
+        "bundles/bundle.null/bundle.json"
+      ]
+    },
+    {
+      "root": "compat",
+      "tracked_file_count": 17,
+      "sample_files": [
+        "compat/__init__.py",
+        "compat/capability_negotiation.py",
+        "compat/data_format_loader.py",
+        "compat/descriptor/__init__.py",
+        "compat/descriptor/descriptor_engine.py"
+      ]
+    },
+    {
+      "root": "lib",
+      "tracked_file_count": 22,
+      "sample_files": [
+        "lib/__init__.py",
+        "lib/artifact/__init__.py",
+        "lib/artifact/artifact_validator.py",
+        "lib/bundle/__init__.py",
+        "lib/bundle/bundle_manifest.py"
+      ]
+    },
+    {
+      "root": "libs",
+      "tracked_file_count": 86,
+      "sample_files": [
+        "libs/CMakeLists.txt",
+        "libs/appcore/CMakeLists.txt",
+        "libs/appcore/command/command_dispatch.c",
+        "libs/appcore/command/command_registry.c",
+        "libs/appcore/command/command_registry.h"
+      ]
+    },
+    {
+      "root": "locks",
+      "tracked_file_count": 1,
+      "sample_files": [
+        "locks/pack_lock.mvp_default.json"
+      ]
+    },
+    {
+      "root": "repo",
+      "tracked_file_count": 11,
+      "sample_files": [
+        "repo/canon_state.json",
+        "repo/release_policy.toml",
+        "repo/repox/repox_exemptions.json",
+        "repo/repox/rulesets/abstraction.json",
+        "repo/repox/rulesets/change_shape.json"
+      ]
+    },
+    {
+      "root": "safety",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "safety/__init__.py",
+        "safety/safety_engine.py"
+      ]
+    },
+    {
+      "root": "security",
+      "tracked_file_count": 4,
+      "sample_files": [
+        "security/__init__.py",
+        "security/trust/__init__.py",
+        "security/trust/license_capability.py",
+        "security/trust/trust_verifier.py"
+      ]
+    },
+    {
+      "root": "specs",
+      "tracked_file_count": 9,
+      "sample_files": [
+        "specs/__init__.py",
+        "specs/reality/SPEC_CAPABILITY_SURFACES.md",
+        "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+        "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+        "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md"
+      ]
+    },
+    {
+      "root": "updates",
+      "tracked_file_count": 6,
+      "sample_files": [
+        "updates/README.md",
+        "updates/beta.json",
+        "updates/changelog.json",
+        "updates/nightly.json",
+        "updates/pinned.json"
+      ]
+    },
+    {
+      "root": "meta",
+      "tracked_file_count": 26,
+      "sample_files": [
+        "meta/__init__.py",
+        "meta/compile/__init__.py",
+        "meta/compile/compile_engine.py",
+        "meta/compute/__init__.py",
+        "meta/compute/compute_budget_engine.py"
+      ]
+    },
+    {
+      "root": "governance",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "governance/__init__.py",
+        "governance/governance_profile.py"
+      ]
+    },
+    {
+      "root": "performance",
+      "tracked_file_count": 3,
+      "sample_files": [
+        "performance/__init__.py",
+        "performance/cost_engine.py",
+        "performance/inspection_cache.py"
+      ]
+    },
+    {
+      "root": "validation",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "validation/__init__.py",
+        "validation/validation_engine.py"
+      ]
+    },
+    {
+      "root": "modding",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "modding/__init__.py",
+        "modding/mod_policy_engine.py"
+      ]
+    },
+    {
+      "root": "models",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "models/__init__.py",
+        "models/model_engine.py"
+      ]
+    },
+    {
+      "root": "templates",
+      "tracked_file_count": 2,
+      "sample_files": [
+        "templates/adapter_template.md",
+        "templates/domain_contract_template.md"
+      ]
+    },
+    {
+      "root": "net",
+      "tracked_file_count": 17,
+      "sample_files": [
+        "net/__init__.py",
+        "net/anti_cheat/__init__.py",
+        "net/anti_cheat/anti_cheat_engine.py",
+        "net/policies/__init__.py",
+        "net/policies/policy_lockstep.py"
+      ]
+    },
+    {
+      "root": "ide",
+      "tracked_file_count": 0,
+      "sample_files": []
+    }
+  ]
+}

@@ -2,68 +2,61 @@
 
 ## PHASE
 
-POST-RESTRUCTURE-00-FULL-PROOF - Full Post-Restructure Proof
+RESTRUCTURE-REPAIR-00 - Full remediation, repair, proof, and origin sync attempt.
 
 ## GOAL
 
-Run full post-restructure proof only if MOVE-BULK-08 authorizes it.
+Repair safe post-restructure drift, rerun the strongest feasible validation suite, and classify remaining blockers without weakening gates.
 
 ## WHY
 
-Feature work and DOE-00 planning require a proven post-restructure baseline, but the proof must not run past a closure gate that says the repo is not ready.
+MOVE-BULK and POST-RESTRUCTURE evidence left deferred roots, skipped references, and proof blockers. This task turns the current state into an auditable repair baseline.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/MOVE-BULK-08-CLOSURE-next-readiness.json`
-- `.aide/reports/MOVE-BULK-08-CLOSURE-root-matrix.json`
-- `.aide/reports/POST-RESTRUCTURE-00-status.md`
-- `docs/repo/audits/POST_RESTRUCTURE_00_FULL_PROOF.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-status.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-blockers.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
+- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
+- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
 
 ## ALLOWED_PATHS
 
-- `.aide/reports/**`
-- `.aide/context/**`
-- `.aide/ledgers/**`
-- `docs/repo/audits/**`
-- `docs/repo/root-recycling/**`
-- `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
-- `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
-- `docs/release/**` proof docs
+- Safe stale-path tests, proof docs, AIDE reports/context/ledger, root-recycling docs, release proof docs, and deterministic proof metadata.
 
 ## FORBIDDEN_PATHS
 
-Moves, deletes, renames, imports, references, shims, path aliases, feature/domain files, product/runtime behavior, public release artifacts, tags, GitHub releases, packages, and installers.
+- Feature work, public release artifacts, tags, GitHub releases, force-pushes, root moves without a valid gate, frozen-hash refresh without review, override renewal without review, and replay-hash acceptance without semantic proof.
 
 ## IMPLEMENTATION
 
-Stopped before full proof because MOVE-BULK-08 says `ready_for_post_restructure_full_proof = false`. Wrote blocked proof evidence only.
+Applied safe path/test/doc/proof repairs. Remaining root, policy, frozen-hash, replay, and full CTest blockers are classified instead of suppressed.
 
 ## VALIDATION
 
-Initial git sync/ancestry checks passed. Full proof validation was not run because closure readiness blocked it.
+AIDE, strict structural validators, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, and internal pilot pass. Full CTest remains failing/incomplete.
 
 ## EVIDENCE
 
-- `.aide/reports/POST-RESTRUCTURE-00-status.md`
-- `.aide/reports/POST-RESTRUCTURE-00-blockers.md`
-- `.aide/reports/POST-RESTRUCTURE-00-next-readiness.json`
-- `docs/repo/POST_RESTRUCTURE_PROOF.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-evidence-index.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-master-remediation-ledger.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-final-root-matrix.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
+- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
 
 ## NON_GOALS
 
-No full proof execution, no build/test/product/projection/release proof, no feature work, and no root cleanup apply.
+No DOE-00 execution, no feature implementation, no public release, no root move batch, no validator weakening.
 
 ## ACCEPTANCE
 
-- Closure readiness was read.
-- Blocked status was recorded.
-- No proof commands past the closure gate were run.
-- Next remediation is exact.
+Partial repair baseline is acceptable only as blocker evidence. DOE-00 is not ready and feature implementation remains blocked.
 
 ## OUTPUT_SCHEMA
 
-Evidence is Markdown plus JSON reports under schema prefix `dominium.post_restructure_00.*.v1`.
+Evidence is emitted as Markdown status reports, JSON readiness/root-matrix reports, and one appended migration ledger JSONL event.
 
 ## TOKEN_ESTIMATE
 
-Compact task packet, under 1,200 tokens.
+Small. The packet is intended to remain below AIDE Lite task-packet budget.

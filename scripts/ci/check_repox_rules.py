@@ -81,8 +81,8 @@ CANON_LEVEL_FIELD_RE = re.compile(r"\bcanon_level\s*[:=]\s*([A-Za-z0-9_.-]+)\b",
 ALLOWED_ARCHIVE_ROOTS = (
     "docs/archive",
     "archive/historical/labs",
-    "legacy",
-    "tmp",
+    "archive/legacy",
+    "archive/generated",
 )
 
 CANON_INDEX_PATH = "docs/architecture/CANON_INDEX.md"

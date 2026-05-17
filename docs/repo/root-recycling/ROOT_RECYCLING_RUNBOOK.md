@@ -73,3 +73,11 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- RESTRUCTURE-REPAIR-00 -->
+
+## RESTRUCTURE-REPAIR-00 Repair Rule
+
+Safe repair may fix stale paths, stale test fixtures, deterministic proof metadata, and current-status evidence. It must not force deferred root moves, refresh frozen contract hashes, extend expired overrides, accept replay hash drift, or retire layout exceptions unless the root is empty and the exception plan permits it.
+
+RESTRUCTURE-REPAIR-00 confirmed that 23 formerly bad roots still require deferred owner-specific remediation. The next root cleanup task remains `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.

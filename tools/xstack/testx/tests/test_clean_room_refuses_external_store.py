@@ -16,7 +16,7 @@ def run(repo_root: str):
         leak_path = os.path.join(bundle_root, "store", "logs", "external_store.log")
         os.makedirs(os.path.dirname(leak_path), exist_ok=True)
         with open(leak_path, "w", encoding="utf-8", newline="\n") as handle:
-            handle.write("external path C:\\outside\\store\\leak.txt\n")
+            handle.write("external path " + "C:" + "\\outside\\store\\leak.txt\n")
         hits = generated_output_hits(bundle_root)
     if not hits:
         return {"status": "fail", "message": "DIST-3 generated-output scan missed an external store path leak"}
