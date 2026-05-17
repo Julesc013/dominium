@@ -87,3 +87,17 @@ MOVE-FAMILY-00B-PLAN planned the tracked IDE manifest source-metadata migration 
 - Apply remains unauthorized.
 - Generated IDE projection output under `ide/manifests/*.projection.json` remains generated/local output and must not be committed.
 - Next recommended task: `MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate`.
+
+## MOVE-FAMILY-00B-GATE Update
+
+MOVE-FAMILY-00B-GATE reviewed the draft IDE manifest projection plan and authorized only the next apply task.
+
+- Result: PASS_WITH_WARNINGS.
+- Planned moves reviewed: 3 tracked files from `ide/manifests/**` to `contracts/projections/ide/**`.
+- Apply rewrite groups reviewed: 5.
+- Target collision status: no tracked or filesystem target collisions found; `contracts/projections/ide/**` is planned for creation during apply.
+- Exception condition: retire `ide` only if approved apply leaves `git ls-files ide` empty and validators pass.
+- Authorized next task: `MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration`.
+- Authorized scope: the three planned IDE manifest moves only.
+- All other moves remain unauthorized.
+- No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate.

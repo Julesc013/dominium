@@ -130,3 +130,13 @@ The gate must confirm:
 ## No Moves/Deletes/Renames Confirmation
 
 MOVE-FAMILY-00B-PLAN made no source-root moves, deletes, renames, reference rewrites, active aliases, compatibility shims, salvage-map applications, move-map applications, or exception retirements.
+
+## MOVE-FAMILY-00B-GATE Note
+
+MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-APPLY` for the three planned tracked IDE manifest moves:
+
+- `ide/manifests/projection_manifest.schema.json` -> `contracts/projections/ide/projection_manifest.schema.json`
+- `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` -> `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` -> `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+
+No other move wave is authorized. The `ide` layout exception may retire only after the apply task proves `git ls-files ide` is empty and validators pass.

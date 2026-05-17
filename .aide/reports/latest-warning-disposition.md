@@ -112,3 +112,13 @@ Superseded By: none
 - Generated `ide/manifests/*.projection.json` references are warning-only if they remain classified as generated-output references, not tracked source authority.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by scope.
 - No files were moved, deleted, renamed, or rewritten.
+
+## MOVE-FAMILY-00B-GATE
+
+- Gate result is PASS_WITH_WARNINGS, not BLOCKED.
+- The absent `contracts/projections/ide/**` target directory is warning-only because the reviewed plan creates it during apply and no target collision exists.
+- Historical/audit `ide/manifests/**` references remain warning-only and should not be rewritten by the apply task.
+- Generated-output `ide/manifests/*.projection.json` references remain warning-only if the apply task preserves them as generated/local output references.
+- Strict validators emitted known TOML fallback-parser warnings while passing.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by gate scope.
+- No files were moved, deleted, renamed, or rewritten.

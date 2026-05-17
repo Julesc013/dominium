@@ -1,0 +1,129 @@
+{
+  "schema_version": "dominium.move_family_00b.gate.v1",
+  "task_id": "MOVE-FAMILY-00B-GATE",
+  "gate_result": "PASS_WITH_WARNINGS",
+  "head": "32dc93947661c98935d1308f7144eab5e78984bf",
+  "origin_main": "32dc93947661c98935d1308f7144eab5e78984bf",
+  "branch": "main",
+  "planned_moves": [
+    {
+      "source": "ide/manifests/projection_manifest.schema.json",
+      "target": "contracts/projections/ide/projection_manifest.schema.json",
+      "action": "move",
+      "risk": "medium"
+    },
+    {
+      "source": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "target": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "action": "move",
+      "risk": "medium"
+    },
+    {
+      "source": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "action": "move",
+      "risk": "medium"
+    }
+  ],
+  "planned_move_count": 3,
+  "deferred_tracked_manifest_count": 0,
+  "blocked_count": 0,
+  "plan_state": {
+    "status": "draft",
+    "approval_status": "not_approved",
+    "apply_allowed": false
+  },
+  "rewrite_groups": {
+    "planned": 5,
+    "review_or_later": 5,
+    "historical_never_rewrite": 4
+  },
+  "target_collision_status": {
+    "contracts_projections_ide_exists": false,
+    "target_files_exist": false,
+    "collision": false,
+    "target_creation_planned": true
+  },
+  "exception_policy": {
+    "retire_ide_only_if_git_ls_files_ide_empty": true,
+    "retire_broader_exceptions": false
+  },
+  "no_apply_invariants": {
+    "moves_applied": false,
+    "deletes_applied": false,
+    "renames_applied": false,
+    "references_rewritten": false,
+    "active_aliases": false,
+    "exceptions_retired": false,
+    "product_source_runtime_build_changed": false
+  },
+  "validation": [
+    {
+      "command": "git status --short --branch",
+      "result": "PASS",
+      "notes": "Initial state clean on main...origin/main."
+    },
+    {
+      "command": "git fetch --all --prune",
+      "result": "PASS",
+      "notes": "origin/main remained equal to HEAD."
+    },
+    {
+      "command": "plan JSON/TOML invariant inspection",
+      "result": "PASS",
+      "notes": "Exact three sources, targets under contracts/projections/ide, not approved, apply_allowed false."
+    },
+    {
+      "command": "git ls-files ide",
+      "result": "PASS",
+      "notes": "Exactly three tracked IDE manifest files."
+    },
+    {
+      "command": "git ls-files contracts/projections/ide",
+      "result": "PASS",
+      "notes": "No tracked target collisions."
+    },
+    {
+      "command": "AIDE doctor/validate/test/selftest/tools/roots/repo and commit check",
+      "result": "PASS",
+      "notes": "All required AIDE gate checks passed."
+    },
+    {
+      "command": "strict repo/root/distribution/component validators",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "All strict validators passed; known TOML fallback-parser warnings were emitted."
+    },
+    {
+      "command": "docs/build/UI/ABI checks",
+      "result": "PASS",
+      "notes": "Docs sanity, build target boundaries, UI shell purity, and ABI boundary checks passed."
+    },
+    {
+      "command": "python -m json.tool .aide/reports/MOVE-FAMILY-00B-GATE-readiness.json",
+      "result": "PASS",
+      "notes": "Gate readiness JSON parsed."
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS",
+      "notes": "No whitespace errors in unstaged diff."
+    },
+    {
+      "command": "git diff --cached --check",
+      "result": "PASS",
+      "notes": "No staged diff at report creation time."
+    }
+  ],
+  "known_warnings": [
+    "contracts/projections/ide/** target directory does not exist yet but is planned for apply",
+    "historical/audit references to old ide/manifests/** paths remain by design",
+    "generated-output references to ide/manifests/*.projection.json remain review/later items",
+    "strict validators emit known TOML fallback-parser warnings",
+    "full CTest, full eval, CMake configure/build, package/release generation, product binary execution, portable projection regeneration, and internal pilot release regeneration were not run by scope"
+  ],
+  "blockers": [],
+  "authorized_next": [
+    "MOVE-FAMILY-00B-APPLY"
+  ],
+  "authorized_scope": "ide/manifests/** -> contracts/projections/ide/** for the three planned files only"
+}

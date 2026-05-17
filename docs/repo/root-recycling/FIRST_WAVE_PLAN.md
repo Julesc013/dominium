@@ -87,3 +87,7 @@ MOVE-FAMILY-00B-PLAN produced a no-apply draft plan for the remaining tracked ID
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
 - Apply allowed: false.
 - The future apply task must keep generated IDE projection output ignored and may retire the `ide` source-layout exception only after `git ls-files ide` is empty and validators pass.
+
+## MOVE-FAMILY-00B-GATE Result
+
+MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-APPLY` for the three planned `ide/manifests/**` to `contracts/projections/ide/**` moves. No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate. All other MOVE-FAMILY waves remain unauthorized.

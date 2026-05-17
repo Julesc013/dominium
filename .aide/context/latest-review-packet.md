@@ -68,3 +68,16 @@ This review packet is intentionally compact and references repo evidence by path
 ## Reviewer Instructions
 
 Check that the diff is limited to scoped planning evidence and documentation, apply remains disabled, and the recommended next task is `MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate`.
+
+## MOVE-FAMILY-00B-GATE REVIEW UPDATE
+
+- Gate result: PASS_WITH_WARNINGS.
+- Gate evidence:
+  - `.aide/reports/MOVE-FAMILY-00B-GATE-readiness.md`
+  - `.aide/reports/MOVE-FAMILY-00B-GATE-readiness.json`
+  - `.aide/reports/MOVE-FAMILY-00B-GATE-validation.md`
+  - `.aide/reports/MOVE-FAMILY-00B-GATE-blockers.md`
+- Authorized next task: `MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration`.
+- Authorized scope: the three planned moves from `ide/manifests/**` to `contracts/projections/ide/**`.
+- All other root moves remain unauthorized.
+- No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate.

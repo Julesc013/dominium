@@ -104,3 +104,14 @@ Return a compact final report with `STATUS`, `SUMMARY`, `CHANGED_FILES`, `VALIDA
 
 - method: chars / 4, rounded up
 - budget_status: PASS
+
+## MOVE-FAMILY-00B-GATE UPDATE
+
+- Phase: MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate
+- Goal: review the draft MOVE-FAMILY-00B plan and decide whether the next apply task may move only the three tracked IDE manifest files.
+- Result: PASS_WITH_WARNINGS
+- Authorized next task: MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration
+- Authorized scope: `ide/manifests/**` to `contracts/projections/ide/**` for the three planned tracked files only.
+- Move apply authorized: true, limited to MOVE-FAMILY-00B-APPLY only.
+- Feature work authorized: false.
+- No moves, deletes, renames, reference rewrites, aliases, maps, or exception retirements were applied by the gate.
