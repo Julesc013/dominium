@@ -157,3 +157,21 @@ MOVE-FAMILY-00B-APPLY completed the IDE manifest source migration.
 - Required follow-up: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
 
 Future MOVE-FAMILY tasks must continue to use Tier 0 plus risk-specific validators from this file. This apply does not authorize governance, meta, performance, validation, package, release, runtime, or feature moves.
+
+## MOVE-FAMILY-00B-PROOF Outcome
+
+MOVE-FAMILY-00B-PROOF proved the IDE root retirement.
+
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` source-layout exception: retired and accepted by strict validators.
+- Replacement manifest files under `contracts/projections/ide/**`: tracked, present, JSON parse PASS.
+- Active stale references to old tracked schema/example source paths: none.
+- Remaining old-path references: historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references.
+- Baseline validation: Tier 0, strict validators, docs/build/UI/ABI checks, focused RepoX, manifest parsing, and generated-output ignored/staging checks passed with known warnings.
+
+Next recommended task:
+
+```text
+MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
+```

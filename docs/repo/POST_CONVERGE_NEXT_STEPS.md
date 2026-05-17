@@ -356,3 +356,16 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Focused RepoX passed after metadata-only status header repairs in three touched planning docs.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by scope.
 - Next recommended task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
+
+## MOVE-FAMILY-00B-PROOF Update - IDE Root Retirement Proof
+
+- Result: PASS_WITH_WARNINGS.
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` source-layout exception: retired and accepted by strict validators.
+- Tracked replacement files under `contracts/projections/ide/**`: present and JSON parse PASS.
+- Active stale references to retired tracked schema/example source paths: none.
+- Remaining old-path references are historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references.
+- AIDE validation, strict validators, docs/build/UI/ABI checks, focused RepoX, manifest parsing, generated-output ignored/staging checks, and git diff checks passed with known warnings.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by scope.
+- Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

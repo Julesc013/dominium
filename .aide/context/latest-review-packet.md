@@ -95,3 +95,20 @@ Check that the diff is limited to scoped planning evidence and documentation, ap
   - `.aide/reports/MOVE-FAMILY-00B-APPLY-rollback.md`
 - Reviewed state: three moves applied, five rewrite groups applied, `git ls-files ide` empty, `ide_root` retired.
 - Next review target: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
+
+## MOVE-FAMILY-00B-PROOF REVIEW UPDATE
+
+- Proof result: PASS_WITH_WARNINGS.
+- Evidence:
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-status.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-validation.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-blockers.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-root-retirement.json`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-reference-classification.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-reference-classification.json`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-baseline-regression.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-next-readiness.md`
+  - `.aide/reports/MOVE-FAMILY-00B-PROOF-next-readiness.json`
+  - `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_ROOT_RETIREMENT_PROOF.md`
+- Reviewed state: `git ls-files ide` empty, filesystem `ide/` absent, `ide_root` retired, moved manifests parse, no active stale source/tool/validator blockers.
+- Next review target: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

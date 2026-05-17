@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.move_family_00b.next_readiness.v1",
+  "task_id": "MOVE-FAMILY-00B-PROOF",
+  "result": "PASS_WITH_WARNINGS",
+  "ide_root_retired": true,
+  "move_apply_authorized": false,
+  "feature_work_authorized": false,
+  "recommended_next_task": "MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan",
+  "rationale": [
+    "MOVE-FAMILY-00B retired ide as tracked source and closed the machine-readable IDE manifest blocker.",
+    "MOVE-FAMILY-00 still has active validation, meta identity/stability, and governance tooling surfaces that need namespace and shim planning before apply.",
+    "performance remains product/runtime-sensitive and should stay preserve-current until a separate owner-specific plan exists."
+  ],
+  "blockers": []
+}

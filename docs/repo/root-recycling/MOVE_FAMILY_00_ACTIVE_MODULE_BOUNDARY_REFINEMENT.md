@@ -102,3 +102,18 @@ The remaining active-module ownership work is unchanged:
 - `validation/**`, `meta/identity/**`, and `meta/stability/**` still need shim-aware validator namespace planning.
 - `governance/**` still needs release/tool import proof before relocation.
 - semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
+
+## MOVE-FAMILY-00B Proof Follow-up
+
+`MOVE-FAMILY-00B-PROOF` proved the `ide/` root retirement state:
+
+- tracked `ide/` files: none;
+- filesystem `ide/` path: absent;
+- retired `ide_root` exception: accepted by strict validators;
+- active stale references to old tracked schema/example paths: none.
+
+The next family-00 task should now focus on active tooling/module ownership rather than IDE manifests:
+
+```text
+MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
+```

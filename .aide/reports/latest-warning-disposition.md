@@ -131,3 +131,12 @@ Superseded By: none
 - Historical/audit/planning references to old `ide/manifests/**` paths remain warning-only by design.
 - Focused RepoX initially failed on three touched planning docs missing the full four-line status header; metadata-only header repairs were applied and the rerun passed.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by apply scope.
+
+## MOVE-FAMILY-00B-PROOF
+
+- Proof result is PASS_WITH_WARNINGS, not BLOCKED.
+- Historical/audit/planning/root-recycling/AIDE references to old `ide/manifests/**` paths remain warning-only by design.
+- Generated-output references to `ide/manifests/*.projection.json` remain warning-only because they describe ignored local projection output, not tracked source authority.
+- Strict validators emitted known TOML fallback-parser warnings while passing.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by proof scope.
+- No files were moved, deleted, renamed, or rewritten by the proof task.

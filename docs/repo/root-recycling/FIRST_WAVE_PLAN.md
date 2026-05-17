@@ -95,3 +95,14 @@ MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-A
 ## MOVE-FAMILY-00B-APPLY Result
 
 MOVE-FAMILY-00B-APPLY moved the three tracked IDE manifest files to `contracts/projections/ide/**`, applied the five approved reference rewrite groups, removed the empty `ide/` directory tree, and retired the `ide` source-layout exception after `git ls-files ide` became empty. All other MOVE-FAMILY moves remain unauthorized.
+
+## MOVE-FAMILY-00B-PROOF Result
+
+MOVE-FAMILY-00B-PROOF proved the first bad-root retirement.
+
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` exception: retired and accepted by strict validators.
+- Active stale references to old tracked schema/example paths: none.
+- Remaining old-path references are warning-only historical/planning/audit/AIDE/generated-output references.
+- Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

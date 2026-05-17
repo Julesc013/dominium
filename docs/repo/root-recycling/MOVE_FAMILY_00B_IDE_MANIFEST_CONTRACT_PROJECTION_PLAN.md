@@ -154,3 +154,14 @@ MOVE-FAMILY-00B-APPLY consumed the gate authorization and applied the three plan
 - `ide` source-layout exception: retired after strict validators passed.
 - Generated `ide/manifests/*.projection.json` output remains an ignored local-output concern if regenerated later.
 - Next task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
+
+## MOVE-FAMILY-00B-PROOF Result
+
+MOVE-FAMILY-00B-PROOF proved that the plan and apply achieved tracked `ide/` retirement without baseline regression.
+
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` exception: retired.
+- Active stale references to old tracked schema/example source paths: none.
+- Remaining old-path references are historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references.
+- Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

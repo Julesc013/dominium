@@ -116,3 +116,17 @@ MOVE-FAMILY-00B-APPLY applied the scoped IDE manifest projection migration.
 - Focused RepoX: passed after touched-doc status header repair.
 - Next recommended task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
 - All other root-family moves remain unauthorized.
+
+## MOVE-FAMILY-00B-PROOF Update
+
+MOVE-FAMILY-00B-PROOF proved the IDE root retirement.
+
+- Result: PASS_WITH_WARNINGS.
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` exception: retired.
+- Replacement manifests under `contracts/projections/ide/**`: tracked, present, JSON parse PASS.
+- Active stale references to old tracked schema/example source paths: none.
+- Focused RepoX: PASS.
+- Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.
+- All other root-family moves remain unauthorized.

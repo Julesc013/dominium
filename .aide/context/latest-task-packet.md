@@ -78,6 +78,29 @@ MOVE-FAMILY-00-REFINE found that `ide/manifests/**` is the smallest remaining ro
 - `.aide/reports/MOVE-FAMILY-00B-PLAN-*`
 - `docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_MANIFEST_CONTRACT_PROJECTION_PLAN.md`
 
+## MOVE-FAMILY-00B-PROOF TASK UPDATE
+
+Current proof task:
+
+```text
+MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof
+```
+
+Proof target:
+
+- prove `git ls-files ide` is empty;
+- prove filesystem `ide/` is absent or empty;
+- prove `ide_root` exception retirement remains valid;
+- prove moved manifests under `contracts/projections/ide/**` parse;
+- classify old `ide/manifests/**` references;
+- run Tier 0 plus focused RepoX validation.
+
+Next recommended task after proof:
+
+```text
+MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan
+```
+
 ## NON_GOALS
 
 - No move application.

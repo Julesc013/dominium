@@ -68,3 +68,15 @@ Rollback requires explicit approval and must reverse the three moves, five refer
 ```text
 MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof
 ```
+
+## MOVE-FAMILY-00B-PROOF Result
+
+MOVE-FAMILY-00B-PROOF verified the apply result.
+
+- `git ls-files ide`: empty.
+- Filesystem `ide/`: absent.
+- `ide_root` exception: retired and accepted by strict validators.
+- Moved manifest files under `contracts/projections/ide/**`: tracked, present, JSON parse PASS.
+- Old-path active source/tool/validator blockers: none.
+- Remaining old-path references: historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references only.
+- Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

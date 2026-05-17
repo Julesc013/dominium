@@ -1,0 +1,101 @@
+{
+  "schema_version": "dominium.move_family_00b.reference_classification.v1",
+  "task_id": "MOVE-FAMILY-00B-PROOF",
+  "head": "7077e317c3c87a75036c8b76fe70cce112ef0bbc",
+  "scan_scope": {
+    "source": "tracked files from git ls-files before this proof report set was created",
+    "old_path_patterns": [
+      "ide/manifests",
+      "projection_manifest_examples",
+      "ide\\\\manifests"
+    ],
+    "tracked_files_with_old_path_references": 135,
+    "note": "This proof's own reports add audit/proof references to old paths after the scan and are classified as proof evidence."
+  },
+  "old_reference_summary": {
+    "active_source_blockers": 0,
+    "active_tool_schema_or_example_blockers": 0,
+    "active_validator_blockers": 0,
+    "current_architecture_schema_or_example_blockers": 0,
+    "generated_output_references": 6,
+    "historical_planning_audit_or_aide_reference_files": 129
+  },
+  "classifications": [
+    {
+      "category": "generated_output_producer_reference",
+      "paths": [
+        "scripts/ide_gen.sh",
+        "scripts/ide_gen.bat",
+        "cmake/ide/IdeProjectionManifest.cmake",
+        "data/release/preset_and_toolchain_registry.json",
+        "docs/release/PRESET_AND_TOOLCHAIN_CONSOLIDATION.md"
+      ],
+      "status": "warning_only",
+      "reason": "These references describe or produce ignored generated projection manifests under ide/manifests/*.projection.json, not tracked schema/example source authority."
+    },
+    {
+      "category": "generated_output_architecture_doc",
+      "paths": [
+        "docs/architecture/IDE_PROJECTIONS.md",
+        "docs/architecture/PROJECTION_LIFECYCLE.md"
+      ],
+      "status": "warning_only",
+      "reason": "Current architecture docs intentionally distinguish contracts/projections/ide schema/examples from generated ide/manifests output paths."
+    },
+    {
+      "category": "root_recycling_history",
+      "paths": [
+        "docs/repo/root-recycling/MOVE_FAMILY_00B_APPLY_RESULT.md",
+        "docs/repo/root-recycling/MOVE_FAMILY_00B_IDE_MANIFEST_CONTRACT_PROJECTION_PLAN.md",
+        "docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md",
+        "docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md",
+        "docs/repo/root-recycling/FIRST_WAVE_PLAN.md",
+        "docs/repo/root-recycling/ROOT_RECYCLING_RUNBOOK.md"
+      ],
+      "status": "warning_only",
+      "reason": "Root-recycling documents preserve the history of the planned and applied move."
+    },
+    {
+      "category": "AIDE_context_or_generated_evidence",
+      "paths": [
+        ".aide/refactors/**",
+        ".aide/reports/**",
+        ".aide/context/**",
+        ".aide/roots/**",
+        ".aide/repo/**",
+        ".aide/install/**",
+        ".aide/repair/**",
+        ".aide/queue/**"
+      ],
+      "status": "warning_only",
+      "reason": "These are planning, root inventory, context, and generated evidence surfaces that intentionally preserve old source paths."
+    },
+    {
+      "category": "audit_or_planning_evidence",
+      "paths": [
+        "docs/audit/**",
+        "docs/planning/**",
+        "data/architecture/**",
+        "data/planning/**",
+        "tools/aide/select_move_wave.py"
+      ],
+      "status": "warning_only",
+      "reason": "These references are historical or planning evidence and are not active consumers of the retired tracked IDE manifest source files."
+    }
+  ],
+  "targeted_blocker_scans": [
+    {
+      "command": "rg -n \"ide/manifests/projection_manifest\\\\.schema\\\\.json|projection_manifest_examples\" scripts tools cmake .gitignore docs/architecture",
+      "result": "PASS",
+      "matches": 0
+    },
+    {
+      "command": "rg -n \"ide/manifests\" scripts/verify_docs_sanity.py .gitignore docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md docs/architecture/PROJECTION_LIFECYCLE.md docs/architecture/IDE_PROJECTIONS.md",
+      "result": "PASS_WITH_WARNINGS",
+      "matches": 2,
+      "notes": "Only generated-output documentation references remain under docs/architecture."
+    }
+  ],
+  "blocking_old_path_references": [],
+  "new_path_reference_status": "PASS"
+}
