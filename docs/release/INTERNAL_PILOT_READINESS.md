@@ -85,3 +85,20 @@ Recommended next task:
 ```text
 DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan
 ```
+
+## BASELINE-00 Update
+
+RELEASE-00 remains accepted as local internal pilot proof, but the immediate next repository task is now structural cleanup planning, not DOE-00.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Internal pilot release root: `.dominium.local/releases/internal-pilot-0`.
+- Projection input: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Strict internal pilot validation remains the release regression check for move families that touch release/projection prerequisites.
+- Generated release/projection/build output remains ignored/local and must not be committed.
+- DOE-00 and feature work are deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
+
+Recommended next task:
+
+```text
+MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan
+```

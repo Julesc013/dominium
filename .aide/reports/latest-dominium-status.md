@@ -34,3 +34,18 @@ Public package/release generation, installer generation, tag creation, upload, a
 ## Next Recommended Task
 
 `DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan`, with `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline` as the parallel validation-speed follow-up.
+
+## BASELINE-00 Update
+
+RELEASE-00 is now frozen as the structural regression baseline for MOVE-FAMILY cleanup waves.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Internal pilot release root: `.dominium.local/releases/internal-pilot-0`.
+- Portable projection root: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Generated release/projection/build/local outputs remain ignored and uncommitted.
+- Move apply is not authorized by BASELINE-00.
+- DOE-00 and feature work are deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
+
+## Next Recommended Task After BASELINE-00
+
+`MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan`.

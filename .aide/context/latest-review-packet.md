@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review RELEASE-00 and confirm that internal pilot release staging is local-only, ignored, validated, and recorded without creating a public release, tag, upload, installer, package publication, source move, or product/runtime behavior change.
+Review BASELINE-00 and confirm that RELEASE-00 was frozen as the structural regression baseline without applying moves, deleting files, renaming files, rewriting references, publishing release artifacts, or committing generated output.
 
 ## Decision Requested
 
@@ -23,34 +23,31 @@ Return exactly one of `PASS`, `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`
 
 ## Evidence Packet References
 
-- `.aide/reports/RELEASE-00-status.md`
-- `.aide/reports/RELEASE-00-validation.md`
-- `.aide/reports/RELEASE-00-blockers.md`
-- `.aide/reports/RELEASE-00-internal-pilot-results.json`
-- `.aide/reports/RELEASE-00-internal-pilot-results.md`
-- `.aide/reports/RELEASE-00-release-tree.json`
-- `.aide/reports/RELEASE-00-next-readiness.json`
-- `.aide/reports/RELEASE-00-next-readiness.md`
-- `docs/repo/audits/RELEASE_00_INTERNAL_PILOT_RELEASE.md`
-- `docs/release/INTERNAL_PILOT_RELEASE_0.md`
-- `docs/release/PORTABLE_PROJECTION_PROOF.md`
-- `docs/release/INTERNAL_PILOT_READINESS.md`
+- `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md`
+- `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
+- `docs/repo/audits/BASELINE_00_RELEASE_STRUCTURAL_REGRESSION_BASELINE.md`
+- `.aide/reports/BASELINE-00-status.md`
+- `.aide/reports/BASELINE-00-validation.md`
+- `.aide/reports/BASELINE-00-blockers.md`
+- `.aide/reports/BASELINE-00-structural-regression-baseline.json`
+- `.aide/reports/BASELINE-00-required-regression-commands.md`
+- `.aide/reports/BASELINE-00-next-readiness.json`
+- `.aide/reports/BASELINE-00-next-readiness.md`
 
 ## Changed Files Summary
 
-- Added RELEASE-00 internal pilot reports and audit evidence.
-- Added local-only internal pilot release staging and validation tooling.
-- Staged `.dominium.local/releases/internal-pilot-0` as ignored generated proof output.
-- Recorded DOE-00 readiness with operational warnings.
-- Updated post-converge and release status docs, latest packets, latest status, warning disposition, and migration ledger.
+- Added BASELINE-00 structural regression baseline docs and AIDE reports.
+- Recorded RELEASE-00 release/projection proof roots, manifests, checksums, binaries, warnings, and comparison rules.
+- Updated post-converge, release, root-recycling, latest status, warning disposition, review packet, and migration ledger surfaces.
+- Preserved generated release/projection/build/local outputs as ignored and uncommitted evidence.
 
 ## Validation Summary
 
-Internal pilot staging validates with no blockers. The strict validator verifies required manifests, proof reports, native binaries, provenance, ignored-root status, no absolute host paths in checked manifests, and 4718 checksum entries.
+BASELINE-00 validation records passing AIDE checks, strict repo/root/distribution/component validators, release/projection validators, focused RepoX, smoke CTest, docs/build/UI/ABI checks, JSON parse checks, generated-output ignored checks, and git diff checks. Full CTest and full eval remain out of scope.
 
 ## Risk Summary
 
-Remaining risks are operational warnings: no public release, tag, upload, installer, package publication, or full promotion CTest was run. Generated release staging is local ignored evidence and must not be committed.
+Remaining risks are warning-only baseline limitations: full promotion CTest and full eval were not run; no public release artifacts were created; generated proof roots are local ignored evidence; DOE-00 and feature work are deferred until MOVE-FAMILY cleanup and post-restructure proof.
 
 ## Token Summary
 
@@ -58,12 +55,13 @@ This review packet is intentionally compact and references repo evidence by path
 
 ## Non-Goals / Scope Guard
 
-- no root moves, deletes, renames, aliases, or move maps
-- no public release, GitHub release, tag, upload, installer, or package publication
-- no committed generated release/projection/build output
+- no source-root moves, deletes, renames, active aliases, move maps, or salvage maps
+- no public release, GitHub release, tag, upload, installer, package publication, or generated package output
+- no committed generated release/projection/build/local output
 - no product/runtime/source behavior changes
 - no RepoX/AuditX/TestX weakening
+- no MOVE-FAMILY apply work
 
 ## Reviewer Instructions
 
-Check that the committed changes are limited to proof evidence, docs, the local-only stager, and the read-only validator; generated release output stays ignored; and the DOE-00 readiness decision follows the validator evidence.
+Check that the diff is limited to scoped baseline evidence and documentation; generated output remains ignored and untracked; and the required next task is `MOVE-FAMILY-00-PLAN`.

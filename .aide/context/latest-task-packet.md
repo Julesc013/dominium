@@ -2,92 +2,122 @@
 
 ## PHASE
 
-RELEASE-00 - Internal Pilot Release 0
+structural-regression-baseline - BASELINE-00 - Freeze RELEASE-00 Structural Regression Baseline
 
 ## GOAL
 
-Stage and validate a local-only internal pilot release proof tree from the proven portable projection. Preserve generated release bytes under `.dominium.local/` and commit only proof evidence, docs, and narrow local tooling.
+BASELINE-00 - Freeze RELEASE-00 Structural Regression Baseline
 
 ## WHY
 
-Dominium needs one self-describing internal proof artifact before moving into operating-environment MVP spine work. RELEASE-00 collects the proven projection, manifests, checksums, proof reports, warning ledger, runbook, and rollback notes without publishing a release.
-
-## CURRENT RESULT
-
-PASS_WITH_WARNINGS. Internal Pilot Release 0 is staged under `.dominium.local/releases/internal-pilot-0`; strict validation passes with no blockers and verifies 4718 checksum entries.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `docs/repo/audits/RELEASE_00_INTERNAL_PILOT_RELEASE.md`
-- `docs/release/INTERNAL_PILOT_RELEASE_0.md`
-- `docs/release/PORTABLE_PROJECTION_PROOF.md`
-- `docs/release/INTERNAL_PILOT_READINESS.md`
-- `.aide/reports/RELEASE-00-internal-pilot-results.json`
-- `.aide/reports/RELEASE-00-release-tree.json`
-- `.aide/reports/RELEASE-00-next-readiness.json`
-- `.aide/reports/RELEASE-00-validation.md`
-- `.aide/reports/RELEASE-00-blockers.md`
-
-## IMPLEMENTATION
-
-RELEASE-00 adds a narrow local-only stager and read-only validator, stages `.dominium.local/releases/internal-pilot-0`, validates manifests/checksums/proofs/binaries, and records readiness for DOE-00.
-
-## EVIDENCE
-
-- Portable projection input: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
-- Internal release root: `.dominium.local/releases/internal-pilot-0`.
-- Validator: `python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict`.
-- Result: PASS, blockers none, checksum entries 4718.
-
-## NON_GOALS
-
-- no root moves, deletes, renames, aliases, move maps, or salvage maps
-- no public release, GitHub release, tag, upload, installer, or package publication
-- no committed generated release/projection/build output
-- no product/runtime/source behavior changes
-- no RepoX/AuditX/TestX weakening
-
-## ACCEPTANCE
-
-- portable projection input is read and accepted
-- local release staging root is generated under ignored `.dominium.local/`
-- internal pilot manifest, provenance, checksums, proof reports, warning ledger, runbook, and rollback notes exist
-- strict internal pilot validator passes
-- generated release staging remains uncommitted
-- exact next task is recommended
-
-## OUTPUT_SCHEMA
-
-Human-readable reports plus JSON evidence:
-
-- `.aide/reports/RELEASE-00-internal-pilot-results.json`
-- `.aide/reports/RELEASE-00-release-tree.json`
-- `.aide/reports/RELEASE-00-next-readiness.json`
-
-## TOKEN_ESTIMATE
-
-Latest packet is intended to stay below the AIDE compact-context budget.
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- AIDE reports/context/ledger
-- post-converge and release status docs
-- release audit evidence
-- local-only release stager and read-only validator
+- `.aide/context/**`
+- `.aide/reports/**`
+- `.aide/ledgers/**`
+- `docs/repo/**`
+- `docs/release/**`
+- no source/runtime/product paths
 
 ## FORBIDDEN_PATHS
 
-- product/runtime/source behavior changes
-- committed generated product/projection/package/release artifacts
-- public release, GitHub release, tag, upload, installer, or package publication
-- root moves, deletes, renames, aliases, or move maps
-- broad AuditX output regeneration
-- RepoX/AuditX/TestX weakening
+- `.git/**`
+- `.env`
+- `secrets/**`
+- `.aide.local/**`
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+
+## IMPLEMENTATION
+
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-RELEASE-00 validates the stager, read-only validator, release root checksum/provenance/proof structure, JSON reports, AIDE checks, repo/layout/distribution/component validators, docs/build/UI/ABI checks, and git diff hygiene.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
 
-## NEXT
+## COMMITS
 
-Recommended next task: `DOE-00 - Dominium Operating Environment Doctrine and Boot Spine Plan`. Validation-speed follow-up remains `TEST-PERF-01 - CTest Sharding and Slow-Test Baseline`.
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
+
+## EVIDENCE
+
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
+
+## NON_GOALS
+
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+
+## ACCEPTANCE
+
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+
+## OUTPUT_SCHEMA
+
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
+
+## TOKEN_ESTIMATE
+
+- method: chars / 4, rounded up
+- chars: 4186
+- approx_tokens: 1047
+- budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

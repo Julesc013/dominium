@@ -44,3 +44,13 @@ AIDE-MOVE-02-PLAN reviewed the next preferred roots and did not select a second 
 ## AIDE-MOVE-02-REFINE Result
 
 AIDE-MOVE-02-REFINE narrowed the search to single-file docs, historical/evidence files, README-style files, template scaffolds, and generated review artifacts. No candidate passed the low-risk filter. `templates/` contained the closest near-misses, but both files are template scaffolds with protected spec/XStack references and conversion fates. The recommended next task is `POST-CONVERGE-10F - Unit Annotation and RepoX Rule Remediation`, not `AIDE-GATE-04`.
+
+## BASELINE-00 Result
+
+RELEASE-00 is now frozen as the structural regression baseline before the next root cleanup sequence.
+
+- Move apply remains unauthorized.
+- The next task is `MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan`.
+- Future first-wave selection must use `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md` and `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`.
+- Generated release/projection/build/local outputs must remain ignored and uncommitted.
+- DOE-00 and feature work remain deferred until MOVE-FAMILY cleanup and post-restructure proof pass.

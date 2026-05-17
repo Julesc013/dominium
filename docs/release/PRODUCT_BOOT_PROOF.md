@@ -143,3 +143,12 @@ The portable projection that includes the native command-surface binaries was st
 - `tools.exe`
 
 RELEASE-00 does not add gameplay proof. It preserves the command/help/status/smoke level established by the product boot closeout evidence.
+
+## BASELINE-00 Update
+
+BASELINE-00 freezes the RELEASE-00 command-surface product boot posture as part of the structural regression baseline.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Product command-surface baseline: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` present in the portable projection and internal pilot staging roots.
+- Proof level remains command/help/status/smoke; no gameplay, renderer, native GUI, or operating-environment MVP proof is added by BASELINE-00.
+- Future build-sensitive MOVE-FAMILY waves must preserve this proof level or rerun product boot proof before claiming success.

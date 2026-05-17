@@ -1,0 +1,20 @@
+{
+  "schema_version": "dominium.baseline_00.next_readiness.v1",
+  "task_id": "BASELINE-00",
+  "baseline_frozen": true,
+  "ready_for_move_family_00_plan": true,
+  "move_apply_authorized": false,
+  "feature_work_authorized": false,
+  "ready_for_doe_00": false,
+  "readiness": "yes_with_warnings",
+  "blockers": [],
+  "warnings": [
+    "full promotion CTest was not run",
+    "full eval was not run",
+    "no public package, installer, tag, GitHub release, upload, or release publication was created",
+    "generated release, projection, build, and local AIDE outputs remain ignored proof evidence",
+    "DOE-00 and feature work are deferred until MOVE-FAMILY cleanup and post-restructure proof"
+  ],
+  "required_next_task": "MOVE-FAMILY-00-PLAN",
+  "recommended_next_task": "MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan"
+}

@@ -168,3 +168,16 @@ Internal Pilot Release 0 consumes the portable projection copy of the five nativ
 ```
 
 The strict internal pilot validator confirms the staged projection contains all five native binaries and that generated release staging remains ignored/local and uncommitted.
+
+## BASELINE-00 Update
+
+BASELINE-00 freezes the RELEASE-00 native binary proof state as part of the structural regression baseline.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Required native binaries: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe`.
+- Required generated roots remain local and ignored:
+  - `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`
+  - `.dominium.local/releases/internal-pilot-0`
+- Full promotion CTest and full eval remain not run.
+
+Future core, runtime, build, lib/libs, ABI, or UI-bind MOVE-FAMILY waves must rerun the build/product proof tier required by `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`.

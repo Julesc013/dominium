@@ -1,0 +1,100 @@
+{
+  "schema_version": "dominium.baseline_00.structural_regression.v1",
+  "task_id": "BASELINE-00",
+  "head": "0b631fc5f09f3d927a54e8312976b926d111a72e",
+  "origin_main": "0b631fc5f09f3d927a54e8312976b926d111a72e",
+  "branch": "main",
+  "release_00": {
+    "status": "PASS_WITH_WARNINGS",
+    "release_root": ".dominium.local/releases/internal-pilot-0",
+    "projection_root": ".dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium",
+    "validator_status": "PASS",
+    "stager_time_repo_head": "c7d0a1a1b4d92a127bfb58cb740d4d177131f213",
+    "stager_time_origin_main": "7b9068bd421d1fa4ae872fdda598d412313548fe",
+    "checksums_entries": 4718,
+    "generated_output_ignored": true,
+    "generated_output_committed": false
+  },
+  "baseline_artifacts": [
+    "docs/repo/audits/RELEASE_00_INTERNAL_PILOT_RELEASE.md",
+    "docs/release/INTERNAL_PILOT_RELEASE_0.md",
+    "docs/release/INTERNAL_PILOT_READINESS.md",
+    "docs/release/NATIVE_BINARY_PROOF.md",
+    "docs/release/PRODUCT_BOOT_PROOF.md",
+    "docs/release/PORTABLE_PROJECTION_PROOF.md",
+    ".aide/reports/RELEASE-00-status.md",
+    ".aide/reports/RELEASE-00-validation.md",
+    ".aide/reports/RELEASE-00-blockers.md",
+    ".aide/reports/RELEASE-00-internal-pilot-results.json",
+    ".aide/reports/RELEASE-00-release-tree.json"
+  ],
+  "baseline_commands": {
+    "tier0": [
+      "py -3 .aide/scripts/aide_lite.py doctor",
+      "py -3 .aide/scripts/aide_lite.py validate",
+      "py -3 .aide/scripts/aide_lite.py test",
+      "py -3 .aide/scripts/aide_lite.py selftest",
+      "py -3 .aide/scripts/aide_lite.py tools validate",
+      "py -3 .aide/scripts/aide_lite.py roots validate",
+      "py -3 .aide/scripts/aide_lite.py repo validate",
+      "py -3 .aide/scripts/aide_lite.py commit check --latest",
+      "python tools/validators/check_repo_layout.py --repo-root . --strict",
+      "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+      "python tools/validators/check_distribution_layout.py --repo-root . --strict",
+      "python tools/validators/check_component_matrices.py --repo-root . --strict",
+      "python scripts/verify_docs_sanity.py --repo-root .",
+      "python scripts/verify_build_target_boundaries.py --repo-root .",
+      "python scripts/verify_ui_shell_purity.py --repo-root .",
+      "python scripts/verify_abi_boundaries.py --repo-root .",
+      "git status --short --branch",
+      "git diff --check"
+    ],
+    "tier1": [
+      "ctest --preset verify -R inv_repox_rules --output-on-failure",
+      "ctest --preset verify -L smoke --output-on-failure --timeout 300",
+      "affected AIDE wrapper command, when a wrapper is touched"
+    ],
+    "tier2": [
+      "python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium --strict",
+      "python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --strict",
+      "content/package/profile validators, when present",
+      "ctest --preset verify -L smoke --output-on-failure --timeout 300"
+    ],
+    "tier3": [
+      "cmake --preset verify",
+      "cmake --build --preset verify",
+      "focused CTest for touched runtime/build/component area",
+      "ctest --preset verify -L smoke --output-on-failure --timeout 300",
+      "product boot proof",
+      "portable projection proof",
+      "internal pilot release proof"
+    ],
+    "tier4": [
+      "full or accepted-sharded CTest",
+      "post-restructure layout audit",
+      "native build proof",
+      "product boot proof",
+      "portable projection proof",
+      "internal pilot rebuild and strict validation"
+    ]
+  },
+  "known_warnings": [
+    "full promotion CTest was not run",
+    "full eval was not run",
+    "no public package, installer, tag, GitHub release, upload, or release publication was created",
+    "generated release, projection, build, and AIDE-local outputs remain ignored local proof evidence",
+    "prior full cmake build verification phase timed out after producing native binaries",
+    "stager-time release manifest provenance records earlier RELEASE-00 input commits than BASELINE-00 freeze HEAD"
+  ],
+  "blocking_regressions": [
+    "unclassified failure of a required tier command",
+    "internal pilot release validator failure when release proof is required",
+    "portable projection validator failure when projection proof is required",
+    "missing required manifest, proof report, provenance, checksum, or product binary without documented regeneration",
+    "generated output staged or committed",
+    "unauthorized root move, delete, rename, alias, move map, salvage map, new top-level root, or exception retirement",
+    "identity changes to product, pack, profile, bundle, semantic contract, virtual root, package, or release IDs outside reviewed scope",
+    "known warning worsened or hidden without disposition"
+  ],
+  "next_task": "MOVE-FAMILY-00-PLAN"
+}

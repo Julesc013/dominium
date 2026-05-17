@@ -82,3 +82,15 @@ The proven portable projection root was consumed by RELEASE-00 as the input for 
 ```
 
 The internal pilot validator confirms that the staged projection still contains the required install, release, and semantic contract manifests and the five native product binaries. The generated release staging root is local/ignored and was not committed.
+
+## BASELINE-00 Update
+
+BASELINE-00 freezes this portable projection as part of the structural regression baseline.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Projection root: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Release consumer root: `.dominium.local/releases/internal-pilot-0/projection`.
+- Required manifests and native binaries remain the comparison target for MOVE-FAMILY tasks.
+- Generated projection output remains ignored/local and must not be committed.
+
+Future content, package, profile, bundle, distribution, release, or build-sensitive move waves must rerun the portable projection validator or regenerate the projection through documented tooling before claiming success.

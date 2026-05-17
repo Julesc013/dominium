@@ -65,3 +65,16 @@ python tools/validators/check_internal_pilot_release.py --repo-root . --release-
 ## Relationship to DOE-00
 
 DOE-00 may proceed with warnings. RELEASE-00 proves the current local build/product/projection evidence can be assembled into one self-describing internal pilot artifact with manifests, checksums, provenance, proof reports, warning ledger, runbook, and rollback notes.
+
+## BASELINE-00 Relationship
+
+BASELINE-00 freezes this local internal pilot release proof as the structural regression baseline for MOVE-FAMILY cleanup waves.
+
+- Baseline HEAD: `0b631fc5f09f3d927a54e8312976b926d111a72e`.
+- Release root: `.dominium.local/releases/internal-pilot-0`.
+- Projection input: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
+- Checksums: `manifest/checksums.sha256`, 4718 entries.
+- Required native binaries in staging: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, `tools.exe`.
+- Generated release staging remains ignored/local and uncommitted.
+
+MOVE-FAMILY proof tasks must preserve or explicitly regenerate and revalidate this proof state. DOE-00 is deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
