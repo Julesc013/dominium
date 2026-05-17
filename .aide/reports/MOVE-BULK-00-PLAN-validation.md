@@ -71,3 +71,4 @@ The AIDE latest task/review packets initially failed validation after refresh be
 - AIDE packet validation initially failed and was corrected before final validation.
 - Validator side effects to `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json` were detected and reverted before staging because this is a planning-only task.
 - The first MOVE-BULK-00 commit passed Git but failed the latest AIDE commit-message check because it omitted the newer `## Changelog` section and `AIDE-Token-Impact` trailer. The task forbids amend/rebase, so this report records the issue and a narrow follow-up commit is used to make the latest commit policy-compliant.
+- The first follow-up commit also failed the latest AIDE commit-message check because the changelog bullet used `docs:` instead of an accepted category prefix such as `Added:`. A final narrow evidence commit records the exact policy requirement without rewriting history.
