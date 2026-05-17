@@ -1,0 +1,105 @@
+{
+  "schema_version": "dominium.move_family_00.plan.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "result": "BLOCKED",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "baseline_head": "6ed2516ea9570bd54cdd3f1d94ed347f48cf6447",
+  "release_baseline": {
+    "release_root": ".dominium.local/releases/internal-pilot-0",
+    "projection_root": ".dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium",
+    "required_post_apply_tier": "Tier 0 plus focused RepoX for MOVE-FAMILY-00"
+  },
+  "roots": ["governance", "meta", "performance", "validation", "ide"],
+  "scope": {
+    "moves_allowed": false,
+    "deletes_allowed": false,
+    "renames_allowed": false,
+    "reference_rewrites_allowed": false,
+    "exception_retirement_allowed": false,
+    "target_root_files_modified": false
+  },
+  "summary": {
+    "included_count": 0,
+    "deferred_count": 36,
+    "blocked_count": 5,
+    "risk": "mixed",
+    "ready_for_gate": false,
+    "reason": "No remaining target-family file is both safe and substantial enough for MOVE-FAMILY-00 apply after ide/README.md was already moved."
+  },
+  "moves": [],
+  "deferred": [
+    {
+      "root": "governance",
+      "paths": ["governance/__init__.py", "governance/governance_profile.py"],
+      "reason": "Active policy/governance Python helpers with release/setup/dist/tool/test consumers.",
+      "next_step": "consumer import-boundary plan"
+    },
+    {
+      "root": "meta",
+      "paths": ["meta/**"],
+      "reason": "Broad active Python subsystem with runtime, game, release, tools, AuditX, RepoX, TestX, and test consumers.",
+      "next_step": "subpackage-by-subpackage owner and import bridge plan"
+    },
+    {
+      "root": "performance",
+      "paths": ["performance/__init__.py", "performance/cost_engine.py", "performance/inspection_cache.py"],
+      "reason": "Active product/runtime helpers imported by client interaction, materials performance, and XStack session runtime.",
+      "next_step": "runtime/tool ownership decision"
+    },
+    {
+      "root": "validation",
+      "paths": ["validation/__init__.py", "validation/validation_engine.py"],
+      "reason": "Active validation pipeline with AppShell, convergence, shim, AuditX, RepoX, TestX, and wrapper consumers.",
+      "next_step": "validation package relocation design"
+    },
+    {
+      "root": "ide",
+      "paths": ["ide/manifests/projection_manifest.schema.json", "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json", "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"],
+      "reason": "Machine-readable projection schema/examples are consumed by CMake, scripts, docs, and release/toolchain registries.",
+      "next_step": "IDE manifest contract/projection ownership plan"
+    }
+  ],
+  "blocked": [
+    {
+      "id": "no_docs_only_candidate",
+      "severity": "blocking_for_gate",
+      "reason": "The only docs-only candidate in this family was ide/README.md and it has already been moved."
+    },
+    {
+      "id": "active_python_import_surface",
+      "severity": "blocking_for_gate",
+      "reason": "governance, meta, performance, and validation roots are active import surfaces, not passive docs/evidence roots."
+    },
+    {
+      "id": "ide_manifest_consumers",
+      "severity": "blocking_for_gate",
+      "reason": "ide/manifests has active CMake/script/docs/registry consumers and cannot move without a consumer migration plan."
+    },
+    {
+      "id": "reference_complexity",
+      "severity": "blocking_for_gate",
+      "reason": "Current reference scans show high reference counts for the target family."
+    },
+    {
+      "id": "no_approved_move_map",
+      "severity": "expected_planning_blocker",
+      "reason": "This task is planning-only and intentionally creates no approved move map."
+    }
+  ],
+  "rewrites": [],
+  "validators": ".aide/refactors/MOVE-FAMILY-00.validation_plan.json",
+  "rollback": ".aide/refactors/MOVE-FAMILY-00.rollback_plan.json",
+  "exception_updates": ".aide/refactors/MOVE-FAMILY-00.exception_update_plan.json",
+  "candidate_table": ".aide/reports/MOVE-FAMILY-00-PLAN-candidate-table.json",
+  "salvage_plan": ".aide/refactors/MOVE-FAMILY-00.salvage_plan.json",
+  "reference_rewrite_plan": ".aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json",
+  "next_gate": null,
+  "next_refinement": "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES",
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false
+}

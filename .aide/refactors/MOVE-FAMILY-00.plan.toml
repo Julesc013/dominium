@@ -1,0 +1,59 @@
+[plan]
+id = "MOVE-FAMILY-00"
+title = "Governance, Meta, Performance, Validation, and IDE Cleanup Plan"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+created_by = "MOVE-FAMILY-00-PLAN"
+baseline = "BASELINE-00"
+baseline_head = "6ed2516ea9570bd54cdd3f1d94ed347f48cf6447"
+result = "blocked"
+
+[scope]
+roots = ["governance", "meta", "performance", "validation", "ide"]
+moves_allowed = false
+deletes_allowed = false
+renames_allowed = false
+reference_rewrites_allowed = false
+exception_retirement_allowed = false
+
+[summary]
+included_count = 0
+deferred_count = 36
+blocked_count = 5
+risk = "mixed"
+ready_for_gate = false
+reason = "No safe docs-only or evidence-only move remains in the target family after ide/README.md was already moved."
+next_refinement = "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES"
+
+[[deferred_roots]]
+root = "governance"
+tracked_file_count = 2
+reason = "Active policy/governance Python helpers are imported by release, setup, dist, governance tooling, and tests."
+recommended_next = "Map consumers and design an import-compatible tool/package relocation before any move."
+
+[[deferred_roots]]
+root = "meta"
+tracked_file_count = 26
+reason = "Broad active Python subsystem used by game domains, runtime, release, tools, AuditX, RepoX, TestX, and tests."
+recommended_next = "Split by subpackage and prove import-boundary compatibility before any move."
+
+[[deferred_roots]]
+root = "performance"
+tracked_file_count = 3
+reason = "Active product/runtime helpers imported by client interaction, materials performance, and XStack session runtime."
+recommended_next = "Choose an owning runtime/tool package and prove product smoke before any move."
+
+[[deferred_roots]]
+root = "validation"
+tracked_file_count = 2
+reason = "Active validation pipeline imported by runtime AppShell commands, convergence tools, shims, AuditX, RepoX, and TestX."
+recommended_next = "Plan validation package relocation with wrapper equivalence before any move."
+
+[[deferred_roots]]
+root = "ide"
+tracked_file_count = 3
+reason = "Remaining IDE material is machine-readable projection manifest schema/examples with active CMake, script, docs, and registry consumers."
+recommended_next = "Plan contract/projection ownership for ide/manifests before any move."
+
+# No moves are approved or selected by this plan.

@@ -1,0 +1,60 @@
+{
+  "schema_version": "dominium.move_family_00.reference_rewrite_plan.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "included_sources": [],
+  "rewrites": [],
+  "summary": {
+    "included_source_count": 0,
+    "rewrite_count": 0,
+    "references_rewritten": false,
+    "reference_complexity": "high",
+    "reason": "No move candidate was included; therefore no reference rewrite is planned."
+  },
+  "excluded_reference_observations": [
+    {
+      "root": "governance",
+      "classification": "active_source_and_tool",
+      "current_reference_report_count": 1399,
+      "direct_import_examples": ["release/update_resolver.py", "tools/governance/governance_model_common.py", "tools/setup/setup_cli.py"],
+      "rewrite_decision": "review",
+      "risk": "medium"
+    },
+    {
+      "root": "meta",
+      "classification": "active_source_tool_runtime_test",
+      "current_reference_report_count": 1345,
+      "direct_import_examples": ["runtime/appshell/logging/log_engine.py", "tools/dist/dist_tree_common.py", "game/domains/logic/compile/logic_compiler.py", "tools/xstack/sessionx/process_runtime.py"],
+      "rewrite_decision": "review",
+      "risk": "high"
+    },
+    {
+      "root": "performance",
+      "classification": "active_product_runtime",
+      "current_reference_report_count": 116,
+      "direct_import_examples": ["apps/client/interaction/preview_generator.py", "apps/client/interaction/inspection_overlays.py", "tools/xstack/sessionx/process_runtime.py"],
+      "rewrite_decision": "review",
+      "risk": "medium"
+    },
+    {
+      "root": "validation",
+      "classification": "active_validation_tooling",
+      "current_reference_report_count": 1998,
+      "direct_import_examples": ["runtime/appshell/commands/command_engine.py", "tools/validation/tool_run_validation.py", "tools/xstack/repox/check.py"],
+      "rewrite_decision": "review",
+      "risk": "medium"
+    },
+    {
+      "root": "ide",
+      "classification": "machine_readable_projection_metadata",
+      "current_reference_report_count": 21553,
+      "direct_reference_examples": ["cmake/ide/IdeProjectionManifest.cmake", "scripts/ide_gen.sh", "scripts/verify_docs_sanity.py", "docs/architecture/IDE_PROJECTIONS.md"],
+      "rewrite_decision": "review",
+      "risk": "medium"
+    }
+  ],
+  "references_rewritten": false
+}

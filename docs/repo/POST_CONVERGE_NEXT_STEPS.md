@@ -332,3 +332,15 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Future move-family work must compare against `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md` and `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`.
 - DOE-00 and feature/operating-environment MVP work are deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
 - Next recommended task: `MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan`.
+
+## MOVE-FAMILY-00-PLAN Update - First Family Cleanup Planning
+
+- Result: BLOCKED.
+- BASELINE-00 task commit used for this plan: `6ed2516ea9570bd54cdd3f1d94ed347f48cf6447`.
+- Target roots inspected: `governance/`, `meta/`, `performance/`, `validation/`, and `ide/`.
+- Planned moves: 0.
+- Deferred files: 36.
+- `ide/README.md` was already moved by AIDE-MOVE-01; the remaining target-family material is active Python/tooling surface or machine-readable IDE projection metadata.
+- No files were moved, deleted, renamed, or rewritten.
+- Apply remains unauthorized and `MOVE-FAMILY-00-GATE` is not ready.
+- Next recommended task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.

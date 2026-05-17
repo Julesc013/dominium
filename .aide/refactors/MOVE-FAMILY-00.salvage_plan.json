@@ -1,0 +1,72 @@
+{
+  "schema_version": "dominium.move_family_00.salvage_plan.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "summary": {
+    "entry_count": 36,
+    "include_in_apply_count": 0,
+    "preserve_defer_count": 33,
+    "convert_later_count": 3,
+    "archive_later_count": 0,
+    "move_now_count": 0
+  },
+  "entries_source": ".aide/reports/MOVE-FAMILY-00-PLAN-candidate-table.json",
+  "root_fates": [
+    {
+      "root": "governance",
+      "fate": "preserve_defer",
+      "include_in_apply": false,
+      "target_path": null,
+      "reason": "Active policy/governance Python import surface.",
+      "risk": "medium",
+      "evidence_refs": ["governance.classification.json", "rg import scan"],
+      "blockers": ["active_python_import_surface", "release_tool_consumers"]
+    },
+    {
+      "root": "meta",
+      "fate": "preserve_defer",
+      "include_in_apply": false,
+      "target_path": null,
+      "reason": "Broad active Python subsystem with high runtime/tool/test reference surface.",
+      "risk": "high",
+      "evidence_refs": ["meta.classification.json", "rg import scan"],
+      "blockers": ["active_python_import_surface", "too_many_consumers"]
+    },
+    {
+      "root": "performance",
+      "fate": "preserve_defer",
+      "include_in_apply": false,
+      "target_path": null,
+      "reason": "Active product/client/session runtime helpers.",
+      "risk": "medium",
+      "evidence_refs": ["performance.classification.json", "rg import scan"],
+      "blockers": ["product_runtime_consumers"]
+    },
+    {
+      "root": "validation",
+      "fate": "preserve_defer",
+      "include_in_apply": false,
+      "target_path": null,
+      "reason": "Active validation pipeline and wrapper/test surface.",
+      "risk": "medium",
+      "evidence_refs": ["validation.classification.json", "rg import scan"],
+      "blockers": ["validation_tooling_consumers"]
+    },
+    {
+      "root": "ide",
+      "fate": "convert_later",
+      "include_in_apply": false,
+      "target_path": null,
+      "reason": "Remaining files are machine-readable projection manifest schema/examples with active consumers.",
+      "risk": "medium",
+      "evidence_refs": ["ide.classification.json", "AIDE-MOVE-02-REFINE-candidates.json", "rg ide/manifests scan"],
+      "blockers": ["machine_readable_projection_metadata", "cmake_script_registry_consumers"]
+    }
+  ],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false
+}

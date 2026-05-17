@@ -1,0 +1,30 @@
+{
+  "schema_version": "dominium.move_family_00.plan_summary.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "result": "BLOCKED",
+  "baseline": "BASELINE-00",
+  "baseline_commit": "6ed2516ea9570bd54cdd3f1d94ed347f48cf6447",
+  "target_roots": ["governance", "meta", "performance", "validation", "ide"],
+  "candidate_count": 36,
+  "planned_move_count": 0,
+  "deferred_count": 36,
+  "blocked_count": 5,
+  "ready_for_gate": false,
+  "next_gate": null,
+  "next_task": "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES",
+  "blocked_reasons": [
+    "ide/README.md was already moved by AIDE-MOVE-01",
+    "remaining governance/meta/performance/validation material is active Python import surface",
+    "remaining ide material is machine-readable projection schema/example metadata",
+    "reference complexity is too high for a no-risk family apply",
+    "no approved move map or salvage map exists"
+  ],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false,
+  "exception_updates_applied": false
+}

@@ -54,3 +54,13 @@ RELEASE-00 is now frozen as the structural regression baseline before the next r
 - Future first-wave selection must use `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md` and `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`.
 - Generated release/projection/build/local outputs must remain ignored and uncommitted.
 - DOE-00 and feature work remain deferred until MOVE-FAMILY cleanup and post-restructure proof pass.
+
+## MOVE-FAMILY-00-PLAN Result
+
+MOVE-FAMILY-00-PLAN inspected `governance/`, `meta/`, `performance/`, `validation/`, and `ide/` against BASELINE-00. No apply-ready move set was selected: `ide/README.md` was already moved by AIDE-MOVE-01, and the remaining material is active Python/tooling surface or machine-readable IDE projection metadata.
+
+- Planned moves: 0.
+- Apply allowed: false.
+- Approval status: not_approved.
+- Ready for `MOVE-FAMILY-00-GATE`: false.
+- Recommended next task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.

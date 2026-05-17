@@ -49,3 +49,15 @@ RELEASE-00 is now frozen as the structural regression baseline for MOVE-FAMILY c
 ## Next Recommended Task After BASELINE-00
 
 `MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan`.
+
+## MOVE-FAMILY-00-PLAN Update
+
+The first family-level cleanup plan inspected `governance/`, `meta/`, `performance/`, `validation/`, and `ide/` against BASELINE-00 task commit `6ed2516ea9570bd54cdd3f1d94ed347f48cf6447`.
+
+- Result: BLOCKED.
+- Planned moves: 0.
+- Deferred files: 36.
+- Ready for `MOVE-FAMILY-00-GATE`: false.
+- No files were moved, deleted, renamed, or rewritten.
+- Remaining target-family material is active Python/tooling surface or machine-readable IDE projection metadata.
+- Next recommended task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.

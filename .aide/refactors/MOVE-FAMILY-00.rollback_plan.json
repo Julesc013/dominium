@@ -1,0 +1,27 @@
+{
+  "schema_version": "dominium.move_family_00.rollback_plan.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "moves_planned": 0,
+  "rollback_strategy": "No source path rollback is required because this plan applies no moves, deletes, renames, reference rewrites, or exception updates.",
+  "abandon_before_apply": [
+    "Leave this plan as blocked evidence or supersede it with a later refinement task.",
+    "Do not delete target-root files.",
+    "Do not move target-root files.",
+    "Do not rewrite references based on this plan."
+  ],
+  "reverse_moves": [],
+  "reverse_reference_rewrites": [],
+  "reverse_exception_updates": [],
+  "validation_after_rollback": [
+    "py -3 .aide/scripts/aide_lite.py doctor",
+    "py -3 .aide/scripts/aide_lite.py validate",
+    "python tools/validators/check_repo_layout.py --repo-root . --strict",
+    "python tools/validators/check_root_allowlist.py --repo-root . --strict",
+    "git diff --check"
+  ],
+  "generated_output_policy": "Do not touch .dominium.local/** or .aide.local/** during rollback."
+}

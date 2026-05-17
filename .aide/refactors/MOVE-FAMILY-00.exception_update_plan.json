@@ -1,0 +1,65 @@
+{
+  "schema_version": "dominium.move_family_00.exception_update_plan.v1",
+  "task_id": "MOVE-FAMILY-00-PLAN",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "exception_retirement_allowed": false,
+  "updates": [
+    {
+      "root": "governance",
+      "current_exception_id": "governance_root",
+      "current_exception_status": "active",
+      "root_remains": true,
+      "exception_narrows": false,
+      "exception_retires": false,
+      "expected_status_after_apply": "unchanged",
+      "evidence_required": ["consumer/import-boundary plan before move"]
+    },
+    {
+      "root": "meta",
+      "current_exception_id": "meta_root",
+      "current_exception_status": "active",
+      "root_remains": true,
+      "exception_narrows": false,
+      "exception_retires": false,
+      "expected_status_after_apply": "unchanged",
+      "evidence_required": ["subpackage owner plan before move"]
+    },
+    {
+      "root": "performance",
+      "current_exception_id": "performance_root",
+      "current_exception_status": "active",
+      "root_remains": true,
+      "exception_narrows": false,
+      "exception_retires": false,
+      "expected_status_after_apply": "unchanged",
+      "evidence_required": ["product/runtime consumer migration proof before move"]
+    },
+    {
+      "root": "validation",
+      "current_exception_id": "validation_root",
+      "current_exception_status": "active",
+      "root_remains": true,
+      "exception_narrows": false,
+      "exception_retires": false,
+      "expected_status_after_apply": "unchanged",
+      "evidence_required": ["validation wrapper equivalence plan before move"]
+    },
+    {
+      "root": "ide",
+      "current_exception_id": "ide_root",
+      "current_exception_status": "active",
+      "root_remains": true,
+      "exception_narrows": false,
+      "exception_retires": false,
+      "expected_status_after_apply": "unchanged",
+      "evidence_required": ["IDE manifest consumer and contract/projection ownership plan before move"]
+    }
+  ],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false
+}
