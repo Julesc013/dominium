@@ -7,23 +7,22 @@ Current task: `RESTRUCTURE-REPAIR-00`.
 - `.aide.local/**`, `.dominium.local/**`, `build/`, `out/`, `dist/`, and `tmp/` are ignored local output and were not staged.
 - SDL2 CMake deprecation warnings and missing `PkgConfig` warning remain nonblocking for configure.
 - The tracked `.aide/reports/file-quality-ledger.json` large-file policy warning remains unresolved and must not be deleted without evidence.
+- Prior commit-policy warning commits were retained without amendment.
 
 ## Repaired Warnings
 
-- Stale path references in focused tests were repaired.
-- TestX fixture host-path literals no longer violate path hygiene.
-- Ops compatibility JSON output no longer includes a Python deprecation warning.
-- Archive presence now targets archive roots, not retired root paths.
-- RepoX archive allowlist now targets the same archive roots.
+- frozen contract hash evidence refreshed from current frozen surfaces.
+- expired locklist overrides retired instead of extended.
+- performance replay fixture hashes refreshed from current replay stubs.
+- AuditX graph/cache scans now ignore local/generated evidence roots.
+- AuditX archive-policy analyzers use existing archive-policy report in static scan mode.
+- incomplete tracked AuditX JSON and root inventory noise kept out of the commit.
 
 ## Blocking Warnings
 
-- Commit `51257dfdb` failed AIDE commit-message policy because required Markdown headings and `AIDE-Token-Impact` were missing; it was not amended.
-- Commit `0a579e3c` failed AIDE commit-message policy because changelog prefixes were lowercase; it was not amended.
-- Full CTest is failing/incomplete and cannot be marked green.
-- Frozen contract hash drift needs a review-gated hash refresh or doc rollback decision.
-- Expired override entries need explicit policy review.
-- Replay hash mismatches need deterministic remediation.
-- AuditX timeouts need test partitioning or performance repair.
+- Full CTest is not green and cannot be marked green.
+- `slice0_hardcoded_ids` and `slice1_hardcoded_constants` need doctrine-backed remediation.
+- AuditX CTest wall-time needs partitioning or performance repair.
+- Remaining excepted bad roots need deferred MOVE-BULK remediation.
 
-Next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.

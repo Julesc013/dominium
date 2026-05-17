@@ -21,7 +21,7 @@ ANALYZER_ID = "E537_OVERWRITTEN_RELEASE_INDEX_SMELL"
 def run(graph, repo_root, changed_files=None):
     del graph, changed_files
     findings = []
-    for row in archive_policy_violations(repo_root):
+    for row in archive_policy_violations(repo_root, build_report=False):
         item = dict(row or {})
         if str(item.get("rule_id", "")).strip() != RULE_INDEX_HISTORY:
             continue

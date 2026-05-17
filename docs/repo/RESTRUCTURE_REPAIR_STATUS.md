@@ -17,19 +17,22 @@ Result: PARTIAL.
 - Smoke CTest passes.
 - Native configure and build-only `ALL_BUILD` pass.
 - Product boot, portable projection, and internal pilot release validators pass.
+- Frozen contract guard passes.
+- Override policy tests pass.
+- Replay hash invariance passes.
 
 ## Current Blockers
 
-- Full CTest is failing/incomplete.
+- Full CTest is not green.
 - Twenty-three formerly bad roots remain under active exceptions.
-- Frozen contract hashes are stale.
-- Override policy entries are expired.
-- Replay hash invariance fails for performance profiles.
-- AuditX full CTest cases time out.
-- The first two repair evidence commits failed AIDE commit-message policy and were not amended; a final compliant follow-up commit records the warnings.
+- `slice0_hardcoded_ids` still fails on current hardcoded identifiers.
+- `slice1_hardcoded_constants` still fails on current domain constants.
+- `tools_auditx` still exceeds the 300 second CTest timeout.
+- The tracked `.aide/reports/file-quality-ledger.json` large-file policy remains unresolved.
+- The first two repair evidence commits failed AIDE commit-message policy and were not amended; the follow-up commit records the warnings.
 
 ## Next Task
 
-`MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`
+`TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`
 
 DOE-00 is not ready. Feature implementation remains blocked.

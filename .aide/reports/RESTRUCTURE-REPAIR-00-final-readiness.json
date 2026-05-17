@@ -1,6 +1,9 @@
 {
   "schema_version": "dominium.restructure_repair_00.final_readiness.v1",
   "task_id": "RESTRUCTURE-REPAIR-00",
+  "generated_at_utc": "2026-05-17T19:03:54Z",
+  "head_before_followup_commit": "85e3ce3fbaf1b6611a27241250d4534b647d06b6",
+  "origin_main": "0ddc1797c122d720c3cb9363a477c028d8413c49",
   "result": "PARTIAL",
   "ready_for_doe_00": false,
   "feature_work_authorized": false,
@@ -9,23 +12,30 @@
   "aide": "pass",
   "repox": "pass",
   "smoke_ctest": "pass",
-  "full_ctest": "fail_incomplete_walltime",
+  "full_ctest": "not_green_known_failures_and_auditx_walltime",
   "configure": "pass",
   "build": "pass_all_build",
   "product_boot": "pass",
   "portable_projection": "pass",
   "internal_pilot": "pass",
   "generated_outputs": "ignored_uncommitted",
+  "safe_repairs_applied": [
+    "frozen contract hash evidence refreshed from current frozen surfaces",
+    "expired locklist overrides retired instead of extended",
+    "performance replay fixture hashes refreshed from current replay stubs",
+    "AuditX graph/cache scans now ignore local/generated evidence roots",
+    "AuditX archive-policy analyzers use existing archive-policy report in static scan mode",
+    "incomplete tracked AuditX JSON and root inventory noise kept out of the commit"
+  ],
   "remaining_blockers": [
     "23 excepted former bad roots remain with 1764 tracked files",
-    "full CTest fails/incomplete",
-    "slice0_hardcoded_ids findings",
-    "slice1_hardcoded_constants findings",
-    "frozen contract hash drift",
-    "expired override policy entries",
-    "determinism replay hash mismatches",
-    "AuditX timeout cases",
-    "tracked large AIDE file-quality ledger policy remains unresolved"
+    "full CTest is not green",
+    "slice0_hardcoded_ids still fails on current hardcoded domain/source/tool/test identifiers",
+    "slice1_hardcoded_constants still fails on current atmosphere/gravity/oxygen assumptions",
+    "tools_auditx still exceeds the 300 second CTest timeout",
+    "tracked large AIDE file-quality ledger policy remains unresolved",
+    "prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended"
   ],
-  "next_task": "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT"
+  "next_task": "TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline",
+  "secondary_follow_up": "POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - hardcoded identifier and constant lint disposition"
 }

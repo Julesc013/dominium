@@ -16,29 +16,31 @@ Result: PARTIAL.
 - Product boot matrix: PASS.
 - Portable projection: PASS.
 - Internal pilot release validation: PASS.
+- Frozen contract guard: PASS.
+- Override policy tests: PASS.
+- Replay hash invariance: PASS.
 
 ## Repairs Applied
 
-- Stale AppShell/client paths updated.
-- Integration metadata path updated to `runtime/app/app_runtime.c`.
-- Archive manifest paths updated to archive roots.
-- RepoX archive allowlist updated to match archive roots.
-- TestX host-path fixture sources repaired.
-- Ops compatibility JSON output warning repaired.
-- RepoX test helper signature updated.
-- Narrow pack/lockfile/budget doc contract references added.
+- frozen contract hash evidence refreshed from current frozen surfaces.
+- expired locklist overrides retired instead of extended.
+- performance replay fixture hashes refreshed from current replay stubs.
+- AuditX graph/cache scans now ignore local/generated evidence roots.
+- AuditX archive-policy analyzers use existing archive-policy report in static scan mode.
+- incomplete tracked AuditX JSON and root inventory noise kept out of the commit.
 
 ## Remaining Blockers
 
-- 23 formerly bad roots remain under active exceptions.
-- Full CTest is failing/incomplete.
-- Frozen contract hash drift remains.
-- Override policy entries are expired.
-- Replay hash invariance fails for performance profiles.
-- AuditX CTest cases time out.
+- 23 excepted former bad roots remain with 1764 tracked files.
+- full CTest is not green.
+- slice0_hardcoded_ids still fails on current hardcoded domain/source/tool/test identifiers.
+- slice1_hardcoded_constants still fails on current atmosphere/gravity/oxygen assumptions.
+- tools_auditx still exceeds the 300 second CTest timeout.
+- tracked large AIDE file-quality ledger policy remains unresolved.
+- prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended.
 
 DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.

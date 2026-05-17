@@ -718,7 +718,7 @@ def write_archive_policy_outputs(repo_root: str, *, platform_tag: str = DEFAULT_
     }
 
 
-def archive_policy_violations(repo_root: str) -> list[dict]:
+def archive_policy_violations(repo_root: str, *, build_report: bool = True) -> list[dict]:
     root = _norm(repo_root)
     violations: list[dict] = []
     required_paths = (
@@ -755,18 +755,35 @@ def archive_policy_violations(repo_root: str) -> list[dict]:
             continue
         violations.append(_violation(RULE_ARCHIVE_RECORD, "doctrine_token_missing", message, file_path=DOCTRINE_DOC_REL))
 
-    try:
-        report = build_archive_policy_report(root, platform_tag=DEFAULT_PLATFORM_TAG)
-    except Exception as exc:
-        violations.append(
-            _violation(
-                RULE_ARCHIVE_RECORD,
-                "archive_policy_report_failed",
-                "unable to build archive-policy report ({})".format(str(exc)),
-                file_path=REPORT_JSON_REL,
+    if build_report:
+        try:
+            report = build_archive_policy_report(root, platform_tag=DEFAULT_PLATFORM_TAG)
+        except Exception as exc:
+            violations.append(
+                _violation(
+                    RULE_ARCHIVE_RECORD,
+                    "archive_policy_report_failed",
+                    "unable to build archive-policy report ({})".format(str(exc)),
+                    file_path=REPORT_JSON_REL,
+                )
             )
-        )
-        return violations
+            return violations
+    else:
+        report_path = os.path.join(root, REPORT_JSON_REL.replace("/", os.sep))
+        if not os.path.isfile(report_path):
+            return violations
+        try:
+            report = _read_json(report_path)
+        except Exception as exc:
+            violations.append(
+                _violation(
+                    RULE_ARCHIVE_RECORD,
+                    "archive_policy_report_load_failed",
+                    "unable to load archive-policy report ({})".format(str(exc)),
+                    file_path=REPORT_JSON_REL,
+                )
+            )
+            return violations
     if _token(report.get("result")) != "complete":
         for row in _as_list(report.get("violations")):
             item = _as_map(row)

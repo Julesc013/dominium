@@ -9,7 +9,7 @@ Superseded By: none
 
 Result: PARTIAL.
 
-The repair pass fixed safe stale-path, test-contract, and proof-output issues discovered during post-restructure validation. It did not force unsafe root moves, policy renewals, frozen-hash refreshes, or replay-hash acceptance.
+The repair pass fixed safe stale-path, test-contract, proof-output, frozen-hash, override-policy, replay-fixture, and AuditX scan-scope issues discovered during post-restructure validation. It did not force unsafe root moves, weaken semantic lint gates, or mark full CTest green.
 
 ## Scope
 
@@ -22,15 +22,20 @@ This was structural repair and proof only. No feature, gameplay, renderer, GUI, 
 - Ops compatibility JSON output no longer receives a Python 3.14 deprecation warning on stdout.
 - TestX host-path fixtures no longer trip source path hygiene while preserving leak-test semantics.
 - Archive presence fixtures now point to `archive/legacy/` and `archive/generated/` instead of retired top-level roots.
-- The focused RepoX archive allowlist now matches the repaired archive fixture roots.
+- Focused RepoX archive allowlist now matches the repaired archive fixture roots.
 - Narrow current contract references were added to pack, lockfile, and budget docs.
-- The hardcoded-identifier lint now prints deterministic diagnostics on Windows codepages.
+- Hardcoded-identifier lint prints deterministic diagnostics on Windows codepages.
+- Frozen contract hashes were refreshed from current frozen surfaces without editing the frozen source text.
+- Expired locklist overrides were removed rather than extended.
+- Performance replay fixture hashes were refreshed from current replay stubs.
+- AuditX graph/cache scans skip generated evidence and local proof roots.
+- AuditX archive-policy analyzers use existing archive-policy evidence in static scan mode.
 
 ## Validation Summary
 
-Passing: AIDE, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, focused RepoX, smoke CTest, CMake configure, build-only `ALL_BUILD`, product boot proof, portable projection proof, and internal pilot proof.
+Passing: AIDE, strict repo/root/distribution/component validators, docs/build/UI/ABI checks, focused RepoX, smoke CTest, CMake configure, build-only `ALL_BUILD`, product boot proof, portable projection proof, internal pilot proof, frozen contract guard, override policy tests, and replay hash invariance.
 
-Partial/failing: full CTest remains failing and incomplete due hardcoded-id findings, hardcoded-constant findings, frozen hash drift, expired overrides, replay hash mismatches, and AuditX timeouts.
+Partial/failing: full CTest remains not green due hardcoded-id findings, hardcoded-constant findings, and AuditX wall-time.
 
 ## Root State
 
@@ -38,10 +43,10 @@ Partial/failing: full CTest remains failing and incomplete due hardcoded-id find
 
 ## Generated Output Policy
 
-`.aide.local/**`, `.dominium.local/**`, `build/`, `out/`, `dist/`, and `tmp/` remain ignored local output and were not staged.
+`.aide.local/**`, `.dominium.local/**`, `build/`, `out/`, `dist/`, and `tmp/` remain ignored local output and were not staged. Incomplete generated AuditX JSON from timed runs was not committed.
 
 ## Readiness
 
 DOE-00 is not authorized. Feature implementation remains blocked.
 
-Next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.

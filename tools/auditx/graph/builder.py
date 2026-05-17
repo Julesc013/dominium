@@ -43,8 +43,11 @@ SYMBOL_EXTENSIONS = (
 )
 
 IGNORED_DIRECTORIES = {
+    ".aide.local",
+    ".dominium.local",
     ".git",
     ".vs",
+    ".xstack_cache",
     "__pycache__",
     "build",
     "dist",
@@ -80,6 +83,14 @@ def _read_json(path: str):
         return {}, "invalid_json"
 
 
+def _is_generated_evidence_path(rel: str) -> bool:
+    if rel.startswith(".aide/") and not rel.startswith((".aide/scripts/", ".aide/adapters/")):
+        return True
+    if rel.startswith("docs/audit/"):
+        return True
+    return False
+
+
 def _walk_repo_files(repo_root: str) -> List[str]:
     rows: List[str] = []
     ignored = {name.lower() for name in IGNORED_DIRECTORIES}
@@ -92,7 +103,7 @@ def _walk_repo_files(repo_root: str) -> List[str]:
         for name in sorted(files):
             rel = _norm(os.path.relpath(os.path.join(root, name), repo_root))
             ext = os.path.splitext(name.lower())[1]
-            if rel.startswith("docs/audit/"):
+            if _is_generated_evidence_path(rel):
                 continue
             if ext in SOURCE_EXTENSIONS:
                 rows.append(rel)

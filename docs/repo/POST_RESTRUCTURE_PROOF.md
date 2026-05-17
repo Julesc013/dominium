@@ -5,43 +5,56 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-## Latest Status
+Latest proof state: PARTIAL after `RESTRUCTURE-REPAIR-00` follow-up repairs.
 
-POST-RESTRUCTURE-00 is blocked before full proof execution.
+## Passing Proof Surfaces
 
-## Current Blockers
-
-- MOVE-BULK-08 did not authorize full proof.
-- 1764 tracked files remain under formerly bad roots.
-- Batches B-G remain deferred and Batch H remains blocked.
-- Batch A still has 283 skipped files.
-
-## Commands To Rerun After Remediation
-
-- AIDE doctor/validate/test/selftest/tools/roots/repo/commit check.
-- Strict repo/root/distribution/component validators.
+- AIDE doctor/validate/test/selftest/tools/roots/repo.
+- Strict layout/root/distribution/component validators.
+- Supplemental docs/build/UI/ABI checks.
 - Focused RepoX.
-- `cmake --preset verify` and `cmake --build --preset verify`.
-- Smoke CTest and sharded/full CTest as approved.
-- Product boot proof.
-- Portable projection proof.
-- Internal pilot release proof.
+- Smoke CTest.
+- Native configure and build-only `ALL_BUILD`.
+- Product boot matrix strict smoke.
+- Portable projection strict validation.
+- Internal pilot release strict validation.
+- Frozen contract hash guard.
+- Override policy tests.
+- Replay hash invariance.
 
-## DOE-00 Readiness
+## Remaining Blockers
 
-Not ready. Feature implementation remains blocked.
+- Full CTest is not green.
+- 23 formerly bad roots remain under active exceptions with 1,764 tracked files.
+- `slice0_hardcoded_ids` and `slice1_hardcoded_constants` still need doctrine-backed remediation.
+- AuditX CTest wall-time still needs partitioning or performance repair.
+- Large file-quality ledger storage policy remains unresolved.
 
-## Next Task
+## Rerun Commands
 
-`MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`
+```powershell
+py -3 .aide/scripts/aide_lite.py doctor
+py -3 .aide/scripts/aide_lite.py validate
+py -3 .aide/scripts/aide_lite.py test
+py -3 .aide/scripts/aide_lite.py selftest
+py -3 .aide/scripts/aide_lite.py tools validate
+py -3 .aide/scripts/aide_lite.py roots validate
+py -3 .aide/scripts/aide_lite.py repo validate
+python tools/validators/check_repo_layout.py --repo-root . --strict
+python tools/validators/check_root_allowlist.py --repo-root . --strict
+python tools/validators/check_distribution_layout.py --repo-root . --strict
+python tools/validators/check_component_matrices.py --repo-root . --strict
+ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300
+ctest --preset verify -L smoke --output-on-failure --timeout 300
+cmake --preset verify
+cmake --build --preset verify --target ALL_BUILD
+python tools/validators/check_product_boot_matrix.py --repo-root . --json --strict --run-smoke --timeout 30
+python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium --json --strict
+python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict
+```
 
-## RESTRUCTURE-REPAIR-00 Update
+## Readiness
 
-RESTRUCTURE-REPAIR-00 ran a repair/proof pass and remains PARTIAL.
+DOE-00 is not authorized. Feature implementation remains blocked.
 
-- Passing: AIDE, strict structural validators, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, and internal pilot validators.
-- Repaired: stale AppShell/client paths, integration metadata path, archive manifest paths, TestX fixture host-path literals, ops JSON warning leakage, and narrow doc contract references.
-- Still blocking: full CTest, frozen contract hashes, expired overrides, replay hash mismatches, AuditX timeout cases, and 23 excepted former bad roots.
-- DOE-00 readiness: no.
-- Feature implementation authorized: no.
-- Next task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.

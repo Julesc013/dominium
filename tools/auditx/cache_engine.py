@@ -86,6 +86,15 @@ def _hash_text_values(values: Iterable[str]) -> str:
     return h.hexdigest()
 
 
+def _is_generated_evidence_path(rel: str) -> bool:
+    token = str(rel or "").replace("\\", "/")
+    if token.startswith(".aide/") and not token.startswith((".aide/scripts/", ".aide/adapters/")):
+        return True
+    if token.startswith("docs/audit/"):
+        return True
+    return False
+
+
 def _scan_rel_files(repo_root: str) -> List[str]:
     exts = {
         ".c",
@@ -105,6 +114,8 @@ def _scan_rel_files(repo_root: str) -> List[str]:
         ".yml",
     }
     skip_dirs = {
+        ".aide.local",
+        ".dominium.local",
         ".git",
         ".vs",
         "__pycache__",
@@ -119,7 +130,7 @@ def _scan_rel_files(repo_root: str) -> List[str]:
         dirs[:] = sorted([item for item in dirs if item not in skip_dirs])
         for name in sorted(files):
             rel = os.path.relpath(os.path.join(root, name), repo_root).replace("\\", "/")
-            if rel.startswith("docs/audit/auditx/"):
+            if _is_generated_evidence_path(rel):
                 continue
             ext = os.path.splitext(rel)[1].lower()
             if ext in exts:

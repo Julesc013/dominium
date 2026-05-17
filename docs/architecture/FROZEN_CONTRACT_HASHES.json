@@ -2,223 +2,223 @@
   "entries": [
     {
       "path": "docs/architecture/ARCH0_CONSTITUTION.md",
-      "sha256": "43ba4019d5d3bed1322049d17b5f79c81c34724ad5fb0f38ba5748262c52ea81"
+      "sha256": "d276d3b33433f4afd9e47ba3af400dfaba2208e20cc042bcfa17a2a7cf211279"
     },
     {
       "path": "docs/architecture/INVARIANTS.md",
-      "sha256": "f73b6c96812757fcf6027858719072f80b150e1c09015db8598edd40c7aa61f9"
+      "sha256": "042aaa3cd320fc07303732adfb6aa3e9065bbe050cc21ad08aa6e56a035151d7"
     },
     {
       "path": "docs/architecture/CANONICAL_SYSTEM_MAP.md",
-      "sha256": "25f19837fa7e88f05cd889d2ea4572958f4b13362c78dfb16181b238707d2da4"
+      "sha256": "faee375cf6fd8b3e8cec2676a5ecd907d725d19f3110d933e4d561c81e922461"
     },
     {
       "path": "docs/architecture/CANON_INDEX.md",
-      "sha256": "d22b7babca88c7b96f95ecf0a345cc0081387a219d37cf7109b080995f4753ce"
+      "sha256": "1a69022b33aaf949c812086efb0c25ee2c48be54adfabe780b11de89a916ca24"
     },
     {
       "path": "docs/architecture/REPO_NAV.md",
-      "sha256": "4b6a71717a46e348b397c4f21e6f7844e1fd6b43c3909298695470a5fd72f237"
+      "sha256": "25ef185fcb39339384ffa04fd2c3a9735581894b4bdfd03b77260198164435bd"
     },
     {
       "path": "docs/architecture/REPO_INTENT.md",
-      "sha256": "b1d5b1e51dfd38c0e7a7da4874f5cdb9167adf41d1977affe3f5a792973de897"
+      "sha256": "f83f0e9dc01ae3195db327768d9324e45938a1ffa645627681f4f308c300dbbf"
     },
     {
       "path": "docs/architecture/ID_AND_NAMESPACE_RULES.md",
-      "sha256": "ca1d740a30bb5fb460a2b447b23ce0d8eec9caa5b5d2494eaa2bfe85f8d672fb"
+      "sha256": "ebf18966bd941f3776daf7cdd07c45a0c34d2e403288328a3c89ead25a9194f9"
     },
     {
       "path": "docs/architecture/DETERMINISTIC_ORDERING_POLICY.md",
-      "sha256": "32ee5a1cb3322c5a23c058d3edfb86eff5742bf5d4597c193f71dc11dca08d0b"
+      "sha256": "75ff9c714c3c562d16e059cfed36d32afbef8cffbb75a6f10b071bb0b16b4eb8"
     },
     {
       "path": "docs/architecture/CODE_KNOWLEDGE_BOUNDARY.md",
-      "sha256": "1a452e0b2da3aa297065845c8c3280931bd35e83374801237cd8ebccf251b571"
+      "sha256": "d36b513e0f9c920fad2db0fd82efaa2ab443a406a5a0fa79ce4444e4268153e0"
     },
     {
       "path": "docs/architecture/PROCESS_ONLY_MUTATION.md",
-      "sha256": "12a6f51bbfeb92b1c372f2c68bed2a6f3212c8e6f3088e289cea6e93636672af"
+      "sha256": "250af56896acc5e5f0e0c118523f148f48c477c7c24298553d9b7ddc602c98b6"
     },
     {
       "path": "docs/architecture/LAW_AND_META_LAW.md",
-      "sha256": "da1326e9fb0ecf7d784b2d060f1087309f407e5a82147024362a0d10ba2fb2eb"
+      "sha256": "4c755998bb903e72026f20ebc06c85bde07cc9b85953f2477591344fb99a3b00"
     },
     {
       "path": "docs/architecture/REFUSAL_SEMANTICS.md",
-      "sha256": "e7c72623245220ae3446479d3f4ff30605c4b8e3d70636c9e27fcb0c1cd65da5"
+      "sha256": "4647557b74075d893e3a4372370ba2bca1736ef964a8511955453638a2847f8a"
     },
     {
       "path": "docs/architecture/UNIT_SYSTEM_POLICY.md",
-      "sha256": "3bacc374804a48b327eaa3b9cb2a627fe6196ead65710535ffbbeb73a3033a9d"
+      "sha256": "16591d5db349970b7617036a8e949ae99f31a145e4bb3e9216f4edd20e4b4371"
     },
     {
       "path": "docs/architecture/FABRICATION_MODEL.md",
-      "sha256": "00a9fa24635bd9cafc80ffae42a80d961932e19fae83637f01f17bf597ca5d0c"
+      "sha256": "6a64e426c1a81769c55146c6e6481811da7b4d78519d4122ed66d607ce463c47"
     },
     {
       "path": "docs/architecture/SCHEMA_STABILITY.md",
-      "sha256": "5ca136ae6735a92fa9839c61859d1784903d1e65c8f7f48343a1f4a9c640e209"
+      "sha256": "656250143567c2df69057b50427e878c67b8cbc139339930a346c67b9445b6f7"
     },
     {
       "path": "docs/architecture/EXECUTION_MODEL.md",
-      "sha256": "e128ec5f7ce16ecf5c25201391b7c82e400ed29ef91f6af6b6513b6902468ba8"
+      "sha256": "9f584ff74b05a91859bdabd54e56ae24cbc861dd0a097323393df8eea035f205"
     },
     {
       "path": "docs/architecture/EXECUTION_REORDERING_POLICY.md",
-      "sha256": "2b74edcd09f93891d75bd291c87241a29d5bbdde85e121c1b8c0e762fc856ab1"
+      "sha256": "5504a4acb607acbd597b7780206c704d42e88f84662da15a0ae8fae4995acd03"
     },
     {
       "path": "docs/architecture/DETERMINISTIC_REDUCTION_RULES.md",
-      "sha256": "2572a719b85f4c04cb7785359b2de59c9e75c763f8aa14ae2f0cecc8c6bcd013"
+      "sha256": "d6fc0759f93ae817568c32b9371dffe2acbca3219455e07dbb98e76120c75bb4"
     },
     {
       "path": "docs/architecture/RNG_MODEL.md",
-      "sha256": "07d30a966185d01bd3a967e2f0c789a6efa51fb241d3431af5173388353bd6ba"
+      "sha256": "48c078eaef5352e3beb60146e1e9d0678f871b6b7d1c14795c903a8edca58513"
     },
     {
       "path": "docs/architecture/REDUCTION_MODEL.md",
-      "sha256": "d6e51e305cb4e1099f4e473aa67ecb0eb1a049a77d81e39a87ad8d3e13cb9a99"
+      "sha256": "c0e8d9d52600c94234cc09cbc3b5b2009f445c22b245f3081422e03dc1f45aa1"
     },
     {
       "path": "docs/architecture/FLOAT_POLICY.md",
-      "sha256": "49cf73d0472542d80f02e4c752c02d494751147614e6df3f8a944657fadd18a1"
+      "sha256": "cf1482a4972c3531cfdfa8a7ede2c8adc64c5f57588ef2777f611b778897366e"
     },
     {
       "path": "docs/architecture/SIGNAL_MODEL.md",
-      "sha256": "f3ed4a6f6ed700cbdda72706490c79e7eab11c1c4119b6c96d8b1d5023eea425"
+      "sha256": "068973fdb50f3e5b693740c3835af7173202af66256bbd8cec208d9b474e4c9d"
     },
     {
       "path": "docs/architecture/LAW_ENFORCEMENT_POINTS.md",
-      "sha256": "08ac93b6cb3ecbb08dd1331f91a7e65c75ce686576d2d0db9a45bc2dbd4e054b"
+      "sha256": "f56d4c599b81a0af1b561f4c47825cd64581d37d64b870d639a117d4ca442f22"
     },
     {
       "path": "docs/architecture/GLOBAL_ID_MODEL.md",
-      "sha256": "a4e144001fc03aafb98d37a662e9027e60fb6ba7686b66409fc9381dd85d552b"
+      "sha256": "95c6692b08799c2da823e27ddc996daaefb4972cd16a73bbf26bf268027e7ba2"
     },
     {
       "path": "docs/architecture/CROSS_SHARD_LOG.md",
-      "sha256": "fc961bc342d2b546749ae2958a38b675a4e71d1b9b787c43ef05b69360d79740"
+      "sha256": "39c2b53fa487863b443d0b83e481555027ff39b2377de21de2ad124f4a0e147d"
     },
     {
       "path": "docs/architecture/BUDGET_POLICY.md",
-      "sha256": "6cbed3f0aa32c9db8b72e8c60dd49af8944a73352ff147ce95758d4670c9816f"
+      "sha256": "e0a5369a959458b73096f79a69d8f74c452fd4ae7ecfd41ef5badd4ba18c8029"
     },
     {
       "path": "docs/architecture/PERFORMANCE_METRICS.md",
-      "sha256": "161e8fbcca8157dc91945431955defe4a5f238e639ee54283d25b59a9e680356"
+      "sha256": "edbb8b8d61ca406c73df53d8a340ddb9f745221d81992fe98aebc56246d128e7"
     },
     {
       "path": "docs/architecture/CODE_DATA_BOUNDARY.md",
-      "sha256": "75c28c38b115e725174b0ce7f2d0b2e2d3425d701f1884e65c9d8de486792451"
+      "sha256": "7e1d9d06cb91ea52e7b585187efcb0f7da4f73eb6c8b9fc033761d093b54f572"
     },
     {
       "path": "docs/architecture/SEMANTIC_STABILITY_POLICY.md",
-      "sha256": "3f4b867ccebfaa00d65dfb318bdb5c185c42dfb9aa73151af49cc165142191b0"
+      "sha256": "dedd5010a6da3c38d978c71f206ac0f4abb38098d597c80e394c72da7d003756"
     },
     {
       "path": "docs/contracts/SEMANTIC_CONTRACT_MODEL.md",
-      "sha256": "da0d21264d0e6790d42233a88cc9bad14a4f2d74ebf761ce95ba1c22a5a390d9"
+      "sha256": "e18743d81fb52dc764f5c3a7dcdf99e273d728b7e68f1cabc539116ac6f848b6"
     },
     {
       "path": "docs/meta/EXTENSION_DISCIPLINE.md",
-      "sha256": "c32de5c38e2edaf11b03ebc1ddb11496bb6a80a3860b85b50a9abbb7099b202a"
+      "sha256": "9fd7e40f83b97f63fe5fdf6c2e93d731ad54a966fa285dd8f3c80b3ac2b6c088"
     },
     {
       "path": "docs/geo/OVERLAY_CONFLICT_POLICIES.md",
-      "sha256": "9e511038c6885a738b9f498f48a545b37c1b8807b1776d7f7f299f40af6b30c3"
+      "sha256": "0a4d98ec51bb177e5129527c0924bd2af8c9ef9f87a5380d05d4488aa7820144"
     },
     {
       "path": "docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md",
-      "sha256": "ba7c0cd82d59d6dbd1d45b49a1780de1f78d40997df94bc7b12281ecee46eaae"
+      "sha256": "b402ea5abfc0028f49f1a89855afe412ecc0eef4fec471bac5fd9c903765ab52"
     },
     {
       "path": "docs/modding/MOD_TRUST_AND_CAPABILITIES.md",
-      "sha256": "c9b0e3dc1782ab808588a1fb810d7b822393712beab269723a70da1865a86a89"
+      "sha256": "610ae3c13e8088f2ad76ba0932846abadaa90050050b4361e32b62792d948c9f"
     },
     {
       "path": "docs/architecture/ANTI_ENTROPY_RULES.md",
-      "sha256": "36411bade25f81cedbf72230c6e4f028448932980774456c1619bbbb2258dc2f"
+      "sha256": "55bd6fd5a78ed5cc1caee6fbc375e27f16f1d9d99a015f2599e8328ae8948ced"
     },
     {
       "path": "docs/architecture/CAPABILITY_BASELINES.md",
-      "sha256": "467026159f77793c3237d92c574ec010eda3b8f001400152b93be362e62d5b7a"
+      "sha256": "7bda1d8150f25a3c23c08e756ac11fc159616b9c189bb1693f95e3de8533fe61"
     },
     {
       "path": "docs/architecture/AI_INTENT_MODEL.md",
-      "sha256": "f469e839773417c95a5701fb854e027e228228c1958666466452ce7beef35c8f"
+      "sha256": "93be96ba280dd9bc6a2645394fda5dff91ad393b41d503466ec1bac550a0a45e"
     },
     {
       "path": "docs/architecture/AI_BUDGET_MODEL.md",
-      "sha256": "e7db11d7f107a71150324d5a67b2648080f59b78ce4f3ec9b235b067e98438fd"
+      "sha256": "9c04f6dec95a32d54710e117e3fa119dc8d27266b1f30970ac2c020501e60838"
     },
     {
       "path": "docs/architecture/BUNDLE_MODEL.md",
-      "sha256": "589b0e78811a7a54899b3639bfce21a4d4ab730652629f98e73fc78920772faa"
+      "sha256": "5a8b73d749ce22d97dcfea2b92565056dfd1fd70033f21debc1123a6edd1e157"
     },
     {
       "path": "docs/architecture/BUGREPORT_MODEL.md",
-      "sha256": "3a57ff40ecc11fa1f318440000669bf2756c91e596f27066312f8c7638a91cb5"
+      "sha256": "42d60b23f91d0d88b20a4d63073706ab6538abee093aabb05adb298ae6676320"
     },
     {
       "path": "docs/distribution/PACK_TAXONOMY.md",
-      "sha256": "da58946bbf1d9b3c9cd7b02ba2aa500f6a55ecd6ab52819b96b8f333ccda821b"
+      "sha256": "40428414c177f4281197cf89f20d0cc6d0086eda3bda193915ce01456559adeb"
     },
     {
       "path": "docs/distribution/LAUNCHER_SETUP_CONTRACT.md",
-      "sha256": "2988841d7ac6ab0fe294e0112139544abe51e9b06ea56c44d07cbb79a614cdd5"
+      "sha256": "70fdb1576e9f65dfdd43e4c1169be7dc5824c94ceb86986e461f63ad960ed87d"
     },
     {
       "path": "docs/distribution/LEGACY_COMPATIBILITY.md",
-      "sha256": "e892382c662b2fb8a4a5d9485e7297990a89e68092cddab8d735b0b625c09394"
+      "sha256": "d9738270487209c066536a60c4a2fdd34b4797ad1f5c06bda17adc73d5142479"
     },
     {
       "path": "docs/architecture/INSTALL_MODEL.md",
-      "sha256": "4a08b15a5d325ef93bbfd27b6ca566d2d8df987ead2e7d8aec31233ba10daaeb"
+      "sha256": "2b90f192fb1970fc0f8bbbdaf99ddd2ac0d280106244e00c111c6f823dadc8a0"
     },
     {
       "path": "docs/architecture/INSTANCE_MODEL.md",
-      "sha256": "7de50ad6b6780ae77a1c5a06b89197a953d19cf693715668ae2642da7b3cac1f"
+      "sha256": "2e41c6cacf4ccf39c50e431641c6113d92d8237418a73aa5f60c0ee1e81a1832"
     },
     {
       "path": "docs/architecture/OPS_TRANSACTION_MODEL.md",
-      "sha256": "a1a320e495c4eba0e77ed49ca62713bf9109c61d0254af956556b6f0a9bc9795"
+      "sha256": "1293bf1a58031683a72d7169cce2220cca468357097182f67722cb18a41ae0bc"
     },
     {
       "path": "docs/architecture/UPDATE_MODEL.md",
-      "sha256": "1ffb583cce49cfefe1fa70361ba2a941c0b7d02236590c57855ec39862a432ff"
+      "sha256": "b4f4badca88575284bcdd8366a8c8b54cabc190f923006b8a6e9eb05a01a5bbb"
     },
     {
       "path": "docs/architecture/SANDBOX_MODEL.md",
-      "sha256": "4ffd893615eb5f0715cd0468f7ab38c68af473f1e7253186b138a1e38d523bbe"
+      "sha256": "3c7357b70a43d3621b53a90f9a9f1f444822ace5f9d872da7649c24053afd4c2"
     },
     {
       "path": "docs/architecture/COMPATIBILITY_MODEL.md",
-      "sha256": "36197c64da08905ce36a0bcd1afe4426d66f37f28c0a6624d208dfe7d8f2e44c"
+      "sha256": "f542476fb5fe7f86e28e2c802571846180c22daf0125a528f87e9b16d96e7dc9"
     },
     {
       "path": "docs/architecture/LIVE_EVOLUTION_MODEL.md",
-      "sha256": "cb33d99c4c688f951b5dbd115e5ad93a6a052bf15fcee9d3e297ad6c5a0d8f9c"
+      "sha256": "5080481695bddb8a9441e9b4cf26596c707c3c7a806903a0b19e4023f744cc99"
     },
     {
       "path": "docs/architecture/LEGACY_SUPPORT_MODEL.md",
-      "sha256": "baca2b7b1f38f1c8fb92b699c5410251864073ded47cff706844e76155032e64"
+      "sha256": "16384d36f639f1115e42b6986492b730cfac42fed16e6c3df37b377f02931642"
     },
     {
       "path": "docs/distribution/PACK_SOURCES.md",
-      "sha256": "c0562a21b477c97b7b85fb3de5bcb7aebe8ba9cd3682e35441835decc2bed0fe"
+      "sha256": "3da5481fd4da91ef960b657c312c7b0a16cfada12dd6a56826e4ff1cdce2a80f"
     },
     {
       "path": "docs/architecture/LOCKLIST.md",
-      "sha256": "c44976b44239268c2207afec51254ed441ce54ad11c3a5286a8ceeab587f0cd4"
+      "sha256": "ceeba7fca7e960d5a595fd948db07e86cb35bb0536718f58d5b330e882a59c9a"
     },
     {
       "path": "docs/architecture/PLATFORM_RESPONSIBILITY.md",
-      "sha256": "93cce9b1f8c2e7308b374d94dae4bc6acf9a89894c19689ccea460c3830141ab"
+      "sha256": "cf098b1a04da59d493ec30874eff0a101c1e81e4a5ff22ce30226da94776d0d9"
     },
     {
       "path": "docs/architecture/RENDERER_RESPONSIBILITY.md",
-      "sha256": "eab922da248b61ca6d12b92c184ba34961a65a67790b0bc7191c1ea20ae57eca"
+      "sha256": "13b970a152eb21cdb1ad4a1bed85f41a4c45f513d38eab417661e6138b054e18"
     }
   ]
 }

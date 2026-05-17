@@ -21,7 +21,7 @@ ANALYZER_ID = "E536_MISSING_ARCHIVE_RECORD_SMELL"
 def run(graph, repo_root, changed_files=None):
     del graph, changed_files
     findings = []
-    for row in archive_policy_violations(repo_root):
+    for row in archive_policy_violations(repo_root, build_report=False):
         item = dict(row or {})
         if str(item.get("rule_id", "")).strip() != RULE_ARCHIVE_RECORD:
             continue

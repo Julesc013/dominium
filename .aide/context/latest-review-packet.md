@@ -1,59 +1,56 @@
-# AIDE Latest Review Packet
+# AIDE Review Packet
 
 ## Review Objective
 
-Review RESTRUCTURE-REPAIR-00 and confirm the repair pass fixed safe stale structural issues while preserving real blockers.
+Review the RESTRUCTURE-REPAIR-00 partial repair follow-up for scope, policy preservation, validation accuracy, and remaining blocker disposition.
 
 ## Decision Requested
 
-Return exactly one of `PASS_WITH_NOTES`, `REQUEST_CHANGES`, or `BLOCKED`.
+`PASS | PASS_WITH_NOTES | REQUEST_CHANGES | BLOCKED`
 
 ## Task Packet Reference
 
-- `.aide/context/latest-task-packet.md`
+`.aide/context/latest-task-packet.md`
 
 ## Context Packet Reference
 
-- `.aide/context/latest-context-packet.md`
+`.aide/context/latest-context-packet.md`
 
 ## Verification Report Reference
 
-- `.aide/verification/latest-verification-report.md`
-- `.aide/verification/review-decision-policy.yaml`
+`.aide/verification/latest-verification-report.md`
 
 ## Evidence Packet References
 
 - `.aide/reports/RESTRUCTURE-REPAIR-00-status.md`
 - `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md`
 - `.aide/reports/RESTRUCTURE-REPAIR-00-blockers.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-final-root-matrix.md`
 - `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
+- `.aide/reports/RESTRUCTURE-REPAIR-00-master-remediation-ledger.md`
+- `.aide/verification/review-decision-policy.yaml`
 - `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
+- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
 
 ## Changed Files Summary
 
-- Repaired stale path/test expectations.
-- Added final repair evidence and readiness reports.
-- Updated release, post-restructure, root-recycling, regression, AIDE status, and warning surfaces.
+The follow-up updates deterministic frozen-hash evidence, removes expired overrides, refreshes replay fixture hashes from current stubs, narrows AuditX generated-evidence scanning, keeps incomplete generated AuditX JSON out of scope, and refreshes repair evidence reports.
 
 ## Validation Summary
 
-Green: AIDE, strict structural validators, focused RepoX, smoke CTest, configure, build-only `ALL_BUILD`, product boot, portable projection, and internal pilot.
-
-Partial: full CTest remains failing/incomplete due semantic, policy, frozen-hash, replay, and AuditX timeout blockers.
-
-## Risk Summary
-
-The remaining blockers are intentionally not repaired in this task because they require explicit semantic or policy review.
+Passing: AIDE after packet format repair, docs sanity, JSON parsing, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, internal pilot, frozen contract guard, override policy tests, and replay hash invariance. Not green: full CTest, `slice0_hardcoded_ids`, `slice1_hardcoded_constants`, and AuditX wall-time.
 
 ## Token Summary
 
-This review packet is compact and references evidence by path.
+The task and review packets are compact and reference evidence by path rather than embedding long outputs.
+
+## Risk Summary
+
+Root debt remains excepted, semantic lint gates are not waived, AuditX still needs partitioning/performance repair, and DOE-00 remains blocked.
 
 ## Non-Goals / Scope Guard
 
-Do not approve feature work, DOE-00 execution, forced root moves, validator weakening, public release work, or hash/override/replay acceptance from this repair packet alone.
+No feature work, public release, root move batch, force push, validator weakening, or generated local proof output commit.
 
 ## Reviewer Instructions
 
-Check that safe repairs are scoped, remaining blockers are not hidden, generated outputs are uncommitted, and final readiness remains `PARTIAL`.
+Check that repaired evidence is deterministic, that no policy was weakened, that generated local outputs are not staged, and that the remaining blockers are reported honestly.
