@@ -65,17 +65,19 @@ created_phase = "CONVERGE-10"
 active = true
 notes = "POST-CONVERGE-02 found active imports from release and tooling helpers. This package is not a canonical governance doctrine source and must not compete with AGENTS.md or canon."
 
-[exceptions.ide_root]
+[retired_exceptions.ide_root]
 path = "ide"
 kind = "directory"
 classification = "partial_review"
-reason = "Root IDE projection boundary is intentionally referenced by generation and quarantine checks; tracked files are README, manifest schema, and examples."
-retirement_phase = "POST-CONVERGE"
-target = "keep root projection boundary until IDE generation policy is relocated or explicitly revised"
-risk = "medium"
+reason = "Tracked IDE README and projection manifest schema/examples were moved to docs/architecture and contracts/projections/ide; remaining ide/ material is generated local output only."
+retirement_phase = "MOVE-FAMILY-00B-APPLY"
+target = "tracked manifest source metadata lives under contracts/projections/ide; generated IDE projection output remains ignored local output"
+risk = "low"
 created_phase = "CONVERGE-10"
-active = true
-notes = "POST-CONVERGE-02 left this active because .gitignore and verify_ide_quarantine.py intentionally preserve ide/ as the generated IDE projection boundary. No source authority may be added here."
+active = false
+retired_phase = "MOVE-FAMILY-00B-APPLY"
+retired_reason = "git ls-files ide returned no tracked files after moving the three approved IDE manifest files to contracts/projections/ide."
+notes = "Retained for audit history only. Do not add tracked source authority under ide/; generated projection output under ide/ remains ignored local output."
 
 [retired_exceptions.labs_root]
 path = "labs"

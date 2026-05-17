@@ -115,3 +115,16 @@ Return a compact final report with `STATUS`, `SUMMARY`, `CHANGED_FILES`, `VALIDA
 - Move apply authorized: true, limited to MOVE-FAMILY-00B-APPLY only.
 - Feature work authorized: false.
 - No moves, deletes, renames, reference rewrites, aliases, maps, or exception retirements were applied by the gate.
+
+## MOVE-FAMILY-00B-APPLY UPDATE
+
+- Phase: MOVE-FAMILY-00B-APPLY - Apply IDE Manifest Projection Migration
+- Result: PASS_WITH_WARNINGS.
+- Moves applied: 3 tracked files from `ide/manifests/**` to `contracts/projections/ide/**`.
+- Reference rewrite groups applied: 5.
+- `git ls-files ide`: empty.
+- `ide_root` exception retired after strict validators passed.
+- Authorized scope consumed: true.
+- Additional moves authorized: false.
+- Feature work authorized: false.
+- Next recommended task: MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof.

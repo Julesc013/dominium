@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-15T18:29:30Z",
+  "generated_at_utc": "2026-05-17T11:29:27Z",
   "repo_root": ".",
-  "head_sha": "3c434cbe1e930ec8f3612ba5f3bf9eef24005217",
+  "head_sha": "2cea2a44c7af9e596da3ae79a3246471f010e932",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
-  "active_exception_count": 32,
+  "active_exception_count": 31,
   "map_status": "complete",
   "entries": [
     {
@@ -1134,32 +1134,6 @@
       "completed_phase": "",
       "completed_target": "",
       "completed_notes": ""
-    },
-    {
-      "name": "ide",
-      "current_path": "ide",
-      "proposed_target": "cmake_or_tools_review",
-      "action": "review",
-      "classification": "unknown_needs_review",
-      "ownership_surface": "unknown",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires manual root ownership review"
-      ],
-      "preserve_paths": "Preserve current path until manual review proves no compatibility dependency.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "IDE projections may belong under cmake, tools, or generated evidence depending on role.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "ide_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "keep root projection boundary until IDE generation policy is relocated or explicitly revised"
     },
     {
       "name": "infrastructure",

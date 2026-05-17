@@ -1,0 +1,85 @@
+{
+  "schema_version": "dominium.move_family_00b.apply.v1",
+  "task_id": "MOVE-FAMILY-00B-APPLY",
+  "result": "PASS_WITH_WARNINGS",
+  "head_before": "2cea2a44c7af9e596da3ae79a3246471f010e932",
+  "origin_main_before": "2cea2a44c7af9e596da3ae79a3246471f010e932",
+  "moves": [
+    {
+      "source": "ide/manifests/projection_manifest.schema.json",
+      "target": "contracts/projections/ide/projection_manifest.schema.json",
+      "status": "applied"
+    },
+    {
+      "source": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "target": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "status": "applied"
+    },
+    {
+      "source": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "status": "applied"
+    }
+  ],
+  "rewrite_groups": {
+    "planned": 5,
+    "applied": 5,
+    "files": [
+      ".gitignore",
+      "scripts/verify_docs_sanity.py",
+      "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
+      "docs/architecture/PROJECTION_LIFECYCLE.md",
+      "docs/architecture/IDE_PROJECTIONS.md"
+    ],
+    "warnings": [
+      "Generated-output references to ide/manifests/*.projection.json remain intentionally preserved.",
+      "Historical/audit/planning references to old ide/manifests paths remain intentionally preserved."
+    ]
+  },
+  "ide_root": {
+    "git_ls_files_ide_empty": true,
+    "filesystem_path_exists_after_empty_dir_cleanup": false,
+    "exception_retired": true,
+    "active_exception_count_after": 31
+  },
+  "validation": [
+    {
+      "command": "AIDE doctor/validate/test/selftest/tools/roots/repo and commit check",
+      "result": "PASS"
+    },
+    {
+      "command": "strict repo/root/distribution/component validators",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Known TOML fallback-parser warnings."
+    },
+    {
+      "command": "docs/build/UI/ABI checks",
+      "result": "PASS"
+    },
+    {
+      "command": "ctest --preset verify -R inv_repox_rules --output-on-failure",
+      "result": "PASS_WITH_WARNINGS",
+      "notes": "Passed after metadata-only status header repair in touched docs."
+    },
+    {
+      "command": "active stale source-reference scan",
+      "result": "PASS",
+      "notes": "No remaining active script/tool/architecture reference to old schema/example source paths."
+    },
+    {
+      "command": "python -m json.tool .aide/reports/MOVE-FAMILY-00B-APPLY-evidence.json",
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check and git diff --cached --check",
+      "result": "PASS"
+    },
+    {
+      "command": "manifest JSON parse and structural example check",
+      "result": "PASS"
+    }
+  ],
+  "blockers": [],
+  "unauthorized_changes": false,
+  "next_task": "MOVE-FAMILY-00B-PROOF"
+}

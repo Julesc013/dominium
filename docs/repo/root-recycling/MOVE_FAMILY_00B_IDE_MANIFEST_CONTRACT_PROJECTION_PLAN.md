@@ -1,5 +1,8 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-05-17
+Supersedes: none
+Superseded By: none
+Plan Status: DRAFT
 Approval Status: not_approved
 Apply Allowed: false
 
@@ -140,3 +143,14 @@ MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-A
 - `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` -> `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 No other move wave is authorized. The `ide` layout exception may retire only after the apply task proves `git ls-files ide` is empty and validators pass.
+
+## MOVE-FAMILY-00B-APPLY Result
+
+MOVE-FAMILY-00B-APPLY consumed the gate authorization and applied the three planned moves to `contracts/projections/ide/**`.
+
+- Applied moves: 3.
+- Applied rewrite groups: 5.
+- `git ls-files ide`: empty.
+- `ide` source-layout exception: retired after strict validators passed.
+- Generated `ide/manifests/*.projection.json` output remains an ignored local-output concern if regenerated later.
+- Next task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.

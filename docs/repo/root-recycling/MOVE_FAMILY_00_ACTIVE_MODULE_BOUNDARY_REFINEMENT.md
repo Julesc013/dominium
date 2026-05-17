@@ -1,5 +1,8 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-05-17
+Supersedes: none
+Superseded By: none
+Plan Status: DRAFT
 Approval Status: not_approved
 Apply Allowed: false
 
@@ -89,3 +92,13 @@ This refinement made no source-root moves, deletes, renames, import rewrites, re
 - Apply allowed: false.
 - Generated `ide/manifests/*.projection.json` output may remain under `ide/` as ignored generated output.
 - The `ide` source-layout exception may retire only after an approved apply moves all tracked files and `git ls-files ide` is empty.
+
+## MOVE-FAMILY-00B Apply Follow-up
+
+`MOVE-FAMILY-00B-APPLY` moved the three tracked IDE manifest source files to `contracts/projections/ide/**` and retired the `ide` source-layout exception after `git ls-files ide` became empty.
+
+The remaining active-module ownership work is unchanged:
+
+- `validation/**`, `meta/identity/**`, and `meta/stability/**` still need shim-aware validator namespace planning.
+- `governance/**` still needs release/tool import proof before relocation.
+- semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.

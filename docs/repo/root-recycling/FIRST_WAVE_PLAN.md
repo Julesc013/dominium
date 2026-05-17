@@ -91,3 +91,7 @@ MOVE-FAMILY-00B-PLAN produced a no-apply draft plan for the remaining tracked ID
 ## MOVE-FAMILY-00B-GATE Result
 
 MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-APPLY` for the three planned `ide/manifests/**` to `contracts/projections/ide/**` moves. No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate. All other MOVE-FAMILY waves remain unauthorized.
+
+## MOVE-FAMILY-00B-APPLY Result
+
+MOVE-FAMILY-00B-APPLY moved the three tracked IDE manifest files to `contracts/projections/ide/**`, applied the five approved reference rewrite groups, removed the empty `ide/` directory tree, and retired the `ide` source-layout exception after `git ls-files ide` became empty. All other MOVE-FAMILY moves remain unauthorized.

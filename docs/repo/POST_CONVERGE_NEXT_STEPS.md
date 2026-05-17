@@ -344,3 +344,15 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - No files were moved, deleted, renamed, or rewritten.
 - Apply remains unauthorized and `MOVE-FAMILY-00-GATE` is not ready.
 - Next recommended task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.
+
+## MOVE-FAMILY-00B-APPLY Update - IDE Manifest Projection Migration
+
+- Result: PASS_WITH_WARNINGS.
+- The three tracked IDE manifest source files moved from `ide/manifests/**` to `contracts/projections/ide/**`.
+- Applied reference rewrite groups: 5.
+- `git ls-files ide`: empty.
+- The empty `ide/` directory tree was removed after verifying it contained no files.
+- `ide_root` source-layout exception retired; active layout exception count is now 31.
+- Focused RepoX passed after metadata-only status header repairs in three touched planning docs.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by scope.
+- Next recommended task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.

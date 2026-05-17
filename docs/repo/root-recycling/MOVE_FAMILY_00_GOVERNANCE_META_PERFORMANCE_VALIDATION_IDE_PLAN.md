@@ -1,5 +1,8 @@
-Status: DRAFT
+Status: DERIVED
 Last Reviewed: 2026-05-17
+Supersedes: none
+Superseded By: none
+Plan Status: DRAFT
 Approval Status: not_approved
 Apply Allowed: false
 
@@ -127,3 +130,13 @@ MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the `ide/manifests
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
 - Apply remains unauthorized.
 - Required apply posture: move the tracked schema/examples only, update current references, keep generated IDE projection output ignored, and retire the `ide` exception only after validation proves no tracked files remain under `ide/`.
+
+## MOVE-FAMILY-00B Apply Result
+
+MOVE-FAMILY-00B-APPLY applied the tracked IDE manifest migration.
+
+- `ide/manifests/**` tracked source files moved to `contracts/projections/ide/**`.
+- Applied reference rewrite groups: 5.
+- `git ls-files ide`: empty.
+- `ide` source-layout exception: retired.
+- MOVE-FAMILY-00 still has no authorization for governance/meta/performance/validation moves.

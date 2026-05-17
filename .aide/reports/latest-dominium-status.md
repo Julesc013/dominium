@@ -101,3 +101,18 @@ MOVE-FAMILY-00B-GATE reviewed the draft IDE manifest projection plan and authori
 - Authorized scope: the three planned IDE manifest moves only.
 - All other moves remain unauthorized.
 - No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate.
+
+## MOVE-FAMILY-00B-APPLY Update
+
+MOVE-FAMILY-00B-APPLY applied the scoped IDE manifest projection migration.
+
+- Result: PASS_WITH_WARNINGS.
+- Moves applied: 3.
+- Rewrite groups applied: 5.
+- `git ls-files ide`: empty.
+- `ide` filesystem root: absent after empty directory cleanup.
+- `ide_root` exception: retired.
+- Active layout exception count: 31.
+- Focused RepoX: passed after touched-doc status header repair.
+- Next recommended task: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
+- All other root-family moves remain unauthorized.

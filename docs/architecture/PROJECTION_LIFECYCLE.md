@@ -30,7 +30,7 @@ Each projection emits a manifest:
 - Path: `/ide/manifests/<projection_id>.projection.json`
 
 
-- Schema: `/ide/manifests/projection_manifest.schema.json`
+- Schema: `/contracts/projections/ide/projection_manifest.schema.json`
 
 
 

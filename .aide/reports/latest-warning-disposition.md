@@ -122,3 +122,12 @@ Superseded By: none
 - Strict validators emitted known TOML fallback-parser warnings while passing.
 - Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by gate scope.
 - No files were moved, deleted, renamed, or rewritten.
+
+## MOVE-FAMILY-00B-APPLY
+
+- Apply result is PASS_WITH_WARNINGS, not BLOCKED.
+- Strict validators emitted known TOML fallback-parser warnings while passing.
+- Generated-output references to `ide/manifests/*.projection.json` remain warning-only when they point at ignored/local projection output, not tracked source authority.
+- Historical/audit/planning references to old `ide/manifests/**` paths remain warning-only by design.
+- Focused RepoX initially failed on three touched planning docs missing the full four-line status header; metadata-only header repairs were applied and the rerun passed.
+- Full CTest, full eval, CMake configure/build, product binary execution, package/release generation, portable projection regeneration, and internal pilot release regeneration remain not run by apply scope.

@@ -145,3 +145,15 @@ Immediate next task:
 ```text
 MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate
 ```
+
+## MOVE-FAMILY-00B-APPLY Outcome
+
+MOVE-FAMILY-00B-APPLY completed the IDE manifest source migration.
+
+- Moves applied: 3.
+- Rewrite groups applied: 5.
+- `ide` tracked files after apply: none.
+- `ide` source-layout exception: retired.
+- Required follow-up: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
+
+Future MOVE-FAMILY tasks must continue to use Tier 0 plus risk-specific validators from this file. This apply does not authorize governance, meta, performance, validation, package, release, runtime, or feature moves.

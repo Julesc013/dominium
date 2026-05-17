@@ -11,7 +11,7 @@ Scope: IDE project projections and projection manifests.
 This directory is the only permitted location for IDE project outputs.
 Everything under `/ide` is disposable and regenerated, except:
 - `/docs/architecture/IDE_PROJECTIONS.md`
-- `/ide/manifests/**` (schema + examples)
+- `/contracts/projections/ide/**` (schema + examples)
 
 Generated layout (created by scripts, not edited by hand):
 - `/ide/win/` (vc6/vc71/vs2015/vs2026 projections)

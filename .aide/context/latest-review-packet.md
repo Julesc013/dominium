@@ -81,3 +81,17 @@ Check that the diff is limited to scoped planning evidence and documentation, ap
 - Authorized scope: the three planned moves from `ide/manifests/**` to `contracts/projections/ide/**`.
 - All other root moves remain unauthorized.
 - No files were moved, deleted, renamed, reference-rewritten, or exception-retired by the gate.
+
+## MOVE-FAMILY-00B-APPLY REVIEW UPDATE
+
+- Apply result: PASS_WITH_WARNINGS.
+- Evidence:
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-status.md`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-validation.md`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-blockers.md`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-evidence.json`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-reference-rewrites.md`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-post-state.md`
+  - `.aide/reports/MOVE-FAMILY-00B-APPLY-rollback.md`
+- Reviewed state: three moves applied, five rewrite groups applied, `git ls-files ide` empty, `ide_root` retired.
+- Next review target: `MOVE-FAMILY-00B-PROOF - IDE Root Retirement Proof`.
