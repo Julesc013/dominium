@@ -1,0 +1,77 @@
+{
+  "schema_version": "dominium.move_family_00.refined_cleanup_strategy.v1",
+  "task_id": "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "no_apply": true,
+  "baseline": "BASELINE-00",
+  "roots": ["governance", "meta", "performance", "validation", "ide"],
+  "strategy": {
+    "recommended_next_task": "MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan",
+    "reason": "IDE manifests have the clearest target owner under contracts/projections and the smallest active surface. Active Python roots require shim/import plans before any move.",
+    "candidate_groups": [
+      {
+        "id": "ide_manifest_contract_projection",
+        "roots": ["ide"],
+        "paths": ["ide/manifests/projection_manifest.schema.json", "ide/manifests/projection_manifest_examples/*.projection.json"],
+        "target_owner": "contracts/projections",
+        "migration_mode": "preserve_until_manifest_contract",
+        "next_task": "MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan",
+        "apply_ready": false,
+        "required_before_apply": ["projection manifest contract path decision", "manifest validator or schema parse proof", "CMake/script/docs reference rewrite plan", "rollback plan"]
+      },
+      {
+        "id": "validation_identity_stability_validator_namespace",
+        "roots": ["validation", "meta"],
+        "paths": ["validation/**", "meta/identity/**", "meta/stability/**"],
+        "target_owner": "tools/validators",
+        "migration_mode": "move_with_temporary_shim",
+        "next_task": "MOVE-FAMILY-00A-PLAN - Active Validation And Validator Namespace Plan",
+        "apply_ready": false,
+        "required_before_apply": ["temporary shim policy", "import rewrite map", "AIDE/tools validator proof", "runtime AppShell import proof", "release/security identity proof"]
+      },
+      {
+        "id": "governance_release_tooling_namespace",
+        "roots": ["governance"],
+        "paths": ["governance/**"],
+        "target_owner": "tools/repo",
+        "migration_mode": "move_with_temporary_shim",
+        "next_task": "MOVE-FAMILY-00C-PLAN - Governance Release/Tooling Helper Namespace Plan",
+        "apply_ready": false,
+        "required_before_apply": ["release-control import proof", "setup/dist/governance tool rewrite plan", "temporary shim policy"]
+      }
+    ],
+    "deferred_groups": [
+      {
+        "id": "meta_semantic_runtime_subsystems",
+        "roots": ["meta"],
+        "paths": ["meta/compile/**", "meta/compute/**", "meta/explain/**", "meta/extensions/**", "meta/instrumentation/**", "meta/numeric.py", "meta/observability.py", "meta/profile/**", "meta/provenance/**", "meta/reference/**"],
+        "target_owner": "preserve_current",
+        "migration_mode": "preserve_until_tool_wrapping",
+        "reason": "These modules are active engine/game/runtime/domain support, not pure tooling."
+      },
+      {
+        "id": "performance_product_runtime_helpers",
+        "roots": ["performance"],
+        "paths": ["performance/**"],
+        "target_owner": "preserve_current",
+        "migration_mode": "block_unknown",
+        "reason": "Current consumers are product/client, game materials, and XStack session runtime; tools/performance would be the wrong owner without a runtime/domain decision."
+      }
+    ],
+    "blocked_groups": [
+      {
+        "id": "direct_apply_gate",
+        "reason": "No group is apply-ready. Every candidate requires contract, shim, or import rewrite planning first."
+      }
+    ]
+  },
+  "validation_floor_for_future_apply": ["Tier 0", "focused RepoX", "generated-output ignored/staging proof"],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "imports_rewritten": false,
+  "references_rewritten": false,
+  "shims_created": false
+}

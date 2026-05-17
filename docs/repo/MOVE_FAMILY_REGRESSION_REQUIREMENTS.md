@@ -111,3 +111,18 @@ MOVE-FAMILY-00-PLAN produced a blocked draft rather than an apply-ready gate pac
 - Next task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.
 
 The future validation posture remains Tier 0 plus focused RepoX for any eventual family-00 apply scope. If active tooling moves are included, affected wrapper/tool validation and consumer proof become required.
+
+## MOVE-FAMILY-00-REFINE Outcome
+
+MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES refined the blocked plan into ownership groups.
+
+- `ide/manifests/**`: plan next under `contracts/projections` with manifest contract and validator proof.
+- `validation/**`, `meta/identity/**`, and `meta/stability/**`: plan later under `tools/validators` with temporary shim/import proof.
+- `governance/**`: plan later under the repo/tooling slot with release/setup/dist/governance import proof.
+- semantic/runtime `meta/**` and product/runtime `performance/**`: preserve-current until owner-specific plans exist.
+
+No group is apply-ready. The immediate next planning task is:
+
+```text
+MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan
+```

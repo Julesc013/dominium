@@ -95,3 +95,11 @@ Superseded By: none
 - `ide/manifests/**` is machine-readable IDE projection metadata with CMake, script, docs, and registry consumers.
 - Full CTest, full eval, CMake configure/build, product binary execution, package generation, and release generation remain not run by scope.
 - No files were moved, deleted, renamed, or rewritten.
+
+## MOVE-FAMILY-00-REFINE
+
+- Ownership refinement is warning-only for this task but remains blocking for direct apply.
+- `ide/manifests/**` has a clear future owner under `contracts/projections`, but still needs a contract/validator/reference plan before movement.
+- `validation/**`, `meta/identity/**`, `meta/stability/**`, and `governance/**` require temporary shim/import planning.
+- semantic/runtime `meta/**` and product/runtime `performance/**` remain preserve-current.
+- No files were moved, deleted, renamed, or rewritten.

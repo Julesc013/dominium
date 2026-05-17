@@ -64,3 +64,15 @@ MOVE-FAMILY-00-PLAN inspected `governance/`, `meta/`, `performance/`, `validatio
 - Approval status: not_approved.
 - Ready for `MOVE-FAMILY-00-GATE`: false.
 - Recommended next task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.
+
+## MOVE-FAMILY-00-REFINE Result
+
+MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES produced ownership boundary evidence and kept apply disabled.
+
+- Active Python files found: 33.
+- IDE manifest files found: 3.
+- Clear next group: `ide/manifests/**` to be planned under `contracts/projections`.
+- Validator-like groups: `validation/**`, `meta/identity/**`, and `meta/stability/**` need shim/import planning before any move.
+- `performance/**` remains preserve-current because product/client/game code imports it.
+- Ready for `MOVE-FAMILY-00-GATE`: false.
+- Recommended next task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.

@@ -1,0 +1,31 @@
+{
+  "schema_version": "dominium.move_family_00.refine_summary.v1",
+  "task_id": "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "result": "PASS_WITH_WARNINGS",
+  "baseline": "BASELINE-00",
+  "target_roots": ["governance", "meta", "performance", "validation", "ide"],
+  "active_python_files": 33,
+  "import_package_files": 14,
+  "ide_manifest_files": 3,
+  "direct_executable_tools": 0,
+  "recommended_ownership_destinations": {
+    "governance": "tools/repo via tools/governance with temporary shim/import plan",
+    "validation": "tools/validators with temporary shim/import plan",
+    "meta_identity": "tools/validators with temporary shim/import plan",
+    "meta_stability": "tools/validators with temporary shim/import plan",
+    "ide_manifests": "contracts/projections after manifest contract/validator plan",
+    "meta_semantic_runtime": "preserve_current until semantic owner split",
+    "performance": "preserve_current until product/runtime owner decision"
+  },
+  "recommended_next_task": "MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan",
+  "ready_for_move_family_00_gate": false,
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "imports_rewritten": false,
+  "references_rewritten": false,
+  "shims_created": false
+}

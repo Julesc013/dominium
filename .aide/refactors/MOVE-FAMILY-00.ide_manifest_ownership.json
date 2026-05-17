@@ -1,0 +1,75 @@
+{
+  "schema_version": "dominium.move_family_00.ide_manifest_ownership.v1",
+  "task_id": "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES",
+  "status": "draft",
+  "approval_status": "not_approved",
+  "apply_allowed": false,
+  "baseline": "BASELINE-00",
+  "summary": {
+    "manifest_files": 3,
+    "machine_readable_files": 3,
+    "recommended_target_owner": "contracts/projections",
+    "safe_to_move_now": false,
+    "contract_needed": true,
+    "validator_needed": true
+  },
+  "decision": {
+    "preferred_owner": "contracts/projections",
+    "reason": "The files define projection manifest shape and examples, not human IDE documentation and not generated evidence.",
+    "rejected_owners": [
+      {"owner":"docs/architecture","reason":"Docs already explain IDE projections; the manifest schema/examples are machine-readable contract inputs."},
+      {"owner":"archive/generated","reason":"The schema/examples are tracked source authority for projection shape, not generated proof output."},
+      {"owner":"tools/ide","reason":"CMake/scripts consume these files, but the files describe contract shape rather than tool implementation."},
+      {"owner":"runtime/ide","reason":"No runtime IDE implementation owner exists for these source metadata files."},
+      {"owner":"contracts/ide","reason":"The strongest identity is projection manifest contract, with IDE as a projection family qualifier."}
+    ]
+  },
+  "items": [
+    {
+      "path": "ide/manifests/projection_manifest.schema.json",
+      "format": "json_schema",
+      "apparent_role": "IDE projection manifest schema",
+      "machine_readable": true,
+      "referenced_by": ["scripts/verify_docs_sanity.py", "docs/architecture/PROJECTION_LIFECYCLE.md", "docs/architecture/IDE_PROJECTIONS.md", "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md", "docs/audit/REPO_STRUCTURE_AUDIT.json"],
+      "target_owner": "contracts/projections",
+      "proposed_target_path": "contracts/projections/ide/projection_manifest.schema.json",
+      "migration_mode": "preserve_until_manifest_contract",
+      "contract_needed": true,
+      "validator_needed": true,
+      "risk": "medium",
+      "blocker": "Must add projection contract ownership and update CMake/script/docs references in an approved apply task."
+    },
+    {
+      "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
+      "format": "json",
+      "apparent_role": "IDE projection manifest example for Linux clang client GUI",
+      "machine_readable": true,
+      "referenced_by": ["docs/audit/REPO_STRUCTURE_AUDIT.json", "docs/architecture/IDE_PROJECTIONS.md", "module discovery evidence"],
+      "target_owner": "contracts/projections",
+      "proposed_target_path": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "migration_mode": "preserve_until_manifest_contract",
+      "contract_needed": true,
+      "validator_needed": true,
+      "risk": "medium",
+      "blocker": "Should move only with schema and manifest validator/ref updates."
+    },
+    {
+      "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
+      "format": "json",
+      "apparent_role": "IDE projection manifest example for Win9x VC6 client GUI",
+      "machine_readable": true,
+      "referenced_by": ["docs/audit/REPO_STRUCTURE_AUDIT.json", "docs/architecture/IDE_PROJECTIONS.md", "module discovery evidence"],
+      "target_owner": "contracts/projections",
+      "proposed_target_path": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "migration_mode": "preserve_until_manifest_contract",
+      "contract_needed": true,
+      "validator_needed": true,
+      "risk": "medium",
+      "blocker": "Should move only with schema and manifest validator/ref updates."
+    }
+  ],
+  "moves_applied": false,
+  "deletes_applied": false,
+  "renames_applied": false,
+  "references_rewritten": false
+}

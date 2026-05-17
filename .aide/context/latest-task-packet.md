@@ -2,29 +2,26 @@
 
 ## PHASE
 
-MOVE-FAMILY-00-PLAN - Governance, Meta, Performance, Validation, and IDE Cleanup Plan
+MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Refine Governance, Meta, Performance, Validation, and IDE Active-Module Ownership
 
 ## GOAL
 
-Produce a reviewable no-apply cleanup plan for `governance/`, `meta/`, `performance/`, `validation/`, and `ide/` using BASELINE-00 as the structural regression baseline.
+Produce ownership boundary evidence for the blocked MOVE-FAMILY-00 plan without applying moves.
 
 ## WHY
 
-The repository has a frozen internal pilot release proof. The first family-level physical cleanup needs an exact plan before any move application so active tooling, policy, machine-readable metadata, and generated evidence are not moved by convenience.
+MOVE-FAMILY-00-PLAN found no safe apply set because the remaining target-family files are active Python/tooling surfaces or machine-readable IDE projection metadata. The next cleanup step needs precise ownership destinations, consumer evidence, and a staged strategy before any move gate.
 
 ## CONTEXT_REFS
 
-- `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md`
-- `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
-- `docs/repo/audits/BASELINE_00_RELEASE_STRUCTURAL_REGRESSION_BASELINE.md`
-- `docs/repo/root-recycling/AIDE_ROOT_01_FIRST_WAVE_INVENTORY.md`
-- `docs/repo/root-recycling/AIDE_ROOT_06_RECONCILIATION_AND_MOVE_SELECTION.md`
-- `.aide/reports/AIDE-MOVE-02-REFINE-decision.md`
-- `.aide/reports/roots/governance.inventory.json`
-- `.aide/reports/roots/meta.inventory.json`
-- `.aide/reports/roots/performance.inventory.json`
-- `.aide/reports/roots/validation.inventory.json`
-- `.aide/reports/roots/ide.inventory.json`
+- `.aide/refactors/MOVE-FAMILY-00.plan.json`
+- `.aide/refactors/MOVE-FAMILY-00.salvage_plan.json`
+- `.aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json`
+- `.aide/reports/MOVE-FAMILY-00-PLAN-candidate-table.json`
+- `docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md`
+- `contracts/repo/root_constitution.toml`
+- `contracts/repo/ownership_slots.toml`
+- `contracts/repo/layout_exceptions.toml`
 
 ## ALLOWED_PATHS
 
@@ -35,60 +32,58 @@ The repository has a frozen internal pilot release proof. The first family-level
 - `docs/repo/root-recycling/**`
 - `docs/repo/audits/**`
 - `docs/repo/POST_CONVERGE_NEXT_STEPS.md`
-- `docs/repo/STRUCTURAL_REGRESSION_BASELINE.md`
 - `docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md`
 
 ## FORBIDDEN_PATHS
 
 - target-root file edits under `governance/**`, `meta/**`, `performance/**`, `validation/**`, or `ide/**`
 - product/runtime/source behavior changes
-- source-root moves, deletes, renames, reference rewrites, active aliases, compatibility shims, approved move maps, applied move maps, applied salvage maps, or exception retirements
+- moves, deletes, renames, import rewrites, reference rewrites, active aliases, compatibility shims, move map approvals, salvage map approvals, map applications, or exception retirements
 - generated build/package/release/projection/local output commits
 
 ## IMPLEMENTATION
 
-- Inspect current target-root files and existing root evidence.
-- Produce draft/not-approved/no-apply plan artifacts.
-- Classify every current target-family tracked file as move now, move later, convert later, archive later, preserve/defer, or block.
-- Record validation, rollback, reference rewrite, exception update, and reviewer-facing blocker evidence.
+- Inspect current target-root file list.
+- Map active Python modules and machine-readable IDE manifests to ownership destinations.
+- Record import/reference consumers and future migration modes.
+- Produce a revised cleanup strategy and next planning task.
 
 ## VALIDATION
 
 - AIDE doctor/validate/test/selftest/tools/roots/repo validation.
 - AIDE latest commit check.
-- Plan JSON and TOML parsing.
+- JSON and TOML parsing for new artifacts.
 - Strict repo/root/distribution/component validators.
 - Docs/build/UI/ABI checks.
 - Git diff checks and generated-output staging checks.
 
 ## EVIDENCE
 
-- `.aide/refactors/MOVE-FAMILY-00.plan.toml`
-- `.aide/refactors/MOVE-FAMILY-00.plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.salvage_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.validation_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.rollback_plan.json`
-- `.aide/refactors/MOVE-FAMILY-00.exception_update_plan.json`
-- `.aide/reports/MOVE-FAMILY-00-PLAN-*`
-- `docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md`
+- `.aide/refactors/MOVE-FAMILY-00.active_module_ownership.json`
+- `.aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json`
+- `.aide/refactors/MOVE-FAMILY-00.import_reference_map.json`
+- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json`
+- `.aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.toml`
+- `.aide/reports/MOVE-FAMILY-00-REFINE-*`
+- `docs/repo/root-recycling/MOVE_FAMILY_00_ACTIVE_MODULE_BOUNDARY_REFINEMENT.md`
 
 ## NON_GOALS
 
 - No move application.
 - No file delete or rename.
-- No reference rewrite.
+- No import or reference rewrite.
+- No compatibility shim or active path alias.
 - No root exception retirement.
 - No feature/domain/product/runtime implementation.
 - No full CTest, full eval, CMake configure/build, product binary execution, package generation, or release generation.
 
 ## ACCEPTANCE
 
-- Required plan and report artifacts exist.
+- Required ownership/refinement artifacts exist and parse.
 - Apply remains unauthorized.
-- The plan truthfully records whether `MOVE-FAMILY-00-GATE` is ready.
+- The refined strategy names the next planning task.
 - Validation is run and recorded.
-- Only scoped planning evidence and docs are committed.
+- Only scoped refinement evidence and docs are committed.
 
 ## OUTPUT_SCHEMA
 

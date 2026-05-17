@@ -104,3 +104,15 @@ MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-s
 ## No Moves/Deletes/Renames Confirmation
 
 MOVE-FAMILY-00-PLAN made no source-root moves, deletes, renames, reference rewrites, active aliases, compatibility shims, salvage-map applications, move-map applications, or exception retirements.
+
+## Boundary Refinement
+
+`MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES` refined the blocked plan without applying moves.
+
+- Active Python files found: 33.
+- IDE manifest files found: 3.
+- `ide/manifests/**` preferred future owner: `contracts/projections`.
+- `validation/**`, `meta/identity/**`, and `meta/stability/**` preferred future owner: `tools/validators`, but only with temporary shim/import planning.
+- `governance/**` preferred future owner: `tools/repo` via `tools/governance/**`, but only with release/tool import proof.
+- most semantic/runtime `meta/**` and all `performance/**` remain preserve-current.
+- Next recommended task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.

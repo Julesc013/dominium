@@ -61,3 +61,16 @@ The first family-level cleanup plan inspected `governance/`, `meta/`, `performan
 - No files were moved, deleted, renamed, or rewritten.
 - Remaining target-family material is active Python/tooling surface or machine-readable IDE projection metadata.
 - Next recommended task: `MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES - Define ownership and consumer-safe destinations for active governance/meta/performance/validation modules and IDE projection manifests`.
+
+## MOVE-FAMILY-00-REFINE Update
+
+MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES refined the blocked plan into owner groups without applying moves.
+
+- Result: PASS_WITH_WARNINGS.
+- Active Python files found: 33.
+- IDE manifest files found: 3.
+- Preferred IDE manifest owner: `contracts/projections`.
+- Validator namespace candidates: `validation/**`, `meta/identity/**`, and `meta/stability/**`, all requiring temporary shim/import planning.
+- Preserve-current groups: semantic/runtime `meta/**` and product/runtime `performance/**`.
+- Ready for `MOVE-FAMILY-00-GATE`: false.
+- Next recommended task: `MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan`.

@@ -1,0 +1,51 @@
+[strategy]
+schema_version = "dominium.move_family_00.refined_cleanup_strategy.v1"
+task_id = "MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES"
+status = "draft"
+approval_status = "not_approved"
+apply_allowed = false
+no_apply = true
+baseline = "BASELINE-00"
+roots = ["governance", "meta", "performance", "validation", "ide"]
+recommended_next_task = "MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan"
+reason = "IDE manifests have the clearest target owner under contracts/projections and the smallest active surface. Active Python roots require shim/import plans before any move."
+
+[[candidate_groups]]
+id = "ide_manifest_contract_projection"
+roots = ["ide"]
+target_owner = "contracts/projections"
+migration_mode = "preserve_until_manifest_contract"
+apply_ready = false
+next_task = "MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan"
+
+[[candidate_groups]]
+id = "validation_identity_stability_validator_namespace"
+roots = ["validation", "meta"]
+target_owner = "tools/validators"
+migration_mode = "move_with_temporary_shim"
+apply_ready = false
+next_task = "MOVE-FAMILY-00A-PLAN - Active Validation And Validator Namespace Plan"
+
+[[candidate_groups]]
+id = "governance_release_tooling_namespace"
+roots = ["governance"]
+target_owner = "tools/repo"
+migration_mode = "move_with_temporary_shim"
+apply_ready = false
+next_task = "MOVE-FAMILY-00C-PLAN - Governance Release/Tooling Helper Namespace Plan"
+
+[[deferred_groups]]
+id = "meta_semantic_runtime_subsystems"
+roots = ["meta"]
+target_owner = "preserve_current"
+migration_mode = "preserve_until_tool_wrapping"
+
+[[deferred_groups]]
+id = "performance_product_runtime_helpers"
+roots = ["performance"]
+target_owner = "preserve_current"
+migration_mode = "block_unknown"
+
+[[blocked_groups]]
+id = "direct_apply_gate"
+reason = "No group is apply-ready. Every candidate requires contract, shim, or import rewrite planning first."
