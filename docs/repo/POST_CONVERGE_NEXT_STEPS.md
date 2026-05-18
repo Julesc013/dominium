@@ -552,6 +552,27 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
 
+<!-- MOVE-ROUTER-00 -->
+
+## MOVE-ROUTER-00 Next-Step Update
+
+MOVE-ROUTER-00 changes the active cleanup path from batch micro-planning to a
+deterministic route table.
+
+- Naming canon: active.
+- Bad-root routing contract: active.
+- Dry-run router: `tools/migration/route_bad_roots.py`.
+- Bad-root tracked files routed: 1,765 of 1,765.
+- Known canonical routes: 1,694.
+- Quarantine routes: 71.
+- Target collisions: 0.
+- Skipped/impossible routes: 0.
+- Moves applied: 0.
+- Feature work authorized: no.
+
+Next recommended task:
+`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
 <!-- RESTRUCTURE-REPAIR-00 -->
 
 ## RESTRUCTURE-REPAIR-00 Repair Update

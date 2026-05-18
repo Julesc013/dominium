@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.repo.bad_root_routing.schema.v1",
+  "title": "Dominium Bad Root Routing Contract",
+  "type": "object",
+  "required": [
+    "contract",
+    "root_policy",
+    "bad_roots",
+    "forbidden_directory_names",
+    "unknown_quarantine",
+    "safety_policy",
+    "output_policy"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "schema_version", "status", "phase", "scope"],
+      "properties": {
+        "id": {"const": "dominium.repo.bad_root_routing.v1"},
+        "schema_version": {"const": "dominium.repo.bad_root_routing.contract.v1"},
+        "status": {"type": "string"},
+        "phase": {"type": "string"},
+        "scope": {"type": "string"},
+        "dry_run_only": {"type": "boolean"},
+        "no_physical_moves_authorized": {"type": "boolean"}
+      }
+    },
+    "root_policy": {
+      "type": "object",
+      "required": ["canonical_roots", "generated_or_local_roots"],
+      "properties": {
+        "canonical_roots": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "generated_or_local_roots": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "optional_future_roots": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        }
+      }
+    },
+    "bad_roots": {
+      "type": "object",
+      "required": ["bad_roots", "rule"],
+      "properties": {
+        "bad_roots": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "status": {"type": "string"},
+        "rule": {"type": "string"}
+      }
+    },
+    "forbidden_directory_names": {
+      "type": "object",
+      "required": ["forbidden_directory_names", "allowed_directory_exceptions"],
+      "properties": {
+        "forbidden_directory_names": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "allowed_directory_exceptions": {
+          "type": "array",
+          "items": {"type": "string"},
+          "uniqueItems": true
+        },
+        "target_sanitization": {"type": "string"}
+      }
+    },
+    "unknown_quarantine": {
+      "type": "object",
+      "additionalProperties": {"type": "string"}
+    },
+    "safety_policy": {
+      "type": "object",
+      "required": [
+        "target_collisions",
+        "identity_sensitive_files",
+        "semantic_mutation",
+        "delete_default"
+      ],
+      "additionalProperties": {"type": "string"}
+    },
+    "output_policy": {
+      "type": "object",
+      "required": [
+        "dry_run_json",
+        "route_table_json",
+        "next_task"
+      ],
+      "additionalProperties": {"type": "string"}
+    }
+  }
+}

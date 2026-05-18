@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review the NAME-00 redo evidence refresh: naming contract snapshot, audit detail, current conflict counts, status/readiness updates, and no-apply compliance.
+Review MOVE-ROUTER-00: naming/routing contracts, dry-run router behavior, complete bad-root route table, quarantine fallback, advisory validators, status updates, and no-apply compliance.
 
 ## Decision Requested
 
@@ -23,28 +23,31 @@ Review the NAME-00 redo evidence refresh: naming contract snapshot, audit detail
 ## Evidence Packet References
 
 - `contracts/repo/naming.contract.toml`
-- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
-- `.aide/reports/NAME-00-status.md`
-- `.aide/reports/NAME-00-validation.md`
-- `.aide/reports/NAME-00-blockers.md`
-- `.aide/reports/NAME-00-next-readiness.json`
-- `.aide/reports/NAME-00-next-readiness.md`
-- `.aide/reports/NAME-00-path-conflicts.json`
-- `.aide/reports/NAME-00-language-ownership-findings.json`
+- `contracts/repo/bad_root_routing.contract.toml`
+- `contracts/repo/bad_root_routing.schema.json`
+- `tools/migration/route_bad_roots.py`
+- `docs/repo/bad_root_routing.md`
+- `docs/repo/final_repository_structure.md`
+- `.aide/reports/MOVE-ROUTER-00-dry-run.json`
+- `.aide/reports/MOVE-ROUTER-00-route-table.json`
+- `.aide/reports/MOVE-ROUTER-00-target-collisions.md`
+- `.aide/reports/MOVE-ROUTER-00-validation.md`
+- `.aide/reports/MOVE-ROUTER-00-status.md`
+- `.aide/reports/MOVE-ROUTER-00-blockers.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
 
 ## Changed Files Summary
 
-The redo updates naming-law evidence and AIDE/status surfaces only. It does not move, delete, rename, rewrite, shim, apply maps, retire exceptions, or change product/runtime/content behavior.
+The task adds the routing contract, router dry-run behavior, route reports, advisory validators, docs, and status surfaces. It does not move, delete, rename, rewrite, shim, apply maps, retire exceptions, or change product/runtime/content behavior.
 
 ## Validation Summary
 
-Expected validation: AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, Python compile for NAME-00 validators, JSON parse for touched JSON, docs/build/UI/ABI checks, and git diff checks.
+Expected validation: router dry-run with collision check, new advisory validators, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, Python compile for new router/validators, JSON/TOML parse checks, docs/build/UI/ABI checks, and git diff checks.
 
 ## Risk Summary
 
-Current naming conflicts remain warning-class transitional debt. The redo confirms naming law but does not make the repository visually tidy and does not authorize MOVE-BULK apply work.
+The route table is dry-run evidence only. Quarantine routes and import/shim candidates remain apply-task risks. The task does not authorize feature work or MOVE-ROUTER-01 application by itself.
 
 ## Token Summary
 
@@ -56,4 +59,4 @@ No root movement, deletion, rename, reference rewrite, import rewrite, shim, lay
 
 ## Reviewer Instructions
 
-Confirm that the current counts align with NAME-00 validators and MOVE-SCRIPT-00 dry-run evidence, and that planned internal renames remain future-only.
+Confirm that every tracked bad-root file receives a route, target collisions are zero, unknown files route to quarantine, and no apply-side filesystem changes occurred.

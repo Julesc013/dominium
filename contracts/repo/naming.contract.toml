@@ -19,6 +19,7 @@ no_physical_moves_authorized = true
 canonical_roots = [
   ".aide",
   ".github",
+  ".vscode",
   "apps",
   "engine",
   "game",
@@ -55,6 +56,10 @@ terms = [
   "legacy",
   "classic",
   "universal",
+  "experimental",
+  "research",
+  "v2",
+  "v3",
   "compat"
 ]
 rule = "Forbidden terms must not become top-level source ownership roots. Nested use is warning-only until an owner review proves the term names real ownership."

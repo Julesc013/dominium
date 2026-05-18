@@ -97,11 +97,29 @@ The repository has a naming canon, but the redo prompt requires current conflict
 
 ## NEXT
 
-`MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`
+`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
 
 ## OUTPUT_SCHEMA
 
 Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `VALIDATION`, `RISKS`, and `NEXT`.
+
+## MOVE-ROUTER-00 CURRENT PACKET ADDENDUM
+
+Current task: `MOVE-ROUTER-00 - Lock Naming Canon and Generate Deterministic Bad-Root Router`.
+
+Acceptance:
+
+- `contracts/repo/bad_root_routing.contract.toml` is active.
+- `tools/migration/route_bad_roots.py` is dry-run-only for this phase.
+- every tracked bad-root file receives either a canonical target or
+  `archive/quarantine/<root>/`.
+- target collisions are blockers.
+- no moves, deletes, renames, shims, rewrites, exception retirements, package
+  generation, release generation, tags, uploads, or feature work occur.
+
+Next task after commit:
+
+`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
 
 ## TOKEN_ESTIMATE
 

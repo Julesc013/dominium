@@ -81,3 +81,13 @@ runtime-store/
 ## Future Enforcement
 
 The initial validator is warning-oriented because existing debt remains. It becomes a hard blocker for new unexcepted `src`, `source`, or `sources` directories outside `archive/` and active exception roots.
+
+## MOVE-ROUTER-00 Update
+
+`MOVE-ROUTER-00` does not preserve bad-root `src`, `source`, or `sources`
+segments in proposed targets. The dry-run router rewrites target directory
+segments that would recreate those names to explicit payload names and records
+the change with `target_path_sanitized = true`.
+
+Apply tasks must review sanitized targets before moving, but the target grammar
+is fixed: no new active `src/`, `source/`, or `sources/` directories.

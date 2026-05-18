@@ -82,3 +82,15 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 - `docs/repo/audits/MOVE_SCRIPT_00_BAD_ROOT_ROUTER.md`.
 - dry-run route, skipped, root-summary, batch-plan, blocker, status, and validation evidence under `.aide/reports/MOVE-SCRIPT-00-*`.
 - dry-run summary: 1,765 tracked bad-root files, 1,593 route candidates, 172 skipped/deferred files, 0 target collisions, 0 moves applied.
+
+## MOVE-ROUTER-00 Additions
+
+- `contracts/repo/bad_root_routing.contract.toml`.
+- `contracts/repo/bad_root_routing.schema.json`.
+- `docs/repo/bad_root_routing.md`.
+- `docs/repo/final_repository_structure.md`.
+- advisory validators for forbidden names and bad-root absence.
+- dry-run route and status evidence under `.aide/reports/MOVE-ROUTER-00-*`.
+- dry-run summary: 1,765 tracked bad-root files, 1,765 routed files, 1,694 known canonical routes, 71 quarantine routes, 0 target collisions, 0 skipped/impossible routes, 0 moves applied.
+
+Next task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.

@@ -123,3 +123,26 @@ NAME-00 redo after MOVE-SCRIPT-00 confirms the current batch-gate inputs:
 - naming-law blockers: 0.
 
 The next batch task is `MOVE-BULK-BG-REFINEMENT-00`. It may produce smaller authorized subsets, but it still must not move files unless a later apply prompt explicitly authorizes the exact subset.
+
+<!-- MOVE-ROUTER-00 -->
+
+## MOVE-ROUTER-00 Sequence Supersession
+
+The active cleanup sequence is now router-based:
+
+1. `MOVE-ROUTER-00 - Lock Naming Canon and Generate Deterministic Bad-Root Router`
+2. `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
+3. `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Root Exceptions`
+4. `POST-RESTRUCTURE-02 - Full Green Proof and Origin Sync`
+
+The old MOVE-BULK B-G sequence remains evidence, not the active route to
+cleanup. MOVE-ROUTER-00 dry-run result:
+
+- Bad-root tracked files: 1,765.
+- Routed files: 1,765.
+- Known canonical routes: 1,694.
+- Quarantine routes: 71.
+- Target collisions: 0.
+- Skipped/impossible routes: 0.
+
+No MOVE-BULK apply authorization is implied by this supersession.

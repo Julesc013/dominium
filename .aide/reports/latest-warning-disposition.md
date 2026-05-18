@@ -60,3 +60,16 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 - `authority_sensitive_docs_only_route_requires_review` and `normative_specs_reality_docs_require_authority_review` remain deferred to authority review.
 - forbidden target segments such as `source` and generic `compat` are refused by the router and require refined target ownership before apply.
 - Target collisions are currently zero.
+
+## MOVE-ROUTER-00 Warning Disposition
+
+- The router no longer leaves unknown files in former bad roots. Unknown or
+  ambiguous files route to `archive/quarantine/<root>/`.
+- Current quarantine routes: 71.
+- Current sanitized target paths: 3.
+- Target collisions: 0.
+- Skipped/impossible routes: 0.
+- Import rewrite candidates and shim candidates are apply-task risks, not
+  MOVE-ROUTER-00 failures, because no files were moved.
+- Feature work and DOE-00 remain blocked until router apply/repair and final
+  proof complete.

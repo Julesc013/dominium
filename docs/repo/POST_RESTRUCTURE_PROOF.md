@@ -96,3 +96,23 @@ The redo did not move, delete, rename, rewrite, shim, retire exceptions, or alte
 MOVE-SCRIPT-00 added a deterministic dry-run router and rule file for the 23 former bad roots. It scans tracked files through `git ls-files`, produces sorted route and skipped ledgers, detects target collisions, and emits batch plans for the deferred MOVE-BULK B-G cleanup. The task did not move, delete, rename, rewrite, shim, or retire exceptions.
 
 The router result is `PASS_WITH_WARNINGS`: 1,593 route candidates are available for later gate review, and 172 files remain deferred for import, identity, authority, ABI/build, or naming-risk reasons.
+
+## MOVE-ROUTER-00 Routing Proof Note
+
+MOVE-ROUTER-00 supersedes the MOVE-SCRIPT skipped/deferred posture as the
+active routing path. The router now routes every tracked file under former bad
+roots: known files to canonical owners and unknown or ambiguous files to
+`archive/quarantine/<root>/`.
+
+Current dry-run result:
+
+- Bad-root tracked files: 1,765.
+- Routed files: 1,765.
+- Known canonical routes: 1,694.
+- Quarantine routes: 71.
+- Target collisions: 0.
+- Skipped/impossible routes: 0.
+- Moves, deletes, renames, rewrites, shims, and exception retirements: 0.
+
+Feature work and DOE-00 remain blocked. Next structural task:
+`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.

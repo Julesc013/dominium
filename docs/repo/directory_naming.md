@@ -159,3 +159,14 @@ The 2026-05-18 NAME-00 redo refreshes the directory posture after MOVE-SCRIPT-00
 - NAME-00 directory/path validators report zero blocker-class findings.
 
 These counts do not make the old roots allowed. They only define the current cleanup queue.
+
+## MOVE-ROUTER-00 Update
+
+`MOVE-ROUTER-00` replaces the skipped/deferred route posture with deterministic
+quarantine routing. Known files route to canonical owners. Unknown or ambiguous
+files route to `archive/quarantine/<root>/` and therefore no longer block bad
+root cleanup by staying in place.
+
+The active dry-run router is `tools/migration/route_bad_roots.py`; its authority
+is `contracts/repo/bad_root_routing.contract.toml`. Future apply tasks must
+consume those reports instead of recreating ad hoc move maps.

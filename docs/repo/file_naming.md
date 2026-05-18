@@ -101,3 +101,13 @@ Contracts and manifests define identity. Paths are storage.
 Do not change contract IDs, package IDs, product IDs, pack IDs, profile IDs, bundle IDs, save IDs, ABI IDs, or release IDs merely because a file is moved in a future migration.
 
 Future move tasks must preserve identity values unless an explicit doctrine or contract-update task authorizes a meaning change.
+
+## MOVE-ROUTER-00 Update
+
+The bad-root router records file moves as storage relocation only. It may
+sanitize proposed target directory segments that would recreate forbidden names,
+but it must not edit file contents, semantic identifiers, manifests, hashes,
+locks, schema versions, or compatibility declarations.
+
+If a filename itself is unclear, the file follows the parent-root quarantine
+policy for later owner review rather than being guessed into an active subsystem.

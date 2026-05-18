@@ -1,0 +1,234 @@
+[contract]
+id = "dominium.repo.bad_root_routing.v1"
+schema_version = "dominium.repo.bad_root_routing.contract.v1"
+status = "active"
+phase = "MOVE-ROUTER-00"
+scope = "dry-run routing for former bad roots into canonical repository ownership roots"
+authority_order = [
+  "docs/canon/constitution_v1.md",
+  "docs/canon/glossary_v1.md",
+  "AGENTS.md",
+  "contracts/repo/layout.contract.toml",
+  "contracts/repo/root_allowlist.toml",
+  "contracts/repo/layout_exceptions.toml",
+  "contracts/repo/naming.contract.toml",
+  "contracts/repo/bad_root_routing.contract.toml"
+]
+dry_run_only = true
+no_physical_moves_authorized = true
+no_deletes_authorized = true
+no_reference_rewrites_authorized = true
+no_import_rewrites_authorized = true
+no_shims_authorized = true
+no_exception_retirement_authorized = true
+
+[root_policy]
+canonical_roots = [
+  ".aide",
+  ".github",
+  ".vscode",
+  "apps",
+  "engine",
+  "game",
+  "runtime",
+  "contracts",
+  "content",
+  "docs",
+  "tests",
+  "tools",
+  "scripts",
+  "cmake",
+  "external",
+  "release",
+  "archive"
+]
+generated_or_local_roots = [".aide.local", ".dominium.local", "build", "out", "dist"]
+optional_future_roots = ["sdk", "examples"]
+
+[bad_roots]
+bad_roots = [
+  "core",
+  "control",
+  "data",
+  "packs",
+  "profiles",
+  "bundles",
+  "compat",
+  "lib",
+  "libs",
+  "locks",
+  "repo",
+  "safety",
+  "security",
+  "specs",
+  "updates",
+  "meta",
+  "governance",
+  "performance",
+  "validation",
+  "modding",
+  "models",
+  "templates",
+  "net",
+  "ide"
+]
+status = "route_every_tracked_file_or_report_collision"
+rule = "Known files route to semantic owners. Unknown or ambiguous files route to archive/quarantine/<root>/."
+
+[forbidden_directory_names]
+forbidden_directory_names = [
+  "src",
+  "source",
+  "sources",
+  "code",
+  "impl",
+  "common",
+  "shared",
+  "misc",
+  "new",
+  "old",
+  "future",
+  "modern",
+  "legacy",
+  "classic",
+  "universal",
+  "experimental",
+  "research",
+  "v2",
+  "v3",
+  "compat"
+]
+allowed_directory_exceptions = [
+  "archive/legacy",
+  "contracts/compatibility",
+  "docs/compatibility"
+]
+target_sanitization = "Forbidden target directory segments are rewritten to explicit payload names in dry-run output; apply tasks must review any sanitized target before moving."
+
+[unknown_quarantine]
+"core" = "archive/quarantine/core"
+"control" = "archive/quarantine/control"
+"data" = "archive/quarantine/data"
+"packs" = "archive/quarantine/packs"
+"profiles" = "archive/quarantine/profiles"
+"bundles" = "archive/quarantine/bundles"
+"compat" = "archive/quarantine/compatibility"
+"lib" = "archive/quarantine/lib"
+"libs" = "archive/quarantine/libs"
+"locks" = "archive/quarantine/locks"
+"repo" = "archive/quarantine/repo"
+"safety" = "archive/quarantine/safety"
+"security" = "archive/quarantine/security"
+"specs" = "archive/quarantine/specs"
+"updates" = "archive/quarantine/updates"
+"meta" = "archive/quarantine/meta"
+"governance" = "archive/quarantine/governance"
+"performance" = "archive/quarantine/performance"
+"validation" = "archive/quarantine/validation"
+"modding" = "archive/quarantine/modding"
+"models" = "archive/quarantine/models"
+"templates" = "archive/quarantine/templates"
+"net" = "archive/quarantine/net"
+"ide" = "archive/quarantine/ide"
+
+[safety_policy]
+target_collisions = "report_and_fail_when_requested"
+duplicate_planned_targets = "report_and_fail_when_requested"
+identity_sensitive_files = "preserve file contents and IDs; route by content/contract ownership only"
+authority_sensitive_files = "route to contracts/tools/docs by authority class; never downgrade normative policy to docs-only"
+build_sensitive_files = "route only as dry-run; apply requires later build/CMake/import proof"
+active_python_packages = "route with import/shim flags; do not create shims in MOVE-ROUTER-00"
+generated_outputs = "do not stage ignored/generated build, projection, or release outputs"
+semantic_mutation = "forbidden"
+delete_default = "forbidden"
+
+[routing.ide]
+rules = [
+  "ide/manifests/projection_manifest.schema.json -> contracts/projections/ide/projection_manifest.schema.json",
+  "ide/manifests/projection_manifest_examples/*.projection.json -> contracts/projections/ide/examples/",
+  "ide/README.md -> docs/architecture/IDE_PROJECTIONS.md",
+  "unknown -> archive/quarantine/ide/"
+]
+
+[routing.templates]
+rules = [
+  "schema -> contracts/schema/templates/",
+  "contract or manifest -> contracts/templates/",
+  "example -> content/examples/templates/",
+  "markdown -> docs/development/templates/",
+  "reusable data/assets -> content/templates/",
+  "unknown -> archive/quarantine/templates/"
+]
+
+[routing.models]
+rules = [
+  "schema -> contracts/schema/models/",
+  "registry -> contracts/registry/models/",
+  "asset -> content/assets/models/",
+  "markdown -> docs/domains/models/",
+  "domain data/json -> content/domains/models/",
+  "unknown -> archive/quarantine/models/"
+]
+
+[routing.modding]
+rules = [
+  "schema -> contracts/schema/modding/",
+  "capability -> contracts/capability/modding/",
+  "contract -> contracts/package/modding/",
+  "example -> content/examples/modding/",
+  "markdown -> docs/modding/",
+  "unknown -> archive/quarantine/modding/"
+]
+
+[routing.content_identity]
+rules = [
+  "data/schema and data/schemas -> contracts/schema/",
+  "data/registry and data/registries -> contracts/registry/",
+  "data/contracts -> contracts/",
+  "data/packs and packs -> content/packs/",
+  "data/profiles and profiles -> content/profiles/",
+  "data/bundles and bundles -> content/bundles/",
+  "data/worldgen -> content/domains/worldgen/",
+  "data/domains -> content/domains/",
+  "data/fixtures -> tests/fixtures/",
+  "data/examples -> content/examples/",
+  "data/assets -> content/assets/",
+  "data markdown -> docs/content/",
+  "unknown -> archive/quarantine/<root>/"
+]
+
+[routing.authority_policy]
+rules = [
+  "compat schema -> contracts/schema/compatibility/",
+  "compat contract/matrix/policy -> contracts/compatibility/",
+  "locks schema -> contracts/schema/lock/",
+  "locks pack/profile/content/runtime/transaction -> contract/content/runtime/release lock owners",
+  "repo schema/contracts/policy -> contracts/repo/ or contracts/schema/repo/",
+  "safety/security schema/contracts/policy -> contracts/safety or contracts/security owners",
+  "specs schema/protocol/abi/package/profile/replay/capability -> contracts owners",
+  "updates schema/contract/policy/manifest/recipe -> contracts/update or release/updates/",
+  "unknown -> archive/quarantine/<root>/"
+]
+
+[routing.tools_and_runtime]
+rules = [
+  "validation python -> tools/validators/validation/",
+  "meta identity/stability python -> tools/validators/identity or tools/validators/stability/",
+  "governance python -> tools/governance/",
+  "performance python -> tools/performance/",
+  "core deterministic/kernel/time/id/math/state/replay/proof/execution/memory -> engine owners",
+  "core domain/rule/process -> game owners",
+  "control shell/command/capability/supervisor -> runtime or contracts owners",
+  "net protocol/schema/capability/runtime/transport/server/client -> contracts or runtime/network owners",
+  "lib/libs ABI/vendor/engine/runtime/tool docs -> contracts/external/engine/runtime/tools/docs owners",
+  "unknown -> archive/quarantine/<root>/"
+]
+
+[output_policy]
+dry_run_json = ".aide/reports/MOVE-ROUTER-00-dry-run.json"
+dry_run_markdown = ".aide/reports/MOVE-ROUTER-00-dry-run.md"
+route_table_json = ".aide/reports/MOVE-ROUTER-00-route-table.json"
+route_table_markdown = ".aide/reports/MOVE-ROUTER-00-route-table.md"
+quarantine_markdown = ".aide/reports/MOVE-ROUTER-00-skipped-or-quarantined.md"
+collisions_markdown = ".aide/reports/MOVE-ROUTER-00-target-collisions.md"
+next_task = "MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset"

@@ -74,6 +74,33 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
 
+<!-- MOVE-ROUTER-00 -->
+
+## MOVE-ROUTER-00 Router Rule
+
+MOVE-ROUTER-00 replaces the remaining deferred B-G micro-plan sequence with a
+deterministic dry-run router. This is still no-apply.
+
+Router apply discipline:
+
+1. Generate the route table from `git ls-files`.
+2. Route known files to canonical ownership roots.
+3. Route unknown or ambiguous files to `archive/quarantine/<root>/`.
+4. Report target collisions as blockers.
+5. Apply no moves until `MOVE-ROUTER-01` explicitly authorizes the subset.
+6. Rewrite references, imports, CMake, and validators only in later repair/apply
+   tasks.
+7. Retire bad-root exceptions only after tracked roots are empty and proof passes.
+
+Current dry-run summary:
+
+- Bad-root tracked files: 1,765.
+- Routed files: 1,765.
+- Quarantine routes: 71.
+- Target collisions: 0.
+- Skipped/impossible routes: 0.
+- Next recommended task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
 <!-- RESTRUCTURE-REPAIR-00 -->
 
 ## RESTRUCTURE-REPAIR-00 Repair Rule
