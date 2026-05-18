@@ -45,3 +45,8 @@ reported commit-message policy failures for missing `## Changelog` and
 `AIDE-Token-Impact`. The commit was not amended because the task forbids
 amending. This follow-up evidence records the check result and closes with a
 policy-compliant latest commit.
+
+The second closeout evidence commit also failed commit-message policy because
+its changelog prefixes were lowercase free-form labels rather than the
+policy-defined category prefixes. The final closeout commit uses policy
+categories such as `Internal:` and `Docs:`.
