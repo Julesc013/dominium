@@ -68,3 +68,11 @@ Task: MOVE-ROUTER-01
 - The staged whitespace warning in the moved adapter template is intentionally
   left for a later cleanup task because MOVE-ROUTER-01 does not edit moved file
   contents.
+
+## Post-Commit Check
+
+The first MOVE-ROUTER-01 commit completed, but `aide_lite.py commit check
+--latest` rejected its changelog bullets because their category prefixes were
+lowercase. The commit was not amended because MOVE-ROUTER-01 forbids amend and
+history rewrite operations. This validation-closure update records the issue so
+the latest commit can use the compliant AIDE category form.
