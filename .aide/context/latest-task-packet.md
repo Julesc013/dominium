@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
+UNSPECIFIED - POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS Hardcoded Identifier and Constant Disposition
 
 ## GOAL
 
-TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
+POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS Hardcoded Identifier and Constant Disposition
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4176
-- approx_tokens: 1044
+- chars: 4230
+- approx_tokens: 1058
 - budget_status: PASS
 - warnings:
   - none

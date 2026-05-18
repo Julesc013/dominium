@@ -3,6 +3,8 @@ import os
 import re
 import sys
 
+from semantic_lint_common import is_allowed, load_allowlist
+
 
 SOURCE_EXTS = {
     ".c", ".cc", ".cpp", ".cxx",
@@ -83,6 +85,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
+    allowlist, allowlist_errors = load_allowlist(repo_root, "slice1_hardcoded_constants")
     violations = []
 
     for path, rel_path in iter_files(repo_root):
@@ -91,10 +94,17 @@ def main():
                 for idx, line in enumerate(handle, start=1):
                     for regex, label in FORBIDDEN_PATTERNS:
                         if regex.search(line):
-                            violations.append((rel_path, idx, label, line.strip()))
+                            text = line.strip()
+                            if not is_allowed(allowlist, rel_path, idx, label, text):
+                                violations.append((rel_path, idx, label, text))
                             break
         except OSError:
             continue
+
+    if allowlist_errors:
+        for error in allowlist_errors:
+            print(error)
+        return 1
 
     if violations:
         for rel, line, label, text in violations:

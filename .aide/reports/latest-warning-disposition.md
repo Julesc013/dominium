@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `TEST-PERF-01`.
+Current task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
 
 ## Accepted Local/Generated Warnings
 
@@ -17,16 +17,23 @@ Current task: `TEST-PERF-01`.
 - AuditX graph/cache scans now ignore local/generated evidence roots.
 - AuditX archive-policy analyzers use existing archive-policy report in static scan mode.
 - incomplete tracked AuditX JSON and root inventory noise kept out of the commit.
+- `slice0_hardcoded_ids` and `slice1_hardcoded_constants` now pass with exact-match semantic lint dispositions.
 
 ## Blocking Warnings
 
-- Full CTest is not green and cannot be marked green.
-- `slice0_hardcoded_ids` and `slice1_hardcoded_constants` need doctrine-backed remediation.
+- Full CTest remains governed by the TEST-PERF-01 sharded execution policy.
 - AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under explicit `audit`/`auditx`/`slow`/`nightly` shards.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
 - NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
 
-Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+
+## SEMANTIC-LINTS Warning Disposition
+
+- 1,104 reproduced findings were classified before allowlisting.
+- The semantic lint allowlist is exact-match only: test name, file, line, validator message, and source-line hash.
+- No broad wildcard, directory-wide, docs-wide, or message-class suppression was added.
+- Future hardcoded identifier/constant findings remain blockers until fixed or narrowly justified.
 
 ## TEST-PERF-01 Warning Disposition
 

@@ -5,9 +5,9 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `TEST-PERF-01`.
+Latest task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
 
-Result: PARTIAL, with naming law locked and CTest sharding now honest.
+Result: PARTIAL, with naming law locked, CTest sharding honest, and semantic lint blockers resolved.
 
 ## Current Green Gates
 
@@ -16,6 +16,7 @@ Result: PARTIAL, with naming law locked and CTest sharding now honest.
 - Focused RepoX passes.
 - Smoke CTest passes.
 - Fast CTest label passes.
+- Semantic lint CTest lanes pass.
 - AuditX slow shard passes.
 - Native configure and build-only `ALL_BUILD` pass.
 - Product boot, portable projection, and internal pilot release validators pass.
@@ -27,8 +28,6 @@ Result: PARTIAL, with naming law locked and CTest sharding now honest.
 
 - Full CTest is not green.
 - Twenty-three formerly bad roots remain under active exceptions.
-- `slice0_hardcoded_ids` still fails on current hardcoded identifiers.
-- `slice1_hardcoded_constants` still fails on current domain constants.
 - `tools_auditx` no longer blocks the 300 second fast lane after `TEST-PERF-01`; AuditX is split into explicit `audit`/`auditx`/`slow`/`nightly` CTest shards with a 1200 second timeout.
 - The tracked `.aide/reports/file-quality-ledger.json` large-file policy remains unresolved.
 - The first two repair evidence commits failed AIDE commit-message policy and were not amended; the follow-up commit records the warnings.
@@ -36,7 +35,7 @@ Result: PARTIAL, with naming law locked and CTest sharding now honest.
 
 ## Next Task
 
-`POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`
+`MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`
 
 DOE-00 is not ready. Feature implementation remains blocked.
 
@@ -57,4 +56,21 @@ Current measured lanes:
 - fast CTest: PASS in 48.821 seconds.
 - AuditX shard: PASS in 824.573 seconds.
 
-Full CTest remains not green because `slice0_hardcoded_ids` and `slice1_hardcoded_constants` still fail.
+Full CTest remains governed by the TEST-PERF-01 sharded execution model.
+
+## SEMANTIC-LINTS Update
+
+POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS reproduced and classified 1,104 hardcoded identifier/constant findings:
+
+- `preserve_doctrine_constant`: 213.
+- `preserve_fixture_literal`: 582.
+- `preserve_protocol_literal`: 264.
+- `preserve_schema_literal`: 45.
+
+Current semantic lint lanes:
+
+- `slice0_hardcoded_ids`: PASS in 7.93 seconds.
+- `slice1_hardcoded_constants`: PASS in 3.00 seconds.
+- combined semantic lint rerun: PASS in 11.01 seconds.
+
+The allowlist is exact-match only and lives at `contracts/repo/semantic_lint_allowlist.json`.

@@ -1,0 +1,13 @@
+{
+  "schema_version": "dominium.semantic_lints.next_readiness.v1",
+  "task": "POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS",
+  "status": "ready_with_warnings",
+  "slice0_hardcoded_ids": "pass",
+  "slice1_hardcoded_constants": "pass",
+  "remaining_semantic_lint_blockers": [],
+  "next_task": "MOVE-SCRIPT-00 \u2014 Generate Deterministic Bad-Root Router and Dry-Run Move Plan",
+  "warnings": [
+    "Full CTest remains governed by the TEST-PERF-01 sharded execution policy.",
+    "The semantic lint allowlist is exact-match and intentionally reviewed; future literals must be fixed or justified."
+  ]
+}

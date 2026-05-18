@@ -1,8 +1,8 @@
 # Latest Dominium Status
 
-Current task: `TEST-PERF-01`.
+Current task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
 
-Result: PARTIAL with naming law locked and CTest sharding/timing established.
+Result: PARTIAL with naming law locked, CTest sharding/timing established, and semantic lint blockers resolved.
 
 ## Current Green State
 
@@ -12,6 +12,7 @@ Result: PARTIAL with naming law locked and CTest sharding/timing established.
 - Focused RepoX: PASS.
 - Smoke CTest: PASS.
 - Fast CTest label: PASS.
+- Semantic lint CTest lanes: PASS.
 - AuditX slow shard: PASS.
 - Native configure: PASS.
 - Native build-only `ALL_BUILD`: PASS.
@@ -34,9 +35,7 @@ Result: PARTIAL with naming law locked and CTest sharding/timing established.
 ## Remaining Blockers
 
 - 23 excepted former bad roots remain with 1764 tracked files.
-- full CTest is not green.
-- slice0_hardcoded_ids still fails on current hardcoded domain/source/tool/test identifiers.
-- slice1_hardcoded_constants still fails on current atmosphere/gravity/oxygen assumptions.
+- full CTest is still governed by the TEST-PERF-01 sharded execution policy.
 - tools_auditx no longer blocks the 300 second fast lane after TEST-PERF-01; AuditX is now an explicit `audit`/`auditx`/`slow`/`nightly` shard with a 1200 second timeout.
 - tracked large AIDE file-quality ledger policy remains unresolved.
 - prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended.
@@ -46,7 +45,7 @@ DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
 
 ## NAME-00 Additions
 
@@ -61,3 +60,11 @@ Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Co
 - `docs/testing/CTEST_SHARDING_AND_TIMEOUTS.md`.
 - `docs/testing/SLOW_TEST_BASELINE.md`.
 - `docs/repo/audits/TEST_PERF_01_CTEST_SHARDING_AUDIT.md`.
+
+## SEMANTIC-LINTS Additions
+
+- `contracts/repo/semantic_lint_allowlist.json`.
+- `contracts/repo/semantic_lint_allowlist.schema.json`.
+- `docs/testing/SEMANTIC_LINT_DISPOSITION.md`.
+- `docs/repo/audits/POST_RESTRUCTURE_REPAIR_SEMANTIC_LINTS.md`.
+- semantic lint findings, disposition, allowlist, validation, blocker, and readiness evidence under `.aide/reports/SEMANTIC-LINTS-*`.

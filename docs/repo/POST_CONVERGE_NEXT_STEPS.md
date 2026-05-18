@@ -168,7 +168,26 @@ Measured results:
 - fast: PASS in 48.821 seconds.
 - AuditX shard: PASS in 824.573 seconds.
 
-Full CTest remains a promotion lane and is still blocked by `slice0_hardcoded_ids` and `slice1_hardcoded_constants`. The next repair task is `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+Full CTest remains a promotion lane under the TEST-PERF-01 sharded execution policy.
+
+## POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS Update
+
+POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS resolved the two remaining semantic lint blockers without broad suppressions.
+
+Current semantic lint lanes:
+
+- `slice0_hardcoded_ids`: PASS in 7.93 seconds.
+- `slice1_hardcoded_constants`: PASS in 3.00 seconds.
+- combined semantic lint rerun: PASS in 11.01 seconds.
+
+Finding disposition:
+
+- `preserve_doctrine_constant`: 213.
+- `preserve_fixture_literal`: 582.
+- `preserve_protocol_literal`: 264.
+- `preserve_schema_literal`: 45.
+
+The allowlist is exact-match only and lives at `contracts/repo/semantic_lint_allowlist.json`. The next repair/refinement task is `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
 
 ## What Can Proceed
 

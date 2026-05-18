@@ -5,7 +5,7 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-up.
+Latest proof state: PARTIAL after `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
 
 ## Passing Proof Surfaces
 
@@ -15,6 +15,7 @@ Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-u
 - Focused RepoX.
 - Smoke CTest.
 - Fast CTest label.
+- Semantic lint CTest lanes.
 - AuditX slow shard.
 - Native configure and build-only `ALL_BUILD`.
 - Product boot matrix strict smoke.
@@ -28,7 +29,6 @@ Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-u
 
 - Full CTest is not green.
 - 23 formerly bad roots remain under active exceptions with 1,764 tracked files.
-- `slice0_hardcoded_ids` and `slice1_hardcoded_constants` still need doctrine-backed remediation.
 - AuditX CTest wall-time is now partitioned into explicit `audit`/`auditx`/`slow`/`nightly` shards with 1200 second timeout.
 - Large file-quality ledger storage policy remains unresolved.
 - Naming conflicts are classified by NAME-00, but no naming migration has been applied.
@@ -52,6 +52,7 @@ python tools/validators/repo/check_path_terms.py --repo-root .
 python tools/validators/repo/check_directory_naming.py --repo-root .
 python tools/validators/repo/check_file_naming.py --repo-root .
 ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300
+ctest --preset verify -R "slice0_hardcoded_ids|slice1_hardcoded_constants" --output-on-failure --timeout 300
 ctest --preset verify -L smoke --output-on-failure --timeout 300
 ctest --preset verify -L fast --output-on-failure --timeout 300
 ctest --preset verify -L audit --output-on-failure --timeout 1200
@@ -67,7 +68,11 @@ python tools/validators/check_internal_pilot_release.py --repo-root . --release-
 
 DOE-00 is not authorized. Feature implementation remains blocked.
 
-Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+
+## Semantic Lint Proof Note
+
+POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS reproduced 1,104 hardcoded identifier/constant findings and classified every finding before allowing it. The focused lanes now pass through exact-match allowlist entries keyed by test, file, line, validator message, and source-line hash. No broad suppressions were added.
 
 ## NAME-00 Naming Proof Note
 

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dominium.local/contracts/repo/semantic_lint_allowlist.schema.json",
+  "title": "Dominium Semantic Lint Allowlist",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task",
+    "status",
+    "matching_policy",
+    "broad_suppressions_allowed",
+    "entry_count",
+    "entries"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "dominium.repo.semantic_lint_allowlist.v1"
+    },
+    "task": {
+      "type": "string"
+    },
+    "status": {
+      "enum": ["active", "superseded"]
+    },
+    "scope": {
+      "type": "string"
+    },
+    "matching_policy": {
+      "type": "string"
+    },
+    "broad_suppressions_allowed": {
+      "const": false
+    },
+    "entry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "test_name",
+          "file",
+          "line",
+          "validator_message",
+          "context_sha256",
+          "disposition",
+          "severity",
+          "owner",
+          "scope",
+          "reason"
+        ],
+        "properties": {
+          "test_name": {
+            "enum": ["slice0_hardcoded_ids", "slice1_hardcoded_constants"]
+          },
+          "file": {
+            "type": "string",
+            "minLength": 1
+          },
+          "line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "validator_message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "context_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "disposition": {
+            "enum": [
+              "preserve_doctrine_constant",
+              "preserve_fixture_literal",
+              "preserve_protocol_literal",
+              "preserve_schema_literal"
+            ]
+          },
+          "severity": {
+            "enum": ["informational", "warning", "blocker"]
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "scope": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
