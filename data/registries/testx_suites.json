@@ -27,13 +27,17 @@
           "default_tests": [
             "inv_proof_manifest",
             "inv_repox_rules",
-            "tools_auditx"
+            "tools_auditx",
+            "tools_auditx_changed_only",
+            "tools_auditx_hash_stability"
           ],
           "tests_by_tag": {
             "auditx": [
               "test_canonical_artifact_hash_stability",
               "test_no_timestamp_in_canonical",
-              "tools_auditx"
+              "tools_auditx",
+              "tools_auditx_changed_only",
+              "tools_auditx_hash_stability"
             ],
             "environment": [
               "test_testx_arbitrary_cwd",

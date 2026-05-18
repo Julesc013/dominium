@@ -42,6 +42,8 @@ def ctest_base_command(spec):
         command.extend(["-C", spec["config"]])
     if spec.get("regex"):
         command.extend(["-R", spec["regex"]])
+    if spec.get("exclude_regex"):
+        command.extend(["-E", spec["exclude_regex"]])
     if spec.get("label_regex"):
         command.extend(["-L", spec["label_regex"]])
     if spec.get("timeout"):

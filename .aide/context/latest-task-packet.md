@@ -2,74 +2,120 @@
 
 ## PHASE
 
-RESTRUCTURE-REPAIR-00 - Full remediation, repair, proof, and origin sync attempt.
+UNSPECIFIED - TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
 
 ## GOAL
 
-Repair safe post-restructure drift, rerun the strongest feasible validation suite, and classify remaining blockers without weakening gates.
+TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
 
 ## WHY
 
-MOVE-BULK and POST-RESTRUCTURE evidence left deferred roots, skipped references, and proof blockers. This task turns the current state into an auditable repair baseline.
+Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
 
 ## CONTEXT_REFS
 
-- `.aide/reports/RESTRUCTURE-REPAIR-00-status.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-blockers.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
-- `.aide/context/latest-context-packet.md`
-- `.aide/verification/latest-verification-report.md`
-- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
-- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
+- `.aide/memory/project-state.md`
+- `.aide/memory/decisions.md`
+- `.aide/memory/open-risks.md`
+- `.aide/context/repo-snapshot.json` (present)
+- `.aide/context/repo-map.json` (present)
+- `.aide/context/repo-map.md` (present)
+- `.aide/context/test-map.json` (present)
+- `.aide/context/context-index.json` (present)
+- `.aide/context/latest-context-packet.md` (present)
+- `.aide/repo/latest-repo-intelligence.md` (present)
+- `.aide/repo/file-inventory.json` (present)
+- `.aide/reports/file-quality-summary.md` (present)
+- `.aide/reports/file-quality-ledger.json` (present)
+- `.aide/refactors/latest-refactor-readiness.md` (present)
+- `.aide/refactors/latest-refactor-plan.example.json` (present)
+- `.aide/routing/latest-route-decision.json` (present)
+- `.aide/routing/latest-route-decision.md` (present)
+- `.aide/cache/latest-cache-keys.json` (present)
+- `.aide/cache/latest-cache-keys.md` (present)
+- `.aide/prompts/compact-task.md`
+- `.aide/policies/token-budget.yaml`
+- `.aide/policies/cache.yaml`
+- `.aide/policies/local-state.yaml`
 
 ## ALLOWED_PATHS
 
-- Safe stale-path tests, proof docs, AIDE reports/context/ledger, root-recycling docs, release proof docs, deterministic hash evidence, replay fixtures, and AuditX scan-scope code.
+- `<fill from the next reviewed queue packet>`
+- `.aide/context/**`
+- `.aide/queue/unspecified-*` if this task becomes a queue item
+- root docs only when behavior or documentation links change
 
 ## FORBIDDEN_PATHS
 
-- Feature work.
-- Public release artifacts, tags, installers, uploads, and GitHub releases.
-- Root moves without a valid gate.
-- Validator weakening.
+- `.git/**`
+- `.env`
+- `secrets/**`
 - `.aide.local/**`
-- `.dominium.local/**`
-- Generated build/projection/release outputs.
+- raw provider credentials, API keys, local caches, raw prompt logs
+- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
 
 ## IMPLEMENTATION
 
-Applied safe path/test/doc/proof repairs, refreshed deterministic hash evidence, removed expired overrides, refreshed replay fixtures from current stubs, and narrowed AuditX generated-evidence scanning. Remaining root, semantic lint, and AuditX wall-time blockers are classified instead of suppressed.
+- Read the queue packet and relevant repo refs first.
+- Keep changes inside the allowed paths.
+- Make the smallest coherent diff that satisfies acceptance.
+- Preserve generated/manual boundaries.
+- Do not inline whole source files unless exact contents are required.
+- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
 
 ## VALIDATION
 
-AIDE, strict structural validators, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, internal pilot, frozen contract guard, override policy tests, and replay hash invariance pass. Full CTest remains not green.
+- `py -3 .aide/scripts/aide_lite.py doctor`
+- `py -3 .aide/scripts/aide_lite.py validate`
+- `py -3 .aide/scripts/aide_lite.py index`
+- `py -3 .aide/scripts/aide_lite.py context`
+- `py -3 .aide/scripts/aide_lite.py repo inventory`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- `py -3 .aide/scripts/aide_lite.py verify`
+- `py -3 .aide/scripts/aide_lite.py review-pack`
+- `py -3 .aide/scripts/aide_lite.py route explain`
+- `py -3 .aide/scripts/aide_lite.py test`
+- `py -3 .aide/scripts/aide_lite.py selftest`
+- `py -3 scripts/aide validate`
+- `git diff --check`
 
 ## COMMITS
 
-- Commit a scoped partial repair follow-up if commit policy passes.
-- Do not push while blockers remain.
+- Commit coherent subdeliverables with verbose bodies.
+- Stop at review gates.
 
 ## EVIDENCE
 
-- `.aide/reports/RESTRUCTURE-REPAIR-00-evidence-index.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-master-remediation-ledger.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-final-root-matrix.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
-- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
+- changed files
+- validation commands and results
+- verifier result
+- review packet path and result when review-pack is available
+- advisory route decision path and result when Q17 routing is available
+- compact packet size and budget status
+- unresolved risks and deferrals
 
 ## NON_GOALS
 
-No DOE-00 execution, no feature implementation, no public release, no root move batch, no validator weakening.
+- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
 
 ## ACCEPTANCE
 
-Partial repair baseline is acceptable only as blocker evidence. DOE-00 is not ready and feature implementation remains blocked.
+- Task-specific acceptance criteria are met.
+- Validation is run and recorded.
+- Evidence is written.
+- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with status, commits, validation, blockers, push state, DOE-00 readiness, and next task.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
+Include the verifier result when Q12 verifier behavior is available.
 
 ## TOKEN_ESTIMATE
 
-Small. The packet is intended to remain below AIDE Lite task-packet budget.
+- method: chars / 4, rounded up
+- chars: 4176
+- approx_tokens: 1044
+- budget_status: PASS
+- warnings:
+  - none
+- formal ledger: `.aide/reports/token-ledger.jsonl`

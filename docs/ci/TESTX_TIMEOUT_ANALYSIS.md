@@ -8,37 +8,30 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # TestX Timeout Analysis
 
-## Source of timeout enforcement
+## Current CTest timeout surfaces
 
-- **Definition location:** `CMakeLists.txt` (testx_all target)
-- **Mechanism:** CTest `--timeout` argument
-- **Variable:** `DOM_TESTX_TIMEOUT` (CMake cache string)
-- **Scope:** **Per-test** timeout (CTest semantics), not a global suite timeout
+- `verify_fast` in `CMakeLists.txt` passes `--timeout ${DOM_VERIFY_FAST_TIMEOUT}` when running `smoke`, `portability`, and `buildmeta` labels.
+- `DOM_VERIFY_FAST_TIMEOUT` defaults to **300 seconds**.
+- Heavy AuditX scan coverage is classified under the `auditx` label instead of the 300-second portability lane.
+- `tools_auditx`, `tools_auditx_hash_stability`, and `tools_auditx_changed_only` have explicit CTest `TIMEOUT` properties of **1200 seconds**.
+- AuditX CTest outputs are routed to `.dominium.local/ctest/auditx/` instead of mutating tracked canonical audit artifacts.
 
-## Current value
+## TestX target behavior
 
-- `DOM_TESTX_TIMEOUT`: **1200 seconds** (20 minutes)
-
-## Command path (as configured)
-
-From CMake:
-
-- `set(DOM_TESTX_TIMEOUT "1200" CACHE STRING "Per-test timeout seconds for TestX gate")`
-- `set(_dom_testx_ctest_cmd ${CMAKE_CTEST_COMMAND} --output-on-failure)`
-- `list(APPEND _dom_testx_ctest_cmd --timeout ${DOM_TESTX_TIMEOUT})`
-- `add_custom_target(testx_all COMMAND ${_dom_testx_ctest_cmd} ...)`
+`testx_all` is currently manifest-driven through `scripts/dev/testx_proof_engine.py`. It selects CTest tests from `data/registries/testx_suites.json` and invokes CTest for the selected suite.
 
 ## Determinism implications
 
-- Timeout is deterministic at the per-test level.
-- No dynamic or machine-dependent timeouts are used in the TestX gate.
+- Timeout values are static CMake/test metadata.
+- The AuditX shard is selected by stable CTest labels and test names.
+- No dynamic or machine-dependent timeout calculation is used.
 
 ## Override procedure
 
-To override the per-test timeout at configure time:
+To override the fast-lane per-test timeout at configure time:
 
 ```
-cmake -DDOM_TESTX_TIMEOUT=1200 -S <src> -B <build>
+cmake -DDOM_VERIFY_FAST_TIMEOUT=300 -S <src> -B <build>
 ```
 
-This changes the per-test timeout only and does not alter test selection.
+This changes timeout behavior only and does not alter test selection.

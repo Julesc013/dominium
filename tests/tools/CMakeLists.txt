@@ -35,7 +35,29 @@ dom_add_testx(NAME tools_coverage_inspect
 dom_add_testx(NAME tools_auditx
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
-    LABELS ${DOM_TESTX_LABEL_PORTABILITY}
+        --case scan_artifacts
+    LABELS auditx
+)
+
+dom_add_testx(NAME tools_auditx_hash_stability
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case hash_stability
+    LABELS auditx
+)
+
+dom_add_testx(NAME tools_auditx_changed_only
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
+        --repo-root ${CMAKE_SOURCE_DIR}
+        --case changed_only
+    LABELS auditx
+)
+
+set_tests_properties(
+    tools_auditx
+    tools_auditx_hash_stability
+    tools_auditx_changed_only
+    PROPERTIES TIMEOUT 1200
 )
 
 dom_add_testx(NAME test_auditx_canonical_hash_stability

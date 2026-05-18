@@ -33,6 +33,13 @@ CANONICAL_FORBIDDEN_KEYS = {
     "run_id",
 }
 
+CANONICAL_ARTIFACTS = (
+    "FINDINGS.json",
+    "INVARIANT_MAP.json",
+    "PROMOTION_CANDIDATES.json",
+    "TRENDS.json",
+)
+
 
 def _run_cmd(cmd, cwd):
     return subprocess.run(
@@ -47,10 +54,12 @@ def _run_cmd(cmd, cwd):
     )
 
 
-def _run_auditx(repo_root, *args):
+def _run_auditx(repo_root, *args, output_root=""):
     tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
     cmd = [sys.executable, tool]
     cmd.extend(args)
+    if output_root:
+        cmd.extend(["--output-root", output_root])
     cmd.extend(["--repo-root", repo_root, "--format", "json"])
     return _run_cmd(cmd, cwd=repo_root)
 
@@ -71,6 +80,21 @@ def _canonical_hash(path):
     payload = _load_json(path)
     blob = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=True).encode("utf-8")
     return hashlib.sha256(blob).hexdigest(), payload
+
+
+def _case_output_dir(repo_root, case_name):
+    return os.path.join(repo_root, ".dominium.local", "ctest", "auditx", case_name)
+
+
+def _clean_case_output_dir(repo_root, case_name):
+    output_dir = _case_output_dir(repo_root, case_name)
+    if os.path.isdir(output_dir):
+        shutil.rmtree(output_dir)
+    return output_dir
+
+
+def _artifact_path(output_dir, name):
+    return os.path.join(output_dir, name)
 
 
 def _walk_forbidden_keys(node, failures, prefix=""):
@@ -180,13 +204,9 @@ def _validate_run_meta(path):
     return ""
 
 
-def main():
-    parser = argparse.ArgumentParser(description="AuditX tool smoke tests.")
-    parser.add_argument("--repo-root", default=".")
-    args = parser.parse_args()
-    repo_root = os.path.abspath(args.repo_root)
-
-    scan = _run_auditx(repo_root, "scan")
+def _validate_artifacts(repo_root):
+    output_dir = _clean_case_output_dir(repo_root, "scan_artifacts")
+    scan = _run_auditx(repo_root, "scan", output_root=output_dir)
     if scan.returncode != 0:
         print("auditx scan failed rc={}".format(scan.returncode))
         print(scan.stdout)
@@ -198,11 +218,11 @@ def main():
         print(scan.stdout)
         return 1
 
-    findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
-    invariant_path = os.path.join(repo_root, "docs", "audit", "auditx", "INVARIANT_MAP.json")
-    promotion_path = os.path.join(repo_root, "docs", "audit", "auditx", "PROMOTION_CANDIDATES.json")
-    trends_path = os.path.join(repo_root, "docs", "audit", "auditx", "TRENDS.json")
-    run_meta_path = os.path.join(repo_root, "docs", "audit", "auditx", "RUN_META.json")
+    findings_path = _artifact_path(output_dir, "FINDINGS.json")
+    invariant_path = _artifact_path(output_dir, "INVARIANT_MAP.json")
+    promotion_path = _artifact_path(output_dir, "PROMOTION_CANDIDATES.json")
+    trends_path = _artifact_path(output_dir, "TRENDS.json")
+    run_meta_path = _artifact_path(output_dir, "RUN_META.json")
     for required in (findings_path, invariant_path, promotion_path, trends_path, run_meta_path):
         if not os.path.isfile(required):
             print("missing artifact {}".format(required))
@@ -219,43 +239,55 @@ def main():
         if error:
             print(error)
             return 1
+    print("auditx scan artifacts OK")
+    return 0
 
-    findings_hash_before, _ = _canonical_hash(findings_path)
-    invariant_hash_before, _ = _canonical_hash(invariant_path)
-    promotion_hash_before, _ = _canonical_hash(promotion_path)
-    trends_hash_before, _ = _canonical_hash(trends_path)
 
-    rescan = _run_auditx(repo_root, "scan")
+def _canonical_hashes(output_dir):
+    hashes = {}
+    for name in CANONICAL_ARTIFACTS:
+        path = _artifact_path(output_dir, name)
+        if not os.path.isfile(path):
+            raise OSError("missing artifact {}".format(path))
+        hashes[name], _payload = _canonical_hash(path)
+    return hashes
+
+
+def _hash_stability(repo_root):
+    output_dir = _clean_case_output_dir(repo_root, "hash_stability")
+    baseline = _run_auditx(repo_root, "scan", output_root=output_dir)
+    if baseline.returncode != 0:
+        print("auditx baseline scan failed rc={}".format(baseline.returncode))
+        print(baseline.stdout)
+        return 1
+    try:
+        hashes_before = _canonical_hashes(output_dir)
+    except (OSError, ValueError) as exc:
+        print(str(exc))
+        return 1
+    rescan = _run_auditx(repo_root, "scan", output_root=output_dir)
     if rescan.returncode != 0:
         print("auditx rescan failed rc={}".format(rescan.returncode))
         print(rescan.stdout)
         return 1
-    findings_hash_after, _ = _canonical_hash(findings_path)
-    invariant_hash_after, _ = _canonical_hash(invariant_path)
-    promotion_hash_after, _ = _canonical_hash(promotion_path)
-    trends_hash_after, _ = _canonical_hash(trends_path)
-    if findings_hash_before != findings_hash_after:
-        print("FINDINGS.json canonical hash drift across rescans")
-        print("before={}".format(findings_hash_before))
-        print("after={}".format(findings_hash_after))
+    try:
+        hashes_after = _canonical_hashes(output_dir)
+    except (OSError, ValueError) as exc:
+        print(str(exc))
         return 1
-    if invariant_hash_before != invariant_hash_after:
-        print("INVARIANT_MAP.json canonical hash drift across rescans")
-        print("before={}".format(invariant_hash_before))
-        print("after={}".format(invariant_hash_after))
-        return 1
-    if promotion_hash_before != promotion_hash_after:
-        print("PROMOTION_CANDIDATES.json canonical hash drift across rescans")
-        print("before={}".format(promotion_hash_before))
-        print("after={}".format(promotion_hash_after))
-        return 1
-    if trends_hash_before != trends_hash_after:
-        print("TRENDS.json canonical hash drift across rescans")
-        print("before={}".format(trends_hash_before))
-        print("after={}".format(trends_hash_after))
-        return 1
+    for name in CANONICAL_ARTIFACTS:
+        if hashes_before[name] != hashes_after[name]:
+            print("{} canonical hash drift across rescans".format(name))
+            print("before={}".format(hashes_before[name]))
+            print("after={}".format(hashes_after[name]))
+            return 1
+    print("auditx canonical hash stability OK")
+    return 0
 
-    changed = _run_auditx(repo_root, "scan", "--changed-only")
+
+def _changed_only(repo_root):
+    output_dir = _clean_case_output_dir(repo_root, "changed_only")
+    changed = _run_auditx(repo_root, "scan", "--changed-only", output_root=output_dir)
     changed_payload = _parse_json_stdout(changed)
     if shutil.which("git"):
         if changed.returncode != 0:
@@ -275,7 +307,31 @@ def main():
             print("changed-only refusal payload invalid")
             print(changed.stdout)
             return 1
+    print("auditx changed-only OK")
+    return 0
 
+
+def main():
+    parser = argparse.ArgumentParser(description="AuditX tool smoke tests.")
+    parser.add_argument("--repo-root", default=".")
+    parser.add_argument(
+        "--case",
+        choices=("all", "scan_artifacts", "hash_stability", "changed_only"),
+        default="all",
+    )
+    args = parser.parse_args()
+    repo_root = os.path.abspath(args.repo_root)
+
+    cases = {
+        "scan_artifacts": _validate_artifacts,
+        "hash_stability": _hash_stability,
+        "changed_only": _changed_only,
+    }
+    selected = ("scan_artifacts", "hash_stability", "changed_only") if args.case == "all" else (args.case,)
+    for case_name in selected:
+        result = cases[case_name](repo_root)
+        if result != 0:
+            return result
     print("auditx tools smoke OK")
     return 0
 

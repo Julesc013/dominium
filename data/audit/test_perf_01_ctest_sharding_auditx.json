@@ -1,0 +1,54 @@
+{
+  "schema_version": "dominium.test_perf_01.ctest_sharding_auditx.v1",
+  "task_id": "TEST-PERF-01",
+  "status": "PASS",
+  "baseline": {
+    "command": "py -3 scripts/test_timing_report.py --preset verify --config Debug --regex tools_auditx --limit 1 --timeout 300 --out .dominium.local/test-perf-01/tools-auditx-ctest-timeout300.json --md-out .dominium.local/test-perf-01/tools-auditx-ctest-timeout300.md",
+    "listed_count": 1,
+    "results": [
+      {
+        "name": "tools_auditx",
+        "returncode": 8,
+        "seconds": 300.195
+      }
+    ]
+  },
+  "applied_shard": {
+    "label": "auditx",
+    "timeout_seconds": 1200,
+    "tracked_artifact_mutation": false,
+    "output_root": ".dominium.local/ctest/auditx/",
+    "tests": [
+      "tools_auditx",
+      "tools_auditx_hash_stability",
+      "tools_auditx_changed_only"
+    ]
+  },
+  "post_change": {
+    "command": "py -3 scripts/test_timing_report.py --preset verify --config Debug --label-regex auditx --limit 3 --timeout 1200 --out .dominium.local/test-perf-01/auditx-shard-timeout1200.json --md-out .dominium.local/test-perf-01/auditx-shard-timeout1200.md",
+    "listed_count": 3,
+    "results": [
+      {
+        "name": "tools_auditx",
+        "returncode": 0,
+        "seconds": 823.085
+      },
+      {
+        "name": "tools_auditx_hash_stability",
+        "returncode": 0,
+        "seconds": 13.638
+      },
+      {
+        "name": "tools_auditx_changed_only",
+        "returncode": 0,
+        "seconds": 8.334
+      }
+    ]
+  },
+  "invariants": [
+    "AGENTS.md Section 8 validation and reporting expectations",
+    "docs/repo/TEST_VALIDATION_STRATEGY.md wall-time policy",
+    "docs/planning/GATES_AND_PROOFS.md proof discipline"
+  ],
+  "contracts_or_schemas_changed": false
+}

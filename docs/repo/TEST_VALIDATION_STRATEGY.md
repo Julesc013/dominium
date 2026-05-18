@@ -44,6 +44,23 @@ TEST-PERF-00 confirmed that discovery can fall to zero when the build tree is st
 
 `dom_add_testx` now writes CTest labels directly when tests are registered. After reconfigure, `ctest --preset verify -N -L smoke` selects the smoke subset.
 
+## CTest Shards
+
+The `auditx` label is the heavy semantic-audit shard. `tools_auditx` was split into:
+
+- `tools_auditx`
+- `tools_auditx_hash_stability`
+- `tools_auditx_changed_only`
+
+Run that shard explicitly with:
+
+```text
+ctest --preset verify -L auditx --output-on-failure
+```
+
+AuditX scan shards are not part of the 300-second portability lane. Full promotion still runs them through complete CTest selection.
+The shard tests write their AuditX outputs under `.dominium.local/ctest/auditx/` so CTest does not mutate tracked canonical audit artifacts.
+
 ## Wall-Time Policy
 
 - T0 and impacted tiers are normal post-task validation.

@@ -134,13 +134,28 @@
       ]
     },
     "component-tools": {
-      "description": "Tooling and governance tool tests.",
+      "description": "Tooling and governance tool tests except heavy AuditX scan shards.",
       "max_seconds": 900,
       "ctest": [
         {
           "preset": "verify",
           "config": "Debug",
           "regex": "^(tools_|test_tool_|test_auditx|controlx_|performx_|compatx_|securex_|ai_tools|bugreport_|share_|signal_)",
+          "exclude_regex": "^tools_auditx",
+          "require_tests": true,
+          "output_on_failure": true
+        }
+      ]
+    },
+    "component-auditx": {
+      "description": "Heavy AuditX scan, canonical hash-stability, and changed-only shards.",
+      "max_seconds": 2400,
+      "ctest": [
+        {
+          "preset": "verify",
+          "config": "Debug",
+          "label_regex": "auditx",
+          "timeout": 1200,
           "require_tests": true,
           "output_on_failure": true
         }
