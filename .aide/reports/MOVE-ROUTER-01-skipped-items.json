@@ -1,0 +1,113 @@
+{
+  "items": [],
+  "schema_version": "dominium.move_router_01.skipped_items.v1",
+  "summary": {
+    "counts_by_root": {
+      "bundles": {
+        "moved": 3,
+        "semantic_moved": 3
+      },
+      "compat": {
+        "moved": 17,
+        "semantic_moved": 17
+      },
+      "control": {
+        "moved": 21,
+        "quarantine_moved": 1,
+        "semantic_moved": 20
+      },
+      "core": {
+        "moved": 16,
+        "semantic_moved": 16
+      },
+      "data": {
+        "moved": 1254,
+        "quarantine_moved": 5,
+        "semantic_moved": 1249
+      },
+      "governance": {
+        "moved": 2,
+        "quarantine_moved": 1,
+        "semantic_moved": 1
+      },
+      "lib": {
+        "moved": 22,
+        "semantic_moved": 22
+      },
+      "libs": {
+        "moved": 86,
+        "quarantine_moved": 59,
+        "semantic_moved": 27
+      },
+      "locks": {
+        "moved": 1,
+        "semantic_moved": 1
+      },
+      "meta": {
+        "moved": 26,
+        "semantic_moved": 26
+      },
+      "modding": {
+        "moved": 2,
+        "quarantine_moved": 1,
+        "semantic_moved": 1
+      },
+      "models": {
+        "moved": 2,
+        "quarantine_moved": 2
+      },
+      "net": {
+        "moved": 17,
+        "semantic_moved": 17
+      },
+      "packs": {
+        "moved": 256,
+        "semantic_moved": 256
+      },
+      "performance": {
+        "moved": 3,
+        "semantic_moved": 3
+      },
+      "profiles": {
+        "moved": 1,
+        "semantic_moved": 1
+      },
+      "repo": {
+        "moved": 11,
+        "semantic_moved": 11
+      },
+      "safety": {
+        "moved": 2,
+        "semantic_moved": 2
+      },
+      "security": {
+        "moved": 4,
+        "semantic_moved": 4
+      },
+      "specs": {
+        "moved": 9,
+        "quarantine_moved": 2,
+        "semantic_moved": 7
+      },
+      "templates": {
+        "moved": 2,
+        "semantic_moved": 2
+      },
+      "updates": {
+        "moved": 6,
+        "semantic_moved": 6
+      },
+      "validation": {
+        "moved": 2,
+        "semantic_moved": 2
+      }
+    },
+    "moved_count": 1765,
+    "quarantine_moved_count": 71,
+    "semantic_moved_count": 1694,
+    "skip_reasons": {},
+    "skipped_count": 0,
+    "total_items": 1765
+  },
+  "task_id": "MOVE-ROUTER-01"
+}

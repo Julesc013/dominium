@@ -114,3 +114,18 @@ then retire exceptions.
 ## Next Task
 
 `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
+## MOVE-ROUTER-01 Result
+
+MOVE-ROUTER-01 applied the route table with `git mv`.
+
+- Bad-root tracked files before: 1,765.
+- Bad-root tracked files after: 0.
+- Semantic moves: 1,694.
+- Quarantine moves: 71.
+- Skipped moves: 0.
+- Target collisions: 0.
+- Active bad-root exceptions retired: 23.
+
+Broad reference/import/build repair is assigned to
+`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.

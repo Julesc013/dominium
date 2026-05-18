@@ -101,6 +101,24 @@ Current dry-run summary:
 - Skipped/impossible routes: 0.
 - Next recommended task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
 
+<!-- MOVE-ROUTER-01 -->
+
+## MOVE-ROUTER-01 Apply Rule
+
+MOVE-ROUTER-01 applied the dry-run route table with `git mv` and did not perform
+semantic repair.
+
+- Bad-root tracked files before: 1,765.
+- Bad-root tracked files after: 0.
+- Semantic moves: 1,694.
+- Quarantine moves: 71.
+- Skipped moves: 0.
+- Target collisions: 0.
+- Empty-root exceptions retired: 23.
+
+The next task must repair references/imports/build/projection proof rather than
+undoing the structural migration.
+
 <!-- RESTRUCTURE-REPAIR-00 -->
 
 ## RESTRUCTURE-REPAIR-00 Repair Rule

@@ -146,3 +146,21 @@ cleanup. MOVE-ROUTER-00 dry-run result:
 - Skipped/impossible routes: 0.
 
 No MOVE-BULK apply authorization is implied by this supersession.
+
+## MOVE-ROUTER-01 Apply Result
+
+MOVE-ROUTER-01 completed the physical bad-root cleanup stage:
+
+- Bad-root tracked files before: 1,765.
+- Bad-root tracked files after: 0.
+- Semantic moves: 1,694.
+- Quarantine moves: 71.
+- Skipped moves: 0.
+- Target collisions: 0.
+- Active root exceptions retired: 23.
+
+The active sequence now continues with:
+
+```text
+MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing
+```

@@ -97,7 +97,7 @@ The repository has a naming canon, but the redo prompt requires current conflict
 
 ## NEXT
 
-`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
+`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
 
 ## OUTPUT_SCHEMA
 
@@ -120,6 +120,29 @@ Acceptance:
 Next task after commit:
 
 `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
+
+## MOVE-ROUTER-01 CURRENT PACKET ADDENDUM
+
+Current task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
+Result evidence expected:
+
+- 1,765 tracked bad-root files moved.
+- 1,694 semantic routes.
+- 71 quarantine routes.
+- 0 skipped moves.
+- 0 target collisions.
+- 0 tracked files remaining under configured former bad roots.
+- 23 active bad-root exceptions retired.
+
+Non-goals:
+
+- Do not repair broad references/imports/build in this task.
+- Do not run feature work.
+
+Next task after commit:
+
+`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
 
 ## TOKEN_ESTIMATE
 

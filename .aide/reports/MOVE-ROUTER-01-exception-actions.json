@@ -1,0 +1,184 @@
+{
+  "remaining": [],
+  "retired_or_empty": [
+    {
+      "action": "retired",
+      "exception_id": "governance_root",
+      "root": "governance",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "already_retired",
+      "exception_id": "ide_root",
+      "root": "ide",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "meta_root",
+      "root": "meta",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "performance_root",
+      "root": "performance",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "validation_root",
+      "root": "validation",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "bundles_root",
+      "root": "bundles",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "compat_root",
+      "root": "compat",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "control_root",
+      "root": "control",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "core_root",
+      "root": "core",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "data_root",
+      "root": "data",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "lib_root",
+      "root": "lib",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "libs_root",
+      "root": "libs",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "locks_root",
+      "root": "locks",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "modding_root",
+      "root": "modding",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "models_root",
+      "root": "models",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "net_root",
+      "root": "net",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "packs_root",
+      "root": "packs",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "profiles_root",
+      "root": "profiles",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "repo_root",
+      "root": "repo",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "safety_root",
+      "root": "safety",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "security_root",
+      "root": "security",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "specs_root",
+      "root": "specs",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "templates_root",
+      "root": "templates",
+      "tracked_file_count": 0
+    },
+    {
+      "action": "retired",
+      "exception_id": "updates_root",
+      "root": "updates",
+      "tracked_file_count": 0
+    }
+  ],
+  "schema_version": "dominium.move_router_01.exception_actions.v1",
+  "summary": {
+    "bad_roots": 24,
+    "exceptions_already_retired": 1,
+    "exceptions_remaining": 0,
+    "exceptions_retired": 23,
+    "roots_empty": 24
+  },
+  "task_id": "MOVE-ROUTER-01",
+  "tracked_counts_after": {
+    "bundles": 0,
+    "compat": 0,
+    "control": 0,
+    "core": 0,
+    "data": 0,
+    "governance": 0,
+    "ide": 0,
+    "lib": 0,
+    "libs": 0,
+    "locks": 0,
+    "meta": 0,
+    "modding": 0,
+    "models": 0,
+    "net": 0,
+    "packs": 0,
+    "performance": 0,
+    "profiles": 0,
+    "repo": 0,
+    "safety": 0,
+    "security": 0,
+    "specs": 0,
+    "templates": 0,
+    "updates": 0,
+    "validation": 0
+  }
+}

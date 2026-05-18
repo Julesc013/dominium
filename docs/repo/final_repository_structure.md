@@ -129,3 +129,15 @@ ide/
 `MOVE-ROUTER-00` routes all tracked files under these roots in dry-run form.
 `MOVE-ROUTER-01` may apply a reviewed safe subset; unknown files should move to
 `archive/quarantine/<root>/`, not remain under bad roots.
+
+## MOVE-ROUTER-01 State
+
+MOVE-ROUTER-01 moved all tracked files out of the former bad roots. Current
+tracked source state should keep those roots empty:
+
+```powershell
+git ls-files core control data packs profiles bundles compat lib libs locks repo safety security specs updates meta governance performance validation modding models templates net ide
+```
+
+The command should return no paths after MOVE-ROUTER-01. Quarantined files are
+under `archive/quarantine/` and remain inactive until reviewed.

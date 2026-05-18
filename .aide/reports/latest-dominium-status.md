@@ -94,3 +94,18 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 - dry-run summary: 1,765 tracked bad-root files, 1,765 routed files, 1,694 known canonical routes, 71 quarantine routes, 0 target collisions, 0 skipped/impossible routes, 0 moves applied.
 
 Next task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
+## MOVE-ROUTER-01 Additions
+
+- Applied deterministic bad-root route table with `git mv`.
+- Added MOVE-ROUTER-01 apply, root-matrix, exception, rollback, stale-reference,
+  quarantine, skip, status, blocker, and summary evidence under `.aide/reports/`.
+- Added `docs/repo/audits/MOVE_ROUTER_01_APPLY_BAD_ROOT_ROUTER.md`.
+- Added `docs/repo/root-recycling/MOVE_ROUTER_01_APPLY_RESULT.md`.
+- Updated `contracts/repo/layout_exceptions.toml` to retire 23 now-empty former
+  bad-root exceptions.
+- Apply summary: 1,765 moved files, 1,694 semantic moves, 71 quarantine moves,
+  0 skipped moves, 0 target collisions, 0 tracked files remaining under former
+  bad roots.
+
+Next task: `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.

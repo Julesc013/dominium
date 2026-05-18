@@ -73,3 +73,13 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
   MOVE-ROUTER-00 failures, because no files were moved.
 - Feature work and DOE-00 remain blocked until router apply/repair and final
   proof complete.
+
+## MOVE-ROUTER-01 Warning Disposition
+
+- Root presence debt is cleared: 0 tracked files remain under the configured
+  former bad roots.
+- 71 files are intentionally quarantined under `archive/quarantine/<root>/`.
+- Stale references and imports remain by design and are assigned to
+  `MOVE-ROUTER-02`.
+- Validation may report missing import/build/reference paths until repair runs.
+- Feature work and DOE-00 remain blocked.

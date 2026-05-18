@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-ROUTER-00: naming/routing contracts, dry-run router behavior, complete bad-root route table, quarantine fallback, advisory validators, status updates, and no-apply compliance.
+Review MOVE-ROUTER-01: physical `git mv` application of the deterministic bad-root route table, quarantine handling, exception retirement, stale-reference evidence, rollback evidence, and no-semantic-mutation compliance.
 
 ## Decision Requested
 
@@ -24,30 +24,31 @@ Review MOVE-ROUTER-00: naming/routing contracts, dry-run router behavior, comple
 
 - `contracts/repo/naming.contract.toml`
 - `contracts/repo/bad_root_routing.contract.toml`
-- `contracts/repo/bad_root_routing.schema.json`
-- `tools/migration/route_bad_roots.py`
+- `contracts/repo/layout_exceptions.toml`
 - `docs/repo/bad_root_routing.md`
 - `docs/repo/final_repository_structure.md`
-- `.aide/reports/MOVE-ROUTER-00-dry-run.json`
-- `.aide/reports/MOVE-ROUTER-00-route-table.json`
-- `.aide/reports/MOVE-ROUTER-00-target-collisions.md`
-- `.aide/reports/MOVE-ROUTER-00-validation.md`
-- `.aide/reports/MOVE-ROUTER-00-status.md`
-- `.aide/reports/MOVE-ROUTER-00-blockers.md`
+- `.aide/reports/MOVE-ROUTER-01-moved-items.json`
+- `.aide/reports/MOVE-ROUTER-01-root-matrix.json`
+- `.aide/reports/MOVE-ROUTER-01-exception-actions.json`
+- `.aide/reports/MOVE-ROUTER-01-stale-reference-scan.json`
+- `.aide/reports/MOVE-ROUTER-01-rollback.json`
+- `.aide/reports/MOVE-ROUTER-01-validation.md`
+- `.aide/reports/MOVE-ROUTER-01-status.md`
+- `.aide/reports/MOVE-ROUTER-01-blockers.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
 
 ## Changed Files Summary
 
-The task adds the routing contract, router dry-run behavior, route reports, advisory validators, docs, and status surfaces. It does not move, delete, rename, rewrite, shim, apply maps, retire exceptions, or change product/runtime/content behavior.
+The task moves tracked files out of former bad roots into canonical owners or quarantine, retires only empty-root exceptions, and writes apply evidence. It does not delete files, edit moved file contents, perform semantic rewrites, repair broad references/imports, or run feature work.
 
 ## Validation Summary
 
-Expected validation: router dry-run with collision check, new advisory validators, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, Python compile for new router/validators, JSON/TOML parse checks, docs/build/UI/ABI checks, and git diff checks.
+Expected validation: preapply router refresh, bad-root absence checks, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, new validators, docs/build/UI/ABI checks, JSON parse checks, git diff checks, and commit check.
 
 ## Risk Summary
 
-The route table is dry-run evidence only. Quarantine routes and import/shim candidates remain apply-task risks. The task does not authorize feature work or MOVE-ROUTER-01 application by itself.
+Reference/import/build breakage is expected until MOVE-ROUTER-02 repairs stale paths. Quarantined files are intentionally inactive. Feature work remains blocked.
 
 ## Token Summary
 
@@ -55,8 +56,8 @@ The task and review packets stay compact and reference evidence by path instead 
 
 ## Non-Goals / Scope Guard
 
-No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, feature work, generated local output commit, package/release generation, tag, or GitHub release.
+No file deletion, moved-file content edit, broad reference rewrite, import repair, shim creation, feature work, generated local output commit, package/release generation, tag, or GitHub release.
 
 ## Reviewer Instructions
 
-Confirm that every tracked bad-root file receives a route, target collisions are zero, unknown files route to quarantine, and no apply-side filesystem changes occurred.
+Confirm that every tracked bad-root file moved, remaining bad-root tracked count is zero, quarantine routes are recorded, exception retirement is limited to empty roots, and stale-reference repair is assigned to MOVE-ROUTER-02.

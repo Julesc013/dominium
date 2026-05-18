@@ -116,3 +116,20 @@ Current dry-run result:
 
 Feature work and DOE-00 remain blocked. Next structural task:
 `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
+
+## MOVE-ROUTER-01 Apply Proof Note
+
+MOVE-ROUTER-01 physically moved every tracked file under the configured former
+bad roots.
+
+- Bad-root tracked files before: 1,765.
+- Bad-root tracked files after: 0.
+- Files moved: 1,765.
+- Semantic moves: 1,694.
+- Quarantine moves: 71.
+- Skipped moves: 0.
+- Target collisions: 0.
+- Active root exceptions retired: 23.
+
+This is not full recovery proof. Reference/import/build repair remains assigned
+to `MOVE-ROUTER-02`, and feature work plus DOE-00 remain blocked.

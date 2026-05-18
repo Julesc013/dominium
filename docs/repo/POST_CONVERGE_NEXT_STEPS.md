@@ -573,6 +573,24 @@ deterministic route table.
 Next recommended task:
 `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
 
+<!-- MOVE-ROUTER-01 -->
+
+## MOVE-ROUTER-01 Next-Step Update
+
+MOVE-ROUTER-01 applied the deterministic bad-root route table.
+
+- Bad-root tracked files before: 1,765.
+- Bad-root tracked files after: 0.
+- Semantic moves: 1,694.
+- Quarantine moves: 71.
+- Skipped moves: 0.
+- Target collisions: 0.
+- Empty-root exceptions retired: 23.
+- Feature work authorized: no.
+
+Next recommended task:
+`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.
+
 <!-- RESTRUCTURE-REPAIR-00 -->
 
 ## RESTRUCTURE-REPAIR-00 Repair Update

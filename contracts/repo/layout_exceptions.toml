@@ -53,7 +53,7 @@ retired_phase = "POST-CONVERGE-02"
 retired_reason = "Removed after wrapper/tooling/governance cleanup found no direct repo import dependency on the root package marker."
 notes = "Retained for audit history only. Do not add additional root package markers without contract update."
 
-[exceptions.governance_root]
+[retired_exceptions.governance_root]
 path = "governance"
 kind = "directory"
 classification = "partial_review"
@@ -62,7 +62,9 @@ retirement_phase = "POST-CONVERGE"
 target = "protected governance ownership review before any move; possible tools/governance or release-control split only with explicit review"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 found active imports from release and tooling helpers. This package is not a canonical governance doctrine source and must not compete with AGENTS.md or canon."
 
 [retired_exceptions.ide_root]
@@ -93,7 +95,7 @@ retired_phase = "POST-CONVERGE-02"
 retired_reason = "Moved quarantined labs README to archive/historical/labs after wrapper/tooling/governance cleanup."
 notes = "Retained for audit history only. Experiments are not canonical source ownership roots."
 
-[exceptions.meta_root]
+[retired_exceptions.meta_root]
 path = "meta"
 kind = "directory"
 classification = "partial_review"
@@ -102,7 +104,9 @@ retirement_phase = "POST-CONVERGE"
 target = "protected ownership split review before any move"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 did not move mixed semantic authority. Do not bind new authority here without updating the contract."
 
 [exceptions.meta_extensions_engine_file]
@@ -129,7 +133,7 @@ created_phase = "CONVERGE-10"
 active = true
 notes = "POST-CONVERGE-02 left this file active to avoid changing numeric semantics. Do not add new root-level discipline modules without contract update."
 
-[exceptions.performance_root]
+[retired_exceptions.performance_root]
 path = "performance"
 kind = "directory"
 classification = "partial_review"
@@ -138,7 +142,9 @@ retirement_phase = "POST-CONVERGE"
 target = "performance ownership review before relocation; possible engine/game/tools split only under explicit scope"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 left this active because moving it would require product/domain import changes. Performance evidence must not become source authority by path."
 
 [exceptions.tool_ui_bind_cmd]
@@ -177,7 +183,7 @@ created_phase = "CONVERGE-10"
 active = true
 notes = "POST-CONVERGE-02 found .github, CMake, RepoX, and developer docs references to the tool name and root shim policy. Prefer scripts/ or tools/ for new command wrappers."
 
-[exceptions.validation_root]
+[retired_exceptions.validation_root]
 path = "validation"
 kind = "directory"
 classification = "partial_review"
@@ -186,7 +192,9 @@ retirement_phase = "POST-CONVERGE"
 target = "validation ownership review before relocation; possible tools/contracts/tests split only under explicit scope"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-02 left this active because moving it would require runtime/tooling import changes. Do not create new validation root authority."
 
 [exceptions.artifacts_root]
@@ -241,7 +249,7 @@ retired_phase = "POST-CONVERGE-01"
 retired_reason = "Root contained no tracked files and was removed as local generated output."
 notes = "Retained for audit history only. Generated output must not be tracked as source authority."
 
-[exceptions.bundles_root]
+[retired_exceptions.bundles_root]
 path = "bundles"
 kind = "directory"
 classification = "partial_review"
@@ -250,10 +258,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected bundle ownership review before relocation; possible contracts/bundles, content bundle examples, release recipes, or tests only after bundle ID and lock semantics review"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 found two tracked bundle.json profiles and live references to bundles/bundle.base.lab/bundle.json. Bundle IDs and dependency/lock semantics were not changed."
 
-[exceptions.compat_root]
+[retired_exceptions.compat_root]
 path = "compat"
 kind = "directory"
 classification = "partial_review"
@@ -262,10 +272,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected compatibility split review: pure contracts to contracts/compatibility; implementation and shims only after runtime/tooling ownership review"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; compatibility semantics, migration behavior, and shim import paths are preserved."
 
-[exceptions.control_root]
+[retired_exceptions.control_root]
 path = "control"
 kind = "directory"
 classification = "partial_review"
@@ -274,10 +286,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected control ownership review: runtime-bound adapters to runtime/control, machine-readable control policy to contracts/control, docs to docs/control, tools/tests to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-05 made no moves here; process-only mutation, authority gates, control proof, and Control IR semantics are preserved."
 
-[exceptions.core_root]
+[retired_exceptions.core_root]
 path = "core"
 kind = "directory"
 classification = "partial_review"
@@ -286,10 +300,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected core ownership review: universal deterministic primitives to engine, domain-specific logic to game/domains, contracts to contracts, tooling/tests to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-05 made no moves here; deterministic substrate semantics and existing import paths are preserved."
 
-[exceptions.data_root]
+[retired_exceptions.data_root]
 path = "data"
 kind = "directory"
 classification = "partial_review"
@@ -298,10 +314,12 @@ retirement_phase = "POST-CONVERGE"
 target = "file-family split review across content/domain-data, content/packs, contracts/registries, docs, tests, release, archive/generated evidence, and runtime/release projection policy"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 did not move data/ wholesale. data/packs remains scoped authored pack content/declaration authority but residual-quarantined for single-root convergence with packs/."
 
-[exceptions.lib_root]
+[retired_exceptions.lib_root]
 path = "lib"
 kind = "directory"
 classification = "partial_review"
@@ -310,10 +328,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected library ownership review before any split across runtime, tools, contracts, external, or implementation surfaces"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; install/save/store/bundle semantics and Python import compatibility are preserved."
 
-[exceptions.libs_root]
+[retired_exceptions.libs_root]
 path = "libs"
 kind = "directory"
 classification = "partial_review"
@@ -322,10 +342,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected build/interface ownership review before any split across external, contracts, runtime, or implementation surfaces"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; CMake target names, include paths, and ABI surfaces are preserved."
 
-[exceptions.locks_root]
+[retired_exceptions.locks_root]
 path = "locks"
 kind = "directory"
 classification = "partial_review"
@@ -334,10 +356,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected lock artifact ownership review preserving source lock artifacts versus store/locks projection and contracts/locks schema boundaries"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; lockfile semantics, path identity, and distribution copy behavior are preserved."
 
-[exceptions.modding_root]
+[retired_exceptions.modding_root]
 path = "modding"
 kind = "directory"
 classification = "partial_review"
@@ -346,10 +370,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected mod policy ownership review before relocation; possible tools, contracts/modding, docs/modding, or content/modding split only under explicit scope"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 found this is not docs-only or authored mod content. Mod policy IDs, trust descriptors, and capability semantics were not changed."
 
-[exceptions.models_root]
+[retired_exceptions.models_root]
 path = "models"
 kind = "directory"
 classification = "partial_review"
@@ -358,10 +384,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected model engine ownership review before relocation; authored model content may later move to content/assets or content/domain-data only if separated from implementation code"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 found this is implementation code, not authored model assets. Model IDs and binding semantics were not changed."
 
-[exceptions.net_root]
+[retired_exceptions.net_root]
 path = "net"
 kind = "directory"
 classification = "partial_review"
@@ -370,10 +398,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected network ownership review: runtime adapters to runtime/network, server composition to apps/server, protocol contracts to contracts/protocols/network, docs/tests/tools to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-05 made no moves here; network protocol, server authority, anti-cheat, SRZ, resync, and replay semantics are preserved."
 
-[exceptions.packs_root]
+[retired_exceptions.packs_root]
 path = "packs"
 kind = "directory"
 classification = "partial_review"
@@ -382,10 +412,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected pack ownership review; preserve packs/ runtime-packaging scope and data/packs authored-content scope until human review resolves any single-root convergence"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 found 42 pack.json manifests with capability/trust/compat sidecars. Pack IDs, sidecars, dependency semantics, and compatibility semantics were not changed."
 
-[exceptions.profiles_root]
+[retired_exceptions.profiles_root]
 path = "profiles"
 kind = "directory"
 classification = "partial_review"
@@ -394,10 +426,12 @@ retirement_phase = "POST-CONVERGE"
 target = "profile ownership review before relocation; possible content/profiles move only with explicit profile identity, hash, release, and store projection review"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 left profiles/bundles/bundle.mvp_default.json in place because direct release, XStack, RepoX, and baseline references remain live. Profile IDs and hashes were not changed."
 
-[exceptions.repo_root]
+[retired_exceptions.repo_root]
 path = "repo"
 kind = "directory"
 classification = "partial_review"
@@ -406,10 +440,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected repo control-plane split review across contracts/repo, docs/repo, tools/migration, and release policy surfaces"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; no new root-level repo authority was created and existing release/control-plane semantics are preserved."
 
-[exceptions.safety_root]
+[retired_exceptions.safety_root]
 path = "safety"
 kind = "directory"
 classification = "partial_review"
@@ -418,10 +454,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected safety ownership review before any split across contracts/safety, docs/safety, tools, or runtime policy"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; safety policy and implementation semantics are preserved."
 
-[exceptions.security_root]
+[retired_exceptions.security_root]
 path = "security"
 kind = "directory"
 classification = "partial_review"
@@ -430,10 +468,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected security/trust ownership review before any split across contracts/security, docs/security, release, tools, or runtime policy"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; security, trust, signing, and capability semantics are preserved."
 
-[exceptions.specs_root]
+[retired_exceptions.specs_root]
 path = "specs"
 kind = "directory"
 classification = "partial_review"
@@ -442,10 +482,12 @@ retirement_phase = "POST-CONVERGE"
 target = "protected spec ownership review preserving specs/reality authority and separating contract-bound specs or docs only after review"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; normative spec authority and active imports are preserved."
 
-[exceptions.templates_root]
+[retired_exceptions.templates_root]
 path = "templates"
 kind = "directory"
 classification = "partial_review"
@@ -454,10 +496,12 @@ retirement_phase = "POST-CONVERGE"
 target = "docs/templates, contracts template review, or tools template review after protected spec/XStack reference review"
 risk = "medium"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-03 did not move templates because safe relocation would require coordinated updates to protected spec and machine-readable XStack/AIDE contract references. Do not create new root-level template authority."
 
-[exceptions.updates_root]
+[retired_exceptions.updates_root]
 path = "updates"
 kind = "directory"
 classification = "partial_review"
@@ -466,5 +510,7 @@ retirement_phase = "POST-CONVERGE"
 target = "protected update feed ownership review across release/updates, contracts/distribution or contracts/updates, and ops transaction boundaries"
 risk = "high"
 created_phase = "CONVERGE-10"
-active = true
+active = false
+retired_phase = "MOVE-ROUTER-01"
+retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
 notes = "POST-CONVERGE-04 made no moves here; update feed identity, generated-feed policy, and release semantics are preserved."

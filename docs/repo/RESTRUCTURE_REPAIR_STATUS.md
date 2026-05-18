@@ -100,3 +100,26 @@ Current dry-run evidence:
 - exceptions retired: 0.
 
 The router consumes the NAME-00 target grammar and emits route candidates, skip/defer reasons, per-root summaries, and B-G batch summaries. It refuses ambiguous targets, collisions, identity-sensitive routes without clear ownership, active Python/import-sensitive packages without rewrite or shim plans, authority-sensitive docs-only routes, normative `specs/reality` material, and forbidden target segments such as `source` and generic `compat`.
+
+## MOVE-ROUTER-01 Update
+
+MOVE-ROUTER-01 replaced the skipped/deferred posture with deterministic
+quarantine routing and applied the route table with `git mv`.
+
+- bad-root tracked files before: 1,765.
+- bad-root tracked files after: 0.
+- semantic moves: 1,694.
+- quarantine moves: 71.
+- skipped moves: 0.
+- target collisions: 0.
+- active root exceptions retired: 23.
+
+Current blockers shift from root presence to repair proof:
+
+- old bad-root path references remain.
+- imports and CMake/build paths may be stale.
+- quarantined files require later owner review before promotion.
+- full proof remains blocked until `MOVE-ROUTER-02` repairs references/imports/build/projection surfaces.
+
+Next task:
+`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
