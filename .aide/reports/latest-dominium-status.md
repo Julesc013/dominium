@@ -1,8 +1,8 @@
 # Latest Dominium Status
 
-Current task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
+Current task: `MOVE-SCRIPT-00`.
 
-Result: PARTIAL with naming law locked, CTest sharding/timing established, and semantic lint blockers resolved.
+Result: PARTIAL with naming law locked, CTest sharding/timing established, semantic lint blockers resolved, and deterministic bad-root dry-run routing evidence generated.
 
 ## Current Green State
 
@@ -31,10 +31,13 @@ Result: PARTIAL with naming law locked, CTest sharding/timing established, and s
 - AuditX graph/cache scans now ignore local/generated evidence roots.
 - AuditX archive-policy analyzers use existing archive-policy report in static scan mode.
 - incomplete tracked AuditX JSON and root inventory noise kept out of the commit.
+- deterministic bad-root router and routing rules added under `tools/migration/`.
+- current bad-root dry run emitted route, skipped, root-summary, and B-G batch-plan evidence without applying moves.
 
 ## Remaining Blockers
 
-- 23 excepted former bad roots remain with 1764 tracked files.
+- 23 excepted former bad roots remain with 1,765 tracked files in the current dry-run router inventory.
+- 172 tracked files under former bad roots remain skipped/deferred by MOVE-SCRIPT-00.
 - full CTest is still governed by the TEST-PERF-01 sharded execution policy.
 - tools_auditx no longer blocks the 300 second fast lane after TEST-PERF-01; AuditX is now an explicit `audit`/`auditx`/`slow`/`nightly` shard with a 1200 second timeout.
 - tracked large AIDE file-quality ledger policy remains unresolved.
@@ -45,7 +48,7 @@ DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 
 ## NAME-00 Additions
 
@@ -68,3 +71,12 @@ Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run 
 - `docs/testing/SEMANTIC_LINT_DISPOSITION.md`.
 - `docs/repo/audits/POST_RESTRUCTURE_REPAIR_SEMANTIC_LINTS.md`.
 - semantic lint findings, disposition, allowlist, validation, blocker, and readiness evidence under `.aide/reports/SEMANTIC-LINTS-*`.
+
+## MOVE-SCRIPT-00 Additions
+
+- `tools/migration/route_bad_roots.py`.
+- `tools/migration/bad_root_routing_rules.json`.
+- `tools/migration/bad_root_routing_readme.md`.
+- `docs/repo/audits/MOVE_SCRIPT_00_BAD_ROOT_ROUTER.md`.
+- dry-run route, skipped, root-summary, batch-plan, blocker, status, and validation evidence under `.aide/reports/MOVE-SCRIPT-00-*`.
+- dry-run summary: 1,765 tracked bad-root files, 1,593 route candidates, 172 skipped/deferred files, 0 target collisions, 0 moves applied.

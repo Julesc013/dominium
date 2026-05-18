@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
+Current task: `MOVE-SCRIPT-00`.
 
 ## Accepted Local/Generated Warnings
 
@@ -25,8 +25,9 @@ Current task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
 - AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under explicit `audit`/`auditx`/`slow`/`nightly` shards.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
 - NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
+- MOVE-SCRIPT-00 skipped/deferred 172 tracked bad-root files that require import, identity, authority, ABI/build, or naming-risk review before any apply task.
 
-Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 
 ## SEMANTIC-LINTS Warning Disposition
 
@@ -37,7 +38,7 @@ Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run 
 
 ## TEST-PERF-01 Warning Disposition
 
-- Full CTest remains not green because `slice0_hardcoded_ids` and `slice1_hardcoded_constants` fail.
+- Full CTest remains governed by TEST-PERF-01 sharding. The former semantic lint blockers were resolved by POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS.
 - AuditX is accepted as a bounded slow/nightly shard, not as a fast local lane.
 - Dirty changed paths that do not match explicit XStack group paths now fall back to core TestX/AuditX groups so impacted FULL plans do not silently lose shards.
 
@@ -47,3 +48,12 @@ Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run 
 - no-`src`/`source` findings: historical archive or active exception debt, not current authority.
 - directory/file naming findings: warning-only until a reviewed enforcement phase.
 - language ownership findings: warning-only existing placement debt; no conversion or relocation authorized.
+
+## MOVE-SCRIPT-00 Warning Disposition
+
+- Router result is `PASS_WITH_WARNINGS` because dry-run planning found deferred files, not because the router failed.
+- `active_python_package_requires_import_rewrite_or_shim_plan` remains deferred to an explicitly authorized active-tool/runtime apply plan.
+- `identity_sensitive_without_clear_identity_safe_route` remains deferred to identity-safe content/package/profile/bundle proof.
+- `authority_sensitive_docs_only_route_requires_review` and `normative_specs_reality_docs_require_authority_review` remain deferred to authority review.
+- forbidden target segments such as `source` and generic `compat` are refused by the router and require refined target ownership before apply.
+- Target collisions are currently zero.

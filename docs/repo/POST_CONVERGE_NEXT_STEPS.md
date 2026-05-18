@@ -187,7 +187,31 @@ Finding disposition:
 - `preserve_protocol_literal`: 264.
 - `preserve_schema_literal`: 45.
 
-The allowlist is exact-match only and lives at `contracts/repo/semantic_lint_allowlist.json`. The next repair/refinement task is `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+The allowlist is exact-match only and lives at `contracts/repo/semantic_lint_allowlist.json`.
+
+## MOVE-SCRIPT-00 Bad-Root Router Update
+
+MOVE-SCRIPT-00 generated the deterministic dry-run router needed before re-gating deferred MOVE-BULK B-G cleanup.
+
+Current dry-run routing evidence:
+
+- bad-root tracked files: 1,765.
+- route candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+- moves applied: 0.
+- exceptions retired: 0.
+
+Batch summaries:
+
+- B templates/models/modding: 2 route candidates, 4 skipped.
+- C content identity: 1,488 route candidates, 26 skipped.
+- D authority/policy: 17 route candidates, 33 skipped.
+- E active tools: 0 route candidates, 33 skipped.
+- F runtime/core/net: 0 route candidates, 54 skipped.
+- G libs/ABI: 86 route candidates, 22 skipped.
+
+The next repair/refinement task is `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 
 ## What Can Proceed
 

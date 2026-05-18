@@ -5,7 +5,7 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
+Latest proof state: PARTIAL after `MOVE-SCRIPT-00`, `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TEST-PERF-01`, and NAME-00 naming-law follow-up.
 
 ## Passing Proof Surfaces
 
@@ -28,7 +28,8 @@ Latest proof state: PARTIAL after `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`, `TES
 ## Remaining Blockers
 
 - Full CTest is not green.
-- 23 formerly bad roots remain under active exceptions with 1,764 tracked files.
+- 23 formerly bad roots remain under active exceptions with 1,765 tracked files in the current `git ls-files` dry-run router inventory.
+- MOVE-SCRIPT-00 produced 1,593 route candidates, 172 skipped/deferred files, and 0 target collisions without applying moves.
 - AuditX CTest wall-time is now partitioned into explicit `audit`/`auditx`/`slow`/`nightly` shards with 1200 second timeout.
 - Large file-quality ledger storage policy remains unresolved.
 - Naming conflicts are classified by NAME-00, but no naming migration has been applied.
@@ -51,6 +52,7 @@ python tools/validators/repo/check_no_src_source_dirs.py --repo-root .
 python tools/validators/repo/check_path_terms.py --repo-root .
 python tools/validators/repo/check_directory_naming.py --repo-root .
 python tools/validators/repo/check_file_naming.py --repo-root .
+python tools/migration/route_bad_roots.py --repo-root . --dry-run --rules tools/migration/bad_root_routing_rules.json --json-out .aide/reports/MOVE-SCRIPT-00-routing-preview.json --md-out .aide/reports/MOVE-SCRIPT-00-routing-preview.md --skipped-out .aide/reports/MOVE-SCRIPT-00-skipped-ledger.json --root-summary-out .aide/reports/MOVE-SCRIPT-00-root-summary.json --batch-plan-out .aide/reports/MOVE-SCRIPT-00-batch-plan.json --fail-on-collision
 ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300
 ctest --preset verify -R "slice0_hardcoded_ids|slice1_hardcoded_constants" --output-on-failure --timeout 300
 ctest --preset verify -L smoke --output-on-failure --timeout 300
@@ -68,7 +70,7 @@ python tools/validators/check_internal_pilot_release.py --repo-root . --release-
 
 DOE-00 is not authorized. Feature implementation remains blocked.
 
-Next task: `MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`.
+Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 
 ## Semantic Lint Proof Note
 
@@ -77,3 +79,9 @@ POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS reproduced 1,104 hardcoded identifier/con
 ## NAME-00 Naming Proof Note
 
 NAME-00 locks naming law and produces warning-only conflict evidence. It does not make current excepted bad roots clean, and it does not authorize `runtime/appshell -> runtime/shell`, `game/domains -> game/domain`, or contract-category singularization. Those are planned future migrations requiring reviewed scope.
+
+## MOVE-SCRIPT-00 Routing Proof Note
+
+MOVE-SCRIPT-00 added a deterministic dry-run router and rule file for the 23 former bad roots. It scans tracked files through `git ls-files`, produces sorted route and skipped ledgers, detects target collisions, and emits batch plans for the deferred MOVE-BULK B-G cleanup. The task did not move, delete, rename, rewrite, shim, or retire exceptions.
+
+The router result is `PASS_WITH_WARNINGS`: 1,593 route candidates are available for later gate review, and 172 files remain deferred for import, identity, authority, ABI/build, or naming-risk reasons.

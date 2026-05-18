@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS hardcoded identifier/constant classification, exact allowlist policy, and focused semantic lint validation.
+Review MOVE-SCRIPT-00 deterministic bad-root router, routing rules, dry-run evidence, skip/defer ledger, and no-apply compliance.
 
 ## Decision Requested
 
@@ -22,31 +22,33 @@ Review POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS hardcoded identifier/constant clas
 
 ## Evidence Packet References
 
-- `.aide/reports/SEMANTIC-LINTS-status.md`
-- `.aide/reports/SEMANTIC-LINTS-validation.md`
-- `.aide/reports/SEMANTIC-LINTS-blockers.md`
-- `.aide/reports/SEMANTIC-LINTS-findings.json`
-- `.aide/reports/SEMANTIC-LINTS-findings.md`
-- `.aide/reports/SEMANTIC-LINTS-disposition.json`
-- `.aide/reports/SEMANTIC-LINTS-disposition.md`
-- `.aide/reports/SEMANTIC-LINTS-allowlist-changes.md`
-- `.aide/reports/SEMANTIC-LINTS-next-readiness.md`
-- `.aide/verification/review-decision-policy.yaml`
-- `contracts/repo/semantic_lint_allowlist.json`
-- `docs/repo/audits/POST_RESTRUCTURE_REPAIR_SEMANTIC_LINTS.md`
-- `docs/testing/SEMANTIC_LINT_DISPOSITION.md`
+- `.aide/reports/MOVE-SCRIPT-00-status.md`
+- `.aide/reports/MOVE-SCRIPT-00-validation.md`
+- `.aide/reports/MOVE-SCRIPT-00-blockers.md`
+- `.aide/reports/MOVE-SCRIPT-00-routing-preview.json`
+- `.aide/reports/MOVE-SCRIPT-00-routing-preview.md`
+- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.json`
+- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.md`
+- `.aide/reports/MOVE-SCRIPT-00-root-summary.json`
+- `.aide/reports/MOVE-SCRIPT-00-root-summary.md`
+- `.aide/reports/MOVE-SCRIPT-00-batch-plan.json`
+- `.aide/reports/MOVE-SCRIPT-00-batch-plan.md`
+- `tools/migration/route_bad_roots.py`
+- `tools/migration/bad_root_routing_rules.json`
+- `tools/migration/bad_root_routing_readme.md`
+- `docs/repo/audits/MOVE_SCRIPT_00_BAD_ROOT_ROUTER.md`
 
 ## Changed Files Summary
 
-POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS adds exact-match semantic lint allowlist support, classifies 1,104 reproduced findings, and keeps the two focused semantic CTest lanes green without broad suppressions.
+MOVE-SCRIPT-00 adds a dry-run-only router that scans tracked bad-root files with `git ls-files`, emits deterministic route/skipped/root/batch evidence, and applies no moves.
 
 ## Validation Summary
 
-Expected validation: AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, docs/build/UI/ABI supplemental checks, focused RepoX, smoke, semantic lint CTest lanes, Python compile for touched tests, JSON parse for evidence, and git diff checks.
+Expected validation: Python compile/help for the router, router dry-run with collision checks, JSON parse for rules/evidence, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, docs/build/UI/ABI supplemental checks, focused RepoX, smoke CTest, and git diff checks.
 
 ## Risk Summary
 
-The exact allowlist is large because the previous validators had no disposition model. Future literals must be fixed or explicitly justified; full CTest still follows TEST-PERF-01 sharding.
+The route candidate set is intentionally conservative. Skipped files remain deferred where import rewrites, shims, identity proof, authority review, ABI/build proof, or naming-risk review is required.
 
 ## Token Summary
 
@@ -54,8 +56,8 @@ The task and review packets stay compact and reference evidence by path instead 
 
 ## Non-Goals / Scope Guard
 
-No test deletion, assertion weakening, root movement, product/runtime feature work, release generation, public release, tag, or generated local output commit.
+No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, product/runtime feature work, release generation, public release, tag, or generated local output commit.
 
 ## Reviewer Instructions
 
-Check that every finding is classified, allowlist entries are exact, no broad suppression was introduced, and both focused semantic lint tests pass.
+Check that the router is dry-run-only by default, every planned target is deterministic, collisions are refused, skipped/deferred reasons are explicit, and no filesystem move or exception retirement occurred.

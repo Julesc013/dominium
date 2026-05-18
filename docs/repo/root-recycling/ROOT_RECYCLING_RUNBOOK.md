@@ -97,3 +97,24 @@ Naming canon effects:
 - treat planned internal renames as future reviewed work, not as implicit MOVE-BULK authorization.
 
 NAME-00 does not authorize moves, rewrites, shims, exception retirement, or feature work.
+
+<!-- MOVE-SCRIPT-00 -->
+
+## MOVE-SCRIPT-00 Router Rule
+
+Before re-gating deferred MOVE-BULK B-G cleanup, consume `tools/migration/route_bad_roots.py`, `tools/migration/bad_root_routing_rules.json`, and the `.aide/reports/MOVE-SCRIPT-00-*` evidence.
+
+MOVE-SCRIPT-00 is a dry-run planning task only:
+
+- it scans tracked files with `git ls-files`;
+- it emits deterministic route candidates, skipped/deferred ledgers, root summaries, and batch summaries;
+- it refuses collisions, ambiguous targets, active Python/import-sensitive packages without rewrite or shim plans, identity-sensitive routes without clear ownership, authority-sensitive docs-only routes, ABI/build-sensitive ambiguity, normative `specs/reality` material, and forbidden target segments;
+- it does not move, delete, rename, rewrite, shim, apply maps, or retire layout exceptions.
+
+Current dry-run snapshot:
+
+- tracked files under former bad roots: 1,765.
+- route candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+- next recommended task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.

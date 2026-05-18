@@ -5,9 +5,9 @@ Superseded By: none
 
 # Restructure Repair Status
 
-Latest task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS`.
+Latest task: `MOVE-SCRIPT-00`.
 
-Result: PARTIAL, with naming law locked, CTest sharding honest, and semantic lint blockers resolved.
+Result: PARTIAL, with naming law locked, CTest sharding honest, semantic lint blockers resolved, and deterministic bad-root routing evidence generated without applying moves.
 
 ## Current Green Gates
 
@@ -28,6 +28,7 @@ Result: PARTIAL, with naming law locked, CTest sharding honest, and semantic lin
 
 - Full CTest is not green.
 - Twenty-three formerly bad roots remain under active exceptions.
+- Current dry-run router inventory finds 1,765 tracked files under the former bad roots.
 - `tools_auditx` no longer blocks the 300 second fast lane after `TEST-PERF-01`; AuditX is split into explicit `audit`/`auditx`/`slow`/`nightly` CTest shards with a 1200 second timeout.
 - The tracked `.aide/reports/file-quality-ledger.json` large-file policy remains unresolved.
 - The first two repair evidence commits failed AIDE commit-message policy and were not amended; the follow-up commit records the warnings.
@@ -35,7 +36,7 @@ Result: PARTIAL, with naming law locked, CTest sharding honest, and semantic lin
 
 ## Next Task
 
-`MOVE-SCRIPT-00 - Generate Deterministic Bad-Root Router and Dry-Run Move Plan`
+`MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`
 
 DOE-00 is not ready. Feature implementation remains blocked.
 
@@ -74,3 +75,18 @@ Current semantic lint lanes:
 - combined semantic lint rerun: PASS in 11.01 seconds.
 
 The allowlist is exact-match only and lives at `contracts/repo/semantic_lint_allowlist.json`.
+
+## MOVE-SCRIPT-00 Update
+
+MOVE-SCRIPT-00 added a dry-run-only bad-root router under `tools/migration/`.
+
+Current dry-run evidence:
+
+- bad-root tracked files: 1,765.
+- move candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+- moves applied: 0.
+- exceptions retired: 0.
+
+The router consumes the NAME-00 target grammar and emits route candidates, skip/defer reasons, per-root summaries, and B-G batch summaries. It refuses ambiguous targets, collisions, identity-sensitive routes without clear ownership, active Python/import-sensitive packages without rewrite or shim plans, authority-sensitive docs-only routes, normative `specs/reality` material, and forbidden target segments such as `source` and generic `compat`.

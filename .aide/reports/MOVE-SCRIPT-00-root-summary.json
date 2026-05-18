@@ -1,0 +1,406 @@
+{
+  "head": "1612f92fe0f51f761ad5078f099e6343ddfda5ff",
+  "mode": "dry_run",
+  "roots": [
+    {
+      "batch": "content_identity",
+      "risk_counts": {
+        "high": 3
+      },
+      "root": "bundles",
+      "route_candidate_count": 3,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 3
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 17
+      },
+      "root": "compat",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 17,
+        "identity_sensitive_without_clear_identity_safe_route": 17
+      },
+      "skipped_count": 17,
+      "status": "has_deferred_items",
+      "tracked_file_count": 17
+    },
+    {
+      "batch": "runtime_core_net",
+      "risk_counts": {
+        "high": 21
+      },
+      "root": "control",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 21,
+        "identity_sensitive_without_clear_identity_safe_route": 5
+      },
+      "skipped_count": 21,
+      "status": "has_deferred_items",
+      "tracked_file_count": 21
+    },
+    {
+      "batch": "runtime_core_net",
+      "risk_counts": {
+        "high": 16
+      },
+      "root": "core",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 16
+      },
+      "skipped_count": 16,
+      "status": "has_deferred_items",
+      "tracked_file_count": 16
+    },
+    {
+      "batch": "content_identity",
+      "risk_counts": {
+        "high": 950,
+        "low": 155,
+        "medium": 149
+      },
+      "root": "data",
+      "route_candidate_count": 1245,
+      "skip_reason_counts": {
+        "identity_sensitive_without_clear_identity_safe_route": 9
+      },
+      "skipped_count": 9,
+      "status": "has_deferred_items",
+      "tracked_file_count": 1254
+    },
+    {
+      "batch": "active_tools",
+      "risk_counts": {
+        "high": 2
+      },
+      "root": "governance",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2,
+        "identity_sensitive_without_clear_identity_safe_route": 1
+      },
+      "skipped_count": 2,
+      "status": "has_deferred_items",
+      "tracked_file_count": 2
+    },
+    {
+      "batch": "",
+      "risk_counts": {},
+      "root": "ide",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "empty_or_retired",
+      "tracked_file_count": 0
+    },
+    {
+      "batch": "libs_abi",
+      "risk_counts": {
+        "high": 22
+      },
+      "root": "lib",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 22,
+        "identity_sensitive_without_clear_identity_safe_route": 8
+      },
+      "skipped_count": 22,
+      "status": "has_deferred_items",
+      "tracked_file_count": 22
+    },
+    {
+      "batch": "libs_abi",
+      "risk_counts": {
+        "high": 86
+      },
+      "root": "libs",
+      "route_candidate_count": 86,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 86
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 1
+      },
+      "root": "locks",
+      "route_candidate_count": 1,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 1
+    },
+    {
+      "batch": "active_tools",
+      "risk_counts": {
+        "high": 8,
+        "low": 18
+      },
+      "root": "meta",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 26,
+        "identity_sensitive_without_clear_identity_safe_route": 5
+      },
+      "skipped_count": 26,
+      "status": "has_deferred_items",
+      "tracked_file_count": 26
+    },
+    {
+      "batch": "templates_models_modding",
+      "risk_counts": {
+        "high": 1,
+        "low": 1
+      },
+      "root": "modding",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2
+      },
+      "skipped_count": 2,
+      "status": "has_deferred_items",
+      "tracked_file_count": 2
+    },
+    {
+      "batch": "templates_models_modding",
+      "risk_counts": {
+        "low": 2
+      },
+      "root": "models",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2
+      },
+      "skipped_count": 2,
+      "status": "has_deferred_items",
+      "tracked_file_count": 2
+    },
+    {
+      "batch": "runtime_core_net",
+      "risk_counts": {
+        "high": 17
+      },
+      "root": "net",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 17,
+        "identity_sensitive_without_clear_identity_safe_route": 3
+      },
+      "skipped_count": 17,
+      "status": "has_deferred_items",
+      "tracked_file_count": 17
+    },
+    {
+      "batch": "content_identity",
+      "risk_counts": {
+        "high": 256
+      },
+      "root": "packs",
+      "route_candidate_count": 239,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 4,
+        "identity_sensitive_without_clear_identity_safe_route": 4,
+        "target_uses_forbidden_segment_compat": 3,
+        "target_uses_forbidden_segment_source": 13
+      },
+      "skipped_count": 17,
+      "status": "has_deferred_items",
+      "tracked_file_count": 256
+    },
+    {
+      "batch": "active_tools",
+      "risk_counts": {
+        "high": 1,
+        "low": 2
+      },
+      "root": "performance",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 3
+      },
+      "skipped_count": 3,
+      "status": "has_deferred_items",
+      "tracked_file_count": 3
+    },
+    {
+      "batch": "content_identity",
+      "risk_counts": {
+        "high": 1
+      },
+      "root": "profiles",
+      "route_candidate_count": 1,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 1
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 11
+      },
+      "root": "repo",
+      "route_candidate_count": 11,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 11
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 2
+      },
+      "root": "safety",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2
+      },
+      "skipped_count": 2,
+      "status": "has_deferred_items",
+      "tracked_file_count": 2
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 4
+      },
+      "root": "security",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 4,
+        "identity_sensitive_without_clear_identity_safe_route": 3
+      },
+      "skipped_count": 4,
+      "status": "has_deferred_items",
+      "tracked_file_count": 4
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 9
+      },
+      "root": "specs",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2,
+        "authority_sensitive_docs_only_route_requires_review": 6,
+        "identity_sensitive_without_clear_identity_safe_route": 2,
+        "normative_specs_reality_docs_require_authority_review": 7
+      },
+      "skipped_count": 9,
+      "status": "has_deferred_items",
+      "tracked_file_count": 9
+    },
+    {
+      "batch": "templates_models_modding",
+      "risk_counts": {
+        "high": 1,
+        "low": 1
+      },
+      "root": "templates",
+      "route_candidate_count": 2,
+      "skip_reason_counts": {},
+      "skipped_count": 0,
+      "status": "all_routed",
+      "tracked_file_count": 2
+    },
+    {
+      "batch": "authority_policy",
+      "risk_counts": {
+        "high": 6
+      },
+      "root": "updates",
+      "route_candidate_count": 5,
+      "skip_reason_counts": {
+        "authority_sensitive_docs_only_route_requires_review": 1
+      },
+      "skipped_count": 1,
+      "status": "has_deferred_items",
+      "tracked_file_count": 6
+    },
+    {
+      "batch": "active_tools",
+      "risk_counts": {
+        "high": 2
+      },
+      "root": "validation",
+      "route_candidate_count": 0,
+      "skip_reason_counts": {
+        "active_python_package_requires_import_rewrite_or_shim_plan": 2,
+        "identity_sensitive_without_clear_identity_safe_route": 2
+      },
+      "skipped_count": 2,
+      "status": "has_deferred_items",
+      "tracked_file_count": 2
+    }
+  ],
+  "schema_version": "dominium.move_script_00.root_summary.v1",
+  "summary": {
+    "bad_root_tracked_files": 1765,
+    "collision_count": 0,
+    "route_candidate_count": 1593,
+    "route_candidates_by_batch": {
+      "authority_policy": 17,
+      "content_identity": 1488,
+      "libs_abi": 86,
+      "templates_models_modding": 2
+    },
+    "routes_by_root": {
+      "bundles": 3,
+      "data": 1245,
+      "libs": 86,
+      "locks": 1,
+      "packs": 239,
+      "profiles": 1,
+      "repo": 11,
+      "templates": 2,
+      "updates": 5
+    },
+    "skipped_by_batch": {
+      "active_tools": 33,
+      "authority_policy": 33,
+      "content_identity": 26,
+      "libs_abi": 22,
+      "runtime_core_net": 54,
+      "templates_models_modding": 4
+    },
+    "skipped_by_root": {
+      "compat": 17,
+      "control": 21,
+      "core": 16,
+      "data": 9,
+      "governance": 2,
+      "lib": 22,
+      "meta": 26,
+      "modding": 2,
+      "models": 2,
+      "net": 17,
+      "packs": 17,
+      "performance": 3,
+      "safety": 2,
+      "security": 4,
+      "specs": 9,
+      "updates": 1,
+      "validation": 2
+    },
+    "skipped_count": 172,
+    "skips_by_reason": {
+      "active_python_package_requires_import_rewrite_or_shim_plan": 142,
+      "authority_sensitive_docs_only_route_requires_review": 7,
+      "identity_sensitive_without_clear_identity_safe_route": 59,
+      "normative_specs_reality_docs_require_authority_review": 7,
+      "target_uses_forbidden_segment_compat": 3,
+      "target_uses_forbidden_segment_source": 13
+    }
+  },
+  "task_id": "MOVE-SCRIPT-00"
+}

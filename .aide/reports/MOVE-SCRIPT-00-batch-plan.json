@@ -1,0 +1,203 @@
+{
+  "apply_authorized": false,
+  "batches": [
+    {
+      "apply_authorized": false,
+      "batch": "templates_models_modding",
+      "batch_id": "B",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "modding": 2,
+        "models": 2,
+        "templates": 2
+      },
+      "roots": [
+        "templates",
+        "models",
+        "modding"
+      ],
+      "route_candidate_count": 2,
+      "skipped_count": 4,
+      "status": "dry_run_only",
+      "title": "templates, models, and modding",
+      "validation_tier": "Tier 1"
+    },
+    {
+      "apply_authorized": false,
+      "batch": "content_identity",
+      "batch_id": "C",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "bundles": 3,
+        "data": 1254,
+        "packs": 256,
+        "profiles": 1
+      },
+      "roots": [
+        "data",
+        "packs",
+        "profiles",
+        "bundles"
+      ],
+      "route_candidate_count": 1488,
+      "skipped_count": 26,
+      "status": "dry_run_only",
+      "title": "content identity, packs, profiles, and bundles",
+      "validation_tier": "Tier 2"
+    },
+    {
+      "apply_authorized": false,
+      "batch": "authority_policy",
+      "batch_id": "D",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "compat": 17,
+        "locks": 1,
+        "repo": 11,
+        "safety": 2,
+        "security": 4,
+        "specs": 9,
+        "updates": 6
+      },
+      "roots": [
+        "compat",
+        "locks",
+        "repo",
+        "safety",
+        "security",
+        "specs",
+        "updates"
+      ],
+      "route_candidate_count": 17,
+      "skipped_count": 33,
+      "status": "dry_run_only",
+      "title": "authority, policy, specs, and updates",
+      "validation_tier": "Tier 2"
+    },
+    {
+      "apply_authorized": false,
+      "batch": "active_tools",
+      "batch_id": "E",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "governance": 2,
+        "meta": 26,
+        "performance": 3,
+        "validation": 2
+      },
+      "roots": [
+        "validation",
+        "meta",
+        "governance",
+        "performance"
+      ],
+      "route_candidate_count": 0,
+      "skipped_count": 33,
+      "status": "dry_run_only",
+      "title": "active tools and module shims",
+      "validation_tier": "Tier 1"
+    },
+    {
+      "apply_authorized": false,
+      "batch": "runtime_core_net",
+      "batch_id": "F",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "control": 21,
+        "core": 16,
+        "net": 17
+      },
+      "roots": [
+        "core",
+        "control",
+        "net"
+      ],
+      "route_candidate_count": 0,
+      "skipped_count": 54,
+      "status": "dry_run_only",
+      "title": "runtime, core, control, and net",
+      "validation_tier": "Tier 3"
+    },
+    {
+      "apply_authorized": false,
+      "batch": "libs_abi",
+      "batch_id": "G",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00",
+      "root_file_counts": {
+        "lib": 22,
+        "libs": 86
+      },
+      "roots": [
+        "lib",
+        "libs"
+      ],
+      "route_candidate_count": 86,
+      "skipped_count": 22,
+      "status": "dry_run_only",
+      "title": "libraries and ABI/build surfaces",
+      "validation_tier": "Tier 3"
+    }
+  ],
+  "head": "1612f92fe0f51f761ad5078f099e6343ddfda5ff",
+  "mode": "dry_run",
+  "schema_version": "dominium.move_script_00.batch_plan.v1",
+  "summary": {
+    "bad_root_tracked_files": 1765,
+    "collision_count": 0,
+    "route_candidate_count": 1593,
+    "route_candidates_by_batch": {
+      "authority_policy": 17,
+      "content_identity": 1488,
+      "libs_abi": 86,
+      "templates_models_modding": 2
+    },
+    "routes_by_root": {
+      "bundles": 3,
+      "data": 1245,
+      "libs": 86,
+      "locks": 1,
+      "packs": 239,
+      "profiles": 1,
+      "repo": 11,
+      "templates": 2,
+      "updates": 5
+    },
+    "skipped_by_batch": {
+      "active_tools": 33,
+      "authority_policy": 33,
+      "content_identity": 26,
+      "libs_abi": 22,
+      "runtime_core_net": 54,
+      "templates_models_modding": 4
+    },
+    "skipped_by_root": {
+      "compat": 17,
+      "control": 21,
+      "core": 16,
+      "data": 9,
+      "governance": 2,
+      "lib": 22,
+      "meta": 26,
+      "modding": 2,
+      "models": 2,
+      "net": 17,
+      "packs": 17,
+      "performance": 3,
+      "safety": 2,
+      "security": 4,
+      "specs": 9,
+      "updates": 1,
+      "validation": 2
+    },
+    "skipped_count": 172,
+    "skips_by_reason": {
+      "active_python_package_requires_import_rewrite_or_shim_plan": 142,
+      "authority_sensitive_docs_only_route_requires_review": 7,
+      "identity_sensitive_without_clear_identity_safe_route": 59,
+      "normative_specs_reality_docs_require_authority_review": 7,
+      "target_uses_forbidden_segment_compat": 3,
+      "target_uses_forbidden_segment_source": 13
+    }
+  },
+  "task_id": "MOVE-SCRIPT-00"
+}

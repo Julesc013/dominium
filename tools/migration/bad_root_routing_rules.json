@@ -1,0 +1,140 @@
+{
+  "schema_version": "dominium.move_script_00.routing_rules.v1",
+  "task_id": "MOVE-SCRIPT-00",
+  "mode": "dry_run_no_apply",
+  "canonical_target_roots": [
+    "apps",
+    "engine",
+    "game",
+    "runtime",
+    "contracts",
+    "content",
+    "docs",
+    "tests",
+    "tools",
+    "scripts",
+    "cmake",
+    "external",
+    "release",
+    "archive"
+  ],
+  "bad_roots": [
+    "core",
+    "control",
+    "data",
+    "packs",
+    "profiles",
+    "bundles",
+    "compat",
+    "lib",
+    "libs",
+    "locks",
+    "repo",
+    "safety",
+    "security",
+    "specs",
+    "updates",
+    "meta",
+    "governance",
+    "performance",
+    "validation",
+    "modding",
+    "models",
+    "templates",
+    "net",
+    "ide"
+  ],
+  "forbidden_target_segments": [
+    "src",
+    "source",
+    "sources",
+    "code",
+    "impl",
+    "common",
+    "shared",
+    "misc",
+    "new",
+    "old",
+    "modern",
+    "legacy",
+    "classic",
+    "universal",
+    "compat"
+  ],
+  "allowed_target_segment_exceptions": [
+    "archive/legacy",
+    "contracts/compatibility",
+    "docs/compatibility"
+  ],
+  "batches": {
+    "templates_models_modding": {
+      "batch_id": "B",
+      "title": "templates, models, and modding",
+      "roots": ["templates", "models", "modding"],
+      "validation_tier": "Tier 1",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    },
+    "content_identity": {
+      "batch_id": "C",
+      "title": "content identity, packs, profiles, and bundles",
+      "roots": ["data", "packs", "profiles", "bundles"],
+      "validation_tier": "Tier 2",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    },
+    "authority_policy": {
+      "batch_id": "D",
+      "title": "authority, policy, specs, and updates",
+      "roots": ["compat", "locks", "repo", "safety", "security", "specs", "updates"],
+      "validation_tier": "Tier 2",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    },
+    "active_tools": {
+      "batch_id": "E",
+      "title": "active tools and module shims",
+      "roots": ["validation", "meta", "governance", "performance"],
+      "validation_tier": "Tier 1",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    },
+    "runtime_core_net": {
+      "batch_id": "F",
+      "title": "runtime, core, control, and net",
+      "roots": ["core", "control", "net"],
+      "validation_tier": "Tier 3",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    },
+    "libs_abi": {
+      "batch_id": "G",
+      "title": "libraries and ABI/build surfaces",
+      "roots": ["lib", "libs"],
+      "validation_tier": "Tier 3",
+      "next_gate": "MOVE-BULK-BG-REFINEMENT-00"
+    }
+  },
+  "safety_policy": {
+    "dry_run_only": true,
+    "moves_allowed": false,
+    "deletes_allowed": false,
+    "reference_rewrites_allowed": false,
+    "shims_allowed": false,
+    "exception_retirement_allowed": false,
+    "skip_if_target_unknown": true,
+    "skip_if_target_collision": true,
+    "skip_if_identity_sensitive_without_clear_owner": true,
+    "skip_if_abi_or_build_sensitive_without_validation_tier": true,
+    "skip_if_active_python_package_without_import_plan": true,
+    "skip_if_authority_material_routes_to_docs_only": true,
+    "skip_if_generated_policy_unclear": true,
+    "skip_if_target_uses_forbidden_naming_segment": true
+  },
+  "target_grammar": {
+    "schemas": "contracts/schema",
+    "registries": "contracts/registry",
+    "packages": "contracts/package",
+    "profiles": "contracts/profile",
+    "protocols": "contracts/protocol",
+    "projections": "contracts/projection",
+    "domain_code": "game/domain",
+    "domain_content": "content/domains",
+    "runtime_shell": "runtime/shell"
+  }
+}
