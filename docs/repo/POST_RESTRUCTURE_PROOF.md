@@ -14,6 +14,8 @@ Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-u
 - Supplemental docs/build/UI/ABI checks.
 - Focused RepoX.
 - Smoke CTest.
+- Fast CTest label.
+- AuditX slow shard.
 - Native configure and build-only `ALL_BUILD`.
 - Product boot matrix strict smoke.
 - Portable projection strict validation.
@@ -27,7 +29,7 @@ Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-u
 - Full CTest is not green.
 - 23 formerly bad roots remain under active exceptions with 1,764 tracked files.
 - `slice0_hardcoded_ids` and `slice1_hardcoded_constants` still need doctrine-backed remediation.
-- AuditX CTest wall-time is now partitioned into an explicit `auditx` shard with 1200 second timeout.
+- AuditX CTest wall-time is now partitioned into explicit `audit`/`auditx`/`slow`/`nightly` shards with 1200 second timeout.
 - Large file-quality ledger storage policy remains unresolved.
 - Naming conflicts are classified by NAME-00, but no naming migration has been applied.
 
@@ -51,7 +53,9 @@ python tools/validators/repo/check_directory_naming.py --repo-root .
 python tools/validators/repo/check_file_naming.py --repo-root .
 ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300
 ctest --preset verify -L smoke --output-on-failure --timeout 300
-ctest --preset verify -L auditx --output-on-failure --timeout 1200
+ctest --preset verify -L fast --output-on-failure --timeout 300
+ctest --preset verify -L audit --output-on-failure --timeout 1200
+ctest --preset verify -L slow --output-on-failure --timeout 1200
 cmake --preset verify
 cmake --build --preset verify --target ALL_BUILD
 python tools/validators/check_product_boot_matrix.py --repo-root . --json --strict --run-smoke --timeout 30

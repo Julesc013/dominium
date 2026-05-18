@@ -1,0 +1,16 @@
+{
+  "schema_version": "dominium.test_perf_01.next_readiness.v1",
+  "task": "TEST-PERF-01",
+  "result": "PASS_WITH_WARNINGS",
+  "focused_repox_green": true,
+  "smoke_green": true,
+  "fast_green": true,
+  "auditx_shard_green": true,
+  "full_ctest_green": false,
+  "remaining_blockers": [
+    "slice0_hardcoded_ids",
+    "slice1_hardcoded_constants"
+  ],
+  "next_task": "POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition",
+  "doe_00_ready": false
+}

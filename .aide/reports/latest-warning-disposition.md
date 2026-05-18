@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `NAME-00`.
+Current task: `TEST-PERF-01`.
 
 ## Accepted Local/Generated Warnings
 
@@ -22,11 +22,17 @@ Current task: `NAME-00`.
 
 - Full CTest is not green and cannot be marked green.
 - `slice0_hardcoded_ids` and `slice1_hardcoded_constants` need doctrine-backed remediation.
-- AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under the `auditx` shard.
+- AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under explicit `audit`/`auditx`/`slow`/`nightly` shards.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
 - NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
 
 Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+
+## TEST-PERF-01 Warning Disposition
+
+- Full CTest remains not green because `slice0_hardcoded_ids` and `slice1_hardcoded_constants` fail.
+- AuditX is accepted as a bounded slow/nightly shard, not as a fast local lane.
+- Dirty changed paths that do not match explicit XStack group paths now fall back to core TestX/AuditX groups so impacted FULL plans do not silently lose shards.
 
 ## NAME-00 Warning Disposition
 

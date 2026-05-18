@@ -149,6 +149,27 @@ Naming validators live under `tools/validators/repo/` and are warning-oriented c
 
 Future MOVE-BULK B-G refinement must not route files to `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets. Planned internal renames such as `runtime/appshell/ -> runtime/shell/`, `game/domains/ -> game/domain/`, and `contracts/schemas/ -> contracts/schema/` remain future reviewed migrations only.
 
+## TEST-PERF-01 CTest Sharding Update
+
+TEST-PERF-01 establishes the current CTest timing and shard policy after RESTRUCTURE-REPAIR-00 and NAME-00.
+
+Current command lanes:
+
+- focused RepoX: `ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300`
+- smoke: `ctest --preset verify -L smoke --output-on-failure --timeout 300`
+- fast: `ctest --preset verify -L fast --output-on-failure --timeout 300`
+- AuditX: `ctest --preset verify -L audit --output-on-failure --timeout 1200`
+- slow/nightly: `ctest --preset verify -L slow --output-on-failure --timeout 1200`
+
+Measured results:
+
+- focused RepoX: PASS in 128.978 seconds.
+- smoke: PASS in 55.829 seconds.
+- fast: PASS in 48.821 seconds.
+- AuditX shard: PASS in 824.573 seconds.
+
+Full CTest remains a promotion lane and is still blocked by `slice0_hardcoded_ids` and `slice1_hardcoded_constants`. The next repair task is `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+
 ## What Can Proceed
 
 The repository is ready for scoped work in these areas:

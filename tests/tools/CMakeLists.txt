@@ -36,21 +36,21 @@ dom_add_testx(NAME tools_auditx
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
         --case scan_artifacts
-    LABELS auditx
+    LABELS auditx ${DOM_TESTX_LABEL_AUDIT} ${DOM_TESTX_LABEL_SLOW} ${DOM_TESTX_LABEL_NIGHTLY}
 )
 
 dom_add_testx(NAME tools_auditx_hash_stability
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
         --case hash_stability
-    LABELS auditx
+    LABELS auditx ${DOM_TESTX_LABEL_AUDIT} ${DOM_TESTX_LABEL_SLOW} ${DOM_TESTX_LABEL_NIGHTLY}
 )
 
 dom_add_testx(NAME tools_auditx_changed_only
     COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/tools_auditx_tests.py
         --repo-root ${CMAKE_SOURCE_DIR}
         --case changed_only
-    LABELS auditx
+    LABELS auditx ${DOM_TESTX_LABEL_AUDIT} ${DOM_TESTX_LABEL_SLOW} ${DOM_TESTX_LABEL_NIGHTLY}
 )
 
 set_tests_properties(

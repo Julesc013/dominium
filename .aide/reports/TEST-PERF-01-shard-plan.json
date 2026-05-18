@@ -1,0 +1,75 @@
+{
+  "schema_version": "dominium.test_perf_01.shard_plan.v1",
+  "task": "TEST-PERF-01",
+  "status": "active",
+  "lanes": [
+    {
+      "id": "focused-repox",
+      "selector": "-R inv_repox_rules",
+      "command": "ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300",
+      "expected": "PASS",
+      "purpose": "focused semantic governance blocker"
+    },
+    {
+      "id": "smoke",
+      "selector": "-L smoke",
+      "command": "ctest --preset verify -L smoke --output-on-failure --timeout 300",
+      "expected": "PASS",
+      "purpose": "57 smoke tests"
+    },
+    {
+      "id": "fast",
+      "selector": "-L fast",
+      "command": "ctest --preset verify -L fast --output-on-failure --timeout 300",
+      "expected": "PASS",
+      "purpose": "fast CTest alias for smoke tests"
+    },
+    {
+      "id": "audit",
+      "selector": "-L audit",
+      "command": "ctest --preset verify -L audit --output-on-failure --timeout 1200",
+      "expected": "PASS slow",
+      "purpose": "AuditX scan, hash-stability, and changed-only shard"
+    },
+    {
+      "id": "tools-without-heavy-auditx",
+      "selector": "component-tools tier",
+      "command": "python scripts/test_tier.py --tier component-tools",
+      "expected": "PASS",
+      "purpose": "tooling tests excluding heavy tools_auditx shard"
+    },
+    {
+      "id": "slow",
+      "selector": "-L slow",
+      "command": "ctest --preset verify -L slow --output-on-failure --timeout 1200",
+      "expected": "PASS slow",
+      "purpose": "currently AuditX slow shard"
+    },
+    {
+      "id": "nightly",
+      "selector": "-L nightly",
+      "command": "ctest --preset verify -L nightly --output-on-failure --timeout 1200",
+      "expected": "PASS slow",
+      "purpose": "currently AuditX nightly shard"
+    },
+    {
+      "id": "semantic-lints",
+      "selector": "-R slice0_hardcoded_ids|slice1_hardcoded_constants",
+      "command": "ctest --preset verify -R \"slice0_hardcoded_ids|slice1_hardcoded_constants\" --output-on-failure",
+      "expected": "FAIL until semantic lint repair",
+      "purpose": "known non-performance blockers"
+    },
+    {
+      "id": "full-promotion",
+      "selector": "unfiltered",
+      "command": "ctest --preset verify --output-on-failure",
+      "expected": "FAIL until semantic lint repair",
+      "purpose": "full canonical promotion lane"
+    }
+  ],
+  "timeout_policy": {
+    "fast_and_smoke_seconds": 300,
+    "audit_slow_seconds": 1200,
+    "full_promotion_seconds": "run only as promotion/nightly until semantic lint blockers are resolved"
+  }
+}

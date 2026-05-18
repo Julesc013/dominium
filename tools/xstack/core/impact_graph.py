@@ -186,6 +186,13 @@ def build_impact_graph(
     if not rel_paths:
         impacted_testx.add("testx.group.core.invariants")
         impacted_auditx.add("auditx.group.core.policy")
+    else:
+        # Unknown changed paths must still produce an honest impacted shard plan.
+        # This keeps dirty test/tooling metadata from collapsing FULL to non-sharded runners.
+        if not impacted_testx:
+            impacted_testx.add("testx.group.core.invariants")
+        if not impacted_auditx:
+            impacted_auditx.add("auditx.group.core.policy")
 
     for subsystem in subsystems:
         row = component_map.get(subsystem, {})

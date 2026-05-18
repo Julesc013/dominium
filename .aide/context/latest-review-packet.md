@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review NAME-00 naming canon work for scope, no-apply discipline, validator warning posture, and consistency with the post-CONVERGE layout authority.
+Review TEST-PERF-01 CTest sharding, timing evidence, AuditX wall-time classification, and XStack impacted-shard fallback.
 
 ## Decision Requested
 
@@ -22,36 +22,39 @@ Review NAME-00 naming canon work for scope, no-apply discipline, validator warni
 
 ## Evidence Packet References
 
-- `.aide/reports/NAME-00-status.md`
-- `.aide/reports/NAME-00-validation.md`
-- `.aide/reports/NAME-00-blockers.md`
-- `.aide/reports/NAME-00-path-conflicts.md`
-- `.aide/reports/NAME-00-language-ownership-findings.md`
-- `.aide/reports/NAME-00-next-readiness.md`
+- `.aide/reports/TEST-PERF-01-status.md`
+- `.aide/reports/TEST-PERF-01-validation.md`
+- `.aide/reports/TEST-PERF-01-blockers.md`
+- `.aide/reports/TEST-PERF-01-ctest-inventory.json`
+- `.aide/reports/TEST-PERF-01-ctest-timing.md`
+- `.aide/reports/TEST-PERF-01-auditx-walltime.md`
+- `.aide/reports/TEST-PERF-01-shard-plan.md`
+- `.aide/reports/TEST-PERF-01-next-readiness.md`
 - `.aide/verification/review-decision-policy.yaml`
-- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
-- `contracts/repo/naming.contract.toml`
+- `docs/repo/audits/TEST_PERF_01_CTEST_SHARDING_AUDIT.md`
+- `docs/testing/CTEST_SHARDING_AND_TIMEOUTS.md`
+- `docs/testing/SLOW_TEST_BASELINE.md`
 
 ## Changed Files Summary
 
-NAME-00 adds a machine-readable naming contract, human naming docs, warning-oriented naming validators, and evidence reports. It does not move, delete, rename, rewrite, create shims, apply move maps, or retire exceptions.
+TEST-PERF-01 adds CTest label metadata for `fast`, `audit`, `slow`, and `nightly`, keeps AuditX required in a bounded slow shard, and adds an XStack impact fallback so unmapped dirty paths still select core TestX/AuditX shard groups.
 
 ## Validation Summary
 
-Expected validation: AIDE doctor/validate, Python compile for new validators, JSON parse for naming evidence/schema, naming validators, strict layout/root/distribution/component validators, focused RepoX, smoke CTest, and `git diff --check`. Full CTest remains out of scope for NAME-00.
-
-## Token Summary
-
-The task and review packets are compact and reference evidence by path rather than embedding long outputs.
+Expected validation: AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, docs/build/UI/ABI supplemental checks, focused RepoX, smoke, fast, AuditX slow shard, Python compile for touched tooling, JSON parse for evidence, and git diff checks. Full CTest remains not green because the semantic lint lanes are still failing.
 
 ## Risk Summary
 
-Root debt remains excepted, semantic lint gates are not waived, AuditX still needs partitioning/performance repair, and DOE-00 remains blocked.
+`slice0_hardcoded_ids` and `slice1_hardcoded_constants` remain real blockers for the next task. AuditX is bounded but slow at roughly 825 seconds on the current machine. Full CTest is still a promotion lane, not a green local proof.
+
+## Token Summary
+
+The task and review packets stay compact and reference evidence by path instead of embedding full CTest output.
 
 ## Non-Goals / Scope Guard
 
-No feature work, public release, root move batch, force push, validator weakening, or generated local proof output commit.
+No test deletion, assertion weakening, root movement, semantic lint repair, product/runtime feature work, release generation, public release, tag, or generated local output commit.
 
 ## Reviewer Instructions
 
-Check that repaired evidence is deterministic, that no policy was weakened, that generated local outputs are not staged, and that the remaining blockers are reported honestly.
+Check that the new labels are additive, the AuditX shard still runs, the impact fallback strengthens rather than weakens shard selection, and the semantic lint failures remain visible.

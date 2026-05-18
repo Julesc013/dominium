@@ -1,8 +1,8 @@
 # Latest Dominium Status
 
-Current task: `NAME-00`.
+Current task: `TEST-PERF-01`.
 
-Result: PARTIAL with naming law locked.
+Result: PARTIAL with naming law locked and CTest sharding/timing established.
 
 ## Current Green State
 
@@ -11,6 +11,8 @@ Result: PARTIAL with naming law locked.
 - Supplemental docs/build/UI/ABI checks: PASS.
 - Focused RepoX: PASS.
 - Smoke CTest: PASS.
+- Fast CTest label: PASS.
+- AuditX slow shard: PASS.
 - Native configure: PASS.
 - Native build-only `ALL_BUILD`: PASS.
 - Product boot matrix: PASS.
@@ -35,7 +37,7 @@ Result: PARTIAL with naming law locked.
 - full CTest is not green.
 - slice0_hardcoded_ids still fails on current hardcoded domain/source/tool/test identifiers.
 - slice1_hardcoded_constants still fails on current atmosphere/gravity/oxygen assumptions.
-- tools_auditx no longer blocks the 300 second fast lane after TEST-PERF-01; AuditX is now an explicit `auditx` shard with a 1200 second timeout.
+- tools_auditx no longer blocks the 300 second fast lane after TEST-PERF-01; AuditX is now an explicit `audit`/`auditx`/`slow`/`nightly` shard with a 1200 second timeout.
 - tracked large AIDE file-quality ledger policy remains unresolved.
 - prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended.
 - NAME-00 naming conflicts are warning-classified and not moved.
@@ -52,3 +54,10 @@ Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Co
 - naming docs under `docs/repo/`
 - naming validators under `tools/validators/repo/`
 - conflict/readiness evidence under `.aide/reports/NAME-00-*`
+
+## TEST-PERF-01 Additions
+
+- CTest inventory, timing, shard, AuditX wall-time, blocker, and readiness evidence under `.aide/reports/TEST-PERF-01-*`.
+- `docs/testing/CTEST_SHARDING_AND_TIMEOUTS.md`.
+- `docs/testing/SLOW_TEST_BASELINE.md`.
+- `docs/repo/audits/TEST_PERF_01_CTEST_SHARDING_AUDIT.md`.
