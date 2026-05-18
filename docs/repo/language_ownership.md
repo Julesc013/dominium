@@ -33,6 +33,15 @@ The current repository still contains Python in active `engine/`, `game/`, and `
 
 NAME-00 classifies that as transitional debt. It does not convert languages, move files, rewrite imports, create shims, or change runtime behavior.
 
+Current redo counts:
+
+- `engine/**/*.py`: 19 tracked files.
+- `game/**/*.py`: 299 tracked files.
+- `runtime/**/*.py`: 37 tracked files.
+- former bad-root Python placement remains warning-class and deferred to owner-specific MOVE-BULK gates.
+
+These warnings are not final architecture approval. They are a ledger for later conversion, relocation, or isolation work.
+
 ## Public Header Rule
 
 Public engine headers must remain C89 and C++98 parseable. This is already stated in `docs/engine/API_SPINE.md` and checked by the build boundary guardrails described in `docs/build/BOUNDARY_ENFORCEMENT.md`.

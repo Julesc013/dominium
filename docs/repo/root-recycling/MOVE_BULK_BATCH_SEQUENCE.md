@@ -113,3 +113,13 @@ This means:
 - target paths should use singular contract and service categories such as `contracts/schema`, `contracts/registry`, `contracts/package`, `contracts/profile`, `contracts/protocol`, `runtime/shell`, and `game/domain` only when the batch explicitly gates those future migrations;
 - identity-sensitive B/C/D/G items must preserve manifest and contract IDs even if future path storage changes;
 - planned internal renames remain future reviewed migrations, not hidden side effects of a bulk move.
+
+NAME-00 redo after MOVE-SCRIPT-00 confirms the current batch-gate inputs:
+
+- bad-root tracked files: 1,765.
+- route candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+- naming-law blockers: 0.
+
+The next batch task is `MOVE-BULK-BG-REFINEMENT-00`. It may produce smaller authorized subsets, but it still must not move files unless a later apply prompt explicitly authorizes the exact subset.

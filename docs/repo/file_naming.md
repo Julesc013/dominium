@@ -68,6 +68,8 @@ VERSION_*
 
 Existing uppercase audit, evidence, and planning docs are transitional debt and may stay until a doc-only normalization pass. Do not mix broad doc renames with root moves or semantic changes.
 
+The 2026-05-18 NAME-00 redo records 5,361 file-name findings, 4,307 warnings, and 0 blockers. Most warnings are existing uppercase docs, noncanonical historical/evidence names, or hyphenated filenames that predate the canon. They are not accepted as final style, and they are not renamed by NAME-00.
+
 ## Code Files
 
 Use module nouns:

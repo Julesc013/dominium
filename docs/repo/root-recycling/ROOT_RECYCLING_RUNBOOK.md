@@ -98,6 +98,8 @@ Naming canon effects:
 
 NAME-00 does not authorize moves, rewrites, shims, exception retirement, or feature work.
 
+NAME-00 redo note: the naming canon was refreshed after MOVE-SCRIPT-00 at `148a9adf95bb678da16784434221c568f7bb96cb`. The current no-apply evidence records 1,765 tracked files under former bad roots, 1,593 route candidates, 172 skipped/deferred files, 0 target collisions, and 0 naming-law blockers. Future root recycling must use this current posture without treating it as apply authorization.
+
 <!-- MOVE-SCRIPT-00 -->
 
 ## MOVE-SCRIPT-00 Router Rule

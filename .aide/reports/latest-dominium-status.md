@@ -1,8 +1,8 @@
 # Latest Dominium Status
 
-Current task: `MOVE-SCRIPT-00`.
+Current task: `NAME-00 redo after MOVE-SCRIPT-00`.
 
-Result: PARTIAL with naming law locked, CTest sharding/timing established, semantic lint blockers resolved, and deterministic bad-root dry-run routing evidence generated.
+Result: PARTIAL with naming law redone/refreshed, CTest sharding/timing established, semantic lint blockers resolved, and deterministic bad-root dry-run routing evidence generated.
 
 ## Current Green State
 
@@ -43,6 +43,7 @@ Result: PARTIAL with naming law locked, CTest sharding/timing established, seman
 - tracked large AIDE file-quality ledger policy remains unresolved.
 - prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended.
 - NAME-00 naming conflicts are warning-classified and not moved.
+- NAME-00 redo confirms 0 naming-law blockers and keeps all naming migrations future-only.
 
 DOE-00 readiness: no.
 
@@ -56,6 +57,7 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 - naming docs under `docs/repo/`
 - naming validators under `tools/validators/repo/`
 - conflict/readiness evidence under `.aide/reports/NAME-00-*`
+- redo snapshot at `148a9adf95bb678da16784434221c568f7bb96cb`, current bad-root inventory 1,765, route candidates 1,593, skipped/deferred 172, collisions 0.
 
 ## TEST-PERF-01 Additions
 

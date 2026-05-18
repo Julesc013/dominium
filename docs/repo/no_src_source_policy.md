@@ -54,6 +54,13 @@ They are not current naming authority.
 
 NAME-00 records this debt but does not move, delete, rename, rewrite, or retire it.
 
+Current redo findings:
+
+- `check_no_src_source_dirs.py` reports 106 findings, 13 warnings, and 0 blockers.
+- The 13 warnings are current non-archive `source` segments under active exception debt.
+- Archive/history findings are informational.
+- MOVE-SCRIPT-00 refuses forbidden target segments such as `source` unless a later reviewed refinement defines a valid ownership target.
+
 ## Source Repo Is Not Install Layout
 
 Distribution, package, media, runtime-store, save, instance, cache, staging, rollback, and portable install layouts are projections governed by `contracts/distribution/layout.contract.toml`.

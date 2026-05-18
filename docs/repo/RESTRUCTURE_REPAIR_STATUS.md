@@ -46,6 +46,16 @@ NAME-00 added `contracts/repo/naming.contract.toml`, human naming docs, warning-
 
 The naming canon does not authorize moves. Future MOVE-BULK B-G refinement must use the NAME-00 target grammar and keep planned internal renames as future work only.
 
+NAME-00 redo at `148a9adf95bb678da16784434221c568f7bb96cb` refreshed the current evidence after MOVE-SCRIPT-00:
+
+- naming-law blockers: 0.
+- current bad-root dry-run inventory: 1,765 tracked files.
+- route candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+
+The redo records current answers to the naming-law prompt but still applies no moves, renames, imports, references, shims, maps, or exception retirements.
+
 ## TEST-PERF-01 Update
 
 TEST-PERF-01 measured 495 `verify` CTest tests, 57 smoke tests, 57 fast-label tests, and 3 AuditX slow-shard tests.

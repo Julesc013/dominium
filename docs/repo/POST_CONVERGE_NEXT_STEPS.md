@@ -149,6 +149,17 @@ Naming validators live under `tools/validators/repo/` and are warning-oriented c
 
 Future MOVE-BULK B-G refinement must not route files to `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets. Planned internal renames such as `runtime/appshell/ -> runtime/shell/`, `game/domains/ -> game/domain/`, and `contracts/schemas/ -> contracts/schema/` remain future reviewed migrations only.
 
+NAME-00 redo after MOVE-SCRIPT-00 refreshes the current numbers without changing scope:
+
+- HEAD: `148a9adf95bb678da16784434221c568f7bb96cb`.
+- naming-law blockers: 0.
+- current bad-root tracked files: 1,765.
+- route candidates: 1,593.
+- skipped/deferred files: 172.
+- target collisions: 0.
+
+No files were moved or renamed by the redo. Feature work remains blocked. The current next cleanup task is `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
+
 ## TEST-PERF-01 CTest Sharding Update
 
 TEST-PERF-01 establishes the current CTest timing and shard policy after RESTRUCTURE-REPAIR-00 and NAME-00.

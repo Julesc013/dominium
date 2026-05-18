@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `MOVE-SCRIPT-00`.
+Current task: `NAME-00 redo after MOVE-SCRIPT-00`.
 
 ## Accepted Local/Generated Warnings
 
@@ -25,6 +25,7 @@ Current task: `MOVE-SCRIPT-00`.
 - AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under explicit `audit`/`auditx`/`slow`/`nightly` shards.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
 - NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
+- NAME-00 redo confirms zero blocker-class naming findings and updates the current conflict posture against `148a9adf95bb678da16784434221c568f7bb96cb`.
 - MOVE-SCRIPT-00 skipped/deferred 172 tracked bad-root files that require import, identity, authority, ABI/build, or naming-risk review before any apply task.
 - Initial MOVE-SCRIPT-00 implementation commit `a4425775f` failed latest-commit policy because the message omitted `## Changelog`; it was not amended and is followed by a scoped policy-disposition commit.
 
@@ -49,6 +50,7 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 - no-`src`/`source` findings: historical archive or active exception debt, not current authority.
 - directory/file naming findings: warning-only until a reviewed enforcement phase.
 - language ownership findings: warning-only existing placement debt; no conversion or relocation authorized.
+- current redo counts: 106 no-src/source findings, 1,450 forbidden path-term findings, 418 directory naming findings, 5,361 file naming findings, and 4 language ownership finding classes, all with 0 blockers.
 
 ## MOVE-SCRIPT-00 Warning Disposition
 

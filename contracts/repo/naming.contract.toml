@@ -95,6 +95,56 @@ tracked_file_count_at_name_00 = 1764
 status = "excepted_transitional_debt"
 rule = "Existing tracked files under active exceptions are not made blockers by NAME-00. New files must use the naming canon unless a later reviewed task extends an exception."
 
+[redo_snapshot_2026_05_18]
+head_sha = "148a9adf95bb678da16784434221c568f7bb96cb"
+origin_main_sha = "148a9adf95bb678da16784434221c568f7bb96cb"
+baseline = "BASELINE-00"
+prior_name_00_commit = "8d7c7dd8e"
+current_task = "NAME-00-redo"
+status = "PASS_WITH_WARNINGS"
+current_bad_root_tracked_files = 1765
+move_script_route_candidates = 1593
+move_script_skipped_deferred = 172
+move_script_target_collisions = 0
+moves_applied = false
+renames_applied = false
+imports_rewritten = false
+references_rewritten = false
+exceptions_retired = false
+feature_work_authorized = false
+doe_00_ready = false
+
+[authority_resolution]
+current_authority = [
+  "docs/canon/constitution_v1.md",
+  "docs/canon/glossary_v1.md",
+  "AGENTS.md",
+  "contracts/repo/layout.contract.toml",
+  "contracts/repo/root_allowlist.toml",
+  "contracts/repo/layout_exceptions.toml",
+  "contracts/repo/naming.contract.toml",
+  "docs/repo/REPO_LAYOUT_TARGET.md",
+  "docs/repo/OWNERSHIP_RULES.md",
+  "docs/repo/DOMAIN_SPLIT_RULES.md",
+  "docs/repo/DISTRIBUTION_LAYOUT_CANON.md"
+]
+old_src_or_source_proposals = "historical_or_superseded"
+layout_exceptions = "transitional_debt_only"
+generated_outputs = "evidence_only_unless_promoted_by_stronger_source"
+chat_memory = "non_authoritative_orientation_only"
+
+[primary_question_disposition]
+authoritative_rules = "Post-CONVERGE root/layout contracts plus this naming contract. Old src/source plans are superseded."
+old_src_docs = "Historical docs may mention src/source; they must not steer new active layout or MOVE-BULK targets."
+current_conflicts = "Tracked conflicts are reported in .aide/reports/NAME-00-path-conflicts.* and language findings."
+immediate_blockers = "No immediate NAME-00 blockers; all current findings are warnings or information."
+transitional_debt = "Existing excepted bad roots, archive history, packs/source content debt, planned rename paths, and existing language placement debt."
+future_move_bulk_targets = "Use target_internal_slots and planned_internal_renames only when a future reviewed task explicitly gates those names."
+enforce_now = "Existing strict layout/root/distribution/component validators remain blocking; NAME-00 validators are warning-oriented classifiers for current debt."
+warning_only_initial = "Path terms, directory case, file case, language placement, and planned internal renames remain warning-only until cleanup or reviewed enforcement."
+planned_future_migrations = "runtime/shell, game/domain, content/domains, contracts/schema, contracts/registry, contracts/package, contracts/profile, contracts/protocol, contracts/projection."
+next_prompt_effect = "MOVE-BULK-BG-REFINEMENT-00 must consume this contract and MOVE-SCRIPT-00 dry-run evidence before authorizing any apply subset."
+
 [naming_rules]
 directory_names_encode = "ownership"
 file_names_encode = "artifact_role"
@@ -168,6 +218,7 @@ rule = "NAME-00 does not authorize applying these renames, creating aliases, rew
 
 [move_bulk_effect]
 next_refinement_task = "MOVE-BULK-BG-REFINEMENT-00"
+router_evidence = "tools/migration/route_bad_roots.py and .aide/reports/MOVE-SCRIPT-00-*"
 rule = "Future B-G refinement must route to the target internal slots in this contract when doing so does not conflict with stronger identity, ABI, runtime, release, or policy evidence."
 no_apply_authorized = true
 batch_a = "Refine skipped references first; preserve historical and audit references."

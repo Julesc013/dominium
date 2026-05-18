@@ -2,120 +2,111 @@
 
 ## PHASE
 
-UNSPECIFIED - MOVE-SCRIPT-00 Generate Deterministic Bad-Root Router and Dry-Run Move Plan
+NAME-00 redo - Directory, File, Language, and Ownership Naming Canon
 
 ## GOAL
 
-MOVE-SCRIPT-00 Generate Deterministic Bad-Root Router and Dry-Run Move Plan
+Refresh the NAME-00 naming canon evidence against current `main` after TEST-PERF-01, semantic lint repair, and MOVE-SCRIPT-00. Keep the task no-apply: no file moves, deletes, renames, import rewrites, reference rewrites, shims, move maps, salvage maps, generated outputs, release work, or exception retirement.
 
 ## WHY
 
-Continue AIDE token survival by using repo-local context refs, compact objectives, deterministic validation, and evidence packets instead of long chat history.
+The repository has a naming canon, but the redo prompt requires current conflict counts, explicit answers to the naming-law questions, and a clear bridge from NAME-00 to MOVE-SCRIPT-00 and `MOVE-BULK-BG-REFINEMENT-00`.
 
 ## CONTEXT_REFS
 
-- `.aide/memory/project-state.md`
-- `.aide/memory/decisions.md`
-- `.aide/memory/open-risks.md`
-- `.aide/context/repo-snapshot.json` (present)
-- `.aide/context/repo-map.json` (present)
-- `.aide/context/repo-map.md` (present)
-- `.aide/context/test-map.json` (present)
-- `.aide/context/context-index.json` (present)
-- `.aide/context/latest-context-packet.md` (present)
-- `.aide/repo/latest-repo-intelligence.md` (present)
-- `.aide/repo/file-inventory.json` (present)
-- `.aide/reports/file-quality-summary.md` (present)
-- `.aide/reports/file-quality-ledger.json` (present)
-- `.aide/refactors/latest-refactor-readiness.md` (present)
-- `.aide/refactors/latest-refactor-plan.example.json` (present)
-- `.aide/routing/latest-route-decision.json` (present)
-- `.aide/routing/latest-route-decision.md` (present)
-- `.aide/cache/latest-cache-keys.json` (present)
-- `.aide/cache/latest-cache-keys.md` (present)
-- `.aide/prompts/compact-task.md`
-- `.aide/policies/token-budget.yaml`
-- `.aide/policies/cache.yaml`
-- `.aide/policies/local-state.yaml`
+- `AGENTS.md`
+- `contracts/repo/layout.contract.toml`
+- `contracts/repo/root_allowlist.toml`
+- `contracts/repo/layout_exceptions.toml`
+- `contracts/repo/naming.contract.toml`
+- `docs/repo/directory_naming.md`
+- `docs/repo/file_naming.md`
+- `docs/repo/no_src_source_policy.md`
+- `docs/repo/module_layout.md`
+- `docs/repo/language_ownership.md`
+- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
+- `.aide/reports/NAME-00-status.md`
+- `.aide/reports/NAME-00-validation.md`
+- `.aide/reports/NAME-00-blockers.md`
+- `.aide/reports/NAME-00-path-conflicts.json`
+- `.aide/reports/NAME-00-language-ownership-findings.json`
+- `.aide/reports/MOVE-SCRIPT-00-routing-preview.json`
+- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.json`
+- `.aide/reports/MOVE-SCRIPT-00-batch-plan.json`
 
 ## ALLOWED_PATHS
 
-- `<fill from the next reviewed queue packet>`
+- `contracts/repo/naming.contract.toml`
+- `docs/repo/**`
+- `tools/validators/repo/**`
+- `.aide/reports/**`
 - `.aide/context/**`
-- `.aide/queue/unspecified-*` if this task becomes a queue item
-- root docs only when behavior or documentation links change
+- `.aide/ledgers/**`
 
 ## FORBIDDEN_PATHS
 
-- `.git/**`
-- `.env`
-- `secrets/**`
+- `.dominium.local/**`
 - `.aide.local/**`
-- raw provider credentials, API keys, local caches, raw prompt logs
-- Gateway, provider, Runtime, Service, Commander, Mobile, MCP/A2A, host, or app-surface implementation paths unless the queue packet explicitly authorizes them
+- generated build/projection/release outputs
+- product/runtime/engine/game behavior files
+- content/package/profile/bundle identity files unless explicitly required by naming evidence
 
 ## IMPLEMENTATION
 
-- Read the queue packet and relevant repo refs first.
-- Keep changes inside the allowed paths.
-- Make the smallest coherent diff that satisfies acceptance.
+- Read the current naming contract and root/layout authority first.
+- Keep changes inside allowed naming/status/evidence paths.
 - Preserve generated/manual boundaries.
-- Do not inline whole source files unless exact contents are required.
-- Use exact refs such as `path#Lstart-Lend` when file details are load-bearing.
+- Record current counts from validators and MOVE-SCRIPT-00 evidence.
+- Do not inline full raw validator output when summary counts and report paths are enough.
 
 ## VALIDATION
 
 - `py -3 .aide/scripts/aide_lite.py doctor`
 - `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py index`
-- `py -3 .aide/scripts/aide_lite.py context`
-- `py -3 .aide/scripts/aide_lite.py repo inventory`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- `py -3 .aide/scripts/aide_lite.py verify`
-- `py -3 .aide/scripts/aide_lite.py review-pack`
-- `py -3 .aide/scripts/aide_lite.py route explain`
 - `py -3 .aide/scripts/aide_lite.py test`
 - `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 scripts/aide validate`
+- `py -3 .aide/scripts/aide_lite.py tools validate`
+- `py -3 .aide/scripts/aide_lite.py roots validate`
+- `py -3 .aide/scripts/aide_lite.py repo validate`
+- strict repo/root/distribution/component validators
+- NAME-00 validators
+- Python compile for NAME-00 validators
+- JSON parse for touched JSON
+- docs/build/UI/ABI supplemental checks
 - `git diff --check`
-
-## COMMITS
-
-- Commit coherent subdeliverables with verbose bodies.
-- Stop at review gates.
 
 ## EVIDENCE
 
 - changed files
 - validation commands and results
-- verifier result
-- review packet path and result when review-pack is available
-- advisory route decision path and result when Q17 routing is available
-- compact packet size and budget status
-- unresolved risks and deferrals
-
-## NON_GOALS
-
-- No Gateway, provider calls, live model routing, local model setup, exact tokenizer, provider billing ledger, Runtime, Service, Commander, Mobile, MCP/A2A, UI, host/app implementation, or autonomous loop unless this packet is superseded by a reviewed queue item that explicitly authorizes it.
+- current NAME-00 conflict counts
+- current MOVE-SCRIPT-00 dry-run counts
+- unresolved warnings and deferrals
 
 ## ACCEPTANCE
 
-- Task-specific acceptance criteria are met.
-- Validation is run and recorded.
-- Evidence is written.
-- No secrets, raw prompt logs, local caches, or `.aide.local` contents are committed.
+- Naming contract and human docs remain active.
+- Current conflict counts are recorded.
+- No naming migration is applied.
+- Future MOVE-BULK B-G refinement is bound to the naming contract and dry-run router evidence.
+- Validation is run and reported honestly.
+
+## NON_GOALS
+
+- No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, feature work, generated output commit, package/release generation, tag, or GitHub release.
+
+## NEXT
+
+`MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `CHANGED_FILES`, `VALIDATION`, route/verifier/token results, `RISKS`, and `NEXT`.
-Include the verifier result when Q12 verifier behavior is available.
+Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `VALIDATION`, `RISKS`, and `NEXT`.
 
 ## TOKEN_ESTIMATE
 
-- method: chars / 4, rounded up
-- chars: 4212
-- approx_tokens: 1053
+- method: approximate manual estimate
+- approx_tokens: 900
 - budget_status: PASS
 - warnings:
   - none
-- formal ledger: `.aide/reports/token-ledger.jsonl`

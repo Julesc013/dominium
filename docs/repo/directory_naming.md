@@ -147,3 +147,15 @@ xcode/
 Existing bad roots under active exceptions remain visible debt. Their presence is not new authority and does not authorize adding new files there.
 
 Future MOVE-BULK refinement must route safe files to ownership-based targets from the naming contract, while deferring identity-sensitive, ABI-sensitive, runtime-sensitive, or policy-sensitive material until proof exists.
+
+## Current Redo Posture
+
+The 2026-05-18 NAME-00 redo refreshes the directory posture after MOVE-SCRIPT-00:
+
+- 23 former bad roots remain under active exceptions.
+- 1,765 tracked files remain under those roots in the current dry-run inventory.
+- 1,593 files have deterministic route candidates.
+- 172 files remain skipped/deferred for import, identity, authority, ABI/build, or naming-risk review.
+- NAME-00 directory/path validators report zero blocker-class findings.
+
+These counts do not make the old roots allowed. They only define the current cleanup queue.

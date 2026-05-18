@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review MOVE-SCRIPT-00 deterministic bad-root router, routing rules, dry-run evidence, skip/defer ledger, and no-apply compliance.
+Review the NAME-00 redo evidence refresh: naming contract snapshot, audit detail, current conflict counts, status/readiness updates, and no-apply compliance.
 
 ## Decision Requested
 
@@ -22,42 +22,38 @@ Review MOVE-SCRIPT-00 deterministic bad-root router, routing rules, dry-run evid
 
 ## Evidence Packet References
 
-- `.aide/reports/MOVE-SCRIPT-00-status.md`
-- `.aide/reports/MOVE-SCRIPT-00-validation.md`
-- `.aide/reports/MOVE-SCRIPT-00-blockers.md`
-- `.aide/reports/MOVE-SCRIPT-00-routing-preview.json`
-- `.aide/reports/MOVE-SCRIPT-00-routing-preview.md`
-- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.json`
-- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.md`
-- `.aide/reports/MOVE-SCRIPT-00-root-summary.json`
-- `.aide/reports/MOVE-SCRIPT-00-root-summary.md`
-- `.aide/reports/MOVE-SCRIPT-00-batch-plan.json`
-- `.aide/reports/MOVE-SCRIPT-00-batch-plan.md`
-- `tools/migration/route_bad_roots.py`
-- `tools/migration/bad_root_routing_rules.json`
-- `tools/migration/bad_root_routing_readme.md`
-- `docs/repo/audits/MOVE_SCRIPT_00_BAD_ROOT_ROUTER.md`
+- `contracts/repo/naming.contract.toml`
+- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
+- `.aide/reports/NAME-00-status.md`
+- `.aide/reports/NAME-00-validation.md`
+- `.aide/reports/NAME-00-blockers.md`
+- `.aide/reports/NAME-00-next-readiness.json`
+- `.aide/reports/NAME-00-next-readiness.md`
+- `.aide/reports/NAME-00-path-conflicts.json`
+- `.aide/reports/NAME-00-language-ownership-findings.json`
+- `.aide/reports/latest-dominium-status.md`
+- `.aide/reports/latest-warning-disposition.md`
 
 ## Changed Files Summary
 
-MOVE-SCRIPT-00 adds a dry-run-only router that scans tracked bad-root files with `git ls-files`, emits deterministic route/skipped/root/batch evidence, and applies no moves.
+The redo updates naming-law evidence and AIDE/status surfaces only. It does not move, delete, rename, rewrite, shim, apply maps, retire exceptions, or change product/runtime/content behavior.
 
 ## Validation Summary
 
-Expected validation: Python compile/help for the router, router dry-run with collision checks, JSON parse for rules/evidence, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, docs/build/UI/ABI supplemental checks, focused RepoX, smoke CTest, and git diff checks.
+Expected validation: AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, NAME-00 validators, Python compile for NAME-00 validators, JSON parse for touched JSON, docs/build/UI/ABI checks, and git diff checks.
 
 ## Risk Summary
 
-The route candidate set is intentionally conservative. Skipped files remain deferred where import rewrites, shims, identity proof, authority review, ABI/build proof, or naming-risk review is required.
+Current naming conflicts remain warning-class transitional debt. The redo confirms naming law but does not make the repository visually tidy and does not authorize MOVE-BULK apply work.
 
 ## Token Summary
 
-The task and review packets stay compact and reference evidence by path instead of embedding full CTest output.
+The task and review packets stay compact and reference evidence by path instead of embedding full validator output.
 
 ## Non-Goals / Scope Guard
 
-No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, product/runtime feature work, release generation, public release, tag, or generated local output commit.
+No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, feature work, generated local output commit, package/release generation, tag, or GitHub release.
 
 ## Reviewer Instructions
 
-Check that the router is dry-run-only by default, every planned target is deterministic, collisions are refused, skipped/deferred reasons are explicit, and no filesystem move or exception retirement occurred.
+Confirm that the current counts align with NAME-00 validators and MOVE-SCRIPT-00 dry-run evidence, and that planned internal renames remain future-only.

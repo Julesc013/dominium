@@ -135,3 +135,5 @@ Future B-G refinement should use these slots as target grammar:
 - lib/libs: `engine`, `runtime`, `external`, `contracts/abi`, or `tools/build` only after ABI/build proof.
 
 If a file has unclear identity, ABI, runtime, policy, or release meaning, it stays deferred.
+
+The current MOVE-SCRIPT-00 dry run gives the next refinement gate its starting set: 1,593 route candidates, 172 skipped/deferred files, and 0 target collisions across 1,765 tracked files under the 23 former bad roots. Those candidates are not approved moves until a later gate and apply prompt authorize exact subsets.

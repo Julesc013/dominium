@@ -80,6 +80,17 @@ POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS reproduced 1,104 hardcoded identifier/con
 
 NAME-00 locks naming law and produces warning-only conflict evidence. It does not make current excepted bad roots clean, and it does not authorize `runtime/appshell -> runtime/shell`, `game/domains -> game/domain`, or contract-category singularization. Those are planned future migrations requiring reviewed scope.
 
+NAME-00 redo at `148a9adf95bb678da16784434221c568f7bb96cb` refreshes the evidence after MOVE-SCRIPT-00:
+
+- NAME-00 blockers: 0.
+- no `src`/`source`/`sources` directory findings: 106 total, 13 warnings, 0 blockers.
+- forbidden path-term findings: 1,450 total, 78 warnings, 0 blockers.
+- directory naming findings: 418 total, 39 warnings, 0 blockers.
+- file naming findings: 5,361 total, 4,307 warnings, 0 blockers.
+- language ownership finding classes: 4 warnings, 0 blockers.
+
+The redo did not move, delete, rename, rewrite, shim, retire exceptions, or alter behavior. Feature work and DOE-00 remain blocked.
+
 ## MOVE-SCRIPT-00 Routing Proof Note
 
 MOVE-SCRIPT-00 added a deterministic dry-run router and rule file for the 23 former bad roots. It scans tracked files through `git ls-files`, produces sorted route and skipped ledgers, detects target collisions, and emits batch plans for the deferred MOVE-BULK B-G cleanup. The task did not move, delete, rename, rewrite, shim, or retire exceptions.
