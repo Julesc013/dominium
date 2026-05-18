@@ -7,7 +7,7 @@ import os
 import shutil
 from typing import Mapping
 
-from tools.validators.validation import (
+from tools.validators.suite import (
     VALIDATION_REPORT_DOC_TEMPLATE,
     VALIDATION_REPORT_JSON_TEMPLATE,
     build_validation_report,

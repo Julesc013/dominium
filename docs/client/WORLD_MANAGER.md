@@ -23,7 +23,7 @@ World records include:
 - `schema_versions`
 - `last_build_identity`
 
-The in-memory model is deterministic and digestible in `apps/client/core/client_models_world.c`.
+The in-memory model is deterministic and digestible in `apps/apps/client/session/client_models_world.c`.
 
 ## Canonical Commands
 

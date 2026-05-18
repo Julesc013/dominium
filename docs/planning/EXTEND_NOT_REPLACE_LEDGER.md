@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`
+Binding Sources: `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`
 
 # Extend-Not-Replace Ledger
 
@@ -33,7 +33,7 @@ It operationalizes P-2 for later prompt generation.
 
 | Surface | Path Family | Status | Why Extension Is Preferred | Later Series |
 | --- | --- | --- | --- | --- |
-| engine and game spine | `engine`, `game`, `game/content/core` | `preserve` | this is the strongest live runtime foundation and already embodies the lawful engine/game split | `Λ`, `Φ`, `Υ`, `Ζ` |
+| engine and game spine | `engine`, `game`, `content/domains/game/core` | `preserve` | this is the strongest live runtime foundation and already embodies the lawful engine/game split | `Λ`, `Φ`, `Υ`, `Ζ` |
 | runtime substrate cluster | `app`, `compat`, `control`, `core`, `libs/appcore`, `libs/contracts`, `net`, `process`, `server/net`, `server/persistence`, `server/runtime` | `extend` | the repo already contains distributed runtime, compat, persistence, and orchestration substrate here; later Φ should extract and freeze boundaries from it | `Φ`, `Υ`, `Ζ` |
 | thin runtime root caution | `runtime` | `do-not-replace` | this path is not the clear canonical orchestrator home; later prompts must not pivot the entire runtime plan around it | `Φ` |
 
@@ -41,7 +41,7 @@ It operationalizes P-2 for later prompt generation.
 
 | Surface | Path Family | Status | Why Extension Is Preferred | Later Series |
 | --- | --- | --- | --- | --- |
-| core reality and world roots | `worldgen`, `geo`, `reality`, `materials`, `logic`, `signals`, `system`, `universe`, `game/content/core` | `extend` | Λ is formalization over live semantic embodiment, not discovery from zero | `Λ`, `Φ`, `Ζ` |
+| core reality and world roots | `worldgen`, `geo`, `reality`, `materials`, `logic`, `signals`, `system`, `universe`, `content/domains/game/core` | `extend` | Λ is formalization over live semantic embodiment, not discovery from zero | `Λ`, `Φ`, `Ζ` |
 | specialist domain roots | `epistemics`, `diegetics`, `infrastructure`, `machines`, `embodiment`, `physics`, `chem`, `astro`, `electric`, `pollution`, `packs/domain`, `packs/experience`, `packs/law` | `extend` | these already represent candidate first-class semantic families and should be formalized rather than reinvented | `Λ`, `Σ`, `Φ`, `Υ` |
 | pack and registry backbone | `schema`, `packs`, `data/architecture`, `data/registries`, `contracts/repo/release_policy.toml` | `preserve` | pack-driven integration, compatibility, and policy meaning already live here and should stay the primary authority backbone | `Λ`, `Φ`, `Υ`, `Ζ` |
 

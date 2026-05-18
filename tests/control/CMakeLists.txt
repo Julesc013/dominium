@@ -100,7 +100,7 @@ add_test(NAME control_audit_disclosure COMMAND control_audit_disclosure_tests)
 
 add_executable(control_removed_hooks_tests
     portability/control_removed_hooks_tests.cpp
-    ${CMAKE_SOURCE_DIR}/engine/modules/core/dom_control.c
+    ${CMAKE_SOURCE_DIR}/engine/kernel/dom_control.c
 )
 target_include_directories(control_removed_hooks_tests PRIVATE
     ${CMAKE_SOURCE_DIR}

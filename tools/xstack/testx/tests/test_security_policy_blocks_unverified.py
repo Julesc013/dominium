@@ -13,9 +13,9 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.logic.eval import process_logic_network_evaluate
-    from game.domains.logic.signal import process_signal_emit_pulse, process_signal_set
-    from game.domains.systems import (
+    from game.domain.logic.eval import process_logic_network_evaluate
+    from game.domain.logic.signal import process_signal_emit_pulse, process_signal_set
+    from game.domain.systems import (
         build_state_vector_definition_row,
         deserialize_state,
         normalize_state_vector_definition_rows,

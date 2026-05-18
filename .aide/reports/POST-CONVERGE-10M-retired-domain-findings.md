@@ -14,14 +14,14 @@ POST-CONVERGE-10M checked 30 retired-domain path policy failures from the focuse
 | RepoX stale rule paths for embodiment, geology, worldgen refinement, universe, and diagnostics | 28 | `stale_current_reference` | Fixed in `scripts/ci/check_repox_rules.py`. |
 | RepoX group cache did not hash direct file dependencies | 0 | `retired_domain_rule_false_positive` | Fixed so normal CTest does not reuse stale rule-output cache after rule edits. |
 
-The canonical replacements were exact current files under `game/domains/embodiment`, `game/domains/geology`, `game/domains/worldgen/refinement`, `game/domains/universe`, and `runtime/diagnostics`.
+The canonical replacements were exact current files under `game/domain/embodiment`, `game/domain/geology`, `game/domain/worldgen/refinement`, `game/domain/universe`, and `runtime/diagnostics`.
 
 ## Blocked
 
 | Rule | Path | Classification | Reason |
 | --- | --- | --- | --- |
-| `INV-REFINEMENT-BUDGETED` | `game/domains/embodiment/__init__.py` | `real_current_policy_violation` | The MW-4 stress fixture reaches a stale `embodiment.*` lazy import. Fixing it would change product/runtime source behavior. |
-| `INV-NO-BLOCKING-WORLDGEN-IN-UI` | `game/domains/embodiment/__init__.py` | `real_current_policy_violation` | The MW-4 viewer stress fixture reaches the same stale lazy import. |
+| `INV-REFINEMENT-BUDGETED` | `game/domain/embodiment/__init__.py` | `real_current_policy_violation` | The MW-4 stress fixture reaches a stale `embodiment.*` lazy import. Fixing it would change product/runtime source behavior. |
+| `INV-NO-BLOCKING-WORLDGEN-IN-UI` | `game/domain/embodiment/__init__.py` | `real_current_policy_violation` | The MW-4 viewer stress fixture reaches the same stale lazy import. |
 
 ## Not Touched
 

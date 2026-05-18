@@ -1,0 +1,23 @@
+SCHEMA: pollution/health_risk_event.schema
+schema_id: dominium.schema.pollution.health_risk_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record deterministic exposure threshold crossings for hazard.health_risk_stub linkage.
+- Provide canonical event stream for explainability and replay proofs.
+
+NON-SEMANTICS:
+- No disease progression or mortality semantics.
+- No stochastic health outcomes.
+
+REQUIRED SHAPE:
+record health_risk_event
+  required:
+    - event_id: id
+    - subject_id: id
+    - pollutant_id: id
+    - threshold_crossed: enum(warning|critical)
+    - tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

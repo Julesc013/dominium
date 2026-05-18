@@ -70,7 +70,7 @@ Reusable artifacts live in a single content-addressable store rooted at:
 Instances use one of two storage topologies:
 
 - `linked`: the instance manifest stores hash references plus a `store_root` locator. Reusable artifacts are resolved from the shared store and are not duplicated into the instance.
-- `portable`: the instance manifest stores the same hashes plus `embedded_artifacts`. Required reusable artifacts are vendored under `embedded_artifacts/` so the instance is self-contained offline.
+- `portable`: the instance manifest stores the same hashes plus `embedded_artifacts`. Required reusable artifacts are vendored under `embedded_archive/generated/artifacts/` so the instance is self-contained offline.
 
 This topology flag is a storage declaration only. It is not a gameplay/runtime mode and does not bypass `docs/canon/constitution_v1.md` section A4.
 

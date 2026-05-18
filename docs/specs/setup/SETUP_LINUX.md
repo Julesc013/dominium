@@ -14,7 +14,7 @@ resolve/plan/apply, keeping logic shared with other platforms.
 Linux TUI/CLI flows must mirror MSI semantics and the canonical UX contract.
 
 ## Prerequisites
-- Built payload staged under `DOMINIUM_DIST_DIR` (default `<build>/dist/`):
+- Built payload staged under `DOMINIUM_DIST_DIR` (default `<build>/archive/generated/dist/`):
   - `dominium-setup`
   - Game/launcher binaries and data
 - For distro packages: `dpkg-deb` (Debian/Ubuntu) and/or `rpmbuild` (Fedora/openSUSE).
@@ -38,7 +38,7 @@ Key cache variables:
 - `DOMINIUM_BUILD_DEB` / `DOMINIUM_BUILD_RPM` / `DOMINIUM_BUILD_RUN` — enable respective targets (default ON when on Linux).
 - `DOMINIUM_GAME_VERSION` — package version string.
 - `DOMINIUM_DIST_DIR` — staging root with binaries/data.
-- `DOMINIUM_INSTALLER_DIR` — output root (defaults to `<build>/dist/installers/linux`).
+- `DOMINIUM_INSTALLER_DIR` — output root (defaults to `<build>/archive/generated/dist/installers/linux`).
 - `DOMINIUM_DEB_DEPENDS`, `DOMINIUM_DEB_MAINTAINER` — control fields for .deb.
 - `DOMINIUM_RPM_REQUIRES`, `DOMINIUM_RPM_RELEASE` — spec fields for .rpm.
 
@@ -50,7 +50,7 @@ cmake --build build/linux --target dominium_rpm   # .rpm via rpmbuild
 cmake --build build/linux --target dominium_run   # portable .run
 ```
 
-Outputs (by default in `dist/installers/linux/`):
+Outputs (by default in `archive/generated/dist/installers/linux/`):
 - `dominium_<version>_amd64.deb`
 - `dominium-<version>-<release>.x86_64.rpm`
 - `Dominium-<version>.run`

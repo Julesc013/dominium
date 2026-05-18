@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interaction Action Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic interaction action metadata registry output.",
+  "x-doc-ref": [
+    "docs/interaction/INTERACTION_MODEL.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "actions",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "action_id",
+          "process_id",
+          "display_name",
+          "target_kinds",
+          "parameter_schema_id",
+          "preview_mode",
+          "default_ui_hints",
+          "required_lens_channels",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "type": "string"
+          },
+          "process_id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "target_kinds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "parameter_schema_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "preview_mode": {
+            "type": "string",
+            "enum": [
+              "none",
+              "cheap",
+              "expensive"
+            ]
+          },
+          "default_ui_hints": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "required_lens_channels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "actions": [],
+      "registry_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84"
+    }
+  ]
+}

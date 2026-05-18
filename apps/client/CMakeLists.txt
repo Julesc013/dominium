@@ -1,27 +1,27 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_client
-    app/main_client.c
+    main_client.c
     adapters/client_fs_adapter.c
     adapters/client_network_adapter.c
-    core/client_command_bridge.c
-    core/client_commands_registry.c
-    core/client_models_options.c
-    core/client_models_server.c
-    core/client_models_world.c
-    core/client_state_machine.c
-    core/session_artifacts.c
-    core/session_pipeline.c
-    core/session_refusal_codes.c
-    core/session_stage_registry.c
-    input/client_input_bindings.c
+    command/client_command_bridge.c
+    command/client_commands_registry.c
+    model/client_models_options.c
+    model/client_models_server.c
+    model/client_models_world.c
+    session/client_state_machine.c
+    session/session_artifacts.c
+    session/session_pipeline.c
+    session/session_refusal_codes.c
+    session/session_stage_registry.c
+    ${CMAKE_SOURCE_DIR}/runtime/input/client/client_input_bindings.c
     modes/client_mode_cli.c
     modes/client_mode_gui.c
     modes/client_mode_tui.c
     observability/readonly_view_model.c
     observability/perceived_model_v1.c
-    shell/client_shell.c
-    ui/client_ui_compositor.c
+    ${CMAKE_SOURCE_DIR}/runtime/shell/client/client_shell.c
+    ${CMAKE_SOURCE_DIR}/runtime/ui/client/client_ui_compositor.c
     presentation/frame_graph_builder.cpp
     presentation/render_prep_system.cpp
     presentation/render_model_adapter_v1.c
@@ -35,14 +35,16 @@ target_link_libraries(dominium_client PRIVATE
 )
 target_include_directories(dominium_client PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/adapters
-    ${CMAKE_CURRENT_SOURCE_DIR}/core
+    ${CMAKE_CURRENT_SOURCE_DIR}/command
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/input
+    ${CMAKE_SOURCE_DIR}/runtime/input/client
+    ${CMAKE_SOURCE_DIR}/runtime/shell/client
+    ${CMAKE_SOURCE_DIR}/runtime/ui/client
     ${CMAKE_CURRENT_SOURCE_DIR}/modes
+    ${CMAKE_CURRENT_SOURCE_DIR}/model
     ${CMAKE_CURRENT_SOURCE_DIR}/observability
     ${CMAKE_CURRENT_SOURCE_DIR}/presentation
-    ${CMAKE_CURRENT_SOURCE_DIR}/shell
-    ${CMAKE_CURRENT_SOURCE_DIR}/ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/session
 )
 set_source_files_properties(
     presentation/frame_graph_builder.cpp
@@ -80,7 +82,7 @@ endforeach()
 
 if(WIN32)
     add_executable(client_app_win32 WIN32
-        gui/client_app_win32.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/platform/win32/client/client_app_win32.cpp
     )
     target_link_libraries(client_app_win32 PRIVATE
         libs::appcore

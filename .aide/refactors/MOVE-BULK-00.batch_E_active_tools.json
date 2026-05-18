@@ -13,7 +13,7 @@
   },
   "roots": ["validation", "meta", "governance", "performance"],
   "included_moves": [
-    {"salvage_id": "E-00C-A", "source_path": "validation/** meta/identity/** meta/stability/**", "target_path": "tools/validators/validation/ tools/validators/identity/ tools/validators/stability/", "action": "move_with_temporary_shim", "file_count": 7},
+    {"salvage_id": "E-00C-A", "source_path": "validation/** meta/identity/** meta/stability/**", "target_path": "tools/validators/suite/ tools/validators/identity/ tools/validators/stability/", "action": "move_with_temporary_shim", "file_count": 7},
     {"salvage_id": "E-META-GOV-PERF", "source_path": "meta/** governance/** performance/** excluding meta/identity and meta/stability", "target_path": "tools/repo/ tools/governance/ tools/performance/ contracts/ docs/ archive/", "action": "preserve_defer", "file_count": 26}
   ],
   "deferred_items": ["governance, broader meta semantics, and performance surfaces need separate namespace gates"],

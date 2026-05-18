@@ -5,7 +5,7 @@ Last Reviewed: 2026-05-16
 
 ## Remaining Focused RepoX Blockers
 
-- `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR`: 7 missing `dist/bin` product descriptor surfaces.
+- `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR`: 7 missing `archive/generated/dist/bin` product descriptor surfaces.
 - `INV-NO-ADHOC-MAIN`: 5 missing AppShell-owned wrapper delegation surfaces.
 - Retired-domain path policy checks remain under `embodiment/`, `geo/`, `diag/`, and `universe`.
 - `INV-TOOL-VERSION-MISMATCH` remains for CompatX and SecureX tool hashes.
@@ -15,6 +15,6 @@ Last Reviewed: 2026-05-16
 
 ## Product/Distribution Blockers
 
-The missing `dist/bin` surfaces are real proof/projection blockers. They require POST-CONVERGE-11 for native product boot proof and POST-CONVERGE-12 or a targeted dist wrapper remediation for portable projection wrapper proof.
+The missing `archive/generated/dist/bin` surfaces are real proof/projection blockers. They require POST-CONVERGE-11 for native product boot proof and POST-CONVERGE-12 or a targeted dist wrapper remediation for portable projection wrapper proof.
 
 No missing proof was converted into a warning.

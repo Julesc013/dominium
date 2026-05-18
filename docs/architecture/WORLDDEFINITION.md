@@ -327,10 +327,10 @@ Required tools (headless, deterministic, no simulation mutation):
 - `schema/world_definition.schema`
 
 
-- `docs/worldgen/TEMPLATE_REGISTRY.md`
+- `docs/domains/worldgen/TEMPLATE_REGISTRY.md`
 
 
-- `docs/worldgen/BUILTIN_TEMPLATES.md`
+- `docs/domains/worldgen/BUILTIN_TEMPLATES.md`
 
 
 - `docs/roadmap/WORLD_CREATION_FLOW.md`

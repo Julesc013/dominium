@@ -155,9 +155,9 @@ def _integration_checks(repo_root: str) -> list[dict]:
     for rel_path, token, rule_id, code, message in (
         ("tools/setup/setup_cli.py", "handle_trust(", RULE_POLICY, "setup_trust_cli_missing", "setup CLI must expose trust commands"),
         ("tools/setup/setup_cli.py", "trust_policy_id", RULE_POLICY, "setup_trust_policy_missing", "setup verification and update flows must accept trust_policy_id"),
-        ("release/update_resolver.py", "verify_artifact_trust(", RULE_STRICT, "update_resolver_trust_missing", "update resolver must verify release index trust"),
-        ("runtime/appshell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
-        ("tools/dist/dist_verify_common.py", "verify_release_manifest(", RULE_HASHES, "dist_verify_trust_missing", "dist verification must route through release manifest verification"),
+        ("tools/release/update_resolver.py", "verify_artifact_trust(", RULE_STRICT, "update_resolver_trust_missing", "update resolver must verify release index trust"),
+        ("runtime/shell/pack_verifier_adapter.py", "verify_artifact_trust(", RULE_HASHES, "pack_pipeline_trust_missing", "pack verification pipeline must route through trust verification"),
+        ("tools/release/dist/dist_verify_common.py", "verify_release_manifest(", RULE_HASHES, "dist_verify_trust_missing", "dist verification must route through release manifest verification"),
     ):
         if token in _file_text(repo_root, rel_path):
             continue
@@ -331,7 +331,7 @@ def render_trust_model_baseline(report: Mapping[str, object]) -> str:
         "## Integration Points",
         "",
         "- `setup verify` and pack verification route through `tools/validators/security/trust/trust_verifier.py`.",
-        "- `setup update` passes the resolved trust policy into `release/update_resolver.py`.",
+        "- `setup update` passes the resolved trust policy into `tools/release/update_resolver.py`.",
         "- `tool_verify_release_manifest` and DIST-2 verification use trust-aware manifest verification.",
         "- Server policy binding is declared in `contracts/registry/server_config_registry.json`.",
         "",

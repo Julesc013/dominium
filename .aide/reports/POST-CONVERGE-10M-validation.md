@@ -17,7 +17,7 @@ Last Reviewed: 2026-05-16
 | Command | Result | Notes |
 | --- | --- | --- |
 | `python -m py_compile scripts/ci/check_repox_rules.py` | PASS | RepoX check script compiles. |
-| MW-4 import traceback probe | FAIL_EXPECTED | `game.domains.embodiment.__getattr__` imports retired `embodiment.*` modules; source fix out of scope. |
+| MW-4 import traceback probe | FAIL_EXPECTED | `game.domain.embodiment.__getattr__` imports retired `embodiment.*` modules; source fix out of scope. |
 
 ## AIDE
 

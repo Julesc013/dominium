@@ -86,8 +86,8 @@ class _SrcAliasFinder(importlib.abc.MetaPathFinder):
             return ""
         if self._repo_has_concrete_module(token):
             return ""
-        if token == "engine.platform" or token.startswith("engine.platform."):
-            return "engine.platform" + token[len("engine.platform") :]
+        if token == "runtime.platform" or token.startswith("runtime.platform."):
+            return "runtime.platform" + token[len("runtime.platform") :]
         if token == "engine.time" or token.startswith("engine.time."):
             return "engine.time" + token[len("engine.time") :]
         head, dot, tail = token.partition(".")

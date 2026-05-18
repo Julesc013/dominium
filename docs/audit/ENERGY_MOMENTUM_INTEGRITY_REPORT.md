@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Energy & Momentum Integrity Report (PATCH-A2)
 
-Status: COMPLETE  
-Date: 2026-03-04  
+Status: COMPLETE
+Date: 2026-03-04
 Scope: Ledger discipline, momentum integration checks, coupling compliance, and replay/proof coverage.
 
 ## 1) Summary
@@ -58,15 +58,15 @@ Coverage confirmed for:
 
 Replay/verification tools:
 
-- `tools/physics/tool_verify_energy_conservation`
-- `tools/physics/tool_replay_energy_window`
-- `tools/physics/tool_replay_momentum_window`
+- `tools/validators/domain/physics/tool_verify_energy_conservation`
+- `tools/validators/domain/physics/tool_replay_energy_window`
+- `tools/validators/domain/physics/tool_replay_momentum_window`
 
 Verification run in PATCH-A2:
 
-- `python tools/physics/tool_replay_energy_window.py --state-path <temporary fixture>` -> complete
-- `python tools/physics/tool_replay_momentum_window.py --state-path <temporary fixture>` -> complete
-- `python tools/physics/tool_verify_energy_conservation.py --ledger-path <temporary fixture>` -> complete
+- `python tools/validators/domain/physics/tool_replay_energy_window.py --state-path <temporary fixture>` -> complete
+- `python tools/validators/domain/physics/tool_replay_momentum_window.py --state-path <temporary fixture>` -> complete
+- `python tools/validators/domain/physics/tool_verify_energy_conservation.py --ledger-path <temporary fixture>` -> complete
 
 ## 6) Enforcement Upgrades
 
@@ -84,14 +84,14 @@ Verification run in PATCH-A2:
 
 ## 8) Gate Results
 
-- RepoX STRICT: `PASS`  
+- RepoX STRICT: `PASS`
   `python tools/xstack/repox/check.py --profile STRICT` -> `status=pass`, findings=`17` (warn-only).
-- AuditX STRICT: `FAIL (pre-existing global blockers)`  
+- AuditX STRICT: `FAIL (pre-existing global blockers)`
   `python tools/xstack/auditx/check.py --profile STRICT` -> `status=fail`, promoted blockers=`7` (`E179_INLINE_RESPONSE_CURVE_SMELL` instances outside PATCH-A2 scope).
-- TestX PATCH-A2 subset: `PASS`  
+- TestX PATCH-A2 subset: `PASS`
   `python tools/xstack/testx/runner.py --profile STRICT --cache off --subset test_no_direct_energy_writes,test_no_direct_velocity_writes,test_energy_ledger_entries_emitted,test_loss_to_heat_transform_present,test_momentum_velocity_derivation,test_replay_energy_hash_match,test_replay_momentum_hash_match` -> `7/7 pass`.
 - strict build: `not run in PATCH-A2 sweep` (no canonical strict-build command in this pass).
-- topology map: `updated`  
+- topology map: `updated`
   `python tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md` -> fingerprint `536937b500bbc86fd10f1c699a67b474d3ab7101388e2ec409e8d40939c27a8f`.
 
 ## 9) Readiness

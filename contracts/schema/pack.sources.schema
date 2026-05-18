@@ -1,0 +1,48 @@
+SCHEMA: pack.sources.schema
+schema_id: dominium.schema.pack_sources
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define ordered pack sources and trust tiers for resolution.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Pack sources do not imply installation order.
+- Resolution policy is external and lockfile-defined.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record pack_sources
+  required:
+    - sources: [pack_source]
+    - extensions: map
+  optional:
+    - source_set_id: id
+    - source_tags: [tag]
+    - notes: map
+
+TYPE DEFINITIONS:
+record pack_source
+  required:
+    - source_id: id
+    - source_type: tag
+    - priority: integer
+    - trust_tier: tag
+    - allowed_capabilities: [id]
+    - offline_allowed: bool
+    - extensions: map
+  optional:
+    - source_label: tag
+    - source_uri: tag
+    - source_tags: [tag]

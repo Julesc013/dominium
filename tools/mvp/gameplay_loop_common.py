@@ -17,9 +17,9 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from game.domains.embodiment.tools.scanner_tool import build_scan_result  # noqa: E402
-from game.domains.embodiment.tools.teleport_tool import build_teleport_tool_surface  # noqa: E402
-from game.domains.embodiment.tools.terrain_edit_tool import build_mine_at_cursor_task  # noqa: E402
+from game.domain.embodiment.tools.scanner_tool import build_scan_result  # noqa: E402
+from game.domain.embodiment.tools.teleport_tool import build_teleport_tool_surface  # noqa: E402
+from game.domain.embodiment.tools.terrain_edit_tool import build_mine_at_cursor_task  # noqa: E402
 from tools.mvp.baseline_universe_common import (  # noqa: E402
     ANCHOR_REASON_INTERVAL,
     ANCHOR_REASON_SAVE,

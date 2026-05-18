@@ -1,0 +1,21 @@
+SCHEMA: mobility/vehicle_class_registry.schema
+schema_id: dominium.registry.vehicle_class_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Source registry contract for MOB-3 data-driven vehicle class declarations.
+
+REQUIRED SHAPE:
+record vehicle_class_registry
+  required:
+    - schema_id: "dominium.registry.vehicle_class_registry"
+    - schema_version: semver
+    - record.registry_id: "dominium.registry.vehicle_class_registry"
+    - record.registry_version: semver
+    - record.vehicle_classes: list[vehicle_class]
+    - record.extensions: map
+
+INVARIANTS:
+- Vehicle classes remain declarative and placeholder-safe.
+- Runtime semantics must be derived from class/spec data, not hardcoded IDs.

@@ -1,0 +1,23 @@
+SCHEMA: interaction/tool_type.schema
+schema_id: dominium.schema.interaction.tool_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define tool capability classes: allowed surfaces/processes and instrument channels.
+
+REQUIRED SHAPE:
+record tool_type
+  required:
+    - schema_version: semver
+    - tool_type_id: id
+    - description: string
+    - default_tool_tags: list[id]
+    - allowed_surface_types: list[id]
+    - allowed_process_ids: list[id]
+    - provides_instrument_channels: list[id]
+    - extensions: map
+
+INVARIANTS:
+- Tool type is capability metadata; legality remains law/authority gated.
+- Runtime behavior must not hardcode tool-type special cases.

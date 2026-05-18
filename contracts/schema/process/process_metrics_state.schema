@@ -1,0 +1,31 @@
+SCHEMA: process/process_metrics_state.schema
+schema_id: dominium.schema.process.process_metrics_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Store deterministic aggregated maturity metrics per ProcessDefinition version.
+
+NON-SEMANTICS:
+- Does not itself authorize lifecycle state transitions.
+- Does not replace canonical run/quality/qc records.
+
+REQUIRED SHAPE:
+record process_metrics_state
+  required:
+    - process_id: id
+    - version: semver
+    - runs_count: nonnegative_int
+    - yield_mean: fixed_point_nonnegative
+    - yield_variance: fixed_point_nonnegative
+    - defect_rate: fixed_point_nonnegative
+    - qc_pass_rate: fixed_point_nonnegative
+    - env_deviation_score: fixed_point_nonnegative
+    - calibration_deviation_score: fixed_point_nonnegative
+    - last_update_tick: tick
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Metric updates must derive from canonical process artifacts.
+- Numeric updates must follow deterministic TOL discipline.

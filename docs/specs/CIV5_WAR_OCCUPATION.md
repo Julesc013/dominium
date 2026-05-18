@@ -55,7 +55,7 @@ Public headers live in `game/include/dominium/rules/war/`.
 - No omniscient occupation or resistance disclosure to UI.
 
 ## Tests (WAR3)
-Implemented in `game/tests/civ5_war3_occupation_tests.cpp`:
+Implemented in `tests/game/civ5_war3_occupation_tests.cpp`:
 - Deterministic occupation failure without supply.
 - Deterministic resistance activation from legitimacy deficit.
 - Deterministic disruption effects.

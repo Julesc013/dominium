@@ -23,8 +23,8 @@ The artifact store provides offline-capable, content-addressed storage for verif
 
 Under the state root:
 
-- `artifacts/<algo>/<hash_hex>/artifact.tlv`
-- `artifacts/<algo>/<hash_hex>/payload/payload.bin`
+- `archive/generated/artifacts/<algo>/<hash_hex>/artifact.tlv`
+- `archive/generated/artifacts/<algo>/<hash_hex>/payload/payload.bin`
 
 Where:
 - `<algo>` is currently `sha256`.

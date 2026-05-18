@@ -15,12 +15,12 @@ Scope: deterministic pathing, traversal cost layers, shard-safe route staging
 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
-- `docs/geo/METRIC_QUERY_ENGINE.md`
-- `docs/geo/FIELD_BINDING_TO_GEO.md`
-- `docs/geo/PROJECTION_AND_LENS_MODEL.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/METRIC_QUERY_ENGINE.md`
+- `docs/domains/geology/FIELD_BINDING_TO_GEO.md`
+- `docs/domains/geology/PROJECTION_AND_LENS_MODEL.md`
 
 ### Current MOB pathfinding and movement assumptions
 

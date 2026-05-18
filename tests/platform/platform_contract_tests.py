@@ -65,26 +65,26 @@ def test_exit_codes(repo_root):
 
 
 def test_null_platform_backend(repo_root):
-    sys_impl = os.path.join(repo_root, "engine", "modules", "system", "sys.c")
+    sys_impl = os.path.join(repo_root, "runtime", "platform", "system", "sys.c")
     text = read_text(sys_impl)
     assert_contains(text, "DSYS_BACKEND_NULL", "null backend macro")
     assert_contains(text, "null_time_now_us", "null time source")
 
 
 def test_sandbox_guard(repo_root):
-    sys_impl = os.path.join(repo_root, "engine", "modules", "system", "sys.c")
+    sys_impl = os.path.join(repo_root, "runtime", "platform", "system", "sys.c")
     text = read_text(sys_impl)
     assert_contains(text, "dsys_guard_io_blocked", "sandbox guard")
 
 
 def test_deterministic_dir_iteration(repo_root):
-    dtlv = os.path.join(repo_root, "engine", "modules", "io", "dtlv.c")
+    dtlv = os.path.join(repo_root, "runtime", "storage", "io", "dtlv.c")
     text = read_text(dtlv)
     assert_contains(text, "Deterministic directory order", "deterministic dir ordering")
 
 
 def test_headless_flags(repo_root):
-    launcher_cli = os.path.join(repo_root, "launcher", "cli", "launcher_cli_main.c")
+    launcher_cli = os.path.join(repo_root, "apps", "launcher", "cli", "launcher_cli_main.c")
     text = read_text(launcher_cli)
     assert_contains(text, "--headless", "headless flag")
     assert_contains(text, "--ui=none", "ui none flag")

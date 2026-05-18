@@ -1,0 +1,24 @@
+SCHEMA: fields/field_update_policy.schema
+schema_id: dominium.schema.fields.field_update_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic FIELD-1 update policy declaration.
+
+REQUIRED SHAPE:
+record field_update_policy
+  required:
+    - schema_version: semver
+    - update_policy_id: id
+    - description: text
+    - extensions: map
+  optional:
+    - schedule_id: id
+    - flow_channel_ref: id
+    - hazard_ref: id
+
+INVARIANTS:
+- Update sources are explicit and deterministic.
+- Policies do not authorize hidden mutation.
+- Missing optional refs are allowed for null/static boot.

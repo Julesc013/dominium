@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Input Ref Schema",
+  "version": "1.0.0",
+  "description": "Deterministic constitutive model input reference row.",
+  "type": "object",
+  "required": ["schema_version", "input_kind", "input_id", "extensions"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "input_kind": {
+      "type": "string",
+      "enum": ["field", "flow_quantity", "hazard", "state_machine", "spec_param", "material_property", "derived"]
+    },
+    "input_id": {"type": "string", "minLength": 1},
+    "selector": {"type": ["string", "null"]},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "input_kind": "field",
+      "input_id": "field.temperature",
+      "selector": "target.position",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explain Contract Schema",
+  "version": "1.0.0",
+  "description": "Mandatory explainability contract declaration for hazard/failure/refusal event kinds.",
+  "x-doc-ref": [
+    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
+    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_id",
+    "event_kind_id",
+    "explain_artifact_type_id",
+    "required_inputs",
+    "remediation_hint_keys",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "explain_artifact_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "remediation_hint_keys": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "contract_id": "explain.elec.trip",
+      "event_kind_id": "elec.trip",
+      "explain_artifact_type_id": "artifact.explain.elec_trip",
+      "required_inputs": [
+        "artifact.decision",
+        "artifact.record"
+      ],
+      "remediation_hint_keys": [
+        "hint.inspect.breaker_panel",
+        "hint.reduce.load"
+      ],
+      "deterministic_fingerprint": "31bcf593879030d55545cb8c35309c2fd65eaf547e44ca4ca95eb5a4e11a6483",
+      "extensions": {}
+    }
+  ]
+}
+

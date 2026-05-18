@@ -22,6 +22,6 @@ Replacement Target: legacy reference surface retained without current binding au
 - Create a new doc from `ui_doc_template_basic.tlv`, save, reopen.
 
 ## Expected artifacts
-- `tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv`
-- `tools/tool_editor/ui/doc/tool_editor_ui_doc.json`
-- `tools/tool_editor/ui/doc/ui_doc_template_basic.tlv`
+- `apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv`
+- `apps/workbench/module/ui/doc/tool_editor_ui_doc.json`
+- `apps/workbench/module/ui/doc/ui_doc_template_basic.tlv`

@@ -36,12 +36,12 @@ for %%D in (
   libs\crypto libs\netproto
   engine engine\include engine\modules engine\render engine\tests
   engine\modules\core engine\modules\ecs engine\modules\sim engine\modules\world engine\modules\io engine\modules\sys
-  engine\modules\sys\time engine\modules\sys\fs engine\modules\sys\thread engine\modules\sys\atomics
-  engine\render\sw engine\render\gl engine\render\gl\core engine\render\gl\shaders
-  engine\render\vulkan engine\render\d3d engine\render\d3d\d3d7 engine\render\d3d\d3d9 engine\render\d3d\d3d11 engine\render\d3d\d3d12
-  engine\render\metal engine\render\null
+  runtime\platform\system\time runtime\platform\system\fs runtime\platform\system\thread runtime\platform\system\atomics
+  runtime\render\sw runtime\render\gl runtime\render\gl\core runtime\render\gl\shaders
+  runtime\render\vulkan runtime\render\d3d runtime\render\d3d\d3d7 runtime\render\d3d\d3d9 runtime\render\d3d\d3d11 runtime\render\d3d\d3d12
+  runtime\render\metal runtime\render\null
   game game\core game\rules game\ai game\economy game\content game\mods game\ui game\tests
-  game\content\worldgen game\content\factions game\content\tech game\content\scenarios
+  content\domains\game\worldgen content\domains\game\factions content\domains\game\tech content\domains\game\scenarios
   client client\core client\core\session client\core\input client\core\net client\ui client\ui\menus client\ui\hud client\ui\overlays client\platform client\tests
   client\platform\win client\platform\win\win9x client\platform\win\winnt client\platform\linux client\platform\bsd client\platform\mac client\platform\mac\classic client\platform\mac\osx client\platform\wasm
   server server\core server\core\world server\core\auth server\core\net server\core\shard server\core\persist server\platform server\tools server\tests
@@ -75,10 +75,10 @@ REM ---------------------------
 REM 2) Flatten known double-nesting patterns
 REM ---------------------------
 
-REM game\tests\tests -> game\tests
-if exist "game\tests\tests" (
-  move "game\tests\tests\*" "game\tests\" >nul 2>nul
-  echo Flattened: game\tests\tests -> game\tests
+REM tests\game\tests -> game\tests
+if exist "tests\game\tests" (
+  move "tests\tests\game\*" "tests\game\" >nul 2>nul
+  echo Flattened: tests\game\tests -> game\tests
 )
 
 REM game\mods\mods -> game\mods

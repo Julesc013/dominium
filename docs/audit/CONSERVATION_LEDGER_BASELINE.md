@@ -92,7 +92,7 @@ Exception entry attribution fields are deterministic and include: tick, shard, d
    - command: `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
    - result: PASS (`findings=0`)
 2. AuditX:
-   - command: `py -3 tools/auditx/auditx.py scan --repo-root . --format json`
+   - command: `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --format json`
    - result: COMPLETE (`findings_count=959`, scan-only, non-gating)
 3. TestX (RS-2 suite):
    - command: `py -3 tools/xstack/testx_all.py --repo-root . --profile STRICT --cache off --subset testx.reality.test_null_contract_set_allows_anything,testx.reality.test_realistic_strict_refuses_unaccounted_creation,testx.reality.test_allow_with_ledger_allows_violation_but_logs,testx.reality.test_ledger_hash_deterministic,testx.reality.test_mp_hash_includes_ledger`

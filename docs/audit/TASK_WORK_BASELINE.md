@@ -86,7 +86,7 @@ TestX:
 ## Gate Snapshot
 - Run date: 2026-02-28
 - RepoX (`python tools/xstack/repox/check.py --profile STRICT`): PASS (`findings=0`)
-- AuditX (`python tools/auditx/auditx.py verify --repo-root . --format both`): run complete (`findings_count=994`, existing repo baseline)
+- AuditX (`python tools/xstack/auditx/auditx.py verify --repo-root . --format both`): run complete (`findings_count=994`, existing repo baseline)
 - TestX ACT-3 required subset (`python tools/xstack/testx_all.py --repo-root . --profile STRICT --subset ...`): PASS (`selected_tests=6`)
 - strict build (`python tools/xstack/run.py strict`): REFUSAL due existing repo-baseline CompatX findings (`schemas=265, findings=127`) and full-suite TestX findings (`selected_tests=336, findings=25`)
 - ui_bind --check (`python tools/xstack/ui_bind.py --check`): PASS (`checked_windows=21`)

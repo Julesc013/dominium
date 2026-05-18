@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate deterministic offline descriptor manifest from dist/bin wrappers."""
+"""Generate deterministic offline descriptor manifest from archive/generated/dist/bin wrappers."""
 
 from __future__ import annotations
 
@@ -54,7 +54,7 @@ def _write_json(path: str, payload: dict) -> None:
 
 
 def main(argv: List[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Generate offline endpoint descriptor manifest from dist/bin.")
+    parser = argparse.ArgumentParser(description="Generate offline endpoint descriptor manifest from archive/generated/dist/bin.")
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--dist-root", default="dist")
     parser.add_argument("--output-path", default=os.path.join("dist", "manifests", "endpoint_descriptors.json"))

@@ -7,7 +7,7 @@ import tempfile
 from typing import Mapping
 
 
-from release import (
+from tools.release import (
     build_mock_signature_block,
     build_release_manifest,
     verify_release_manifest,
@@ -20,13 +20,13 @@ RELEASE2_RETRO_AUDIT_PATH = "docs/audit/RELEASE2_RETRO_AUDIT.md"
 REPRODUCIBLE_BUILD_RULES_PATH = "docs/release/REPRODUCIBLE_BUILD_RULES.md"
 SIGNING_POLICY_PATH = "docs/release/SIGNING_POLICY.md"
 REPRODUCIBLE_BUILD_BASELINE_PATH = "docs/audit/REPRODUCIBLE_BUILD_BASELINE.md"
-BUILD_ID_ENGINE_PATH = "release/build_id_engine.py"
-RELEASE_MANIFEST_ENGINE_PATH = "release/release_manifest_engine.py"
+BUILD_ID_ENGINE_PATH = "tools/release/build_id_engine.py"
+RELEASE_MANIFEST_ENGINE_PATH = "tools/release/release_manifest_engine.py"
 RELEASE_MANIFEST_GENERATOR_PATH = "tools/release/tool_generate_release_manifest.py"
 RELEASE_MANIFEST_VERIFIER_PATH = "tools/release/tool_verify_release_manifest.py"
 REPRODUCIBILITY_TOOL_PATH = "tools/release/tool_verify_build_reproducibility.py"
-SIGNATURE_SCHEMA_PATH = "contracts/schemas/release/signature_block.schema"
-SIGNATURE_SCHEMA_JSON_PATH = "contracts/schemas/signature_block.schema.json"
+SIGNATURE_SCHEMA_PATH = "contracts/schema/release/signature_block.schema"
+SIGNATURE_SCHEMA_JSON_PATH = "contracts/schema/signature_block.schema.json"
 
 DEFAULT_DIST_ROOT = "dist"
 DEFAULT_PLATFORM_TAG = "platform.portable"
@@ -94,8 +94,8 @@ def _required_file_violations(repo_root: str) -> list[dict]:
         (RELEASE_MANIFEST_GENERATOR_PATH, "release manifest generator is required", RULE_BUILD_ID_MATCHES),
         (RELEASE_MANIFEST_VERIFIER_PATH, "release manifest verifier is required", RULE_BUILD_ID_MATCHES),
         (REPRODUCIBILITY_TOOL_PATH, "build reproducibility verifier is required", RULE_BUILD_ID_MATCHES),
-        ("tools/auditx/analyzers/e494_non_reproducible_build_smell.py", "NonReproducibleBuildSmell analyzer is required", RULE_BUILD_ID_MATCHES),
-        ("tools/auditx/analyzers/e495_embedded_timestamp_smell.py", "EmbeddedTimestampSmell analyzer is required", RULE_NO_WALLCLOCK),
+        ("tools/xstack/auditx/analyzers/e494_non_reproducible_build_smell.py", "NonReproducibleBuildSmell analyzer is required", RULE_BUILD_ID_MATCHES),
+        ("tools/xstack/auditx/analyzers/e495_embedded_timestamp_smell.py", "EmbeddedTimestampSmell analyzer is required", RULE_NO_WALLCLOCK),
     ):
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
             continue

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from game.domains.geology import build_path_request, geo_path_query
+from game.domain.geology import build_path_request, geo_path_query
 
 
 TEST_ID = "test_astar_deterministic"

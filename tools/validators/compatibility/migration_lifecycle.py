@@ -46,8 +46,8 @@ REFUSAL_MIGRATION_NO_PATH = "refusal.migration.no_path"
 REFUSAL_MIGRATION_NOT_ALLOWED = "refusal.migration.not_allowed"
 REFUSAL_MIGRATION_CONTRACT_INCOMPATIBLE = "refusal.migration.contract_incompatible"
 
-MIGRATION_POLICY_REGISTRY_REL = os.path.join("data", "registries", "migration_policy_registry.json")
-MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migration_registry.json")
+MIGRATION_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "migration_policy_registry.json")
+MIGRATION_REGISTRY_REL = os.path.join("contracts", "registry", "migration_registry.json")
 
 _LEGACY_COMPONENT_TO_ARTIFACT_KIND = {
     "blueprint": ARTIFACT_KIND_BLUEPRINT,

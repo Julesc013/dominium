@@ -18,10 +18,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 | Subsystem | Enforcement logic (code) | Policy logic (code) | Configuration/data logic |
 | --- | --- | --- | --- |
-| `engine/` | `engine/modules/core/process_guard.c` mutation guard instrumentation | kernel and scheduling gate choices under deterministic policy | schema-driven inputs consumed via validators and registries |
+| `engine/` | `engine/kernel/process_guard.c` mutation guard instrumentation | kernel and scheduling gate choices under deterministic policy | schema-driven inputs consumed via validators and registries |
 | `game/` | refusal paths and deterministic guard checks in rule pipelines | rule-level command behavior and refusal mapping | scenario and pack data under `data/` + `schema/` |
 | `libs/appcore/` | command metadata validation, capability checks | canonical command descriptors in `libs/appcore/command/command_registry.c` | generated UI binding tables in `libs/appcore/ui_bind/` |
-| `tools/` | `tools/pack/pack_validate.py`, `tools/ui_bind/ui_bind_main.cpp`, RepoX scripts | tool command routing policies | schema and manifest validation surfaces |
+| `tools/` | `tools/pack/pack_validate.py`, `tools/codegen/ui/bind/ui_bind_main.cpp`, RepoX scripts | tool command routing policies | schema and manifest validation surfaces |
 | `launcher/ setup/ client/ server/ tools host` | CLI validation and refusal exits | command parsing and UI mode policies | runtime inputs via CLI flags + manifest/state files |
 
 ## Enforcement Points Confirmed
@@ -33,15 +33,15 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `tools/pack/pack_validate.py` (`forbidden_stage_fields`)
 - Process-only mutation guard exists:
   - `engine/include/domino/core/process_guard.h`
-  - `engine/modules/core/process_guard.c`
+  - `engine/kernel/process_guard.c`
 - UI binding contract enforcement exists:
-  - `tools/ui_bind/ui_bind_main.cpp`
+  - `tools/codegen/ui/bind/ui_bind_main.cpp`
 
 ## Clear Misplacements / Drift Risks
 
 1. Canonical command registry is not the runtime command source for app CLIs.
    - Registry exists in `libs/appcore/command/command_registry.c`.
-   - Runtime CLIs still contain direct command/help surfaces (example: `client/app/main_client.c`).
+   - Runtime CLIs still contain direct command/help surfaces (example: `apps/client/main_client.c`).
    - Impact: command graph drift risk between appcore registry and product binaries.
 
 2. Dispatch path is declared but not used as a shared execution surface.

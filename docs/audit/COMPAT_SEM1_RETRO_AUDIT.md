@@ -19,7 +19,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `tools/xstack/sessionx/creator.py` did not write `contract_bundle_hash` into `SessionSpec`.
 - `tools/xstack/sessionx/runner.py` and `tools/xstack/sessionx/script_runner.py` validated `UniverseIdentity.identity_hash` but did not enforce semantic contract sidecar presence or hash match.
 - `tools/xstack/sessionx/common.py` hashed the full UniverseIdentity body except `identity_hash`, so new contract-bundle metadata had to be excluded explicitly to preserve identity-derived object IDs.
-- Existing CompatX semantic helpers in `tools/compatx/core/semantic_contract_validator.py` were sufficient to avoid a large refactor; only a narrow bridge module was needed under `src/universe/`.
+- Existing CompatX semantic helpers in `tools/xstack/compatx/core/semantic_contract_validator.py` were sufficient to avoid a large refactor; only a narrow bridge module was needed under `src/universe/`.
 
 ## Integration Decision
 - Keep `universe_contract_bundle.json` as the canonical sidecar.

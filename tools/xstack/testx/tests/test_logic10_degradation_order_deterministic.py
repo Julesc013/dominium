@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.logic.eval import plan_logic_degradation_actions
+    from game.domain.logic.eval import plan_logic_degradation_actions
 
     kwargs = {
         "compiled_available": True,

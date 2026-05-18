@@ -1,0 +1,27 @@
+SCHEMA: meta/quantity_tolerance.schema
+schema_id: dominium.schema.meta.quantity_tolerance
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical fixed-point resolution, tolerance, rounding, and overflow policy per quantity.
+- Remove implicit per-module numeric assumptions from authoritative paths.
+
+REQUIRED SHAPE:
+record quantity_tolerance
+  required:
+    - schema_version: semver
+    - quantity_id: id
+    - base_resolution: int (>0)
+    - tolerance_abs: int (>=0)
+    - rounding_mode: enum(round_half_to_even|floor|ceiling|truncate)
+    - overflow_policy: enum(fail|saturate)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - tolerance_rel: int (>=0)
+
+INVARIANTS:
+- quantity_id must resolve in quantity_registry.
+- wrap overflow behavior is forbidden.
+- deterministic_fingerprint must be derived from canonical payload fields.

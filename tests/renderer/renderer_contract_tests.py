@@ -47,7 +47,7 @@ def test_locklist(repo_root):
 
 
 def test_null_renderer_backend(repo_root):
-    gfx = os.path.join(repo_root, "engine", "render", "d_gfx.c")
+    gfx = os.path.join(repo_root, "runtime", "render", "d_gfx.c")
     if not os.path.isfile(gfx):
         raise AssertionError("missing renderer implementation")
     text = read_text(gfx)
@@ -56,7 +56,7 @@ def test_null_renderer_backend(repo_root):
 
 
 def test_headless_flag(repo_root):
-    launcher_cli = os.path.join(repo_root, "launcher", "cli", "launcher_cli_main.c")
+    launcher_cli = os.path.join(repo_root, "apps", "launcher", "cli", "launcher_cli_main.c")
     text = read_text(launcher_cli)
     assert_contains(text, "--headless", "headless flag")
     assert_contains(text, "--ui=none", "ui none flag")

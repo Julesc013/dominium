@@ -87,4 +87,4 @@ codes and structured payloads.
 - `docs/architecture/WORLDDEFINITION.md`
 
 
-- `docs/worldgen/TEMPLATE_REGISTRY.md`
+- `docs/domains/worldgen/TEMPLATE_REGISTRY.md`

@@ -95,7 +95,7 @@ Removing the official layer returns the overlap set to the procedural base view.
 - Frozen contract hash guard: PASS on 2026-03-09
 - Identity fingerprint check: PASS on 2026-03-09
 - Sol overlay verification tool: PASS on 2026-03-09
-  - `tools/geo/tool_verify_sol_pin_overlay.py`
+  - `tools/validators/domain/geology/tool_verify_sol_pin_overlay.py`
   - no violations
 - Targeted TestX SOL-0 subset: PASS on 2026-03-09
   - `test_sol_anchor_exists_when_requested`

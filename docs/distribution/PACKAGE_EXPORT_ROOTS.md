@@ -58,9 +58,9 @@ Symbols and source payloads are separate package classes unless an explicit pack
 
 `path` is relative to the target logical root, normalized with forward slashes, and must not contain `..`.
 
-## Relationship To `dist/pkg`
+## Relationship To `archive/generated/dist/pkg`
 
-`dist/pkg/<platform>/<arch>/` is the generated package output channel. It may contain `.dompkg` artifacts and indexes. It is not a source root and does not define install paths by itself.
+`archive/generated/dist/pkg/<platform>/<arch>/` is the generated package output channel. It may contain `.dompkg` artifacts and indexes. It is not a source root and does not define install paths by itself.
 
 ## POST-CONVERGE-09 Proof Status
 

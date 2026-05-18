@@ -31,7 +31,7 @@ next_gate = "MOVE-FAMILY-00C-A-GATE"
 [[target_namespaces]]
 old_package = "validation"
 new_package = "tools.validators.validation"
-target_path = "tools/validators/validation/"
+target_path = "tools/validators/suite/"
 shim_required = true
 
 [[target_namespaces]]

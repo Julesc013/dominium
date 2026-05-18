@@ -23,8 +23,8 @@ Scope: deterministic share bundles for saves, replays, blueprints, modpacks, and
 
 Blueprint bundles are the first LIB-4 shareable artifact bundle surface.
 
-- Primary payload: `artifacts/blueprint/<payload>.json`
-- Required sidecar: `artifacts/blueprint/shareable.artifact.manifest.json`
+- Primary payload: `archive/generated/artifacts/blueprint/<payload>.json`
+- Required sidecar: `archive/generated/artifacts/blueprint/shareable.artifact.manifest.json`
 - The sidecar pins `content_hash`, contract/capability requirements, degrade mode, and migration refs
 - Inspect/import must validate the sidecar before accepting the bundle
 

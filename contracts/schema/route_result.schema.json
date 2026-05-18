@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Route Result Schema",
+  "version": "1.0.0",
+  "description": "Deterministic NetworkGraph route query result payload.",
+  "x-doc-ref": [
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "path_node_ids",
+    "path_edge_ids",
+    "total_cost",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "path_node_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "path_edge_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "total_cost": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "path_node_ids": [
+        "node.a",
+        "node.c",
+        "node.b"
+      ],
+      "path_edge_ids": [
+        "edge.a_c",
+        "edge.c_b"
+      ],
+      "total_cost": 4,
+      "deterministic_fingerprint": "6f701752ec79ad7e5fe3f4ce822299f30a3599b5bc7fc91a7a9f5fb7df4095f4",
+      "extensions": {}
+    }
+  ]
+}

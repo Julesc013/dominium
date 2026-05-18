@@ -121,7 +121,7 @@ macro_net_bytes_recv_max=4194304
 ## Fixture bindings (EXEC-AUDIT1)
 
 These fixtures exercise the budgets above. Each fixture declares per-tier
-caps in `game/tests/fixtures/**/fixture.cfg`.
+caps in `tests/game/fixtures/**/fixture.cfg`.
 
 | Fixture | Budget profile | Primary focus |
 | --- | --- | --- |

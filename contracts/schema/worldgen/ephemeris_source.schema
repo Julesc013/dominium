@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ephemeris Source Schema",
+  "version": "1.0.0",
+  "description": "Authoritative source contract for deterministic SPICE ingestion.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "kernel_files",
+    "supported_bodies",
+    "time_range",
+    "reference_frame",
+    "precision_notes",
+    "license"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "kernel_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "supported_bodies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1
+    },
+    "time_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick",
+        "step_ticks"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "step_ticks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "reference_frame": {
+      "type": "string"
+    },
+    "precision_notes": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    }
+  }
+}
+

@@ -131,7 +131,7 @@ MOVE-FAMILY-00-REFINE-ACTIVE-MODULE-BOUNDARIES refined the blocked plan into own
 
 - `ide/manifests/**`: plan next under `contracts/projections` with manifest contract and validator proof.
 - `validation/**`, `meta/identity/**`, and `meta/stability/**`: plan later under `tools/validators` with temporary shim/import proof.
-- `governance/**`: plan later under the repo/tooling slot with release/setup/dist/governance import proof.
+- `governance/**`: plan later under the repo/tooling slot with release/setup/archive/generated/dist/governance import proof.
 - semantic/runtime `meta/**` and product/runtime `performance/**`: preserve-current until owner-specific plans exist.
 
 No group is apply-ready. The immediate next planning task is:
@@ -145,7 +145,7 @@ MOVE-FAMILY-00B-PLAN - IDE Manifest Contract/Projection Ownership Plan
 MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the IDE manifest source metadata.
 
 - Planned moves: 3 tracked files.
-- Target owner: `contracts/projections/ide/**`.
+- Target owner: `contracts/projection/ide/**`.
 - Deferred tracked files: 0.
 - Blocked files: 0.
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
@@ -178,7 +178,7 @@ MOVE-FAMILY-00B-PROOF proved the IDE root retirement.
 - `git ls-files ide`: empty.
 - Filesystem `ide/`: absent.
 - `ide_root` source-layout exception: retired and accepted by strict validators.
-- Replacement manifest files under `contracts/projections/ide/**`: tracked, present, JSON parse PASS.
+- Replacement manifest files under `contracts/projection/ide/**`: tracked, present, JSON parse PASS.
 - Active stale references to old tracked schema/example source paths: none.
 - Remaining old-path references: historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references.
 - Baseline validation: Tier 0, strict validators, docs/build/UI/ABI checks, focused RepoX, manifest parsing, and generated-output ignored/staging checks passed with known warnings.

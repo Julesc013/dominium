@@ -15,7 +15,7 @@ This report records the MP-4 baseline for `policy.net.server_authoritative` with
 
 ## Canon and Contract Alignment
 - Canon sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`.
-- Net contracts: `docs/net/SERVER_AUTHORITATIVE_POLICY.md`, `docs/net/REPLICATION_POLICIES.md`, `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`.
+- Net contracts: `docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md`, `docs/runtime/network/REPLICATION_POLICIES.md`, `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`.
 - Refusal contract: `docs/contracts/refusal_contract.md`.
 
 ## Snapshot Cadence Policy

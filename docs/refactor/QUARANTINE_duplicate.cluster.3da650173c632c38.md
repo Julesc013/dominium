@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `engine/modules/system/dsys_platform_stub.c`
+- Canonical Candidate: `runtime/platform/system/dsys_platform_stub.c`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `deprecate, quarantine`
 
 ## Competing Files
 
-- `engine/modules/system/dsys_platform_stub.c`
-- `engine/modules/system/dsys_posix.c`
-- `engine/modules/system/dsys_sdl2_stub.c`
+- `runtime/platform/system/dsys_platform_stub.c`
+- `runtime/platform/system/dsys_posix.c`
+- `runtime/platform/system/dsys_sdl2_stub.c`
 
 ## Scorecard
 
-- `engine/modules/system/dsys_platform_stub.c` disposition=`canonical` rank=`1` total_score=`48.21` risk=`HIGH`
-- `engine/modules/system/dsys_posix.c` disposition=`quarantine` rank=`2` total_score=`48.21` risk=`HIGH`
-- `engine/modules/system/dsys_sdl2_stub.c` disposition=`drop` rank=`3` total_score=`35.36` risk=`HIGH`
+- `runtime/platform/system/dsys_platform_stub.c` disposition=`canonical` rank=`1` total_score=`48.21` risk=`HIGH`
+- `runtime/platform/system/dsys_posix.c` disposition=`quarantine` rank=`2` total_score=`48.21` risk=`HIGH`
+- `runtime/platform/system/dsys_sdl2_stub.c` disposition=`drop` rank=`3` total_score=`35.36` risk=`HIGH`
 
 ## Usage Sites
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

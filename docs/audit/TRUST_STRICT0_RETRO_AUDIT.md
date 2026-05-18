@@ -25,7 +25,7 @@ Replacement Target: release-pinned strict trust constitution with signed capabil
 
 ## Update Resolver Trust Checks
 
-- `src/release/update_resolver.py` verifies `release_index` trust before plan resolution.
+- `src/tools/release/update_resolver.py` verifies `release_index` trust before plan resolution.
 - Trust refusal is surfaced through update-plan refusal flow; warnings are preserved in deterministic order.
 
 ## Optional vs Required Signatures

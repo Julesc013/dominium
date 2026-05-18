@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Node Inventory Schema",
+  "version": "1.0.0",
+  "description": "Canonical logistics node inventory declaration.",
+  "x-doc-ref": [
+    "docs/materials/LOGISTICS_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "material_stocks",
+    "inventory_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "material_stocks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "batch_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "inventory_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.site.alpha",
+      "material_stocks": {
+        "material.iron": 5000
+      },
+      "batch_refs": [
+        "batch.example"
+      ],
+      "inventory_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84",
+      "extensions": {}
+    }
+  ]
+}

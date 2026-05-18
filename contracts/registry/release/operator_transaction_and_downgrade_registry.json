@@ -192,7 +192,7 @@
     "docs/release/RELEASE_INDEX_RESOLUTION_POLICY.md",
     "docs/release/RELEASE_MANIFEST_MODEL.md",
     "contracts/repo/release_policy.toml",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "release/updates/stable.json",
     "release/updates/pinned.json",
     "release/updates/nightly.json",
@@ -202,7 +202,7 @@
     "contracts/registry/component_graph_registry.json",
     "contracts/registry/trust_policy_registry.json",
     "contracts/registry/refusal_code_registry.json",
-    "tools/controlx/README.md"
+    "tools/xstack/controlx/README.md"
   ],
   "ambiguities_eliminated": [
     "downgrade is not just a lower version number",

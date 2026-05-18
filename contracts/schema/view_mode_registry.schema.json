@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "View Mode Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic camera view mode registry output.",
+  "x-doc-ref": [
+    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "view_modes",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "view_modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "view_mode_id",
+          "description",
+          "allowed_lens_ids",
+          "requires_embodiment",
+          "allowed_in_policies",
+          "required_entitlements",
+          "watermark_policy_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "view_mode_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "allowed_lens_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requires_embodiment": {
+            "type": "boolean"
+          },
+          "allowed_in_policies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "lockstep",
+                "authoritative",
+                "hybrid"
+              ]
+            }
+          },
+          "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "watermark_policy_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "view_modes": [],
+      "registry_hash": "90a0f3d307e94a17a665f8f8ead7db7f7931d61069b4b0c71f1014ec3e0f7187"
+    }
+  ]
+}

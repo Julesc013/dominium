@@ -1,0 +1,25 @@
+SCHEMA: logic/timing_violation_event.schema
+schema_id: dominium.schema.logic.timing_violation_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical LOGIC-5 timing violation events when behavior is throttled, escalated, or refused.
+
+NON-SEMANTICS:
+- This schema does not encode wall-clock timestamps.
+- It does not replace derived traces.
+
+REQUIRED SHAPE:
+record timing_violation_event
+  required:
+    - event_id: id
+    - tick: u64
+    - network_id: id
+    - reason: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Timing violation events are canonical when they affect behavior or policy routing.
+- `reason` must identify the policy-visible failure mode.

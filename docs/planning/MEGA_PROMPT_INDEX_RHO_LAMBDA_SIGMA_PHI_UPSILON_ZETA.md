@@ -164,7 +164,7 @@ Architecture/specification. Write the explicit versioning constitution that sepa
 
 ### Υ-3 `RELEASE_INDEX_POLICY-0`
 
-Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: Υ-2, `release/update_resolver.py`, `updates/*.json`, `contracts/repo/release_policy.toml`. Outputs: release index policy and authority mapping for channel resolution. Dependencies: `Υ-2`. Human review: recommended after. Suggested order: `25`.
+Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: Υ-2, `tools/release/update_resolver.py`, `updates/*.json`, `contracts/repo/release_policy.toml`. Outputs: release index policy and authority mapping for channel resolution. Dependencies: `Υ-2`. Human review: recommended after. Suggested order: `25`.
 
 ### Υ-4 `MANUAL_AUTOMATION_PARITY-0`
 

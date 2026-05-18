@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/tools/core/tool_host_cli.c
+FILE: source/dominium/tools/validators/core/tool_host_cli.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / tools/core/tool_host_cli
+LAYER / SUBSYSTEM: Dominium impl / tools/validators/core/tool_host_cli
 RESPONSIBILITY: Implements `tool_host_cli`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 - `game/include/dominium/rules/scale/interest_system.h`
 - `game/include/dominium/rules/scale/world_streaming_system.h`
 - `game/include/dominium/rules/war/war_system.h`
-- `game/tests/execution_emit_tests.cpp`
+- `tests/game/execution_emit_tests.cpp`
 
 ## Scorecard
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `game/include/dominium/rules/scale/interest_system.h` disposition=`drop` rank=`6` total_score=`71.7` risk=`HIGH`
 - `game/include/dominium/rules/scale/world_streaming_system.h` disposition=`drop` rank=`7` total_score=`62.71` risk=`HIGH`
 - `client/presentation/render_prep_system.h` disposition=`drop` rank=`8` total_score=`61.69` risk=`HIGH`
-- `game/tests/execution_emit_tests.cpp` disposition=`drop` rank=`9` total_score=`56.08` risk=`HIGH`
+- `tests/game/execution_emit_tests.cpp` disposition=`drop` rank=`9` total_score=`56.08` risk=`HIGH`
 
 ## Usage Sites
 
@@ -54,7 +54,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

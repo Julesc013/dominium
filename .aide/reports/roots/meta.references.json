@@ -17,7 +17,7 @@
       "classification": "unknown",
       "file": "AGENTS.md",
       "line": 209,
-      "snippet": "- generated echoes under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**`"
+      "snippet": "- generated echoes under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**`"
     },
     {
       "classification": "unknown",
@@ -191,223 +191,223 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3475,
-      "snippet": "\"contracts/schemas/meta/action_family.schema\","
+      "snippet": "\"contracts/schema/meta/action_family.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3476,
-      "snippet": "\"contracts/schemas/meta/action_template.schema\","
+      "snippet": "\"contracts/schema/meta/action_template.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3477,
-      "snippet": "\"contracts/schemas/meta/bundle_profile.schema\","
+      "snippet": "\"contracts/schema/meta/bundle_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3478,
-      "snippet": "\"contracts/schemas/meta/compaction_marker.schema\","
+      "snippet": "\"contracts/schema/meta/compaction_marker.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3479,
-      "snippet": "\"contracts/schemas/meta/compile_request.schema\","
+      "snippet": "\"contracts/schema/meta/compile_request.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3480,
-      "snippet": "\"contracts/schemas/meta/compile_result.schema\","
+      "snippet": "\"contracts/schema/meta/compile_result.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3481,
-      "snippet": "\"contracts/schemas/meta/compiled_model.schema\","
+      "snippet": "\"contracts/schema/meta/compiled_model.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3482,
-      "snippet": "\"contracts/schemas/meta/compute_budget_profile.schema\","
+      "snippet": "\"contracts/schema/meta/compute_budget_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3483,
-      "snippet": "\"contracts/schemas/meta/compute_consumption_record.schema\","
+      "snippet": "\"contracts/schema/meta/compute_consumption_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3484,
-      "snippet": "\"contracts/schemas/meta/control_point.schema\","
+      "snippet": "\"contracts/schema/meta/control_point.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3485,
-      "snippet": "\"contracts/schemas/meta/coupling_budget.schema\","
+      "snippet": "\"contracts/schema/meta/coupling_budget.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3486,
-      "snippet": "\"contracts/schemas/meta/coupling_contract.schema\","
+      "snippet": "\"contracts/schema/meta/coupling_contract.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3487,
-      "snippet": "\"contracts/schemas/meta/coupling_evaluation_record.schema\","
+      "snippet": "\"contracts/schema/meta/coupling_evaluation_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3488,
-      "snippet": "\"contracts/schemas/meta/coupling_relevance_policy.schema\","
+      "snippet": "\"contracts/schema/meta/coupling_relevance_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3489,
-      "snippet": "\"contracts/schemas/meta/equivalence_proof.schema\","
+      "snippet": "\"contracts/schema/meta/equivalence_proof.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3490,
-      "snippet": "\"contracts/schemas/meta/exception_event.schema\","
+      "snippet": "\"contracts/schema/meta/exception_event.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3491,
-      "snippet": "\"contracts/schemas/meta/experience_profile.schema\","
+      "snippet": "\"contracts/schema/meta/experience_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3492,
-      "snippet": "\"contracts/schemas/meta/explain_artifact.schema\","
+      "snippet": "\"contracts/schema/meta/explain_artifact.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3493,
-      "snippet": "\"contracts/schemas/meta/explain_contract.schema\","
+      "snippet": "\"contracts/schema/meta/explain_contract.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3494,
-      "snippet": "\"contracts/schemas/meta/forensics_point.schema\","
+      "snippet": "\"contracts/schema/meta/forensics_point.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3495,
-      "snippet": "\"contracts/schemas/meta/instrumentation_surface.schema\","
+      "snippet": "\"contracts/schema/meta/instrumentation_surface.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3496,
-      "snippet": "\"contracts/schemas/meta/measurement_point.schema\","
+      "snippet": "\"contracts/schema/meta/measurement_point.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3497,
-      "snippet": "\"contracts/schemas/meta/model_residual_policy.schema\","
+      "snippet": "\"contracts/schema/meta/model_residual_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3498,
-      "snippet": "\"contracts/schemas/meta/observability_guarantee.schema\","
+      "snippet": "\"contracts/schema/meta/observability_guarantee.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3499,
-      "snippet": "\"contracts/schemas/meta/parameter_bundle.schema\","
+      "snippet": "\"contracts/schema/meta/parameter_bundle.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3500,
-      "snippet": "\"contracts/schemas/meta/player_demand_matrix.schema\","
+      "snippet": "\"contracts/schema/meta/player_demand_matrix.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3501,
-      "snippet": "\"contracts/schemas/meta/profile.schema\","
+      "snippet": "\"contracts/schema/meta/profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3502,
-      "snippet": "\"contracts/schemas/meta/profile_binding.schema\","
+      "snippet": "\"contracts/schema/meta/profile_binding.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3503,
-      "snippet": "\"contracts/schemas/meta/provenance_classification.schema\","
+      "snippet": "\"contracts/schema/meta/provenance_classification.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3504,
-      "snippet": "\"contracts/schemas/meta/quantity_tolerance.schema\","
+      "snippet": "\"contracts/schema/meta/quantity_tolerance.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3505,
-      "snippet": "\"contracts/schemas/meta/real_world_affordance_matrix.schema\","
+      "snippet": "\"contracts/schema/meta/real_world_affordance_matrix.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3506,
-      "snippet": "\"contracts/schemas/meta/reference_evaluator.schema\","
+      "snippet": "\"contracts/schema/meta/reference_evaluator.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3507,
-      "snippet": "\"contracts/schemas/meta/reference_run_record.schema\","
+      "snippet": "\"contracts/schema/meta/reference_run_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3508,
-      "snippet": "\"contracts/schemas/meta/stability_marker.schema\","
+      "snippet": "\"contracts/schema/meta/stability_marker.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3509,
-      "snippet": "\"contracts/schemas/meta/tier_contract.schema\","
+      "snippet": "\"contracts/schema/meta/tier_contract.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3510,
-      "snippet": "\"contracts/schemas/meta/universal_identity_block.schema\","
+      "snippet": "\"contracts/schema/meta/universal_identity_block.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3511,
-      "snippet": "\"contracts/schemas/meta/validity_domain.schema\","
+      "snippet": "\"contracts/schema/meta/validity_domain.schema\","
     },
     {
       "classification": "unknown",
@@ -569,25 +569,25 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 11112,
-      "snippet": "\"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt\","
+      "snippet": "\"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 11113,
-      "snippet": "\"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256\","
+      "snippet": "\"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 11114,
-      "snippet": "\"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv\","
+      "snippet": "\"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 11115,
-      "snippet": "\"game/tests/tests/vectors/tlv/diag_bundle_meta/manifest.txt\","
+      "snippet": "\"tests/tests/game/vectors/tlv/diag_bundle_meta/manifest.txt\","
     },
     {
       "classification": "unknown",
@@ -893,25 +893,25 @@
       "classification": "unknown",
       "file": ".aide/repo/test-map.json",
       "line": 2603,
-      "snippet": "\"test_path\": \"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt\""
+      "snippet": "\"test_path\": \"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.expected.txt\""
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/test-map.json",
       "line": 2611,
-      "snippet": "\"test_path\": \"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256\""
+      "snippet": "\"test_path\": \"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.sha256\""
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/test-map.json",
       "line": 2619,
-      "snippet": "\"test_path\": \"game/tests/tests/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv\""
+      "snippet": "\"test_path\": \"tests/tests/game/vectors/tlv/diag_bundle_meta/bundle_meta_v1.tlv\""
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/test-map.json",
       "line": 2627,
-      "snippet": "\"test_path\": \"game/tests/tests/vectors/tlv/diag_bundle_meta/manifest.txt\""
+      "snippet": "\"test_path\": \"tests/tests/game/vectors/tlv/diag_bundle_meta/manifest.txt\""
     },
     {
       "classification": "unknown",
@@ -1763,13 +1763,13 @@
       "classification": "unknown",
       "file": ".github/copilot-instructions.md",
       "line": 57,
-      "snippet": "- generated roots under `build/`, `artifacts/`, `.xstack_cache/`, and `run_meta/` are evidence only"
+      "snippet": "- generated roots under `build/`, `archive/generated/artifacts/`, `.xstack_cache/`, and `run_meta/` are evidence only"
     },
     {
       "classification": "active_source",
       "file": "cmake/dominium_dist.cmake",
       "line": 198,
-      "snippet": "\"  dist/meta/* (metadata)\\n\""
+      "snippet": "\"  archive/generated/dist/meta/* (metadata)\\n\""
     },
     {
       "classification": "active_source",
@@ -1823,7 +1823,7 @@
       "classification": "active_source",
       "file": "cmake/dominium_dist_meta.cmake",
       "line": 109,
-      "snippet": "string(APPEND _rules_txt \"required_meta=dist/meta/{dist.json,targets.json,files.json,build.txt,ver.txt,hash.txt,rules.txt}\\n\")"
+      "snippet": "string(APPEND _rules_txt \"required_meta=archive/generated/dist/meta/{dist.json,targets.json,files.json,build.txt,ver.txt,hash.txt,rules.txt}\\n\")"
     },
     {
       "classification": "active_source",
@@ -1835,359 +1835,359 @@
       "classification": "unknown",
       "file": "contracts/distribution/layout.contract.toml",
       "line": 186,
-      "snippet": "root_paths = [\"dist/pkg/<platform>/<arch>/\", \"dist/sys/<platform>/<arch>/\", \"dist/sym/<platform>/<arch>/\", \"dist/meta/\", \"dist/cfg/\", \"dist/redist/\", \"dist/res/\"]"
+      "snippet": "root_paths = [\"archive/generated/dist/pkg/<platform>/<arch>/\", \"archive/generated/dist/sys/<platform>/<arch>/\", \"archive/generated/dist/sym/<platform>/<arch>/\", \"archive/generated/dist/meta/\", \"archive/generated/dist/cfg/\", \"archive/generated/dist/rearchive/generated/dist/\", \"archive/generated/dist/res/\"]"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/action_family.schema.json",
+      "file": "contracts/schema/action_family.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/ACTION_GRAMMAR_CONSTITUTION.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/action_template.schema.json",
+      "file": "contracts/schema/action_template.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/ACTION_GRAMMAR_CONSTITUTION.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compaction_marker.schema.json",
+      "file": "contracts/schema/compaction_marker.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/constitutive_model.schema.json",
+      "file": "contracts/schema/constitutive_model.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_resolution.schema.json",
+      "file": "contracts/schema/control_resolution.schema.json",
       "line": 127,
       "snippet": "\"decision_log_ref\": \"run_meta/control_decisions/control.log.abc.json\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/coupling_contract.schema.json",
+      "file": "contracts/schema/coupling_contract.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/coupling_contract.schema.json",
+      "file": "contracts/schema/coupling_contract.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/energy_ledger_entry.schema.json",
+      "file": "contracts/schema/energy_ledger_entry.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/entropy_contribution.schema.json",
+      "file": "contracts/schema/entropy_contribution.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/entropy_effect_policy.schema.json",
+      "file": "contracts/schema/entropy_effect_policy.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/entropy_state.schema.json",
+      "file": "contracts/schema/entropy_state.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/exception_event.schema.json",
+      "file": "contracts/schema/exception_event.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/explain_artifact.schema.json",
+      "file": "contracts/schema/explain_artifact.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/explain_artifact.schema.json",
+      "file": "contracts/schema/explain_artifact.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/explain_contract.schema.json",
+      "file": "contracts/schema/explain_contract.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/explain_contract.schema.json",
+      "file": "contracts/schema/explain_contract.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/fluid_network_policy.schema.json",
+      "file": "contracts/schema/fluid_network_policy.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/model_residual_policy.schema.json",
+      "file": "contracts/schema/model_residual_policy.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/pollution_field_policy.schema.json",
+      "file": "contracts/schema/pollution_field_policy.schema.json",
       "line": 8,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/provenance_classification.schema.json",
+      "file": "contracts/schema/provenance_classification.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/PROVENANCE_AND_COMPACTION_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/quantity_tolerance.schema.json",
+      "file": "contracts/schema/quantity_tolerance.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/tier_contract.schema.json",
+      "file": "contracts/schema/tier_contract.schema.json",
       "line": 7,
       "snippet": "\"docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/action_family.schema",
+      "file": "contracts/schema/meta/action_family.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/action_family.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/action_template.schema",
+      "file": "contracts/schema/meta/action_template.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/action_template.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/bundle_profile.schema",
+      "file": "contracts/schema/meta/bundle_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/bundle_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compaction_marker.schema",
+      "file": "contracts/schema/meta/compaction_marker.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compaction_marker.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compiled_model.schema",
+      "file": "contracts/schema/meta/compiled_model.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compiled_model.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compile_request.schema",
+      "file": "contracts/schema/meta/compile_request.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compile_request.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compile_result.schema",
+      "file": "contracts/schema/meta/compile_result.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compile_result.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compute_budget_profile.schema",
+      "file": "contracts/schema/meta/compute_budget_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compute_budget_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/compute_consumption_record.schema",
+      "file": "contracts/schema/meta/compute_consumption_record.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/compute_consumption_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/control_point.schema",
+      "file": "contracts/schema/meta/control_point.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/control_point.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/coupling_budget.schema",
+      "file": "contracts/schema/meta/coupling_budget.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/coupling_budget.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/coupling_contract.schema",
+      "file": "contracts/schema/meta/coupling_contract.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/coupling_contract.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/coupling_evaluation_record.schema",
+      "file": "contracts/schema/meta/coupling_evaluation_record.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/coupling_evaluation_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/coupling_relevance_policy.schema",
+      "file": "contracts/schema/meta/coupling_relevance_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/coupling_relevance_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/equivalence_proof.schema",
+      "file": "contracts/schema/meta/equivalence_proof.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/equivalence_proof.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/exception_event.schema",
+      "file": "contracts/schema/meta/exception_event.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/exception_event.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/experience_profile.schema",
+      "file": "contracts/schema/meta/experience_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/experience_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/explain_artifact.schema",
+      "file": "contracts/schema/meta/explain_artifact.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/explain_artifact.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/explain_contract.schema",
+      "file": "contracts/schema/meta/explain_contract.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/explain_contract.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/forensics_point.schema",
+      "file": "contracts/schema/meta/forensics_point.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/forensics_point.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/instrumentation_surface.schema",
+      "file": "contracts/schema/meta/instrumentation_surface.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/instrumentation_surface.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/measurement_point.schema",
+      "file": "contracts/schema/meta/measurement_point.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/measurement_point.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/model_residual_policy.schema",
+      "file": "contracts/schema/meta/model_residual_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/model_residual_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/observability_guarantee.schema",
+      "file": "contracts/schema/meta/observability_guarantee.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/observability_guarantee.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/parameter_bundle.schema",
+      "file": "contracts/schema/meta/parameter_bundle.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/parameter_bundle.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/player_demand_matrix.schema",
+      "file": "contracts/schema/meta/player_demand_matrix.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/player_demand_matrix.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/profile.schema",
+      "file": "contracts/schema/meta/profile.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/profile_binding.schema",
+      "file": "contracts/schema/meta/profile_binding.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/profile_binding.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/provenance_classification.schema",
+      "file": "contracts/schema/meta/provenance_classification.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/provenance_classification.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/quantity_tolerance.schema",
+      "file": "contracts/schema/meta/quantity_tolerance.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/quantity_tolerance.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/real_world_affordance_matrix.schema",
+      "file": "contracts/schema/meta/real_world_affordance_matrix.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/real_world_affordance_matrix.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/reference_evaluator.schema",
+      "file": "contracts/schema/meta/reference_evaluator.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/reference_evaluator.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/reference_run_record.schema",
+      "file": "contracts/schema/meta/reference_run_record.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/reference_run_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/stability_marker.schema",
+      "file": "contracts/schema/meta/stability_marker.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/stability_marker.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/tier_contract.schema",
+      "file": "contracts/schema/meta/tier_contract.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/tier_contract.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/universal_identity_block.schema",
+      "file": "contracts/schema/meta/universal_identity_block.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/universal_identity_block.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/meta/validity_domain.schema",
+      "file": "contracts/schema/meta/validity_domain.schema",
       "line": 1,
       "snippet": "SCHEMA: meta/validity_domain.schema"
     },
@@ -2195,7 +2195,7 @@
       "classification": "unknown",
       "file": "data/agents/agent_mirror_registry.json",
       "line": 62,
-      "snippet": "\"summary\": \"generated roots under build/, artifacts/, .xstack_cache/, and run_meta/ remain evidence only.\""
+      "snippet": "\"summary\": \"generated roots under build/, archive/generated/artifacts/, .xstack_cache/, and run_meta/ remain evidence only.\""
     },
     {
       "classification": "unknown",
@@ -2507,7 +2507,7 @@
       "classification": "unknown",
       "file": "data/planning/checkpoints/checkpoint_c_sigma0_phia1.json",
       "line": 146,
-      "snippet": "\"non_canonical_surface\": \"build/**, artifacts/**, .xstack_cache/**, run_meta/**\","
+      "snippet": "\"non_canonical_surface\": \"build/**, archive/generated/artifacts/**, .xstack_cache/**, run_meta/**\","
     },
     {
       "classification": "unknown",
@@ -2519,7 +2519,7 @@
       "classification": "unknown",
       "file": "data/planning/checkpoints/checkpoint_c_sigmaa1_phia2.json",
       "line": 150,
-      "snippet": "\"non_canonical_surface\": \"data/reality/**, data/planning/**, build/**, artifacts/**, .xstack_cache/**, run_meta/**\","
+      "snippet": "\"non_canonical_surface\": \"data/reality/**, data/planning/**, build/**, archive/generated/artifacts/**, .xstack_cache/**, run_meta/**\","
     },
     {
       "classification": "unknown",
@@ -2591,7 +2591,7 @@
       "classification": "unknown",
       "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "line": 972,
-      "snippet": "\"path\": \"build/, out/, .xstack_cache/, artifacts/, run_meta/, tmp/\","
+      "snippet": "\"path\": \"build/, out/, .xstack_cache/, archive/generated/artifacts/, run_meta/, tmp/\","
     },
     {
       "classification": "unknown",
@@ -2691,9 +2691,9 @@
     },
     {
       "classification": "docs",
-      "file": "dist/docs/readme.txt",
+      "file": "archive/generated/dist/docs/readme.txt",
       "line": 23,
-      "snippet": "dist/meta/* (metadata)"
+      "snippet": "archive/generated/dist/meta/* (metadata)"
     },
     {
       "classification": "docs",
@@ -3833,7 +3833,7 @@
       "classification": "docs",
       "file": "docs/audit/MOD_POLICY_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/geo/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine"
     },
     {
       "classification": "docs",
@@ -3917,7 +3917,7 @@
       "classification": "docs",
       "file": "docs/audit/PKG_IMPLEMENTATION_REPORT.md",
       "line": 30,
-      "snippet": "- Build manifest: `dist/meta/winnt/x86_64/build_manifest.json`"
+      "snippet": "- Build manifest: `archive/generated/dist/meta/winnt/x86_64/build_manifest.json`"
     },
     {
       "classification": "docs",
@@ -4085,7 +4085,7 @@
       "classification": "docs",
       "file": "docs/audit/SPECSHEET_BASELINE.md",
       "line": 139,
-      "snippet": "- command: `python tools/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root run_meta/auditx_spec1_final`"
+      "snippet": "- command: `python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root run_meta/auditx_spec1_final`"
     },
     {
       "classification": "docs",
@@ -4253,17 +4253,17 @@
       "classification": "docs",
       "file": "docs/ci/DIST_PKG_PIPELINE.md",
       "line": 40,
-      "snippet": "- Package index artifact under `dist/meta/<platform>/<arch>/`."
+      "snippet": "- Package index artifact under `archive/generated/dist/meta/<platform>/<arch>/`."
     },
     {
       "classification": "docs",
       "file": "docs/ci/DIST_PKG_PIPELINE.md",
       "line": 41,
-      "snippet": "- Build manifest under `dist/meta/build_manifest.json`."
+      "snippet": "- Build manifest under `archive/generated/dist/meta/build_manifest.json`."
     },
     {
       "classification": "docs",
-      "file": "docs/compat/DATA_FORMAT_VERSIONING.md",
+      "file": "docs/compatibility/DATA_FORMAT_VERSIONING.md",
       "line": 6,
       "snippet": "Compatibility: Bound to `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`."
     },
@@ -4283,13 +4283,13 @@
       "classification": "docs",
       "file": "docs/distribution/DIST_PLATFORM_DOCTRINE.md",
       "line": 18,
-      "snippet": "- `dist/meta/<platform>/<arch>/`: build metadata and package indexes."
+      "snippet": "- `archive/generated/dist/meta/<platform>/<arch>/`: build metadata and package indexes."
     },
     {
       "classification": "docs",
       "file": "docs/distribution/DIST_TREE_CONTRACT.md",
       "line": 29,
-      "snippet": "- `dist/meta/`: build metadata, package indexes, and manifest exports."
+      "snippet": "- `archive/generated/dist/meta/`: build metadata, package indexes, and manifest exports."
     },
     {
       "classification": "docs",
@@ -4301,7 +4301,7 @@
       "classification": "docs",
       "file": "docs/distribution/SYMBOLS_AND_PROVENANCE_LAYOUT.md",
       "line": 18,
-      "snippet": "- `dist/meta/` contains release manifests, package indexes, build metadata, checksums, signatures, provenance records, and verification reports."
+      "snippet": "- `archive/generated/dist/meta/` contains release manifests, package indexes, build metadata, checksums, signatures, provenance records, and verification reports."
     },
     {
       "classification": "docs",
@@ -4325,43 +4325,43 @@
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 261,
-      "snippet": "- `dist/meta/dist.json` (schema + build info)"
+      "snippet": "- `archive/generated/dist/meta/dist.json` (schema + build info)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 262,
-      "snippet": "- `dist/meta/targets.json` (active build tuple)"
+      "snippet": "- `archive/generated/dist/meta/targets.json` (active build tuple)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 263,
-      "snippet": "- `dist/meta/files.json` (path + size + sha256)"
+      "snippet": "- `archive/generated/dist/meta/files.json` (path + size + sha256)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 264,
-      "snippet": "- `dist/meta/hash.txt` (sha256 lines)"
+      "snippet": "- `archive/generated/dist/meta/hash.txt` (sha256 lines)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 265,
-      "snippet": "- `dist/meta/build.txt` (toolchain, generator, config)"
+      "snippet": "- `archive/generated/dist/meta/build.txt` (toolchain, generator, config)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 266,
-      "snippet": "- `dist/meta/ver.txt` (project version)"
+      "snippet": "- `archive/generated/dist/meta/ver.txt` (project version)"
     },
     {
       "classification": "docs",
       "file": "docs/guides/BUILD_DIST.md",
       "line": 267,
-      "snippet": "- `dist/meta/rules.txt` (layout/naming rules)"
+      "snippet": "- `archive/generated/dist/meta/rules.txt` (layout/naming rules)"
     },
     {
       "classification": "docs",
@@ -4485,7 +4485,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/net/ESPORTS_PROOF_ARTIFACTS.md",
+      "file": "docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md",
       "line": 71,
       "snippet": "python tools/net/tool_export_ranked_proof_bundle.py --run-meta saves/<save_id>/run_meta/<run_id>.json --out-dir build/net/proofs --out-prefix ranked_proof_bundle"
     },
@@ -4493,25 +4493,25 @@
       "classification": "docs",
       "file": "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
       "line": 5,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/geo/OVERLAY_"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/domains/geology/OVERLAY_"
     },
     {
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md",
       "line": 279,
-      "snippet": "- `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain non-canonical evidence only"
+      "snippet": "- `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain non-canonical evidence only"
     },
     {
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW.md",
       "line": 300,
-      "snippet": "- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless explicitly promoted by stronger doctrine"
+      "snippet": "- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless explicitly promoted by stronger doctrine"
     },
     {
       "classification": "docs",
       "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
       "line": 164,
-      "snippet": "- `build/**`, `artifacts/**`, `out/**`, `run_meta/**`, and `.xstack_cache/**` contain large generated or cached evidence surfaces"
+      "snippet": "- `build/**`, `archive/generated/artifacts/**`, `out/**`, `run_meta/**`, and `.xstack_cache/**` contain large generated or cached evidence surfaces"
     },
     {
       "classification": "docs",
@@ -4523,7 +4523,7 @@
       "classification": "docs",
       "file": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
       "line": 78,
-      "snippet": "| 8 | `generated_evidence_and_baselines` | `data/audit/**`, `data/baselines/**`, `artifacts/**`, `build/**`, `out/**`, `run_meta/**` | evidence of observed or generated state | derived unless explicitly promoted |"
+      "snippet": "| 8 | `generated_evidence_and_baselines` | `data/audit/**`, `data/baselines/**`, `archive/generated/artifacts/**`, `build/**`, `out/**`, `run_meta/**` | evidence of observed or generated state | derived unless explicitly promoted |"
     },
     {
       "classification": "docs",
@@ -4955,7 +4955,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.402c6af0d7498ef7.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md,"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md,"
     },
     {
       "classification": "docs",
@@ -5381,7 +5381,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.a3ff1b55d25b3a33.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, d"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, d"
     },
     {
       "classification": "docs",
@@ -5933,7 +5933,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.11dab82a401db4b3.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/me"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/me"
     },
     {
       "classification": "docs",
@@ -6611,7 +6611,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5456539f32c8d7ae.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, d"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, d"
     },
     {
       "classification": "docs",
@@ -7325,7 +7325,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.fd61a13acf79760f.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/meta/PROFILE_OVERRIDE_ARCHITECTURE.md, docs/release/"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/meta/PROFILE_OVERRIDE_ARCHITECTURE.md, docs/release/"
     },
     {
       "classification": "docs",
@@ -7335,7 +7335,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/render/RENDER_SNAPSHOT_ARTIFACTS.md",
+      "file": "docs/runtime/render/RENDER_SNAPSHOT_ARTIFACTS.md",
       "line": 49,
       "snippet": "1. `run_meta/render_snapshots/<snapshot_id>/`"
     },
@@ -7385,7 +7385,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 69,
-      "snippet": "`build/`, `dist/`, `out/`, `.xstack_cache/`, `artifacts/`, `run_meta/`, `tmp/`, `saves/`"
+      "snippet": "`build/`, `archive/generated/dist/`, `out/`, `.xstack_cache/`, `archive/generated/artifacts/`, `run_meta/`, `tmp/`, `saves/`"
     },
     {
       "classification": "docs",
@@ -7397,7 +7397,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 749,
-      "snippet": "`build/`, `out/`, `.xstack_cache/`, `artifacts/`, `run_meta/`, `tmp/`"
+      "snippet": "`build/`, `out/`, `.xstack_cache/`, `archive/generated/artifacts/`, `run_meta/`, `tmp/`"
     },
     {
       "classification": "docs",
@@ -7409,7 +7409,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -7463,25 +7463,25 @@
       "classification": "docs",
       "file": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
       "line": 156,
-      "snippet": "- generated evidence trees under `build/**`, `artifacts/**`, `.xstack_cache/**`, or `run_meta/**`"
+      "snippet": "- generated evidence trees under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, or `run_meta/**`"
     },
     {
       "classification": "docs",
       "file": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
       "line": 443,
-      "snippet": "- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless stronger doctrine explicitly promotes a specific emitted form"
+      "snippet": "- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless stronger doctrine explicitly promotes a specific emitted form"
     },
     {
       "classification": "docs",
       "file": "docs/runtime/LIFECYCLE_MANAGER.md",
       "line": 394,
-      "snippet": "- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains evidence only unless stronger doctrine explicitly promotes a specific form"
+      "snippet": "- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains evidence only unless stronger doctrine explicitly promotes a specific form"
     },
     {
       "classification": "docs",
       "file": "docs/runtime/STATE_EXTERNALIZATION.md",
       "line": 368,
-      "snippet": "- generated outputs under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain evidence only unless stronger doctrine promotes them"
+      "snippet": "- generated outputs under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain evidence only unless stronger doctrine promotes them"
     },
     {
       "classification": "docs",
@@ -7493,7 +7493,7 @@
       "classification": "docs",
       "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
       "line": 278,
-      "snippet": "- `build/**`, `out/**`, `artifacts/**`, `.xstack_cache/**`, `run_meta/**`, `tmp/**`, `archive/**`"
+      "snippet": "- `build/**`, `out/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, `run_meta/**`, `tmp/**`, `archive/**`"
     },
     {
       "classification": "active_source",
@@ -7503,13 +7503,13 @@
     },
     {
       "classification": "unknown",
-      "file": "game/domains/MANIFEST.md",
+      "file": "game/domain/MANIFEST.md",
       "line": 44,
       "snippet": "| `meta/` | meta | none | review | review | Left in place because it mixes meta, provenance, tooling, and contract-adjacent surfaces. |"
     },
     {
       "classification": "tests",
-      "file": "game/tests/tests/vectors/gen_tlv_vectors.py",
+      "file": "tests/tests/game/vectors/gen_tlv_vectors.py",
       "line": 625,
       "snippet": "# Diagnostics bundle meta/index (launcher)."
     },
@@ -7565,7 +7565,7 @@
       "classification": "tools",
       "file": "scripts/ci/check_repox_rules.py",
       "line": 2261,
-      "snippet": "if rel_norm.startswith(\"dist/pkg/\") or rel_norm.startswith(\"dist/meta/\"):"
+      "snippet": "if rel_norm.startswith(\"archive/generated/dist/pkg/\") or rel_norm.startswith(\"archive/generated/dist/meta/\"):"
     },
     {
       "classification": "tests",
@@ -7629,229 +7629,229 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e162_action_without_family_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e162_action_without_family_smell.py",
       "line": 129,
       "snippet": "\"docs/meta/ACTION_GRAMMAR_CONSTITUTION.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e176_affordance_gap_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e176_affordance_gap_smell.py",
       "line": 51,
       "snippet": "matrix_rel = \"data/meta/real_world_affordance_matrix.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e179_inline_response_curve_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e179_inline_response_curve_smell.py",
       "line": 102,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e179_inline_response_curve_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e179_inline_response_curve_smell.py",
       "line": 103,
       "snippet": "\"docs/meta/CONSTITUTIVE_MODEL_CATALOG.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e236_implicit_float_usage_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e236_implicit_float_usage_smell.py",
       "line": 22,
       "snippet": "\"src/meta/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e236_implicit_float_usage_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e236_implicit_float_usage_smell.py",
       "line": 30,
       "snippet": "\"meta/numeric.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e236_implicit_float_usage_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e236_implicit_float_usage_smell.py",
       "line": 78,
       "snippet": "related_paths=[rel_path, \"meta/numeric.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e238_direct_division_without_round_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e238_direct_division_without_round_smell.py",
       "line": 77,
       "snippet": "related_paths=[rel_path, \"meta/numeric.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e241_missing_compaction_marker_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e241_missing_compaction_marker_smell.py",
       "line": 20,
       "snippet": "\"meta/provenance/compaction_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e241_missing_compaction_marker_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e241_missing_compaction_marker_smell.py",
       "line": 22,
       "snippet": "\"tools/meta/tool_verify_replay_from_anchor.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e241_missing_compaction_marker_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e241_missing_compaction_marker_smell.py",
       "line": 25,
       "snippet": "_ENGINE_REL = \"meta/provenance/compaction_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e241_missing_compaction_marker_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e241_missing_compaction_marker_smell.py",
       "line": 27,
       "snippet": "_REPLAY_TOOL_REL = \"tools/meta/tool_verify_replay_from_anchor.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e278_custom_compilation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e278_custom_compilation_smell.py",
       "line": 31,
       "snippet": "compile_engine_rel = \"meta/compile/compile_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e278_custom_compilation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e278_custom_compilation_smell.py",
       "line": 86,
       "snippet": "_norm(\"tools/meta/tool_verify_compiled_model.py\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e279_missing_equivalence_proof_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e279_missing_equivalence_proof_smell.py",
       "line": 30,
       "snippet": "compile_engine_rel = \"meta/compile/compile_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e279_missing_equivalence_proof_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e279_missing_equivalence_proof_smell.py",
       "line": 33,
-      "snippet": "schema_rel = \"contracts/schemas/meta/equivalence_proof.schema\""
+      "snippet": "schema_rel = \"contracts/schema/meta/equivalence_proof.schema\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e300_orphan_feature_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e300_orphan_feature_smell.py",
       "line": 20,
       "snippet": "PLAYER_DEMAND_MATRIX_REL = \"data/meta/player_demand_matrix.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e301_missing_reference_evaluator_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e301_missing_reference_evaluator_smell.py",
       "line": 23,
       "snippet": "\"meta/reference/reference_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e301_missing_reference_evaluator_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e301_missing_reference_evaluator_smell.py",
       "line": 24,
       "snippet": "\"tools/meta/tool_run_reference_suite.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e302_omniscient_readout_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e302_omniscient_readout_smell.py",
       "line": 13,
       "snippet": "TARGET_REL = \"meta/instrumentation/instrumentation_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e304_silent_override_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e304_silent_override_smell.py",
       "line": 34,
       "snippet": "profile_engine_rel = \"meta/profile/profile_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e305_unmetered_loop_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e305_unmetered_loop_smell.py",
       "line": 35,
       "snippet": "\"meta/compute/compute_budget_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e305_unmetered_loop_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e305_unmetered_loop_smell.py",
       "line": 37,
       "snippet": "\"meta/compile/compile_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e305_unmetered_loop_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e305_unmetered_loop_smell.py",
       "line": 66,
       "snippet": "\"meta/compile/compile_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e305_unmetered_loop_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e305_unmetered_loop_smell.py",
       "line": 97,
       "snippet": "compute_engine_rel = \"meta/compute/compute_budget_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e306_silent_throttle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e306_silent_throttle_smell.py",
       "line": 34,
       "snippet": "compute_engine_rel = \"meta/compute/compute_budget_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e306_silent_throttle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e306_silent_throttle_smell.py",
       "line": 89,
       "snippet": "\"meta/compile/compile_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e389_missing_contract_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e389_missing_contract_bundle_smell.py",
       "line": 28,
       "snippet": "\"docs/meta/UNIVERSE_CONTRACT_BUNDLE.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e390_contract_mismatch_not_refused_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e390_contract_mismatch_not_refused_smell.py",
       "line": 28,
       "snippet": "\"docs/meta/UNIVERSE_CONTRACT_BUNDLE.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e391_bare_extension_key_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e391_bare_extension_key_smell.py",
       "line": 14,
       "snippet": "WRAPPER_REL = \"meta/extensions/extensions_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e391_bare_extension_key_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e391_bare_extension_key_smell.py",
       "line": 15,
       "snippet": "DOC_REL = \"docs/meta/EXTENSION_DISCIPLINE.md\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e391_bare_extension_key_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e391_bare_extension_key_smell.py",
       "line": 16,
       "snippet": "MIGRATION_DOC_REL = \"docs/meta/EXTENSION_MIGRATION_NOTES.md\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e392_undeclared_extension_interpretation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e392_undeclared_extension_interpretation_smell.py",
       "line": 16,
       "snippet": "DOC_REL = \"docs/meta/EXTENSION_DISCIPLINE.md\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e51_render_snapshot_misclassified_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e51_render_snapshot_misclassified_smell.py",
       "line": 118,
       "snippet": "evidence=[\"No deterministic derived storage anchor found (run_meta/render_snapshots).\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e521_missing_identity_block_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e521_missing_identity_block_smell.py",
       "line": 47,
       "snippet": "related_paths=[rel_path or \"meta/identity/identity_validator.py\", \"tools/meta/identity_common.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e522_identity_kind_mismatch_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e522_identity_kind_mismatch_smell.py",
       "line": 36,
       "snippet": "file_path=rel_path or \"meta/identity/identity_validator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e522_identity_kind_mismatch_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e522_identity_kind_mismatch_smell.py",
       "line": 44,
       "snippet": "related_paths=[rel_path or \"meta/identity/identity_validator.py\", \"docs/meta/UNIVERSAL_IDENTITY_MODEL.md\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e530_missing_guaranteed_log_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e530_missing_guaranteed_log_smell.py",
       "line": 43,
       "snippet": "related_paths=[rel_path or \"data/registries/observability_guarantee_registry.json\", \"tools/meta/observability_common.py\"],"
     },
@@ -7901,13 +7901,13 @@
       "classification": "tools",
       "file": "tools/review/doc_inventory_common.py",
       "line": 320,
-      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/worldgen/\", \"docs/geo/\", \"docs/logic/\", \"docs/appshell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compat/\", \"docs/net/\", \"d"
+      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/domains/worldgen/\", \"docs/domains/geology/\", \"docs/logic/\", \"docs/runtime/shell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compatibility/\", \"docs/runtime/network/\", \"d"
     },
     {
       "classification": "tools",
       "file": "tools/review/repo_inventory_common.py",
       "line": 431,
-      "snippet": "if rel_norm.startswith((\"game/domains/processes/\", \"game/domains/systems/\", \"src/meta/provenance/\", \"src/diag/\")):"
+      "snippet": "if rel_norm.startswith((\"game/domain/processes/\", \"game/domain/systems/\", \"src/meta/provenance/\", \"src/diag/\")):"
     },
     {
       "classification": "tools",
@@ -7955,7 +7955,7 @@
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_action_template_schema_allows_constitutive_models.py",
       "line": 21,
-      "snippet": "textual_rel = \"contracts/schemas/meta/action_template.schema\""
+      "snippet": "textual_rel = \"contracts/schema/meta/action_template.schema\""
     },
     {
       "classification": "tests",
@@ -7985,25 +7985,25 @@
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_instrumentation_surface_schema_valid.py",
       "line": 33,
-      "snippet": "\"contracts/schemas/meta/instrumentation_surface.schema\","
+      "snippet": "\"contracts/schema/meta/instrumentation_surface.schema\","
     },
     {
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_instrumentation_surface_schema_valid.py",
       "line": 37,
-      "snippet": "\"contracts/schemas/meta/control_point.schema\","
+      "snippet": "\"contracts/schema/meta/control_point.schema\","
     },
     {
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_instrumentation_surface_schema_valid.py",
       "line": 41,
-      "snippet": "\"contracts/schemas/meta/measurement_point.schema\","
+      "snippet": "\"contracts/schema/meta/measurement_point.schema\","
     },
     {
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_instrumentation_surface_schema_valid.py",
       "line": 45,
-      "snippet": "\"contracts/schemas/meta/forensics_point.schema\","
+      "snippet": "\"contracts/schema/meta/forensics_point.schema\","
     },
     {
       "classification": "tests",
@@ -8027,7 +8027,7 @@
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_player_demand_matrix_schema_valid.py",
       "line": 86,
-      "snippet": "schema_rel = \"contracts/schemas/meta/player_demand_matrix.schema\""
+      "snippet": "schema_rel = \"contracts/schema/meta/player_demand_matrix.schema\""
     },
     {
       "classification": "tests",

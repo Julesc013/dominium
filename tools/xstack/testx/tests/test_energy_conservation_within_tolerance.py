@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.physics.energy.energy_ledger_engine import record_energy_transformation
+    from game.domain.physics.energy.energy_ledger_engine import record_energy_transformation
 
     transformation_rows = [
         {

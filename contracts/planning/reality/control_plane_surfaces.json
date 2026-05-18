@@ -1,0 +1,204 @@
+{
+  "artifact_id": "P-1.control_plane_surfaces",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Entries are sorted by path ascending.",
+    "This inventory records release/control surfaces without resolving final ownership.",
+    "Generated evidence surfaces remain visible but non-authoritative unless explicitly promoted."
+  ],
+  "entries": [
+    {
+      "name": "ci workflow",
+      "path": ".github/workflows/ci.yml",
+      "surface_kind": "repo_ci_entrypoint",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Runs repo-sanity, xstack FAST/STRICT/FULL lanes, docs sanity, projection sanity, and build-test jobs."
+    },
+    {
+      "name": "archive support",
+      "path": "archive",
+      "surface_kind": "archive_policy_and_bundle_support",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Small live implementation root for archive-related behavior."
+    },
+    {
+      "name": "architecture registries",
+      "path": "data/architecture",
+      "surface_kind": "component_graph_and_structure_lock_data",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains architecture_graph, module_registry, module_dependency_graph, and repository_structure_lock."
+    },
+    {
+      "name": "pack data manifests",
+      "path": "data/packs",
+      "surface_kind": "pack_manifest_and_content_declaration_surface",
+      "status_class": "authoritative",
+      "canonicality_assessment": "transitional",
+      "confidence": "medium",
+      "notes": "Contains pack.toml, pack.manifest, and pack_manifest.json alongside content data."
+    },
+    {
+      "name": "registry layer",
+      "path": "data/registries",
+      "surface_kind": "policy_registry_and_control_data",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Large machine-readable control surface including compat, component, policy, and process registries."
+    },
+    {
+      "name": "governance docs",
+      "path": "docs/governance",
+      "surface_kind": "governance_and_prompt_firewall_docs",
+      "status_class": "advisory",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Contains semantic escalation, audit promotion, mode governance, and related policy prose."
+    },
+    {
+      "name": "release doctrine docs",
+      "path": "docs/release",
+      "surface_kind": "release_and_distribution_constitution_docs",
+      "status_class": "advisory",
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Scoped doctrine source for release semantics; authority is conditional per P-0."
+    },
+    {
+      "name": "governance runtime",
+      "path": "governance",
+      "surface_kind": "runtime_governance_profile",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Code-level governance surface distinct from docs/governance."
+    },
+    {
+      "name": "pack runtime manifests",
+      "path": "packs",
+      "surface_kind": "pack_runtime_compat_and_trust_surface",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains pack.json, pack.compat.json, pack.capabilities.json, and pack.trust.json families."
+    },
+    {
+      "name": "release implementation",
+      "path": "release",
+      "surface_kind": "release_update_archive_and_component_resolution_code",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains build-id, archive policy, component graph, release manifest, and update resolver code."
+    },
+    {
+      "name": "repo policy",
+      "path": "repo",
+      "surface_kind": "repo_policy_canon_state_and_repox_rules",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains release_policy.toml, canon_state.json, and repox rulesets."
+    },
+    {
+      "name": "security trust",
+      "path": "security/trust",
+      "surface_kind": "trust_verification_and_license_capability",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "medium",
+      "notes": "Live trust-verification surface."
+    },
+    {
+      "name": "compatx tooling",
+      "path": "tools/compatx",
+      "surface_kind": "compatibility_validation_and_migration_tooling",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains schema diff, semantic contract validation, pack compatibility, and save/replay validation tooling."
+    },
+    {
+      "name": "controlx tooling",
+      "path": "tools/controlx",
+      "surface_kind": "control_plane_operator_tooling",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains execution router, prompt parser, queue runner, and workspace manager tooling."
+    },
+    {
+      "name": "distribution tooling",
+      "path": "tools/distribution",
+      "surface_kind": "packaging_distribution_and_smoke_tooling",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains build manifest, package index, pack discover, verify, and smoke helpers."
+    },
+    {
+      "name": "release tooling",
+      "path": "tools/release",
+      "surface_kind": "release_operator_tooling",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Concrete tooling layer for archive, component graph, release identity, and update flows."
+    },
+    {
+      "name": "securex tooling",
+      "path": "tools/securex",
+      "surface_kind": "security_and_integrity_tooling",
+      "status_class": "authoritative",
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Contains trust model, pack signature, and integrity manifest tooling."
+    },
+    {
+      "name": "xstack umbrella",
+      "path": "tools/xstack",
+      "surface_kind": "umbrella_ci_repox_testx_and_packaging_system",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains auditx, ci, compatx, controlx, packagingx, repox, securex, sessionx, and testx surfaces plus out/** results."
+    },
+    {
+      "name": "channel manifests",
+      "path": "updates",
+      "surface_kind": "release_channel_and_changelog_manifests",
+      "status_class": "authoritative",
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains stable, beta, nightly, pinned, and changelog manifests."
+    }
+  ],
+  "derived_or_non_authoritative_echoes": [
+    {
+      "path": "artifacts",
+      "classification": "derived",
+      "note": "Contains emitted reports and toolchain runs."
+    },
+    {
+      "path": "build",
+      "classification": "derived",
+      "note": "Contains generated release, validation, and schema echo trees."
+    },
+    {
+      "path": "run_meta",
+      "classification": "derived",
+      "note": "Generated runtime metadata surface."
+    }
+  ]
+}

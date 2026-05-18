@@ -28,6 +28,6 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 - Trust policy data: `contracts/registry/trust_policy.json`
 - Privilege role data: `contracts/registry/security_roles.json`
-- SecureX validator: `tools/securex/securex.py`
+- SecureX validator: `tools/xstack/securex/securex.py`
 - RepoX checks: secure trust-policy, privilege, and supply-chain invariants
 - TestX checks: signature, boundary, privilege, and reproducible-build tests

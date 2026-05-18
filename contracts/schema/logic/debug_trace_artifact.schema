@@ -1,0 +1,26 @@
+SCHEMA: logic/debug_trace_artifact.schema
+schema_id: dominium.schema.logic.debug_trace_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic derived LOGIC trace artifacts for replay and compactable observation.
+- Capture bounded sampled values over a declared window.
+
+NON-SEMANTICS:
+- This schema does not classify the artifact as canonical truth.
+- It does not grant access to hidden state outside declared measurement points.
+
+REQUIRED SHAPE:
+record logic_debug_trace_artifact
+  required:
+    - trace_id: id
+    - request_id: id
+    - samples: list<map>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Trace artifacts are derived and compactable.
+- `samples` must remain bounded by the resolved sampling policy.
+- Sample order must be deterministic by tick, then measurement point.

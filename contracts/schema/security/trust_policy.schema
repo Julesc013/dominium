@@ -1,0 +1,22 @@
+SCHEMA: security/trust_policy.schema
+schema_id: dominium.schema.security.trust_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one deterministic offline trust policy for releases, packs, and update verification.
+
+REQUIRED SHAPE:
+record trust_policy
+  required:
+    - trust_policy_id: id
+    - require_signatures_for: [id]
+    - allow_unsigned_for: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- signature requirements are evaluated after mandatory content-hash verification.
+- trust policy ids are stable; policy contents may evolve under governance.
+- deterministic_fingerprint is computed from canonical serialized content.
+

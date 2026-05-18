@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Mobility Edge Kind Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic mobility edge-kind registry output.",
+  "x-doc-ref": [
+    "docs/mobility/MOBILITY_NETWORKGRAPH.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "edge_kinds",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "edge_kinds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "schema_version",
+          "edge_kind_id",
+          "schema_ref",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "edge_kind_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "schema_ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "edge_kinds": [],
+      "registry_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84"
+    }
+  ]
+}

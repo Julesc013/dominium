@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative next-order handoff after the final repo-structure review checkpoint; downstream of the repo-structure series packets and the pre-relayout decision checkpoint
 Replacement Target: later first-slice execution receipt or explicit replacement checkpoint after RMS-001 execution
-Binding Sources: `docs/repo/CHECKPOINT_C_REPO_MEGA_STRUCTURE_REVIEW.md`, `content/data/repo/checkpoint_c_repo_mega_structure_review.json`, `docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md`, `content/data/repo/repo_phased_migration_shims_validation_and_rollback.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`
+Binding Sources: `docs/repo/CHECKPOINT_C_REPO_MEGA_STRUCTURE_REVIEW.md`, `archive/generated/repo/checkpoint_c_repo_mega_structure_review.json`, `docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md`, `archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`
 
 # Next Execution Order Post Repo Structure Review
 
@@ -30,7 +30,7 @@ Scope note:
 1. parse all touched JSON mirrors
 2. confirm prose and machine-readable mirrors still align to live root names, ownership claims, and canonical wrapper precedence
 3. run `git diff --check`
-4. run `python tools/validation/tool_run_validation.py --profile FAST`
+4. run `python tools/validators/suite/tool_run_validation.py --profile FAST`
 5. verify that no runtime, entrypoint, manifest, or path-resolution code was touched; if any was, stop and reclassify the work
 6. roll back immediately if ambiguity increased or `FAST` regressed
 

@@ -13,7 +13,7 @@ This document explains the generated move map. The map is a planning artifact: i
 
 ## CONVERGE-09 Note
 
-CONVERGE-09 completed the safe portion of the domain-root split by moving pure Python domain implementation roots under `game/domains/`. Mixed review roots remain for later inspection; blocking validation remains CONVERGE-10.
+CONVERGE-09 completed the safe portion of the domain-root split by moving pure Python domain implementation roots under `game/domain/`. Mixed review roots remain for later inspection; blocking validation remains CONVERGE-10.
 
 Future migration sequence:
 
@@ -29,7 +29,7 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 - Product roots must remain thin after migration.
 - Runtime roots must not own simulation truth.
 - Distribution/install/media layouts are projections handled by CONVERGE-04.
-- `dist/`, `build/`, `out/`, package caches, staging directories, media payloads, and runtime stores must not be confused with source ownership roots.
+- `archive/generated/dist/`, `build/`, `out/`, package caches, staging directories, media payloads, and runtime stores must not be confused with source ownership roots.
 
 ## Planning Table
 
@@ -43,17 +43,17 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `.gitignore` | `.gitignore` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `.vscode` | `.vscode` | `retain_metadata` | `false` | `false` | `not_started` | `none` | `low` | Allowed metadata/config root. |
 | `AGENTS.md` | `AGENTS.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
-| `app` | `runtime/app` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level app/ moved under runtime/app/. |
+| `app` | `runtime/app` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level app/ moved under runtime/shell/lifecycle/. |
 | `apps` | `apps` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Thin product entrypoints and product composition surfaces. |
-| `appshell` | `runtime/appshell` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level appshell/ moved under runtime/appshell/. |
+| `appshell` | `runtime/appshell` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level appshell/ moved under runtime/shell/. |
 | `archive` | `archive` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Historical, superseded, quarantined, generated-evidence, and legacy material retained with provenance. |
 | `artifacts` | `generated evidence or release artifact review` | `ignore_generated` | `false` | `false` | `not_started` | `review` | `review` | Review before using as authority. |
-| `astro` | `game/domains/astronomy` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level astro/ implementation moved under game/domains/astronomy/. No schemas, registries, content data, or docs were found in that root during the... |
+| `astro` | `game/domain/astronomy` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level astro/ implementation moved under game/domain/astronomy/. No schemas, registries, content data, or docs were found in that root during the... |
 | `attic` | `archive/historical/attic` | `archive` | `false` | `false` | `completed` | `CONVERGE-05` | `low` | Completed in CONVERGE-05; root-level attic/ moved under archive/historical/attic/. |
 | `audio` | `runtime/audio` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/audio/. |
 | `bundles` | `content_or_exports_review` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Authored bundles and generated exports require separate handling. |
 | `CHANGELOG.md` | `CHANGELOG.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
-| `chem` | `game/domains/chemistry` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level chem/ implementation moved under game/domains/chemistry/. No schemas, registries, content data, or docs were found in that root during the s... |
+| `chem` | `game/domain/chemistry` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level chem/ implementation moved under game/domain/chemistry/. No schemas, registries, content data, or docs were found in that root during the s... |
 | `CLAUDE.md` | `CLAUDE.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `client` | `apps/client` | `move` | `false` | `false` | `completed` | `CONVERGE-08` | `medium` | Completed in CONVERGE-08; root-level client/ moved under apps/client/. |
 | `cmake` | `cmake` | `keep` | `false` | `false` | `not_started` | `none` | `low` | CMake modules and build configuration helpers. |
@@ -69,41 +69,41 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `data` | `content_or_runtime_store_review` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Data contains registries, content, planning mirrors, and generated evidence; split by authority. |
 | `diag` | `runtime/diagnostics` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level diag/ moved under runtime/diagnostics/. |
 | `diagnostics` | `runtime/diagnostics` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/diagnostics/. |
-| `diegetics` | `game/domains/diegetics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level diegetics/ implementation moved under game/domains/diegetics/. No schemas, registries, content data, or docs were found in that root during... |
+| `diegetics` | `game/domain/diegetics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level diegetics/ implementation moved under game/domain/diegetics/. No schemas, registries, content data, or docs were found in that root during... |
 | `dist` | `generated distribution output; future distribution contract review` | `ignore_generated` | `false` | `false` | `not_started` | `review` | `review` | Distribution output is governed by distribution contracts, not source repo layout. |
 | `docs` | `docs` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Human-readable doctrine, guides, audits, and explanatory material. |
 | `DOMINIUM.md` | `DOMINIUM.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
-| `electric` | `game/domains/electricity` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level electric/ implementation moved under game/domains/electricity/. No schemas, registries, content data, or docs were found in that root during... |
-| `embodiment` | `game/domains/embodiment` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level embodiment/ implementation moved under game/domains/embodiment/. No schemas, registries, content data, or docs were found in that root durin... |
+| `electric` | `game/domain/electricity` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level electric/ implementation moved under game/domain/electricity/. No schemas, registries, content data, or docs were found in that root during... |
+| `embodiment` | `game/domain/embodiment` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level embodiment/ implementation moved under game/domain/embodiment/. No schemas, registries, content data, or docs were found in that root durin... |
 | `engine` | `engine` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Deterministic Domino substrate and public engine contracts. |
-| `epistemics` | `game/domains/epistemics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level epistemics/ implementation moved under game/domains/epistemics/. No schemas, registries, content data, or docs were found in that root durin... |
-| `field` | `game/domains/fields/from_root_field` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level field/ implementation moved under game/domains/fields/from_root_field/. No schemas, registries, content data, or docs were found in that roo... |
-| `fields` | `game/domains/fields` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level fields/ implementation moved under game/domains/fields/. No schemas, registries, content data, or docs were found in that root during the sa... |
-| `fluid` | `game/domains/fluids` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level fluid/ implementation moved under game/domains/fluids/. No schemas, registries, content data, or docs were found in that root during the saf... |
+| `epistemics` | `game/domain/epistemics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level epistemics/ implementation moved under game/domain/epistemics/. No schemas, registries, content data, or docs were found in that root durin... |
+| `field` | `game/domain/fields/from_root_field` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level field/ implementation moved under game/domain/fields/from_root_field/. No schemas, registries, content data, or docs were found in that roo... |
+| `fields` | `game/domain/fields` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level fields/ implementation moved under game/domain/fields/. No schemas, registries, content data, or docs were found in that root during the sa... |
+| `fluid` | `game/domain/fluids` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level fluid/ implementation moved under game/domain/fluids/. No schemas, registries, content data, or docs were found in that root during the saf... |
 | `game` | `game` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Dominium rules, domain process semantics, and authoritative game meaning. |
-| `geo` | `game/domains/geology` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level geo/ implementation moved under game/domains/geology/. No schemas, registries, content data, or docs were found in that root during the safe... |
+| `geo` | `game/domain/geology` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level geo/ implementation moved under game/domain/geology/. No schemas, registries, content data, or docs were found in that root during the safe... |
 | `governance` | `docs/governance` | `review` | `false` | `false` | `review` | `review` | `review` | Governance mirrors must not compete with AGENTS.md or canon. |
 | `GOVERNANCE.md` | `GOVERNANCE.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `ide` | `cmake_or_tools_review` | `review` | `false` | `false` | `review` | `review` | `review` | IDE projections may belong under cmake, tools, or generated evidence depending on role. |
-| `infrastructure` | `game/domains/infrastructure` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level infrastructure/ implementation moved under game/domains/infrastructure/. No schemas, registries, content data, or docs were found in that ro... |
+| `infrastructure` | `game/domain/infrastructure` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level infrastructure/ implementation moved under game/domain/infrastructure/. No schemas, registries, content data, or docs were found in that ro... |
 | `input` | `runtime/input` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/input/. |
-| `inspection` | `game/domains/inspection` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level inspection/ implementation moved under game/domains/inspection/. No schemas, registries, content data, or docs were found in that root durin... |
-| `interaction` | `game/domains/interaction` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interaction/ implementation moved under game/domains/interaction/. No schemas, registries, content data, or docs were found in that root dur... |
-| `interior` | `game/domains/interior` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interior/ implementation moved under game/domains/interior/. No schemas, registries, content data, or docs were found in that root during th... |
+| `inspection` | `game/domain/inspection` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level inspection/ implementation moved under game/domain/inspection/. No schemas, registries, content data, or docs were found in that root durin... |
+| `interaction` | `game/domain/interaction` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interaction/ implementation moved under game/domain/interaction/. No schemas, registries, content data, or docs were found in that root dur... |
+| `interior` | `game/domain/interior` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level interior/ implementation moved under game/domain/interior/. No schemas, registries, content data, or docs were found in that root during th... |
 | `launcher` | `apps/launcher` | `move` | `false` | `false` | `completed` | `CONVERGE-08` | `medium` | Completed in CONVERGE-08; root-level launcher/ moved under apps/launcher/. |
 | `legacy` | `archive/legacy` | `archive` | `false` | `false` | `completed` | `CONVERGE-05` | `low` | Completed in CONVERGE-05; root-level legacy/ moved under archive/legacy/. |
 | `lib` | `review` | `review` | `false` | `true` | `review` | `CONVERGE-06` | `review` | Do not classify by name alone; inspect ownership first. |
 | `libs` | `review` | `review` | `false` | `true` | `review` | `CONVERGE-06` | `review` | Do not classify by name alone; inspect ownership first. |
 | `LICENSE.md` | `LICENSE.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `locks` | `contracts/locks_or_store_locks_review` | `review` | `true` | `true` | `review` | `CONVERGE-06` | `review` | Root-level locks/ remains review because it contains concrete deterministic pack lock artifacts, not only lockfile schemas. |
-| `logic` | `game/domains/logic` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level logic/ implementation moved under game/domains/logic/. No schemas, registries, content data, or docs were found in that root during the safe... |
-| `logistics` | `game/domains/logistics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level logistics/ implementation moved under game/domains/logistics/. No schemas, registries, content data, or docs were found in that root during... |
-| `machines` | `game/domains/machines` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level machines/ implementation moved under game/domains/machines/. No schemas, registries, content data, or docs were found in that root during th... |
-| `materials` | `game/domains/materials` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level materials/ implementation moved under game/domains/materials/. No schemas, registries, content data, or docs were found in that root during... |
-| `mechanics` | `game/domains/mechanics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mechanics/ implementation moved under game/domains/mechanics/. No schemas, registries, content data, or docs were found in that root during... |
+| `logic` | `game/domain/logic` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level logic/ implementation moved under game/domain/logic/. No schemas, registries, content data, or docs were found in that root during the safe... |
+| `logistics` | `game/domain/logistics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level logistics/ implementation moved under game/domain/logistics/. No schemas, registries, content data, or docs were found in that root during... |
+| `machines` | `game/domain/machines` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level machines/ implementation moved under game/domain/machines/. No schemas, registries, content data, or docs were found in that root during th... |
+| `materials` | `game/domain/materials` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level materials/ implementation moved under game/domain/materials/. No schemas, registries, content data, or docs were found in that root during... |
+| `mechanics` | `game/domain/mechanics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mechanics/ implementation moved under game/domain/mechanics/. No schemas, registries, content data, or docs were found in that root during... |
 | `meta` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | Meta surfaces require ownership review. |
 | `meta_extensions_engine.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
-| `mobility` | `game/domains/mobility` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mobility/ implementation moved under game/domains/mobility/. No schemas, registries, content data, or docs were found in that root during th... |
+| `mobility` | `game/domain/mobility` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level mobility/ implementation moved under game/domain/mobility/. No schemas, registries, content data, or docs were found in that root during th... |
 | `modding` | `content/modding` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Modding may include content, contracts, and docs. |
 | `MODDING.md` | `MODDING.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `models` | `content/models` | `move` | `false` | `false` | `not_started` | `CONVERGE-09` | `medium` | Model data should be distinguished from generated or runtime state. |
@@ -112,42 +112,42 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `numeric_discipline.py` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `packs` | `content/packs` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Current runtime pack substrate; pack ownership split remains review-sensitive. |
 | `performance` | `tools/performance` | `review` | `false` | `false` | `review` | `review` | `review` | Performance tooling and evidence should stay tool/evidence scoped. |
-| `physics` | `game/domains/physics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level physics/ implementation moved under game/domains/physics/. No schemas, registries, content data, or docs were found in that root during the... |
+| `physics` | `game/domain/physics` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level physics/ implementation moved under game/domain/physics/. No schemas, registries, content data, or docs were found in that root during the... |
 | `platform` | `runtime/platform` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/platform/. |
-| `pollution` | `game/domains/pollution` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level pollution/ implementation moved under game/domains/pollution/. No schemas, registries, content data, or docs were found in that root during... |
-| `process` | `game/domains/processes` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level process/ implementation moved under game/domains/processes/. No schemas, registries, content data, or docs were found in that root during th... |
+| `pollution` | `game/domain/pollution` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level pollution/ implementation moved under game/domain/pollution/. No schemas, registries, content data, or docs were found in that root during... |
+| `process` | `game/domain/processes` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level process/ implementation moved under game/domain/processes/. No schemas, registries, content data, or docs were found in that root during th... |
 | `profiles` | `content/profiles` | `move` | `false` | `false` | `not_started` | `CONVERGE-09` | `medium` | Profile data belongs under content unless runtime-store evidence proves otherwise. |
 | `quarantine` | `archive/quarantine` | `archive` | `false` | `false` | `completed` | `CONVERGE-05` | `low` | Completed in CONVERGE-05; root-level quarantine/ moved under archive/quarantine/. |
 | `README.md` | `README.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
-| `reality` | `game/domains/reality` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level reality/ implementation moved under game/domains/reality/. No schemas, registries, content data, or docs were found in that root during the... |
-| `registries` | `contracts/registries` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-06` | `low` | Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/. |
-| `registry` | `contracts/registries` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-06` | `low` | Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/. |
+| `reality` | `game/domain/reality` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level reality/ implementation moved under game/domain/reality/. No schemas, registries, content data, or docs were found in that root during the... |
+| `registries` | `contracts/registries` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-06` | `low` | Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registry/. |
+| `registry` | `contracts/registries` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-06` | `low` | Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registry/. |
 | `release` | `release` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Release definitions, package recipes, matrices, signing metadata, and release policy inputs. |
 | `render` | `runtime/render` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/render/. |
 | `repo` | `split_to_contracts_docs_tools` | `split` | `true` | `true` | `not_started` | `CONVERGE-06` | `high` | Do not add new authority here; split later into contracts/repo, docs/repo, or tools/migration. |
 | `runtime` | `runtime` | `keep` | `false` | `false` | `not_started` | `none` | `medium` | Runtime host, AppShell, platform, render, input, audio, network, storage, diagnostics, and UI adapters. Present canonical target root; inspect contents before treating adjacent... |
 | `safety` | `contracts/safety` | `split` | `true` | `false` | `not_started` | `CONVERGE-06` | `high` | Safety policy belongs under contracts or docs depending on authority. |
-| `schema` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schema/ moved under contracts/schemas/. |
-| `schemas` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schemas/ merged under contracts/schemas/. |
+| `schema` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/. |
+| `schemas` | `contracts/schemas` | `merge` | `false` | `false` | `completed` | `CONVERGE-06` | `medium` | Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/. |
 | `scripts` | `scripts` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Developer workflow scripts and repository automation entrypoints. |
 | `security` | `contracts/security` | `split` | `true` | `false` | `not_started` | `CONVERGE-06` | `high` | Security and trust surfaces are protected and review-sensitive. |
 | `SECURITY.md` | `SECURITY.md` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `server` | `apps/server` | `move` | `false` | `false` | `completed` | `CONVERGE-08` | `medium` | Completed in CONVERGE-08; root-level server/ moved under apps/server/. |
 | `setup` | `apps/setup` | `move` | `false` | `false` | `completed` | `CONVERGE-08` | `medium` | Completed in CONVERGE-08; root-level setup/ moved under apps/setup/. |
-| `signals` | `game/domains/signals` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level signals/ implementation moved under game/domains/signals/. No schemas, registries, content data, or docs were found in that root during the... |
+| `signals` | `game/domain/signals` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level signals/ implementation moved under game/domain/signals/. No schemas, registries, content data, or docs were found in that root during the... |
 | `sitecustomize.py` | `sitecustomize.py` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `specs` | `contracts/specs` | `split` | `true` | `false` | `not_started` | `CONVERGE-06` | `high` | Normative specs must retain authority; reality specs remain canonical over data projections. |
 | `storage` | `runtime/storage` | `review_absent` | `false` | `false` | `completed` | `CONVERGE-07` | `low` | Confirmed absent in CONVERGE-07; future source material belongs under runtime/storage/. |
-| `system` | `game/domains/systems` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level system/ implementation moved under game/domains/systems/. No schemas, registries, content data, or docs were found in that root during the s... |
+| `system` | `game/domain/systems` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level system/ implementation moved under game/domain/systems/. No schemas, registries, content data, or docs were found in that root during the s... |
 | `templates` | `content/templates` | `split` | `true` | `false` | `not_started` | `CONVERGE-09` | `high` | Templates may be authored content, contracts, or generated inputs. |
 | `tests` | `tests` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Test suites, determinism checks, fixtures, and verification evidence inputs. |
-| `thermal` | `game/domains/thermal` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level thermal/ implementation moved under game/domains/thermal/. No schemas, registries, content data, or docs were found in that root during the... |
+| `thermal` | `game/domain/thermal` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level thermal/ implementation moved under game/domain/thermal/. No schemas, registries, content data, or docs were found in that root during the... |
 | `tool_ui_bind.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `tool_ui_doc_annotate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `tool_ui_validate.cmd` | `review` | `review` | `false` | `false` | `review` | `review` | `review` | No matching root classification in layout contract. |
 | `tools` | `tools` | `keep` | `false` | `false` | `not_started` | `none` | `low` | Developer, validation, migration, CI, code generation, review, and audit tools. |
 | `ui` | `runtime/ui` | `move` | `false` | `false` | `completed` | `CONVERGE-07` | `medium` | Completed in CONVERGE-07; root-level ui/ moved under runtime/ui/. |
-| `universe` | `game/domains/universe` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level universe/ implementation moved under game/domains/universe/. No schemas, registries, content data, or docs were found in that root during th... |
+| `universe` | `game/domain/universe` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level universe/ implementation moved under game/domain/universe/. No schemas, registries, content data, or docs were found in that root during th... |
 | `updates` | `release_or_ops_review` | `split` | `true` | `false` | `not_started` | `review` | `high` | Update metadata belongs to release/control-plane ownership after review. |
 | `validation` | `tools/validation` | `review` | `false` | `false` | `review` | `review` | `review` | Validation tooling belongs under tools unless it is contract law. |
 | `VERSION_CLIENT` | `VERSION_CLIENT` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
@@ -158,7 +158,7 @@ Distribution, install, media, portable-store, package-cache, bundle, and runtime
 | `VERSION_SETUP` | `VERSION_SETUP` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `VERSION_SUITE` | `VERSION_SUITE` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
 | `VERSION_TOOLS` | `VERSION_TOOLS` | `retain_file` | `false` | `false` | `not_started` | `none` | `low` | Allowed root file. |
-| `worldgen` | `game/domains/worldgen` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level worldgen/ implementation moved under game/domains/worldgen/. No schemas, registries, content data, or docs were found in that root during th... |
+| `worldgen` | `game/domain/worldgen` | `split` | `true` | `false` | `completed` | `CONVERGE-09` | `medium` | Completed in CONVERGE-09; root-level worldgen/ implementation moved under game/domain/worldgen/. No schemas, registries, content data, or docs were found in that root during th... |
 
 ## CONVERGE-10 Enforcement Note
 
@@ -203,8 +203,8 @@ POST-CONVERGE-01 removed ignored, untracked generated/cache roots `.xstack_cache
 
 The active generated/output move-map review surface is now:
 
-- `artifacts/`: active review, tracked toolchain-run provenance.
-- `dist/`: active review, tracked distribution projection files.
+- `archive/generated/artifacts/`: active review, tracked toolchain-run provenance.
+- `archive/generated/dist/`: active review, tracked distribution projection files.
 
 No source roots were moved, and no product, runtime, domain, contract, or support-matrix semantics changed.
 

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shipment Commitment Schema",
+  "version": "1.0.0",
+  "description": "Canonical shipment commitment declaration.",
+  "x-doc-ref": [
+    "docs/materials/MANIFESTS_AND_SHIPMENTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "commitment_id",
+    "manifest_id",
+    "actor_subject_id",
+    "created_tick",
+    "status",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "commitment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "scheduled",
+        "executing",
+        "completed",
+        "failed"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "commitment_id": "commitment.shipment.example",
+      "manifest_id": "manifest.example",
+      "actor_subject_id": "institution.example",
+      "created_tick": 20,
+      "status": "planned",
+      "extensions": {}
+    }
+  ]
+}

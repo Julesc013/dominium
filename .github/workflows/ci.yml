@@ -260,7 +260,7 @@ jobs:
         run: python setup/packages/scripts/ci/launcher_cli_smoke_matrix.py --build-dir build/${{ matrix.name }}
 
       - name: Support bundle determinism (crash bundle generation)
-        run: python setup/packages/scripts/ci/test_support_bundle_determinism.py --out-dir build/${{ matrix.name }}/ci_artifacts/support_bundle
+        run: python setup/packages/scripts/ci/test_support_bundle_determinism.py --out-dir build/${{ matrix.name }}/ci_archive/generated/artifacts/support_bundle
 
       - name: Upload test artifacts
         if: always()

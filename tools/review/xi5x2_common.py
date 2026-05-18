@@ -31,27 +31,27 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
-XI5A_EXECUTION_LOG_REL = "content/data/restructure/xi5a_execution_log.json"
-XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "content/data/restructure/xi5a_postmove_residual_src_report.json"
+XI5A_EXECUTION_LOG_REL = "archive/generated/restructure/xi5a_execution_log.json"
+XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "archive/generated/restructure/xi5a_postmove_residual_src_report.json"
 
 XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
-XI5X1_CLASSIFICATION_LOCK_REL = "content/data/restructure/xi5x1_residual_classification_lock.json"
-XI5X1_BATCH_PLAN_REL = "content/data/restructure/xi5x1_batch_plan.json"
-XI5X1_EXECUTION_LOG_REL = "content/data/restructure/xi5x1_execution_log.json"
-XI5X1_POSTMOVE_RESIDUAL_REPORT_REL = "content/data/restructure/xi5x1_postmove_residual_src_report.json"
-XI5X1_XI6_GATE_MODEL_REL = "content/data/restructure/xi5x1_xi6_gate_model.json"
+XI5X1_CLASSIFICATION_LOCK_REL = "archive/generated/restructure/xi5x1_residual_classification_lock.json"
+XI5X1_BATCH_PLAN_REL = "archive/generated/restructure/xi5x1_batch_plan.json"
+XI5X1_EXECUTION_LOG_REL = "archive/generated/restructure/xi5x1_execution_log.json"
+XI5X1_POSTMOVE_RESIDUAL_REPORT_REL = "archive/generated/restructure/xi5x1_postmove_residual_src_report.json"
+XI5X1_XI6_GATE_MODEL_REL = "archive/generated/restructure/xi5x1_xi6_gate_model.json"
 
-XI5X2_CLASSIFICATION_LOCK_REL = "content/data/restructure/xi5x2_residual_classification_lock.json"
-XI5X2_BATCH_PLAN_REL = "content/data/restructure/xi5x2_batch_plan.json"
-XI5X2_EXECUTION_LOG_REL = "content/data/restructure/xi5x2_execution_log.json"
-XI5X2_POSTMOVE_RESIDUAL_REPORT_REL = "content/data/restructure/xi5x2_postmove_residual_src_report.json"
-XI5X2_REALITY_REFRESH_REL = "content/data/restructure/xi5x2_residual_reality_refresh.json"
+XI5X2_CLASSIFICATION_LOCK_REL = "archive/generated/restructure/xi5x2_residual_classification_lock.json"
+XI5X2_BATCH_PLAN_REL = "archive/generated/restructure/xi5x2_batch_plan.json"
+XI5X2_EXECUTION_LOG_REL = "archive/generated/restructure/xi5x2_execution_log.json"
+XI5X2_POSTMOVE_RESIDUAL_REPORT_REL = "archive/generated/restructure/xi5x2_postmove_residual_src_report.json"
+XI5X2_REALITY_REFRESH_REL = "archive/generated/restructure/xi5x2_residual_reality_refresh.json"
 XI5X2_SOURCE_POCKET_POLICY_REL = "contracts/restructure/xi5x2_source_pocket_policy.json"
-XI5X2_BLOCKED_PRECONDITIONS_REL = "content/data/restructure/xi5x2_blocked_preconditions.json"
-XI5X2_MANUAL_REVIEW_QUEUE_REL = "content/data/restructure/xi5x2_manual_review_queue.json"
-XI5X2_PLATFORM_ADAPTER_REVIEW_REL = "content/data/restructure/xi5x2_platform_adapter_review.json"
-XI5X2_XI6_GATE_MODEL_REL = "content/data/restructure/xi5x2_xi6_gate_model.json"
-XI5X2_BLOCKER_DELTA_REL = "content/data/restructure/xi5x2_blocker_delta.json"
+XI5X2_BLOCKED_PRECONDITIONS_REL = "archive/generated/restructure/xi5x2_blocked_preconditions.json"
+XI5X2_MANUAL_REVIEW_QUEUE_REL = "archive/generated/restructure/xi5x2_manual_review_queue.json"
+XI5X2_PLATFORM_ADAPTER_REVIEW_REL = "archive/generated/restructure/xi5x2_platform_adapter_review.json"
+XI5X2_XI6_GATE_MODEL_REL = "archive/generated/restructure/xi5x2_xi6_gate_model.json"
+XI5X2_BLOCKER_DELTA_REL = "archive/generated/restructure/xi5x2_blocker_delta.json"
 
 XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
 XI_5X2_REALITY_REFRESH_DOC_REL = "docs/audit/XI_5X2_REALITY_REFRESH.md"
@@ -71,16 +71,16 @@ XI_5X2_BATCH_PLAN_DOC_REL = "docs/restructure/XI_5X2_BATCH_PLAN.md"
 XI_5X2_RESIDUAL_DECISIONS_DOC_REL = "docs/restructure/XI_5X2_RESIDUAL_DECISIONS.md"
 XI_5X2_XI6_READINESS_DOC_REL = "docs/restructure/XI_5X2_XI6_READINESS.md"
 
-VALIDATION_FAST_REL = "content/data/audit/validation_report_FAST.json"
-VALIDATION_STRICT_REL = "content/data/audit/validation_report_STRICT.json"
-ARCH_AUDIT2_REL = "content/data/audit/arch_audit2_report.json"
-WORLDGEN_LOCK_VERIFY_REL = "content/data/audit/worldgen_lock_verify.json"
+VALIDATION_FAST_REL = "archive/generated/audit/validation_report_FAST.json"
+VALIDATION_STRICT_REL = "archive/generated/audit/validation_report_STRICT.json"
+ARCH_AUDIT2_REL = "archive/generated/audit/arch_audit2_report.json"
+WORLDGEN_LOCK_VERIFY_REL = "archive/generated/audit/worldgen_lock_verify.json"
 BASELINE_UNIVERSE_VERIFY_REL = "tests/fixtures/audit/baseline_universe_verify.json"
-GAMEPLAY_VERIFY_REL = "content/data/audit/gameplay_verify.json"
-DISASTER_SUITE_RUN_REL = "content/data/audit/disaster_suite_run.json"
-ECOSYSTEM_VERIFY_RUN_REL = "content/data/audit/ecosystem_verify_run.json"
-UPDATE_SIM_RUN_REL = "content/data/audit/update_sim_run.json"
-TRUST_STRICT_RUN_REL = "content/data/audit/trust_strict_run.json"
+GAMEPLAY_VERIFY_REL = "archive/generated/audit/gameplay_verify.json"
+DISASTER_SUITE_RUN_REL = "archive/generated/audit/disaster_suite_run.json"
+ECOSYSTEM_VERIFY_RUN_REL = "archive/generated/audit/ecosystem_verify_run.json"
+UPDATE_SIM_RUN_REL = "archive/generated/audit/update_sim_run.json"
+TRUST_STRICT_RUN_REL = "archive/generated/audit/trust_strict_run.json"
 
 SOURCE_ROOTS = (
     "src",
@@ -177,12 +177,12 @@ def _required_inputs() -> tuple[str, ...]:
         XI5X1_EXECUTION_LOG_REL,
         XI5X1_POSTMOVE_RESIDUAL_REPORT_REL,
         XI5X1_XI6_GATE_MODEL_REL,
-        "content/data/architecture/architecture_graph.json",
+        "archive/generated/architecture/architecture_graph.json",
         "contracts/registry/architecture/module_registry.json",
-        "content/data/architecture/module_dependency_graph.json",
-        "content/data/audit/build_graph.json",
-        "content/data/audit/include_graph.json",
-        "content/data/audit/symbol_index.json",
+        "archive/generated/architecture/module_dependency_graph.json",
+        "archive/generated/audit/build_graph.json",
+        "archive/generated/audit/include_graph.json",
+        "archive/generated/audit/symbol_index.json",
         "docs/canon/constitution_v1.md",
         "docs/canon/glossary_v1.md",
         "AGENTS.md",
@@ -409,7 +409,7 @@ def _evidence_refs(source_path: str, prior_classification: str) -> list[str]:
         refs.extend(
             [
                 "docs/architecture/deterministic_packaging.md",
-                "docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
+                "docs/domains/worldgen/REAL_DATA_IMPORT_PIPELINE.md",
                 "tools/data/tool_srtm_import.py",
                 "tools/data/tool_spice_import.py",
                 "tools/xstack/testx/tests/test_srtm_import_determinism.py",
@@ -1793,7 +1793,7 @@ def _render_content_source_policy_report(source_pocket_policy: Mapping[str, obje
         "## Rationale",
         "",
         "- `docs/architecture/deterministic_packaging.md` excludes `packs/source/*` from default dist output unless a bundle explicitly selects it.",
-        "- `docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md` states that runtime reads derived packs only while source packs are upstream import inputs.",
+        "- `docs/domains/worldgen/REAL_DATA_IMPORT_PIPELINE.md` states that runtime reads derived packs only while source packs are upstream import inputs.",
         "- import tools and determinism tests still consume `packs/source` directly for reproducible raw-data ingestion.",
     ]
     return "\n".join(lines) + "\n"

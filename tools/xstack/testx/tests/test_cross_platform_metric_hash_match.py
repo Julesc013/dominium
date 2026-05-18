@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.geo.tool_verify_metric_stability import verify_metric_stability
+    from tools.validators.domain.geology.tool_verify_metric_stability import verify_metric_stability
 
     first = verify_metric_stability()
     second = verify_metric_stability()

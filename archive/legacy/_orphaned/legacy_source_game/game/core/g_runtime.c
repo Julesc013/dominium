@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/g_runtime.c
+FILE: source/dominium/game/rule/g_runtime.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/g_runtime
+LAYER / SUBSYSTEM: Dominium impl / game/rule/g_runtime
 RESPONSIBILITY: Implements `g_runtime`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Astronomy Catalog Index Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic astronomy object/frame/search index output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/architecture/astronomy_catalogs.md",
+    "schemas/astronomy_catalog_entry.schema.json",
+    "schemas/reference_frame.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "entries",
+    "reference_frames",
+    "search_index",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "object_id",
+          "kind",
+          "parent_id",
+          "frame_id",
+          "physical_params",
+          "bounds",
+          "search_keys",
+          "pack_id",
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "object_id": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "frame_id": {
+            "type": "string"
+          },
+          "physical_params": {
+            "type": "object"
+          },
+          "orbit_params": {
+            "type": "object"
+          },
+          "bounds": {
+            "type": "object",
+            "required": [
+              "kind"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "type": "string"
+              },
+              "sphere_radius_mm": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          },
+          "search_keys": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reference_frames": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "frame_id",
+          "parent_frame_id",
+          "transform",
+          "semantics",
+          "pack_id",
+          "path"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "frame_id": {
+            "type": "string"
+          },
+          "parent_frame_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "transform": {
+            "type": "object"
+          },
+          "semantics": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "search_index": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "entries": [],
+      "reference_frames": [],
+      "search_index": {},
+      "registry_hash": "2078f71095f6e2c299f2cb6b4d211f36dc9c866b4ecf16de0a6df95d8bf68b38"
+    }
+  ]
+}

@@ -183,12 +183,12 @@ not_runtime_store_layout = true
 rules = ["Source repo roots do not imply install roots.", "Distribution and runtime projections are governed by this contract."]
 
 [projections.dist_output]
-root_paths = ["dist/pkg/<platform>/<arch>/", "dist/sys/<platform>/<arch>/", "dist/sym/<platform>/<arch>/", "dist/meta/", "dist/cfg/", "dist/redist/", "dist/res/"]
-rules = ["dist/pkg ships package artifacts.", "dist/sys is a realized install projection for local or CI flows.", "dist/sym is a separate symbols channel.", "dist/meta carries build metadata, indexes, manifests, checksums, and signatures.", "dist is generated output unless explicitly tracked by exception.", "Symbols are never merged into runtime payload packages."]
+root_paths = ["archive/generated/dist/pkg/<platform>/<arch>/", "archive/generated/dist/sys/<platform>/<arch>/", "archive/generated/dist/sym/<platform>/<arch>/", "archive/generated/dist/meta/", "archive/generated/dist/cfg/", "archive/generated/dist/rearchive/generated/dist/", "archive/generated/dist/res/"]
+rules = ["archive/generated/dist/pkg ships package artifacts.", "archive/generated/dist/sys is a realized install projection for local or CI flows.", "archive/generated/dist/sym is a separate symbols channel.", "archive/generated/dist/meta carries build metadata, indexes, manifests, checksums, and signatures.", "dist is generated output unless explicitly tracked by exception.", "Symbols are never merged into runtime payload packages."]
 
 [projections.compressed_archive]
 root_pattern = "Dominium-<version>-<platform>-<arch>/"
-paths = ["install.manifest.json", "semantic_contract_registry.json", "release.manifest.json", "README.txt", "LICENSES/", "NOTICE.txt", "bin/", "descriptors/", "store/", "instances/", "saves/", "exports/", "logs/", "runtime/", "cache/", "ops/", "docs/", "redist/"]
+paths = ["install.manifest.json", "semantic_contract_registry.json", "release.manifest.json", "README.txt", "LICENSES/", "NOTICE.txt", "bin/", "descriptors/", "store/", "instances/", "saves/", "exports/", "logs/", "runtime/", "cache/", "ops/", "docs/", "rearchive/generated/dist/"]
 rules = ["Extraction must produce a valid portable install.", "Archive manifests must be present.", "Portable mode requires no second install step."]
 
 [projections.portable_install]
@@ -206,7 +206,7 @@ rules = ["Headless operation must not require GUI roots.", "Server install prese
 
 [projections.media_layout]
 root_pattern = "DOMINIUM_MEDIA/"
-paths = ["media.manifest.json", "release.manifest.json", "package.index.json", "checksums.sha256", "signatures/", "README_FIRST.txt", "LICENSES/", "packages/<platform>/<arch>/", "portable/<platform>/<arch>/", "bootstrap/<platform>/", "docs/", "redist/", "symbols/", "source/", "writable_template/"]
+paths = ["media.manifest.json", "release.manifest.json", "package.index.json", "checksums.sha256", "signatures/", "README_FIRST.txt", "LICENSES/", "packages/<platform>/<arch>/", "portable/<platform>/<arch>/", "bootstrap/<platform>/", "docs/", "rearchive/generated/dist/", "symbols/", "source/", "writable_template/"]
 rules = ["Media payload is read-only by default.", "Writable roots must be selected, copied, or projected externally.", "Media may include packages, portable projections, bootstrap setup, docs, redist, symbols, and source archive.", "Runtime must not assume it can write to media."]
 
 [projections.package_export]
@@ -223,7 +223,7 @@ paths = ["cache/packages/", "cache/indexes/", "cache/verify/", "cache/staging/",
 rules = ["Partial downloads never appear as valid packages.", "Cache entries are keyed by content hash.", "Staging is setup-owned.", "Rollback is projection/lockfile based, not ad hoc copying."]
 
 [projections.symbols_and_provenance]
-rules = ["Symbols remain separate from runtime payload.", "Build provenance and manifests live in dist/meta or release metadata.", "Checksums and signatures are explicit.", "Debug packages may exist separately.", "Release identity is manifest-driven."]
+rules = ["Symbols remain separate from runtime payload.", "Build provenance and manifests live in archive/generated/dist/meta or release metadata.", "Checksums and signatures are explicit.", "Debug packages may exist separately.", "Release identity is manifest-driven."]
 
 [platform_ids]
 allowed = ["winnt", "win9x", "win16", "dos", "macosx", "macclassic", "linux", "android", "ios", "web"]

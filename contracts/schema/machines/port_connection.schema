@@ -1,0 +1,24 @@
+SCHEMA: machines/port_connection.schema
+schema_id: dominium.schema.machines.port_connection
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic links between ports and ports/logistics nodes.
+
+REQUIRED SHAPE:
+record port_connection
+  required:
+    - schema_version: semver
+    - connection_id: id
+    - from_port_id: id
+    - to_port_id: optional_id
+    - logistics_node_id: optional_id
+    - connection_kind: enum(direct|pipe|wire|hose)
+    - created_tick: int
+    - active: bool
+    - extensions: map
+
+INVARIANTS:
+- Exactly one of to_port_id or logistics_node_id should be present.
+- connection_id must be deterministic for equivalent endpoints.

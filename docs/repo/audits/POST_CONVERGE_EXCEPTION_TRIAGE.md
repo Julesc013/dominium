@@ -22,7 +22,7 @@ Superseded By: none
 | `xstack_cache_root` | `.xstack_cache` | directory | review | ignored local cache or evidence review | inspect generated evidence, ignore or relocate policy-backed evidence | FAST writes here. Do not delete before provenance review. |
 | `artifacts_root` | `artifacts` | directory | review | generated evidence or release/artifact policy exception | classify tracked evidence vs generated residue | Release-adjacent provenance may matter. |
 | `build_root` | `build` | directory | low | ignored generated build output | remove/ignore after confirming no tracked source | Likely quick retire. |
-| `dist_root` | `dist` | directory | medium | generated distribution output or explicit release exception | inspect for generated package output; preserve intentional release evidence | `dist/` is not source authority. |
+| `dist_root` | `dist` | directory | medium | generated distribution output or explicit release exception | inspect for generated package output; preserve intentional release evidence | `archive/generated/dist/` is not source authority. |
 | `out_root` | `out` | directory | low | ignored generated build output | remove/ignore after confirming no tracked source | Likely quick retire. |
 
 ### Batch 2 - Root Wrapper / Tooling / Governance Cleanup

@@ -15,14 +15,14 @@ It is enforceable and merge-blocking.
 
 - Rendering must remain modular, multi-backend, and deterministic with respect to simulation.
 - Rendering MUST NOT influence authoritative simulation state or hashes.
-- Rendering backends are owned by `engine/render/**` only.
+- Rendering backends are owned by `runtime/render/**` only.
 
 ## Immutable Directory Law
 
-`engine/render/` is the canonical, immutable root for all rendering code.
+`runtime/render/` is the canonical, immutable root for all rendering code.
 
 ```
-engine/render/
+runtime/render/
 ├─ core/
 ├─ graph/
 ├─ features/
@@ -117,6 +117,6 @@ Users MUST NOT select:
 
 - Rendering backends under `client/` are FORBIDDEN.
 - Renderer selection by API name in UI is FORBIDDEN.
-- Backend-specific branching outside `engine/render/**` is FORBIDDEN.
+- Backend-specific branching outside `runtime/render/**` is FORBIDDEN.
 - Legacy backends introducing new abstractions is FORBIDDEN.
 - Continuous runtime shader compilation on UI thread is FORBIDDEN.

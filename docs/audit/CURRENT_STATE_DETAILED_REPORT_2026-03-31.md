@@ -74,7 +74,7 @@ High-level status:
 - single canonical semantic engines are frozen and enforced
 - XStack CI guardrails are wired in and passing on the latest committed strict report
 - repository structure is frozen
-- dist/archive verification is passing in the latest Xi-8 evidence
+- archive/generated/dist/archive verification is passing in the latest Xi-8 evidence
 - the Pi planning layer has been restarted and re-grounded on the current frozen Xi state
 
 Current headline verdict:
@@ -371,11 +371,11 @@ Current provisional modules:
 
 - `apps.client.interaction`
 - `apps.client.local_server`
-- `apps.client.net`
-- `apps.client.ui`
+- `runtime.network.client`
+- `runtime.ui.client`
 - `apps.server`
-- `apps.server.net`
-- `apps.server.runtime`
+- `runtime.network.server`
+- `runtime.shell.server`
 - `appshell.commands`
 - `appshell.supervisor`
 - `diag`

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vehicle Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-3 vehicle assembly row.",
+  "x-doc-ref": [
+    "docs/mobility/VEHICLE_MODEL.md",
+    "docs/audit/VEHICLE_MODEL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "vehicle_id",
+    "vehicle_class_id",
+    "spatial_id",
+    "spec_ids",
+    "port_ids",
+    "pose_slot_ids",
+    "mount_point_ids",
+    "motion_state_ref",
+    "hazard_ids",
+    "maintenance_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_structure_instance_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "vehicle_class_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "spec_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "capability_bindings": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "port_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "interior_graph_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "pose_slot_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "mount_point_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "motion_state_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hazard_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "maintenance_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "vehicle.demo.001",
+      "parent_structure_instance_id": "assembly.structure_instance.demo.001",
+      "vehicle_class_id": "veh.road_car_stub",
+      "spatial_id": "spatial.world.demo",
+      "spec_ids": [
+        "spec.vehicle.interface.demo.v1"
+      ],
+      "capability_bindings": {},
+      "port_ids": [
+        "port.demo.fuel"
+      ],
+      "interior_graph_id": "interior.graph.demo",
+      "pose_slot_ids": [
+        "pose.slot.demo.driver"
+      ],
+      "mount_point_ids": [
+        "mount.point.demo.coupler"
+      ],
+      "motion_state_ref": "motion_state.vehicle.demo.001",
+      "hazard_ids": [],
+      "maintenance_policy_id": "maintenance.policy.default",
+      "deterministic_fingerprint": "0ca26193d8f390d089bf5ffb195ce20f5508c64f1302e027532f4cd8a8ea5d3e",
+      "extensions": {}
+    }
+  ]
+}

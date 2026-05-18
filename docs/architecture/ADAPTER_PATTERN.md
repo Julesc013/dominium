@@ -16,7 +16,7 @@ Adapters allow deterministic, incremental migration from deprecated interfaces t
 - Adapter direction is one-way: old interface -> new canonical implementation.
 - Adapters must not introduce new behavior.
 - Adapters must preserve deterministic ordering and refusal semantics.
-- Adapters must be temporary and listed in `content/data/governance/deprecations.json`.
+- Adapters must be temporary and listed in `contracts/governance/deprecations.json`.
 
 ## Required Adapter Structure
 - Old surface contract (input shape and validation)
@@ -33,7 +33,7 @@ Adapters allow deterministic, incremental migration from deprecated interfaces t
   - `status`
 
 ## Allowed Adapter Access
-- Adapter files explicitly listed in `content/data/governance/deprecations.json` may reference `legacy/` or `quarantine/`.
+- Adapter files explicitly listed in `contracts/governance/deprecations.json` may reference `legacy/` or `quarantine/`.
 - All other paths are refused by enforcement.
 
 ## Removal

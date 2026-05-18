@@ -24,7 +24,7 @@
     "parse all touched JSON mirrors",
     "confirm prose and machine-readable mirrors still align to live root names, ownership claims, and canonical wrapper precedence",
     "run git diff --check",
-    "run python tools/validation/tool_run_validation.py --profile FAST",
+    "run python tools/validators/suite/tool_run_validation.py --profile FAST",
     "verify that no runtime, entrypoint, manifest, or path-resolution code was touched; if any was, stop and reclassify the work",
     "roll back immediately if ambiguity increased or FAST regressed"
   ],

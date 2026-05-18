@@ -139,8 +139,8 @@ Before substantive work, agents must consult the relevant authoritative repo art
 - `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
 - `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`
 - the relevant `Λ` semantic constitution artifacts under `specs/reality/` and `data/reality/`
-- `content/data/planning/final_prompt_inventory.json`
-- `content/data/planning/dependency_graph_post_pi.json`
+- `contracts/planning/final_prompt_inventory.json`
+- `contracts/planning/dependency_graph_post_pi.json`
 
 Task-specific additions are mandatory when scope expands:
 
@@ -206,7 +206,7 @@ Protected or caution-heavy zones include:
 - `schema/**`
 - `docs/release/**`
 - `release/**`, `repo/**`, `updates/**`, `security/**`
-- generated echoes under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**`
+- generated echoes under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**`
 
 Protected does not mean untouchable. It means explicit scope, review awareness, and provenance discipline are required.
 

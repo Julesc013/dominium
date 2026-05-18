@@ -12,26 +12,26 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `game/tests/tests/contract/dominium_contract_tests.cpp`
+- Canonical Candidate: `tests/tests/game/contract/dominium_contract_tests.cpp`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `game/tests/tests/contract/dominium_contract_tests.cpp`
-- `game/tests/tests/setup/test_cli_golden.cpp`
+- `tests/tests/game/contract/dominium_contract_tests.cpp`
+- `tests/tests/game/setup/test_cli_golden.cpp`
 - `tools/mod_builder/dom_mod_builder_controller.cpp`
-- `tools/save_inspector/dom_save_inspector_controller.cpp`
-- `tools/tool_editor/tool_editor_main_win32.cpp`
-- `tools/ui_preview_host/common/ui_preview_common.cpp`
+- `apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp`
+- `apps/workbench/module/tool/editor/tool_editor_main_win32.cpp`
+- `apps/workbench/module/ui/preview/support/ui_preview_common.cpp`
 
 ## Scorecard
 
-- `game/tests/tests/contract/dominium_contract_tests.cpp` disposition=`canonical` rank=`1` total_score=`74.68` risk=`HIGH`
-- `tools/ui_preview_host/common/ui_preview_common.cpp` disposition=`quarantine` rank=`2` total_score=`70.81` risk=`HIGH`
-- `tools/tool_editor/tool_editor_main_win32.cpp` disposition=`drop` rank=`3` total_score=`59.43` risk=`HIGH`
-- `game/tests/tests/setup/test_cli_golden.cpp` disposition=`merge` rank=`4` total_score=`58.57` risk=`HIGH`
-- `tools/save_inspector/dom_save_inspector_controller.cpp` disposition=`drop` rank=`5` total_score=`55.16` risk=`HIGH`
+- `tests/tests/game/contract/dominium_contract_tests.cpp` disposition=`canonical` rank=`1` total_score=`74.68` risk=`HIGH`
+- `apps/workbench/module/ui/preview/support/ui_preview_common.cpp` disposition=`quarantine` rank=`2` total_score=`70.81` risk=`HIGH`
+- `apps/workbench/module/tool/editor/tool_editor_main_win32.cpp` disposition=`drop` rank=`3` total_score=`59.43` risk=`HIGH`
+- `tests/tests/game/setup/test_cli_golden.cpp` disposition=`merge` rank=`4` total_score=`58.57` risk=`HIGH`
+- `apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp` disposition=`drop` rank=`5` total_score=`55.16` risk=`HIGH`
 - `tools/mod_builder/dom_mod_builder_controller.cpp` disposition=`drop` rank=`6` total_score=`53.23` risk=`HIGH`
 
 ## Usage Sites
@@ -46,7 +46,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -18,12 +18,12 @@
     {
       "unit_or_token": "unit.mass_energy.stub",
       "classification": "valid_unit_missing_registry_declaration",
-      "source": "contracts/schemas/quantity.schema.json"
+      "source": "contracts/schema/quantity.schema.json"
     },
     {
       "unit_or_token": "unit.schema",
       "classification": "false_positive_path_fragment",
-      "source": "contracts/schemas/materials/unit.schema"
+      "source": "contracts/schema/materials/unit.schema"
     }
   ],
   "changes_made": [

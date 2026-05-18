@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Platform + Renderer Backends Baseline (RND-3)
 
-Date: 2026-02-26  
+Date: 2026-02-26
 Status: Baseline complete (platform layer, hardware backend minimum viable, deterministic fallback)
 
 ## 1) Platform Modules
@@ -88,7 +88,7 @@ Deterministic selection behavior:
 1. RepoX PASS
    - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
 2. AuditX run
-   - `py -3 tools/auditx/auditx.py scan --repo-root . --format json`
+   - `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --format json`
 3. TestX PASS (RND-3 backend/platform subset)
    - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset testx.render.platform_layer_compiles_on_targets,testx.render.backend_selection_fallback,testx.render.renderer_truth_isolation_hardware,testx.render.renderer_truth_isolation`
 4. strict build PASS

@@ -67,7 +67,7 @@ AuditX additions:
 
 ## 5) Shard Rules
 
-Shard doctrine documented in `docs/physics/FIELD_SHARD_RULES.md`:
+Shard doctrine documented in `docs/domains/physics/FIELD_SHARD_RULES.md`:
 
 - no direct cross-shard field reads/writes
 - boundary artifact exchange only

@@ -12,15 +12,15 @@
 
 ## Purpose
 
-This gate exists because `ide/manifests/**` is machine-readable IDE projection metadata, not passive documentation. MOVE-FAMILY-00B-PLAN proposed moving the remaining tracked IDE manifest source files into `contracts/projections/ide/**`; this gate verifies the move is scoped, reversible, reference-aware, validator-backed, and sufficient to retire the `ide` source-root exception only after apply proves `git ls-files ide` is empty.
+This gate exists because `ide/manifests/**` is machine-readable IDE projection metadata, not passive documentation. MOVE-FAMILY-00B-PLAN proposed moving the remaining tracked IDE manifest source files into `contracts/projection/ide/**`; this gate verifies the move is scoped, reversible, reference-aware, validator-backed, and sufficient to retire the `ide` source-root exception only after apply proves `git ls-files ide` is empty.
 
 ## Planned Moves
 
 | Source | Target | Action | Risk | Notes |
 | --- | --- | --- | --- | --- |
-| `ide/manifests/projection_manifest.schema.json` | `contracts/projections/ide/projection_manifest.schema.json` | move | medium | Projection manifest schema authority moves to contract/projection ownership. |
-| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` | move | medium | Authored example moves with schema. |
-| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | move | medium | Authored example moves with schema. |
+| `ide/manifests/projection_manifest.schema.json` | `contracts/projection/ide/projection_manifest.schema.json` | move | medium | Projection manifest schema authority moves to contract/projection ownership. |
+| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` | move | medium | Authored example moves with schema. |
+| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | move | medium | Authored example moves with schema. |
 
 ## Plan Artifacts
 
@@ -29,7 +29,7 @@ This gate exists because `ide/manifests/**` is machine-readable IDE projection m
 | `.aide/refactors/MOVE-FAMILY-00B.plan.toml` | yes | yes | Draft, not approved, `apply_allowed = false`, three planned moves. |
 | `.aide/refactors/MOVE-FAMILY-00B.plan.json` | yes | yes | Exact three planned source files; deferred tracked files 0; blocked files 0. |
 | `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json` | yes | yes | Three tracked JSON manifest files; no generated or unknown tracked manifest file. |
-| `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json` | yes | yes | Target owner `contracts/projections/ide`; target creation planned for apply. |
+| `.aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json` | yes | yes | Target owner `contracts/projection/ide`; target creation planned for apply. |
 | `.aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json` | yes | yes | Five apply rewrite groups, five review/later groups, historical references preserved. |
 | `.aide/refactors/MOVE-FAMILY-00B.validation_plan.json` | yes | yes | Tier 0 validators plus stale-reference and manifest parse checks. |
 | `.aide/refactors/MOVE-FAMILY-00B.rollback_plan.json` | yes | yes | Reverse moves, references, exceptions, and target directory cleanup. |
@@ -58,7 +58,7 @@ Full CTest, full eval, CMake configure/build, package generation, release genera
 
 ## Rollback Plan Review
 
-Rollback is sufficient for gate approval. It reverses the three file moves, restores `.gitignore` and architecture/docs sanity references, restores the `ide` exception if tracked files return under `ide`, removes empty `contracts/projections/ide/**` directories created only by apply, and reruns Tier 0 plus strict validator checks.
+Rollback is sufficient for gate approval. It reverses the three file moves, restores `.gitignore` and architecture/docs sanity references, restores the `ide` exception if tracked files return under `ide`, removes empty `contracts/projection/ide/**` directories created only by apply, and reruns Tier 0 plus strict validator checks.
 
 ## Exception Update Plan Review
 
@@ -94,7 +94,7 @@ It does not authorize broader root constitution changes.
 | `git merge-base --is-ancestor HEAD origin/main` | PASS | HEAD is ancestor of origin/main. |
 | Plan JSON/TOML invariant inspection | PASS | Exact three planned moves, `apply_allowed = false`, `approval_status = not_approved`. |
 | `git ls-files ide` | PASS | Exactly the three expected tracked manifest files. |
-| `git ls-files contracts/projections/ide` | PASS | No tracked target collisions. |
+| `git ls-files contracts/projection/ide` | PASS | No tracked target collisions. |
 | Target path existence checks | PASS | Planned target files do not exist; target path creation is planned for apply. |
 | `py -3 .aide/scripts/aide_lite.py doctor` | PASS | AIDE doctor passed. |
 | `py -3 .aide/scripts/aide_lite.py validate` | PASS | AIDE validate passed. |
@@ -118,7 +118,7 @@ It does not authorize broader root constitution changes.
 
 ## Known Warnings
 
-- `contracts/projections/ide/**` does not exist yet, but the plan explicitly creates it during apply.
+- `contracts/projection/ide/**` does not exist yet, but the plan explicitly creates it during apply.
 - Historical/audit references to old `ide/manifests/**` paths remain by design.
 - Generated-output references to `ide/manifests/*.projection.json` remain review/later items because they are generated projection output, not tracked source metadata.
 - Strict validators print known TOML fallback-parser warnings while still passing.

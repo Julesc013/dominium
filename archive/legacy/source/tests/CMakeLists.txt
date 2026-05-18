@@ -2162,7 +2162,7 @@ if(WIN32)
         COMMAND ui_cli_determinism_test
             --mode apply_determinism
             --ui-editor $<TARGET_FILE:dominium-ui-editor>
-            --script ${CMAKE_SOURCE_DIR}/tools/launcher/ui/scripts/minecraft_launcher_v1.ops.json
+            --script ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/scripts/minecraft_launcher_v1.ops.json
             --doc-basename launcher_ui_doc
             --work-dir ${UI_CLI_TEST_ROOT}/launcher_apply
     )
@@ -2171,7 +2171,7 @@ if(WIN32)
         COMMAND ui_cli_determinism_test
             --mode apply_determinism
             --ui-editor $<TARGET_FILE:dominium-ui-editor>
-            --script ${CMAKE_SOURCE_DIR}/tools/setup/ui/scripts/minecraft_setup_v1.ops.json
+            --script ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/scripts/minecraft_setup_v1.ops.json
             --doc-basename setup_ui_doc
             --work-dir ${UI_CLI_TEST_ROOT}/setup_apply
     )
@@ -2180,7 +2180,7 @@ if(WIN32)
         COMMAND ui_cli_determinism_test
             --mode codegen_determinism
             --ui-editor $<TARGET_FILE:dominium-ui-editor>
-            --doc ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv
+            --doc ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv
             --docname launcher_ui
             --work-dir ${UI_CLI_TEST_ROOT}/launcher_codegen
     )
@@ -2189,7 +2189,7 @@ if(WIN32)
         COMMAND ui_cli_determinism_test
             --mode codegen_determinism
             --ui-editor $<TARGET_FILE:dominium-ui-editor>
-            --doc ${CMAKE_SOURCE_DIR}/tools/setup/ui/doc/setup_ui_doc.tlv
+            --doc ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/doc/setup_ui_doc.tlv
             --docname setup_ui
             --work-dir ${UI_CLI_TEST_ROOT}/setup_codegen
     )
@@ -2514,7 +2514,7 @@ file(RELATIVE_PATH setup_golden_rel
 )
 file(RELATIVE_PATH setup_gold_master_rel
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/artifacts/setup/gold_master
+    ${CMAKE_SOURCE_DIR}/archive/generated/artifacts/setup/gold_master
 )
 
 add_test(NAME setup_cli_golden
@@ -2992,7 +2992,7 @@ add_test(NAME dom_tool_handshake_validation_test COMMAND dom_tool_handshake_vali
 
 add_executable(dom_universe_editor_roundtrip_test
     dom_universe_editor_roundtrip_test.cpp
-    ../dominium/tools/universe_editor/ue_commands.cpp
+    ../dominium/apps/workbench/module/domain/universe/ue_commands.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
 )
 
@@ -3020,7 +3020,7 @@ add_test(NAME dom_universe_editor_roundtrip_test COMMAND dom_universe_editor_rou
 
 add_executable(dom_validator_invalid_content_test
     dom_validator_invalid_content_test.cpp
-    ../dominium/tools/validator/validator_checks.cpp
+    ../dominium/tools/validators/validator_checks.cpp
     ../dominium/game/runtime/dom_universe_bundle.cpp
 )
 
@@ -3049,8 +3049,8 @@ add_test(NAME dom_validator_invalid_content_test COMMAND dom_validator_invalid_c
 
 add_executable(dom_replay_analyzer_basic_test
     dom_replay_analyzer_basic_test.cpp
-    ../dominium/tools/replay_analyzer/ra_parser.cpp
-    ../dominium/tools/replay_analyzer/ra_diff.cpp
+    ../dominium/apps/workbench/module/replay/analyzer/ra_parser.cpp
+    ../dominium/apps/workbench/module/replay/analyzer/ra_diff.cpp
     ../dominium/game/runtime/dom_game_replay.cpp
     ../dominium/game/runtime/dom_io_guard.cpp
 )

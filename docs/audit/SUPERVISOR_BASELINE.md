@@ -37,7 +37,7 @@ The run manifest records:
 
 - portable local-only orchestration
 - negotiated IPC attach for logs, console, and status
-- deterministic aggregated log file at `dist/runtime/supervisor/aggregated_logs.jsonl`
+- deterministic aggregated log file at `archive/generated/dist/runtime/supervisor/aggregated_logs.jsonl`
 
 ## Next Phase Readiness
 

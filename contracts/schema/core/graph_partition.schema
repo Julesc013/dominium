@@ -1,0 +1,22 @@
+SCHEMA: core/graph_partition.schema
+schema_id: dominium.schema.core.graph_partition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic graph partition metadata for shard-aware routing plans.
+
+REQUIRED SHAPE:
+record graph_partition
+  required:
+    - schema_version: semver
+    - partition_id: id
+    - graph_id: id
+    - node_shard_map: map[node_id -> shard_id]
+    - edge_shard_map: map[edge_id -> shard_id]
+    - cross_shard_boundary_nodes: list[node_id]
+    - extensions: map
+
+INVARIANTS:
+- Referenced node/edge IDs must exist in the target graph.
+- Route segmentation across shard ownership is deterministic.

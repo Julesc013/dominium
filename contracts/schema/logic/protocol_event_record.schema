@@ -1,0 +1,27 @@
+SCHEMA: logic/protocol_event_record.schema
+schema_id: dominium.schema.logic.protocol_event_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical protocol delivery outcomes when they affect LOGIC behavior.
+
+NON-SEMANTICS:
+- This schema does not replace SIG delivery events.
+- It does not authorize silent protocol refusal or silent corruption.
+
+REQUIRED SHAPE:
+record protocol_event_record
+  required:
+    - event_id: id
+    - protocol_id: id
+    - bus_id: id
+    - frame_id: id
+    - result: enum(delivered|dropped|blocked|corrupted)
+    - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `result` must reflect the deterministic protocol outcome for the frame at `tick`.
+- Security blocks and corruption outcomes must be explicit and replayable.

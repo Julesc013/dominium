@@ -20,8 +20,8 @@ RepoX and TestX must self-canonicalize their tool environment. Manual `PATH` set
 ## Canonical Contract
 
 - Canonical tools are discovered from workspace-aware roots:
-  - preferred: `dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/`
-  - fallback: `dist/sys/<platform>/<arch>/bin/tools/`
+  - preferred: `archive/generated/dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/`
+  - fallback: `archive/generated/dist/sys/<platform>/<arch>/bin/tools/`
 - RepoX prepends this directory to its own process `PATH` at run start.
 - TestX tool-invocation tests use the same canonicalization helpers.
 - Missing canonical tools directory is a hard failure (`INV-TOOLS-DIR-MISSING`) with remediation guidance.
@@ -54,7 +54,7 @@ Use `scripts/dev/gate.py` (or `python scripts/dev/dev.py gate ...`) as the prefe
 Behavior:
 
 - self-canonicalizes `PATH`
-- derives workspace-scoped build/dist/remediation roots
+- derives workspace-scoped build/archive/generated/dist/remediation roots
 - runs dependency-aware gate classes from `contracts/registry/gate_policy.json`
 - supports minimal preflight (`PRECHECK_MIN`) and strict completion (`EXIT_STRICT`)
 - supports dependency-only evaluation (`TASK_DEPENDENCY`) through `gate taskcheck`

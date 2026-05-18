@@ -13,7 +13,7 @@ def run(repo_root: str):
     payload = committed_readiness_contract(repo_root)
     if str(payload.get("report_id", "")).strip() != "xi.4z.xi5_readiness_contract.v1":
         return {"status": "fail", "message": "XI-4z readiness contract report_id drifted"}
-    if str(payload.get("approved_lock_path", "")).strip() != "content/data/restructure/src_domain_mapping_lock_approved.json":
+    if str(payload.get("approved_lock_path", "")).strip() != "archive/generated/restructure/src_domain_mapping_lock_approved.json":
         return {"status": "fail", "message": "XI-4z readiness contract must point at the approved lock"}
     if str(payload.get("readiness_status", "")).strip() != "xi5_can_proceed_bounded":
         return {"status": "fail", "message": "XI-4z readiness contract readiness_status drifted"}

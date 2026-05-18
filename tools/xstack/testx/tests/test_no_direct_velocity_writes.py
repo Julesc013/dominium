@@ -22,17 +22,17 @@ _SCAN_ROOTS = (
 
 _SKIP_PREFIXES = (
     "docs/",
-    "contracts/schemas/",
-    "contracts/schemas/",
-    "tools/auditx/analyzers/",
+    "contracts/schema/",
+    "contracts/schema/",
+    "tools/xstack/auditx/analyzers/",
     "tools/xstack/testx/tests/",
 )
 
 _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
-    "game/domains/mobility/micro/free_motion_solver.py",
-    "game/domains/mobility/micro/constrained_motion_solver.py",
-    "game/domains/physics/momentum_engine.py",
+    "game/domain/mobility/micro/free_motion_solver.py",
+    "game/domain/mobility/micro/constrained_motion_solver.py",
+    "game/domain/physics/momentum_engine.py",
 }
 
 

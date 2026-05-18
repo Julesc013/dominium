@@ -24,7 +24,7 @@ GEO-7 freezes the deterministic geometry edit contract on top of:
 
 The authoritative doctrine is:
 
-- `docs/geo/GEOMETRY_EDIT_CONTRACT.md`
+- `docs/domains/geology/GEOMETRY_EDIT_CONTRACT.md`
 
 Relevant invariants and contracts upheld:
 
@@ -197,7 +197,7 @@ All presentation remains derived from lawful lens/view surfaces rather than dire
 
 Proof and replay surfaces added:
 
-- `tools/geo/tool_replay_geometry_window.py`
+- `tools/validators/domain/geology/tool_replay_geometry_window.py`
 
 Control/server/shard proof surfaces now carry:
 

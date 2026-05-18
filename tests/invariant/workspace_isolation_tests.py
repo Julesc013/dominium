@@ -45,11 +45,11 @@ def case_dist(repo_root):
     dirs_b = env_tools.canonical_workspace_dirs(repo_root, ws_id="isolation-b")
     checks = [
         _require(dirs_a["dist_root"] != dirs_b["dist_root"], "workspace dist roots must differ"),
-        _require(dirs_a["dist_root"].replace("\\", "/").startswith(repo_root.replace("\\", "/") + "/dist/ws/"),
-                 "workspace dist root must be under dist/ws"),
-        _require("/dist/ws/isolation-a" in dirs_a["dist_root"].replace("\\", "/"),
+        _require(dirs_a["dist_root"].replace("\\", "/").startswith(repo_root.replace("\\", "/") + "/archive/generated/dist/ws/"),
+                 "workspace dist root must be under archive/generated/dist/ws"),
+        _require("/archive/generated/dist/ws/isolation-a" in dirs_a["dist_root"].replace("\\", "/"),
                  "workspace A dist root must include ws id"),
-        _require("/dist/ws/isolation-b" in dirs_b["dist_root"].replace("\\", "/"),
+        _require("/archive/generated/dist/ws/isolation-b" in dirs_b["dist_root"].replace("\\", "/"),
                  "workspace B dist root must include ws id"),
     ]
     if not all(checks):
@@ -72,8 +72,8 @@ def case_no_global_write(repo_root):
         lowered = joined.lower()
         if "out/build/vs2026" in lowered:
             violations.append("hardcoded legacy build path in gate {}".format(gate.get("gate_id", "<unknown>")))
-        if "dist/sys/" in lowered or "dist\\sys\\" in lowered:
-            violations.append("hardcoded global dist/sys path in gate {}".format(gate.get("gate_id", "<unknown>")))
+        if "archive/generated/dist/sys/" in lowered or "archive\generated\archive\generated\dist\\sys\\" in lowered:
+            violations.append("hardcoded global archive/generated/dist/sys path in gate {}".format(gate.get("gate_id", "<unknown>")))
     if violations:
         for item in violations:
             sys.stderr.write("FAIL: {}\n".format(item))

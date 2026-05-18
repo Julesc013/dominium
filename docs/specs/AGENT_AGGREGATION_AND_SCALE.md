@@ -53,7 +53,7 @@ Public headers live in `game/include/dominium/agents/`.
 - UI visibility remains epistemically gated.
 
 ## Tests (AGENT3)
-Implemented in `game/tests/agent3_aggregation_tests.cpp`:
+Implemented in `tests/game/agent3_aggregation_tests.cpp`:
 - Aggregate vs individual equivalence.
 - Deterministic refinement selection.
 - Deterministic collapse summaries.

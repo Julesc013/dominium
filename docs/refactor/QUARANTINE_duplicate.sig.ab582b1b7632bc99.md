@@ -29,7 +29,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/CODE_CHANGE_JUSTIFICATION.md, docs/GLOSSARY.md, docs/app/CLI_CONTRACTS.md, docs/app/PRODUCT_BOUNDARIES.md, docs/app/RUNTIME_LOOP.md, docs/app/TESTX_COMPLIANCE.md, docs/architecture/ARCH_BUILD_ENFORCEMENT.md, docs/architecture/CANONICAL_SYSTEM_MAP.md`
+- Docs: `docs/CODE_CHANGE_JUSTIFICATION.md, docs/GLOSSARY.md, docs/apps/CLI_CONTRACTS.md, docs/apps/PRODUCT_BOUNDARIES.md, docs/apps/RUNTIME_LOOP.md, docs/apps/TESTX_COMPLIANCE.md, docs/architecture/ARCH_BUILD_ENFORCEMENT.md, docs/architecture/CANONICAL_SYSTEM_MAP.md`
 
 ## Tests Involved
 
@@ -39,7 +39,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

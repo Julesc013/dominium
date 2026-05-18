@@ -1,4 +1,4 @@
-﻿"""Deterministic MVP stress gate orchestration and proof helpers."""
+"""Deterministic MVP stress gate orchestration and proof helpers."""
 
 from __future__ import annotations
 
@@ -17,8 +17,8 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set, write_pack_compatibility_outputs  # noqa: E402
-from apps.server.net.loopback_transport import service_loopback_control_channel  # noqa: E402
-from apps.server.runtime.tick_loop import run_server_ticks  # noqa: E402
+from runtime.network.server.loopback_transport import service_loopback_control_channel  # noqa: E402
+from runtime.shell.server.tick_loop import run_server_ticks  # noqa: E402
 from tools.compat.cap_neg4_common import (  # noqa: E402
     DEFAULT_CAP_NEG4_SEED,
     generate_interop_matrix,
@@ -26,8 +26,8 @@ from tools.compat.cap_neg4_common import (  # noqa: E402
     verify_interop_stress_replay,
 )
 from tools.earth.earth9_stress_common import DEFAULT_EARTH9_SEED, verify_earth_mvp_stress_scenario  # noqa: E402
-from tools.geo.geo10_stress_common import DEFAULT_GEO10_SEED  # noqa: E402
-from tools.geo.geo10_stress_runtime import verify_geo_stress_scenario  # noqa: E402
+from tools.validators.domain.geology.geo10_stress_common import DEFAULT_GEO10_SEED  # noqa: E402
+from tools.validators.domain.geology.geo10_stress_runtime import verify_geo_stress_scenario  # noqa: E402
 from tools.lib.lib_stress_common import DEFAULT_LIB7_SEED, run_lib_stress  # noqa: E402
 from tools.logic.tool_run_logic_stress import run_logic_stress  # noqa: E402
 from tools.mvp.runtime_bundle import build_pack_lock_payload  # noqa: E402

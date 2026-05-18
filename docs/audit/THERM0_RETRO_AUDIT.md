@@ -8,7 +8,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # THERM0 Retro-Consistency Audit
 
-Status: Baseline audit complete (THERM-0 Phase 0)  
+Status: Baseline audit complete (THERM-0 Phase 0)
 Date: 2026-03-03
 
 ## Scope
@@ -24,7 +24,7 @@ Audit targets:
 ## Findings
 
 1. Existing thermal-like logic already exists in multiple stacks and is not yet unified under a THERM constitution namespace.
-- `engine/modules/world/heat_fields.cpp` and `engine/include/domino/world/heat_fields.h` implement deterministic heat stores/flows/stress with domain-local semantics.
+- `game/world/heat_fields.cpp` and `engine/include/domino/world/heat_fields.h` implement deterministic heat stores/flows/stress with domain-local semantics.
 - `schema/heat.store.schema`, `schema/heat.flow.schema`, and `schema/thermal.stress.schema` exist as earlier schema surfaces.
 
 2. Inline overheat/temperature threshold logic exists outside an explicit THERM policy envelope.

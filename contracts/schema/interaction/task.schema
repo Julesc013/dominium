@@ -1,0 +1,35 @@
+SCHEMA: interaction/task.schema
+schema_id: dominium.schema.interaction.task
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical deterministic task/work rows used by interaction and process runtime.
+
+REQUIRED SHAPE:
+record task
+  required:
+    - schema_version: semver
+    - task_id: id
+    - task_type_id: id
+    - actor_subject_id: id
+    - target_semantic_id: id
+    - surface_id: optional_id
+    - tool_id: optional_id
+    - process_id_to_execute: id
+    - parameters: map
+    - created_tick: u64
+    - started_tick: optional_u64
+    - last_progress_tick: optional_u64
+    - status: enum(planned|running|paused|completed|failed|cancelled)
+    - progress_units_total: fixed_point_raw
+    - progress_units_done: fixed_point_raw
+    - cost_units_per_tick: u32
+    - linked_commitment_id: optional_id
+    - linked_event_ids: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Task progress math is fixed-point deterministic.
+- Task completion mutates domains only through process handoff intents.

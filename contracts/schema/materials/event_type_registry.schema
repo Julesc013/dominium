@@ -1,0 +1,18 @@
+SCHEMA: materials/event_type_registry.schema
+schema_id: dominium.schema.materials.event_type_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define construction provenance event type entries.
+
+REQUIRED SHAPE:
+record event_type
+  required:
+    - schema_version: semver
+    - event_type_id: id
+    - description: string
+    - extensions: map
+
+INVARIANTS:
+- event_type_id is stable and unique within provenance event type registry.

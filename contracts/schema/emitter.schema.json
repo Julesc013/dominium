@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Emitter Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SOL-1 illumination emitter descriptor.",
+  "x-doc-ref": [
+    "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "emitter_id",
+    "kind",
+    "object_id",
+    "luminosity_proxy",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "emitter_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "emitter.star"
+      ]
+    },
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "luminosity_proxy": {
+      "type": "object",
+      "required": [
+        "unit",
+        "value"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "emitter_id": "emitter.sol.primary",
+      "kind": "emitter.star",
+      "object_id": "object.star.sol",
+      "luminosity_proxy": {
+        "unit": "milli_solar_luminosity",
+        "value": 1000
+      },
+      "deterministic_fingerprint": "3664f3414d6643cf31cc94553ca841c61fd8fe356f1f3ed29fbdcd83dcfd132b",
+      "extensions": {
+        "source": "SOL1-2"
+      }
+    }
+  ]
+}

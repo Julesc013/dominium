@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -41,7 +41,7 @@ Registry evidence:
 
 Constitution authority:
 
-- `docs/physics/PHYSICS_CONSTITUTION.md`
+- `docs/domains/physics/PHYSICS_CONSTITUTION.md`
 
 Declared baseline:
 
@@ -81,7 +81,7 @@ Exception logging contract:
 
 - No silent violations.
 - `exception_event` must carry deterministic fingerprint + affected quantity deltas.
-- proof/replay hooks documented in `docs/physics/PHYSICS_PROOF_REPLAY_HOOKS.md`.
+- proof/replay hooks documented in `docs/domains/physics/PHYSICS_PROOF_REPLAY_HOOKS.md`.
 
 ## 4. Enforcement Readiness (PHYS-1 Precondition)
 

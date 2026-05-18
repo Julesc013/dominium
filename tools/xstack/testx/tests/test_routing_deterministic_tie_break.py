@@ -24,7 +24,7 @@ def _law_profile():
 
 
 def _seed_state() -> dict:
-    from tools.core.graph.network_graph_engine import normalize_network_graph
+    from tools.validators.core.graph.network_graph_engine import normalize_network_graph
     from tools.xstack.testx.tests.construction_testlib import base_state
 
     state = base_state()

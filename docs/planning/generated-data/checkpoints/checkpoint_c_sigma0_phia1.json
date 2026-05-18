@@ -81,7 +81,7 @@
       "setup",
       "engine",
       "game",
-      "game/content/core"
+      "content/domains/game/core"
     ],
     "extend": [
       "app",
@@ -95,7 +95,7 @@
     ],
     "consolidate": [
       "build/** with provenance only",
-      "artifacts/** with provenance only",
+      "archive/generated/artifacts/** with provenance only",
       ".xstack_cache/** with provenance only",
       "run_meta/** with provenance only"
     ],
@@ -143,7 +143,7 @@
     },
     {
       "family": "generated_echoes",
-      "non_canonical_surface": "build/**, artifacts/**, .xstack_cache/**, run_meta/**",
+      "non_canonical_surface": "build/**, archive/generated/artifacts/**, .xstack_cache/**, run_meta/**",
       "rule": "Evidence only unless a stronger source explicitly promotes an emitted artifact."
     }
   ],

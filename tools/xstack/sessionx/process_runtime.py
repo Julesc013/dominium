@@ -9,7 +9,7 @@ import math
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from game.domains.reality.ledger import (
+from game.domain.reality.ledger import (
     begin_process_accounting,
     emit_exception as ledger_emit_exception,
     finalize_process_accounting,
@@ -25,21 +25,21 @@ from tools.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
-from game.domains.inspection.inspection_engine import (
+from game.domain.inspection.inspection_engine import (
     InspectionError,
     build_inspection_snapshot_artifact,
     normalize_inspection_request_row,
 )
-from tools.core.graph.network_graph_engine import (
+from tools.validators.core.graph.network_graph_engine import (
     NetworkGraphError,
     REFUSAL_CORE_GRAPH_INVALID,
     normalize_network_graph,
 )
-from tools.core.graph.routing_engine import (
+from tools.validators.core.graph.routing_engine import (
     RoutingError,
     query_route_result,
 )
-from tools.core.schedule.schedule_engine import (
+from tools.validators.core.schedule.schedule_engine import (
     REFUSAL_CORE_SCHEDULE_INVALID,
     ScheduleError,
     normalize_schedule,
@@ -51,12 +51,12 @@ from engine.state.state.state_machine_engine import (
     apply_transition,
     normalize_state_machine,
 )
-from tools.core.constraints.constraint_engine import (
+from tools.validators.core.constraints.constraint_engine import (
     build_constraint_enforcement_hooks,
     constraint_type_rows_by_id,
 )
-from tools.core.flow import normalize_flow_channel as normalize_core_flow_channel
-from game.domains.logistics.logistics_engine import (
+from tools.validators.core.flow import normalize_flow_channel as normalize_core_flow_channel
+from game.domain.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
     create_manifest_and_commitment,
@@ -66,7 +66,7 @@ from game.domains.logistics.logistics_engine import (
     routing_rule_rows_by_id,
     tick_manifests,
 )
-from game.domains.materials.construction.construction_engine import (
+from game.domain.materials.construction.construction_engine import (
     ConstructionError,
     REFUSAL_CONSTRUCTION_BLUEPRINT_MISSING,
     REFUSAL_CONSTRUCTION_INSUFFICIENT_MATERIAL,
@@ -74,7 +74,7 @@ from game.domains.materials.construction.construction_engine import (
     create_construction_project,
     tick_construction_projects,
 )
-from game.domains.materials.maintenance.decay_engine import (
+from game.domain.materials.maintenance.decay_engine import (
     MaintenanceError,
     REFUSAL_MAINTENANCE_FORBIDDEN_BY_LAW,
     normalize_asset_health_state,
@@ -84,7 +84,7 @@ from game.domains.materials.maintenance.decay_engine import (
     schedule_maintenance_commitments,
     tick_decay,
 )
-from game.domains.materials.materialization.materialization_engine import (
+from game.domain.materials.materialization.materialization_engine import (
     MaterializationError,
     REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED,
     dematerialize_structure_roi,
@@ -94,7 +94,7 @@ from game.domains.materials.materialization.materialization_engine import (
     normalize_micro_part_instance_row,
     normalize_reenactment_descriptor_row,
 )
-from game.domains.materials.commitments.commitment_engine import (
+from game.domain.materials.commitments.commitment_engine import (
     CommitmentError,
     REFUSAL_COMMITMENT_FORBIDDEN,
     REFUSAL_COMMITMENT_INVALID_SCHEDULE,
@@ -108,8 +108,8 @@ from game.domains.materials.commitments.commitment_engine import (
     resolve_causality_strictness_row,
     strictness_requires_commitment,
 )
-from game.domains.materials import create_material_batch
-from game.domains.chemistry import (
+from game.domain.materials import create_material_batch
+from game.domain.chemistry import (
     batch_quality_rows_by_batch_id,
     build_degradation_state,
     build_batch_quality_row,
@@ -121,11 +121,11 @@ from game.domains.chemistry import (
     normalize_process_run_state_rows,
     process_run_rows_by_id,
 )
-from game.domains.materials.provenance.event_stream_index import (
+from game.domain.materials.provenance.event_stream_index import (
     build_event_stream_index,
     normalize_event_stream_index_row,
 )
-from game.domains.interaction.task.task_engine import (
+from game.domain.interaction.task.task_engine import (
     REFUSAL_TASK_BUDGET_EXCEEDED,
     REFUSAL_TASK_FORBIDDEN_BY_LAW,
     REFUSAL_TASK_TOOL_REQUIRED,
@@ -136,7 +136,7 @@ from game.domains.interaction.task.task_engine import (
     set_task_status,
     tick_tasks,
 )
-from game.domains.interaction.pose import (
+from game.domain.interaction.pose import (
     PoseError,
     REFUSAL_POSE_FORBIDDEN_BY_LAW,
     REFUSAL_POSE_INVALID_POSTURE,
@@ -148,7 +148,7 @@ from game.domains.interaction.pose import (
     grants_for_subject,
     normalize_pose_slot_rows,
 )
-from game.domains.interaction.mount import (
+from game.domain.interaction.mount import (
     MountError,
     REFUSAL_MOUNT_ALREADY_ATTACHED,
     REFUSAL_MOUNT_FORBIDDEN_BY_LAW,
@@ -157,20 +157,20 @@ from game.domains.interaction.mount import (
     detach_mount_point,
     normalize_mount_point_rows,
 )
-from game.domains.interior.compartment_flow_builder import (
+from game.domain.interior.compartment_flow_builder import (
     normalize_compartment_state,
     normalize_leak_hazard,
     normalize_portal_flow_params,
 )
-from game.domains.interior.compartment_flow_engine import (
+from game.domain.interior.compartment_flow_engine import (
     CompartmentFlowEngineError,
     REFUSAL_COMPARTMENT_FLOW_BUDGET_EXCEEDED,
     REFUSAL_COMPARTMENT_FLOW_INVALID,
     resolve_compartment_flow_policy_row,
     tick_compartment_flows,
 )
-from game.domains.interior.interior_engine import InteriorError, apply_portal_transition, path_exists
-from game.domains.machines.port_engine import (
+from game.domain.interior.interior_engine import InteriorError, apply_portal_transition, path_exists
+from game.domain.machines.port_engine import (
     PortError,
     REFUSAL_PORT_EMPTY,
     REFUSAL_PORT_FORBIDDEN_BY_LAW,
@@ -191,7 +191,7 @@ from game.domains.machines.port_engine import (
     port_rows_for_machine,
     port_type_rows_by_id,
 )
-from game.domains.reality.transitions import compute_transition_plan
+from game.domain.reality.transitions import compute_transition_plan
 from engine.time.time_engine import (
     advance_time as time_advance,
     clamp_rate_to_policy as time_clamp_rate_to_policy,
@@ -243,7 +243,7 @@ from tools.governance.planning.plan_engine import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
-from contracts.capability.capability import (
+from tools.governance.capability import (
     capability_binding_rows,
     has_capability,
     normalize_capability_binding_rows,
@@ -258,14 +258,14 @@ from tools.governance.view import (
     resolve_view_policy_id as resolve_view_policy_id_from_registry,
     view_policy_rows_by_id,
 )
-from game.domains.embodiment.body import (
+from game.domain.embodiment.body import (
     DEFAULT_BODY_TEMPLATE_ID,
     body_state_from_body_row,
     body_state_rows_by_subject_id,
     body_template_rows_by_id,
     normalize_body_state_rows,
 )
-from game.domains.embodiment.collision import (
+from game.domain.embodiment.collision import (
     DEFAULT_COLLISION_PROVIDER_ID,
     DEFAULT_MOVEMENT_SLOPE_PARAMS_ID,
     collision_provider_rows_by_id,
@@ -273,8 +273,8 @@ from game.domains.embodiment.collision import (
     movement_slope_params_rows_by_id,
     resolve_macro_heightfield_sample,
 )
-from game.domains.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
-from game.domains.embodiment.movement import (
+from game.domain.embodiment.lens import resolve_authorized_lens_profile, resolve_lens_camera_state
+from game.domain.embodiment.movement import (
     DEFAULT_JUMP_PARAMS_ID,
     build_impact_event_row,
     normalize_impact_event_rows,
@@ -303,11 +303,11 @@ from tools.specs import (
     spec_type_rows_by_id,
     tolerance_policy_rows_by_id,
 )
-from game.domains.infrastructure.formalization import (
+from game.domain.infrastructure.formalization import (
     infer_candidates,
     normalize_inference_candidate_rows,
 )
-from game.domains.mobility.geometry import (
+from game.domain.mobility.geometry import (
     build_geometry_candidate,
     build_geometry_metric_row,
     build_guide_geometry,
@@ -322,7 +322,7 @@ from game.domains.mobility.geometry import (
     normalize_junction_rows,
     snap_geometry_parameters,
 )
-from game.domains.mobility.network import (
+from game.domain.mobility.network import (
     MobilityNetworkError,
     REFUSAL_MOBILITY_NETWORK_INVALID,
     REFUSAL_MOBILITY_NO_ROUTE,
@@ -335,7 +335,7 @@ from game.domains.mobility.network import (
     normalize_mobility_network_binding_rows,
     select_switch_transition_id,
 )
-from game.domains.mobility.vehicle import (
+from game.domain.mobility.vehicle import (
     REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
     VehicleError,
     build_motion_state,
@@ -351,7 +351,7 @@ from game.domains.mobility.vehicle import (
     normalize_vehicle_rows,
     vehicle_class_rows_by_id,
 )
-from game.domains.mobility.travel import (
+from game.domain.mobility.travel import (
     ItineraryError,
     TravelEngineError,
     build_travel_event,
@@ -364,7 +364,7 @@ from game.domains.mobility.travel import (
     start_macro_travel,
     tick_macro_travel,
 )
-from game.domains.mobility.traffic import (
+from game.domain.mobility.traffic import (
     REFUSAL_MOBILITY_RESERVATION_CONFLICT,
     TrafficEngineError,
     congestion_policy_rows_by_id,
@@ -374,7 +374,7 @@ from game.domains.mobility.traffic import (
     reserve_edge_capacity,
     resolve_congestion_policy,
 )
-from game.domains.mobility.micro import (
+from game.domain.mobility.micro import (
     FreeMotionError,
     apply_consist_offsets,
     build_coupling_constraint,
@@ -398,7 +398,7 @@ from game.domains.mobility.micro import (
     traction_model_rows_by_id,
     wind_model_rows_by_id,
 )
-from game.domains.mobility.signals.signal_engine import (
+from game.domain.mobility.signals.signal_engine import (
     REFUSAL_MOBILITY_SIGNAL_INVALID,
     REFUSAL_MOBILITY_SIGNAL_VIOLATION,
     SignalEngineError,
@@ -418,7 +418,7 @@ from game.domains.mobility.signals.signal_engine import (
     signal_type_rows_by_id,
     switch_lock_rows_by_machine_id,
 )
-from game.domains.mobility.maintenance import (
+from game.domain.mobility.maintenance import (
     apply_wear_updates,
     normalize_wear_state_rows,
     service_wear_rows,
@@ -428,7 +428,7 @@ from game.domains.mobility.maintenance import (
     wear_summary_for_target,
     wear_type_rows_by_id,
 )
-from game.domains.electricity import (
+from game.domain.electricity import (
     ElectricFaultError,
     ElectricProtectionError,
     ElectricStorageError,
@@ -459,7 +459,7 @@ from game.domains.electricity import (
     solve_power_network_e0,
     solve_power_network_e1,
 )
-from game.domains.mechanics import (
+from game.domain.mechanics import (
     build_structural_edge,
     build_structural_node,
     evaluate_structural_graphs,
@@ -468,8 +468,8 @@ from game.domains.mechanics import (
     normalize_structural_node_rows,
     summarize_stress_for_target,
 )
-from game.domains.fields.from_root_field import exchange_field_boundary_values
-from game.domains.fields import (
+from game.domain.fields.from_root_field import exchange_field_boundary_values
+from game.domain.fields import (
     build_field_cell,
     build_field_layer,
     build_field_sample,
@@ -483,7 +483,7 @@ from game.domains.fields import (
     normalize_field_sample_rows,
     update_field_layers,
 )
-from game.domains.signals import (
+from game.domain.signals import (
     SignalTransportError,
     build_jamming_effect,
     build_knowledge_receipt,
@@ -506,33 +506,33 @@ from game.domains.signals import (
     process_signal_send,
     tick_signal_transport,
 )
-from game.domains.logic.signal import (
+from game.domain.logic.signal import (
     normalize_signal_store_state,
     process_signal_emit_pulse,
     process_signal_set,
 )
-from game.domains.logic.fault import (
+from game.domain.logic.fault import (
     normalize_logic_fault_state_rows,
     process_logic_fault_clear,
     process_logic_fault_set,
 )
-from game.domains.logic.eval import (
+from game.domain.logic.eval import (
     normalize_logic_state_update_record_rows,
     normalize_logic_eval_state,
     process_logic_network_evaluate,
     process_statevec_update,
 )
-from game.domains.logic.debug import (
+from game.domain.logic.debug import (
     normalize_logic_debug_state,
     process_logic_probe,
     process_logic_trace_end,
     process_logic_trace_start,
     process_logic_trace_tick,
 )
-from game.domains.logic.compile import (
+from game.domain.logic.compile import (
     compile_logic_network,
 )
-from game.domains.logic.network.logic_network_engine import (
+from game.domain.logic.network.logic_network_engine import (
     normalize_logic_network_state,
     process_logic_network_add_edge,
     process_logic_network_add_node,
@@ -559,7 +559,7 @@ from tools.models import (
     normalize_model_binding_rows,
     normalize_model_evaluation_result_rows,
 )
-from game.domains.physics import (
+from game.domain.physics import (
     apply_entropy_reset,
     apply_force_to_momentum_state,
     apply_impulse_to_momentum_state,
@@ -590,7 +590,7 @@ from game.domains.physics import (
     record_entropy_contribution,
     velocity_from_momentum_state,
 )
-from game.domains.pollution import (
+from game.domain.pollution import (
     concentration_field_id_for_pollutant,
     build_pollution_source_event,
     build_pollution_deposition_row,
@@ -620,7 +620,7 @@ from game.domains.pollution import (
     pollution_field_hash_chain,
     pollution_totals_by_key,
 )
-from game.domains.systems import (
+from game.domain.systems import (
     REFUSAL_STATEVEC_UNDECLARED_OUTPUT_FIELD,
     REFUSAL_SYSTEM_COLLAPSE_INVALID,
     REFUSAL_SYSTEM_COLLAPSE_INELIGIBLE,
@@ -694,7 +694,7 @@ from tools.repo.meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
 )
-from game.domains.geology.edit import (
+from game.domain.geology.edit import (
     aggregate_geometry_chunk_to_cell,
     build_micro_geometry_chunk_from_cell_state,
     build_geometry_chunk_state,
@@ -715,8 +715,8 @@ from game.domains.geology.edit import (
     normalize_geometry_edit_event,
     normalize_geometry_edit_event_rows,
 )
-from game.domains.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
-from game.domains.geology.worldgen import (
+from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semantic_cell_key, geo_cell_key_neighbors
+from game.domain.geology.worldgen import (
     DEFAULT_GENERATOR_VERSION_ID,
     DEFAULT_REALISM_PROFILE_ID,
     build_worldgen_request,
@@ -730,7 +730,7 @@ from game.domains.geology.worldgen import (
     worldgen_request_hash,
     worldgen_result_proof_surface,
 )
-from game.domains.geology.overlay import (
+from game.domain.geology.overlay import (
     build_default_overlay_manifest,
     build_property_patch,
     normalize_effective_object_view_rows,
@@ -741,13 +741,13 @@ from game.domains.geology.overlay import (
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
-from game.domains.worldgen.refinement.refinement_cache import (
+from game.domain.worldgen.refinement.refinement_cache import (
     DEFAULT_REFINEMENT_CACHE_LIMITS,
     normalize_refinement_cache_entry_rows,
     touch_refinement_cache_entries,
     evict_refinement_cache_entries,
 )
-from game.domains.worldgen.refinement.refinement_scheduler import (
+from game.domain.worldgen.refinement.refinement_scheduler import (
     DEFAULT_REFINEMENT_COST_UNITS,
     DEFAULT_REFINEMENT_QUEUE_CAPACITY,
     EXPLAIN_CONTRACT_MISMATCH_CACHE,
@@ -759,16 +759,16 @@ from game.domains.worldgen.refinement.refinement_scheduler import (
     normalize_refinement_request_record_rows,
     refinement_record_to_worldgen_request,
 )
-from game.domains.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
-from game.domains.worldgen.mw.mw_system_refiner_l2 import (
+from game.domain.worldgen.mw.mw_cell_generator import normalize_star_system_artifact_rows
+from game.domain.worldgen.mw.mw_system_refiner_l2 import (
     normalize_planet_basic_artifact_rows,
     normalize_planet_orbit_artifact_rows,
     normalize_star_artifact_rows,
     normalize_system_l2_summary_rows,
 )
-from game.domains.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
-from game.domains.worldgen.galaxy import normalize_galaxy_object_stub_rows
-from game.domains.worldgen.earth import (
+from game.domain.worldgen.mw.mw_surface_refiner_l3 import normalize_surface_tile_artifact_rows
+from game.domain.worldgen.galaxy import normalize_galaxy_object_stub_rows
+from game.domain.worldgen.earth import (
     DEFAULT_EARTH_CLIMATE_PARAMS_ID,
     DEFAULT_HYDROLOGY_PARAMS_ID,
     EARTH_MATERIAL_PROXY_DEFAULT_MAX_TILES_PER_UPDATE,
@@ -810,7 +810,7 @@ from tools.repo.meta.compile import (
     normalize_validity_domain_rows,
     verification_procedure_rows_by_id,
 )
-from game.domains.processes.capsules import (
+from game.domain.processes.capsules import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
     build_process_capsule_invalidation_row,
     build_capsule_execution_record_row,
@@ -819,7 +819,7 @@ from game.domains.processes.capsules import (
     normalize_capsule_execution_record_rows,
     normalize_process_capsule_rows,
 )
-from game.domains.processes.research import (
+from game.domain.processes.research import (
     REFUSAL_CANDIDATE_PROMOTION_DENIED,
     REFUSAL_EXPERIMENT_INVALID,
     REFUSAL_EXPERIMENT_PROCESS_UNKNOWN,
@@ -831,7 +831,7 @@ from game.domains.processes.research import (
     normalize_experiment_definition_rows,
     normalize_experiment_result_rows,
 )
-from game.domains.processes.software import (
+from game.domain.processes.software import (
     REFUSAL_SOFTWARE_PIPELINE_COMPILE_FAILED,
     REFUSAL_SOFTWARE_PIPELINE_INVALID,
     REFUSAL_SOFTWARE_PIPELINE_SIGNATURE_INVALID,
@@ -47306,7 +47306,7 @@ def execute_intent(
             ),
         )
         try:
-            from runtime.appshell.logging import log_emit
+            from runtime.shell.logging import log_emit
         except Exception:  # pragma: no cover - logging is optional in non-AppShell runtimes
             log_emit = None
         approved_rows = [dict(row) for row in list(scheduler_plan.get("approved_rows") or []) if isinstance(row, Mapping)]

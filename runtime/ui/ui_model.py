@@ -8,17 +8,17 @@ import os
 from functools import lru_cache
 from typing import Iterable, Mapping
 
-from runtime.appshell.command_registry import build_root_command_descriptors
-from runtime.appshell.config_loader import list_profile_bundles
-from runtime.appshell.paths import (
+from runtime.shell.command_registry import build_root_command_descriptors
+from runtime.shell.config_loader import list_profile_bundles
+from runtime.shell.paths import (
     VROOT_INSTANCES,
     VROOT_SAVES,
     get_current_virtual_paths,
     vpath_candidate_roots,
 )
-from runtime.appshell.ui_mode_selector import policy_row_for_product
-from tools.libraries.instance import instance_ui_mode_default, validate_instance_manifest
-from tools.libraries.save import validate_save_manifest
+from runtime.shell.ui_mode_selector import policy_row_for_product
+from tools.package.libraries.instance import instance_ui_mode_default, validate_instance_manifest
+from tools.package.libraries.save import validate_save_manifest
 
 
 MENU_STATE_MAIN = "menu.main"
@@ -34,8 +34,8 @@ MENU_STATE_IDS = (
     MENU_STATE_START_SESSION,
 )
 
-_INSTANCE_SCAN_ROOTS = ("instances", "dist/instances")
-_SAVE_SCAN_ROOTS = ("saves", "dist/saves")
+_INSTANCE_SCAN_ROOTS = ("instances", "archive/generated/dist/instances")
+_SAVE_SCAN_ROOTS = ("saves", "archive/generated/dist/saves")
 _COMMAND_ACTION_SPECS = (
     ("action.help", "Help", ("help",)),
     ("action.validate_fast", "Validate FAST", ("validate", "--all", "--profile", "FAST")),

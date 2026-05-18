@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `merge`
 - Risk Level: `MED`
-- Canonical Candidate: `src/tools/network/policies/policy_server_authoritative.py`
+- Canonical Candidate: `src/tools/validators/network/policies/policy_server_authoritative.py`
 - Quarantine Reasons: `cross_domain_helper_collision, file_scope_ambiguity, near_duplicate_requires_review, phase_boundary_deferred, requires_medium_risk_batch_gate, source_like_surface, test_runtime_split`
 - Planned Action Kinds: `merge, rewire, deprecate`
 
 ## Competing Files
 
-- `src/tools/network/policies/policy_server_authoritative.py`
-- `src/tools/network/srz/shard_coordinator.py`
+- `src/tools/validators/network/policies/policy_server_authoritative.py`
+- `src/tools/validators/network/srz/shard_coordinator.py`
 - `tools/xstack/testx/tests/net_mp9_testlib.py`
 
 ## Scorecard
 
-- `src/tools/network/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`58.93` risk=`MED`
+- `src/tools/validators/network/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`58.93` risk=`MED`
 - `tools/xstack/testx/tests/net_mp9_testlib.py` disposition=`merge` rank=`2` total_score=`54.33` risk=`LOW`
-- `src/tools/network/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`40.32` risk=`MED`
+- `src/tools/validators/network/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`40.32` risk=`MED`
 
 ## Usage Sites
 
@@ -38,8 +38,8 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

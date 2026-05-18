@@ -157,8 +157,8 @@
         "paths": [
           "cmake/dist*",
           "scripts/pkg/**",
-          "scripts/dist/**",
-          "dist/**"
+          "tools/release/dist/**",
+          "archive/generated/dist/**"
         ],
         "tags": [
           "dist",

@@ -26,8 +26,8 @@ validation_expectations = ["determinism checks", "ABI boundary checks when publi
 
 [slots.game_domain]
 id = "game_domain"
-target = "game/domains/<domain>/"
-examples = ["game/domains/physics/", "game/domains/fields/"]
+target = "game/domain/<domain>/"
+examples = ["game/domain/physics/", "game/domain/fields/"]
 must_not_contain = ["schema authority", "authored content", "runtime adapter ownership"]
 validation_expectations = ["domain tests", "determinism checks", "contract link review"]
 
@@ -75,29 +75,29 @@ validation_expectations = ["storage boundary tests", "compatibility contract rev
 
 [slots.protocol_contract]
 id = "protocol_contract"
-target = "contracts/protocols/"
-examples = ["contracts/protocols/network/"]
+target = "contracts/protocol/"
+examples = ["contracts/protocol/network/"]
 must_not_contain = ["runtime implementation", "generated packets without provenance"]
 validation_expectations = ["schema/contract parse", "implementation reference review"]
 
 [slots.schema_contract]
 id = "schema_contract"
-target = "contracts/schemas/"
-examples = ["contracts/schemas/domains/<domain>/"]
+target = "contracts/schema/"
+examples = ["contracts/schema/domains/<domain>/"]
 must_not_contain = ["source implementation", "authored instance data"]
 validation_expectations = ["JSON schema parse", "schema identity review"]
 
 [slots.registry_contract]
 id = "registry_contract"
-target = "contracts/registries/"
-examples = ["contracts/registries/domains/<domain>/"]
+target = "contracts/registry/"
+examples = ["contracts/registry/domains/<domain>/"]
 must_not_contain = ["runtime cache", "generated registry output without provenance"]
 validation_expectations = ["registry parse", "authority-order review"]
 
 [slots.capability_contract]
 id = "capability_contract"
-target = "contracts/capabilities/"
-examples = ["contracts/capabilities/domains/<domain>/"]
+target = "contracts/capability/"
+examples = ["contracts/capability/domains/<domain>/"]
 must_not_contain = ["implementation-only switches", "UI-only powers"]
 validation_expectations = ["capability contract validation", "doctrine boundary review"]
 
@@ -152,8 +152,8 @@ validation_expectations = ["asset manifest review", "pack/content validation"]
 
 [slots.domain_data]
 id = "domain_data"
-target = "content/domain-data/<domain>/"
-examples = ["content/domain-data/geology/"]
+target = "content/domains/<domain>/"
+examples = ["content/domains/geology/"]
 must_not_contain = ["domain implementation", "schema authority"]
 validation_expectations = ["data parse", "domain contract reference review"]
 
@@ -201,8 +201,8 @@ validation_expectations = ["release policy validation", "publication-boundary re
 
 [slots.generated_output]
 id = "generated_output"
-target = "dist/, build/, out/, .dominium.local/, or .aide.local/"
-examples = ["dist/", "build/", "out/", ".dominium.local/", ".aide.local/"]
+target = "archive/generated/dist/, build/, out/, .dominium.local/, or .aide.local/"
+examples = ["archive/generated/dist/", "build/", "out/", ".dominium.local/", ".aide.local/"]
 must_not_contain = ["source authority", "unignored secrets"]
 validation_expectations = ["ignored/local-state check", "no generated outputs staged"]
 
@@ -225,12 +225,12 @@ new_product = "apps/<product>/"
 new_renderer_backend = "runtime/render/backends/<renderer>/"
 vector_or_canvas_drawing = "runtime/render/drawing/ or runtime/ui/drawing/"
 new_platform_host = "runtime/platform/hosts/<host>/"
-new_protocol = "contracts/protocols/ plus runtime implementation"
-new_domain = "game/domains/<domain>/"
-domain_schema = "contracts/schemas/domains/<domain>/"
-domain_registry = "contracts/registries/domains/<domain>/"
+new_protocol = "contracts/protocol/ plus runtime implementation"
+new_domain = "game/domain/<domain>/"
+domain_schema = "contracts/schema/domains/<domain>/"
+domain_registry = "contracts/registry/domains/<domain>/"
 authored_pack = "content/packs/<pack>/"
 release_recipe = "release/"
-generated_output = "dist/, build/, out/, .dominium.local/, or .aide.local/"
+generated_output = "archive/generated/dist/, build/, out/, .dominium.local/, or .aide.local/"
 validator = "tools/validators/"
 aide_adapter = "tools/aide/"

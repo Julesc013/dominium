@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Intent Envelope Schema",
+  "version": "1.0.0",
+  "description": "Deterministic cross-shard-ready intent envelope contract for SRZ scheduling.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A2, §4 E8",
+    "docs/canon/glossary_v1.md Process",
+    "docs/architecture/srz_contract.md",
+    "docs/contracts/session_spec.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "envelope_id",
+    "authority_origin",
+    "source_shard_id",
+    "target_shard_id",
+    "intent_id",
+    "payload",
+    "deterministic_sequence_number",
+    "submission_tick"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "envelope_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_origin": {
+      "type": "string",
+      "enum": [
+        "client",
+        "server",
+        "tool",
+        "replay"
+      ]
+    },
+    "source_shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "process_id",
+        "inputs"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "process_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "inputs": {
+          "type": "object"
+        }
+      }
+    },
+    "deterministic_sequence_number": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "submission_tick": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "envelope_id": "env.shard.0.0001",
+      "authority_origin": "client",
+      "source_shard_id": "shard.0",
+      "target_shard_id": "shard.0",
+      "intent_id": "intent.camera.teleport.0001",
+      "payload": {
+        "process_id": "process.camera_teleport",
+        "inputs": {
+          "target_object_id": "object.earth"
+        }
+      },
+      "deterministic_sequence_number": 1,
+      "submission_tick": 0
+    }
+  ]
+}

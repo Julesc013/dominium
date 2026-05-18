@@ -1,0 +1,22 @@
+SCHEMA: logic/signal_value_scalar.schema
+schema_id: dominium.schema.logic.signal_value.scalar
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic fixed-point scalar signal values for LOGIC.
+
+NON-SEMANTICS:
+- This schema does not define transport, propagation, or carrier-specific costs.
+
+REQUIRED SHAPE:
+record logic_signal_value_scalar
+  required:
+    - value_fixed: i64
+    - deterministic_fingerprint: sha256
+  optional:
+    - units_id: id
+
+INVARIANTS:
+- Scalar payloads are fixed-point only; raw float truth is invalid.
+- `units_id` describes declared meaning, not carrier substrate.

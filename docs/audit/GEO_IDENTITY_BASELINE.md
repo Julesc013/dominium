@@ -14,7 +14,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 GEO-1 freezes deterministic spatial addressing and stable spatial identity on top of the GEO-0 topology/metric/partition/projection constitution.
 
-The authoritative doctrine is `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`.
+The authoritative doctrine is `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`.
 
 Relevant invariants and contracts upheld:
 
@@ -23,8 +23,8 @@ Relevant invariants and contracts upheld:
 - `docs/canon/constitution_v1.md` A9 Pack-driven integration
 - `docs/canon/constitution_v1.md` C1 Version semantics
 - `docs/canon/constitution_v1.md` C3 CompatX obligations
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
 
 ## 2) Retro Audit Summary
 
@@ -140,7 +140,7 @@ This is sufficient for future coarse-to-fine workflows such as:
 
 Proof/replay integration added:
 
-- `tools/geo/tool_verify_id_stability.py`
+- `tools/validators/domain/geology/tool_verify_id_stability.py`
 - GEO identity context is included in control proof bundle `extensions` when relevant GEO metadata is present
 
 RepoX scaffolding added:
@@ -197,7 +197,7 @@ Executed during GEO-1 baseline:
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset test_cell_key_from_position_deterministic,test_object_id_stable,test_refinement_relation_stable,test_torus_wrap_cell_keys,test_sphere_atlas_cell_keys_deterministic`
   - result: `pass`
 - GEO ID stability verifier:
-  - `py -3 tools/geo/tool_verify_id_stability.py`
+  - `py -3 tools/validators/domain/geology/tool_verify_id_stability.py`
   - result: `complete`
   - deterministic fingerprint: `ba5d6e209cbf5df78f7c0fa4b319b35844443e5f0552d8b80ee5cc1ad8bb3cfa`
   - run hash: `3da2fe772fd13fe5c8e02a45c1b241f7f96185b9df53b036ba19ce976163c31b`

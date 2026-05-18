@@ -29,7 +29,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/TUI_FRAMEWORK.md, docs/architecture/CANON_INDEX.md, docs/architecture/CHECKPOINTS.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/PRODUCT_SHELL_CONTRACT.md, docs/architecture/SLICE_0_CONTRACT.md, docs/audit/CANON_MAP.md, docs/audit/DIST5_UX_POLISH_FINAL.md`
+- Docs: `docs/runtime/shell/TUI_FRAMEWORK.md, docs/architecture/CANON_INDEX.md, docs/architecture/CHECKPOINTS.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/PRODUCT_SHELL_CONTRACT.md, docs/architecture/SLICE_0_CONTRACT.md, docs/audit/CANON_MAP.md, docs/audit/DIST5_UX_POLISH_FINAL.md`
 
 ## Tests Involved
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

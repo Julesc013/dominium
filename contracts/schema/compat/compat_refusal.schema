@@ -1,0 +1,23 @@
+SCHEMA: compat/compat_refusal.schema
+schema_id: dominium.schema.compat.compat_refusal
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic refusal payload emitted by capability negotiation and handshake validation.
+- Provide stable refusal codes and remediation hints for replay, attach, and client/server connect failures.
+
+NON-SEMANTICS:
+- CompatRefusal does not change simulation behavior.
+- It only reports a deterministic refusal outcome.
+
+REQUIRED SHAPE:
+record compat_refusal
+  required:
+    - refusal_code: id
+    - remediation_hint: string
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- refusal_code must remain stable for the same refusal class
+- remediation_hint must be deterministic and transport-neutral

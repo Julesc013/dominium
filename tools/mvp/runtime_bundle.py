@@ -26,7 +26,7 @@ from tools.validators.modding import (
 from content.packs.compatibility_payload import attach_pack_compat_manifest
 from tools.validators.compatibility.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
 from tools.validators.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
-from game.domains.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
+from game.domain.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 
 MVP_RUNTIME_VERSION = "0.0.0"
@@ -1012,7 +1012,7 @@ def build_runtime_bootstrap(
 
 
 def build_star_system_teleport_runtime_contract(system_row: Dict[str, object]) -> Dict[str, object]:
-    from game.domains.worldgen.mw import build_system_teleport_plan
+    from game.domain.worldgen.mw import build_system_teleport_plan
 
     plan = build_system_teleport_plan(system_row)
     if str(plan.get("result", "")) != "complete":

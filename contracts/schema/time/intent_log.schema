@@ -1,0 +1,18 @@
+SCHEMA: time/intent_log.schema
+schema_id: dominium.schema.time.intent_log
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic chunked intent-log artifacts.
+
+REQUIRED SHAPE:
+record intent_log
+  required:
+    - schema_version: semver
+    - log_id: id
+    - save_id: id
+    - tick_range: map
+    - envelopes_or_intents: [id]
+    - log_hash: sha256
+    - extensions: map

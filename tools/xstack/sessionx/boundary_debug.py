@@ -35,8 +35,8 @@ def _assert_render_truth_isolation_contract() -> None:
         return
     repo_root = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
     targets = (
-        "apps/client/render/render_model_adapter.py",
-        "apps/client/render/representation_resolver.py",
+        "runtime/render/client/render_model_adapter.py",
+        "runtime/render/client/representation_resolver.py",
     )
     for rel_path in targets:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -53,8 +53,8 @@ def _assert_render_truth_isolation_contract() -> None:
 
 
 def _assert_component_engine_contracts() -> None:
-    from tools.core.hazards import hazard_engine
-    from tools.core.schedule import schedule_engine
+    from tools.validators.core.hazards import hazard_engine
+    from tools.validators.core.schedule import schedule_engine
     from engine.state.state import state_machine_engine
 
     required = (

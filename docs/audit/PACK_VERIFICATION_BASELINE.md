@@ -14,7 +14,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Verification Summary
 - Setup and Launcher now run the same offline verification pipeline before pack activation.
-- The pipeline scans portable `dist/packs`, validates `pack.json` plus `pack.compat.json`, checks contract ranges against the pinned/default universe contract bundle, verifies registry requirements, applies MOD-POLICY gates, and dry-runs GEO-9 overlay conflicts.
+- The pipeline scans portable `archive/generated/dist/packs`, validates `pack.json` plus `pack.compat.json`, checks contract ranges against the pinned/default universe contract bundle, verifies registry requirements, applies MOD-POLICY gates, and dry-runs GEO-9 overlay conflicts.
 - Valid pack sets produce a deterministic `pack_lock` artifact and a deterministic `PackCompatibilityReport`.
 
 ## Refusal Matrix

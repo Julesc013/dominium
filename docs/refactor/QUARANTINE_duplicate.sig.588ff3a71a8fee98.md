@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/release/release_manifest_engine.py`
+- `src/tools/release/release_manifest_engine.py`
 - `tools/release/archive_policy_common.py`
 - `tools/release/offline_archive_common.py`
 
@@ -26,12 +26,12 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/release/archive_policy_common.py` disposition=`canonical` rank=`1` total_score=`84.64` risk=`HIGH`
 - `tools/release/offline_archive_common.py` disposition=`quarantine` rank=`2` total_score=`83.04` risk=`HIGH`
-- `src/release/release_manifest_engine.py` disposition=`drop` rank=`3` total_score=`62.56` risk=`HIGH`
+- `src/tools/release/release_manifest_engine.py` disposition=`drop` rank=`3` total_score=`62.56` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/README.md, docs/appshell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md, docs/architecture/ENERGY_MODEL.md, docs/architecture/FLUIDS_MODEL.md, docs/architecture/REPO_INTENT.md`
+- Docs: `docs/README.md, docs/runtime/shell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/DISTRIBUTED_SIMULATION_MODEL.md, docs/architecture/ENERGY_MODEL.md, docs/architecture/FLUIDS_MODEL.md, docs/architecture/REPO_INTENT.md`
 
 ## Tests Involved
 
@@ -42,7 +42,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

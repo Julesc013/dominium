@@ -14,9 +14,9 @@ CONVERGE-06 consolidates safe contract-adjacent root material under `contracts/`
 
 ## What Moved
 
-- `schema/` moved to `contracts/schemas/`.
-- `schemas/` merged into `contracts/schemas/`.
-- Active tooling, scripts, tests, CMake helpers, and GitHub automation references to those root paths were updated to `contracts/schemas/`.
+- `schema/` moved to `contracts/schema/`.
+- `schemas/` merged into `contracts/schema/`.
+- Active tooling, scripts, tests, CMake helpers, and GitHub automation references to those root paths were updated to `contracts/schema/`.
 
 ## What Did Not Move
 
@@ -39,7 +39,7 @@ Domain schemas and registries may live under `contracts/`, but Process execution
 
 ## Lock-Root Split
 
-- `contracts/locks/`: deterministic lockfile schemas and contract definitions.
+- `contracts/lock/`: deterministic lockfile schemas and contract definitions.
 - `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts in install/runtime projections.
 - `runtime/locks/`: process, IPC, and transient runtime locks.
 - `ops/transactions/`: setup, update, rollback plans, stages, commits, and rollback records.
@@ -50,4 +50,4 @@ Domain schemas and registries may live under `contracts/`, but Process execution
 - CONVERGE-09: domain split into contracts, game, content, docs, and tests.
 - CONVERGE-12: stale-doc and cross-reference cleanup.
 
-Domain roots still need file-level split. Do not move a root domain folder wholesale just because its schema material is now under `contracts/schemas/`.
+Domain roots still need file-level split. Do not move a root domain folder wholesale just because its schema material is now under `contracts/schema/`.

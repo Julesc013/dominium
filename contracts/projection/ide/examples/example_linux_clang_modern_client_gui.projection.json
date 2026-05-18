@@ -1,0 +1,21 @@
+{
+  "projection_id": "ide-linux-clang-modern-client-gui",
+  "product": "client",
+  "ui_shell": "client/ui",
+  "toolchain_tier": "clang_modern",
+  "target_os_family": "linux",
+  "target_os_min": "glibc_2.17",
+  "arch": "x86_64",
+  "language_mode": "c17_cpp17",
+  "sdk_pin": "llvm-17",
+  "crt_policy": "dynamic:glibc",
+  "generator": "Ninja",
+  "input_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "output_paths": [
+    "ide/linux/clang_modern/client_gui"
+  ],
+  "regeneration_command": "cmake --preset ide-linux-clang-modern-client-gui",
+  "warnings": [
+    "best-effort"
+  ]
+}

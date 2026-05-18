@@ -71,7 +71,7 @@ Replacement Target: legacy reference surface retained without current binding au
   - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - Result: `status=pass` (`repox scan passed`, findings=`0`).
 - AuditX run:
-  - `py -3 tools/auditx/auditx.py scan --repo-root . --changed-only --format json`
+  - `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format json`
   - Result: `result=scan_complete`, findings=`789`.
 - TestX PASS (CIV-3 required suite):
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.civilisation.order_create_deterministic,testx.civilisation.order_queue_ordering_deterministic,testx.civilisation.order_executor_stub_refusals_deterministic,testx.civilisation.role_assignment_entitlement_gating,testx.civilisation.cross_shard_order_behavior,testx.civilisation.order_visibility_gated`

@@ -246,7 +246,7 @@
           "legacy_alias_for": "allow_cross_shard_collision",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -274,7 +274,7 @@
           "legacy_alias_for": "allow_cross_shard_follow",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -302,7 +302,7 @@
           "legacy_alias_for": "allow_cross_shard_possession",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -386,7 +386,7 @@
           "legacy_alias_for": "allow_retrigger",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/core/hazards/hazard_engine.py"
+            "tools/validators/core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -471,7 +471,7 @@
           "legacy_alias_for": "allow_srz_transfer",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -614,7 +614,7 @@
           "legacy_alias_for": "allowed_view_modes",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -698,7 +698,7 @@
           "legacy_alias_for": "artifact_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'artifact_id' surfaced during Omega prep registry hardening.",
@@ -1070,7 +1070,7 @@
           "legacy_alias_for": "build_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py"
+            "tools/release/update_resolver.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'build_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -1099,7 +1099,7 @@
           "legacy_alias_for": "built_in_mock_release",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "engine/platform/target_matrix.py",
+            "runtime/platform/target_matrix.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'built_in_mock_release' surfaced during Omega prep registry hardening.",
@@ -1129,7 +1129,7 @@
           "legacy_alias_for": "bundle_quantity_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/core/flow/flow_engine.py"
+            "tools/validators/core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1636,7 +1636,7 @@
           "legacy_alias_for": "component_graph",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'component_graph' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -1693,7 +1693,7 @@
           "legacy_alias_for": "component_weights",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/core/flow/flow_engine.py"
+            "tools/validators/core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1947,7 +1947,7 @@
           "legacy_alias_for": "cosmetic_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py"
+            "tools/validators/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2144,8 +2144,8 @@
           "legacy_alias_for": "default_transition_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py",
-            "tools/network/srz/shard_coordinator.py",
+            "tools/validators/network/policies/policy_server_authoritative.py",
+            "tools/validators/network/srz/shard_coordinator.py",
             "tools/xstack/registry_compile/compiler.py",
             "tools/xstack/sessionx/runner.py"
           ],
@@ -2400,7 +2400,7 @@
           "legacy_alias_for": "distribution_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py"
+            "tools/release/update_resolver.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'distribution_rel' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -2429,7 +2429,7 @@
           "legacy_alias_for": "doc_rel",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'doc_rel' surfaced during Omega prep registry hardening.",
@@ -2884,7 +2884,7 @@
           "legacy_alias_for": "escalation_rules",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/anti_cheat/anti_cheat_engine.py"
+            "tools/validators/network/anti_cheat/anti_cheat_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -3713,7 +3713,7 @@
           "observed_paths": [
             "client/render/renderers/null_renderer.py",
             "client/render/renderers/software_renderer.py",
-            "tools/auditx/analyzers/e378_renderer_truth_leak_smell.py"
+            "tools/xstack/auditx/analyzers/e378_renderer_truth_leak_smell.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4348,7 +4348,7 @@
           "legacy_alias_for": "managed_paths",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/update_model_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'managed_paths' surfaced during Omega prep registry hardening.",
@@ -5197,9 +5197,9 @@
           "legacy_alias_for": "platform_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "engine/platform/target_matrix.py",
-            "release/component_graph_resolver.py",
-            "release/update_resolver.py",
+            "runtime/platform/target_matrix.py",
+            "tools/release/component_graph_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/arch_matrix_common.py",
             "tools/release/release_index_policy_common.py"
           ],
@@ -5230,7 +5230,7 @@
           "legacy_alias_for": "platform_tag",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'platform_tag' surfaced during Omega prep registry hardening.",
@@ -5260,7 +5260,7 @@
           "legacy_alias_for": "platform_tags",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "engine/platform/target_matrix.py"
+            "runtime/platform/target_matrix.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'platform_tags' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5401,7 +5401,7 @@
           "legacy_alias_for": "product_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "release/update_resolver.py",
+            "tools/release/update_resolver.py",
             "tools/release/release_manifest_common.py",
             "tools/release/update_model_common.py"
           ],
@@ -5827,7 +5827,7 @@
           "legacy_alias_for": "release_index_default",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "engine/platform/target_matrix.py",
+            "runtime/platform/target_matrix.py",
             "tools/release/arch_matrix_common.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'release_index_default' surfaced during Omega prep registry hardening.",
@@ -5969,8 +5969,8 @@
           "legacy_alias_for": "require_attestation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/network/policies/policy_server_authoritative.py",
-            "tools/network/srz/shard_coordinator.py"
+            "tools/validators/network/policies/policy_server_authoritative.py",
+            "tools/validators/network/srz/shard_coordinator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5998,7 +5998,7 @@
           "legacy_alias_for": "required_capabilities",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/libraries/provides/provider_resolution.py"
+            "tools/package/libraries/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_capabilities' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -6027,7 +6027,7 @@
           "legacy_alias_for": "required_contract_ranges",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/libraries/provides/provider_resolution.py"
+            "tools/package/libraries/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_contract_ranges' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -6676,7 +6676,7 @@
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
             "client/render/renderers/software_renderer.py",
-            "tools/auditx/analyzers/e376_truth_read_in_renderer_smell.py"
+            "tools/xstack/auditx/analyzers/e376_truth_read_in_renderer_smell.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7388,7 +7388,7 @@
           "legacy_alias_for": "threshold_crossed",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "tools/core/hazards/hazard_engine.py"
+            "tools/validators/core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8125,7 +8125,7 @@
           "observed_paths": [
             "client/render/renderers/null_renderer.py",
             "client/render/renderers/software_renderer.py",
-            "tools/auditx/analyzers/e382_water_sim_leak_smell.py"
+            "tools/xstack/auditx/analyzers/e382_water_sim_leak_smell.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8258,7 +8258,7 @@
         "extension_key": "official.binary_ref",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/install/install_validator.py",
+            "tools/package/libraries/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic binary-relative path recorded in install and product build descriptors.",
@@ -8286,7 +8286,7 @@
         "extension_key": "official.build_configuration",
         "extensions": {
           "observed_paths": [
-            "release/release_manifest_engine.py"
+            "tools/release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.build_configuration' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8529,7 +8529,7 @@
         "extension_key": "official.component_graph_hash",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Hash of the resolved component graph recorded in install metadata.",
           "official.source": "OMEGA-PREP"
@@ -8556,7 +8556,7 @@
         "extension_key": "official.component_graph_id",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Component graph identifier recorded in install metadata.",
           "official.source": "OMEGA-PREP"
@@ -8583,7 +8583,7 @@
         "extension_key": "official.component_install_plan_fingerprint",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Deterministic fingerprint of the resolved component install plan.",
           "official.source": "OMEGA-PREP"
@@ -8634,7 +8634,7 @@
         "extension_key": "official.descriptor_command",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/install/install_validator.py"
+            "tools/package/libraries/install/install_validator.py"
           ],
           "official.description": "Descriptor emission command surfaced for deterministic install verification.",
           "official.source": "OMEGA-PREP"
@@ -8661,7 +8661,7 @@
         "extension_key": "official.descriptor_ref",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/install/install_validator.py",
+            "tools/package/libraries/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic descriptor-relative path recorded in install and product build descriptors.",
@@ -8715,7 +8715,7 @@
         "deterministic_fingerprint": "dc318db76999dccde338eade90b7ebae8912c764997d2fd847d44fb8eeaae664",
         "extension_key": "official.dist_bin_names",
         "extensions": {
-          "official.description": "Deterministically ordered dist/bin wrapper names associated with a product endpoint descriptor.",
+          "official.description": "Deterministically ordered archive/generated/dist/bin wrapper names associated with a product endpoint descriptor.",
           "official.source": "CAP-NEG-1"
         },
         "profile_gate_required": "extensions.default",
@@ -8788,7 +8788,7 @@
         "extension_key": "official.explicit_build_number",
         "extensions": {
           "observed_paths": [
-            "release/release_manifest_engine.py"
+            "tools/release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.explicit_build_number' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8839,7 +8839,7 @@
         "extension_key": "official.governance_profile_hash",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Hash of the governance profile pinned into install metadata.",
           "official.source": "OMEGA-PREP"
@@ -8866,7 +8866,7 @@
         "extension_key": "official.governance_profile_ref",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Governance profile reference pinned into install metadata.",
           "official.source": "OMEGA-PREP"
@@ -8917,7 +8917,7 @@
         "extension_key": "official.inputs_hash",
         "extensions": {
           "observed_paths": [
-            "release/release_manifest_engine.py"
+            "tools/release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.inputs_hash' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8944,8 +8944,8 @@
         "extension_key": "official.install_profile_id",
         "extensions": {
           "observed_paths": [
-            "release/update_resolver.py",
-            "tools/dist/dist_tree_common.py",
+            "tools/release/update_resolver.py",
+            "tools/release/dist/dist_tree_common.py",
             "tools/launcher/launch.py",
             "tools/release/release_index_policy_common.py",
             "tools/release/update_model_common.py",
@@ -9006,7 +9006,7 @@
         "extension_key": "official.legacy_ref_hash",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/save/save_validator.py"
+            "tools/package/libraries/save/save_validator.py"
           ],
           "official.description": "Legacy reference hash recorded when compat validators bridge older payload shapes.",
           "official.source": "OMEGA-PREP"
@@ -9189,7 +9189,7 @@
         "extension_key": "official.platform_tag",
         "extensions": {
           "observed_paths": [
-            "release/release_manifest_engine.py"
+            "tools/release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.platform_tag' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -9216,8 +9216,8 @@
         "extension_key": "official.product_version",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/install/install_validator.py",
-            "release/update_resolver.py"
+            "tools/package/libraries/install/install_validator.py",
+            "tools/release/update_resolver.py"
           ],
           "official.description": "Product version recorded in deterministic product build descriptors.",
           "official.source": "OMEGA-PREP"
@@ -9245,8 +9245,8 @@
         "extensions": {
           "observed_paths": [
             "tools/validators/identity/identity_validator.py",
-            "release/release_manifest_engine.py",
-            "tools/dist/dist_tree_common.py",
+            "tools/release/release_manifest_engine.py",
+            "tools/release/dist/dist_tree_common.py",
             "tools/mvp/runtime_bundle.py",
             "tools/release/update_model_common.py",
             "tools/setup/setup_cli.py",
@@ -9277,8 +9277,8 @@
         "extension_key": "official.release_id",
         "extensions": {
           "observed_paths": [
-            "release/update_resolver.py",
-            "tools/dist/dist_tree_common.py"
+            "tools/release/update_resolver.py",
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Release identifier pinned into install metadata.",
           "official.source": "OMEGA-PREP"
@@ -9305,7 +9305,7 @@
         "extension_key": "official.release_index_ref",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Release index reference pinned into install metadata.",
           "official.source": "OMEGA-PREP"
@@ -9332,7 +9332,7 @@
         "extension_key": "official.release_manifest_ref",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py"
+            "tools/release/dist/dist_tree_common.py"
           ],
           "official.description": "Release manifest reference pinned into install metadata.",
           "official.source": "OMEGA-PREP"
@@ -9480,8 +9480,8 @@
         "extensions": {
           "observed_paths": [
             "contracts/abi/store/reachability_engine.py",
-            "release/update_resolver.py",
-            "tools/dist/dist_tree_common.py",
+            "tools/release/update_resolver.py",
+            "tools/release/dist/dist_tree_common.py",
             "tools/lib/store_gc_common.py",
             "tools/perf/performance_envelope_common.py",
             "tools/setup/setup_cli.py"
@@ -9511,7 +9511,7 @@
         "extension_key": "official.selected_component_ids",
         "extensions": {
           "observed_paths": [
-            "tools/dist/dist_tree_common.py",
+            "tools/release/dist/dist_tree_common.py",
             "tools/setup/setup_cli.py"
           ],
           "official.description": "Deterministically ordered selected component identifiers for an install plan.",
@@ -9563,8 +9563,8 @@
         "extension_key": "official.semantic_contract_registry_ref",
         "extensions": {
           "observed_paths": [
-            "tools/libraries/install/install_validator.py",
-            "tools/dist/dist_tree_common.py",
+            "tools/package/libraries/install/install_validator.py",
+            "tools/release/dist/dist_tree_common.py",
             "tools/lib/lib_stress_common.py",
             "tools/lib/store_gc_common.py",
             "tools/setup/setup_cli.py"
@@ -9667,7 +9667,7 @@
         "extension_key": "official.source_revision_id",
         "extensions": {
           "observed_paths": [
-            "release/release_manifest_engine.py"
+            "tools/release/release_manifest_engine.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'official.source_revision_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"

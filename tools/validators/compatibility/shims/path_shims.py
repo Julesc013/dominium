@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from runtime.appshell.paths import (
+from runtime.shell.paths import (
     VROOT_EXPORTS,
     VROOT_INSTANCES,
     VROOT_IPC,

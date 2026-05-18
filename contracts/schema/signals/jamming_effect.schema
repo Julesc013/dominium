@@ -1,0 +1,23 @@
+SCHEMA: signals/jamming_effect.schema
+schema_id: dominium.schema.signals.jamming_effect
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic jamming effect state attached to signal channels.
+
+REQUIRED SHAPE:
+record jamming_effect
+  required:
+    - schema_version: semver
+    - effect_id: id
+    - target_channel_id: id
+    - strength_modifier: int
+    - duration_ticks: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Jamming effects are process-created and process-removed.
+- Strength and duration are tick-scoped deterministic values.
+- Runtime effect updates must remain replayable and auditable.

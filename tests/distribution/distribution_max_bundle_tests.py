@@ -27,7 +27,7 @@ def main():
         "org.dominium.l10n.en_us",
     ])
 
-    discover = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                         ["--repo-root", repo_root, "--root", bundle_root, "--format", "json"])
     pack_ids = sorted([p.get("pack_id") for p in discover.get("packs", []) if p.get("pack_id")])
     if pack_ids != expected_ids:
@@ -41,7 +41,7 @@ def main():
         "cap.examples.simple_factory",
         "cap.l10n.en_us",
     ]
-    compat = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                       ["--repo-root", repo_root, "--root", bundle_root, "--format", "json"] +
                       sum([["--require-capability", cap] for cap in required_caps], []))
     if not compat.get("ok"):

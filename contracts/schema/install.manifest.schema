@@ -1,0 +1,104 @@
+SCHEMA: install.manifest.schema
+schema_id: dominium.schema.install_manifest
+schema_version: 1.1.0
+stability: core
+
+PURPOSE:
+- Define immutable install roots and their build/protocol identity.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- The manifest does not imply a single install.
+- The manifest does not imply online connectivity.
+- The manifest does not imply content availability.
+- Install identity is not derived from absolute host paths.
+
+CONVENTIONS:
+- uuid: canonical UUID string (lowercase, hyphenated).
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- timestamp: ISO-8601 UTC string.
+- path_ref: relative or canonical path string (no raw absolute paths in docs).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record install_manifest
+  required:
+    - install_id: uuid
+    - install_root: path_ref
+    - binaries: binaries
+    - supported_capabilities: [id]
+    - protocol_versions: protocol_versions
+    - build_identity: integer
+    - trust_tier: tag
+    - created_at: timestamp
+    - extensions: map
+  optional:
+    - install_version: tag
+    - product_builds: map
+    - semantic_contract_registry_hash: id
+    - supported_protocol_versions: map
+    - supported_contract_ranges: map
+    - default_mod_policy_id: id
+    - store_root_ref: store_root_ref
+    - mode: tag
+    - deterministic_fingerprint: id
+    - product_build_descriptors: map
+    - install_manifest_version: integer
+    - platform: tag
+    - install_type: tag
+    - install_tags: [tag]
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record binaries
+  required:
+    - engine: binary_info
+    - game: binary_info
+  optional:
+    - client: binary_info
+    - server: binary_info
+    - tools: binary_info
+    - launcher: binary_info
+    - setup: binary_info
+
+record binary_info
+  required:
+    - product_id: id
+    - product_version: tag
+  optional:
+    - build_id: tag
+    - build_number: integer
+    - abi_versions: [tag]
+    - binary_ref: path_ref
+    - descriptor_ref: path_ref
+    - binary_hash: id
+    - endpoint_descriptor_hash: id
+    - extensions: map
+
+record protocol_versions
+  required:
+    - network: tag
+    - save: tag
+    - mod: tag
+    - replay: tag
+  optional:
+    - protocol_tags: [tag]
+    - extensions: map
+
+record provenance_ref
+  required:
+    - provenance_id: id
+
+record store_root_ref
+  required:
+    - store_id: id
+  optional:
+    - root_path: path_ref
+    - manifest_ref: path_ref

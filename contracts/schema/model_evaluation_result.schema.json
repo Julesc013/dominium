@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model Evaluation Result Schema",
+  "version": "1.0.0",
+  "description": "Deterministic constitutive model evaluation result row.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "result_id",
+    "tick",
+    "model_id",
+    "binding_id",
+    "inputs_hash",
+    "outputs_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "result_id": {"type": "string", "minLength": 1},
+    "tick": {"type": "integer", "minimum": 0},
+    "model_id": {"type": "string", "minLength": 1},
+    "binding_id": {"type": "string", "minLength": 1},
+    "inputs_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "outputs_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "derived_observation_artifact_id": {"type": ["string", "null"]},
+    "deterministic_fingerprint": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "result_id": "result.model.signal.001",
+      "tick": 42,
+      "model_id": "model.signal.attenuation.default",
+      "binding_id": "binding.model.signal.001",
+      "inputs_hash": "2cb4f64d58ba7a4f39f0128f7f9eb3afe6cd877ff5f7bb3262669d84f3ef3388",
+      "outputs_hash": "179f18cb1eb73c95f39d6c130598ca4d18b061d2a8d645f0f8a6da8777a71b39",
+      "derived_observation_artifact_id": "artifact.obs.model.signal.001",
+      "deterministic_fingerprint": "d03b75be8a9c64129d7d4f99132008e19997026d8184f77f4063f17a3ee88231",
+      "extensions": {}
+    }
+  ]
+}

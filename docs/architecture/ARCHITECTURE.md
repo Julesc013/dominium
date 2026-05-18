@@ -75,10 +75,10 @@ Conceptual framing lives in `docs/architectureitecture/MENTAL_MODEL.md`.
 - Deterministic simulation logic lives under `engine/modules/` and is C90.
 
 
-- `engine/modules/system/` contains platform backends; it must not influence authoritative simulation state.
+- `runtime/platform/system/` contains platform backends; it must not influence authoritative simulation state.
 
 
-- Render backends live under `engine/render/` and are treated as derived output.
+- Render backends live under `runtime/render/` and are treated as derived output.
 
 
 
@@ -87,7 +87,7 @@ Conceptual framing lives in `docs/architectureitecture/MENTAL_MODEL.md`.
 ### Dominium game (authoritative rules + domain logic)
 
 
-- Game logic lives under `game/core/`, `game/rules/`, and `game/economy/`.
+- Game logic lives under `game/rule/`, `game/rules/`, and `game/economy/`.
 
 
 - Game code uses engine public headers only; it must not include `engine/modules/**`.

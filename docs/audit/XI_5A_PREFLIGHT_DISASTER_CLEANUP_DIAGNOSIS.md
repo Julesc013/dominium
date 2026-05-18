@@ -19,7 +19,7 @@ The live STRICT blocker was:
 
 - `PermissionError [WinError 5]`
 - path:
-  `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc`
+  `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/archive/generated/dist/tools/xstack/packagingx/__init__.pyc`
 
 The failure did not come from disaster scenario semantics or from missing fixture assembly. It came from teardown of a reused disaster-suite work root under Windows.
 

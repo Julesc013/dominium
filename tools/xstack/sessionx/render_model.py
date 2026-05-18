@@ -1,10 +1,10 @@
-﻿"""SessionX wrapper for the canonical RenderModel adapter."""
+"""SessionX wrapper for the canonical RenderModel adapter."""
 
 from __future__ import annotations
 
 from typing import Dict
 
-from apps.client.render import build_render_model as _build_render_model
+from runtime.render.client import build_render_model as _build_render_model
 
 
 def build_render_model(

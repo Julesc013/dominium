@@ -15,14 +15,14 @@ Define canonical packaging from compiled bundle artifacts into a reproducible `d
 
 ## Canonical Dist Layout
 Root:
-- `dist/bin/`
-- `dist/packs/`
-- `dist/bundles/<bundle_id>/bundle.json`
-- `dist/registries/`
-- `dist/lockfile.json`
-- `dist/manifest.json`
+- `archive/generated/dist/bin/`
+- `archive/generated/dist/packs/`
+- `archive/generated/dist/bundles/<bundle_id>/bundle.json`
+- `archive/generated/dist/registries/`
+- `archive/generated/dist/lockfile.json`
+- `archive/generated/dist/manifest.json`
 
-Expected registry files in `dist/registries/`:
+Expected registry files in `archive/generated/dist/registries/`:
 - `domain.registry.json`
 - `law.registry.json`
 - `experience.registry.json`
@@ -53,7 +53,7 @@ Expected registry files in `dist/registries/`:
 6. Never include file timestamps or OS metadata in canonical hashes.
 
 ## Manifest Contract
-`dist/manifest.json` fields include:
+`archive/generated/dist/manifest.json` fields include:
 - `schema_version: "1.0.0"`
 - `manifest_type: "dominium.dist_manifest"`
 - `layout_version: "1.0.0"`
@@ -102,7 +102,7 @@ tools/launcher/launch run --dist dist --session saves/save.demo/session_spec.jso
 
 ## TODO
 - Add optional detached signature manifest after SecureX signing workflow is finalized.
-- Introduce explicit schema for `dist/manifest.json` in CompatX when packaging contract stabilizes.
+- Introduce explicit schema for `archive/generated/dist/manifest.json` in CompatX when packaging contract stabilizes.
 
 ## Cross-References
 - `docs/architecture/registry_compile.md`

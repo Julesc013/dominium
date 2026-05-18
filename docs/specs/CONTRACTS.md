@@ -63,6 +63,6 @@ referenced by per-symbol doc blocks to avoid repeating the same rules across hea
 ## Documentation Placement (No Duplication)
 - Each public symbol is documented **exactly once**, in the public header that
   declares it.
-- Source files (`engine/modules/**`, `engine/render/**`, `game/**`, `launcher/**`,
+- Source files (`engine/modules/**`, `runtime/render/**`, `game/**`, `launcher/**`,
   `setup/**`, `tools/**`) may add comments only for internal invariants,
   rationale, and non-obvious algorithms; they must not restate header contracts.

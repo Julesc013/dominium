@@ -1,0 +1,53 @@
+{
+  "record": {
+    "dependencies": [
+      {
+        "capability_id": "capability.on_planet.survey"
+      },
+      {
+        "capability_id": "capability.on_planet.mining"
+      },
+      {
+        "capability_id": "capability.on_planet.terrain.modify"
+      },
+      {
+        "capability_id": "process.epistemic.observe"
+      },
+      {
+        "capability_id": "topology.body.earth"
+      }
+    ],
+    "entitlements": [],
+    "extensions": {
+      "notes": "Exemplar: ruins, archaeology processes, and conflicting histories."
+    },
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
+    "pack_id": "org.dominium.examples.lost_civilization",
+    "pack_version": "1.0.0",
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.examples.lost_civilization.manifest.v1"
+    },
+    "provides": [
+      {
+        "capability_id": "example.lost_civilization"
+      }
+    ],
+    "provides_capabilities": [
+      {
+        "capability_id": "example.lost_civilization"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "requires_capabilities": []
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
+}

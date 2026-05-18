@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""CLI: validate a bundle profile file against contracts/schemas/bundle_profile.schema.json."""
+"""CLI: validate a bundle profile file against contracts/schema/bundle_profile.schema.json."""
 
 from __future__ import annotations
 

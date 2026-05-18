@@ -1,0 +1,281 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "capability.on_planet.survey",
+      "capability_tags": [
+        "capability.sensing"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.survey.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.terrain.modify",
+      "capability_tags": [
+        "capability.terrain"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.terrain.modify.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.construction",
+      "capability_tags": [
+        "capability.construction"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.construction.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.manufacturing",
+      "capability_tags": [
+        "capability.manufacturing"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.manufacturing.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.mining",
+      "capability_tags": [
+        "capability.mining"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.mining.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.refining",
+      "capability_tags": [
+        "capability.refining"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.refining.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.network.electrical",
+      "capability_tags": [
+        "capability.network",
+        "network.electrical"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.network.electrical.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.network.fluid",
+      "capability_tags": [
+        "capability.network",
+        "network.fluid"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.network.fluid.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.network.thermal",
+      "capability_tags": [
+        "capability.network",
+        "network.thermal"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.network.thermal.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.network.logistics",
+      "capability_tags": [
+        "capability.network",
+        "network.logistics"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.network.logistics.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.network.data",
+      "capability_tags": [
+        "capability.network",
+        "network.data"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.network.data.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.maintenance",
+      "capability_tags": [
+        "capability.maintenance"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.maintenance.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.terraforming",
+      "capability_tags": [
+        "capability.terraforming"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.terraforming.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.trade",
+      "capability_tags": [
+        "capability.trade"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.trade.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.regulation",
+      "capability_tags": [
+        "capability.regulation"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.regulation.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.transport",
+      "capability_tags": [
+        "capability.transport"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.transport.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.ownership.registry",
+      "capability_tags": [
+        "capability.ownership"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.ownership.registry.v1"
+      }
+    },
+    {
+      "capability_id": "capability.on_planet.compliance.audit",
+      "capability_tags": [
+        "capability.compliance"
+      ],
+      "providers": [
+        {
+          "ref_type": "pack",
+          "ref_id": "org.dominium.lib.on_planet.primitives"
+        }
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.on_planet.capability.compliance.audit.v1"
+      }
+    }
+  ]
+}

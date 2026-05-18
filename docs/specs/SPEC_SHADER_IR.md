@@ -15,7 +15,7 @@ Backend-specific shader sources are FORBIDDEN in game code.
 
 - Shader IR is the only authoring format.
 - Backend compilation targets include HLSL, SPIR-V, and MSL.
-- Backend-specific shaders MUST live under `engine/render/shader/**`.
+- Backend-specific shaders MUST live under `runtime/render/shader/**`.
 - Game code MUST NOT reference backend shader dialects.
 
 ## Compilation Model
@@ -31,5 +31,5 @@ Backend-specific shader sources are FORBIDDEN in game code.
 
 ## Prohibitions
 
-- Backend-specific shader branching outside `engine/render/**` is FORBIDDEN.
+- Backend-specific shader branching outside `runtime/render/**` is FORBIDDEN.
 - Shader model selection by user intent is FORBIDDEN.

@@ -19,13 +19,13 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-CONVERGENCE_PLAN_REL = "content/data/refactor/convergence_plan.json"
-CONVERGENCE_ACTIONS_REL = "content/data/refactor/convergence_actions.json"
-CONVERGENCE_RISK_MAP_REL = "content/data/refactor/convergence_risk_map.json"
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+CONVERGENCE_PLAN_REL = "archive/generated/refactor/convergence_plan.json"
+CONVERGENCE_ACTIONS_REL = "archive/generated/refactor/convergence_actions.json"
+CONVERGENCE_RISK_MAP_REL = "archive/generated/refactor/convergence_risk_map.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 
-CONVERGENCE_EXECUTION_LOG_REL = "content/data/refactor/convergence_execution_log.json"
+CONVERGENCE_EXECUTION_LOG_REL = "archive/generated/refactor/convergence_execution_log.json"
 CONVERGENCE_EXECUTION_LOG_DOC_REL = "docs/refactor/CONVERGENCE_EXECUTION_LOG.md"
 DEPRECATIONS_REL = "docs/refactor/DEPRECATIONS.md"
 XI_4_FINAL_REL = "docs/audit/XI_4_FINAL.md"
@@ -49,7 +49,7 @@ REQUIRED_INPUTS = {
 
 DOC_REPORT_DATE = "2026-03-26"
 SOURCE_LIKE_DIRS = {"Source", "Sources", "source", "src"}
-TEST_PATH_PREFIXES = ("Testing/", "game/tests/", "tests/", "tools/xstack/testx/tests/")
+TEST_PATH_PREFIXES = ("Testing/", "tests/game/", "tests/", "tools/xstack/testx/tests/")
 AUTO_QUARANTINE_SYMBOLS = {"main", "sizeof", "stat", "winmain", "wwinmain"}
 ACTION_KIND_ORDER = {"keep": 0, "merge": 1, "rewire": 2, "deprecate": 3, "quarantine": 4}
 RISK_ORDER = {"HIGH": 0, "MED": 1, "LOW": 2}
@@ -73,14 +73,14 @@ GATE_ROWS = (
     },
     {
         "gate_id": "validate_fast",
-        "command": "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
+        "command": "python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST",
         "phase": "phase_1_safe_merges",
         "status": "fail",
         "note": "repo-global validation refusal: registry entries must declare stability in contracts/registry/toolchain_test_profile_registry.json",
     },
     {
         "gate_id": "validate_strict",
-        "command": "python tools/validation/tool_run_validation.py --repo-root . --profile STRICT",
+        "command": "python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT",
         "phase": "phase_2_medium_risk_merges",
         "status": "fail",
         "note": "repo-global validation failure: ARCH-AUDIT disaster worktree cleanup under build/tmp/omega4_disaster_arch_audit failed",
@@ -592,7 +592,7 @@ def render_convergence_execution_log(snapshot: Mapping[str, object]) -> str:
     for cluster_id in list(cluster_sets.get("skipped") or [])[:CLUSTER_LIST_LIMIT]:
         lines.append("- `{}`".format(cluster_id))
     if len(list(cluster_sets.get("skipped") or [])) > CLUSTER_LIST_LIMIT:
-        lines.append("- ... see `content/data/refactor/convergence_execution_log.json` for the full deferred set")
+        lines.append("- ... see `archive/generated/refactor/convergence_execution_log.json` for the full deferred set")
     if not list(cluster_sets.get("skipped") or []):
         lines.append("- none")
     lines.append("")
@@ -633,7 +633,7 @@ def render_deprecations(snapshot: Mapping[str, object]) -> str:
             )
         )
     if len(deprecations) > DEPRECATION_LIST_LIMIT:
-        lines.append("- ... see `content/data/refactor/convergence_execution_log.json` for the complete set")
+        lines.append("- ... see `archive/generated/refactor/convergence_execution_log.json` for the complete set")
     lines.append("")
     return "\n".join(lines)
 

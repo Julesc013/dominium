@@ -33,7 +33,7 @@
     {
       "old_package": "validation",
       "new_package": "tools.validators.validation",
-      "target_path": "tools/validators/validation/"
+      "target_path": "tools/validators/suite/"
     },
     {
       "old_package": "meta.identity",
@@ -52,8 +52,8 @@
       "title": "Create validator target namespaces and move implementations",
       "phase": "future_apply",
       "moves": [
-        {"source":"validation/__init__.py","target":"tools/validators/validation/__init__.py"},
-        {"source":"validation/validation_engine.py","target":"tools/validators/validation/validation_engine.py"},
+        {"source":"validation/__init__.py","target":"tools/validators/suite/__init__.py"},
+        {"source":"validation/validation_engine.py","target":"tools/validators/suite/validation_engine.py"},
         {"source":"meta/identity/__init__.py","target":"tools/validators/identity/__init__.py"},
         {"source":"meta/identity/identity_validator.py","target":"tools/validators/identity/identity_validator.py"},
         {"source":"meta/stability/__init__.py","target":"tools/validators/stability/__init__.py"},
@@ -62,7 +62,7 @@
       ],
       "create_if_needed": [
         "tools/validators/__init__.py",
-        "tools/validators/validation/",
+        "tools/validators/suite/",
         "tools/validators/identity/",
         "tools/validators/stability/"
       ],

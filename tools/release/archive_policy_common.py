@@ -7,7 +7,7 @@ import os
 from typing import Mapping, Sequence
 
 from tools.governance import governance_profile_hash, load_governance_profile
-from release import (
+from tools.release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
     load_release_index,
@@ -15,7 +15,7 @@ from release import (
     release_index_hash,
     write_release_index,
 )
-from release.archive_policy import (
+from tools.release.archive_policy import (
     DEFAULT_ARCHIVE_BUNDLE_PREFIX,
     DEFAULT_ARCHIVE_RECORD_REL,
     DEFAULT_MIRROR_LIST,
@@ -35,7 +35,7 @@ BASELINE_DOC_REL = os.path.join("docs", "audit", "ARCHIVE_POLICY_BASELINE.md")
 REPORT_JSON_REL = os.path.join("data", "audit", "archive_policy_report.json")
 ARCHIVE_RECORD_SCHEMA_REL = os.path.join("contracts", "schemas", "release", "archive_record.schema")
 ARCHIVE_RECORD_SCHEMA_JSON_REL = os.path.join("contracts", "schemas", "archive_record.schema.json")
-ARCHIVE_POLICY_REGISTRY_REL = os.path.join("data", "registries", "archive_policy_registry.json")
+ARCHIVE_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "archive_policy_registry.json")
 RULE_ARCHIVE_RECORD = "INV-RELEASES-MUST-GENERATE-ARCHIVE-RECORD"
 RULE_INDEX_HISTORY = "INV-NO-RELEASE-INDEX-OVERWRITE"
 LAST_REVIEWED = "2026-03-14"
@@ -636,7 +636,7 @@ def build_archive_policy_report(repo_root: str, *, platform_tag: str = DEFAULT_P
         )
 
     report = {
-        "report_id": "release.archive_policy.v1",
+        "report_id": "tools.release.archive_policy.v1",
         "result": "complete" if not violations else "refused",
         "release_id": _token(archive_result.get("release_id")) or DEFAULT_RELEASE_ID,
         "bundle_root": _norm_rel(os.path.relpath(bundle_root, root)),
@@ -727,7 +727,7 @@ def archive_policy_violations(repo_root: str, *, build_report: bool = True) -> l
         (ARCHIVE_RECORD_SCHEMA_REL, "archive_record schema is required", RULE_ARCHIVE_RECORD),
         (ARCHIVE_RECORD_SCHEMA_JSON_REL, "compiled archive_record schema is required", RULE_ARCHIVE_RECORD),
         (ARCHIVE_POLICY_REGISTRY_REL, "archive policy registry is required", RULE_ARCHIVE_RECORD),
-        ("release/archive_policy.py", "archive-policy release helpers are required", RULE_ARCHIVE_RECORD),
+        ("tools/release/archive_policy.py", "archive-policy release helpers are required", RULE_ARCHIVE_RECORD),
         ("tools/release/archive_policy_common.py", "archive-policy helper is required", RULE_ARCHIVE_RECORD),
         ("tools/release/tool_archive_release.py", "archive release tool is required", RULE_ARCHIVE_RECORD),
         ("tools/release/tool_verify_archive.py", "archive verification tool is required", RULE_ARCHIVE_RECORD),

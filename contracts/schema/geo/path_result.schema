@@ -1,0 +1,27 @@
+SCHEMA: geo/path_result.schema
+schema_id: dominium.schema.geo.path_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-6 path result artifact.
+- Preserve ordered path cells, bounded cost, and replay-stable result fingerprints.
+
+NON-SEMANTICS:
+- This schema does not guarantee a route exists.
+- This schema does not authorize direct truth mutation or route adoption.
+
+REQUIRED SHAPE:
+record path_result
+  required:
+    - result_id: id
+    - request_id: id
+    - path_cells: [map]
+    - total_cost: i64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- path_cells ordering must be canonical and stable
+- total_cost must be derived from declared traversal policy rules
+- derived partial results must remain explicit in extensions rather than implicit truncation

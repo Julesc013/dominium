@@ -220,7 +220,7 @@
     "doctrine existence treated as implementation maturity"
   ],
   "repo_evidence_surfaces": [
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "tools/validators/security/trust/trust_verifier.py",
     "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
     "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",

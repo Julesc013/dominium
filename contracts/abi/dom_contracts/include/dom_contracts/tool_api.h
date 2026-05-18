@@ -57,7 +57,7 @@ typedef enum {
  *
  * ABI/versioning:
  * - `struct_size` and `struct_version` allow the host to validate the layout when linking
- *   across components. Current `struct_version` is 1 (see `source/dominium/tools/core/tool_core.c`).
+ *   across components. Current `struct_version` is 1 (see `source/dominium/tools/validators/core/tool_core.c`).
  *
  * Ownership:
  * - String pointers refer to NUL-terminated storage owned by the registry for the process lifetime.

@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -45,9 +45,9 @@ ELEC-5 hardening completed for:
 - Enforcement:
   - RepoX: `tools/xstack/repox/check.py`
   - AuditX analyzers:
-    - `tools/auditx/analyzers/e192_infinite_cascade_smell.py`
-    - `tools/auditx/analyzers/e193_unbudgeted_solve_smell.py`
-    - `tools/auditx/analyzers/e194_silent_degrade_smell.py`
+    - `tools/xstack/auditx/analyzers/e192_infinite_cascade_smell.py`
+    - `tools/xstack/auditx/analyzers/e193_unbudgeted_solve_smell.py`
+    - `tools/xstack/auditx/analyzers/e194_silent_degrade_smell.py`
 - TestX coverage:
   - `test_stress_scenario_deterministic`
   - `test_cascade_bounded`
@@ -120,7 +120,7 @@ Run date: 2026-03-03
   Notes: warnings remain in unrelated/global areas; no failing findings.
 
 - AuditX: `RUN COMPLETE`
-  Command: `python tools/auditx/auditx.py scan --repo-root . --format both`
+  Command: `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
 
 - ELEC-5 TestX subset: `PASS`
   Command:

@@ -92,7 +92,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.mobility.vehicle.vehicle_engine import build_motion_state
+    from game.domain.mobility.vehicle.vehicle_engine import build_motion_state
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     edge_length_by_id = {"edge.mob.transition.alpha": 12000}

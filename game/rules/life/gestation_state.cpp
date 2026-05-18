@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/gestation_state.cpp
+FILE: game/rule/life/gestation_state.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements gestation state registries.

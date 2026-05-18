@@ -25,8 +25,8 @@
     "materials/blueprint_engine.py",
     "materials/maintenance/decay_engine.py",
     "infrastructure/formalization/inference_engine.py",
-    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
-    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
+    "docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
     "docs/knowledge/EPISTEMICS_OVERVIEW.md",
     "docs/audit/BOM_AG_BASELINE.md"
   ],

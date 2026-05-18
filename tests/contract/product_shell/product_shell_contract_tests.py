@@ -15,14 +15,14 @@ REQUIRED_DOCS = {
         "## F) Tools",
         "SHELL-PARITY-CLI-CANON",
     ],
-    "docs/ui/UX_RULES.md": [
+    "docs/runtime/ui/UX_RULES.md": [
         "UX-PARITY-CLI-CANON",
         "UX-PARITY-NO-UI-ONLY",
         "UX-REFUSAL-VISIBLE",
         "UX-MISSING-CONTENT-EXPLAINED",
         "UX-DEBUG-DISCOVERABLE",
     ],
-    "docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md": [
+    "docs/development/DEBUG_AND_DIAGNOSTICS_MODEL.md": [
         "Logging expectations",
         "Error vs refusal",
         "Replay",

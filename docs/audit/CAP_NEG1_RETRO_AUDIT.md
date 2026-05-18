@@ -20,11 +20,11 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Existing Product Surfaces
 - `src/server/server_main.py` is the authoritative server CLI surface.
-- `tools/mvp/runtime_entry.py` is the practical MVP client/server bootstrap surface used by `dist/bin/dominium_client` and `dist/bin/dominium_server`.
+- `tools/mvp/runtime_entry.py` is the practical MVP client/server bootstrap surface used by `archive/generated/dist/bin/dominium_client` and `archive/generated/dist/bin/dominium_server`.
 - `tools/setup/setup_cli.py` is the setup product CLI surface.
 - `tools/launcher/launch.py` is the deterministic launcher product surface used by the current dist wrapper.
-- `dist/bin/engine`, `dist/bin/client`, `dist/bin/server`, `dist/bin/launcher`, and `dist/bin/setup` are currently placeholder wrappers and do not emit descriptors.
-- `dist/bin/game` is not present yet.
+- `archive/generated/dist/bin/engine`, `archive/generated/dist/bin/client`, `archive/generated/dist/bin/server`, `archive/generated/dist/bin/launcher`, and `archive/generated/dist/bin/setup` are currently placeholder wrappers and do not emit descriptors.
+- `archive/generated/dist/bin/game` is not present yet.
 
 ## Existing Product IDs and Capability Defaults
 - CAP-NEG-0 already introduced `data/registries/product_registry.json`.
@@ -62,10 +62,10 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - server
   - setup
   - launcher
-- Add an offline manifest tool that scans `dist/bin` and records emitted descriptors deterministically.
+- Add an offline manifest tool that scans `archive/generated/dist/bin` and records emitted descriptors deterministically.
 
 ## Risks Found
-- Placeholder dist wrappers currently prevent `dist/bin` scanning from producing real descriptors.
+- Placeholder dist wrappers currently prevent `archive/generated/dist/bin` scanning from producing real descriptors.
 - No shared build-metadata helper means product versions could drift if each product invents its own build id logic.
 - Capability defaults are currently mixed into the product registry, which makes future identity-only tooling brittle.
 

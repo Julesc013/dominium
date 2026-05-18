@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/distribution/profile_inspect.py`
+- Canonical Candidate: `tools/package/distribution/profile_inspect.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `tools/distribution/compat_dry_run.py`
-- `tools/distribution/profile_inspect.py`
+- `tools/package/distribution/compat_dry_run.py`
+- `tools/package/distribution/profile_inspect.py`
 
 ## Scorecard
 
-- `tools/distribution/profile_inspect.py` disposition=`canonical` rank=`1` total_score=`70.44` risk=`HIGH`
-- `tools/distribution/compat_dry_run.py` disposition=`quarantine` rank=`2` total_score=`65.62` risk=`HIGH`
+- `tools/package/distribution/profile_inspect.py` disposition=`canonical` rank=`1` total_score=`70.44` risk=`HIGH`
+- `tools/package/distribution/compat_dry_run.py` disposition=`quarantine` rank=`2` total_score=`65.62` risk=`HIGH`
 
 ## Usage Sites
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

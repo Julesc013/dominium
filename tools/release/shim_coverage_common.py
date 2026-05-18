@@ -14,12 +14,12 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.validators.compatibility.shims import legacy_flag_rows, path_shim_rows, tool_shim_rows, validation_shim_rows  # noqa: E402
-from tools.validators.validation import validation_surface_rows  # noqa: E402
+from tools.validators.suite import validation_surface_rows  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
-FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
+FLAG_MIGRATION_DOC_PATH = "docs/runtime/shell/FLAG_MIGRATION.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
 PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
@@ -30,7 +30,7 @@ VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.p
 _INTEGRATION_TARGETS = (
     {
         "integration_id": "bootstrap_flag_shims",
-        "file_path": "runtime/appshell/bootstrap.py",
+        "file_path": "runtime/shell/bootstrap.py",
         "required_tokens": ("apply_flag_shims(",),
         "rule_id": "INV-SHIMS-MUST-LOG-DEPRECATION",
         "message": "AppShell bootstrap must apply centralized legacy flag shims before shell argument resolution.",
@@ -44,7 +44,7 @@ _INTEGRATION_TARGETS = (
     },
     {
         "integration_id": "distribution_path_shims",
-        "file_path": "tools/distribution/distribution_lib.py",
+        "file_path": "tools/package/distribution/distribution_lib.py",
         "required_tokens": ("redirect_legacy_path(",),
         "rule_id": "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION",
         "message": "Legacy pack discovery roots must redirect through the governed path shim layer.",

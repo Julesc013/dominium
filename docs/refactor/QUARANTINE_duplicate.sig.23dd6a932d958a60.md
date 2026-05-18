@@ -37,8 +37,8 @@ Replacement Target: XI-4b manual review resolution
 - `tools/fluid/tool_generate_fluid_stress.py`
 - `tools/fluid/tool_replay_fluid_window.py`
 - `tools/fluid/tool_run_fluid_stress.py`
-- `tools/geo/tool_generate_geo_stress.py`
-- `tools/geo/tool_run_geo_stress.py`
+- `tools/validators/domain/geology/tool_generate_geo_stress.py`
+- `tools/validators/domain/geology/tool_run_geo_stress.py`
 - `tools/materials/tool_generate_factory_planet_scenario.py`
 - `tools/materials/tool_run_stress.py`
 - `tools/mobility/tool_determinism_compare.py`
@@ -68,7 +68,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/chem/tool_generate_chem_stress.py` disposition=`merge` rank=`10` total_score=`70.62` risk=`HIGH`
 - `tools/fluid/tool_run_fluid_stress.py` disposition=`merge` rank=`11` total_score=`69.94` risk=`HIGH`
 - `tools/control/tool_run_control_stress.py` disposition=`merge` rank=`12` total_score=`67.86` risk=`HIGH`
-- `tools/geo/tool_run_geo_stress.py` disposition=`merge` rank=`13` total_score=`67.55` risk=`HIGH`
+- `tools/validators/domain/geology/tool_run_geo_stress.py` disposition=`merge` rank=`13` total_score=`67.55` risk=`HIGH`
 - `tools/thermal/tool_run_therm_stress.py` disposition=`merge` rank=`14` total_score=`67.48` risk=`HIGH`
 - `tools/compat/tool_replay_migration.py` disposition=`merge` rank=`15` total_score=`67.44` risk=`HIGH`
 - `tools/chem/tool_replay_chem_window.py` disposition=`merge` rank=`16` total_score=`67.39` risk=`HIGH`
@@ -78,7 +78,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/fluid/tool_replay_fluid_window.py` disposition=`merge` rank=`20` total_score=`65.46` risk=`HIGH`
 - `tools/earth/tool_generate_earth_mvp_stress.py` disposition=`merge` rank=`21` total_score=`64.65` risk=`HIGH`
 - `tools/earth/tool_replay_earth_physics_window.py` disposition=`merge` rank=`22` total_score=`64.65` risk=`HIGH`
-- `tools/geo/tool_generate_geo_stress.py` disposition=`merge` rank=`23` total_score=`64.65` risk=`HIGH`
+- `tools/validators/domain/geology/tool_generate_geo_stress.py` disposition=`merge` rank=`23` total_score=`64.65` risk=`HIGH`
 - `tools/electric/tool_run_elec_stress.py` disposition=`merge` rank=`24` total_score=`64.57` risk=`HIGH`
 - `tools/thermal/tool_replay_therm_window.py` disposition=`merge` rank=`25` total_score=`64.5` risk=`HIGH`
 - `tools/pollution/tool_generate_poll_stress.py` disposition=`merge` rank=`26` total_score=`63.68` risk=`HIGH`
@@ -107,7 +107,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

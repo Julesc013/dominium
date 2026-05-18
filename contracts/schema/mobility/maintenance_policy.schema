@@ -1,0 +1,21 @@
+SCHEMA: mobility/maintenance_policy.schema
+schema_id: dominium.schema.mobility.maintenance_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic mobility maintenance policy row.
+
+REQUIRED SHAPE:
+record maintenance_policy
+  required:
+    - schema_version: semver
+    - maintenance_policy_id: id
+    - target_kind: token
+    - inspection_interval_ticks: int
+    - service_action_id: id
+    - extensions: map
+
+INVARIANTS:
+- `inspection_interval_ticks >= 0`.
+- Maintenance policy usage must be process mediated.

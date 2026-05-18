@@ -74,7 +74,7 @@ Executed gates:
 - Result: `FAIL` (pre-existing repository findings remain; current run reported one fail-level finding under `INV-NO-RANKED-FLAGS` in `tools/signals/tool_run_sig_stress.py` and multiple warn-level findings outside COMPLETENESS-1 scope).
 
 2. AuditX
-- Command: `python tools/auditx/auditx.py scan --repo-root . --changed-only`
+- Command: `python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only`
 - Result: `RUN COMPLETE` (artifacts refreshed in `docs/audit/auditx/`).
 
 3. TestX (RWAM scope)

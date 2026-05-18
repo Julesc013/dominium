@@ -84,7 +84,7 @@ Execution run status (2026-03-03):
 - RepoX (`python tools/xstack/repox/check.py --profile FAST`):
   - `status=fail` due pre-existing non-ELEC finding in `tools/signals/tool_run_sig_stress.py` (`INV-NO-RANKED-FLAGS`).
   - ELEC-1-specific invariants executed: `INV-POWER-FLOW-THROUGH-BUNDLE`, `INV-BREAKER-THROUGH-SAFETY`.
-- AuditX (`python tools/auditx/auditx.py scan --repo-root . --changed-only --format both`):
+- AuditX (`python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format both`):
   - `result=scan_complete`.
   - analyzers include ELEC-1 additions:
     - `E185_INLINE_POWER_LOSS_SMELL`

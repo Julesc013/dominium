@@ -1,0 +1,28 @@
+SCHEMA: interaction/affordance.schema
+schema_id: dominium.schema.interaction.affordance
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic interaction affordance rows derived from perceived targets and lawful authority.
+
+REQUIRED SHAPE:
+record affordance
+  required:
+    - schema_version: semver
+    - affordance_id: id
+    - target_semantic_id: id
+    - process_id: id
+    - display_name: string
+    - required_entitlements: list[id]
+    - required_lens_channels: optional_list[id]
+    - parameter_schema_id: optional_id
+    - preview_capability: enum(none|cheap|expensive)
+    - cost_units_estimate: optional_u32
+    - deterministic_fingerprint: hash_hex
+    - extensions: map
+
+INVARIANTS:
+- `affordance_id` is deterministic from `(target_semantic_id, process_id)`.
+- Affordance declaration is UI metadata and does not bypass LawProfile gating.
+- Affordance rows never mutate authoritative state directly.

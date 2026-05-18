@@ -29,7 +29,7 @@ Status: `partially_enforced`
 Status: `partially_enforced`
 
 - `VIOLATION`: `docs/architecture/CAPABILITY_ONLY_CANON.md` forbids stage/progression identifiers outside planning language, but `docs/CAPABILITY_STAGES.md` and `docs/TESTX_STAGE_MATRIX.md` still prescribe runtime stage rules and identifiers.
-- `RISK`: `docs/app/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md` claims mode-specific capability checks for memory/observer camera modes, but command metadata currently encodes only `ui.camera.mode.embodied` for `camera.set_mode` (`libs/appcore/command/command_registry.c`).
+- `RISK`: `docs/apps/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md` claims mode-specific capability checks for memory/observer camera modes, but command metadata currently encodes only `ui.camera.mode.embodied` for `camera.set_mode` (`libs/appcore/command/command_registry.c`).
 - `RISK`: `docs/security/CHEAT_THREAT_MODEL.md` and `docs/security/CHEATING_AND_VERIFICATION.md` are near-duplicate normative surfaces with overlapping authority claims.
 
 ## Axis C - Schemas vs Runtime Expectations

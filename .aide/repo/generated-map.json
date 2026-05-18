@@ -11095,7 +11095,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "apps/setup/packages/scripts/gen_changelog.bat",
+      "path": "release/packaging/setup/scripts/gen_changelog.bat",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11105,7 +11105,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/env_report.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/env_report.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11115,7 +11115,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/hashes.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/hashes.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11125,7 +11125,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/results.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/results.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11135,7 +11135,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/build_ids.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/build_ids.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11145,7 +11145,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/endpoint_descriptors.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/endpoint_descriptors.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11155,7 +11155,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/env_report.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/env_report.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11165,7 +11165,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/hashes.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/hashes.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11175,7 +11175,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/results.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/results.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11185,7 +11185,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/run_manifest.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/run_manifest.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11195,7 +11195,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run_manifest.json",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run_manifest.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11265,7 +11265,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dom",
+      "path": "archive/generated/dist/bin/dom",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11275,7 +11275,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dom.cmd",
+      "path": "archive/generated/dist/bin/dom.cmd",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11285,7 +11285,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dominium_client",
+      "path": "archive/generated/dist/bin/dominium_client",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11295,7 +11295,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dominium_client.cmd",
+      "path": "archive/generated/dist/bin/dominium_client.cmd",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11305,7 +11305,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dominium_server",
+      "path": "archive/generated/dist/bin/dominium_server",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11315,7 +11315,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/bin/dominium_server.cmd",
+      "path": "archive/generated/dist/bin/dominium_server.cmd",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11325,7 +11325,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/locks/pack_lock.mvp_default.json",
+      "path": "archive/generated/dist/locks/pack_lock.mvp_default.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11335,7 +11335,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/logs/.gitkeep",
+      "path": "archive/generated/dist/logs/.gitkeep",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11345,7 +11345,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/packs/base/pack.base.procedural/pack.alias.json",
+      "path": "archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11355,7 +11355,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/packs/official/pack.earth.procedural/pack.alias.json",
+      "path": "archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11365,7 +11365,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/packs/official/pack.sol.pin_minimal/pack.alias.json",
+      "path": "archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11375,7 +11375,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/profiles/bundle.mvp_default.json",
+      "path": "archive/generated/dist/profiles/bundle.mvp_default.json",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11385,7 +11385,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "dist/saves/.gitkeep",
+      "path": "archive/generated/dist/saves/.gitkeep",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11445,7 +11445,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/clean_room_common.py",
+      "path": "tools/release/dist/clean_room_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11455,7 +11455,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/dist6_interop_common.py",
+      "path": "tools/release/dist/dist6_interop_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11465,7 +11465,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/dist_platform_matrix_common.py",
+      "path": "tools/release/dist/dist_platform_matrix_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11475,7 +11475,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/dist_tree_common.py",
+      "path": "tools/release/dist/dist_tree_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11485,7 +11485,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/dist_verify_common.py",
+      "path": "tools/release/dist/dist_verify_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11495,7 +11495,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/runtime_compile_helper.py",
+      "path": "tools/release/dist/runtime_compile_helper.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11505,7 +11505,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_assemble_dist_tree.py",
+      "path": "tools/release/dist/tool_assemble_dist_tree.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11515,7 +11515,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_dist_minimize.py",
+      "path": "tools/release/dist/tool_dist_minimize.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11525,7 +11525,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_run_clean_room.py",
+      "path": "tools/release/dist/tool_run_clean_room.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11535,7 +11535,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_run_platform_matrix.py",
+      "path": "tools/release/dist/tool_run_platform_matrix.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11545,7 +11545,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_run_ux_smoke.py",
+      "path": "tools/release/dist/tool_run_ux_smoke.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11555,7 +11555,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_run_version_interop.py",
+      "path": "tools/release/dist/tool_run_version_interop.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11565,7 +11565,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/tool_verify_distribution.py",
+      "path": "tools/release/dist/tool_verify_distribution.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],
@@ -11575,7 +11575,7 @@
       "exportable_hint": "source_specific",
       "kind": "generated",
       "owner": "unknown",
-      "path": "tools/dist/ux_smoke_common.py",
+      "path": "tools/release/dist/ux_smoke_common.py",
       "reasons": [
         "known_generated_path_or_marker"
       ],

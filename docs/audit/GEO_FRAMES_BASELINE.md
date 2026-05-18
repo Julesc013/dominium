@@ -16,7 +16,7 @@ GEO-2 freezes the deterministic reference-frame layer on top of GEO-0 topology/m
 
 The authoritative doctrine is:
 
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
 
 Relevant invariants and contracts upheld:
 
@@ -26,9 +26,9 @@ Relevant invariants and contracts upheld:
 - `docs/canon/constitution_v1.md` A4 No runtime mode flags
 - `docs/canon/constitution_v1.md` C1 Version semantics
 - `docs/canon/constitution_v1.md` C3 CompatX obligations
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
 
 ## 2) Retro Audit Summary
 
@@ -119,7 +119,7 @@ Existing FIELD/ROI runtime logic remains behaviorally unchanged in this phase.
 
 Proof/replay integration added:
 
-- `tools/geo/tool_replay_frame_window.py`
+- `tools/validators/domain/geology/tool_replay_frame_window.py`
 - control proof bundle GEO extensions now accept:
   - `frame_graph_hash_chain`
   - `position_ref_hash_chain`
@@ -181,7 +181,7 @@ Executed during GEO-2 baseline:
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset test_frame_transform_deterministic,test_position_conversion_roundtrip,test_floating_origin_no_truth_mutation,test_large_scale_precision_stability,test_cross_platform_frame_hash_match`
   - result: `pass`
 - GEO frame replay verifier:
-  - `py -3 tools/geo/tool_replay_frame_window.py`
+  - `py -3 tools/validators/domain/geology/tool_replay_frame_window.py`
   - result: `complete`
   - frame graph hash chain: `782572113a259c4f3a79bdeb414ef1e1ff18e5b91ebbba43efbb408505da650d`
   - position ref hash chain: `63222f74b3a87ae336a5f39206c091094e0cca7f2d44eaff385c285b29691401`

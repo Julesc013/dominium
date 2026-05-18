@@ -18,7 +18,7 @@ Replacement Target: legacy reference surface retained without current binding au
   - `data/registries/lenses.json` includes required baseline lenses.
   - `schema/law/law_profile.schema` and `data/registries/law_profiles.json` enforce survival diegetic allowlist + nondiegetic forbids.
   - RepoX invariant present: `INV-SURVIVAL-NO-NONDIEGETIC-LENSES`.
-  - AuditX analyzer present: `C7_LENS_BYPASS_SMELL` (`tools/auditx/analyzers/c7_lens_bypass_smell.py`).
+  - AuditX analyzer present: `C7_LENS_BYPASS_SMELL` (`tools/xstack/auditx/analyzers/c7_lens_bypass_smell.py`).
 - Phase 2 (AuthorityContext enforcement): Complete.
   - RepoX invariants present: `INV-AUTHORITY-CONTEXT-REQUIRED`, `INV-AUTHORITY_CONTEXT_REQUIRED_FOR_INTENTS`.
   - Intent/dispatch refusal paths include authority-context checks in client/server wiring.
@@ -49,7 +49,7 @@ Replacement Target: legacy reference surface retained without current binding au
 - Gate precheck: `python scripts/dev/gate.py precheck --trace --profile-report` -> PASS.
 - Strict exitcheck: `python scripts/dev/gate.py exitcheck --strict --trace --profile-report` -> PASS.
 - Full gate profile: `python scripts/dev/gate.py full --trace --profile-report` -> PASS.
-- AuditX scan: `python tools/auditx/auditx.py scan --format both` -> PASS; analyzers include:
+- AuditX scan: `python tools/xstack/auditx/auditx.py scan --format both` -> PASS; analyzers include:
   - `C2_MODE_FLAG_SMELL`
   - `C4_TERMINOLOGY_MISUSE`
   - `C6_AUTHORITY_BYPASS_SMELL`

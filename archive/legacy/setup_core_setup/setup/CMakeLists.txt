@@ -211,15 +211,15 @@ target_link_libraries(setup_frontend_cli INTERFACE
 
 add_library(setup_frontend_gui STATIC
     cli/setup_ui_gui.cpp
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/user/ui_setup_ui_actions_user.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/user/ui_setup_ui_actions_user.cpp
 )
 
 target_include_directories(setup_frontend_gui PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/user
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/gen
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/user
 )
 
 target_link_libraries(setup_frontend_gui
@@ -242,8 +242,8 @@ add_executable(dominium-setup-legacy
 target_include_directories(dominium-setup-legacy PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/core/include
     ${PROJECT_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/gen
-    ${CMAKE_SOURCE_DIR}/tools/setup/ui/user
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/gen
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/user
 )
 
 target_link_libraries(dominium-setup-legacy

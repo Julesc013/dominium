@@ -1,7 +1,7 @@
 Status: TEMPLATE
 Version: 1.0.0
 Last Reviewed: 2026-02-14
-Compatibility: Use with schema law (`contracts/schemas/SCHEMA_VERSIONING.md`, `contracts/schemas/SCHEMA_MIGRATION.md`) and canon v1.0.0.
+Compatibility: Use with schema law (`contracts/schema/SCHEMA_VERSIONING.md`, `contracts/schema/SCHEMA_MIGRATION.md`) and canon v1.0.0.
 
 # Skill Template: schema_update
 
@@ -22,8 +22,8 @@ Apply schema changes safely with explicit compatibility, migration/refusal, and 
 5. Update related docs under `docs/contracts/` and `docs/architecture/`.
 6. Update compatibility notes (CompatX-facing docs) when behavior changes.
 7. Run schema-focused tests and required gate profile.
-   - `tools/xstack/schema_validate session_spec contracts/schemas/examples/session_spec.example.json`
-   - `tools/xstack/schema_validate bundle_profile contracts/schemas/examples/bundle_profile.example.json`
+   - `tools/xstack/schema_validate session_spec contracts/schema/examples/session_spec.example.json`
+   - `tools/xstack/schema_validate bundle_profile contracts/schema/examples/bundle_profile.example.json`
    - `tools/xstack/run fast`
 8. Record remaining TODOs clearly.
 
@@ -35,12 +35,12 @@ Apply schema changes safely with explicit compatibility, migration/refusal, and 
 
 ## Example Invocation
 ```text
-Use skill.schema_update for contracts/schemas/lens/lens.schema:
+Use skill.schema_update for contracts/schema/lens/lens.schema:
 - Add a backward-compatible field.
 - Keep extension preservation.
 - Update contracts and run FAST validation.
 Run:
-- tools/xstack/schema_validate lens contracts/schemas/examples/lens.example.json
+- tools/xstack/schema_validate lens contracts/schema/examples/lens.example.json
 - tools/xstack/run strict
 ```
 
@@ -52,5 +52,5 @@ Run:
 - `docs/canon/constitution_v1.md`
 - `docs/contracts/lens_contract.md`
 - `docs/governance/COMPATX_MODEL.md`
-- `contracts/schemas/SCHEMA_VERSIONING.md`
-- `contracts/schemas/SCHEMA_MIGRATION.md`
+- `contracts/schema/SCHEMA_VERSIONING.md`
+- `contracts/schema/SCHEMA_MIGRATION.md`

@@ -27,10 +27,10 @@ CONVERGE-12 performed no physical moves and implemented no platform, render, nat
 | CONVERGE-03 | Root inventory and move map refined. |
 | CONVERGE-04 | Distribution/install/media projection contract added. |
 | CONVERGE-05 | Archive-family roots converged under `archive/`. |
-| CONVERGE-06 | Root `schema/` and `schemas/` converged under `contracts/schemas/`; mixed contract roots left review-backed. |
+| CONVERGE-06 | Root `schema/` and `schemas/` converged under `contracts/schema/`; mixed contract roots left review-backed. |
 | CONVERGE-07 | Runtime/AppShell roots converged under `runtime/`; mixed runtime roots left review-backed. |
 | CONVERGE-08 | Product roots converged under `apps/`. |
-| CONVERGE-09 | Safe Python domain roots split under `game/domains/`; mixed roots left review-backed. |
+| CONVERGE-09 | Safe Python domain roots split under `game/domain/`; mixed roots left review-backed. |
 | CONVERGE-10 | Strict layout validation enabled with explicit exceptions. |
 | CONVERGE-11 | Release component/support matrices added. |
 | CONVERGE-12 | High-risk stale layout docs patched and final audits added. |
@@ -71,7 +71,7 @@ Optional future roots remain `sdk/` and `examples/` when explicitly introduced b
 
 ## Generated And Ephemeral Policy
 
-`build/`, `out/`, `dist/`, and `artifacts/` are generated or generated-adjacent roots. They are not source authority. `dist/` is governed as generated distribution output by `contracts/distribution/layout.contract.toml`.
+`build/`, `out/`, `archive/generated/dist/`, and `archive/generated/artifacts/` are generated or generated-adjacent roots. They are not source authority. `archive/generated/dist/` is governed as generated distribution output by `contracts/distribution/layout.contract.toml`.
 
 ## Distribution Projection Doctrine
 
@@ -111,7 +111,7 @@ These are mainly historical docs, older matrix mocks, and active exception-backe
 - Begin platform host proof work through `runtime/` and the component matrix.
 - Begin renderer backend proof work through `runtime/` and the renderer matrix.
 - Build native setup/launcher/admin shells only as thin projections over product semantics.
-- Continue worldgen/domain realism work through the contracts/game/content/docs/tests split.
+- Continue worldgen/domain realism work through the contracts/content/domains/game/docs/tests split.
 - Retire active layout exceptions through scoped follow-up tasks.
 
 ## Confirmation

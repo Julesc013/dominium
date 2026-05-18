@@ -13,7 +13,7 @@ Superseded By: none
 - Branch: `main`
 - HEAD SHA: `4e256e81c37c8e8a699174d21c4cbc429fbf7cee`
 - origin/main SHA: `4e256e81c37c8e8a699174d21c4cbc429fbf7cee`
-- Working tree status before task: clean tracked tree; ignored `.dominium.local/`, `dist/docs/`, `dist/sym/`, and `dist/sys/` present
+- Working tree status before task: clean tracked tree; ignored `.dominium.local/`, `archive/generated/dist/docs/`, `archive/generated/dist/sym/`, and `archive/generated/dist/sys/` present
 - Working tree status after task: UI bind freshness policy, audit docs, proof docs, and AIDE task packet modified for commit; generated local outputs remain ignored/uncommitted
 
 ## Scope
@@ -42,11 +42,11 @@ The prior build blocker was `ui_bind_phase`:
 
 | Item | Value |
 | --- | --- |
-| CMake target | `ui_bind_phase` in `tools/ui_bind/CMakeLists.txt` |
-| Generator/checker | `tool_ui_bind` from `tools/ui_bind/ui_bind_main.cpp` |
-| Build command | `scripts/dev/env_tools.py --repo-root <repo> run -- tool_ui_bind --repo-root <repo> --ui-index <repo>/tools/ui_index/ui_index.json --out-dir <repo>/libs/appcore/ui_bind --check` |
-| Source index | `tools/ui_index/ui_index.json` |
-| Source UI docs | canonical TLV docs listed by `tools/ui_index/ui_index.json` |
+| CMake target | `ui_bind_phase` in `tools/codegen/ui/bind/CMakeLists.txt` |
+| Generator/checker | `tool_ui_bind` from `tools/codegen/ui/bind/ui_bind_main.cpp` |
+| Build command | `scripts/dev/env_tools.py --repo-root <repo> run -- tool_ui_bind --repo-root <repo> --ui-index <repo>/tools/codegen/ui/index/ui_index.json --out-dir <repo>/libs/appcore/ui_bind --check` |
+| Source index | `tools/codegen/ui/index/ui_index.json` |
+| Source UI docs | canonical TLV docs listed by `tools/codegen/ui/index/ui_index.json` |
 | Additional input | appcore command registry metadata |
 | Generated outputs | tracked generated C/H/JSON files under `libs/appcore/ui_bind/` |
 | Committed? | yes, as generated source artifacts consumed by `libs/appcore` |
@@ -57,10 +57,10 @@ The failure was not stale semantic content after regeneration. It was byte-for-b
 
 | Reference | File | Classification | Action | Notes |
 | --- | --- | --- | --- | --- |
-| `ui_bind_phase` | `tools/ui_bind/CMakeLists.txt` | active CMake custom target | inspected | owns check command |
-| `tool_ui_bind --check` | `tools/ui_bind/CMakeLists.txt` | active freshness checker | preserved | gate not bypassed |
-| `tool_ui_bind --write` | `tools/ui_bind/ui_bind_main.cpp` | generator mode | used | scoped to `libs/appcore/ui_bind/` |
-| `tools/ui_index/ui_index.json` | generator source index | inspected | unchanged | canonical UI entries only |
+| `ui_bind_phase` | `tools/codegen/ui/bind/CMakeLists.txt` | active CMake custom target | inspected | owns check command |
+| `tool_ui_bind --check` | `tools/codegen/ui/bind/CMakeLists.txt` | active freshness checker | preserved | gate not bypassed |
+| `tool_ui_bind --write` | `tools/codegen/ui/bind/ui_bind_main.cpp` | generator mode | used | scoped to `libs/appcore/ui_bind/` |
+| `tools/codegen/ui/index/ui_index.json` | generator source index | inspected | unchanged | canonical UI entries only |
 | `libs/appcore/ui_bind/**` | tracked generated source outputs | inspected and regenerated locally | no semantic content change | now governed by LF attribute |
 | `libs/appcore/CMakeLists.txt` | active generated-source consumer | inspected | unchanged | consumes generated C files |
 | `.gitattributes` | line-ending policy | updated | narrow `libs/appcore/ui_bind/** text eol=lf` rule |
@@ -146,7 +146,7 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 | `python .aide/scripts/aide_lite.py doctor` | pass | existing optional warnings only |
 | `python .aide/scripts/aide_lite.py validate` | pass | existing review packet warnings |
 | `python .aide/scripts/aide_lite.py pack --task "POST-CONVERGE-10D UI bind freshness remediation"` | pass | task packet updated |
-| `python scripts/dev/env_tools.py --repo-root . run -- tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` | pass | after regeneration and LF policy |
+| `python scripts/dev/env_tools.py --repo-root . run -- tool_ui_bind --repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --check` | pass | after regeneration and LF policy |
 | `python -m py_compile tools/build/build_contract_common.py tools/build/probe_toolchains.py tools/build/generate_user_presets.py tools/build/validate_build_contract.py tools/build/run_tuple.py` | pass | build tools parse |
 | `python tools/build/validate_build_contract.py --repo-root . --strict` | pass | build contract valid |
 | `python tools/build/probe_toolchains.py --repo-root . --out .dominium.local/toolchains.detected.json` | pass | available: `host_default`, `msvc143` |
@@ -182,7 +182,7 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers from this report:
 
 - `tools_coverage_inspect` and `tools_refusal_explain` now pass after direct tool subprocesses resolve the repo root before importing `compat`.
-- AuditX tests no longer assume root `schema` as source authority; generated bundle projections now source schema content from `contracts/schemas/`.
+- AuditX tests no longer assume root `schema` as source authority; generated bundle projections now source schema content from `contracts/schema/`.
 - Missing generated release manifests now produce deterministic refused verification results instead of crashing AuditX.
 - Focused AuditX CTest cases pass:
   - `tools_auditx`

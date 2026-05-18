@@ -36,9 +36,14 @@ Generated/local-only roots:
 ```text
 .aide.local/
 .dominium.local/
+.xstack_cache/
 build/
 out/
 dist/
+artifacts/
+reports/
+tmp/
+__pycache__/
 ```
 
 Optional future roots require a new contract before use:
@@ -50,7 +55,7 @@ examples/
 
 ## Ownership Planes
 
-- `apps/`: thin product entrypoints and product-specific shells.
+- `apps/`: thin product entrypoints and `apps/workbench/` user-facing modules.
 - `engine/`: deterministic C89 substrate, identity, time, math, state,
   execution, replay, proof, and diagnostics.
 - `game/`: simulation meaning, law, rules, processes, worlds, scenarios, and
@@ -74,6 +79,21 @@ examples/
   and internal pilot distribution definitions.
 - `archive/`: historical, superseded, generated retained evidence, and
   quarantine material.
+
+## CANON-SPINE-NEW Result
+
+CANON-SPINE-NEW collapsed the active source spine after bad-root routing:
+
+- `runtime/shell/` is the canonical shell/app/appshell/appcore owner.
+- `runtime/ui/`, `runtime/render/`, `runtime/platform/`, and related runtime
+  service roots own shared host systems.
+- `apps/*` are thin product entrypoints; user-facing tools live under
+  `apps/workbench/module/`.
+- `engine/` owns deterministic substrate only.
+- `game/domain/`, `content/domains/`, and `docs/domains/` preserve the
+  code/data/docs singular-plural distinction.
+- `contracts/schema/`, `contracts/registry/`, and other singular contract
+  roots are preferred over plural duplicates.
 
 ## Preferred Internal Names
 

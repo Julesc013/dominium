@@ -82,8 +82,8 @@ family-prefix mappings.
 
 ## Auto-Documentation
 
-`tools/appshell/tool_generate_command_docs.py` generates
-`docs/appshell/CLI_REFERENCE.md` directly from:
+`tools/codegen/shell/tool_generate_command_docs.py` generates
+`docs/runtime/shell/CLI_REFERENCE.md` directly from:
 
 - `data/registries/command_registry.json`
 - `data/registries/refusal_to_exit_registry.json`

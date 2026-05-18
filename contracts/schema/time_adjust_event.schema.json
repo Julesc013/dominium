@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Adjust Event Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-2 synchronization adjustment event row.",
+  "x-doc-ref": [
+    "docs/time/DRIFT_AND_SYNC_POLICY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "adjust_id",
+    "target_id",
+    "temporal_domain_id",
+    "canonical_tick",
+    "previous_domain_time",
+    "new_domain_time",
+    "adjustment_delta",
+    "originating_receipt_id",
+    "sync_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "adjust_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "previous_domain_time": {
+      "type": "integer"
+    },
+    "new_domain_time": {
+      "type": "integer"
+    },
+    "adjustment_delta": {
+      "type": "integer"
+    },
+    "originating_receipt_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sync_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "adjust_id": "adjust.time.0001",
+      "target_id": "session.default",
+      "temporal_domain_id": "time.civil",
+      "canonical_tick": 120,
+      "previous_domain_time": 1200,
+      "new_domain_time": 1203,
+      "adjustment_delta": 3,
+      "originating_receipt_id": "receipt.sig.0001",
+      "sync_policy_id": "sync.adjust_on_receipt",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

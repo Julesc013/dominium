@@ -1,0 +1,22 @@
+SCHEMA: materials/commitment_type.schema
+schema_id: dominium.schema.materials.commitment_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define commitment type registry entry controlling law/strictness semantics.
+
+REQUIRED SHAPE:
+record commitment_type
+  required:
+    - schema_version: semver
+    - commitment_type_id: id
+    - description: string
+    - required_entitlements: list<string>
+    - produces_event_type_ids: list<id>
+    - strictness_requirements: list<string>
+    - extensions: map
+
+INVARIANTS:
+- commitment_type_id is unique and stable.
+- strictness_requirements tokens must be registry-backed causality IDs.

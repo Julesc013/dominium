@@ -1,0 +1,34 @@
+SCHEMA: materials/commitment.schema
+schema_id: dominium.schema.materials.commitment
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical commitment artifact for causality enforcement and reenactment linkage.
+
+REQUIRED SHAPE:
+record commitment
+  required:
+    - schema_version: semver
+    - commitment_id: id
+    - commitment_type_id: id
+    - actor_subject_id: id
+    - target_kind: enum(structure|logistics|maintenance|research|custom)
+    - target_id: id
+    - created_tick: int
+    - scheduled_start_tick: int
+    - status: enum(planned|scheduled|executing|completed|failed|cancelled)
+    - linked_event_ids: list<id>
+    - deterministic_fingerprint: hash64
+    - extensions: map
+  optional:
+    - scheduled_end_tick: int|null
+    - required_inputs: list<string>
+    - expected_outputs: list<string>
+    - linked_project_id: id|null
+    - linked_manifest_id: id|null
+
+INVARIANTS:
+- commitment_id and deterministic_fingerprint must be stable for equivalent canonical inputs.
+- linked_event_ids must remain deterministically ordered.
+- scheduled_end_tick when present must be >= scheduled_start_tick.

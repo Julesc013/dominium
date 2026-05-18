@@ -61,11 +61,11 @@ references, tests, and rollback behavior.
 
 ## Generated And Local Roots
 
-`dist/`, `build/`, and `out/` are generated output roots. `.dominium.local/`
+`archive/generated/dist/`, `build/`, and `out/` are generated output roots. `.dominium.local/`
 and `.aide.local/` are ignored local machine or AIDE state roots. They are not
 source authority, even when a task records evidence about them.
 
-Tracked exception-backed generated or evidence surfaces such as `artifacts/`
+Tracked exception-backed generated or evidence surfaces such as `archive/generated/artifacts/`
 remain governed by `contracts/repo/layout_exceptions.toml` until a future
 evidence-policy task retires or relocates them.
 

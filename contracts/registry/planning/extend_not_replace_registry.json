@@ -16,7 +16,7 @@
       "status": "preserve",
       "rationale": "These are already the stable product anchors and later consumers of runtime, semantic, and release work.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/POST_PI_EXECUTION_PLAN.md"
       ],
       "later_series_impacted": [
@@ -38,7 +38,7 @@
       "status": "extend",
       "rationale": "The repo already exposes operator- and product-adjacent tooling here, so later work should mine it before creating new operator-facing products.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -60,7 +60,7 @@
       "status": "do-not-replace",
       "rationale": "This is already the live governance and intake spine and must remain the binding planning layer.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
         "docs/planning/AUTHORITY_ORDER.md"
       ],
@@ -82,7 +82,7 @@
       "status": "extend",
       "rationale": "The blueprint archive remains useful, but only through the P-2 reconciled lens rather than as raw truth.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "later_series_impacted": [
         "Λ",
@@ -109,8 +109,8 @@
       "status": "consolidate",
       "rationale": "The problem is mirrored ownership and drift, not absence, so later Σ should normalize rather than duplicate.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "later_series_impacted": [
         "Σ",
@@ -133,8 +133,8 @@
       "status": "do-not-replace",
       "rationale": "The repo already has a substantial governed build substrate that later Υ should lock and normalize.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "later_series_impacted": [
         "Υ"
@@ -153,8 +153,8 @@
       "status": "consolidate",
       "rationale": "The matrix already exists and should be normalized into doctrine rather than redesigned from scratch.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "later_series_impacted": [
         "Υ"
@@ -176,8 +176,8 @@
       "status": "do-not-replace",
       "rationale": "Υ is consolidation over strong existing control-plane and release substrate, not a greenfield control-plane track.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -199,7 +199,7 @@
       "status": "consolidate",
       "rationale": "These are useful evidence surfaces but not primary release policy authority and must only be consumed with provenance.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/AUTHORITY_ORDER.md"
       ],
       "later_series_impacted": [
@@ -224,7 +224,7 @@
       "status": "extend",
       "rationale": "These tools already embody operator, trust, compat, and release flows that later work should unify rather than bypass.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -248,7 +248,7 @@
       "status": "preserve",
       "rationale": "Pack-driven integration, compatibility, and policy meaning already live here and should stay the primary authority backbone.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/canon/constitution_v1.md"
       ],
       "later_series_impacted": [
@@ -263,7 +263,7 @@
     {
       "surface_name": "core reality and world roots",
       "path_family": [
-        "game/content/core",
+        "content/domains/game/core",
         "geo",
         "logic",
         "materials",
@@ -277,8 +277,8 @@
       "status": "extend",
       "rationale": "Λ is formalization over live semantic embodiment, not discovery from zero.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -310,7 +310,7 @@
       "status": "extend",
       "rationale": "These already represent candidate first-class semantic families and should be formalized rather than reinvented.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -327,13 +327,13 @@
       "path_family": [
         "engine",
         "game",
-        "game/content/core"
+        "content/domains/game/core"
       ],
       "category": "runtime_service_component",
       "status": "preserve",
       "rationale": "This is the strongest live runtime foundation and already embodies the lawful engine/game split.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/canon/constitution_v1.md"
       ],
       "later_series_impacted": [
@@ -364,8 +364,8 @@
       "status": "extend",
       "rationale": "The repo already contains distributed runtime, compat, persistence, and orchestration substrate here; later Φ should extract and freeze boundaries from it.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json",
         "docs/planning/FOUNDATION_READINESS_REPORT.md"
       ],
       "later_series_impacted": [
@@ -385,8 +385,8 @@
       "status": "do-not-replace",
       "rationale": "This path is not the clear canonical orchestrator home and later prompts must not pivot the entire runtime plan around it as the single target.",
       "evidence_sources": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json",
         "docs/planning/POST_PI_EXECUTION_PLAN.md"
       ],
       "later_series_impacted": [

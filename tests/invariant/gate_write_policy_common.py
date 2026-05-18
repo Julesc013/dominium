@@ -33,25 +33,25 @@ def check_non_snapshot_routing(repo_root: str) -> int:
         (
             "auditx.group.core.policy",
             "auditx.group.core.policy",
-            ["python", "tools/auditx/auditx.py", "scan", "--repo-root", repo_root, "--changed-only", "--format", "json"],
+            ["python", "tools/xstack/auditx/auditx.py", "scan", "--repo-root", repo_root, "--changed-only", "--format", "json"],
             ("--output-root",),
         ),
         (
             "performx_runner",
             "",
-            ["python", "tools/performx/performx.py", "run", "--repo-root", repo_root],
+            ["python", "tools/xstack/performx/performx.py", "run", "--repo-root", repo_root],
             ("--output-root",),
         ),
         (
             "compatx_runner",
             "",
-            ["python", "tools/compatx/compatx.py", "verify", "--repo-root", repo_root],
+            ["python", "tools/xstack/compatx/compatx.py", "verify", "--repo-root", repo_root],
             ("--output-root",),
         ),
         (
             "securex_runner",
             "",
-            ["python", "tools/securex/securex.py", "verify", "--repo-root", repo_root],
+            ["python", "tools/xstack/securex/securex.py", "verify", "--repo-root", repo_root],
             ("--output-dir",),
         ),
     ]
@@ -69,7 +69,7 @@ def check_non_snapshot_routing(repo_root: str) -> int:
                 print("{} missing expected flag {}".format(runner_id, flag))
                 return 1
         joined = " ".join(routed).replace("\\", "/")
-        if ".xstack_cache/" not in joined or "/artifacts/" not in joined:
+        if ".xstack_cache/" not in joined or "/archive/generated/artifacts/" not in joined:
             print("{} output not routed to workspace-scoped .xstack_cache/<workspace_id>/artifacts".format(runner_id))
             return 1
     return 0
@@ -79,7 +79,7 @@ def check_snapshot_passthrough(repo_root: str) -> int:
     apply_output_routing = _load_routing(repo_root)
     scenarios = [
         ("repox_runner", "", ["python", "scripts/ci/check_repox_rules.py", "--repo-root", repo_root, "--profile", "STRICT"]),
-        ("auditx.group.core.policy", "auditx.group.core.policy", ["python", "tools/auditx/auditx.py", "scan", "--repo-root", repo_root]),
+        ("auditx.group.core.policy", "auditx.group.core.policy", ["python", "tools/xstack/auditx/auditx.py", "scan", "--repo-root", repo_root]),
         ("testx.group.core.invariants", "testx.group.core.invariants", ["python", "scripts/dev/run_xstack_group_tests.py", "--repo-root", repo_root, "--group-id", "testx.group.core.invariants"]),
     ]
     for runner_id, group_id, base_cmd in scenarios:

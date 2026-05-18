@@ -39,13 +39,13 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 XI4Z_FIX_REPORT_REL = "docs/restructure/XI_4Z_FIX_REPORT.md"
-XI4Z_FIX_REPORT_JSON_REL = "content/data/restructure/xi4z_fix_report.json"
+XI4Z_FIX_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix_report.json"
 XI4Z_FIX_FINAL_REL = "docs/audit/XI_4Z_FIX_FINAL.md"
 
 FIX_CHANGED_RELS = (
     "contracts/restructure/xi4z_decision_manifest.json",
     "contracts/restructure/xi5_readiness_contract.json",
-    "content/data/restructure/xi4z_fix_report.json",
+    "archive/generated/restructure/xi4z_fix_report.json",
     "docs/audit/XI_4Z_FINAL.md",
     "docs/audit/XI_4Z_FIX_FINAL.md",
     "docs/restructure/XI_4Z_DECISION_REPORT.md",
@@ -217,7 +217,7 @@ def _scan_snapshot(snapshot: Mapping[str, object], repo_root: str) -> dict[str, 
             }
         )
     for required_marker in (
-        "content/data/restructure/src_domain_mapping_lock_approved.json",
+        "archive/generated/restructure/src_domain_mapping_lock_approved.json",
         "contracts/restructure/xi5_readiness_contract.json",
         "docs/restructure/XI_4Z_DECISION_REPORT.md",
         "docs/restructure/XI_4Z_XI5_READINESS.md",

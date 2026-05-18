@@ -27,9 +27,9 @@ _SCAN_ROOTS = (
 
 _SKIP_PREFIXES = (
     "docs/",
-    "contracts/schemas/",
-    "contracts/schemas/",
-    "tools/auditx/analyzers/",
+    "contracts/schema/",
+    "contracts/schema/",
+    "tools/xstack/auditx/analyzers/",
     "tools/xstack/testx/tests/",
 )
 

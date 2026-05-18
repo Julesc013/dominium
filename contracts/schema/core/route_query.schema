@@ -1,0 +1,22 @@
+SCHEMA: core/route_query.schema
+schema_id: dominium.schema.core.route_query
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic route query inputs for NetworkGraph routing.
+
+REQUIRED SHAPE:
+record route_query
+  required:
+    - schema_version: semver
+    - graph_id: id
+    - from_node_id: id
+    - to_node_id: id
+    - route_policy_id: id
+    - constraints: map(optional)
+    - extensions: map
+
+INVARIANTS:
+- Query inputs are canonicalized before routing.
+- Constraint semantics are deterministic and policy-driven.

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Part Class Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic part-class registry output.",
+  "x-doc-ref": [
+    "docs/materials/BOM_AND_ASSEMBLY_GRAPH.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "part_classes",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "part_classes": {
+      "type": "array",
+      "items": {
+        "$ref": "part_class.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "part_classes": [],
+      "registry_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84"
+    }
+  ]
+}

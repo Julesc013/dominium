@@ -36,8 +36,8 @@ generated_or_evidence_paths:
     - .aide/github/*advisory.*
     - .aide/github/*plan.*
   generated:
-    - artifacts/**
-    - dist/**
+    - archive/generated/artifacts/**
+    - archive/generated/dist/**
     - .aide/export/**
     - .aide/intake/latest-*
     - .aide/git/workflow-detection.*

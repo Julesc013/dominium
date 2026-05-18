@@ -21,9 +21,9 @@ def main():
     lock_a = os.path.join("tests", "distribution", "fixtures", "lockfiles", "lockfile_a.json")
     lock_b = os.path.join("tests", "distribution", "fixtures", "lockfiles", "lockfile_b.json")
 
-    out_a = run_tool(repo_root, "tools/distribution/lockfile_inspect.py",
+    out_a = run_tool(repo_root, "tools/package/distribution/lockfile_inspect.py",
                      ["--input", lock_a, "--format", "json"])
-    out_b = run_tool(repo_root, "tools/distribution/lockfile_inspect.py",
+    out_b = run_tool(repo_root, "tools/package/distribution/lockfile_inspect.py",
                      ["--input", lock_b, "--format", "json"])
     if out_a != out_b:
         print("lockfile determinism: outputs differ")

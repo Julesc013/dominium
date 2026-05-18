@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/distribution/dompkg_lib.py`
+- Canonical Candidate: `tools/package/distribution/dompkg_lib.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `game/tests/tests/vectors/gen_tlv_vectors.py`
+- `tests/tests/game/vectors/gen_tlv_vectors.py`
 - `setup/packages/scripts/packaging/dsumanifest.py`
-- `tools/distribution/dompkg_lib.py`
+- `tools/package/distribution/dompkg_lib.py`
 
 ## Scorecard
 
-- `tools/distribution/dompkg_lib.py` disposition=`canonical` rank=`1` total_score=`67.64` risk=`HIGH`
+- `tools/package/distribution/dompkg_lib.py` disposition=`canonical` rank=`1` total_score=`67.64` risk=`HIGH`
 - `setup/packages/scripts/packaging/dsumanifest.py` disposition=`drop` rank=`2` total_score=`59.61` risk=`HIGH`
-- `game/tests/tests/vectors/gen_tlv_vectors.py` disposition=`quarantine` rank=`3` total_score=`58.33` risk=`HIGH`
+- `tests/tests/game/vectors/gen_tlv_vectors.py` disposition=`quarantine` rank=`3` total_score=`58.33` risk=`HIGH`
 
 ## Usage Sites
 
@@ -42,7 +42,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

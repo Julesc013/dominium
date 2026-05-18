@@ -11,7 +11,7 @@ Replacement Target: bounded preflight archive repair record
 ## Result
 
 - Offline archive arch-audit drift no longer blocks `FAST`.
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST` now returns `complete`.
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST` now returns `complete`.
 - No runtime semantics changed.
 
 ## Archive Surface State

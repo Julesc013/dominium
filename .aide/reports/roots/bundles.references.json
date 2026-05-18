@@ -35,7 +35,7 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2587,
-      "snippet": "\"contracts/bundles/README.md\","
+      "snippet": "\"contracts/package/bundles/README.md\","
     },
     {
       "classification": "unknown",
@@ -95,7 +95,7 @@
       "classification": "unknown",
       "file": "contracts/MANIFEST.md",
       "line": 35,
-      "snippet": "- `contracts/bundles/`"
+      "snippet": "- `contracts/package/bundles/`"
     },
     {
       "classification": "unknown",
@@ -143,7 +143,7 @@
       "classification": "unknown",
       "file": "data/audit/dist_verify_win64.json",
       "line": 1,
-      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
+      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
     },
     {
       "classification": "unknown",
@@ -375,7 +375,7 @@
     },
     {
       "classification": "unknown",
-      "file": "dist/profiles/bundle.mvp_default.json",
+      "file": "archive/generated/dist/profiles/bundle.mvp_default.json",
       "line": 1,
       "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
     },
@@ -389,7 +389,7 @@
       "classification": "docs",
       "file": "docs/architecture/deterministic_packaging.md",
       "line": 20,
-      "snippet": "- `dist/bundles/<bundle_id>/bundle.json`"
+      "snippet": "- `archive/generated/dist/bundles/<bundle_id>/bundle.json`"
     },
     {
       "classification": "docs",
@@ -515,7 +515,7 @@
       "classification": "docs",
       "file": "docs/audit/MVP1_RETRO_AUDIT.md",
       "line": 23,
-      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `archive/generated/dist/`."
     },
     {
       "classification": "docs",
@@ -551,7 +551,7 @@
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 34,
-      "snippet": "- bundle manifest `dist/bundles/bundle.base.lab/bundle.json`"
+      "snippet": "- bundle manifest `archive/generated/dist/bundles/bundle.base.lab/bundle.json`"
     },
     {
       "classification": "docs",
@@ -629,7 +629,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 164,
-      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+      "snippet": "`runtime/process_spawn.py`, `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
     },
     {
       "classification": "docs",
@@ -743,7 +743,7 @@
       "classification": "docs",
       "file": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
       "line": 280,
-      "snippet": "- `dist/**`, `bundles/**`"
+      "snippet": "- `archive/generated/dist/**`, `bundles/**`"
     },
     {
       "classification": "docs",
@@ -777,7 +777,7 @@
     },
     {
       "classification": "active_source",
-      "file": "release/update_resolver.py",
+      "file": "tools/release/update_resolver.py",
       "line": 490,
       "snippet": "return [\"store/profiles/bundles/bundle.mvp_default.json\"]"
     },
@@ -789,25 +789,25 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 11,
       "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 16,
       "snippet": "\"profiles/bundles/bundle.mvp_default.json\": (\"pack_lock.mvp_default\", \"profile.bundle.mvp_default\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 89,
       "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\", \"profiles/bundles/bundle.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_verify_common.py",
+      "file": "tools/release/dist/dist_verify_common.py",
       "line": 46,
       "snippet": "\"store/profiles/bundles/bundle.mvp_default.json\","
     },

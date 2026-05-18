@@ -76,7 +76,7 @@ def _base_channel() -> dict:
 def _run(repo_root: str, *, with_policy: bool):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.core.flow.flow_engine import tick_flow_channels
+    from tools.validators.core.flow.flow_engine import tick_flow_channels
 
     channel = _base_channel()
     if with_policy:

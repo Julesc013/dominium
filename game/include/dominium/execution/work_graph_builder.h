@@ -9,6 +9,6 @@ FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 #ifndef DOMINIUM_EXECUTION_WORK_GRAPH_BUILDER_H
 #define DOMINIUM_EXECUTION_WORK_GRAPH_BUILDER_H
 
-#include "../../../core/execution/work_graph_builder.h"
+#include "../../../rule/execution/work_graph_builder.h"
 
 #endif /* DOMINIUM_EXECUTION_WORK_GRAPH_BUILDER_H */

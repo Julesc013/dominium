@@ -3163,9 +3163,9 @@
       "conflict_id": "conflict-9d1982520bd0",
       "conflict_type": "secret_like_path",
       "evidence_refs": [
-        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+        "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
-      "path": "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+      "path": "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py",
       "reason": "Install planning cannot treat local, secret-like, or unsupported schema state as a portable install artifact.",
       "recommended_next_action": "Preserve or repair in a future explicit repair or upgrade phase; do not overwrite in Q43.",
       "status": "blocking"
@@ -3175,9 +3175,9 @@
       "conflict_id": "conflict-231e4ad6fbd8",
       "conflict_type": "secret_like_path",
       "evidence_refs": [
-        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+        "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
-      "path": "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+      "path": "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py",
       "reason": "Install planning cannot treat local, secret-like, or unsupported schema state as a portable install artifact.",
       "recommended_next_action": "Preserve or repair in a future explicit repair or upgrade phase; do not overwrite in Q43.",
       "status": "blocking"

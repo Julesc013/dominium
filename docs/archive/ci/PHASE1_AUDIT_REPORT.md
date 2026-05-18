@@ -76,7 +76,7 @@ Scope: ENF0, ENF1, ENF2, DET0, DET1, DET2, PERF0, PERF1, PERF2, PERF3, SCALE0, S
 - Reviewed enforcement implementations: `CMakeLists.txt`, `engine/CMakeLists.txt`, `game/CMakeLists.txt`, `scripts/verify_includes_sanity.py`, `scripts/verify_cmake_no_global_includes.py`, `tools/ci/arch_checks.py`, `tools/ci/perf_budget_check.py`.
 
 
-- Reviewed tests: `engine/tests/engine_det_order_test.c`, `engine/tests/engine_perf_no_modal_test.c`, `engine/tests/engine_due_sched_test.c`, `engine/tests/engine_perf_budget_test.c`, `engine/tests/engine_data_validate_test.c`, `game/tests/interest/dom_interest_tests.c`, `game/tests/fidelity/dom_fidelity_tests.c`, `game/tests/epistemic/dom_epistemic_tests.c`, `game/tests/epistemic/epistemic_ui_bypass_trycompile.cmake.in`.
+- Reviewed tests: `tests/engine/engine_det_order_test.c`, `tests/engine/engine_perf_no_modal_test.c`, `tests/engine/engine_due_sched_test.c`, `tests/engine/engine_perf_budget_test.c`, `tests/engine/engine_data_validate_test.c`, `tests/game/interest/dom_interest_tests.c`, `tests/game/fidelity/dom_fidelity_tests.c`, `tests/game/epistemic/dom_epistemic_tests.c`, `tests/game/epistemic/epistemic_ui_bypass_trycompile.cmake.in`.
 
 
 - Reviewed CI pipeline wiring: `.github/workflows/ci.yml`.
@@ -205,16 +205,16 @@ Status legend:
 | UI-BYPASS-001 | UI reads authoritative world state forbidden. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| EPIS-BYPASS-001 | UI includes authoritative headers forbidden. | CTest + static scan. | `game/tests/epistemic/epistemic_ui_bypass_trycompile.cmake.in`, `tools/ci/arch_checks.py` | Partial |
+| EPIS-BYPASS-001 | UI includes authoritative headers forbidden. | CTest + static scan. | `tests/game/epistemic/epistemic_ui_bypass_trycompile.cmake.in`, `tools/ci/arch_checks.py` | Partial |
 
 
 | EPIS-API-002 | UI calls forbidden sim/world APIs. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| EPIS-CAP-003 | UI displays info without capability justification forbidden. | CTest dominium_epistemic. | `game/tests/epistemic/dom_epistemic_tests.c` | Live |
+| EPIS-CAP-003 | UI displays info without capability justification forbidden. | CTest dominium_epistemic. | `tests/game/epistemic/dom_epistemic_tests.c` | Live |
 
 
-| REND-DIR-001 | Backend dirs outside engine/render/backends forbidden. | Not implemented (future hook). | Not implemented. | Missing |
+| REND-DIR-001 | Backend dirs outside runtime/render/backends forbidden. | Not implemented (future hook). | Not implemented. | Missing |
 
 
 | REND-DIR-002 | Capability-named backend folders forbidden. | Not implemented (future hook). | Not implemented. | Missing |
@@ -262,13 +262,13 @@ Status legend:
 | DET-ORD-004 | Unordered container usage without normalization forbidden. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| DET-ORDER-TEST-001 | Event queue ordering deterministic under permutations. | CTest engine_det_order. | `engine/tests/engine_det_order_test.c` | Live |
+| DET-ORDER-TEST-001 | Event queue ordering deterministic under permutations. | CTest engine_det_order. | `tests/engine/engine_det_order_test.c` | Live |
 
 
-| DET-ORDER-TEST-002 | Ledger obligation ordering deterministic under permutations. | CTest engine_det_order. | `engine/tests/engine_det_order_test.c` | Live |
+| DET-ORDER-TEST-002 | Ledger obligation ordering deterministic under permutations. | CTest engine_det_order. | `tests/engine/engine_det_order_test.c` | Live |
 
 
-| DET-ORDER-TEST-003 | Interest set ordering deterministic under permutations. | CTest engine_det_order. | `engine/tests/engine_det_order_test.c` | Live |
+| DET-ORDER-TEST-003 | Interest set ordering deterministic under permutations. | CTest engine_det_order. | `tests/engine/engine_det_order_test.c` | Live |
 
 
 | DET-THREAD-005 | Shared mutable state races forbidden. | Not implemented. | Not implemented. | Missing |
@@ -304,7 +304,7 @@ Status legend:
 | DET-G5 | No float/OS time/nondeterministic RNG. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| DET-G6 | Canonical ordering under permutations. | CTest engine_det_order (partial coverage). | `engine/tests/engine_det_order_test.c` | Partial |
+| DET-G6 | Canonical ordering under permutations. | CTest engine_det_order (partial coverage). | `tests/engine/engine_det_order_test.c` | Partial |
 
 
 
@@ -325,13 +325,13 @@ Status legend:
 | PERF-GLOBAL-002 | Global iteration patterns forbidden. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| PERF-EVT-001 | Macro scheduler processes only due entries. | CTest engine_due_sched. | `engine/tests/engine_due_sched_test.c` | Live |
+| PERF-EVT-001 | Macro scheduler processes only due entries. | CTest engine_due_sched. | `tests/engine/engine_due_sched_test.c` | Live |
 
 
-| PERF-EVT-002 | Deterministic due-event ordering enforced. | CTest engine_due_sched. | `engine/tests/engine_due_sched_test.c` | Live |
+| PERF-EVT-002 | Deterministic due-event ordering enforced. | CTest engine_due_sched. | `tests/engine/engine_due_sched_test.c` | Live |
 
 
-| PERF-IOBAN-001 | Render/UI thread IO forbidden. | Runtime guard + CTest engine_perf_no_modal. | `engine/tests/engine_perf_no_modal_test.c` | Live |
+| PERF-IOBAN-001 | Render/UI thread IO forbidden. | Runtime guard + CTest engine_perf_no_modal. | `tests/engine/engine_perf_no_modal_test.c` | Live |
 
 
 | PERF-MODAL-001 | Blocking IO on render/UI threads forbidden. | Not implemented. | Not implemented. | Missing |
@@ -343,13 +343,13 @@ Status legend:
 | PERF-ASSET-003 | Synchronous asset decode on render/UI threads forbidden. | Not implemented. | Not implemented. | Missing |
 
 
-| PERF-STALL-001 | Stall watchdog thresholds must not be exceeded. | Runtime watchdog + CTest engine_perf_no_modal. | `engine/tests/engine_perf_no_modal_test.c` | Live |
+| PERF-STALL-001 | Stall watchdog thresholds must not be exceeded. | Runtime watchdog + CTest engine_perf_no_modal. | `tests/engine/engine_perf_no_modal_test.c` | Live |
 
 
 | PERF-STALL-004 | Stall watchdog thresholds must not be exceeded. | Not implemented. | Not implemented. | Missing |
 
 
-| PERF-PROFILE-001 | PERF3 fixtures emit telemetry and required metrics. | CTest engine_perf_budget_fixture + perf_budget_check. | `engine/tests/engine_perf_budget_test.c`, `tools/ci/perf_budget_check.py` | Live |
+| PERF-PROFILE-001 | PERF3 fixtures emit telemetry and required metrics. | CTest engine_perf_budget_fixture + perf_budget_check. | `tests/engine/engine_perf_budget_test.c`, `tools/ci/perf_budget_check.py` | Live |
 
 
 | PERF-FID-005 | Forbidden fidelity degradation forbidden. | Not implemented. | Not implemented. | Missing |
@@ -403,10 +403,10 @@ Status legend:
 | SCALE-FID-002 | Ad-hoc approximation/LOD shortcuts forbidden. | Static scan (arch_checks). | `tools/ci/arch_checks.py` | Partial |
 
 
-| SCALE-INT-TEST-001 | Interest set determinism, latency, hysteresis. | CTest dominium_interest. | `game/tests/interest/dom_interest_tests.c` | Live |
+| SCALE-INT-TEST-001 | Interest set determinism, latency, hysteresis. | CTest dominium_interest. | `tests/game/interest/dom_interest_tests.c` | Live |
 
 
-| SCALE-FID-TEST-001 | Fidelity continuity and provenance preservation. | CTest dominium_fidelity. | `game/tests/fidelity/dom_fidelity_tests.c` | Live |
+| SCALE-FID-TEST-001 | Fidelity continuity and provenance preservation. | CTest dominium_fidelity. | `tests/game/fidelity/dom_fidelity_tests.c` | Live |
 
 
 
@@ -424,19 +424,19 @@ Status legend:
 | --- | --- | --- | --- | --- |
 
 
-| DATA-SCHEMA-001 | Missing schema version metadata forbidden. | Data validator test only (no pack scan). | `engine/tests/engine_data_validate_test.c` | Partial |
+| DATA-SCHEMA-001 | Missing schema version metadata forbidden. | Data validator test only (no pack scan). | `tests/engine/engine_data_validate_test.c` | Partial |
 
 
-| DATA-SCHEMA-002 | Invalid schema version progression forbidden. | Data validator test only (no pack scan). | `engine/tests/engine_data_validate_test.c` | Partial |
+| DATA-SCHEMA-002 | Invalid schema version progression forbidden. | Data validator test only (no pack scan). | `tests/engine/engine_data_validate_test.c` | Partial |
 
 
-| DATA-VALID-001 | Structural validation failure forbidden. | CTest engine_data_validate. | `engine/tests/engine_data_validate_test.c` | Partial |
+| DATA-VALID-001 | Structural validation failure forbidden. | CTest engine_data_validate. | `tests/engine/engine_data_validate_test.c` | Partial |
 
 
-| DATA-VALID-002 | Determinism/perf schema violation forbidden. | CTest engine_data_validate. | `engine/tests/engine_data_validate_test.c` | Partial |
+| DATA-VALID-002 | Determinism/perf schema violation forbidden. | CTest engine_data_validate. | `tests/engine/engine_data_validate_test.c` | Partial |
 
 
-| DATA-MIGRATE-001 | Missing migration for major bump forbidden. | CTest engine_data_validate. | `engine/tests/engine_data_validate_test.c` | Partial |
+| DATA-MIGRATE-001 | Missing migration for major bump forbidden. | CTest engine_data_validate. | `tests/engine/engine_data_validate_test.c` | Partial |
 
 
 

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Intent Log Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-3 intent/envelope log chunk artifact.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "log_id",
+    "save_id",
+    "tick_range",
+    "envelopes_or_intents",
+    "log_hash",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "log_id": {
+      "type": "string"
+    },
+    "save_id": {
+      "type": "string"
+    },
+    "tick_range": {
+      "type": "object",
+      "required": [
+        "start_tick",
+        "end_tick"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "start_tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_tick": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "envelopes_or_intents": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "log_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "log_id": "intent_log.save.lab.0_31",
+      "save_id": "save.lab",
+      "tick_range": {
+        "start_tick": 0,
+        "end_tick": 31
+      },
+      "envelopes_or_intents": [
+        "env.shard.0.00000001"
+      ],
+      "log_hash": "f6306f2be18e6daed9916eec703c2efcecc373fa5b29947f4942d85797dc8f5b",
+      "extensions": {}
+    }
+  ]
+}

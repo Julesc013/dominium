@@ -85,9 +85,9 @@ ctest --preset vs2026-x64-debug
 
 ## Tests and checks
 - `DOM_BUILD_TESTS=ON` enables engine tests (`engine/tests`) and game tests
-  (`game/tests/phase6`).
+  (`tests/game/phase6`).
 - `DOM_BUILD_TOOLS=ON` enables `validate_all` fixture tests under
-  `tools/validation/fixtures`.
+  `tools/validators/suite/fixtures`.
 - Root CMake registers `launcher_help` and `setup_help` CTest entries when
   those components are built.
 - `check_arch` runs `tools/ci/arch_checks.py` for static architecture rules.

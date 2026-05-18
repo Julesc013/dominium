@@ -119,7 +119,7 @@ def prepare_hybrid_runtime_fixture(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.network.policies.policy_srz_hybrid import initialize_hybrid_runtime
+    from tools.validators.network.policies.policy_srz_hybrid import initialize_hybrid_runtime
     from tools.xstack.sessionx.creator import create_session_spec
 
     created = create_session_spec(

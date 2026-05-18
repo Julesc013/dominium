@@ -51,7 +51,7 @@ Linked instances:
 
 Portable instances:
 
-- embed required lock/profile/pack artifacts under `embedded_artifacts/`
+- embed required lock/profile/pack artifacts under `embedded_archive/generated/artifacts/`
 - may carry optional `embedded_builds`
 - remain shareable and offline-usable after directory copy or bundle export
 

@@ -11,12 +11,12 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from tools.libraries.export import export_instance_bundle, export_save_bundle
-from tools.libraries.instance import (
+from tools.package.libraries.export import export_instance_bundle, export_save_bundle
+from tools.package.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
 )
-from tools.libraries.save import (
+from tools.package.libraries.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
 )
@@ -156,14 +156,14 @@ def make_instance_root(tmp_root, *, instance_id="instance.test.alpha", slash_mod
                     "artifact_hash": pack_lock_hash,
                     "artifact_id": str(pack_lock_payload.get("pack_lock_id", "")),
                     "artifact_type": "json",
-                    "artifact_path": slash("embedded_artifacts/locks/{}".format(pack_lock_hash)),
+                    "artifact_path": slash("embedded_archive/generated/artifacts/locks/{}".format(pack_lock_hash)),
                 },
                 {
                     "category": "profiles",
                     "artifact_hash": profile_bundle_hash,
                     "artifact_id": str(profile_bundle_payload.get("profile_bundle_id", "")),
                     "artifact_type": "json",
-                    "artifact_path": slash("embedded_artifacts/profiles/{}".format(profile_bundle_hash)),
+                    "artifact_path": slash("embedded_archive/generated/artifacts/profiles/{}".format(profile_bundle_hash)),
                 },
             ],
             "extensions": {},

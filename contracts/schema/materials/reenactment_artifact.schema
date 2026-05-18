@@ -1,0 +1,23 @@
+SCHEMA: materials/reenactment_artifact.schema
+schema_id: dominium.schema.materials.reenactment_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic derived reenactment output artifact metadata.
+
+REQUIRED SHAPE:
+record reenactment_artifact
+  required:
+    - schema_version: semver
+    - reenactment_id: id
+    - request_id: id
+    - inputs_hash: hash64
+    - output_timeline_ref: string
+    - fidelity_achieved: enum(macro|meso|micro)
+    - deterministic_fingerprint: hash64
+    - extensions: map
+
+INVARIANTS:
+- reenactment artifact must be derived-only and reproducible from inputs_hash.
+- fidelity_achieved must be <= desired fidelity requested under deterministic budget degradation.

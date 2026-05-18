@@ -31,7 +31,7 @@ Authority: canonical. All reality packs MUST follow this.
 - Knowledge artifacts MAY encode belief or doctrine without changing truth.
 
 ## References
-- `docs/worldgen/REALISM_IS_CONTENT.md`
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/REALISM_IS_CONTENT.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`
 - `schema/worldgen_model.schema`
 - `schema/refinement_plan.schema`

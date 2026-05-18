@@ -1,0 +1,24 @@
+SCHEMA: signals/signal_message_envelope.schema
+schema_id: dominium.schema.signals.signal_message_envelope
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical transport envelope linking INFO artifacts to deterministic channel delivery.
+
+REQUIRED SHAPE:
+record signal_message_envelope
+  required:
+    - schema_version: semver
+    - envelope_id: id
+    - artifact_id: id
+    - sender_subject_id: id
+    - recipient_address: map
+    - created_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Envelope identity is deterministic and replay-safe.
+- Envelope content references artifact identity; transport must not mutate artifact payload.
+- Recipient resolution is deterministic and policy-driven.

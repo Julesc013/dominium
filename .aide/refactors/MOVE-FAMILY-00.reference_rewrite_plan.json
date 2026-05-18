@@ -19,7 +19,7 @@
       "root": "governance",
       "classification": "active_source_and_tool",
       "current_reference_report_count": 1399,
-      "direct_import_examples": ["release/update_resolver.py", "tools/governance/governance_model_common.py", "tools/setup/setup_cli.py"],
+      "direct_import_examples": ["tools/release/update_resolver.py", "tools/governance/governance_model_common.py", "tools/setup/setup_cli.py"],
       "rewrite_decision": "review",
       "risk": "medium"
     },
@@ -27,7 +27,7 @@
       "root": "meta",
       "classification": "active_source_tool_runtime_test",
       "current_reference_report_count": 1345,
-      "direct_import_examples": ["runtime/appshell/logging/log_engine.py", "tools/dist/dist_tree_common.py", "game/domains/logic/compile/logic_compiler.py", "tools/xstack/sessionx/process_runtime.py"],
+      "direct_import_examples": ["runtime/shell/logging/log_engine.py", "tools/release/dist/dist_tree_common.py", "game/domain/logic/compile/logic_compiler.py", "tools/xstack/sessionx/process_runtime.py"],
       "rewrite_decision": "review",
       "risk": "high"
     },
@@ -43,7 +43,7 @@
       "root": "validation",
       "classification": "active_validation_tooling",
       "current_reference_report_count": 1998,
-      "direct_import_examples": ["runtime/appshell/commands/command_engine.py", "tools/validation/tool_run_validation.py", "tools/xstack/repox/check.py"],
+      "direct_import_examples": ["runtime/shell/commands/command_engine.py", "tools/validators/suite/tool_run_validation.py", "tools/xstack/repox/check.py"],
       "rewrite_decision": "review",
       "risk": "medium"
     },

@@ -5,19 +5,19 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3566,
-      "snippet": "\"contracts/schemas/modding/mod_policy_profile.schema\","
+      "snippet": "\"contracts/schema/modding/mod_policy_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3567,
-      "snippet": "\"contracts/schemas/modding/pack_capabilities.schema\","
+      "snippet": "\"contracts/schema/modding/pack_capabilities.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3568,
-      "snippet": "\"contracts/schemas/modding/pack_trust_descriptor.schema\","
+      "snippet": "\"contracts/schema/modding/pack_trust_descriptor.schema\","
     },
     {
       "classification": "unknown",
@@ -111,19 +111,19 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/modding/mod_policy_profile.schema",
+      "file": "contracts/schema/modding/mod_policy_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: modding/mod_policy_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/modding/pack_capabilities.schema",
+      "file": "contracts/schema/modding/pack_capabilities.schema",
       "line": 1,
       "snippet": "SCHEMA: modding/pack_capabilities.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/modding/pack_trust_descriptor.schema",
+      "file": "contracts/schema/modding/pack_trust_descriptor.schema",
       "line": 1,
       "snippet": "SCHEMA: modding/pack_trust_descriptor.schema"
     },
@@ -329,7 +329,7 @@
       "classification": "docs",
       "file": "docs/architecture/REPO_INTENT.md",
       "line": 66,
-      "snippet": "- `docs/dev/` and `docs/modding/` are how-to only."
+      "snippet": "- `docs/development/` and `docs/modding/` are how-to only."
     },
     {
       "classification": "docs",
@@ -533,7 +533,7 @@
       "classification": "docs",
       "file": "docs/audit/MOD_POLICY_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/geo/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, `docs/meta/EXTENSION_DISCIPLINE.md`, `docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md`, `src/modding/mod_policy_engine"
     },
     {
       "classification": "docs",
@@ -629,7 +629,7 @@
       "classification": "docs",
       "file": "docs/packs/PACK_COMPATIBILITY_MANIFEST.md",
       "line": 5,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/geo/OVERLAY_"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`, and `docs/domains/geology/OVERLAY_"
     },
     {
       "classification": "docs",
@@ -771,25 +771,25 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e394_missing_capabilities_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e394_missing_capabilities_smell.py",
       "line": 12,
       "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e394_missing_capabilities_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e394_missing_capabilities_smell.py",
       "line": 31,
       "snippet": "\"modding/mod_policy_engine.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e395_trust_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e395_trust_bypass_smell.py",
       "line": 12,
       "snippet": "\"docs/modding/MOD_TRUST_AND_CAPABILITIES.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e395_trust_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e395_trust_bypass_smell.py",
       "line": 27,
       "snippet": "\"modding/mod_policy_engine.py\": ("
     },

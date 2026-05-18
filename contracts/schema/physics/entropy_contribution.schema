@@ -1,0 +1,22 @@
+SCHEMA: physics/entropy_contribution.schema
+schema_id: dominium.schema.physics.entropy_contribution
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic mapping rows from transformation sources to entropy increment formulas.
+- Keep entropy accumulation model-driven and auditable.
+
+NON-SEMANTICS:
+- This schema does not authorize source transformations.
+- Source legality remains governed by process/model/profile policy.
+
+REQUIRED SHAPE:
+record entropy_contribution
+  required:
+    - contribution_id: id
+    - source_transformation_id: id
+    - entropy_increment_formula_id: id
+    - parameters: map
+    - deterministic_fingerprint: sha256
+    - extensions: map

@@ -1,0 +1,21 @@
+SCHEMA: specs/tolerance_policy.schema
+schema_id: dominium.schema.specs.tolerance_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declares deterministic numeric tolerance and rounding behavior for compliance checks.
+
+REQUIRED SHAPE:
+record tolerance_policy
+  required:
+    - schema_version: semver
+    - tolerance_policy_id: id
+    - description: string
+    - numeric_tolerances: map
+    - rounding_rules: map
+    - extensions: map
+
+INVARIANTS:
+- Tolerances are deterministic and purely data-defined.
+- No wall-clock behavior is allowed in tolerance interpretation.

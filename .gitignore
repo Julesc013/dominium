@@ -23,10 +23,12 @@
 /build/
 /build/*/
 /build/output/
-/dist/
+/archive/generated/dist/
+/artifacts/
 /bin/
 /obj/
 /out/
+/dist/
 /lib/
 /tmp/
 /temp/
@@ -333,7 +335,7 @@ venv/
 stdout
 .xstack_cache/
 .xstack_cache/**
-dist/ws/**
+archive/generated/dist/ws/**
 out/**
 tools/xstack/out/
 tools/xstack/out/**

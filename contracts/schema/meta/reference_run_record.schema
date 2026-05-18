@@ -1,0 +1,32 @@
+SCHEMA: meta/reference_run_record.schema
+schema_id: dominium.schema.meta.reference_run_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record deterministic runtime-vs-reference comparison outcomes for replayable windows.
+
+NON-SEMANTICS:
+- Derived-only verification surface; not canonical truth mutation.
+- Not a replacement for subsystem proof chains.
+
+REQUIRED SHAPE:
+record reference_run_record
+  required:
+    - run_id: id
+    - evaluator_id: id
+    - seed: int
+    - tick_range: map
+    - runtime_output_hash: sha256
+    - reference_output_hash: sha256
+    - match: bool
+    - discrepancy_summary: map?
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+ARTIFACT CLASS:
+- derived
+
+INVARIANTS:
+- output hashes must be deterministic for equal inputs.
+- mismatch records must include reproducible divergence details.

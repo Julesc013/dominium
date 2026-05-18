@@ -14,9 +14,9 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from tools.governance.fidelity import DEFAULT_FIDELITY_POLICY_ID, arbitrate_fidelity_requests
-    from game.domains.inspection import inspection_engine as inspect_engine
-    from game.domains.materials.commitments.commitment_engine import build_reenactment_artifact
-    from game.domains.materials.materialization.materialization_engine import materialize_structure_roi
+    from game.domain.inspection import inspection_engine as inspect_engine
+    from game.domain.materials.commitments.commitment_engine import build_reenactment_artifact
+    from game.domain.materials.materialization.materialization_engine import materialize_structure_roi
 
     # MAT-9 equivalence: inspection fidelity resolver must match direct fidelity arbitration output.
     section_rows = {}

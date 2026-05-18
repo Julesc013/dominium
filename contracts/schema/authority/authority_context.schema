@@ -1,0 +1,32 @@
+SCHEMA: authority/authority_context.schema
+schema_id: dominium.schema.authority.context
+schema_version: 1.1.0
+stability: core
+
+PURPOSE:
+- Define explicit authority context used by session composition.
+- Keep entitlement and law resolution explicit at session boundaries.
+
+NON-SEMANTICS:
+- AuthorityContext does not change simulation behavior.
+- AuthorityContext only declares legal/entitlement context for runtime commands.
+
+REQUIRED SHAPE:
+record authority_context
+  required:
+    - authority_context_id: id
+    - authority_origin: enum(client|server|tool|replay)
+    - experience_id: id
+    - law_profile_id: id
+    - entitlements: [id]
+    - capability_set_hash: tag
+    - epistemic_scope_id: id
+    - privilege_watermark_policy: enum(none|observer|dev)
+    - audit_required: bool
+    - server_authoritative: bool
+    - refusal_policy_id: id
+    - extensions: map
+
+OPTIONAL:
+  - profile_bindings: [id]
+  - effective_profile_snapshot: map

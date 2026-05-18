@@ -9,8 +9,8 @@ Runtime may host, adapt, present, route, persist, observe, and diagnose. Runtime
 
 ## Subroots
 
-- `runtime/app/`: shared C app-runtime helpers, read-only adapters, UI event helpers, and app-facing runtime support.
-- `runtime/appshell/`: product bootstrap, command dispatch, mode resolution, virtual path binding, supervisor, IPC, logging, TUI, and rendered-mode shell support.
+- `runtime/shell/lifecycle/`: shared C app-runtime helpers, read-only adapters, UI event helpers, and app-facing runtime support.
+- `runtime/shell/`: product bootstrap, command dispatch, mode resolution, virtual path binding, supervisor, IPC, logging, TUI, and rendered-mode shell support.
 - `runtime/diagnostics/`: deterministic repro and diagnostic bundle source.
 - `runtime/ui/`: shared UI model and UI runtime adapter surfaces.
 - `runtime/process_spawn.py`: process-hosting helper retained at the runtime root until later subroot refinement.

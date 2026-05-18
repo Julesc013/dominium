@@ -73,7 +73,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Gate Run Summary
 - RepoX (`python tools/xstack/repox/check.py --profile STRICT`): PASS (1 warn; non-gating high-risk audit threshold warning)
-- AuditX (`python tools/auditx/auditx.py verify --repo-root .`): run complete
+- AuditX (`python tools/xstack/auditx/auditx.py verify --repo-root .`): run complete
 - TestX INT-2 subset (`python tools/xstack/testx_all.py --profile FAST --cache off --subset ...`): PASS
 - strict build (`python tools/xstack/run.py strict`): REFUSAL due pre-existing global CompatX/TestX/lab-build findings outside INT-2 scope; INT-2 registry compile/session/ui steps passed
 - ui_bind (`python tools/xstack/ui_bind.py --check`): PASS

@@ -123,11 +123,11 @@ Generated local presets expose the canonical VS2022 tuple. POST-CONVERGE-10C rem
 
 Resolved UI bind blocker:
 
-- `runtime/shell/appcore/ui_bind/ui_command_binding_table.h`
-- `runtime/shell/appcore/ui_bind/ui_command_binding_table.c`
-- `runtime/shell/appcore/ui_bind/ui_accessibility_map.h`
-- `runtime/shell/appcore/ui_bind/ui_accessibility_map.c`
-- `runtime/shell/appcore/ui_bind/ui_localisation_usage_report.json`
+- `tools/codegen/ui/bind/ui_command_binding_table.h`
+- `tools/codegen/ui/bind/ui_command_binding_table.c`
+- `tools/codegen/ui/bind/ui_accessibility_map.h`
+- `tools/codegen/ui/bind/ui_accessibility_map.c`
+- `tools/codegen/ui/bind/ui_localisation_usage_report.json`
 
 These tracked generated outputs are now protected by `.gitattributes`:
 
@@ -164,15 +164,15 @@ Root cause:
 
 - `modding.load_mod_policy_registry('.')` returned schema validation errors.
 - The key schema error was `unknown schema: mod_policy_profile`.
-- `contracts/schemas/mod_policy_profile.schema.json` existed.
+- `contracts/schema/mod_policy_profile.schema.json` existed.
 - `tools/xstack/compatx/schema_registry.py` still discovered root `schemas/`.
 - Root `schemas/` no longer exists after convergence.
 
 POST-CONVERGE-06 remediation:
 
-- `tools/xstack/compatx/schema_registry.py` now prefers `contracts/schemas/` and keeps `schemas/` as a legacy fallback.
-- `game/domains/worldgen/mw/mw_surface_refiner_l3.py` now imports the Earth surface generator from `game.domains.worldgen.earth`.
-- `scripts/ci/check_repox_rules.py` now points worldgen source constants at the canonical `game/domains/...` paths.
+- `tools/xstack/compatx/schema_registry.py` now prefers `contracts/schema/` and keeps `schemas/` as a legacy fallback.
+- `game/domain/worldgen/mw/mw_surface_refiner_l3.py` now imports the Earth surface generator from `game.domain.worldgen.earth`.
+- `scripts/ci/check_repox_rules.py` now points worldgen source constants at the canonical `game/domain/...` paths.
 
 Focused result after remediation:
 

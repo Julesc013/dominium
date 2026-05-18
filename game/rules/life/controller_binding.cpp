@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/controller_binding.cpp
+FILE: game/rule/life/controller_binding.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements deterministic controller bindings.

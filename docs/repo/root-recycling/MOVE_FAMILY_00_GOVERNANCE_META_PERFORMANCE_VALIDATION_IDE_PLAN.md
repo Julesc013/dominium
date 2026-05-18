@@ -52,7 +52,7 @@ The current tracked target-family state contains 36 files:
 
 | Root | Fate | Count | Reason |
 | --- | --- | ---: | --- |
-| `governance/` | preserve/defer | 2 | Active governance Python helpers with release/setup/dist/tool consumers. |
+| `governance/` | preserve/defer | 2 | Active governance Python helpers with release/setup/archive/generated/dist/tool consumers. |
 | `meta/` | preserve/defer | 26 | Broad active Python subsystem with runtime, game, release, tool, AuditX, RepoX, TestX, and test consumers. |
 | `performance/` | preserve/defer | 3 | Active product/runtime performance helpers imported by client and XStack paths. |
 | `validation/` | preserve/defer | 2 | Active validation pipeline imported by runtime, tools, shims, AuditX, RepoX, and TestX. |
@@ -125,7 +125,7 @@ MOVE-FAMILY-00-PLAN made no source-root moves, deletes, renames, reference rewri
 MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the `ide/manifests/**` portion.
 
 - Planned moves: 3.
-- Target owner: `contracts/projections/ide/**`.
+- Target owner: `contracts/projection/ide/**`.
 - Deferred tracked IDE manifest files: 0.
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
 - Apply remains unauthorized.
@@ -135,7 +135,7 @@ MOVE-FAMILY-00B-PLAN produced a gate-ready no-apply draft for the `ide/manifests
 
 MOVE-FAMILY-00B-APPLY applied the tracked IDE manifest migration.
 
-- `ide/manifests/**` tracked source files moved to `contracts/projections/ide/**`.
+- `ide/manifests/**` tracked source files moved to `contracts/projection/ide/**`.
 - Applied reference rewrite groups: 5.
 - `git ls-files ide`: empty.
 - `ide` source-layout exception: retired.

@@ -9,7 +9,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from tools.libraries.artifact import (
+from tools.package.libraries.artifact import (
     ARTIFACT_DEGRADE_BEST_EFFORT,
     ARTIFACT_DEGRADE_STRICT_REFUSE,
     ARTIFACT_KIND_BLUEPRINT,
@@ -172,13 +172,13 @@ def test_cross_platform_artifact_hash_match() -> None:
             "degrade_mode_id": ARTIFACT_DEGRADE_STRICT_REFUSE,
             "migration_refs": [],
             "extensions": {
-                "official.payload_ref": "artifacts\\profile\\payload.json",
+                "official.payload_ref": "archive\generated\archive\generated\archive\generated\artifacts\\profile\\payload.json",
             },
         },
         expected_kind_id=ARTIFACT_KIND_PROFILE_BUNDLE,
     )
     posix_like = _clone(windows_like)
-    posix_like["extensions"]["official.payload_ref"] = "artifacts/profile/payload.json"
+    posix_like["extensions"]["official.payload_ref"] = "archive/generated/artifacts/profile/payload.json"
     if compute_artifact_content_hash(windows_like) != compute_artifact_content_hash(posix_like):
         raise RuntimeError("artifact content hash changed across path separators")
     if deterministic_fingerprint(windows_like) != deterministic_fingerprint(posix_like):

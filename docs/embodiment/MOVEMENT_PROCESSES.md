@@ -74,6 +74,6 @@ Define deterministic, process-only movement for embodied agents.
 ## Cross-References
 - `docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md`
 - `docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md`
-- `docs/net/ANTI_CHEAT_MODULES.md`
+- `docs/runtime/network/ANTI_CHEAT_MODULES.md`
 - `docs/contracts/authority_context.md`
 - `docs/contracts/law_profile.md`

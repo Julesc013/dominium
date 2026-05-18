@@ -1,0 +1,21 @@
+SCHEMA: inspection/inspection_section.schema
+schema_id: dominium.schema.inspection.inspection_section
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define bounded inspection section payload used in inspection snapshots.
+
+REQUIRED SHAPE:
+record inspection_section
+  required:
+    - schema_version: semver
+    - section_id: id
+    - title: string
+    - data: map
+    - epistemic_redaction_level: string
+    - extensions: map
+
+INVARIANTS:
+- section_id must resolve through inspection section registry when strict policy is enabled.
+- data payload must remain bounded and deterministic.

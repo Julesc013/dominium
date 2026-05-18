@@ -2751,7 +2751,7 @@ REQUIRED_IGNORE_PATTERNS = [
     ".mypy_cache/**",
     ".ruff_cache/**",
     "node_modules/**",
-    "dist/**",
+    "archive/generated/dist/**",
     "build/**",
 ]
 
@@ -5219,8 +5219,8 @@ REPO_TEXT_EXTENSIONS = {
 }
 REPO_LOCAL_FORBIDDEN_PATTERNS = [".aide.local/**", ".aide.local", ".env", "secrets/**"]
 REPO_GENERATED_PATH_PATTERNS = [
-    "artifacts/**",
-    "dist/**",
+    "archive/generated/artifacts/**",
+    "archive/generated/dist/**",
     ".aide/export/**",
     ".aide/intake/latest-*",
     ".aide/git/workflow-detection.*",
@@ -15683,7 +15683,7 @@ XSTACK_SYSTEM_DEFINITIONS: tuple[dict[str, object], ...] = (
         "label": "AuditX",
         "wrapper_id": "dominium.auditx.status",
         "aide_command": "xstack status --system auditx",
-        "source_globs": ["tools/auditx/**", "tools/xstack/auditx/**", "**/*auditx*"],
+        "source_globs": ["tools/xstack/auditx/**", "tools/xstack/auditx/**", "**/*auditx*"],
         "capabilities": ["audit", "docs", "repo_policy", "security"],
         "risk_class": "authority_sensitive",
         "recommended_fate": "keep_wrap_adapt",

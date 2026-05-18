@@ -14,9 +14,9 @@ Change:
 Touched Paths:
 - `.github/workflows/ci.yml`
 - `.github/workflows/xstack_lanes.yml`
-- `client/app/main_client.c`
-- `client/core/session_artifacts.h`
-- `tools/validators/validation/validation_engine.py`
+- `apps/client/main_client.c`
+- `apps/client/session/session_artifacts.h`
+- `tools/validators/suite/validation_engine.py`
 - `tools/xstack/repox/check.py`
 
 Demand IDs:

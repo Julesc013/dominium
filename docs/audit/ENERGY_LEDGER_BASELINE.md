@@ -62,7 +62,7 @@ AuditX analyzers added:
 
 Tool added:
 
-- `tools/physics/tool_verify_energy_conservation`
+- `tools/validators/domain/physics/tool_verify_energy_conservation`
 
 ## 5) Regression Baseline Status
 

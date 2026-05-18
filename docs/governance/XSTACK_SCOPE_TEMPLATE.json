@@ -16,7 +16,7 @@
       ],
       "excluded_prefixes": [
         "docs/audit/",
-        "dist/",
+        "archive/generated/dist/",
         "build/",
         "tmp/",
         ".xstack_cache/"
@@ -34,7 +34,7 @@
       ],
       "excluded_prefixes": [
         "docs/audit/",
-        "dist/",
+        "archive/generated/dist/",
         "build/",
         "tmp/",
         ".xstack_cache/"
@@ -51,7 +51,7 @@
       ],
       "excluded_prefixes": [
         "docs/audit/",
-        "dist/",
+        "archive/generated/dist/",
         "build/",
         "tmp/",
         ".xstack_cache/"

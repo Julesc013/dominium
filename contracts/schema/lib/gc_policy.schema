@@ -1,0 +1,23 @@
+SCHEMA: lib/gc_policy.schema
+schema_id: dominium.schema.lib.gc_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic GC policies for the shared content-addressable store.
+- Separate report-only, quarantine-first, and explicit destructive cleanup modes.
+
+REQUIRED SHAPE:
+record gc_policy
+  required:
+    - gc_policy_id: id
+    - mode: enum(none|safe|aggressive)
+    - quarantine_enabled: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `gc.none` MUST NOT mutate store contents.
+- `gc.safe` MUST quarantine rather than delete.
+- `gc.aggressive` MUST still be policy-governed and require an explicit destructive flag at runtime.
+- deterministic_fingerprint MUST derive from canonical payload fields only.

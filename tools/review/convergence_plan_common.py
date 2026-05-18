@@ -19,18 +19,18 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DUPLICATE_CLUSTER_RANKINGS_REL = "content/data/analysis/duplicate_cluster_rankings.json"
-IMPLEMENTATION_SCORES_REL = "content/data/analysis/implementation_scores.json"
-DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
-SHADOW_MODULES_REL = "content/data/audit/shadow_modules.json"
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
-MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+DUPLICATE_CLUSTER_RANKINGS_REL = "archive/generated/analysis/duplicate_cluster_rankings.json"
+IMPLEMENTATION_SCORES_REL = "archive/generated/analysis/implementation_scores.json"
+DUPLICATE_IMPLS_REL = "archive/generated/audit/duplicate_impls.json"
+SHADOW_MODULES_REL = "archive/generated/audit/shadow_modules.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
+MODULE_DEP_GRAPH_REL = "archive/generated/architecture/module_dependency_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 DOC_SYMBOL_LINKS_REL = "data/audit/doc_symbol_links.json"
 
-CONVERGENCE_PLAN_REL = "content/data/refactor/convergence_plan.json"
-CONVERGENCE_ACTIONS_REL = "content/data/refactor/convergence_actions.json"
-CONVERGENCE_RISK_MAP_REL = "content/data/refactor/convergence_risk_map.json"
+CONVERGENCE_PLAN_REL = "archive/generated/refactor/convergence_plan.json"
+CONVERGENCE_ACTIONS_REL = "archive/generated/refactor/convergence_actions.json"
+CONVERGENCE_RISK_MAP_REL = "archive/generated/refactor/convergence_risk_map.json"
 
 CONVERGENCE_PLAN_DOC_REL = "docs/refactor/CONVERGENCE_PLAN.md"
 CONVERGENCE_RISK_REPORT_REL = "docs/refactor/CONVERGENCE_RISK_REPORT.md"
@@ -59,7 +59,7 @@ REQUIRED_INPUTS = {
 
 DOC_REPORT_DATE = "2026-03-26"
 SOURCE_LIKE_DIRS = {"Source", "Sources", "source", "src"}
-TEST_PATH_PREFIXES = ("Testing/", "game/tests/", "tests/", "tools/xstack/testx/tests/")
+TEST_PATH_PREFIXES = ("Testing/", "tests/game/", "tests/", "tools/xstack/testx/tests/")
 PRODUCTION_PRODUCT_TOKENS = {"client", "launcher", "server", "setup"}
 HIGH_RISK_REASON_ORDER = (
     "semantic_contracts",
@@ -433,9 +433,9 @@ def _required_test_commands(risk_level: str, reasons: Sequence[object], include_
             "python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable"
         )
     if risk_level == "LOW":
-        commands.append("python tools/validation/tool_run_validation.py --repo-root . --profile FAST")
+        commands.append("python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST")
     else:
-        commands.append("python tools/validation/tool_run_validation.py --repo-root . --profile STRICT")
+        commands.append("python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT")
         commands.extend(
             [
                 "python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .",
@@ -455,9 +455,9 @@ def _required_test_commands(risk_level: str, reasons: Sequence[object], include_
     if "time_anchor" in reason_tokens:
         commands.append("python tools/time/tool_verify_longrun_ticks.py --repo-root .")
     if "ipc_attach" in reason_tokens:
-        commands.append("python tools/appshell/tool_run_ipc_unify.py --repo-root .")
+        commands.append("python tools/validators/shell/tool_run_ipc_unify.py --repo-root .")
     if "supervisor" in reason_tokens:
-        commands.append("python tools/appshell/tool_run_supervisor_hardening.py --repo-root .")
+        commands.append("python tools/validators/shell/tool_run_supervisor_hardening.py --repo-root .")
     if risk_level == "HIGH":
         commands.append("python tools/convergence/tool_run_convergence_gate.py --repo-root .")
     seen: set[str] = set()
@@ -963,10 +963,10 @@ def _phase_plan(actions: Sequence[Mapping[str, object]]) -> list[dict[str, objec
     phase_commands = {
         "phase_1_safe_merges": [
             "python tools/xstack/testx/runner.py --repo-root . --profile FAST",
-            "python tools/validation/tool_run_validation.py --repo-root . --profile FAST",
+            "python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST",
         ],
         "phase_2_medium_risk_merges": [
-            "python tools/validation/tool_run_validation.py --repo-root . --profile STRICT",
+            "python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT",
             "python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .",
             "python tools/mvp/tool_verify_baseline_universe.py --repo-root .",
             "python tools/mvp/tool_verify_gameplay_loop.py --repo-root .",
@@ -978,7 +978,7 @@ def _phase_plan(actions: Sequence[Mapping[str, object]]) -> list[dict[str, objec
         "phase_4_rewire_sweep": [
             "python tools/review/tool_run_duplicate_impl_scan.py --repo-root .",
             "python tools/review/tool_run_implementation_scoring.py --repo-root .",
-            "python tools/validation/tool_run_validation.py --repo-root . --profile STRICT",
+            "python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT",
         ],
         "phase_5_deprecation_and_quarantine": [
             "python tools/review/tool_run_convergence_plan.py --repo-root .",

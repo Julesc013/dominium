@@ -59,7 +59,7 @@
     {
       "family_id": "canonical_vs_generated_roots",
       "must_preserve": true,
-      "summary": "generated roots under build/, artifacts/, .xstack_cache/, and run_meta/ remain evidence only."
+      "summary": "generated roots under build/, archive/generated/artifacts/, .xstack_cache/, and run_meta/ remain evidence only."
     },
     {
       "family_id": "runtime_root_name_bias",

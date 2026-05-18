@@ -1,0 +1,41 @@
+"""MOB-3 vehicle assembly exports."""
+
+from .vehicle_engine import (
+    REFUSAL_MOBILITY_NETWORK_INVALID,
+    REFUSAL_MOBILITY_SPEC_NONCOMPLIANT,
+    VehicleError,
+    build_motion_state,
+    build_vehicle,
+    deterministic_motion_state_ref,
+    deterministic_vehicle_id,
+    evaluate_vehicle_edge_compatibility,
+    get_vehicle_capabilities,
+    get_vehicle_driver_pose_slots,
+    get_vehicle_interior,
+    get_vehicle_ports,
+    motion_state_rows_by_vehicle_id,
+    normalize_motion_state_rows,
+    normalize_vehicle_rows,
+    vehicle_class_rows_by_id,
+    vehicle_rows_by_id,
+)
+
+__all__ = [
+    "REFUSAL_MOBILITY_NETWORK_INVALID",
+    "REFUSAL_MOBILITY_SPEC_NONCOMPLIANT",
+    "VehicleError",
+    "build_motion_state",
+    "build_vehicle",
+    "deterministic_motion_state_ref",
+    "deterministic_vehicle_id",
+    "evaluate_vehicle_edge_compatibility",
+    "get_vehicle_capabilities",
+    "get_vehicle_driver_pose_slots",
+    "get_vehicle_interior",
+    "get_vehicle_ports",
+    "motion_state_rows_by_vehicle_id",
+    "normalize_motion_state_rows",
+    "normalize_vehicle_rows",
+    "vehicle_class_rows_by_id",
+    "vehicle_rows_by_id",
+]

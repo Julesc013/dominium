@@ -137,11 +137,11 @@
       "contracts/registry/trust_root_registry.json"
     ],
     "further_upsilon_must_extend": [
-      "release/update_resolver.py",
-      "release/release_manifest_engine.py",
-      "release/archive_policy.py",
-      "tools/controlx/README.md",
-      "tools/controlx/controlx.py",
+      "tools/release/update_resolver.py",
+      "tools/release/release_manifest_engine.py",
+      "tools/release/archive_policy.py",
+      "tools/xstack/controlx/README.md",
+      "tools/xstack/controlx/controlx.py",
       "tools/xstack/run.py",
       "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
       "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",

@@ -1,0 +1,23 @@
+SCHEMA: time/branch.schema
+schema_id: dominium.schema.time.branch
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic branch lineage artifacts.
+
+REQUIRED SHAPE:
+record branch
+  required:
+    - schema_version: semver
+    - branch_id: id
+    - parent_save_id: id
+    - parent_checkpoint_id: id
+    - divergence_tick: u64
+    - new_save_id: id
+    - reason: text
+    - extensions: map
+
+INVARIANTS:
+- Branching creates new lineage only.
+- Retroactive mutation in-place is forbidden.

@@ -69,7 +69,7 @@ Scope: repository sovereignty, authoritative sources, and IDE projections.
 | `/ide/**` | GENERATED / PROJECTION | Disposable IDE outputs. |
 
 
-| `/docs/architecture/IDE_PROJECTIONS.md`, `/contracts/projections/ide/**` | AUTHORITATIVE metadata | Projection policy + manifest schema/examples. `/ide/**` remains generated projection output. |
+| `/docs/architecture/IDE_PROJECTIONS.md`, `/contracts/projection/ide/**` | AUTHORITATIVE metadata | Projection policy + manifest schema/examples. `/ide/**` remains generated projection output. |
 
 
 | `/setup/**/package/**/vs/**` | FROZEN PACKAGING INPUT | No current first-class paths; see legacy grandfathered archival inputs below. |
@@ -81,7 +81,7 @@ Scope: repository sovereignty, authoritative sources, and IDE projections.
 | `/.vs`, `/.vscode` | GENERATED | Local IDE state; must never be committed. |
 
 
-| `/build/**`, `/dist/**`, `/out/**`, `/bin/**` | GENERATED | Build outputs. |
+| `/build/**`, `/archive/generated/dist/**`, `/out/**`, `/bin/**` | GENERATED | Build outputs. |
 
 
 

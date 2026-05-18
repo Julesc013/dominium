@@ -1,0 +1,26 @@
+SCHEMA: meta/validity_domain.schema
+schema_id: dominium.schema.meta.validity_domain
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic assumptions under which a compiled model is valid.
+- Support safe fallback to uncompiled execution when assumptions are violated.
+
+NON-SEMANTICS:
+- No implicit clamping of out-of-domain inputs.
+- No hidden widening of validity ranges at runtime.
+
+REQUIRED SHAPE:
+record validity_domain
+  required:
+    - domain_id: id
+    - input_ranges: map
+    - timing_constraints: map|null
+    - environmental_constraints: map|null
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Validity checks must be deterministic and stable for identical inputs.
+- Out-of-domain detection must trigger refusal or forced expand hooks.

@@ -25,13 +25,13 @@
     "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "content/data/xstack/xstack_scope_freeze.json",
+    "archive/generated/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "content/data/xstack/xstack_inventory_and_classification.json",
+    "archive/generated/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "contracts/xstack/aide_portable_task_contract.json",
     "contracts/registry/derived_artifacts.json",
-    "tools/validators/validation/validation_engine.py",
+    "tools/validators/suite/validation_engine.py",
     "tools/xstack/controlx/orchestrator.py",
     "tools/xstack/securex/check.py",
     "tools/xstack/auditx/check.py",
@@ -55,9 +55,9 @@
   },
   "dependencies": {
     "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "required_scope_freeze_json": "content/data/xstack/xstack_scope_freeze.json",
+    "required_scope_freeze_json": "archive/generated/xstack/xstack_scope_freeze.json",
     "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "required_inventory_json": "content/data/xstack/xstack_inventory_and_classification.json",
+    "required_inventory_json": "archive/generated/xstack/xstack_inventory_and_classification.json",
     "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "required_task_contract_json": "contracts/xstack/aide_portable_task_contract.json"
   },
@@ -253,7 +253,7 @@
       "note": "Classifies artifacts as CANONICAL, DERIVED_VIEW, or RUN_META and records canonical hashing, gating use, regeneration, and stability metadata."
     },
     {
-      "surface": "tools/validators/validation/validation_engine.py",
+      "surface": "tools/validators/suite/validation_engine.py",
       "supports": [
         "evidence_id",
         "evidence_kind",

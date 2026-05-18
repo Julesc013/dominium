@@ -391,7 +391,7 @@ All checkpoint, ownership, and anti-reinvention cautions remain in force for lif
 
 - `specs/reality/**` outranks `data/reality/**` for semantic meaning
 - `docs/planning/**` outranks planning JSON for checkpoint interpretation
-- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains evidence only unless stronger doctrine explicitly promotes a specific form
+- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains evidence only unless stronger doctrine explicitly promotes a specific form
 
 ### 17.5 Thin `runtime/` root
 

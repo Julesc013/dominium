@@ -16,7 +16,7 @@ Run from a CMake target or manually:
 ```
 cmake -P build_tarball.cmake \
   -DARTIFACT_ROOT=/path/to/artifact_root \
-  -DOUT_DIR=/path/to/dist/linux \
+  -DOUT_DIR=/path/to/archive/generated/dist/linux \
   -DVERSION=1.2.3 \
   -DARCH=x64 \
   -DREPO_ROOT=/path/to/repo

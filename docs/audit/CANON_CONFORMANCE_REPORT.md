@@ -16,7 +16,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - Command: `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - Result: `pass` (`findings=0`)
 - AuditX semantic scan (full):
-  - Command: `python tools/auditx/auditx.py scan --repo-root . --format both`
+  - Command: `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
   - Result: `scan_complete` (`findings=745`)
 - Impact graph rebuild:
   - Command: `python tools/dev/dev.py --repo-root . impact-graph --out build/impact_graph.json`

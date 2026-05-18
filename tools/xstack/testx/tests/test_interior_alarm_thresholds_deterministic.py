@@ -27,7 +27,7 @@ def run(repo_root: str):
         portal_state_rows,
         volume_rows,
     )
-    from game.domains.interior.compartment_flow_engine import tick_compartment_flows
+    from game.domain.interior.compartment_flow_engine import tick_compartment_flows
 
     states = [
         {

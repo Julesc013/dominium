@@ -1,0 +1,26 @@
+SCHEMA: meta/measurement_point.schema
+schema_id: dominium.schema.meta.measurement_point
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic measurement-point metadata for instrumentation surfaces.
+
+NON-SEMANTICS:
+- Does not sample state by itself.
+- Does not bypass redaction policies.
+
+REQUIRED SHAPE:
+record measurement_point
+  required:
+    - measurement_point_id: id
+    - quantity_id: id
+    - instrument_type_id: id
+    - measurement_model_id: id
+    - destructive: bool
+    - redaction_policy_id: id
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- Measurement requests require instrument + access policy compliance.
+- Redaction policy must be applied before user-visible output.

@@ -24,7 +24,7 @@
     },
     {
       "count": 1,
-      "file": "engine/import/import_engine.py",
+      "file": "tools/import/import_engine.py",
       "form": "from",
       "new_import": "tools.validators.modding",
       "old_import": "modding"
@@ -38,126 +38,126 @@
     },
     {
       "count": 1,
-      "file": "game/domains/chemistry/degradation/degradation_engine.py",
+      "file": "game/domain/chemistry/degradation/degradation_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/electricity/power_network_engine.py",
+      "file": "game/domain/electricity/power_network_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/fields/field_engine.py",
+      "file": "game/domain/fields/field_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/fluids/network/fluid_network_engine.py",
+      "file": "game/domain/fluids/network/fluid_network_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/logic/eval/propagate_engine.py",
+      "file": "game/domain/logic/eval/propagate_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/mechanics/structural_graph_engine.py",
+      "file": "game/domain/mechanics/structural_graph_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/mobility/maintenance/wear_engine.py",
+      "file": "game/domain/mobility/maintenance/wear_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/mobility/micro/constrained_motion_solver.py",
+      "file": "game/domain/mobility/micro/constrained_motion_solver.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 2,
-      "file": "game/domains/mobility/traffic/traffic_engine.py",
+      "file": "game/domain/mobility/traffic/traffic_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/mobility/travel/travel_engine.py",
+      "file": "game/domain/mobility/travel/travel_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/processes/capsules/capsule_builder.py",
+      "file": "game/domain/processes/capsules/capsule_builder.py",
       "form": "from",
       "new_import": "tools.specs",
       "old_import": "specs"
     },
     {
       "count": 1,
-      "file": "game/domains/processes/process_run_engine.py",
+      "file": "game/domain/processes/process_run_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/signals/institutions/dispatch_engine.py",
+      "file": "game/domain/signals/institutions/dispatch_engine.py",
       "form": "from",
       "new_import": "tools.governance",
       "old_import": "control"
     },
     {
       "count": 1,
-      "file": "game/domains/signals/trust/trust_engine.py",
+      "file": "game/domain/signals/trust/trust_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/systems/certification/system_cert_engine.py",
+      "file": "game/domain/systems/certification/system_cert_engine.py",
       "form": "from",
       "new_import": "tools.specs",
       "old_import": "specs"
     },
     {
       "count": 1,
-      "file": "game/domains/systems/macro/macro_capsule_engine.py",
+      "file": "game/domain/systems/macro/macro_capsule_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "game/domains/thermal/network/thermal_network_engine.py",
+      "file": "game/domain/thermal/network/thermal_network_engine.py",
       "form": "from",
       "new_import": "tools.models",
       "old_import": "models"
     },
     {
       "count": 1,
-      "file": "release/update_resolver.py",
+      "file": "tools/release/update_resolver.py",
       "form": "from",
       "new_import": "tools.governance",
       "old_import": "governance"
@@ -185,7 +185,7 @@
     },
     {
       "count": 1,
-      "file": "tools/dist/dist_tree_common.py",
+      "file": "tools/release/dist/dist_tree_common.py",
       "form": "from",
       "new_import": "tools.governance",
       "old_import": "governance"

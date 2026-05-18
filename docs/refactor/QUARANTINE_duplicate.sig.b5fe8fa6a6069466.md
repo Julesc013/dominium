@@ -12,13 +12,13 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/dist/dist_tree_common.py`
+- Canonical Candidate: `tools/release/dist/dist_tree_common.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `tools/dist/dist_tree_common.py`
+- `tools/release/dist/dist_tree_common.py`
 - `tools/lib/lib_stress_common.py`
 - `tools/mvp/disaster_suite_common.py`
 - `tools/mvp/mvp_smoke_common.py`
@@ -29,7 +29,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Scorecard
 
-- `tools/dist/dist_tree_common.py` disposition=`canonical` rank=`1` total_score=`63.21` risk=`HIGH`
+- `tools/release/dist/dist_tree_common.py` disposition=`canonical` rank=`1` total_score=`63.21` risk=`HIGH`
 - `tools/mvp/disaster_suite_common.py` disposition=`quarantine` rank=`2` total_score=`61.29` risk=`HIGH`
 - `tools/mvp/mvp_smoke_common.py` disposition=`quarantine` rank=`3` total_score=`60.36` risk=`HIGH`
 - `tools/mvp/stress_gate_common.py` disposition=`quarantine` rank=`4` total_score=`57.89` risk=`HIGH`
@@ -50,7 +50,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

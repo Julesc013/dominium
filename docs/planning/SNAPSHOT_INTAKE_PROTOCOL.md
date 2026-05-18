@@ -75,7 +75,7 @@ The family list is based on the live mixed repository state observed after Ω/Ξ
 | 5 | `live_code_and_build_surface` | `engine/**`, `game/**`, `client/**`, `server/**`, `runtime/**`, `app/**`, `appshell/**`, `launcher/**`, `setup/**`, `lib/**`, `libs/**`, domain roots, build files | implementation and structure reality | structurally authoritative |
 | 6 | `release_distribution_and_update_surface` | `release/**`, `docs/release/**`, `contracts/repo/release_policy.toml`, `data/release/**`, `updates/**` | install, distribution, channel, archive, and update truth | release-authoritative |
 | 7 | `planning_surfaces` | `docs/planning/**`, `data/planning/**`, `docs/blueprint/**`, `data/blueprint/**`, `docs/omega/**`, `docs/restructure/**`, `data/restructure/**` | planning constraints, sequencing, stop conditions, and reconciliation inputs | advisory by default; P-0 artifacts are planning-authoritative within intake scope |
-| 8 | `generated_evidence_and_baselines` | `data/audit/**`, `data/baselines/**`, `artifacts/**`, `build/**`, `out/**`, `run_meta/**` | evidence of observed or generated state | derived unless explicitly promoted |
+| 8 | `generated_evidence_and_baselines` | `data/audit/**`, `data/baselines/**`, `archive/generated/artifacts/**`, `build/**`, `out/**`, `run_meta/**` | evidence of observed or generated state | derived unless explicitly promoted |
 | 9 | `transitional_legacy_and_quarantine` | `legacy/**`, `attic/src_quarantine/**`, `quarantine/**`, roots such as `_orphaned` | migration evidence, residue, or quarantined material | transitional or quarantined |
 
 Notes:

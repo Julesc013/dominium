@@ -30,10 +30,10 @@ presets, and option names, see `docs/guides/BUILDING.md` and `docs/ci/BUILD_MATR
   `docs/architecture/COMPONENTS.md`.
 
 
-- Tests are optional and live under `engine/tests`, `game/tests/phase6`, and
+- Tests are optional and live under `engine/tests`, `tests/game/phase6`, and
 
 
-  `tools/validation/fixtures`.
+  `tools/validators/suite/fixtures`.
 
 
 
@@ -57,7 +57,7 @@ launcher, and game builds. Option names are listed in `docs/guides/BUILDING.md`.
 - Default outputs go to `${CMAKE_BINARY_DIR}/bin` and `${CMAKE_BINARY_DIR}/lib`.
 
 
-- The `dist/` layout is opt-in and only applies to targets that call
+- The `archive/generated/dist/` layout is opt-in and only applies to targets that call
 
 
   `dist_set_role`. See `docs/guides/BUILD_DIST.md`.

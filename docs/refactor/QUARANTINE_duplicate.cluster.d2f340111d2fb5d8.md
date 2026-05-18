@@ -18,35 +18,35 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `tools/blueprint_editor/main_blueprint_editor.cpp`
-- `tools/item_editor/main_item_editor.cpp`
+- `apps/workbench/module/schema/blueprint/main_blueprint_editor.cpp`
+- `apps/workbench/module/domain/item/main_item_editor.cpp`
 - `tools/mod_builder/main_mod_builder.cpp`
 - `tools/net_inspector/main_net_inspector.cpp`
-- `tools/pack_editor/main_pack_editor.cpp`
-- `tools/policy_editor/main_policy_editor.cpp`
-- `tools/process_editor/main_process_editor.cpp`
-- `tools/replay_viewer/main_replay_viewer.cpp`
-- `tools/save_inspector/main_save_inspector.cpp`
-- `tools/struct_editor/main_struct_editor.cpp`
-- `tools/tech_editor/main_tech_editor.cpp`
-- `tools/transport_editor/main_transport_editor.cpp`
-- `tools/world_editor/main_world_editor.cpp`
+- `apps/workbench/module/pack/editor/main_pack_editor.cpp`
+- `apps/workbench/module/policy/editor/main_policy_editor.cpp`
+- `apps/workbench/module/process/editor/main_process_editor.cpp`
+- `apps/workbench/module/replay/viewer/main_replay_viewer.cpp`
+- `apps/workbench/module/save/inspector/main_save_inspector.cpp`
+- `apps/workbench/module/schema/structure/main_struct_editor.cpp`
+- `apps/workbench/module/domain/technology/main_tech_editor.cpp`
+- `apps/workbench/module/domain/transport/main_transport_editor.cpp`
+- `apps/workbench/module/world/editor/main_world_editor.cpp`
 
 ## Scorecard
 
 - `tools/mod_builder/main_mod_builder.cpp` disposition=`canonical` rank=`1` total_score=`69.29` risk=`HIGH`
-- `tools/policy_editor/main_policy_editor.cpp` disposition=`quarantine` rank=`2` total_score=`67.26` risk=`HIGH`
-- `tools/save_inspector/main_save_inspector.cpp` disposition=`drop` rank=`3` total_score=`66.39` risk=`HIGH`
+- `apps/workbench/module/policy/editor/main_policy_editor.cpp` disposition=`quarantine` rank=`2` total_score=`67.26` risk=`HIGH`
+- `apps/workbench/module/save/inspector/main_save_inspector.cpp` disposition=`drop` rank=`3` total_score=`66.39` risk=`HIGH`
 - `tools/net_inspector/main_net_inspector.cpp` disposition=`drop` rank=`4` total_score=`60.61` risk=`HIGH`
-- `tools/replay_viewer/main_replay_viewer.cpp` disposition=`drop` rank=`5` total_score=`59.79` risk=`HIGH`
-- `tools/process_editor/main_process_editor.cpp` disposition=`drop` rank=`6` total_score=`57.76` risk=`HIGH`
-- `tools/world_editor/main_world_editor.cpp` disposition=`drop` rank=`7` total_score=`57.63` risk=`HIGH`
-- `tools/item_editor/main_item_editor.cpp` disposition=`drop` rank=`8` total_score=`57.54` risk=`HIGH`
-- `tools/struct_editor/main_struct_editor.cpp` disposition=`drop` rank=`9` total_score=`57.54` risk=`HIGH`
-- `tools/blueprint_editor/main_blueprint_editor.cpp` disposition=`drop` rank=`10` total_score=`55.61` risk=`HIGH`
-- `tools/pack_editor/main_pack_editor.cpp` disposition=`drop` rank=`11` total_score=`54.64` risk=`HIGH`
-- `tools/tech_editor/main_tech_editor.cpp` disposition=`drop` rank=`12` total_score=`54.64` risk=`HIGH`
-- `tools/transport_editor/main_transport_editor.cpp` disposition=`drop` rank=`13` total_score=`54.64` risk=`HIGH`
+- `apps/workbench/module/replay/viewer/main_replay_viewer.cpp` disposition=`drop` rank=`5` total_score=`59.79` risk=`HIGH`
+- `apps/workbench/module/process/editor/main_process_editor.cpp` disposition=`drop` rank=`6` total_score=`57.76` risk=`HIGH`
+- `apps/workbench/module/world/editor/main_world_editor.cpp` disposition=`drop` rank=`7` total_score=`57.63` risk=`HIGH`
+- `apps/workbench/module/domain/item/main_item_editor.cpp` disposition=`drop` rank=`8` total_score=`57.54` risk=`HIGH`
+- `apps/workbench/module/schema/structure/main_struct_editor.cpp` disposition=`drop` rank=`9` total_score=`57.54` risk=`HIGH`
+- `apps/workbench/module/schema/blueprint/main_blueprint_editor.cpp` disposition=`drop` rank=`10` total_score=`55.61` risk=`HIGH`
+- `apps/workbench/module/pack/editor/main_pack_editor.cpp` disposition=`drop` rank=`11` total_score=`54.64` risk=`HIGH`
+- `apps/workbench/module/domain/technology/main_tech_editor.cpp` disposition=`drop` rank=`12` total_score=`54.64` risk=`HIGH`
+- `apps/workbench/module/domain/transport/main_transport_editor.cpp` disposition=`drop` rank=`13` total_score=`54.64` risk=`HIGH`
 
 ## Usage Sites
 
@@ -63,7 +63,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

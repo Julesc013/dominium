@@ -8,14 +8,14 @@ import tempfile
 from typing import Iterable, Mapping
 
 
-from release import build_release_manifest, verify_release_manifest, write_release_manifest
+from tools.release import build_release_manifest, verify_release_manifest, write_release_manifest
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
 DISTRIBUTION_MODEL_PATH = "docs/release/DISTRIBUTION_MODEL.md"
 DISTRIBUTION_ARCHITECTURE_FREEZE_PATH = "docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md"
-DISTRIBUTION_ARCHITECTURE_REPORT_PATH = "content/data/audit/distribution_architecture_report.json"
-RELEASE_MANIFEST_REL = "dist/manifests/release_manifest.json"
+DISTRIBUTION_ARCHITECTURE_REPORT_PATH = "archive/generated/audit/distribution_architecture_report.json"
+RELEASE_MANIFEST_REL = "archive/generated/dist/manifests/release_manifest.json"
 
 RULE_NO_DEV_ARTIFACTS = "INV-DIST-NO-DEV-ARTIFACTS"
 RULE_INCLUDES_RELEASE_MANIFEST = "INV-DIST-INCLUDES-RELEASE-MANIFEST"

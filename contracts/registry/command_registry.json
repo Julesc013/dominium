@@ -1937,7 +1937,7 @@
         "args_schema_id": "dominium.schema.appshell.args.tool_passthrough",
         "command_id": "command.dom_compat_generate_descriptor_manifest",
         "command_path": "dom compat generate-descriptor-manifest",
-        "description": "Generate deterministic offline descriptor manifest from dist/bin wrappers",
+        "description": "Generate deterministic offline descriptor manifest from archive/generated/dist/bin wrappers",
         "deterministic_fingerprint": "38f4ed1863478ff58a04460af92519dae66a1d8e4b4ce008e53abf4c9ee56d9d",
         "exit_code_mapping_id": "exit.refusal",
         "extensions": {
@@ -3265,7 +3265,7 @@
             "stable_id": "dom.geo.explain-property-origin.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_explain_property_origin",
-            "tool_relpath": "tools/geo/tool_explain_property_origin.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_explain_property_origin.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3317,7 +3317,7 @@
             "stable_id": "dom.geo.generate-geo-stress.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_generate_geo_stress",
-            "tool_relpath": "tools/geo/tool_generate_geo_stress.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_generate_geo_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3369,7 +3369,7 @@
             "stable_id": "dom.geo.replay-field-geo-window.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_field_geo_window",
-            "tool_relpath": "tools/geo/tool_replay_field_geo_window.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_field_geo_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3421,7 +3421,7 @@
             "stable_id": "dom.geo.replay-frame-window.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_frame_window",
-            "tool_relpath": "tools/geo/tool_replay_frame_window.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_frame_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3473,7 +3473,7 @@
             "stable_id": "dom.geo.replay-geo-window.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_geo_window",
-            "tool_relpath": "tools/geo/tool_replay_geo_window.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_geo_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3525,7 +3525,7 @@
             "stable_id": "dom.geo.replay-geometry-window.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_geometry_window",
-            "tool_relpath": "tools/geo/tool_replay_geometry_window.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_geometry_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3577,7 +3577,7 @@
             "stable_id": "dom.geo.replay-overlay-merge.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_overlay_merge",
-            "tool_relpath": "tools/geo/tool_replay_overlay_merge.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_overlay_merge.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3629,7 +3629,7 @@
             "stable_id": "dom.geo.replay-path-request.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_path_request",
-            "tool_relpath": "tools/geo/tool_replay_path_request.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_path_request.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3681,7 +3681,7 @@
             "stable_id": "dom.geo.replay-view-window.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_view_window",
-            "tool_relpath": "tools/geo/tool_replay_view_window.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_view_window.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3733,7 +3733,7 @@
             "stable_id": "dom.geo.replay-worldgen-cell.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_replay_worldgen_cell",
-            "tool_relpath": "tools/geo/tool_replay_worldgen_cell.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_replay_worldgen_cell.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3785,7 +3785,7 @@
             "stable_id": "dom.geo.run-geo-stress.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_run_geo_stress",
-            "tool_relpath": "tools/geo/tool_run_geo_stress.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_run_geo_stress.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3837,7 +3837,7 @@
             "stable_id": "dom.geo.verify-id-stability.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_verify_id_stability",
-            "tool_relpath": "tools/geo/tool_verify_id_stability.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_verify_id_stability.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3889,7 +3889,7 @@
             "stable_id": "dom.geo.verify-metric-stability.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_verify_metric_stability",
-            "tool_relpath": "tools/geo/tool_verify_metric_stability.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_verify_metric_stability.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3941,7 +3941,7 @@
             "stable_id": "dom.geo.verify-overlay-identity.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_verify_overlay_identity",
-            "tool_relpath": "tools/geo/tool_verify_overlay_identity.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_verify_overlay_identity.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },
@@ -3993,7 +3993,7 @@
             "stable_id": "dom.geo.verify-sol-pin-overlay.v1",
             "surface_role": "leaf",
             "tool_module": "tools.geo.tool_verify_sol_pin_overlay",
-            "tool_relpath": "tools/geo/tool_verify_sol_pin_overlay.py",
+            "tool_relpath": "tools/validators/domain/geology/tool_verify_sol_pin_overlay.py",
             "virtual_path_policy": "repo_relative_cwd"
           }
         },

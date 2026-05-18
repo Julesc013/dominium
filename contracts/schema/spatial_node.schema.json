@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Spatial Node Schema",
+  "version": "1.0.0",
+  "description": "Deterministic hierarchical spatial node declaration.",
+  "x-doc-ref": [
+    "docs/architecture/CORE_ABSTRACTIONS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "spatial_id",
+    "parent_spatial_id",
+    "frame_id",
+    "transform",
+    "bounds",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "spatial_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parent_spatial_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "frame_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "translation_mm",
+        "rotation_mdeg",
+        "scale_permille"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "translation_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer"
+            },
+            "y": {
+              "type": "integer"
+            },
+            "z": {
+              "type": "integer"
+            }
+          }
+        },
+        "rotation_mdeg": {
+          "type": "object",
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "yaw": {
+              "type": "integer"
+            },
+            "pitch": {
+              "type": "integer"
+            },
+            "roll": {
+              "type": "integer"
+            }
+          }
+        },
+        "scale_permille": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "spatial_id": "spatial.site.alpha.factory_floor",
+      "parent_spatial_id": "spatial.site.alpha",
+      "frame_id": "frame.site.alpha",
+      "transform": {
+        "translation_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale_permille": 1000
+      },
+      "bounds": {
+        "shape": "aabb",
+        "extents_mm": {
+          "x": 5000,
+          "y": 5000,
+          "z": 3000
+        }
+      },
+      "extensions": {}
+    }
+  ]
+}
+

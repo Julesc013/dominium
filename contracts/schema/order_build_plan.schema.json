@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order Build Plan Payload Schema",
+  "version": "1.0.0",
+  "description": "CIV-3 build-plan payload. Generates plan artifacts only (no material execution).",
+  "x-doc-ref": [
+    "docs/civilisation/ORDER_LANGUAGE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "blueprint_id",
+    "site_id",
+    "notes",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "blueprint_id": {
+      "type": "string"
+    },
+    "site_id": {
+      "type": "string"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "blueprint_id": "blueprint.stub.hut",
+      "site_id": "site.alpha.001",
+      "notes": "stub planning artifact",
+      "extensions": {}
+    }
+  ]
+}

@@ -31,7 +31,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/audit/GEO3_RETRO_AUDIT.md, docs/audit/GEO6_RETRO_AUDIT.md, docs/audit/GEO_METRIC_BASELINE.md, docs/audit/MACRO_TRAVEL_BASELINE.md, docs/geo/GEO_CONSTITUTION.md, docs/geo/METRIC_QUERY_ENGINE.md, docs/mobility/GUIDE_GEOMETRY.md, docs/release/PROVISIONAL_FEATURE_LIST.md`
+- Docs: `docs/audit/GEO3_RETRO_AUDIT.md, docs/audit/GEO6_RETRO_AUDIT.md, docs/audit/GEO_METRIC_BASELINE.md, docs/audit/MACRO_TRAVEL_BASELINE.md, docs/domains/geology/GEO_CONSTITUTION.md, docs/domains/geology/METRIC_QUERY_ENGINE.md, docs/mobility/GUIDE_GEOMETRY.md, docs/release/PROVISIONAL_FEATURE_LIST.md`
 
 ## Tests Involved
 
@@ -39,7 +39,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

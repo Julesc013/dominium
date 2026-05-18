@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/life_audit_log.cpp
+FILE: game/rule/life/life_audit_log.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements append-only audit log for LIFE events.

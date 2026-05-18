@@ -26,18 +26,18 @@ Replacement Target: XI-4b manual review resolution
 - `src/appshell/paths/virtual_paths.py`
 - `src/archive/deterministic_bundle.py`
 - `src/tools/governance/governance_profile.py`
-- `src/tools/libraries/bundle/bundle_manifest.py`
-- `src/engine/install/install_discovery_engine.py`
+- `src/tools/package/libraries/bundle/bundle_manifest.py`
+- `src/runtime/package/install_discovery_engine.py`
 - `src/contracts/abi/store/reachability_engine.py`
 - `src/tools/validators/identity/identity_validator.py`
-- `src/release/archive_policy.py`
-- `src/release/release_manifest_engine.py`
-- `src/release/update_resolver.py`
+- `src/tools/release/archive_policy.py`
+- `src/tools/release/release_manifest_engine.py`
+- `src/tools/release/update_resolver.py`
 - `tools/compat/migration_lifecycle_common.py`
-- `tools/dist/clean_room_common.py`
-- `tools/dist/dist6_interop_common.py`
-- `tools/dist/dist_platform_matrix_common.py`
-- `tools/dist/dist_verify_common.py`
+- `tools/release/dist/clean_room_common.py`
+- `tools/release/dist/dist6_interop_common.py`
+- `tools/release/dist/dist_platform_matrix_common.py`
+- `tools/release/dist/dist_verify_common.py`
 - `tools/engine/concurrency_contract_common.py`
 - `tools/engine/numeric_discipline_common.py`
 - `tools/governance/governance_model_common.py`
@@ -61,8 +61,8 @@ Replacement Target: XI-4b manual review resolution
 - `tools/release/dist_final_common.py` disposition=`canonical` rank=`1` total_score=`88.33` risk=`HIGH`
 - `tools/meta/identity_common.py` disposition=`quarantine` rank=`2` total_score=`87.38` risk=`HIGH`
 - `tools/release/component_graph_common.py` disposition=`quarantine` rank=`3` total_score=`87.38` risk=`HIGH`
-- `tools/dist/dist_verify_common.py` disposition=`quarantine` rank=`4` total_score=`87.32` risk=`HIGH`
-- `tools/dist/clean_room_common.py` disposition=`quarantine` rank=`5` total_score=`85.89` risk=`HIGH`
+- `tools/release/dist/dist_verify_common.py` disposition=`quarantine` rank=`4` total_score=`87.32` risk=`HIGH`
+- `tools/release/dist/clean_room_common.py` disposition=`quarantine` rank=`5` total_score=`85.89` risk=`HIGH`
 - `tools/release/release_index_policy_common.py` disposition=`quarantine` rank=`6` total_score=`85.83` risk=`HIGH`
 - `tools/release/arch_matrix_common.py` disposition=`quarantine` rank=`7` total_score=`84.76` risk=`HIGH`
 - `tools/compat/migration_lifecycle_common.py` disposition=`quarantine` rank=`8` total_score=`84.64` risk=`HIGH`
@@ -72,16 +72,16 @@ Replacement Target: XI-4b manual review resolution
 - `tools/lib/store_gc_common.py` disposition=`quarantine` rank=`12` total_score=`83.57` risk=`HIGH`
 - `tools/security/trust_model_common.py` disposition=`quarantine` rank=`13` total_score=`83.16` risk=`HIGH`
 - `tools/governance/governance_model_common.py` disposition=`quarantine` rank=`14` total_score=`82.5` risk=`HIGH`
-- `tools/dist/dist6_interop_common.py` disposition=`merge` rank=`15` total_score=`78.21` risk=`HIGH`
+- `tools/release/dist/dist6_interop_common.py` disposition=`merge` rank=`15` total_score=`78.21` risk=`HIGH`
 - `tools/mvp/toolchain_matrix_common.py` disposition=`merge` rank=`16` total_score=`77.85` risk=`HIGH`
 - `tools/perf/performance_envelope_common.py` disposition=`merge` rank=`17` total_score=`76.01` risk=`HIGH`
-- `tools/dist/dist_platform_matrix_common.py` disposition=`merge` rank=`18` total_score=`75.89` risk=`HIGH`
+- `tools/release/dist/dist_platform_matrix_common.py` disposition=`merge` rank=`18` total_score=`75.89` risk=`HIGH`
 - `src/archive/deterministic_bundle.py` disposition=`drop` rank=`19` total_score=`74.94` risk=`HIGH`
 - `tools/engine/concurrency_contract_common.py` disposition=`merge` rank=`20` total_score=`74.32` risk=`HIGH`
 - `src/appshell/paths/virtual_paths.py` disposition=`drop` rank=`21` total_score=`73.87` risk=`HIGH`
 - `src/tools/governance/governance_profile.py` disposition=`drop` rank=`22` total_score=`73.87` risk=`HIGH`
-- `src/engine/install/install_discovery_engine.py` disposition=`merge` rank=`23` total_score=`73.09` risk=`HIGH`
-- `src/release/archive_policy.py` disposition=`drop` rank=`24` total_score=`72.38` risk=`HIGH`
+- `src/runtime/package/install_discovery_engine.py` disposition=`merge` rank=`23` total_score=`73.09` risk=`HIGH`
+- `src/tools/release/archive_policy.py` disposition=`drop` rank=`24` total_score=`72.38` risk=`HIGH`
 - `tools/release/distribution_model_common.py` disposition=`merge` rank=`25` total_score=`72.02` risk=`HIGH`
 - `setup/packages/scripts/packaging/pipeline.py` disposition=`drop` rank=`26` total_score=`70.55` risk=`HIGH`
 - `src/tools/validators/identity/identity_validator.py` disposition=`drop` rank=`27` total_score=`69.64` risk=`HIGH`
@@ -89,12 +89,12 @@ Replacement Target: XI-4b manual review resolution
 - `tools/review/architecture_graph_bootstrap_common.py` disposition=`merge` rank=`29` total_score=`67.64` risk=`HIGH`
 - `setup/packages/scripts/diagnostics/make_support_bundle.py` disposition=`drop` rank=`30` total_score=`65.25` risk=`HIGH`
 - `setup/packages/scripts/packaging/make_deterministic_archive.py` disposition=`drop` rank=`31` total_score=`64.19` risk=`HIGH`
-- `src/release/release_manifest_engine.py` disposition=`drop` rank=`32` total_score=`62.56` risk=`HIGH`
+- `src/tools/release/release_manifest_engine.py` disposition=`drop` rank=`32` total_score=`62.56` risk=`HIGH`
 - `setup/packages/scripts/packaging/windows/generate_dominium_setup_wxs.py` disposition=`drop` rank=`33` total_score=`58.11` risk=`HIGH`
 - `setup/packages/scripts/packaging/windows/generate_dominium_wxs.py` disposition=`drop` rank=`34` total_score=`58.11` risk=`HIGH`
 - `src/contracts/abi/store/reachability_engine.py` disposition=`drop` rank=`35` total_score=`54.29` risk=`HIGH`
-- `src/release/update_resolver.py` disposition=`drop` rank=`36` total_score=`54.29` risk=`HIGH`
-- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`37` total_score=`46.76` risk=`HIGH`
+- `src/tools/release/update_resolver.py` disposition=`drop` rank=`36` total_score=`54.29` risk=`HIGH`
+- `src/tools/package/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`37` total_score=`46.76` risk=`HIGH`
 
 ## Usage Sites
 
@@ -111,7 +111,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

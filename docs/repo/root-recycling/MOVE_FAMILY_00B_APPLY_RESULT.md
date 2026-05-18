@@ -15,7 +15,7 @@ Superseded By: none
 
 ## Scope
 
-This apply moved the approved projection manifest schema/examples from `ide/manifests/**` to `contracts/projections/ide/**`, applied the five approved current-reference rewrites, and retired the `ide` source-layout exception after tracked `ide/` state became empty.
+This apply moved the approved projection manifest schema/examples from `ide/manifests/**` to `contracts/projection/ide/**`, applied the five approved current-reference rewrites, and retired the `ide` source-layout exception after tracked `ide/` state became empty.
 
 No other root family move, feature work, product behavior change, release generation, package generation, build generation, or public release action was performed.
 
@@ -23,9 +23,9 @@ No other root family move, feature work, product behavior change, release genera
 
 | Source | Target |
 | --- | --- |
-| `ide/manifests/projection_manifest.schema.json` | `contracts/projections/ide/projection_manifest.schema.json` |
-| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` |
-| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` |
+| `ide/manifests/projection_manifest.schema.json` | `contracts/projection/ide/projection_manifest.schema.json` |
+| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` |
+| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` |
 
 ## Reference Rewrites
 
@@ -76,7 +76,7 @@ MOVE-FAMILY-00B-PROOF verified the apply result.
 - `git ls-files ide`: empty.
 - Filesystem `ide/`: absent.
 - `ide_root` exception: retired and accepted by strict validators.
-- Moved manifest files under `contracts/projections/ide/**`: tracked, present, JSON parse PASS.
+- Moved manifest files under `contracts/projection/ide/**`: tracked, present, JSON parse PASS.
 - Old-path active source/tool/validator blockers: none.
 - Remaining old-path references: historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references only.
 - Next recommended task: `MOVE-FAMILY-00C-PLAN - Active Validation/Meta/Governance Tool Namespace Plan`.

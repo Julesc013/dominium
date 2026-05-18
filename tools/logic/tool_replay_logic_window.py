@@ -7,9 +7,9 @@ import json
 import os
 from typing import Iterable, Mapping
 
-from game.domains.logic.eval import normalize_logic_eval_state, process_logic_network_evaluate
-from game.domains.logic.signal import canonical_signal_hash, process_signal_emit_pulse, process_signal_set
-from game.domains.systems import (
+from game.domain.logic.eval import normalize_logic_eval_state, process_logic_network_evaluate
+from game.domain.logic.signal import canonical_signal_hash, process_signal_emit_pulse, process_signal_set
+from game.domain.systems import (
     build_state_vector_definition_row,
     deserialize_state,
     normalize_state_vector_definition_rows,

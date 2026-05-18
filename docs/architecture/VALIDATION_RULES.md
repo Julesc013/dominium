@@ -13,7 +13,7 @@ Scope: single source of truth for invariant enforcement gates.
 
 Failure format:
 - Every violation MUST emit the invariant ID, then a short reason and location.
-- Example: `INV-DET-ORDERING: ordering violation at engine/modules/core/det_order.c:123`.
+- Example: `INV-DET-ORDERING: ordering violation at engine/kernel/det_order.c:123`.
 
 Overrides:
 - Overrides are explicit entries in `docs/architecture/LOCKLIST_OVERRIDES.json`.

@@ -292,7 +292,7 @@
         "group_id": "performx_runner",
         "runner_command": [
           "python",
-          "tools/performx/performx.py",
+          "tools/xstack/performx/performx.py",
           "run",
           "--repo-root",
           "{repo_root}"
@@ -316,7 +316,7 @@
         "group_id": "compatx_runner",
         "runner_command": [
           "python",
-          "tools/compatx/compatx.py",
+          "tools/xstack/compatx/compatx.py",
           "verify",
           "--repo-root",
           "{repo_root}"
@@ -339,7 +339,7 @@
         "group_id": "securex_runner",
         "runner_command": [
           "python",
-          "tools/securex/securex.py",
+          "tools/xstack/securex/securex.py",
           "verify",
           "--repo-root",
           "{repo_root}"

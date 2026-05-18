@@ -21,7 +21,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 DEFAULT_TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
 
-SCHEMA_ROOT_PREFIXES = ("contracts/schemas/", "contracts/schemas/")
+SCHEMA_ROOT_PREFIXES = ("contracts/schema/", "contracts/schema/")
 REGISTRY_ROOT_PREFIXES = ("data/registries/", "data/governance/")
 
 CONTROL_PLANE_PREFIXES = (
@@ -45,13 +45,13 @@ CONTROL_DEPENDENCY_SCAN_TOKENS = (
 NETWORKGRAPH_FLOW_PREFIXES = (
     "src/core/graph/",
     "src/core/flow/",
-    "game/domains/logistics/",
-    "game/domains/interior/",
-    "game/domains/mobility/",
+    "game/domain/logistics/",
+    "game/domain/interior/",
+    "game/domain/mobility/",
 )
 EPISTEMIC_PREFIXES = (
-    "game/domains/inspection/",
-    "game/domains/interior/",
+    "game/domain/inspection/",
+    "game/domain/interior/",
     "src/client/interaction/",
     "tools/xstack/sessionx/observation.py",
     "docs/architecture/lens_system.md",
@@ -285,7 +285,7 @@ def _docs_required_for_path(path: str) -> Set[str]:
     if rel.startswith("data/governance/"):
         out.add("docs/architecture/DEPRECATION_LIFECYCLE.md")
     if rel.startswith(CONTROL_PLANE_PREFIXES):
-        out.add("docs/net/MP_VALIDATION_BASELINE.md")
+        out.add("docs/runtime/network/MP_VALIDATION_BASELINE.md")
     if rel.startswith(NETWORKGRAPH_FLOW_PREFIXES):
         out.add("docs/architecture/CORE_ABSTRACTIONS.md")
     if rel.startswith(EPISTEMIC_PREFIXES):

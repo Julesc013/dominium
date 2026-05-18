@@ -131,7 +131,7 @@ These services coordinate presentation-adjacent runtime support behavior while r
 
 Representative evidence roots include:
 
-- `runtime/app/ui_event_log.c`
+- `runtime/shell/lifecycle/ui_event_log.c`
 - `engine/modules/view`
 - `engine/modules/ui`
 - `client/presentation`
@@ -177,7 +177,7 @@ Representative evidence roots include:
 - `control/planning`
 - `process`
 - `core`
-- `game/core/execution`
+- `game/rule/execution`
 
 ### 6.8 Product-Support Services
 

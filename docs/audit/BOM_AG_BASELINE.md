@@ -115,7 +115,7 @@ TestX MAT-3 required tests:
    - command: `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
    - result: `status=pass` (warn-level finding present in AuditX report threshold)
 2. AuditX run
-   - command: `py -3 tools/auditx/auditx.py scan --repo-root .`
+   - command: `py -3 tools/xstack/auditx/auditx.py scan --repo-root .`
    - result: `result=scan_complete`, findings_count=1654
 3. TestX PASS (MAT-3 required subset)
    - command: `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.materials.blueprint_compile_deterministic,testx.materials.bom_ag_schema_valid,testx.materials.instancing_expansion_deterministic,testx.materials.missing_part_class_refusal,testx.materials.blueprint_visualization_render_model_hash_stable,testx.materials.guardrail_declarations_present`

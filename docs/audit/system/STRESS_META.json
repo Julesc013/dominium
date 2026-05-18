@@ -3,7 +3,7 @@
   "failure_scenarios": [
     "compat.breaking_schema_diff"
   ],
-  "generated_utc": "2026-05-18T14:06:29Z",
+  "generated_utc": "2026-05-18T16:59:30Z",
   "quick_mode": true,
   "status": "DERIVED"
 }

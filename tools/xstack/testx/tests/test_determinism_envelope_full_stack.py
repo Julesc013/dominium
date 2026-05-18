@@ -69,7 +69,7 @@ def run(repo_root: str):
     first_worldgen_ephemeris_tile = _lock_key_rows(first)
     second_worldgen_ephemeris_tile = _lock_key_rows(second)
     if first_worldgen_ephemeris_tile != second_worldgen_ephemeris_tile:
-        return {"status": "fail", "message": "game/domains/worldgen/ephemeris/tile registry anchors diverged"}
+        return {"status": "fail", "message": "game/domain/worldgen/ephemeris/tile registry anchors diverged"}
 
     real_data_files = {
         "ephemeris_table": os.path.join(

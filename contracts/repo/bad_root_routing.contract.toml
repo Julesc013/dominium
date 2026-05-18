@@ -144,8 +144,8 @@ delete_default = "forbidden"
 
 [routing.ide]
 rules = [
-  "ide/manifests/projection_manifest.schema.json -> contracts/projections/ide/projection_manifest.schema.json",
-  "ide/manifests/projection_manifest_examples/*.projection.json -> contracts/projections/ide/examples/",
+  "ide/manifests/projection_manifest.schema.json -> contracts/projection/ide/projection_manifest.schema.json",
+  "ide/manifests/projection_manifest_examples/*.projection.json -> contracts/projection/ide/examples/",
   "ide/README.md -> docs/architecture/IDE_PROJECTIONS.md",
   "unknown -> archive/quarantine/ide/"
 ]
@@ -212,7 +212,7 @@ rules = [
 
 [routing.tools_and_runtime]
 rules = [
-  "validation python -> tools/validators/validation/",
+  "validation python -> tools/validators/suite/",
   "meta identity/stability python -> tools/validators/identity or tools/validators/stability/",
   "governance python -> tools/governance/",
   "performance python -> tools/performance/",

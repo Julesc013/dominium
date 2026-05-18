@@ -27,11 +27,11 @@ Phase: `GLOBAL-REVIEW-4`
    - Result: `complete` (`violation_count=0`, `tolerance_abs=1`)
 
 3. PHYS energy conservation verifier on extracted ledger payload
-   - Command: `python tools/physics/tool_verify_energy_conservation.py --ledger-path build/global_review/phase4_energy_ledger_payload.json`
+   - Command: `python tools/validators/domain/physics/tool_verify_energy_conservation.py --ledger-path build/global_review/phase4_energy_ledger_payload.json`
    - Result: `complete` (`violation_count=0`)
 
 4. Momentum replay-window verifier
-   - Command: `python tools/physics/tool_replay_momentum_window.py --state-path build/global_review/phase4_momentum_state.json --expected-state-path build/global_review/phase4_momentum_state.json`
+   - Command: `python tools/validators/domain/physics/tool_replay_momentum_window.py --state-path build/global_review/phase4_momentum_state.json --expected-state-path build/global_review/phase4_momentum_state.json`
    - Result: `complete`
 
 5. Focused TestX conservation/momentum checks
@@ -39,7 +39,7 @@ Phase: `GLOBAL-REVIEW-4`
    - Result: `pass` (all selected tests passed)
 
 ## Patch Applied
-- `tools/physics/tool_verify_energy_conservation.py`
+- `tools/validators/domain/physics/tool_verify_energy_conservation.py`
   - `_is_energy_quantity` now includes `quantity.heat_loss`.
   - Reason: per-tick transforms in canonical reports account dissipation through `heat_loss`; excluding it created false conservation mismatches in verifier output.
   - Runtime gameplay semantics unchanged (verification-path correction only).

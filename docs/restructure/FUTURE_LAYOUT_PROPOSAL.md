@@ -144,17 +144,17 @@ The table below maps current module clusters to proposed locations. The stabilit
 | `tools/mvp/runtime_entry.py` | `/src/products/client/entry.py` | client product entry wrapper | `provisional` | appshell, ui/rendered | `medium` |
 | `tools/launcher/launch.py` | `/src/products/launcher/entry.py` | launcher product entry wrapper | `provisional` | appshell, lib, ui/native or tui | `low` |
 | `tools/setup/setup_cli.py` | `/src/products/setup/entry.py` | setup product entry wrapper | `provisional` | appshell, compat, lib | `low` |
-| `tools/appshell/product_stub_cli.py` | `/src/products/engine/entry.py`, `/src/products/game/entry.py`, `/src/products/tools/entry.py` | thin product stubs | `provisional` | appshell only | `low` |
-| `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py` | `/src/appshell/supervisor/hosts/*` | supervisor-owned hosted runtime glue | `provisional` | appshell supervisor, compat | `medium` |
+| `tools/validators/shell/product_stub_cli.py` | `/src/products/engine/entry.py`, `/src/products/game/entry.py`, `/src/products/tools/entry.py` | thin product stubs | `provisional` | appshell only | `low` |
+| `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py` | `/src/appshell/supervisor/hosts/*` | supervisor-owned hosted runtime glue | `provisional` | appshell supervisor, compat | `medium` |
 | `tools/review/*` | `/tools/review/*` | repository inventory and reconciliation tooling | `provisional` | audit data only | `low` |
-| `tools/audit/*`, `tools/auditx/*` | `/tools/audit/*` | architecture/repo/document audit stack | `provisional` | runtime inspection only; no runtime importers | `low` |
+| `tools/audit/*`, `tools/xstack/auditx/*` | `/tools/audit/*` | architecture/repo/document audit stack | `provisional` | runtime inspection only; no runtime importers | `low` |
 | `tools/mvp/*` | `/tools/mvp/*` | release-gate smoke/stress/product boot tooling | `provisional` | appshell, compat, lib | `low` |
-| `tools/compatx/*`, `tools/pack/*`, `tools/validation/*`, `tools/validate/*` | `/tools/compat/*` and `/tools/release/*` | validation and compatibility adapters | `provisional` | compat, lib, schema data | `medium` |
+| `tools/xstack/compatx/*`, `tools/pack/*`, `tools/validators/suite/*`, `tools/validators/*` | `/tools/compat/*` and `/tools/release/*` | validation and compatibility adapters | `provisional` | compat, lib, schema data | `medium` |
 | `tools/xstack/*` | `/tools/xstack/*` | CI/test/orchestration meta-layer | `provisional` | may depend broadly; never runtime | `medium` |
 | `schema/*` and `schemas/*` | `/data/schemas/*` | source schemas and generated schema mirrors | `provisional` | validators, compat, release tooling | `high` |
 | `data/registries/*` | `/data/registries/*` | canonical runtime registries | `stable semantics / provisional placement` | consumed by compat, lib, appshell, domains | `low` |
-| `dist/profiles/*`, `dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |
-| `dist/packs/*` | `/packs/*` with portable mirrors retained via vpath | pack storage and distribution content | `provisional` | lib, pack-compat, install discovery | `medium` |
+| `archive/generated/dist/profiles/*`, `archive/generated/dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |
+| `archive/generated/dist/packs/*` | `/packs/*` with portable mirrors retained via vpath | pack storage and distribution content | `provisional` | lib, pack-compat, install discovery | `medium` |
 | layout and architecture docs under `docs/architecture/*` | `/docs/restructure/*` or `/docs/archive/*` | historical layout references | `legacy_reference_only` | canon map only | `low` |
 
 ## Migration Strategy

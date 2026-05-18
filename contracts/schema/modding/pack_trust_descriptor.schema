@@ -1,0 +1,22 @@
+SCHEMA: modding/pack_trust_descriptor.schema
+schema_id: dominium.schema.modding.pack_trust_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic trust metadata for a pack.
+- Separate trust posture from content manifest structure.
+
+REQUIRED SHAPE:
+record pack_trust_descriptor
+  required:
+    - pack_id: id
+    - trust_level_id: id
+    - signature_hash: optional<tag>
+    - deterministic_fingerprint: tag
+    - extensions: map
+
+INVARIANTS:
+- Trust metadata is immutable for the compiled pack artifact set.
+- Trust metadata does not change pack content semantics.
+- Deterministic fingerprint is computed with the fingerprint field blanked.

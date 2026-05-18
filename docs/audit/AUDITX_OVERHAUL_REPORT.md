@@ -17,9 +17,9 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `docs/audit/auditx/TRENDS.json` (`CANONICAL`)
   - `docs/audit/auditx/RUN_META.json` (`RUN_META`)
   - `docs/audit/auditx/FINDINGS.md` and `SUMMARY.md` (`DERIVED_VIEW`)
-- Canonicalization utility added: `tools/auditx/canonicalize.py`.
-- Incremental cache engine added: `tools/auditx/cache_engine.py`.
-- Workspace-scoped cache and trend history under `tools/auditx/cache/<WS_ID>/`.
+- Canonicalization utility added: `tools/xstack/auditx/canonicalize.py`.
+- Incremental cache engine added: `tools/xstack/auditx/cache_engine.py`.
+- Workspace-scoped cache and trend history under `tools/xstack/auditx/cache/<WS_ID>/`.
 - Analyzer suite expanded with semantic drift and structural risk analyzers.
 - Promotion candidate output and trend output integrated.
 - AuditX environment self-containment hardened using `env_tools_lib`.

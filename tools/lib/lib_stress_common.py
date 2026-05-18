@@ -12,8 +12,8 @@ import importlib
 from typing import Dict, List, Mapping, Sequence, Tuple
 
 from tools.validators.compatibility import build_product_descriptor
-from tools.libraries.export import export_instance_bundle, export_pack_bundle, export_save_bundle
-from tools.libraries.install import (
+from tools.package.libraries.export import export_instance_bundle, export_pack_bundle, export_save_bundle
+from tools.package.libraries.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
     normalize_contract_range,
@@ -21,13 +21,13 @@ from tools.libraries.install import (
     normalize_protocol_range,
     validate_install_manifest,
 )
-from tools.libraries.instance import (
+from tools.package.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from tools.libraries.instance.instance_clone import clone_instance_local
-from tools.libraries.provides import (
+from tools.package.libraries.instance.instance_clone import clone_instance_local
+from tools.package.libraries.provides import (
     RESOLUTION_POLICY_DETERMINISTIC_LOWEST_PACK_ID,
     RESOLUTION_POLICY_EXPLICIT_REQUIRED,
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
@@ -35,7 +35,7 @@ from tools.libraries.provides import (
     canonicalize_provides_resolution,
     resolve_providers,
 )
-from tools.libraries.save import (
+from tools.package.libraries.save import (
     CURRENT_SAVE_FORMAT_VERSION,
     deterministic_fingerprint as save_deterministic_fingerprint,
     evaluate_save_open,
@@ -57,7 +57,7 @@ from tools.lib.content_store import (
     store_add_artifact,
     store_add_tree_artifact,
 )
-from tools.compatx.core.semantic_contract_validator import build_default_universe_contract_bundle
+from tools.xstack.compatx.core.semantic_contract_validator import build_default_universe_contract_bundle
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -1061,14 +1061,14 @@ def generate_lib_stress_scenario(
             "artifact_hash": portable_lock_hash,
             "artifact_id": str(portable_lock_payload.get("pack_lock_id", "")).strip(),
             "artifact_type": "json",
-            "artifact_path": _slash("embedded_artifacts/locks/{}".format(portable_lock_hash), slash_mode),
+            "artifact_path": _slash("embedded_archive/generated/artifacts/locks/{}".format(portable_lock_hash), slash_mode),
         },
         {
             "category": "profiles",
             "artifact_hash": portable_profile_hash,
             "artifact_id": str(portable_profile_payload.get("profile_bundle_id", "")).strip(),
             "artifact_type": "json",
-            "artifact_path": _slash("embedded_artifacts/profiles/{}".format(portable_profile_hash), slash_mode),
+            "artifact_path": _slash("embedded_archive/generated/artifacts/profiles/{}".format(portable_profile_hash), slash_mode),
         },
     ]
     for pack_id in list(portable_lock_payload.get("ordered_pack_ids") or []):
@@ -1080,7 +1080,7 @@ def generate_lib_stress_scenario(
                 "artifact_id": pack_id,
                 "artifact_type": "tree",
                 "artifact_path": _slash(
-                    "embedded_artifacts/packs/{}".format(str(embed_result.get("artifact_hash", "")).strip()),
+                    "embedded_archive/generated/artifacts/packs/{}".format(str(embed_result.get("artifact_hash", "")).strip()),
                     slash_mode,
                 ),
             }

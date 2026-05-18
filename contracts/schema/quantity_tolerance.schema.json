@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quantity Tolerance Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic fixed-point tolerance and rounding contract per quantity.",
+  "x-doc-ref": [
+    "docs/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "quantity_id",
+    "base_resolution",
+    "tolerance_abs",
+    "rounding_mode",
+    "overflow_policy",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "quantity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "base_resolution": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "tolerance_abs": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tolerance_rel": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "rounding_mode": {
+      "type": "string",
+      "enum": [
+        "round_half_to_even",
+        "floor",
+        "ceiling",
+        "truncate"
+      ]
+    },
+    "overflow_policy": {
+      "type": "string",
+      "enum": [
+        "fail",
+        "saturate"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "quantity_id": "quantity.energy_total",
+      "base_resolution": 1,
+      "tolerance_abs": 1,
+      "tolerance_rel": 0,
+      "rounding_mode": "round_half_to_even",
+      "overflow_policy": "fail",
+      "deterministic_fingerprint": "30d9c172914f58e5ff541f469b4bf0488a6f3f11cbb7f5edab188ecf42903257",
+      "extensions": {}
+    }
+  ]
+}

@@ -38,7 +38,7 @@ Strict mode blocks:
 
 - unknown root-level directories or files without an active exception
 - new product roots outside `apps/`
-- new domain roots outside the contracts/game/content/docs/tests split
+- new domain roots outside the contracts/content/domains/game/docs/tests split
 - new schema or registry roots outside `contracts/`
 - new runtime adapter roots outside `runtime/`
 - generated roots without generated policy or active exception

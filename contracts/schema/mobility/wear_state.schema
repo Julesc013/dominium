@@ -1,0 +1,23 @@
+SCHEMA: mobility/wear_state.schema
+schema_id: dominium.schema.mobility.wear_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic mobility wear accumulation state for a target and wear type.
+
+REQUIRED SHAPE:
+record wear_state
+  required:
+    - schema_version: semver
+    - target_id: id
+    - wear_type_id: id
+    - accumulated_value: int
+    - last_update_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Wear state mutates only via deterministic process execution.
+- `accumulated_value >= 0`.
+- Updates are ordered deterministically by `(target_id, wear_type_id)`.

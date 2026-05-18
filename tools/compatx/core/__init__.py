@@ -1,2 +1,0 @@
-"""CompatX core modules."""
-

@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -25,7 +25,7 @@ Scope: instrumentation-like features, epistemic/control bypass risks, and missin
 - `src/meta/explain/explain_engine.py` and `data/registries/explain_contract_registry.json`
   - Forensics/explain generation + contract registry.
 - Existing AuditX/TestX instrumentation checks:
-  - `tools/auditx/analyzers/e99_instrument_truth_leak_smell.py`
+  - `tools/xstack/auditx/analyzers/e99_instrument_truth_leak_smell.py`
   - `tools/xstack/testx/tests/test_no_truth_access_in_instruments.py`
   - `tools/xstack/testx/tests/test_instrument_redaction.py`
 

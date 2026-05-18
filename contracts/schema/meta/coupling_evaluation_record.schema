@@ -1,0 +1,30 @@
+SCHEMA: meta/coupling_evaluation_record.schema
+schema_id: dominium.schema.meta.coupling_evaluation_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record deterministic per-tick coupling evaluation decisions for proof/replay.
+- Preserve skip/evaluate reasoning under budget and relevance filtering.
+
+NON-SEMANTICS:
+- This schema does not execute coupling logic.
+- It does not classify presentation-only observations.
+
+REQUIRED SHAPE:
+record coupling_evaluation_record
+  required:
+    - record_id: id
+    - tick: int
+    - coupling_contract_id: id
+    - evaluated: bool
+    - reason: enum{relevant,forced,skipped_budget,skipped_irrelevant}
+    - input_hash: sha256
+    - output_hash: optional(sha256)
+    - error_bound_estimate: optional(int)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Selection order must be deterministic.
+- Every skipped relevant coupling must produce a record.

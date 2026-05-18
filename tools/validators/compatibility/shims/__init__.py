@@ -1,25 +1,38 @@
 """Transitional compatibility shims for convergence without semantic drift."""
 
-from .flag_shims import FLAG_SHIM_ROWS, FLAG_WARNING_KEY, apply_flag_shims, legacy_flag_rows
-from .path_shims import PATH_SHIM_ROWS, PATH_SHIM_WARNING_KEY, path_shim_rows, redirect_legacy_path
-from .tool_shims import TOOL_SHIM_ROWS, TOOL_WARNING_KEY, emit_legacy_tool_warning, tool_shim_rows
-from .validation_shims import VALIDATION_SHIM_ROWS, VALIDATION_WARNING_KEY, run_legacy_validate_all, validation_shim_rows
+from __future__ import annotations
 
-__all__ = [
-    "FLAG_SHIM_ROWS",
-    "FLAG_WARNING_KEY",
-    "PATH_SHIM_ROWS",
-    "PATH_SHIM_WARNING_KEY",
-    "TOOL_SHIM_ROWS",
-    "TOOL_WARNING_KEY",
-    "VALIDATION_SHIM_ROWS",
-    "VALIDATION_WARNING_KEY",
-    "apply_flag_shims",
-    "emit_legacy_tool_warning",
-    "legacy_flag_rows",
-    "path_shim_rows",
-    "redirect_legacy_path",
-    "run_legacy_validate_all",
-    "tool_shim_rows",
-    "validation_shim_rows",
-]
+from importlib import import_module
+
+
+_EXPORTS = {
+    "FLAG_SHIM_ROWS": ("tools.validators.compatibility.shims.flag_shims", "FLAG_SHIM_ROWS"),
+    "FLAG_WARNING_KEY": ("tools.validators.compatibility.shims.flag_shims", "FLAG_WARNING_KEY"),
+    "apply_flag_shims": ("tools.validators.compatibility.shims.flag_shims", "apply_flag_shims"),
+    "legacy_flag_rows": ("tools.validators.compatibility.shims.flag_shims", "legacy_flag_rows"),
+    "PATH_SHIM_ROWS": ("tools.validators.compatibility.shims.path_shims", "PATH_SHIM_ROWS"),
+    "PATH_SHIM_WARNING_KEY": ("tools.validators.compatibility.shims.path_shims", "PATH_SHIM_WARNING_KEY"),
+    "path_shim_rows": ("tools.validators.compatibility.shims.path_shims", "path_shim_rows"),
+    "redirect_legacy_path": ("tools.validators.compatibility.shims.path_shims", "redirect_legacy_path"),
+    "TOOL_SHIM_ROWS": ("tools.validators.compatibility.shims.tool_shims", "TOOL_SHIM_ROWS"),
+    "TOOL_WARNING_KEY": ("tools.validators.compatibility.shims.tool_shims", "TOOL_WARNING_KEY"),
+    "emit_legacy_tool_warning": ("tools.validators.compatibility.shims.tool_shims", "emit_legacy_tool_warning"),
+    "tool_shim_rows": ("tools.validators.compatibility.shims.tool_shims", "tool_shim_rows"),
+    "VALIDATION_SHIM_ROWS": ("tools.validators.compatibility.shims.validation_shims", "VALIDATION_SHIM_ROWS"),
+    "VALIDATION_WARNING_KEY": ("tools.validators.compatibility.shims.validation_shims", "VALIDATION_WARNING_KEY"),
+    "run_legacy_validate_all": ("tools.validators.compatibility.shims.validation_shims", "run_legacy_validate_all"),
+    "validation_shim_rows": ("tools.validators.compatibility.shims.validation_shims", "validation_shim_rows"),
+}
+
+
+def __getattr__(name: str):
+    target = _EXPORTS.get(str(name))
+    if target is None:
+        raise AttributeError("module 'tools.validators.compatibility.shims' has no attribute '{}'".format(str(name)))
+    module_name, attr_name = target
+    value = getattr(import_module(module_name), attr_name)
+    globals()[str(name)] = value
+    return value
+
+
+__all__ = sorted(_EXPORTS.keys())

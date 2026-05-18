@@ -18,7 +18,7 @@ Replacement Target: XI-3 convergence planning
 - `REFUSAL_PACK_REGISTRY_MISSING` -> `src/packs/compat/__init__.py` score=`79.05` confidence=`high` gap=`24.65`
 - `REFUSAL_SAVE_PACK_LOCK_MISMATCH` -> `src/lib/save/__init__.py` score=`79.05` confidence=`high` gap=`21.25`
 - `DEFAULT_CONTRACT_BUNDLE_REF` -> `src/lib/save/__init__.py` score=`79.05` confidence=`high` gap=`16.49`
-- `load_semantic_contract_registry` -> `tools/compatx/core/semantic_contract_validator.py` score=`84.05` confidence=`high` gap=`24.76`
+- `load_semantic_contract_registry` -> `tools/xstack/compatx/core/semantic_contract_validator.py` score=`84.05` confidence=`high` gap=`24.76`
 - `mod_manifest_init` -> `game/include/dominium/mods/mod_manifest.h` score=`89.4` confidence=`high` gap=`25.1`
 - `dom_data_schema_find` -> `engine/include/domino/io/data_validate.h` score=`85.95` confidence=`high` gap=`15.23`
 - `dom_data_schema_register` -> `engine/include/domino/io/data_validate.h` score=`78.81` confidence=`high` gap=`16.49`

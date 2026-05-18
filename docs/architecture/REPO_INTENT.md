@@ -27,7 +27,7 @@ Normative contracts live under `docs/architecture/` only. See `docs/architecture
 | `cmake/` | Build system modules | Build configuration only | Evolving |
 | `data/` | Data packs and fixtures | Data-only changes, no code | Frozen (pack formats), Evolving (content) |
 | `bundles/` | Governed bundle fixtures and serialized bundle artifacts | Bundle/schema-preserving changes only | Evolving |
-| `dist/` | Distribution artifacts and layout | Packaging only | Evolving |
+| `archive/generated/dist/` | Distribution artifacts and layout | Packaging only | Evolving |
 | `repo/` | Pack output repository (generated packs) | Generated pack outputs only | Quarantined |
 | `updates/` | Update feeds and channel metadata | Packaging metadata only | Evolving |
 | `docs/` | Documentation | See doc taxonomy below | Frozen/Evolving per taxonomy |
@@ -63,7 +63,7 @@ Normative contracts live in `docs/architecture/` only. Other documentation categ
 
 - `docs/roadmap/` is goals and tests only.
 - `docs/content/` is data explanation only.
-- `docs/dev/` and `docs/modding/` are how-to only.
+- `docs/development/` and `docs/modding/` are how-to only.
 
 Non-architecture docs must link to their canonical contract counterparts when relevant.
 

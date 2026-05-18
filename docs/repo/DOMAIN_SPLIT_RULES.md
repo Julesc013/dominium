@@ -15,8 +15,8 @@ Current root-level domain folders are likely mixed. CONVERGE-01 records this wit
 For any domain such as geology, chemistry, ecology, hydrology, materials, fluid, thermal, electricity, economy, logistics, civilization, or worldgen, split by ownership:
 
 - schemas, registries, capabilities, protocols, compatibility, and stability rules go to `contracts/`.
-- implementation and process logic go to `game/domains/<domain>/`.
-- content, datasets, authored fixtures, and pack data go to `content/domain-data/<domain>/` or `content/packs/`.
+- implementation and process logic go to `game/domain/<domain>/`.
+- content, datasets, authored fixtures, and pack data go to `content/domains/<domain>/` or `content/packs/`.
 - human-readable design, doctrine, and explanatory notes go to `docs/domains/<domain>/`.
 - determinism tests, fixtures, and proof inputs go to `tests/determinism/<domain>/` or `tests/fixtures/<domain>/`.
 
@@ -24,7 +24,7 @@ Do not move a root domain folder wholesale unless it is proven pure. Most curren
 
 Domain split work must happen after the contract, inventory, and move-map phases. Later moves must preserve process-only mutation, truth/perceived/render separation, pack-driven integration, deterministic ordering, named RNG discipline, and explicit compatibility/refusal obligations.
 
-CONVERGE-06 moved shared schema roots into `contracts/schemas/`. It did not perform a full domain split. Domain-specific schemas and registries found during later domain inspection should ultimately live under `contracts/schemas/<domain>/` or `contracts/registries/<domain>/`, but domain implementation, content, docs, and tests remain separate ownership surfaces.
+CONVERGE-06 moved shared schema roots into `contracts/schema/`. It did not perform a full domain split. Domain-specific schemas and registries found during later domain inspection should ultimately live under `contracts/schema/<domain>/` or `contracts/registry/<domain>/`, but domain implementation, content, docs, and tests remain separate ownership surfaces.
 
 CONVERGE-07 moved only safe runtime-facing roots into `runtime/`. It did not perform a domain split. Runtime adapters may observe, present, route, and diagnose domain state, but they must not absorb domain law or Process mutation authority during CONVERGE-09.
 
@@ -51,26 +51,26 @@ Examples:
 
 CONVERGE-09 examples after contract convergence:
 
-- `geo/` schema material -> `contracts/schemas/geology/` or `contracts/registries/geology/`; implementation remains under a game/domain owner.
-- `materials/` registry definitions -> `contracts/registries/materials/`; authored material datasets remain content.
-- `worldgen/` schemas -> `contracts/schemas/worldgen/`; deterministic generation logic remains game/domain implementation.
-- `field/` and `fields/` schema contracts -> `contracts/schemas/fields/` or `contracts/registries/fields/` depending on file role.
+- `geo/` schema material -> `contracts/schema/geology/` or `contracts/registry/geology/`; implementation remains under a game/domain owner.
+- `materials/` registry definitions -> `contracts/registry/materials/`; authored material datasets remain content.
+- `worldgen/` schemas -> `contracts/schema/worldgen/`; deterministic generation logic remains game/domain implementation.
+- `field/` and `fields/` schema contracts -> `contracts/schema/fields/` or `contracts/registry/fields/` depending on file role.
 
 ## CONVERGE-09 Execution Status
 
-CONVERGE-09 moved safe Python-only implementation roots to `game/domains/` and retired those root-level aliases. The full report is `docs/repo/DOMAIN_SPLIT_REPORT.md`.
+CONVERGE-09 moved safe Python-only implementation roots to `game/domain/` and retired those root-level aliases. The full report is `docs/repo/DOMAIN_SPLIT_REPORT.md`.
 
 Completed implementation moves include:
 
-- `astro/` -> `game/domains/astronomy/`
-- `chem/` -> `game/domains/chemistry/`
-- `electric/` -> `game/domains/electricity/`
-- `field/` -> `game/domains/fields/from_root_field/`
-- `fields/` -> `game/domains/fields/`
-- `fluid/` -> `game/domains/fluids/`
-- `geo/` -> `game/domains/geology/`
-- `logic/`, `materials/`, `mechanics/`, `physics/`, `pollution/`, `signals/`, `thermal/`, `universe/`, `worldgen/`, `mobility/`, and `logistics/` -> matching `game/domains/` targets.
-- additional detected domain roots `diegetics/`, `embodiment/`, `epistemics/`, `infrastructure/`, `inspection/`, `interaction/`, `interior/`, `machines/`, and `reality/` -> matching `game/domains/` targets.
+- `astro/` -> `game/domain/astronomy/`
+- `chem/` -> `game/domain/chemistry/`
+- `electric/` -> `game/domain/electricity/`
+- `field/` -> `game/domain/fields/from_root_field/`
+- `fields/` -> `game/domain/fields/`
+- `fluid/` -> `game/domain/fluids/`
+- `geo/` -> `game/domain/geology/`
+- `logic/`, `materials/`, `mechanics/`, `physics/`, `pollution/`, `signals/`, `thermal/`, `universe/`, `worldgen/`, `mobility/`, and `logistics/` -> matching `game/domain/` targets.
+- additional detected domain roots `diegetics/`, `embodiment/`, `epistemics/`, `infrastructure/`, `inspection/`, `interaction/`, `interior/`, `machines/`, and `reality/` -> matching `game/domain/` targets.
 
 `economy/`, `civilization/`, and `ecology/` were absent. `control/`, `core/`, and `meta/` remain review roots because they are mixed or ownership-sensitive.
 
@@ -82,9 +82,9 @@ After CONVERGE-10, new root-level domain folders are invalid without a specific 
 
 New domains must be introduced through the split ownership model:
 
-- `contracts/schemas/<domain>/`, `contracts/registries/<domain>/`, `contracts/capabilities/<domain>/`, or `contracts/protocols/<domain>/`
-- `game/domains/<domain>/`
-- `content/domain-data/<domain>/` or `content/packs/`
+- `contracts/schema/<domain>/`, `contracts/registry/<domain>/`, `contracts/capability/<domain>/`, or `contracts/protocol/<domain>/`
+- `game/domain/<domain>/`
+- `content/domains/<domain>/` or `content/packs/`
 - `docs/domains/<domain>/`
 - `tests/fixtures/<domain>/`, `tests/determinism/<domain>/`, `tests/regression/<domain>/`, or `tests/golden/<domain>/`
 
@@ -96,4 +96,4 @@ Final audit: `docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md`.
 
 Post-converge work plan: `docs/repo/POST_CONVERGE_NEXT_STEPS.md`.
 
-Future worldgen, ecology, geology, evolution, economy, civilization, process, and domain realism work must continue through the contracts/game/content/docs/tests split model. No new root-level domain folders are allowed without a reviewed exception.
+Future worldgen, ecology, geology, evolution, economy, civilization, process, and domain realism work must continue through the contracts/content/domains/game/docs/tests split model. No new root-level domain folders are allowed without a reviewed exception.

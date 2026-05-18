@@ -193,12 +193,12 @@ def _dry_run_commands() -> List[Dict[str, str]]:
         },
         {
             "purpose": "assemble artifact root",
-            "command": "python apps/setup/packages/scripts/packaging/pipeline.py assemble --build-dir out/build/vs2026/verify --out <temp>/artifact_root --version 0.0.0-smoke",
+            "command": "python release/packaging/setup/scripts/packaging/pipeline.py assemble --build-dir out/build/vs2026/verify --out <temp>/artifact_root --version 0.0.0-smoke",
             "status": "blocked_until_build_output_exists",
         },
         {
             "purpose": "create portable archive",
-            "command": "python apps/setup/packages/scripts/packaging/pipeline.py portable --artifact <temp>/artifact_root --out <temp>/portable --version 0.0.0-smoke",
+            "command": "python release/packaging/setup/scripts/packaging/pipeline.py portable --artifact <temp>/artifact_root --out <temp>/portable --version 0.0.0-smoke",
             "status": "blocked_until_artifact_root_exists",
         },
         {

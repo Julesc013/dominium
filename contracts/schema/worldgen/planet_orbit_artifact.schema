@@ -1,0 +1,28 @@
+SCHEMA: worldgen/planet_orbit_artifact.schema
+schema_id: dominium.schema.worldgen.planet_orbit_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-2 coarse orbital prior model for a planet.
+- Preserve deterministic orbit ordering and bounded stability constraints.
+
+NON-SEMANTICS:
+- This schema does not encode orbital propagation or time evolution.
+- This schema does not authorize full n-body simulation.
+
+REQUIRED SHAPE:
+record planet_orbit_artifact
+  required:
+    - planet_object_id: sha256
+    - star_object_id: sha256
+    - semi_major_axis: map
+    - eccentricity: map
+    - inclination: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- orbital rows remain deterministically ordered by parent system and planet index
+- eccentricity must remain bounded to preserve ordered periapsis
+- no retry loop may be required to produce the orbit row

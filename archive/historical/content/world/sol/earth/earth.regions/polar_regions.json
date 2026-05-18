@@ -1,0 +1,55 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [],
+    "region_records": [
+      {
+        "region_id": "earth_polar_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_polar_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "polar"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_arctic_land_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_arctic_land_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_polar_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "polar",
+          "arctic"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_antarctic_land_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_antarctic_land_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_polar_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "polar",
+          "antarctic"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      }
+    ]
+  }
+}

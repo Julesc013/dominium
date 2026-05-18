@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/birth_refusal_codes.cpp
+FILE: game/rule/life/birth_refusal_codes.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Provides string names for birth refusal codes.

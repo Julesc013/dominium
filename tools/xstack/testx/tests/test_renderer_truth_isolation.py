@@ -11,14 +11,14 @@ TEST_ID = "testx.render.renderer_truth_isolation"
 TEST_TAGS = ["strict", "render", "repox"]
 
 TARGETS = (
-    "apps/client/render/render_model_adapter.py",
-    "apps/client/render/representation_resolver.py",
-    "apps/client/render/snapshot_capture.py",
-    "apps/client/render/renderers/null_renderer.py",
-    "apps/client/render/renderers/software_renderer.py",
-    "apps/client/render/renderers/hw_renderer_gl.py",
-    "tools/render/tool_render_capture.py",
-    "tools/render/render_cli.py",
+    "runtime/render/client/render_model_adapter.py",
+    "runtime/render/client/representation_resolver.py",
+    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/client/renderers/null_renderer.py",
+    "runtime/render/client/renderers/software_renderer.py",
+    "runtime/render/client/renderers/hw_renderer_gl.py",
+    "tools/validators/render/tool_render_capture.py",
+    "tools/validators/render/render_cli.py",
 )
 FORBIDDEN = re.compile(r"\b(truth_model|truthmodel|universe_state|process_runtime)\b", re.IGNORECASE)
 

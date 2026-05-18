@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/client/input/dom_input_mapping.c
+FILE: source/dominium/game/rule/client/input/dom_input_mapping.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/client/input/dom_input_mapping
+LAYER / SUBSYSTEM: Dominium impl / game/rule/client/input/dom_input_mapping
 RESPONSIBILITY: Implements `dom_input_mapping`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

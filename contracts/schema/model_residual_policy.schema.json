@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model Residual Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic residual bound and action policy for model evaluations.",
+  "x-doc-ref": [
+    "docs/meta/NUMERICAL_TOLERANCE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "model_id",
+    "max_expected_residual",
+    "residual_action",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_expected_residual": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "residual_action": {
+      "type": "string",
+      "enum": [
+        "log_only",
+        "strict_fail",
+        "clamp"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "model_id": "model.therm_conductance",
+      "max_expected_residual": 2,
+      "residual_action": "log_only",
+      "deterministic_fingerprint": "d8150d2ce6f7456f2aa91d5d0154a5f0a26439d8cf2b290b9bfecf503c07ab6a",
+      "extensions": {}
+    }
+  ]
+}

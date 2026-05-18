@@ -123,8 +123,8 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    shell_path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
-    ui_path = os.path.join(repo_root, "apps", "client", "app", "main_client.c")
+    shell_path = os.path.join(repo_root, "runtime", "shell", "client", "client_shell.c")
+    ui_path = os.path.join(repo_root, "apps", "client", "main_client.c")
     template_path = os.path.join(
         repo_root, "tests", "fixtures", "world", "templates", "exploration_baseline.worlddef.json"
     )

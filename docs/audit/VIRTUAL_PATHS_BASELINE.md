@@ -42,11 +42,11 @@ Fingerprint: `9f680a5970dd78dd84c0540b0c473d81a505ee43396728dd423369a2c9d589f0`
 
 | Root | Repo-Normalized Path |
 | --- | --- |
-| `VROOT_BIN` | `<repo>/dist/bin` |
+| `VROOT_BIN` | `<repo>/archive/generated/dist/bin` |
 | `VROOT_EXPORTS` | `<repo>/exports` |
 | `VROOT_INSTALL` | `<repo>/dist` |
 | `VROOT_INSTANCES` | `<repo>/instances` |
-| `VROOT_IPC` | `<repo>/dist/runtime` |
+| `VROOT_IPC` | `<repo>/archive/generated/dist/runtime` |
 | `VROOT_LOCKS` | `<repo>/locks` |
 | `VROOT_LOGS` | `<repo>/build/appshell/logs` |
 | `VROOT_PACKS` | `<repo>/packs` |

@@ -42,9 +42,9 @@ def run(repo_root: str):
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {

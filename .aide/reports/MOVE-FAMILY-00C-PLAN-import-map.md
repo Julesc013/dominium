@@ -20,10 +20,10 @@ Path-reference counts include high-volume AIDE, audit, generated, and historical
 
 | Group | Consumers |
 | --- | --- |
-| `validation` | `runtime/appshell/commands/command_engine.py`, `compat/shims/validation_shims.py`, `tools/validation/tool_run_validation.py`, `tools/convergence/convergence_gate_common.py`, `tools/xstack/repox/check.py`, AuditX, TestX |
-| `meta.identity` | release, security/trust, lib install/instance/save validators, dist/setup/MVP/meta tools, validation, TestX |
+| `validation` | `runtime/shell/commands/command_engine.py`, `compat/shims/validation_shims.py`, `tools/validators/suite/tool_run_validation.py`, `tools/convergence/convergence_gate_common.py`, `tools/xstack/repox/check.py`, AuditX, TestX |
+| `meta.identity` | release, security/trust, lib install/instance/save validators, archive/generated/dist/setup/MVP/meta tools, validation, TestX |
 | `meta.stability` | validation, governance tools, AuditX analyzers, convergence, release, review, security, RepoX, TestX |
-| `governance` | release/update resolver, dist/setup tools, release tools, governance tools, TestX |
+| `governance` | release/update resolver, archive/generated/dist/setup tools, release tools, governance tools, TestX |
 | semantic/runtime `meta` | engine time, game domains, runtime/session, tools, invariant tests, TestX |
 | `performance` | client interaction, game materials, XStack session runtime |
 

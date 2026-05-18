@@ -1,0 +1,21 @@
+SCHEMA: control/control_ir_block.schema
+schema_id: dominium.schema.control.control_ir_block
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical bounded Control IR block declaration.
+
+REQUIRED SHAPE:
+record control_ir_block
+  required:
+    - schema_version: semver
+    - block_id: id
+    - op_sequence: list[id]
+    - next_block_on_success: optional_id
+    - next_block_on_failure: optional_id
+    - extensions: map
+
+INVARIANTS:
+- Block transitions are explicit and deterministic.
+- Dynamic branching outside declared next-block edges is forbidden.

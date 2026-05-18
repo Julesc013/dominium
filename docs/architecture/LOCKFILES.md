@@ -19,7 +19,7 @@ Scope: deterministic capability and pack resolution artifacts.
 
 ## Storage Rules
 
-- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_artifacts/locks/<hash>/`.
+- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_archive/generated/artifacts/locks/<hash>/`.
 - Instances and saves pin lock identity by `pack_lock_hash`.
 - Path-based `capability_lockfile` references remain compatibility adapters only.
 

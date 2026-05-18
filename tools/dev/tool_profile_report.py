@@ -98,7 +98,7 @@ def _render_markdown(trace_payload: dict, trace_path: str) -> str:
             "## Notes",
             "",
             "- Metrics are informational and non-gating.",
-            "- Structure is deterministic and schema-validated (`contracts/schemas/profile_trace.schema.json`).",
+            "- Structure is deterministic and schema-validated (`contracts/schema/profile_trace.schema.json`).",
             "",
         ]
     )

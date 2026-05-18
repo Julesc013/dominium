@@ -184,7 +184,7 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 
 - `ctest --preset verify -N` reports 493 tests in the refreshed local verify build tree.
 - Focused `ctest --preset verify -R inv_repox_rules --output-on-failure` remains failing at 51 failures / 5 warnings after the safe audit status-header fix.
-- The 12 distribution/product target failures are missing `dist/bin` wrapper/projection surfaces, not build-output proof that can be faked in a governance classification task.
+- The 12 distribution/product target failures are missing `archive/generated/dist/bin` wrapper/projection surfaces, not build-output proof that can be faked in a governance classification task.
 - No configure/build rerun was required because POST-CONVERGE-10L changed evidence/status files only.
 - POST-CONVERGE-11 remains blocked by non-proof RepoX governance failures.
 
@@ -238,7 +238,7 @@ Focused tuple `inv_repox_rules` remains failing after 10H, but the failure count
 
 ## Closeout Remediation Update - Portable Projection
 
-- `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel post-converge-12 --output-root .dominium.local/projections/post-converge-12 ...` completes.
+- `python tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel post-converge-12 --output-root .dominium.local/projections/post-converge-12 ...` completes.
 - The generated projection root is `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
 - The projection includes native `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, and `tools.exe` copied from `out/build/vs2026/verify/bin/`.
 - `python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium` reports `proof_status: proven`.

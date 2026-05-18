@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Orbit Path Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SOL-2 orbit path sampling policy descriptor.",
+  "x-doc-ref": [
+    "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "samples_per_orbit",
+    "max_paths_per_view",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "samples_per_orbit": {
+      "type": "integer",
+      "minimum": 8,
+      "maximum": 512
+    },
+    "max_paths_per_view": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 64
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "orbitpath.mvp_default",
+      "samples_per_orbit": 128,
+      "max_paths_per_view": 16,
+      "deterministic_fingerprint": "7cd38c822bc597307aa54b32d4267a20cc7e7f8ce27332b225f1b9ca82676dd4",
+      "extensions": {
+        "source": "SOL2-2"
+      }
+    }
+  ]
+}

@@ -21,7 +21,7 @@ from tools.audit.arch_audit_common import scan_duplicate_semantics  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-INVENTORY_JSON_REL = "content/data/audit/repo_inventory.json"
+INVENTORY_JSON_REL = "archive/generated/audit/repo_inventory.json"
 TREE_INDEX_MD_REL = "docs/audit/REPO_TREE_INDEX.md"
 MODULE_DUPLICATION_REPORT_REL = "docs/audit/MODULE_DUPLICATION_REPORT.md"
 ENTRYPOINT_MAP_REL = "docs/audit/ENTRYPOINT_MAP.md"
@@ -83,12 +83,12 @@ PRODUCT_IDS = (
 )
 PRODUCT_HINTS = {
     "client": ("tools/mvp/runtime_entry.py",),
-    "engine": ("tools/appshell/product_stub_cli.py",),
-    "game": ("tools/appshell/product_stub_cli.py",),
+    "engine": ("tools/validators/shell/product_stub_cli.py",),
+    "game": ("tools/validators/shell/product_stub_cli.py",),
     "launcher": ("tools/launcher/launch.py",),
     "server": ("apps/server/server_main.py", "tools/mvp/runtime_entry.py"),
     "setup": ("tools/setup/setup_cli.py",),
-    "tool.attach_console_stub": ("tools/appshell/product_stub_cli.py",),
+    "tool.attach_console_stub": ("tools/validators/shell/product_stub_cli.py",),
 }
 LEGACY_TOP_LEVEL_DIRS = {
     "ai",
@@ -311,7 +311,7 @@ def _discover_product_entrypoint(repo_root: str, product_id: str, python_files: 
     if candidates:
         return sorted(candidates)[0]
     if product_id in {"engine", "game", "tool.attach_console_stub"}:
-        return "tools/appshell/product_stub_cli.py"
+        return "tools/validators/shell/product_stub_cli.py"
     return ""
 
 
@@ -426,39 +426,39 @@ def _classify_layer(rel_path: str, text: str) -> str:
 
 def _classify_responsibility(rel_path: str, layer: str) -> str:
     rel_norm = _norm(rel_path)
-    if rel_norm.startswith(("game/domains/universe/", "game/domains/fields/from_root_field/", "game/domains/fields/", "src/time/")):
+    if rel_norm.startswith(("game/domain/universe/", "game/domain/fields/from_root_field/", "game/domain/fields/", "src/time/")):
         return "core.truth_time"
-    if rel_norm.startswith(("game/domains/processes/", "game/domains/systems/", "src/meta/provenance/", "src/diag/")):
+    if rel_norm.startswith(("game/domain/processes/", "game/domain/systems/", "src/meta/provenance/", "src/diag/")):
         return "core.proof_process"
-    if rel_norm.startswith(("game/domains/worldgen/refinement/",)):
+    if rel_norm.startswith(("game/domain/worldgen/refinement/",)):
         return "core.refinement"
     if rel_norm.startswith(("src/control/", "src/core/", "src/compat/")):
         return "game.composition_binding"
     if rel_norm.startswith(("src/appshell/", "src/client/",)):
         return "ui.shared"
-    if rel_norm.startswith(("game/domains/geology/",)):
+    if rel_norm.startswith(("game/domain/geology/",)):
         return "domain.geo"
-    if rel_norm.startswith(("game/domains/worldgen/mw/", "game/domains/worldgen/galaxy/")):
+    if rel_norm.startswith(("game/domain/worldgen/mw/", "game/domain/worldgen/galaxy/")):
         return "domain.mw"
-    if rel_norm.startswith(("game/domains/astronomy/",)):
+    if rel_norm.startswith(("game/domain/astronomy/",)):
         return "domain.sol"
-    if rel_norm.startswith(("game/domains/worldgen/earth/",)):
+    if rel_norm.startswith(("game/domain/worldgen/earth/",)):
         return "domain.earth"
-    if rel_norm.startswith(("game/domains/logic/",)):
+    if rel_norm.startswith(("game/domain/logic/",)):
         return "domain.logic"
-    if rel_norm.startswith(("game/domains/pollution/",)):
+    if rel_norm.startswith(("game/domain/pollution/",)):
         return "domain.poll"
-    if rel_norm.startswith(("game/domains/embodiment/",)):
+    if rel_norm.startswith(("game/domain/embodiment/",)):
         return "domain.embodiment"
-    if rel_norm.startswith(("game/domains/mobility/",)):
+    if rel_norm.startswith(("game/domain/mobility/",)):
         return "domain.mobility"
-    if rel_norm.startswith(("game/domains/thermal/",)):
+    if rel_norm.startswith(("game/domain/thermal/",)):
         return "domain.thermal"
-    if rel_norm.startswith(("game/domains/fluids/",)):
+    if rel_norm.startswith(("game/domain/fluids/",)):
         return "domain.fluid"
-    if rel_norm.startswith(("game/domains/chemistry/", "game/domains/materials/")):
+    if rel_norm.startswith(("game/domain/chemistry/", "game/domain/materials/")):
         return "domain.materials"
-    if rel_norm.startswith(("game/domains/electricity/", "game/domains/signals/")):
+    if rel_norm.startswith(("game/domain/electricity/", "game/domain/signals/")):
         return "domain.electric"
     if rel_norm.startswith(("src/client/render/",)):
         return "ui.rendered"
@@ -466,11 +466,11 @@ def _classify_responsibility(rel_path: str, layer: str) -> str:
         return "ui.shared"
     if rel_norm.startswith(("src/platform/", "tools/platform/")):
         return "platform.adapters"
-    if rel_norm.startswith(("src/validation/", "tools/validation/")):
+    if rel_norm.startswith(("src/validation/", "tools/validators/suite/")):
         return "validation.stack"
-    if rel_norm.startswith(("tools/audit", "tools/auditx", "tools/compatx", "tools/xstack/", "contracts/schemas/", "contracts/schemas/", "data/registries/")):
+    if rel_norm.startswith(("tools/audit", "tools/xstack/auditx", "tools/xstack/compatx", "tools/xstack/", "contracts/schema/", "contracts/schema/", "data/registries/")):
         return "validation.stack"
-    if rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/pack/", "tools/distribution/", "data/packs/")):
+    if rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/pack/", "tools/package/distribution/", "data/packs/")):
         return "packaging.install"
     if layer == "legacy":
         return "legacy.experimental"
@@ -522,7 +522,7 @@ def _build_target(rel_path: str, product: str, text: str, entrypoints: list[str]
         return "setup"
     if rel_norm == "tools/mvp/runtime_entry.py":
         return "client/server"
-    if rel_norm == "tools/appshell/product_stub_cli.py":
+    if rel_norm == "tools/validators/shell/product_stub_cli.py":
         return "engine/game/tool.attach_console_stub"
     if entrypoints and rel_norm.startswith("tools/"):
         return os.path.splitext(os.path.basename(rel_norm))[0]
@@ -582,9 +582,9 @@ def _summary_maps(entries: list[dict]) -> dict:
 def _renderer_surface(repo_root: str, entries: list[dict], product_rows: Mapping[str, object]) -> dict:
     del product_rows
     backend_map = {
-        "null": "apps/client/render/renderers/null_renderer.py",
-        "software": "apps/client/render/renderers/software_renderer.py",
-        "hardware_gl": "apps/client/render/renderers/hw_renderer_gl.py",
+        "null": "runtime/render/client/renderers/null_renderer.py",
+        "software": "runtime/render/client/renderers/software_renderer.py",
+        "hardware_gl": "runtime/render/client/renderers/hw_renderer_gl.py",
     }
     python_files = [row for row in entries if str(row.get("path", "")).endswith(".py")]
     rows: list[dict] = []
@@ -714,21 +714,21 @@ def _scan_product_main_bypasses(repo_root: str, python_files: Iterable[str]) -> 
     bypasses: list[dict] = []
     for rel_path in sorted(set(str(path) for path in python_files)):
         rel_norm = _norm(rel_path)
-        if rel_norm.startswith("tools/") and not rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/mvp/", "tools/appshell/")):
+        if rel_norm.startswith("tools/") and not rel_norm.startswith(("tools/launcher/", "tools/setup/", "tools/mvp/", "tools/validators/shell/")):
             continue
         if rel_norm not in {
             "apps/server/server_main.py",
             "tools/launcher/launch.py",
             "tools/setup/setup_cli.py",
             "tools/mvp/runtime_entry.py",
-            "tools/appshell/product_stub_cli.py",
+            "tools/validators/shell/product_stub_cli.py",
         } and not rel_norm.startswith(("src/client/", "src/server/")):
             continue
         text = _read_text(_repo_abs(repo_root, rel_norm))
         if "def main(" not in text and "def client_main(" not in text and "def server_main(" not in text:
             continue
         product_ids = sorted(set(PRODUCT_PATH_PATTERN.findall(text)))
-        if rel_norm == "tools/appshell/product_stub_cli.py":
+        if rel_norm == "tools/validators/shell/product_stub_cli.py":
             product_ids = ["engine", "game", "tool.attach_console_stub"]
         if rel_norm == "tools/mvp/runtime_entry.py":
             product_ids = ["client", "server"]

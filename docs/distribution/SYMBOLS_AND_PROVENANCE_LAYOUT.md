@@ -9,13 +9,13 @@ Symbols and build provenance are separate from runtime payload packages.
 ## Distribution Output Roles
 
 ```text
-dist/
+archive/generated/dist/
   sym/<platform>/<arch>/
   meta/
 ```
 
-- `dist/sym/<platform>/<arch>/` contains symbols, debug packages, symbol indexes, and source-link metadata.
-- `dist/meta/` contains release manifests, package indexes, build metadata, checksums, signatures, provenance records, and verification reports.
+- `archive/generated/dist/sym/<platform>/<arch>/` contains symbols, debug packages, symbol indexes, and source-link metadata.
+- `archive/generated/dist/meta/` contains release manifests, package indexes, build metadata, checksums, signatures, provenance records, and verification reports.
 
 Symbols are never merged into runtime payload packages unless an explicit symbols package class is being produced.
 

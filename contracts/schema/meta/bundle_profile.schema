@@ -1,0 +1,34 @@
+SCHEMA: meta/bundle_profile.schema
+schema_id: dominium.schema.meta.bundle_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Optional install bundle contract for setup/launcher orchestration.
+- Bundle profiles define install-time content groups without forcing enablement.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record bundle_profile_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - bundles: [bundle_profile]
+    - extensions: map
+
+record bundle_profile
+  required:
+    - bundle_id: id
+    - description: tag
+    - install_pack_ids: [id]
+    - optional_content: [id]
+    - size_class: enum(small|medium|large)
+    - extensions: map
+  optional:
+    - default_experience_id: id
+

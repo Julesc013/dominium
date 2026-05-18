@@ -73,13 +73,13 @@
       "returncode": 0
     }
   ],
-  "dist_root": "c:/Inbox/Git Repos/dominium/dist/ws/vs2026",
+  "dist_root": "c:/Inbox/Git Repos/dominium/archive/generated/dist/ws/vs2026",
   "gate_kind": "verify",
   "repo_root": "c:/Inbox/Git Repos/dominium",
   "skipped": [
     "dist.verify"
   ],
-  "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools",
+  "tools_dir": "c:/Inbox/Git Repos/dominium/archive/generated/dist/sys/winnt/x64/bin/tools",
   "verify_build_dir": "c:/Inbox/Git Repos/dominium/out/build/vs2026/verify",
   "warnings": [],
   "workspace_id": "vs2026"

@@ -1,0 +1,23 @@
+SCHEMA: mobility/signal_rule_policy.schema
+schema_id: dominium.schema.mobility.signal_rule_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic registry-driven signal aspect and interlocking rule policy contract.
+
+REQUIRED SHAPE:
+record signal_rule_policy
+  required:
+    - schema_version: semver
+    - rule_policy_id: id
+    - description: text
+    - aspects: list
+    - transition_rules: list
+    - interlocking_rules: list
+    - extensions: map
+
+INVARIANTS:
+- Policy data drives aspect/interlocking behavior; no hardcoded rail-only runtime branches.
+- Aspect tokens are deterministic and state-machine compatible.
+- Tables are ordered deterministically by stable row keys.

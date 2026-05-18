@@ -74,7 +74,7 @@ Profile policy is defined by `contracts/registry/gate_policy.json` and described
 
 RepoX enforces static invariants and repository law.
 
-- rulesets: `repo/repox/rulesets/`
+- rulesets: `contracts/repo/repox/rulesets/`
 - runner entry: `scripts/ci/check_repox_rules.py`
 - architecture docs: `docs/governance/REPOX_RULESETS.md`, `docs/governance/REPOX_TOOL_RULES.md`
 
@@ -95,8 +95,8 @@ XStack maps changed paths to impacted TestX groups via `tools/xstack/core/impact
 
 AuditX provides semantic drift and smell detection.
 
-- tool entry: `tools/auditx/auditx.py`
-- analyzers: `tools/auditx/analyzers/`
+- tool entry: `tools/xstack/auditx/auditx.py`
+- analyzers: `tools/xstack/auditx/analyzers/`
 - group mapping: `contracts/registry/auditx_groups.json`
 - docs: `docs/governance/AUDITX_MODEL.md`
 
@@ -107,7 +107,7 @@ Artifacts are emitted under `docs/audit/auditx/`.
 ControlX defines orchestration semantics and prompt/gate contracts for autonomous execution.
 
 - docs: `docs/governance/CONTROLX_MODEL.md`
-- implementation area: `tools/controlx/`
+- implementation area: `tools/xstack/controlx/`
 
 Gate and policy orchestration in this repository follows the same structural contract family.
 
@@ -115,7 +115,7 @@ Gate and policy orchestration in this repository follows the same structural con
 
 PerformX tracks performance/budget evidence and regression signals.
 
-- tool entry: `tools/performx/performx.py`
+- tool entry: `tools/xstack/performx/performx.py`
 - docs: `docs/governance/PERFORMX_MODEL.md`
 - artifacts: `docs/audit/performance/`
 
@@ -123,7 +123,7 @@ PerformX tracks performance/budget evidence and regression signals.
 
 CompatX validates schema/data compatibility and migration pathways.
 
-- tool entry: `tools/compatx/compatx.py`
+- tool entry: `tools/xstack/compatx/compatx.py`
 - docs: `docs/governance/COMPATX_MODEL.md`
 - artifacts: `docs/audit/compat/`
 
@@ -131,8 +131,8 @@ CompatX validates schema/data compatibility and migration pathways.
 
 SecureX verifies pack integrity, trust policy, and security manifests.
 
-- tool entry: `tools/securex/securex.py`
-- tool docs: `tools/securex/README.md`
+- tool entry: `tools/xstack/securex/securex.py`
+- tool docs: `tools/xstack/securex/README.md`
 - policy data: `contracts/registry/trust_policy.json`, `contracts/registry/security_roles.json`
 - artifacts: `docs/audit/security/`
 

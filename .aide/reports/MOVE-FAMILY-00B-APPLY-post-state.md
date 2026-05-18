@@ -3,9 +3,9 @@
 ## Tracked State
 
 - `git ls-files ide`: empty.
-- `contracts/projections/ide/projection_manifest.schema.json`: tracked by move.
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`: tracked by move.
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`: tracked by move.
+- `contracts/projection/ide/projection_manifest.schema.json`: tracked by move.
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`: tracked by move.
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`: tracked by move.
 
 ## Filesystem State
 

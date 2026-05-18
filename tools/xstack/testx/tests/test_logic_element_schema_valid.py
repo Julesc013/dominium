@@ -32,7 +32,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.logic import (
+    from game.domain.logic import (
         build_logic_behavior_model_row,
         build_logic_element_definition_row,
         build_state_machine_definition_row,
@@ -40,7 +40,7 @@ def run(repo_root: str):
 
     schema_checks = (
         (
-            "contracts/schemas/logic/logic_element_definition.schema",
+            "contracts/schema/logic/logic_element_definition.schema",
             (
                 "element_id",
                 "description",
@@ -53,7 +53,7 @@ def run(repo_root: str):
             ),
         ),
         (
-            "contracts/schemas/logic/logic_behavior_model.schema",
+            "contracts/schema/logic/logic_behavior_model.schema",
             (
                 "behavior_model_id",
                 "model_kind",
@@ -62,7 +62,7 @@ def run(repo_root: str):
             ),
         ),
         (
-            "contracts/schemas/logic/state_machine_definition.schema",
+            "contracts/schema/logic/state_machine_definition.schema",
             (
                 "sm_id",
                 "states",

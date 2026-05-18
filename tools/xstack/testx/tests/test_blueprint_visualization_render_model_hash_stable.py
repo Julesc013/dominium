@@ -20,7 +20,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from client.render import build_render_model
-    from game.domains.materials.blueprint_engine import build_blueprint_ghost_overlay, compile_blueprint_artifacts
+    from game.domain.materials.blueprint_engine import build_blueprint_ghost_overlay, compile_blueprint_artifacts
 
     blueprint_registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))
     part_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "part_class_registry.json"))

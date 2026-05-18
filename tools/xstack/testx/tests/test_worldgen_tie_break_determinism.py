@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "worldgen", "determinism"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from game.domains.worldgen.core.constraint_solver import _rank_candidates
+    from game.domain.worldgen.core.constraint_solver import _rank_candidates
 
     candidates = [
         {

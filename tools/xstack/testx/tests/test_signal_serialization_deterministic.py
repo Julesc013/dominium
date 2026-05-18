@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "logic", "signal", "determinism"]
 
 def run(repo_root: str):
     del repo_root
-    from game.domains.logic.signal import canonical_signal_hash, canonical_signal_serialization
+    from game.domain.logic.signal import canonical_signal_hash, canonical_signal_serialization
 
     row_a = {
         "signal_id": "signal.logic.a",

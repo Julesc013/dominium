@@ -18,7 +18,7 @@ Owns schemas, registries, protocols, capabilities, compatibility, stability, rep
 
 `contracts/` must not contain generated package bytes, mutable runtime state, product entrypoints, or implementation convenience that silently changes schema law.
 
-CONVERGE-06 moved root-level `schema/` and `schemas/` into `contracts/schemas/`. Root-level schema directories are retired and must not be recreated as active authority. Docs explain contract meaning, but docs do not override machine-readable contract definitions.
+CONVERGE-06 moved root-level `schema/` and `schemas/` into `contracts/schema/`. Root-level schema directories are retired and must not be recreated as active authority. Docs explain contract meaning, but docs do not override machine-readable contract definitions.
 
 Runtime mutable state does not belong in `contracts/`. Store lock artifacts, process locks, IPC locks, package caches, setup/update transaction state, and rollback state are projection/runtime material, not contract source.
 
@@ -26,7 +26,7 @@ Content data does not belong in `contracts/` unless the file is a schema, regist
 
 Lock-root split:
 
-- `contracts/locks/`: deterministic lockfile schemas and contract definitions.
+- `contracts/lock/`: deterministic lockfile schemas and contract definitions.
 - `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts.
 - `runtime/locks/`: process, IPC, and transient runtime locks.
 - `ops/transactions/`: setup, update, and rollback transaction state.
@@ -127,14 +127,14 @@ POST-CONVERGE-03 keeps this boundary conservative: `content/` is the target owne
 
 ## Generated And Ephemeral Roots
 
-Generated roots are non-authoritative unless a stronger release or evidence contract says otherwise. `dist/`, `artifacts/`, `build/`, and `out/` must be treated as outputs or evidence, not source ownership.
+Generated roots are non-authoritative unless a stronger release or evidence contract says otherwise. `archive/generated/dist/`, `archive/generated/artifacts/`, `build/`, and `out/` must be treated as outputs or evidence, not source ownership.
 
 ## CONVERGE-06 Contract-Adjacent Review Roots
 
 `compat/` and `locks/` remain root-level review items after CONVERGE-06:
 
 - `compat/` contains Python implementation and shim code, so it cannot be moved wholesale into `contracts/compatibility/`.
-- `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/locks/`.
+- `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/lock/`.
 
 Later phases must split these by file role before binding anything to contracts, runtime, store, or ops ownership.
 
@@ -144,13 +144,13 @@ POST-CONVERGE-05 keeps `core/`, `control/`, and `net/` conservative: these roots
 
 ## CONVERGE-09 Domain Ownership
 
-CONVERGE-09 moved safe root-level domain implementation packages under `game/domains/`. The moved roots were implementation code only during inspection; domain schemas, registries, capabilities, protocols, authored content, docs, and tests remain governed by their own target roots.
+CONVERGE-09 moved safe root-level domain implementation packages under `game/domain/`. The moved roots were implementation code only during inspection; domain schemas, registries, capabilities, protocols, authored content, docs, and tests remain governed by their own target roots.
 
 Domain ownership surfaces are:
 
-- `game/domains/<domain>/` for Dominium domain rules, deterministic implementation, process semantics, and domain engines.
-- `contracts/schemas/<domain>/`, `contracts/registries/<domain>/`, `contracts/capabilities/<domain>/`, and `contracts/protocols/<domain>/` for machine-readable domain authority.
-- `content/domain-data/<domain>/` and `content/packs/` for authored source data, datasets, and pack material.
+- `game/domain/<domain>/` for Dominium domain rules, deterministic implementation, process semantics, and domain engines.
+- `contracts/schema/<domain>/`, `contracts/registry/<domain>/`, `contracts/capability/<domain>/`, and `contracts/protocol/<domain>/` for machine-readable domain authority.
+- `content/domains/<domain>/` and `content/packs/` for authored source data, datasets, and pack material.
 - `docs/domains/<domain>/` for human-readable domain explanation.
 - `tests/fixtures/<domain>/`, `tests/determinism/<domain>/`, `tests/regression/<domain>/`, and `tests/golden/<domain>/` for verification material.
 
@@ -167,7 +167,7 @@ Strict validators now block unexcepted ownership drift:
 - product entrypoints outside `apps/`
 - runtime adapters outside `runtime/`
 - schemas, registries, or contracts outside `contracts/`
-- domain roots outside the contracts/game/content/docs/tests split
+- domain roots outside the contracts/content/domains/game/docs/tests split
 - generated roots without generated policy or exception
 - unknown root files or directories
 

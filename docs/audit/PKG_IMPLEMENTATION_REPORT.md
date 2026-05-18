@@ -17,7 +17,7 @@ This report captures the current `dompkg` packaging pipeline state for `winnt/x8
 - `python scripts/ci/check_repox_rules.py --repo-root .`
 - `cmake --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game`
 - `cmake --build out/build/vs2026/verify --config Debug --target testx_all`
-- `dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`
+- `archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`
 - `cmake --build out/build/vs2026/verify --config Debug --target pkg_pack_all`
 - `cmake --build out/build/vs2026/verify --config Debug --target pkg_index_all`
 - `cmake --build out/build/vs2026/verify --config Debug --target pkg_verify_all`
@@ -25,9 +25,9 @@ This report captures the current `dompkg` packaging pipeline state for `winnt/x8
 
 ## Output Locations
 
-- Packages: `dist/pkg/winnt/x86_64/pkgs`
-- Package index: `dist/pkg/winnt/x86_64/index/pkg_index.json`
-- Build manifest: `dist/meta/winnt/x86_64/build_manifest.json`
+- Packages: `archive/generated/dist/pkg/winnt/x86_64/pkgs`
+- Package index: `archive/generated/dist/pkg/winnt/x86_64/index/pkg_index.json`
+- Build manifest: `archive/generated/dist/meta/winnt/x86_64/build_manifest.json`
 
 ## Produced Packages (pkg_id -> content_hash)
 

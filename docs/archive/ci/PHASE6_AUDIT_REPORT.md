@@ -184,7 +184,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/life/dom_life_continuation_tests.cpp`.
+- Evidence: `tests/game/life/dom_life_continuation_tests.cpp`.
 
 
 - Enforcement: `LIFE-CONT-DET-001`, `LIFE-CONT-AUTH-001`,
@@ -202,7 +202,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/life/dom_life_death_pipeline_tests.cpp`,
+- Evidence: `tests/game/life/dom_life_death_pipeline_tests.cpp`,
 
 
   `docs/LIFE_DEATH_PIPELINE.md`.
@@ -226,7 +226,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/life/dom_life_birth_tests.cpp`,
+- Evidence: `tests/game/life/dom_life_birth_tests.cpp`,
 
 
   `docs/LIFE_BIRTH_PIPELINE.md`.
@@ -250,7 +250,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/life/dom_life_remains_salvage_tests.cpp`,
+- Evidence: `tests/game/life/dom_life_remains_salvage_tests.cpp`,
 
 
   `docs/LIFE_REMAINS_SALVAGE.md`.
@@ -274,7 +274,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ0a/dom_civ0a_survival_tests.cpp`,
+- Evidence: `tests/game/civ0a/dom_civ0a_survival_tests.cpp`,
 
 
   `docs/specs/CIV0a_SURVIVAL_LOOP.md`.
@@ -292,7 +292,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/mp0/dom_mp0_parity_tests.cpp`,
+- Evidence: `tests/game/mp0/dom_mp0_parity_tests.cpp`,
 
 
   `docs/guides/OFFLINE_AND_LOCAL_MP.md`.
@@ -310,7 +310,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ0/dom_civ0_population_tests.cpp`,
+- Evidence: `tests/game/civ0/dom_civ0_population_tests.cpp`,
 
 
   `docs/specs/CIV0_POPULATION_GENESIS.md`.
@@ -328,7 +328,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ1/dom_civ1_city_infra_tests.cpp`,
+- Evidence: `tests/game/civ1/dom_civ1_city_infra_tests.cpp`,
 
 
   `docs/specs/CIV1_CITIES_INFRA.md`.
@@ -349,7 +349,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ2/civ2_governance_tests.cpp`,
+- Evidence: `tests/game/civ2/civ2_governance_tests.cpp`,
 
 
   `docs/specs/CIV2_GOVERNANCE.md`.
@@ -373,7 +373,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ3/dom_civ3_knowledge_tests.cpp`,
+- Evidence: `tests/game/civ3/dom_civ3_knowledge_tests.cpp`,
 
 
   `docs/specs/CIV3_KNOWLEDGE_TECH.md`.
@@ -397,7 +397,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `game/tests/civ4/dom_civ4_scale_tests.cpp`,
+- Evidence: `tests/game/civ4/dom_civ4_scale_tests.cpp`,
 
 
   `docs/specs/CIV4_SCALE_AND_LOGISTICS.md`.
@@ -418,7 +418,7 @@ Status: PASS
 Status: PASS
 
 
-- Evidence: `tools/validation/validate_all_main.cpp`,
+- Evidence: `tools/validators/suite/validate_all_main.cpp`,
 
 
   `tools/ci/validate_all.py`, `docs/policies/VALIDATION_AND_GOVERNANCE.md`.

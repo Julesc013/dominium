@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "View Mode Schema",
+  "version": "1.0.0",
+  "description": "Canonical camera view mode contract for deterministic process gating.",
+  "x-doc-ref": [
+    "docs/embodiment/CAMERA_AND_VIEW_LENSES.md",
+    "docs/contracts/refusal_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "view_mode_id",
+    "description",
+    "allowed_lens_ids",
+    "requires_embodiment",
+    "allowed_in_policies",
+    "required_entitlements",
+    "watermark_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "view_mode_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "allowed_lens_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requires_embodiment": {
+      "type": "boolean"
+    },
+    "allowed_in_policies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "lockstep",
+          "authoritative",
+          "hybrid"
+        ]
+      }
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "watermark_policy_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "view_mode_id": "view.third_person.player",
+      "description": "Third-person camera tethered to an embodied target.",
+      "allowed_lens_ids": [
+        "lens.diegetic.sensor"
+      ],
+      "requires_embodiment": true,
+      "allowed_in_policies": [
+        "lockstep",
+        "authoritative",
+        "hybrid"
+      ],
+      "required_entitlements": [
+        "entitlement.control.camera"
+      ],
+      "watermark_policy_id": null,
+      "extensions": {}
+    }
+  ]
+}

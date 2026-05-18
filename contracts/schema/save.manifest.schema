@@ -1,0 +1,56 @@
+SCHEMA: save.manifest.schema
+schema_id: dominium.schema.save_manifest
+schema_version: 1.1.0
+stability: core
+
+PURPOSE:
+- Define the legacy-compatible save manifest adapter for LIB-3 portable save identity and negotiation.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Saves do not imply instance ownership.
+- Save portability does not imply silent migration.
+- Save identity is not derived from host paths.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- semver: semantic version string `major.minor.patch`.
+- integer: non-negative whole number.
+- path_ref: relative or canonical path string (relative to save root when possible).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record save_manifest
+  required:
+    - save_id: id
+    - save_format_version: semver
+    - universe_identity_hash: id
+    - universe_contract_bundle_hash: id
+    - generator_version_id: id
+    - realism_profile_id: id
+    - pack_lock_hash: id
+    - overlay_manifest_hash: id
+    - mod_policy_id: id
+    - created_by_build_id: id
+    - migration_chain: [map]
+    - allow_read_only_open: bool
+    - deterministic_fingerprint: id
+    - extensions: map
+  optional:
+    - semantic_contract_registry_hash: id
+    - contract_bundle_hash: id
+    - contract_bundle_ref: path_ref
+    - state_snapshots_ref: path_ref
+    - patches_ref: path_ref
+    - proofs_ref: path_ref
+    - notes: map
+
+INVARIANTS:
+- Legacy adapter field `contract_bundle_hash` remains an alias for `universe_contract_bundle_hash`.
+- Saves must pin both `universe_contract_bundle_hash` and `pack_lock_hash`.
+- Save migration remains explicit and must be recorded in `migration_chain`.

@@ -99,7 +99,7 @@ Reusable verification surfaces already present:
 
 - `tools/xstack/testx/tests/geo8_testlib.py`
   - deterministic worldgen process fixture
-- `tools/geo/tool_replay_worldgen_cell.py`
+- `tools/validators/domain/geology/tool_replay_worldgen_cell.py`
   - replay/hash verification pattern for repeated worldgen
 - `tools/xstack/sessionx/process_runtime.py`
   - worldgen request/result artifact persistence

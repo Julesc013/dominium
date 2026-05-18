@@ -15,12 +15,12 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from runtime.appshell import appshell_main  # noqa: E402
-from runtime.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
-from runtime.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
+from runtime.shell import appshell_main  # noqa: E402
+from runtime.shell.pack_verifier_adapter import verify_pack_root  # noqa: E402
+from runtime.shell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
 from tools.validators.compatibility import descriptor_json_text, emit_product_descriptor  # noqa: E402
-from tools.libraries.install import default_install_registry_path, discover_install  # noqa: E402
-from release import (  # noqa: E402
+from tools.package.libraries.install import default_install_registry_path, discover_install  # noqa: E402
+from tools.release import (  # noqa: E402
     DEFAULT_RELEASE_MANIFEST_REL,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
@@ -207,7 +207,7 @@ def _validate_session_vs_dist(
         return _refusal(
             "REFUSE_SESSION_SPEC_INVALID",
             "session spec failed schema validation",
-            "Fix SessionSpec fields to satisfy contracts/schemas/session_spec.schema.json.",
+            "Fix SessionSpec fields to satisfy contracts/schema/session_spec.schema.json.",
             {"session_spec_path": _norm(os.path.relpath(spec_abs, repo_root))},
             "$.session_spec",
         )

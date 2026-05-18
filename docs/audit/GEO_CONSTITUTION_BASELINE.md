@@ -19,7 +19,7 @@ GEO-0 freezes the geometry portability contract around four first-class profiles
 - `GeometryPartitionProfile`
 - `ProjectionProfile`
 
-Universe space is now defined as topology + metric + partition + projection, rather than by ad hoc axis arithmetic. The constitutional source is `docs/geo/GEO_CONSTITUTION.md`.
+Universe space is now defined as topology + metric + partition + projection, rather than by ad hoc axis arithmetic. The constitutional source is `docs/domains/geology/GEO_CONSTITUTION.md`.
 
 ## 2) Retro Audit Summary
 

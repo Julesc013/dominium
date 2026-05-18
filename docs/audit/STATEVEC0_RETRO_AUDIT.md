@@ -24,7 +24,7 @@ Identify output-affecting internal state across SYS/COMPILE/process runtimes and
 - `src/chem/process_run_engine.py`
   - deterministic process run state rows (`process_run_state`) but no universal state-vector declaration link
 - `src/meta/compile/compile_engine.py`
-  - compile artifacts/proofs are explicit, but runtime state memory is extension-based and not governed by a declared state-vector definition.
+  - compile archive/generated/artifacts/proofs are explicit, but runtime state memory is extension-based and not governed by a declared state-vector definition.
 
 ## Candidate Hidden State Inventory
 

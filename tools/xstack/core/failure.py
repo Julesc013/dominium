@@ -30,7 +30,7 @@ _MESSAGES = {
 
 _HINTS = {
     FailureClass.MECHANICAL: "verify tool availability, command wiring, and environment setup",
-    FailureClass.STRUCTURAL: "validate contracts/schemas/registry contracts and required structural invariants",
+    FailureClass.STRUCTURAL: "validate contracts/schema/registry contracts and required structural invariants",
     FailureClass.SEMANTIC: "inspect invariant findings and adjust semantic logic",
     FailureClass.SECURITY: "review trust, privilege, and boundary controls",
     FailureClass.DRIFT: "reconcile artifact and policy drift against canonical baseline",

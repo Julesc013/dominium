@@ -16,8 +16,8 @@ Audited entrypoints:
 - `src/lib/install/install_validator.py`
 - `src/lib/provides/provider_resolution.py`
 - `src/packs/compat/pack_verification_pipeline.py`
-- `src/release/release_manifest_engine.py`
-- `src/release/update_resolver.py`
+- `src/tools/release/release_manifest_engine.py`
+- `src/tools/release/update_resolver.py`
 - `src/security/trust/trust_verifier.py`
 - `src/universe/universe_contract_enforcer.py`
 
@@ -69,7 +69,7 @@ Observed deterministic remediation surfaces:
   - `refusal_code`
   - `remediation_hint`
   - `decision_action_id`
-- `src/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists
+- `src/tools/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists
 
 Conclusion:
 
@@ -81,7 +81,7 @@ Conclusion:
 Current trust enforcement happens at these deterministic choke points:
 
 - `verify_artifact_trust(...)` in `src/security/trust/trust_verifier.py`
-- `verify_release_manifest(...)` in `src/release/release_manifest_engine.py`, which delegates manifest trust verification
+- `verify_release_manifest(...)` in `src/tools/release/release_manifest_engine.py`, which delegates manifest trust verification
 - `verify_pack_set(...)` in `src/packs/compat/pack_verification_pipeline.py`, which normalizes trust and overlay-conflict refusals
 
 Observed strict-trust behaviors:
@@ -132,7 +132,7 @@ Important observation:
 
 ## Release Index Policy Behavior
 
-`src/release/update_resolver.py` currently implements deterministic release-policy behavior:
+`src/tools/release/update_resolver.py` currently implements deterministic release-policy behavior:
 
 - `policy.latest_compatible` sets `allow_yanked = false`
 - yanked candidates are skipped deterministically under latest-compatible selection

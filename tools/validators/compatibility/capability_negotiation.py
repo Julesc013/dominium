@@ -6,21 +6,21 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from engine.platform.platform_probe import (
+from runtime.platform.platform_probe import (
     endpoint_descriptor_platform_snapshot,
     probe_platform_descriptor,
     project_feature_capabilities_for_platform,
 )
-from engine.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
+from runtime.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
-CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
-PRODUCT_REGISTRY_REL = os.path.join("data", "registries", "product_registry.json")
-COMPAT_MODE_REGISTRY_REL = os.path.join("data", "registries", "compat_mode_registry.json")
-SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
-DEGRADE_LADDER_REGISTRY_REL = os.path.join("data", "registries", "degrade_ladder_registry.json")
-CAPABILITY_FALLBACK_REGISTRY_REL = os.path.join("data", "registries", "capability_fallback_registry.json")
+CAPABILITY_REGISTRY_REL = os.path.join("contracts", "registry", "capability_registry.json")
+PRODUCT_REGISTRY_REL = os.path.join("contracts", "registry", "product_registry.json")
+COMPAT_MODE_REGISTRY_REL = os.path.join("contracts", "registry", "compat_mode_registry.json")
+SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("contracts", "registry", "semantic_contract_registry.json")
+DEGRADE_LADDER_REGISTRY_REL = os.path.join("contracts", "registry", "degrade_ladder_registry.json")
+CAPABILITY_FALLBACK_REGISTRY_REL = os.path.join("contracts", "registry", "capability_fallback_registry.json")
 
 REFUSAL_NO_COMMON_PROTOCOL = "refusal.compat.no_common_protocol"
 REFUSAL_CONTRACT_MISMATCH = "refusal.compat.contract_mismatch"

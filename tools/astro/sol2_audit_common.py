@@ -7,24 +7,24 @@ from typing import Iterable
 
 
 SOL2_SCOPE_PATHS = (
-    "game/domains/astronomy/ephemeris/",
-    "game/domains/astronomy/views/",
+    "game/domain/astronomy/ephemeris/",
+    "game/domain/astronomy/views/",
     "src/client/ui/",
     "tools/astro/",
 )
 
 SOL2_RUNTIME_SCAN_FILES = (
-    "game/domains/astronomy/ephemeris/kepler_proxy_engine.py",
-    "game/domains/astronomy/views/orbit_view_engine.py",
-    "apps/client/ui/viewer_shell.py",
+    "game/domain/astronomy/ephemeris/kepler_proxy_engine.py",
+    "game/domain/astronomy/views/orbit_view_engine.py",
+    "runtime/ui/client/viewer_shell.py",
     "tools/astro/sol2_runtime_common.py",
 )
 
 SOL2_TRUTH_SCAN_FILES = (
     "tools/xstack/sessionx/process_runtime.py",
     "apps/server/server_boot.py",
-    "contracts/schemas/universe_state.schema",
-    "contracts/schemas/universe_state.schema.json",
+    "contracts/schema/universe_state.schema",
+    "contracts/schema/universe_state.schema.json",
 )
 
 

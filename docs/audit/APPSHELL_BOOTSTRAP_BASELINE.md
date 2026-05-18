@@ -26,15 +26,15 @@ The shared bootstrap lives in `src/appshell/bootstrap.py` and is bound to
 
 The following product-facing surfaces now route through `appshell_main(...)`:
 
-- client via `tools/mvp/runtime_entry.py` and `dist/bin/dominium_client`
-- server via `tools/mvp/runtime_entry.py`, `src/server/server_main.py`, and `dist/bin/dominium_server`
-- setup via `tools/setup/setup_cli.py` and `dist/bin/setup`
-- launcher via `tools/launcher/launch.py` and `dist/bin/launcher`
-- engine via `dist/bin/engine` + `tools/appshell/product_stub_cli.py`
-- game via `dist/bin/game` + `tools/appshell/product_stub_cli.py`
-- tool attach-console stub via `dist/bin/tool_attach_console_stub` + `tools/appshell/product_stub_cli.py`
+- client via `tools/mvp/runtime_entry.py` and `archive/generated/dist/bin/dominium_client`
+- server via `tools/mvp/runtime_entry.py`, `src/server/server_main.py`, and `archive/generated/dist/bin/dominium_server`
+- setup via `tools/setup/setup_cli.py` and `archive/generated/dist/bin/setup`
+- launcher via `tools/launcher/launch.py` and `archive/generated/dist/bin/launcher`
+- engine via `archive/generated/dist/bin/engine` + `tools/validators/shell/product_stub_cli.py`
+- game via `archive/generated/dist/bin/game` + `tools/validators/shell/product_stub_cli.py`
+- tool attach-console stub via `archive/generated/dist/bin/tool_attach_console_stub` + `tools/validators/shell/product_stub_cli.py`
 
-Alias wrappers `dist/bin/client` and `dist/bin/server` remain thin aliases to the
+Alias wrappers `archive/generated/dist/bin/client` and `archive/generated/dist/bin/server` remain thin aliases to the
 AppShell-aware product wrappers.
 
 ## Shared Surfaces

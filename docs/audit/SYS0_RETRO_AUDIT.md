@@ -54,7 +54,7 @@ These are explicit process flows, but not unified under a formal SYS composition
 ## 4) Implicit Collapse Without Artifact Check
 No silent collapse path was found in the audited runtime paths.
 
-- Region transition emits transition artifacts/events.
+- Region transition emits transition archive/generated/artifacts/events.
 - Materialization collapse emits deterministic transition/event traces.
 - Cohort collapse emits deterministic state/event outputs.
 

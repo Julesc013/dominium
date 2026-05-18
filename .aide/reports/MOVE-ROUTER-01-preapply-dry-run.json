@@ -724,7 +724,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/__init__.py",
-      "target": "tools/core/__init__.py",
+      "target": "tools/validators/core/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -741,7 +741,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/constraints/__init__.py",
-      "target": "tools/core/constraints/__init__.py",
+      "target": "tools/validators/core/constraints/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -758,7 +758,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/constraints/constraint_engine.py",
-      "target": "tools/core/constraints/constraint_engine.py",
+      "target": "tools/validators/core/constraints/constraint_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -775,7 +775,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/flow/__init__.py",
-      "target": "tools/core/flow/__init__.py",
+      "target": "tools/validators/core/flow/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -792,7 +792,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/flow/flow_engine.py",
-      "target": "tools/core/flow/flow_engine.py",
+      "target": "tools/validators/core/flow/flow_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -809,7 +809,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/graph/__init__.py",
-      "target": "tools/core/graph/__init__.py",
+      "target": "tools/validators/core/graph/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -826,7 +826,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/graph/network_graph_engine.py",
-      "target": "tools/core/graph/network_graph_engine.py",
+      "target": "tools/validators/core/graph/network_graph_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -843,7 +843,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/graph/routing_engine.py",
-      "target": "tools/core/graph/routing_engine.py",
+      "target": "tools/validators/core/graph/routing_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -860,7 +860,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/hazards/__init__.py",
-      "target": "tools/core/hazards/__init__.py",
+      "target": "tools/validators/core/hazards/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -877,7 +877,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/hazards/hazard_engine.py",
-      "target": "tools/core/hazards/hazard_engine.py",
+      "target": "tools/validators/core/hazards/hazard_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -894,7 +894,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/schedule/__init__.py",
-      "target": "tools/core/schedule/__init__.py",
+      "target": "tools/validators/core/schedule/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -911,7 +911,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/schedule/schedule_engine.py",
-      "target": "tools/core/schedule/schedule_engine.py",
+      "target": "tools/validators/core/schedule/schedule_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -928,7 +928,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/spatial/__init__.py",
-      "target": "tools/core/spatial/__init__.py",
+      "target": "tools/validators/core/spatial/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -945,7 +945,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "core/spatial/spatial_engine.py",
-      "target": "tools/core/spatial/spatial_engine.py",
+      "target": "tools/validators/core/spatial/spatial_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -1013,7 +1013,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/agents/agent_context.json",
-      "target": "content/data/agents/agent_context.json",
+      "target": "archive/generated/agents/agent_context.json",
       "target_path_sanitized": false
     },
     {
@@ -1030,7 +1030,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/agents/task_intent_map.json",
-      "target": "content/data/agents/task_intent_map.json",
+      "target": "archive/generated/agents/task_intent_map.json",
       "target_path_sanitized": false
     },
     {
@@ -1047,7 +1047,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/analysis/duplicate_cluster_rankings.json",
-      "target": "content/data/analysis/duplicate_cluster_rankings.json",
+      "target": "archive/generated/analysis/duplicate_cluster_rankings.json",
       "target_path_sanitized": false
     },
     {
@@ -1064,7 +1064,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/analysis/implementation_scores.json",
-      "target": "content/data/analysis/implementation_scores.json",
+      "target": "archive/generated/analysis/implementation_scores.json",
       "target_path_sanitized": false
     },
     {
@@ -1081,7 +1081,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/architecture/architecture_graph.json",
-      "target": "content/data/architecture/architecture_graph.json",
+      "target": "archive/generated/architecture/architecture_graph.json",
       "target_path_sanitized": false
     },
     {
@@ -1098,7 +1098,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/architecture/architecture_graph.v1.json",
-      "target": "content/data/architecture/architecture_graph.v1.json",
+      "target": "archive/generated/architecture/architecture_graph.v1.json",
       "target_path_sanitized": false
     },
     {
@@ -1115,7 +1115,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/architecture/module_boundary_rules.v1.json",
-      "target": "content/data/architecture/module_boundary_rules.v1.json",
+      "target": "archive/generated/architecture/module_boundary_rules.v1.json",
       "target_path_sanitized": false
     },
     {
@@ -1132,7 +1132,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/architecture/module_dependency_graph.json",
-      "target": "content/data/architecture/module_dependency_graph.json",
+      "target": "archive/generated/architecture/module_dependency_graph.json",
       "target_path_sanitized": false
     },
     {
@@ -1183,7 +1183,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/architecture/repository_structure_lock.json",
-      "target": "content/data/architecture/repository_structure_lock.json",
+      "target": "archive/generated/architecture/repository_structure_lock.json",
       "target_path_sanitized": false
     },
     {
@@ -1302,7 +1302,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/milky_way/milky_way.anchors.json",
-      "target": "content/data/archive/world/milky_way/milky_way.anchors.json",
+      "target": "archive/historical/content/world/milky_way/milky_way.anchors.json",
       "target_path_sanitized": false
     },
     {
@@ -1319,7 +1319,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/milky_way/milky_way.arms.json",
-      "target": "content/data/archive/world/milky_way/milky_way.arms.json",
+      "target": "archive/historical/content/world/milky_way/milky_way.arms.json",
       "target_path_sanitized": false
     },
     {
@@ -1336,7 +1336,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/milky_way/milky_way.galaxy.json",
-      "target": "content/data/archive/world/milky_way/milky_way.galaxy.json",
+      "target": "archive/historical/content/world/milky_way/milky_way.galaxy.json",
       "target_path_sanitized": false
     },
     {
@@ -1353,7 +1353,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/milky_way/milky_way.procedural_rules.json",
-      "target": "content/data/archive/world/milky_way/milky_way.procedural_rules.json",
+      "target": "archive/historical/content/world/milky_way/milky_way.procedural_rules.json",
       "target_path_sanitized": false
     },
     {
@@ -1370,7 +1370,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/milky_way/milky_way.regions.json",
-      "target": "content/data/archive/world/milky_way/milky_way.regions.json",
+      "target": "archive/historical/content/world/milky_way/milky_way.regions.json",
       "target_path_sanitized": false
     },
     {
@@ -1421,7 +1421,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.body.json",
-      "target": "content/data/archive/world/sol/earth/earth.body.json",
+      "target": "archive/historical/content/world/sol/earth/earth.body.json",
       "target_path_sanitized": false
     },
     {
@@ -1438,7 +1438,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.climate/biome_tags.json",
-      "target": "content/data/archive/world/sol/earth/earth.climate/biome_tags.json",
+      "target": "archive/historical/content/world/sol/earth/earth.climate/biome_tags.json",
       "target_path_sanitized": false
     },
     {
@@ -1455,7 +1455,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.climate/climate_zones.json",
-      "target": "content/data/archive/world/sol/earth/earth.climate/climate_zones.json",
+      "target": "archive/historical/content/world/sol/earth/earth.climate/climate_zones.json",
       "target_path_sanitized": false
     },
     {
@@ -1489,7 +1489,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.orbits.json",
-      "target": "content/data/archive/world/sol/earth/earth.orbits.json",
+      "target": "archive/historical/content/world/sol/earth/earth.orbits.json",
       "target_path_sanitized": false
     },
     {
@@ -1506,7 +1506,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.regions/continents.json",
-      "target": "content/data/archive/world/sol/earth/earth.regions/continents.json",
+      "target": "archive/historical/content/world/sol/earth/earth.regions/continents.json",
       "target_path_sanitized": false
     },
     {
@@ -1523,7 +1523,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.regions/oceans.json",
-      "target": "content/data/archive/world/sol/earth/earth.regions/oceans.json",
+      "target": "archive/historical/content/world/sol/earth/earth.regions/oceans.json",
       "target_path_sanitized": false
     },
     {
@@ -1540,7 +1540,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.regions/polar_regions.json",
-      "target": "content/data/archive/world/sol/earth/earth.regions/polar_regions.json",
+      "target": "archive/historical/content/world/sol/earth/earth.regions/polar_regions.json",
       "target_path_sanitized": false
     },
     {
@@ -1557,7 +1557,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.regions/tectonic_plates.json",
-      "target": "content/data/archive/world/sol/earth/earth.regions/tectonic_plates.json",
+      "target": "archive/historical/content/world/sol/earth/earth.regions/tectonic_plates.json",
       "target_path_sanitized": false
     },
     {
@@ -1574,7 +1574,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.surfaces/atmosphere.volume.json",
-      "target": "content/data/archive/world/sol/earth/earth.surfaces/atmosphere.volume.json",
+      "target": "archive/historical/content/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "target_path_sanitized": false
     },
     {
@@ -1591,7 +1591,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.surfaces/land.surface.json",
-      "target": "content/data/archive/world/sol/earth/earth.surfaces/land.surface.json",
+      "target": "archive/historical/content/world/sol/earth/earth.surfaces/land.surface.json",
       "target_path_sanitized": false
     },
     {
@@ -1608,7 +1608,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.surfaces/ocean.surface.json",
-      "target": "content/data/archive/world/sol/earth/earth.surfaces/ocean.surface.json",
+      "target": "archive/historical/content/world/sol/earth/earth.surfaces/ocean.surface.json",
       "target_path_sanitized": false
     },
     {
@@ -1625,7 +1625,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/earth/earth.surfaces/subsurface.volume.json",
-      "target": "content/data/archive/world/sol/earth/earth.surfaces/subsurface.volume.json",
+      "target": "archive/historical/content/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "target_path_sanitized": false
     },
     {
@@ -1642,7 +1642,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.belts/asteroid_belt.json",
-      "target": "content/data/archive/world/sol/sol.belts/asteroid_belt.json",
+      "target": "archive/historical/content/world/sol/sol.belts/asteroid_belt.json",
       "target_path_sanitized": false
     },
     {
@@ -1659,7 +1659,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.belts/kuiper_belt.json",
-      "target": "content/data/archive/world/sol/sol.belts/kuiper_belt.json",
+      "target": "archive/historical/content/world/sol/sol.belts/kuiper_belt.json",
       "target_path_sanitized": false
     },
     {
@@ -1676,7 +1676,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.belts/oort_cloud.json",
-      "target": "content/data/archive/world/sol/sol.belts/oort_cloud.json",
+      "target": "archive/historical/content/world/sol/sol.belts/oort_cloud.json",
       "target_path_sanitized": false
     },
     {
@@ -1693,7 +1693,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/earth.json",
-      "target": "content/data/archive/world/sol/sol.bodies/earth.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/earth.json",
       "target_path_sanitized": false
     },
     {
@@ -1710,7 +1710,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/jupiter.json",
-      "target": "content/data/archive/world/sol/sol.bodies/jupiter.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/jupiter.json",
       "target_path_sanitized": false
     },
     {
@@ -1727,7 +1727,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/mars.json",
-      "target": "content/data/archive/world/sol/sol.bodies/mars.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/mars.json",
       "target_path_sanitized": false
     },
     {
@@ -1744,7 +1744,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/mercury.json",
-      "target": "content/data/archive/world/sol/sol.bodies/mercury.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/mercury.json",
       "target_path_sanitized": false
     },
     {
@@ -1761,7 +1761,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/neptune.json",
-      "target": "content/data/archive/world/sol/sol.bodies/neptune.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/neptune.json",
       "target_path_sanitized": false
     },
     {
@@ -1778,7 +1778,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/saturn.json",
-      "target": "content/data/archive/world/sol/sol.bodies/saturn.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/saturn.json",
       "target_path_sanitized": false
     },
     {
@@ -1795,7 +1795,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/sun.json",
-      "target": "content/data/archive/world/sol/sol.bodies/sun.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/sun.json",
       "target_path_sanitized": false
     },
     {
@@ -1812,7 +1812,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/uranus.json",
-      "target": "content/data/archive/world/sol/sol.bodies/uranus.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/uranus.json",
       "target_path_sanitized": false
     },
     {
@@ -1829,7 +1829,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.bodies/venus.json",
-      "target": "content/data/archive/world/sol/sol.bodies/venus.json",
+      "target": "archive/historical/content/world/sol/sol.bodies/venus.json",
       "target_path_sanitized": false
     },
     {
@@ -1846,7 +1846,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/callisto.json",
-      "target": "content/data/archive/world/sol/sol.moons/callisto.json",
+      "target": "archive/historical/content/world/sol/sol.moons/callisto.json",
       "target_path_sanitized": false
     },
     {
@@ -1863,7 +1863,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/deimos.json",
-      "target": "content/data/archive/world/sol/sol.moons/deimos.json",
+      "target": "archive/historical/content/world/sol/sol.moons/deimos.json",
       "target_path_sanitized": false
     },
     {
@@ -1880,7 +1880,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/enceladus.json",
-      "target": "content/data/archive/world/sol/sol.moons/enceladus.json",
+      "target": "archive/historical/content/world/sol/sol.moons/enceladus.json",
       "target_path_sanitized": false
     },
     {
@@ -1897,7 +1897,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/europa.json",
-      "target": "content/data/archive/world/sol/sol.moons/europa.json",
+      "target": "archive/historical/content/world/sol/sol.moons/europa.json",
       "target_path_sanitized": false
     },
     {
@@ -1914,7 +1914,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/ganymede.json",
-      "target": "content/data/archive/world/sol/sol.moons/ganymede.json",
+      "target": "archive/historical/content/world/sol/sol.moons/ganymede.json",
       "target_path_sanitized": false
     },
     {
@@ -1931,7 +1931,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/io.json",
-      "target": "content/data/archive/world/sol/sol.moons/io.json",
+      "target": "archive/historical/content/world/sol/sol.moons/io.json",
       "target_path_sanitized": false
     },
     {
@@ -1948,7 +1948,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/moon.json",
-      "target": "content/data/archive/world/sol/sol.moons/moon.json",
+      "target": "archive/historical/content/world/sol/sol.moons/moon.json",
       "target_path_sanitized": false
     },
     {
@@ -1965,7 +1965,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/phobos.json",
-      "target": "content/data/archive/world/sol/sol.moons/phobos.json",
+      "target": "archive/historical/content/world/sol/sol.moons/phobos.json",
       "target_path_sanitized": false
     },
     {
@@ -1982,7 +1982,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.moons/titan.json",
-      "target": "content/data/archive/world/sol/sol.moons/titan.json",
+      "target": "archive/historical/content/world/sol/sol.moons/titan.json",
       "target_path_sanitized": false
     },
     {
@@ -1999,7 +1999,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.orbits.json",
-      "target": "content/data/archive/world/sol/sol.orbits.json",
+      "target": "archive/historical/content/world/sol/sol.orbits.json",
       "target_path_sanitized": false
     },
     {
@@ -2016,7 +2016,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.surfaces.json",
-      "target": "content/data/archive/world/sol/sol.surfaces.json",
+      "target": "archive/historical/content/world/sol/sol.surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -2033,7 +2033,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/archive/world/sol/sol.system.json",
-      "target": "content/data/archive/world/sol/sol.system.json",
+      "target": "archive/historical/content/world/sol/sol.system.json",
       "target_path_sanitized": false
     },
     {
@@ -2067,7 +2067,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/arch_audit2_report.json",
-      "target": "content/data/audit/arch_audit2_report.json",
+      "target": "archive/generated/audit/arch_audit2_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2084,7 +2084,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/arch_audit_report.json",
-      "target": "content/data/audit/arch_audit_report.json",
+      "target": "archive/generated/audit/arch_audit_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2118,7 +2118,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/architecture_scan_report.json",
-      "target": "content/data/audit/architecture_scan_report.json",
+      "target": "archive/generated/audit/architecture_scan_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2169,7 +2169,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/build_graph.json",
-      "target": "content/data/audit/build_graph.json",
+      "target": "archive/generated/audit/build_graph.json",
       "target_path_sanitized": false
     },
     {
@@ -2186,7 +2186,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ci_run_report.json",
-      "target": "content/data/audit/ci_run_report.json",
+      "target": "archive/generated/audit/ci_run_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2203,7 +2203,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/clean_room_win64.json",
-      "target": "content/data/audit/clean_room_win64.json",
+      "target": "archive/generated/audit/clean_room_win64.json",
       "target_path_sanitized": false
     },
     {
@@ -2220,7 +2220,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/component_graph_report.json",
-      "target": "content/data/audit/component_graph_report.json",
+      "target": "archive/generated/audit/component_graph_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2254,7 +2254,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_final.json",
-      "target": "content/data/audit/convergence_final.json",
+      "target": "archive/generated/audit/convergence_final.json",
       "target_path_sanitized": false
     },
     {
@@ -2271,7 +2271,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/arch_audit.json",
-      "target": "content/data/audit/convergence_steps/arch_audit.json",
+      "target": "archive/generated/audit/convergence_steps/arch_audit.json",
       "target_path_sanitized": false
     },
     {
@@ -2288,7 +2288,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/cap_neg_interop.json",
-      "target": "content/data/audit/convergence_steps/cap_neg_interop.json",
+      "target": "archive/generated/audit/convergence_steps/cap_neg_interop.json",
       "target_path_sanitized": false
     },
     {
@@ -2305,7 +2305,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/dist_verify.json",
-      "target": "content/data/audit/convergence_steps/dist_verify.json",
+      "target": "archive/generated/audit/convergence_steps/dist_verify.json",
       "target_path_sanitized": false
     },
     {
@@ -2322,7 +2322,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/ipc_attach_smoke.json",
-      "target": "content/data/audit/convergence_steps/ipc_attach_smoke.json",
+      "target": "archive/generated/audit/convergence_steps/ipc_attach_smoke.json",
       "target_path_sanitized": false
     },
     {
@@ -2339,7 +2339,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/lib_stress.json",
-      "target": "content/data/audit/convergence_steps/lib_stress.json",
+      "target": "archive/generated/audit/convergence_steps/lib_stress.json",
       "target_path_sanitized": false
     },
     {
@@ -2356,7 +2356,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/meta_stability.json",
-      "target": "content/data/audit/convergence_steps/meta_stability.json",
+      "target": "archive/generated/audit/convergence_steps/meta_stability.json",
       "target_path_sanitized": false
     },
     {
@@ -2373,7 +2373,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/mvp_cross_platform.json",
-      "target": "content/data/audit/convergence_steps/mvp_cross_platform.json",
+      "target": "archive/generated/audit/convergence_steps/mvp_cross_platform.json",
       "target_path_sanitized": false
     },
     {
@@ -2390,7 +2390,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/mvp_smoke.json",
-      "target": "content/data/audit/convergence_steps/mvp_smoke.json",
+      "target": "archive/generated/audit/convergence_steps/mvp_smoke.json",
       "target_path_sanitized": false
     },
     {
@@ -2407,7 +2407,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/mvp_stress.json",
-      "target": "content/data/audit/convergence_steps/mvp_stress.json",
+      "target": "archive/generated/audit/convergence_steps/mvp_stress.json",
       "target_path_sanitized": false
     },
     {
@@ -2424,7 +2424,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/pack_compat_stress.json",
-      "target": "content/data/audit/convergence_steps/pack_compat_stress.json",
+      "target": "archive/generated/audit/convergence_steps/pack_compat_stress.json",
       "target_path_sanitized": false
     },
     {
@@ -2458,7 +2458,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/supervisor_hardening.json",
-      "target": "content/data/audit/convergence_steps/supervisor_hardening.json",
+      "target": "archive/generated/audit/convergence_steps/supervisor_hardening.json",
       "target_path_sanitized": false
     },
     {
@@ -2475,7 +2475,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/time_anchor.json",
-      "target": "content/data/audit/convergence_steps/time_anchor.json",
+      "target": "archive/generated/audit/convergence_steps/time_anchor.json",
       "target_path_sanitized": false
     },
     {
@@ -2492,7 +2492,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/convergence_steps/validation_strict.json",
-      "target": "content/data/audit/convergence_steps/validation_strict.json",
+      "target": "archive/generated/audit/convergence_steps/validation_strict.json",
       "target_path_sanitized": false
     },
     {
@@ -2509,7 +2509,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/disaster_suite_run.json",
-      "target": "content/data/audit/disaster_suite_run.json",
+      "target": "archive/generated/audit/disaster_suite_run.json",
       "target_path_sanitized": false
     },
     {
@@ -2526,7 +2526,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist5_ux_smoke.json",
-      "target": "content/data/audit/dist5_ux_smoke.json",
+      "target": "archive/generated/audit/dist5_ux_smoke.json",
       "target_path_sanitized": false
     },
     {
@@ -2577,7 +2577,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist6_interop_minor_protocol_drift.json",
-      "target": "content/data/audit/dist6_interop_minor_protocol_drift.json",
+      "target": "archive/generated/audit/dist6_interop_minor_protocol_drift.json",
       "target_path_sanitized": false
     },
     {
@@ -2594,7 +2594,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist6_interop_pack_lock_mismatch.json",
-      "target": "content/data/audit/dist6_interop_pack_lock_mismatch.json",
+      "target": "archive/generated/audit/dist6_interop_pack_lock_mismatch.json",
       "target_path_sanitized": false
     },
     {
@@ -2611,7 +2611,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist6_interop_same_build_identical_rebuild.json",
-      "target": "content/data/audit/dist6_interop_same_build_identical_rebuild.json",
+      "target": "archive/generated/audit/dist6_interop_same_build_identical_rebuild.json",
       "target_path_sanitized": false
     },
     {
@@ -2628,7 +2628,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist6_interop_same_build_same_build.json",
-      "target": "content/data/audit/dist6_interop_same_build_same_build.json",
+      "target": "archive/generated/audit/dist6_interop_same_build_same_build.json",
       "target_path_sanitized": false
     },
     {
@@ -2645,7 +2645,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist6_interop_same_version_cross_platform.json",
-      "target": "content/data/audit/dist6_interop_same_version_cross_platform.json",
+      "target": "archive/generated/audit/dist6_interop_same_version_cross_platform.json",
       "target_path_sanitized": false
     },
     {
@@ -2662,7 +2662,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist_content_audit.json",
-      "target": "content/data/audit/dist_content_audit.json",
+      "target": "archive/generated/audit/dist_content_audit.json",
       "target_path_sanitized": false
     },
     {
@@ -2696,7 +2696,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist_tree_assembly_report.json",
-      "target": "content/data/audit/dist_tree_assembly_report.json",
+      "target": "archive/generated/audit/dist_tree_assembly_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2713,7 +2713,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/dist_verify_win64.json",
-      "target": "content/data/audit/dist_verify_win64.json",
+      "target": "archive/generated/audit/dist_verify_win64.json",
       "target_path_sanitized": false
     },
     {
@@ -2730,7 +2730,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/distribution_architecture_report.json",
-      "target": "content/data/audit/distribution_architecture_report.json",
+      "target": "archive/generated/audit/distribution_architecture_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2747,7 +2747,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/doc_inventory.json",
-      "target": "content/data/audit/doc_inventory.json",
+      "target": "archive/generated/audit/doc_inventory.json",
       "target_path_sanitized": false
     },
     {
@@ -2764,7 +2764,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/duplicate_clusters.json",
-      "target": "content/data/audit/duplicate_clusters.json",
+      "target": "archive/generated/audit/duplicate_clusters.json",
       "target_path_sanitized": false
     },
     {
@@ -2781,7 +2781,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/duplicate_impls.json",
-      "target": "content/data/audit/duplicate_impls.json",
+      "target": "archive/generated/audit/duplicate_impls.json",
       "target_path_sanitized": false
     },
     {
@@ -2798,7 +2798,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ecosystem_verify_run.json",
-      "target": "content/data/audit/ecosystem_verify_run.json",
+      "target": "archive/generated/audit/ecosystem_verify_run.json",
       "target_path_sanitized": false
     },
     {
@@ -2815,7 +2815,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/gameplay_verify.json",
-      "target": "content/data/audit/gameplay_verify.json",
+      "target": "archive/generated/audit/gameplay_verify.json",
       "target_path_sanitized": false
     },
     {
@@ -2849,7 +2849,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/include_graph.json",
-      "target": "content/data/audit/include_graph.json",
+      "target": "archive/generated/audit/include_graph.json",
       "target_path_sanitized": false
     },
     {
@@ -2866,7 +2866,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/install_discovery_report.json",
-      "target": "content/data/audit/install_discovery_report.json",
+      "target": "archive/generated/audit/install_discovery_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2883,7 +2883,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/install_profile_report.json",
-      "target": "content/data/audit/install_profile_report.json",
+      "target": "archive/generated/audit/install_profile_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2900,7 +2900,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ipc_unify_report.json",
-      "target": "content/data/audit/ipc_unify_report.json",
+      "target": "archive/generated/audit/ipc_unify_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2917,7 +2917,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/migration_lifecycle_report.json",
-      "target": "content/data/audit/migration_lifecycle_report.json",
+      "target": "archive/generated/audit/migration_lifecycle_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2934,7 +2934,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/numeric_discipline_report.json",
-      "target": "content/data/audit/numeric_discipline_report.json",
+      "target": "archive/generated/audit/numeric_discipline_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2951,7 +2951,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/observability_report.json",
-      "target": "content/data/audit/observability_report.json",
+      "target": "archive/generated/audit/observability_report.json",
       "target_path_sanitized": false
     },
     {
@@ -2968,7 +2968,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/offline_archive_verify.json",
-      "target": "content/data/audit/offline_archive_verify.json",
+      "target": "archive/generated/audit/offline_archive_verify.json",
       "target_path_sanitized": false
     },
     {
@@ -2985,7 +2985,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/platform_formalize_report.json",
-      "target": "content/data/audit/platform_formalize_report.json",
+      "target": "archive/generated/audit/platform_formalize_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3019,7 +3019,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/release_identity_report.json",
-      "target": "content/data/audit/release_identity_report.json",
+      "target": "archive/generated/audit/release_identity_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3053,7 +3053,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/repo_inventory.json",
-      "target": "content/data/audit/repo_inventory.json",
+      "target": "archive/generated/audit/repo_inventory.json",
       "target_path_sanitized": false
     },
     {
@@ -3070,7 +3070,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/shadow_modules.json",
-      "target": "content/data/audit/shadow_modules.json",
+      "target": "archive/generated/audit/shadow_modules.json",
       "target_path_sanitized": false
     },
     {
@@ -3087,7 +3087,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/src_directory_report.json",
-      "target": "content/data/audit/src_directory_report.json",
+      "target": "archive/generated/audit/src_directory_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3104,7 +3104,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/store_gc_report.json",
-      "target": "content/data/audit/store_gc_report.json",
+      "target": "archive/generated/audit/store_gc_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3121,7 +3121,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/store_verify_report.json",
-      "target": "content/data/audit/store_verify_report.json",
+      "target": "archive/generated/audit/store_verify_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3138,7 +3138,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/supervisor_hardening_report.json",
-      "target": "content/data/audit/supervisor_hardening_report.json",
+      "target": "archive/generated/audit/supervisor_hardening_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3155,7 +3155,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/symbol_index.json",
-      "target": "content/data/audit/symbol_index.json",
+      "target": "archive/generated/audit/symbol_index.json",
       "target_path_sanitized": false
     },
     {
@@ -3189,7 +3189,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/trust_model_report.json",
-      "target": "content/data/audit/trust_model_report.json",
+      "target": "archive/generated/audit/trust_model_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3206,7 +3206,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/trust_strict_run.json",
-      "target": "content/data/audit/trust_strict_run.json",
+      "target": "archive/generated/audit/trust_strict_run.json",
       "target_path_sanitized": false
     },
     {
@@ -3223,7 +3223,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ui_surface_report.json",
-      "target": "content/data/audit/ui_surface_report.json",
+      "target": "archive/generated/audit/ui_surface_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3257,7 +3257,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_entrypoints.json",
-      "target": "content/data/audit/ultra_repo_audit_entrypoints.json",
+      "target": "archive/generated/audit/ultra_repo_audit_entrypoints.json",
       "target_path_sanitized": false
     },
     {
@@ -3274,7 +3274,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_gap_ledger.json",
-      "target": "content/data/audit/ultra_repo_audit_gap_ledger.json",
+      "target": "archive/generated/audit/ultra_repo_audit_gap_ledger.json",
       "target_path_sanitized": false
     },
     {
@@ -3291,7 +3291,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_product_assembly_plan.json",
-      "target": "content/data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "target": "archive/generated/audit/ultra_repo_audit_product_assembly_plan.json",
       "target_path_sanitized": false
     },
     {
@@ -3308,7 +3308,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_reuse_plan.json",
-      "target": "content/data/audit/ultra_repo_audit_reuse_plan.json",
+      "target": "archive/generated/audit/ultra_repo_audit_reuse_plan.json",
       "target_path_sanitized": false
     },
     {
@@ -3325,7 +3325,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_system_inventory.json",
-      "target": "content/data/audit/ultra_repo_audit_system_inventory.json",
+      "target": "archive/generated/audit/ultra_repo_audit_system_inventory.json",
       "target_path_sanitized": false
     },
     {
@@ -3342,7 +3342,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/ultra_repo_audit_wiring_map.json",
-      "target": "content/data/audit/ultra_repo_audit_wiring_map.json",
+      "target": "archive/generated/audit/ultra_repo_audit_wiring_map.json",
       "target_path_sanitized": false
     },
     {
@@ -3359,7 +3359,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/universal_identity_report.json",
-      "target": "content/data/audit/universal_identity_report.json",
+      "target": "archive/generated/audit/universal_identity_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3376,7 +3376,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/update_model_report.json",
-      "target": "content/data/audit/update_model_report.json",
+      "target": "archive/generated/audit/update_model_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3393,7 +3393,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/update_sim_run.json",
-      "target": "content/data/audit/update_sim_run.json",
+      "target": "archive/generated/audit/update_sim_run.json",
       "target_path_sanitized": false
     },
     {
@@ -3410,7 +3410,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/validation_report_FAST.json",
-      "target": "content/data/audit/validation_report_FAST.json",
+      "target": "archive/generated/audit/validation_report_FAST.json",
       "target_path_sanitized": false
     },
     {
@@ -3427,7 +3427,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/validation_report_STRICT.json",
-      "target": "content/data/audit/validation_report_STRICT.json",
+      "target": "archive/generated/audit/validation_report_STRICT.json",
       "target_path_sanitized": false
     },
     {
@@ -3444,7 +3444,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/virtual_paths_report.json",
-      "target": "content/data/audit/virtual_paths_report.json",
+      "target": "archive/generated/audit/virtual_paths_report.json",
       "target_path_sanitized": false
     },
     {
@@ -3461,7 +3461,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/worldgen_lock_verify.json",
-      "target": "content/data/audit/worldgen_lock_verify.json",
+      "target": "archive/generated/audit/worldgen_lock_verify.json",
       "target_path_sanitized": false
     },
     {
@@ -3478,7 +3478,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/xi5a_preflight_archive_fix.json",
-      "target": "content/data/audit/xi5a_preflight_archive_fix.json",
+      "target": "archive/generated/audit/xi5a_preflight_archive_fix.json",
       "target_path_sanitized": false
     },
     {
@@ -3495,7 +3495,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/xi5a_preflight_disaster_cleanup_fix.json",
-      "target": "content/data/audit/xi5a_preflight_disaster_cleanup_fix.json",
+      "target": "archive/generated/audit/xi5a_preflight_disaster_cleanup_fix.json",
       "target_path_sanitized": false
     },
     {
@@ -3512,7 +3512,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/audit/xi5a_preflight_repair.json",
-      "target": "content/data/audit/xi5a_preflight_repair.json",
+      "target": "archive/generated/audit/xi5a_preflight_repair.json",
       "target_path_sanitized": false
     },
     {
@@ -3835,7 +3835,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/final_prompt_inventory.json",
-      "target": "content/data/blueprint/final_prompt_inventory.json",
+      "target": "archive/generated/blueprint/final_prompt_inventory.json",
       "target_path_sanitized": false
     },
     {
@@ -3852,7 +3852,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/foundation_phases.json",
-      "target": "content/data/blueprint/foundation_phases.json",
+      "target": "archive/generated/blueprint/foundation_phases.json",
       "target_path_sanitized": false
     },
     {
@@ -3869,7 +3869,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/manual_review_gates.json",
-      "target": "content/data/blueprint/manual_review_gates.json",
+      "target": "archive/generated/blueprint/manual_review_gates.json",
       "target_path_sanitized": false
     },
     {
@@ -3903,7 +3903,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/prompt_dependency_tree.json",
-      "target": "content/data/blueprint/prompt_dependency_tree.json",
+      "target": "archive/generated/blueprint/prompt_dependency_tree.json",
       "target_path_sanitized": false
     },
     {
@@ -3954,7 +3954,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/repo_reality_reconciliation_rules.json",
-      "target": "content/data/blueprint/repo_reality_reconciliation_rules.json",
+      "target": "archive/generated/blueprint/repo_reality_reconciliation_rules.json",
       "target_path_sanitized": false
     },
     {
@@ -3971,7 +3971,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/series_dependency_graph.json",
-      "target": "content/data/blueprint/series_dependency_graph.json",
+      "target": "archive/generated/blueprint/series_dependency_graph.json",
       "target_path_sanitized": false
     },
     {
@@ -3988,7 +3988,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/series_execution_strategy.json",
-      "target": "content/data/blueprint/series_execution_strategy.json",
+      "target": "archive/generated/blueprint/series_execution_strategy.json",
       "target_path_sanitized": false
     },
     {
@@ -4005,7 +4005,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/snapshot_mapping_template.json",
-      "target": "content/data/blueprint/snapshot_mapping_template.json",
+      "target": "archive/generated/blueprint/snapshot_mapping_template.json",
       "target_path_sanitized": false
     },
     {
@@ -4022,7 +4022,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/blueprint/stop_conditions.json",
-      "target": "content/data/blueprint/stop_conditions.json",
+      "target": "archive/generated/blueprint/stop_conditions.json",
       "target_path_sanitized": false
     },
     {
@@ -4124,7 +4124,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/defaults/profiles/modern_2020.tlv",
-      "target": "content/data/defaults/profiles/modern_2020.tlv",
+      "target": "content/defaults/profiles/modern_2020.tlv",
       "target_path_sanitized": false
     },
     {
@@ -4141,7 +4141,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/defaults/profiles/retro_1990s.tlv",
-      "target": "content/data/defaults/profiles/retro_1990s.tlv",
+      "target": "content/defaults/profiles/retro_1990s.tlv",
       "target_path_sanitized": false
     },
     {
@@ -4158,7 +4158,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/defaults/profiles/server_mmo.tlv",
-      "target": "content/data/defaults/profiles/server_mmo.tlv",
+      "target": "content/defaults/profiles/server_mmo.tlv",
       "target_path_sanitized": false
     },
     {
@@ -4192,7 +4192,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/governance/deprecations.json",
-      "target": "content/data/governance/deprecations.json",
+      "target": "contracts/governance/deprecations.json",
       "target_path_sanitized": false
     },
     {
@@ -4209,7 +4209,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/governance/governance_profile.json",
-      "target": "content/data/governance/governance_profile.json",
+      "target": "contracts/governance/governance_profile.json",
       "target_path_sanitized": false
     },
     {
@@ -4396,7 +4396,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.body.earth_macro/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.body.earth_macro/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.body.earth_macro/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4413,7 +4413,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4430,7 +4430,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.rules/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.base.rules/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.base.rules/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -4481,7 +4481,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.rules/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.rules/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.rules/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4498,7 +4498,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.rules/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.rules/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.rules/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4532,7 +4532,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.scenarios.minimal/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.scenarios.minimal/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.scenarios.minimal/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4549,7 +4549,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4600,7 +4600,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.system.sol/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.system.sol/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.system.sol/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4617,7 +4617,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.system.sol/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.system.sol/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.system.sol/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4668,7 +4668,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.topology/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.topology/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.topology/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4685,7 +4685,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.topology/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.topology/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.topology/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4753,7 +4753,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.universe.milkyway/pack.manifest",
-      "target": "contracts/packs/org.dominium.base.universe.milkyway/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.base.universe.milkyway/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -4770,7 +4770,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4838,7 +4838,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4906,7 +4906,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -4974,7 +4974,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5042,7 +5042,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5110,7 +5110,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5178,7 +5178,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5195,7 +5195,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
-      "target": "contracts/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
+      "target": "contracts/package/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
       "target_path_sanitized": false
     },
     {
@@ -5212,7 +5212,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.contracts.basic/docs/README.md",
-      "target": "contracts/packs/org.dominium.core.contracts.basic/docs/README.md",
+      "target": "contracts/package/packs/org.dominium.core.contracts.basic/docs/README.md",
       "target_path_sanitized": false
     },
     {
@@ -5229,7 +5229,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.contracts.basic/pack.toml",
-      "target": "contracts/packs/org.dominium.core.contracts.basic/pack.toml",
+      "target": "contracts/package/packs/org.dominium.core.contracts.basic/pack.toml",
       "target_path_sanitized": false
     },
     {
@@ -5246,7 +5246,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.contracts.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.contracts.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.contracts.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5314,7 +5314,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.ecology.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.ecology.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.ecology.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5382,7 +5382,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5450,7 +5450,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.hazards.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.hazards.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.hazards.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5518,7 +5518,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5586,7 +5586,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.institutions.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.institutions.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.institutions.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5654,7 +5654,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.instruments.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.instruments.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.instruments.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5722,7 +5722,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5790,7 +5790,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5858,7 +5858,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.interfaces/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.interfaces/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.interfaces/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5926,7 +5926,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.law.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.law.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.law.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -5994,7 +5994,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.materials.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.materials.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.materials.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6062,7 +6062,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.materials.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.materials.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.materials.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6130,7 +6130,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.parts.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.parts.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.parts.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6198,7 +6198,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.parts.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.parts.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.parts.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6266,7 +6266,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.population.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.population.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.population.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6334,7 +6334,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.processes.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.processes.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.processes.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6402,7 +6402,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.processes.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.processes.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.processes.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6470,7 +6470,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.quality.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.quality.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.quality.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6538,7 +6538,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.settlements.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.settlements.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.settlements.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6623,7 +6623,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.signals.baseline/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.signals.baseline/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.signals.baseline/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6708,7 +6708,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.signals.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.signals.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.signals.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6776,7 +6776,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.standards.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.standards.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.standards.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6844,7 +6844,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.standards.certification/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.standards.certification/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.standards.certification/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6912,7 +6912,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.standards.extended/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.standards.extended/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.standards.extended/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -6980,7 +6980,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.trade.basic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.trade.basic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.trade.basic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7065,7 +7065,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.core.units/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.core.units/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.core.units/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7082,7 +7082,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.epistemics.core/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.epistemics.core/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.epistemics.core/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -7218,7 +7218,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.epistemics.core/pack.manifest",
-      "target": "contracts/packs/org.dominium.epistemics.core/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.epistemics.core/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -7235,7 +7235,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.epistemics.core/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.epistemics.core/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.epistemics.core/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7269,7 +7269,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.false_science/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.examples.false_science/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.examples.false_science/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -7405,7 +7405,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.false_science/pack.manifest",
-      "target": "contracts/packs/org.dominium.examples.false_science/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.examples.false_science/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -7422,7 +7422,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.false_science/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.examples.false_science/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.examples.false_science/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7456,7 +7456,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -7592,7 +7592,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.lost_civilization/pack.manifest",
-      "target": "contracts/packs/org.dominium.examples.lost_civilization/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.examples.lost_civilization/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -7609,7 +7609,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7626,7 +7626,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.magic_earth/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.examples.magic_earth/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.examples.magic_earth/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -7745,7 +7745,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.magic_earth/pack.manifest",
-      "target": "contracts/packs/org.dominium.examples.magic_earth/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.examples.magic_earth/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -7762,7 +7762,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.magic_earth/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.examples.magic_earth/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.examples.magic_earth/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7779,7 +7779,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.multicosmology/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.examples.multicosmology/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.examples.multicosmology/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -7881,7 +7881,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.multicosmology/pack.manifest",
-      "target": "contracts/packs/org.dominium.examples.multicosmology/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.examples.multicosmology/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -7898,7 +7898,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.multicosmology/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.examples.multicosmology/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.examples.multicosmology/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -7915,7 +7915,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -8034,7 +8034,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.realistic_earth/pack.manifest",
-      "target": "contracts/packs/org.dominium.examples.realistic_earth/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.examples.realistic_earth/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -8051,7 +8051,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -8085,7 +8085,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -8221,7 +8221,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
-      "target": "contracts/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -8238,7 +8238,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -8408,7 +8408,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.lib.on_planet.processes/pack.manifest",
-      "target": "contracts/packs/org.dominium.lib.on_planet.processes/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.lib.on_planet.processes/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -8425,7 +8425,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -8442,7 +8442,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alchemy/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.realities.alchemy/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.realities.alchemy/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -8612,7 +8612,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alchemy/pack.manifest",
-      "target": "contracts/packs/org.dominium.realities.alchemy/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.realities.alchemy/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -8629,7 +8629,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alchemy/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.realities.alchemy/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.realities.alchemy/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -8646,7 +8646,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alt_physics/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.realities.alt_physics/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.realities.alt_physics/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -8782,7 +8782,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alt_physics/pack.manifest",
-      "target": "contracts/packs/org.dominium.realities.alt_physics/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.realities.alt_physics/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -8799,7 +8799,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.alt_physics/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.realities.alt_physics/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.realities.alt_physics/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -8816,7 +8816,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.astrology/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.realities.astrology/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.realities.astrology/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -8986,7 +8986,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.astrology/pack.manifest",
-      "target": "contracts/packs/org.dominium.realities.astrology/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.realities.astrology/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9003,7 +9003,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.astrology/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.realities.astrology/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.realities.astrology/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9020,7 +9020,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.hyperspace/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.realities.hyperspace/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.realities.hyperspace/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -9190,7 +9190,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.hyperspace/pack.manifest",
-      "target": "contracts/packs/org.dominium.realities.hyperspace/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.realities.hyperspace/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9207,7 +9207,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.hyperspace/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.realities.hyperspace/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.realities.hyperspace/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9224,7 +9224,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.magic/content/capabilities.json",
-      "target": "contracts/packs/org.dominium.realities.magic/content/capabilities.json",
+      "target": "contracts/package/packs/org.dominium.realities.magic/content/capabilities.json",
       "target_path_sanitized": false
     },
     {
@@ -9394,7 +9394,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.magic/pack.manifest",
-      "target": "contracts/packs/org.dominium.realities.magic/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.realities.magic/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9411,7 +9411,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.realities.magic/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.realities.magic/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.realities.magic/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9496,7 +9496,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9581,7 +9581,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9683,7 +9683,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.body/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.base.body/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.body/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9700,7 +9700,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.body/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.base.body/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.body/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9836,7 +9836,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9853,7 +9853,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -9955,7 +9955,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -9972,7 +9972,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10074,7 +10074,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -10091,7 +10091,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10193,7 +10193,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.system/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.base.system/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.system/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -10210,7 +10210,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.base.system/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.base.system/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.base.system/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10295,7 +10295,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.minimal/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.minimal/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.minimal/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10431,7 +10431,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -10448,7 +10448,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10550,7 +10550,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -10567,7 +10567,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10686,7 +10686,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.sol/pack.manifest",
-      "target": "contracts/packs/org.dominium.worldgen.real.sol/pack.manifest",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.sol/pack.manifest",
       "target_path_sanitized": false
     },
     {
@@ -10703,7 +10703,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
-      "target": "contracts/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
+      "target": "contracts/package/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
       "target_path_sanitized": false
     },
     {
@@ -10737,7 +10737,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/perf/perf_report_win64.json",
-      "target": "content/data/perf/perf_report_win64.json",
+      "target": "archive/generated/performance/perf_report_win64.json",
       "target_path_sanitized": false
     },
     {
@@ -10754,7 +10754,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10771,7 +10771,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10788,7 +10788,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10805,7 +10805,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10822,7 +10822,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10839,7 +10839,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "target_path_sanitized": false
     },
     {
@@ -10856,7 +10856,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_ya_safe_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10873,7 +10873,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_yc_safe_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_yc_safe_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_yc_safe_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10890,7 +10890,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
       "target_path_sanitized": false
     },
     {
@@ -10907,7 +10907,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
-      "target": "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "target": "contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
       "target_path_sanitized": false
     },
     {
@@ -10924,7 +10924,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
-      "target": "content/data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
+      "target": "contracts/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
       "target_path_sanitized": false
     },
     {
@@ -10941,7 +10941,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/dependency_graph_post_pi.json",
-      "target": "content/data/planning/dependency_graph_post_pi.json",
+      "target": "contracts/planning/dependency_graph_post_pi.json",
       "target_path_sanitized": false
     },
     {
@@ -10975,7 +10975,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/final_prompt_inventory.json",
-      "target": "content/data/planning/final_prompt_inventory.json",
+      "target": "contracts/planning/final_prompt_inventory.json",
       "target_path_sanitized": false
     },
     {
@@ -11077,7 +11077,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/merged_series_state.json",
-      "target": "content/data/planning/merged_series_state.json",
+      "target": "contracts/planning/merged_series_state.json",
       "target_path_sanitized": false
     },
     {
@@ -11094,7 +11094,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/next_execution_order_post_phib5.json",
-      "target": "content/data/planning/next_execution_order_post_phib5.json",
+      "target": "contracts/planning/next_execution_order_post_phib5.json",
       "target_path_sanitized": false
     },
     {
@@ -11111,7 +11111,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/next_execution_order_post_za_first_wave.json",
-      "target": "content/data/planning/next_execution_order_post_za_first_wave.json",
+      "target": "contracts/planning/next_execution_order_post_za_first_wave.json",
       "target_path_sanitized": false
     },
     {
@@ -11128,7 +11128,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/next_execution_order_post_zeta.json",
-      "target": "content/data/planning/next_execution_order_post_zeta.json",
+      "target": "contracts/planning/next_execution_order_post_zeta.json",
       "target_path_sanitized": false
     },
     {
@@ -11145,7 +11145,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/next_execution_order_post_zp.json",
-      "target": "content/data/planning/next_execution_order_post_zp.json",
+      "target": "contracts/planning/next_execution_order_post_zp.json",
       "target_path_sanitized": false
     },
     {
@@ -11162,7 +11162,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/next_two_series_plan_phib_upsilon.json",
-      "target": "content/data/planning/next_two_series_plan_phib_upsilon.json",
+      "target": "contracts/planning/next_two_series_plan_phib_upsilon.json",
       "target_path_sanitized": false
     },
     {
@@ -11213,7 +11213,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/agent_instruction_surfaces.json",
-      "target": "content/data/planning/reality/agent_instruction_surfaces.json",
+      "target": "contracts/planning/reality/agent_instruction_surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -11230,7 +11230,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/content_domain_surfaces.json",
-      "target": "content/data/planning/reality/content_domain_surfaces.json",
+      "target": "contracts/planning/reality/content_domain_surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -11247,7 +11247,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/control_plane_surfaces.json",
-      "target": "content/data/planning/reality/control_plane_surfaces.json",
+      "target": "contracts/planning/reality/control_plane_surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -11264,7 +11264,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/module_map.json",
-      "target": "content/data/planning/reality/module_map.json",
+      "target": "contracts/planning/reality/module_map.json",
       "target_path_sanitized": false
     },
     {
@@ -11281,7 +11281,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/product_entrypoints.json",
-      "target": "content/data/planning/reality/product_entrypoints.json",
+      "target": "contracts/planning/reality/product_entrypoints.json",
       "target_path_sanitized": false
     },
     {
@@ -11298,7 +11298,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/runtime_surfaces.json",
-      "target": "content/data/planning/reality/runtime_surfaces.json",
+      "target": "contracts/planning/reality/runtime_surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -11332,7 +11332,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reality/toolchain_and_preset_map.json",
-      "target": "content/data/planning/reality/toolchain_and_preset_map.json",
+      "target": "contracts/planning/reality/toolchain_and_preset_map.json",
       "target_path_sanitized": false
     },
     {
@@ -11349,7 +11349,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reconciliation/assumption_invalidations.json",
-      "target": "content/data/planning/reconciliation/assumption_invalidations.json",
+      "target": "contracts/planning/reconciliation/assumption_invalidations.json",
       "target_path_sanitized": false
     },
     {
@@ -11366,7 +11366,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-      "target": "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+      "target": "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
       "target_path_sanitized": false
     },
     {
@@ -11383,7 +11383,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/reconciliation/subsystem_classification.json",
-      "target": "content/data/planning/reconciliation/subsystem_classification.json",
+      "target": "contracts/planning/reconciliation/subsystem_classification.json",
       "target_path_sanitized": false
     },
     {
@@ -11468,7 +11468,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/planning/zeta_final_admissible_scope.json",
-      "target": "content/data/planning/zeta_final_admissible_scope.json",
+      "target": "contracts/planning/zeta_final_admissible_scope.json",
       "target_path_sanitized": false
     },
     {
@@ -11876,7 +11876,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/refactor/convergence_actions.json",
-      "target": "content/data/refactor/convergence_actions.json",
+      "target": "archive/generated/refactor/convergence_actions.json",
       "target_path_sanitized": false
     },
     {
@@ -11893,7 +11893,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/refactor/convergence_execution_log.json",
-      "target": "content/data/refactor/convergence_execution_log.json",
+      "target": "archive/generated/refactor/convergence_execution_log.json",
       "target_path_sanitized": false
     },
     {
@@ -11910,7 +11910,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/refactor/convergence_plan.json",
-      "target": "content/data/refactor/convergence_plan.json",
+      "target": "archive/generated/refactor/convergence_plan.json",
       "target_path_sanitized": false
     },
     {
@@ -11927,7 +11927,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/refactor/convergence_risk_map.json",
-      "target": "content/data/refactor/convergence_risk_map.json",
+      "target": "archive/generated/refactor/convergence_risk_map.json",
       "target_path_sanitized": false
     },
     {
@@ -17214,7 +17214,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/registries/schema_version_policy.json",
-      "target": "contracts/schema/registries/schema_version_policy.json",
+      "target": "contracts/schema/registry/schema_version_policy.json",
       "target_path_sanitized": false
     },
     {
@@ -19475,7 +19475,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/release/dist_final_expected_artifacts.json",
-      "target": "content/data/release/dist_final_expected_artifacts.json",
+      "target": "archive/generated/release/dist_final_expected_artifacts.json",
       "target_path_sanitized": false
     },
     {
@@ -19747,7 +19747,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/checkpoint_c_repo_mega_structure_review.json",
-      "target": "content/data/repo/checkpoint_c_repo_mega_structure_review.json",
+      "target": "archive/generated/repo/checkpoint_c_repo_mega_structure_review.json",
       "target_path_sanitized": false
     },
     {
@@ -19764,7 +19764,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
-      "target": "content/data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "target": "archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json",
       "target_path_sanitized": false
     },
     {
@@ -19781,7 +19781,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
-      "target": "content/data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "target": "archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
       "target_path_sanitized": false
     },
     {
@@ -19798,7 +19798,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_non_negotiables_and_current_reality.json",
-      "target": "content/data/repo/repo_non_negotiables_and_current_reality.json",
+      "target": "archive/generated/repo/repo_non_negotiables_and_current_reality.json",
       "target_path_sanitized": false
     },
     {
@@ -19815,7 +19815,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_phased_migration_shims_validation_and_rollback.json",
-      "target": "content/data/repo/repo_phased_migration_shims_validation_and_rollback.json",
+      "target": "archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json",
       "target_path_sanitized": false
     },
     {
@@ -19832,7 +19832,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_target_topology_options_and_comparison.json",
-      "target": "content/data/repo/repo_target_topology_options_and_comparison.json",
+      "target": "archive/generated/repo/repo_target_topology_options_and_comparison.json",
       "target_path_sanitized": false
     },
     {
@@ -19849,7 +19849,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
-      "target": "content/data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "target": "archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json",
       "target_path_sanitized": false
     },
     {
@@ -19866,7 +19866,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping.json",
-      "target": "content/data/restructure/src_domain_mapping.json",
+      "target": "archive/generated/restructure/src_domain_mapping.json",
       "target_path_sanitized": false
     },
     {
@@ -19883,7 +19883,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_attic_approved.json",
-      "target": "content/data/restructure/src_domain_mapping_attic_approved.json",
+      "target": "archive/generated/restructure/src_domain_mapping_attic_approved.json",
       "target_path_sanitized": false
     },
     {
@@ -19900,7 +19900,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_candidates.json",
-      "target": "content/data/restructure/src_domain_mapping_candidates.json",
+      "target": "archive/generated/restructure/src_domain_mapping_candidates.json",
       "target_path_sanitized": false
     },
     {
@@ -19917,7 +19917,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_conflicts.json",
-      "target": "content/data/restructure/src_domain_mapping_conflicts.json",
+      "target": "archive/generated/restructure/src_domain_mapping_conflicts.json",
       "target_path_sanitized": false
     },
     {
@@ -19934,7 +19934,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_decisions.json",
-      "target": "content/data/restructure/src_domain_mapping_decisions.json",
+      "target": "archive/generated/restructure/src_domain_mapping_decisions.json",
       "target_path_sanitized": false
     },
     {
@@ -19951,7 +19951,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_deferred.json",
-      "target": "content/data/restructure/src_domain_mapping_deferred.json",
+      "target": "archive/generated/restructure/src_domain_mapping_deferred.json",
       "target_path_sanitized": false
     },
     {
@@ -19968,7 +19968,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_lock_approved.json",
-      "target": "content/data/restructure/src_domain_mapping_lock_approved.json",
+      "target": "archive/generated/restructure/src_domain_mapping_lock_approved.json",
       "target_path_sanitized": false
     },
     {
@@ -19985,7 +19985,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_lock_approved_v2.json",
-      "target": "content/data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "target": "archive/generated/restructure/src_domain_mapping_lock_approved_v2.json",
       "target_path_sanitized": false
     },
     {
@@ -20002,7 +20002,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_lock_approved_v3.json",
-      "target": "content/data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "target": "archive/generated/restructure/src_domain_mapping_lock_approved_v3.json",
       "target_path_sanitized": false
     },
     {
@@ -20019,7 +20019,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_lock_approved_v4.json",
-      "target": "content/data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "target": "archive/generated/restructure/src_domain_mapping_lock_approved_v4.json",
       "target_path_sanitized": false
     },
     {
@@ -20036,7 +20036,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_lock_proposal.json",
-      "target": "content/data/restructure/src_domain_mapping_lock_proposal.json",
+      "target": "archive/generated/restructure/src_domain_mapping_lock_proposal.json",
       "target_path_sanitized": false
     },
     {
@@ -20053,7 +20053,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_target_paths.json",
-      "target": "content/data/restructure/src_domain_mapping_target_paths.json",
+      "target": "archive/generated/restructure/src_domain_mapping_target_paths.json",
       "target_path_sanitized": false
     },
     {
@@ -20070,7 +20070,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_target_paths_v3.json",
-      "target": "content/data/restructure/src_domain_mapping_target_paths_v3.json",
+      "target": "archive/generated/restructure/src_domain_mapping_target_paths_v3.json",
       "target_path_sanitized": false
     },
     {
@@ -20087,7 +20087,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_domain_mapping_target_paths_v4.json",
-      "target": "content/data/restructure/src_domain_mapping_target_paths_v4.json",
+      "target": "archive/generated/restructure/src_domain_mapping_target_paths_v4.json",
       "target_path_sanitized": false
     },
     {
@@ -20104,7 +20104,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_generated_set.json",
-      "target": "content/data/restructure/src_generated_set.json",
+      "target": "archive/generated/restructure/src_generated_set.json",
       "target_path_sanitized": false
     },
     {
@@ -20121,7 +20121,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_legacy_set.json",
-      "target": "content/data/restructure/src_legacy_set.json",
+      "target": "archive/generated/restructure/src_legacy_set.json",
       "target_path_sanitized": false
     },
     {
@@ -20138,7 +20138,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_runtime_critical_set.json",
-      "target": "content/data/restructure/src_runtime_critical_set.json",
+      "target": "archive/generated/restructure/src_runtime_critical_set.json",
       "target_path_sanitized": false
     },
     {
@@ -20172,7 +20172,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/src_tool_only_set.json",
-      "target": "content/data/restructure/src_tool_only_set.json",
+      "target": "archive/generated/restructure/src_tool_only_set.json",
       "target_path_sanitized": false
     },
     {
@@ -20223,7 +20223,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi4z_fix1_report.json",
-      "target": "content/data/restructure/xi4z_fix1_report.json",
+      "target": "archive/generated/restructure/xi4z_fix1_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20240,7 +20240,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi4z_fix2_report.json",
-      "target": "content/data/restructure/xi4z_fix2_report.json",
+      "target": "archive/generated/restructure/xi4z_fix2_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20257,7 +20257,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi4z_fix3_report.json",
-      "target": "content/data/restructure/xi4z_fix3_report.json",
+      "target": "archive/generated/restructure/xi4z_fix3_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20274,7 +20274,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi4z_fix_report.json",
-      "target": "content/data/restructure/xi4z_fix_report.json",
+      "target": "archive/generated/restructure/xi4z_fix_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20359,7 +20359,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5a_attic_map.json",
-      "target": "content/data/restructure/xi5a_attic_map.json",
+      "target": "archive/generated/restructure/xi5a_attic_map.json",
       "target_path_sanitized": false
     },
     {
@@ -20376,7 +20376,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5a_execution_log.json",
-      "target": "content/data/restructure/xi5a_execution_log.json",
+      "target": "archive/generated/restructure/xi5a_execution_log.json",
       "target_path_sanitized": false
     },
     {
@@ -20393,7 +20393,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5a_move_map.json",
-      "target": "content/data/restructure/xi5a_move_map.json",
+      "target": "archive/generated/restructure/xi5a_move_map.json",
       "target_path_sanitized": false
     },
     {
@@ -20410,7 +20410,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5a_postmove_residual_src_report.json",
-      "target": "content/data/restructure/xi5a_postmove_residual_src_report.json",
+      "target": "archive/generated/restructure/xi5a_postmove_residual_src_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20427,7 +20427,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x1_batch_plan.json",
-      "target": "content/data/restructure/xi5x1_batch_plan.json",
+      "target": "archive/generated/restructure/xi5x1_batch_plan.json",
       "target_path_sanitized": false
     },
     {
@@ -20444,7 +20444,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x1_execution_log.json",
-      "target": "content/data/restructure/xi5x1_execution_log.json",
+      "target": "archive/generated/restructure/xi5x1_execution_log.json",
       "target_path_sanitized": false
     },
     {
@@ -20461,7 +20461,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x1_postmove_residual_src_report.json",
-      "target": "content/data/restructure/xi5x1_postmove_residual_src_report.json",
+      "target": "archive/generated/restructure/xi5x1_postmove_residual_src_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20478,7 +20478,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x1_residual_classification_lock.json",
-      "target": "content/data/restructure/xi5x1_residual_classification_lock.json",
+      "target": "archive/generated/restructure/xi5x1_residual_classification_lock.json",
       "target_path_sanitized": false
     },
     {
@@ -20495,7 +20495,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x1_xi6_gate_model.json",
-      "target": "content/data/restructure/xi5x1_xi6_gate_model.json",
+      "target": "archive/generated/restructure/xi5x1_xi6_gate_model.json",
       "target_path_sanitized": false
     },
     {
@@ -20512,7 +20512,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_batch_plan.json",
-      "target": "content/data/restructure/xi5x2_batch_plan.json",
+      "target": "archive/generated/restructure/xi5x2_batch_plan.json",
       "target_path_sanitized": false
     },
     {
@@ -20529,7 +20529,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_blocked_preconditions.json",
-      "target": "content/data/restructure/xi5x2_blocked_preconditions.json",
+      "target": "archive/generated/restructure/xi5x2_blocked_preconditions.json",
       "target_path_sanitized": false
     },
     {
@@ -20546,7 +20546,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_blocker_delta.json",
-      "target": "content/data/restructure/xi5x2_blocker_delta.json",
+      "target": "archive/generated/restructure/xi5x2_blocker_delta.json",
       "target_path_sanitized": false
     },
     {
@@ -20563,7 +20563,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_execution_log.json",
-      "target": "content/data/restructure/xi5x2_execution_log.json",
+      "target": "archive/generated/restructure/xi5x2_execution_log.json",
       "target_path_sanitized": false
     },
     {
@@ -20580,7 +20580,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_manual_review_queue.json",
-      "target": "content/data/restructure/xi5x2_manual_review_queue.json",
+      "target": "archive/generated/restructure/xi5x2_manual_review_queue.json",
       "target_path_sanitized": false
     },
     {
@@ -20597,7 +20597,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_platform_adapter_review.json",
-      "target": "content/data/restructure/xi5x2_platform_adapter_review.json",
+      "target": "archive/generated/restructure/xi5x2_platform_adapter_review.json",
       "target_path_sanitized": false
     },
     {
@@ -20614,7 +20614,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_postmove_residual_src_report.json",
-      "target": "content/data/restructure/xi5x2_postmove_residual_src_report.json",
+      "target": "archive/generated/restructure/xi5x2_postmove_residual_src_report.json",
       "target_path_sanitized": false
     },
     {
@@ -20631,7 +20631,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_residual_classification_lock.json",
-      "target": "content/data/restructure/xi5x2_residual_classification_lock.json",
+      "target": "archive/generated/restructure/xi5x2_residual_classification_lock.json",
       "target_path_sanitized": false
     },
     {
@@ -20648,7 +20648,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_residual_reality_refresh.json",
-      "target": "content/data/restructure/xi5x2_residual_reality_refresh.json",
+      "target": "archive/generated/restructure/xi5x2_residual_reality_refresh.json",
       "target_path_sanitized": false
     },
     {
@@ -20682,7 +20682,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/restructure/xi5x2_xi6_gate_model.json",
-      "target": "content/data/restructure/xi5x2_xi6_gate_model.json",
+      "target": "archive/generated/restructure/xi5x2_xi6_gate_model.json",
       "target_path_sanitized": false
     },
     {
@@ -20954,7 +20954,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/session_templates/session.mvp_default.json",
-      "target": "content/data/session_templates/session.mvp_default.json",
+      "target": "content/templates/session/session.mvp_default.json",
       "target_path_sanitized": false
     },
     {
@@ -21005,7 +21005,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/milky_way/milky_way.anchors.json",
-      "target": "content/data/world/milky_way/milky_way.anchors.json",
+      "target": "content/domains/world/milky_way/milky_way.anchors.json",
       "target_path_sanitized": false
     },
     {
@@ -21022,7 +21022,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/milky_way/milky_way.arms.json",
-      "target": "content/data/world/milky_way/milky_way.arms.json",
+      "target": "content/domains/world/milky_way/milky_way.arms.json",
       "target_path_sanitized": false
     },
     {
@@ -21039,7 +21039,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/milky_way/milky_way.galaxy.json",
-      "target": "content/data/world/milky_way/milky_way.galaxy.json",
+      "target": "content/domains/world/milky_way/milky_way.galaxy.json",
       "target_path_sanitized": false
     },
     {
@@ -21056,7 +21056,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/milky_way/milky_way.procedural_rules.json",
-      "target": "content/data/world/milky_way/milky_way.procedural_rules.json",
+      "target": "content/domains/world/milky_way/milky_way.procedural_rules.json",
       "target_path_sanitized": false
     },
     {
@@ -21073,7 +21073,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/milky_way/milky_way.regions.json",
-      "target": "content/data/world/milky_way/milky_way.regions.json",
+      "target": "content/domains/world/milky_way/milky_way.regions.json",
       "target_path_sanitized": false
     },
     {
@@ -21107,7 +21107,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.body.json",
-      "target": "content/data/world/sol/earth/earth.body.json",
+      "target": "content/domains/world/sol/earth/earth.body.json",
       "target_path_sanitized": false
     },
     {
@@ -21124,7 +21124,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.climate/biome_tags.json",
-      "target": "content/data/world/sol/earth/earth.climate/biome_tags.json",
+      "target": "content/domains/world/sol/earth/earth.climate/biome_tags.json",
       "target_path_sanitized": false
     },
     {
@@ -21141,7 +21141,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.climate/climate_zones.json",
-      "target": "content/data/world/sol/earth/earth.climate/climate_zones.json",
+      "target": "content/domains/world/sol/earth/earth.climate/climate_zones.json",
       "target_path_sanitized": false
     },
     {
@@ -21175,7 +21175,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.orbits.json",
-      "target": "content/data/world/sol/earth/earth.orbits.json",
+      "target": "content/domains/world/sol/earth/earth.orbits.json",
       "target_path_sanitized": false
     },
     {
@@ -21192,7 +21192,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.regions/continents.json",
-      "target": "content/data/world/sol/earth/earth.regions/continents.json",
+      "target": "content/domains/world/sol/earth/earth.regions/continents.json",
       "target_path_sanitized": false
     },
     {
@@ -21209,7 +21209,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.regions/oceans.json",
-      "target": "content/data/world/sol/earth/earth.regions/oceans.json",
+      "target": "content/domains/world/sol/earth/earth.regions/oceans.json",
       "target_path_sanitized": false
     },
     {
@@ -21226,7 +21226,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.regions/polar_regions.json",
-      "target": "content/data/world/sol/earth/earth.regions/polar_regions.json",
+      "target": "content/domains/world/sol/earth/earth.regions/polar_regions.json",
       "target_path_sanitized": false
     },
     {
@@ -21243,7 +21243,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.regions/tectonic_plates.json",
-      "target": "content/data/world/sol/earth/earth.regions/tectonic_plates.json",
+      "target": "content/domains/world/sol/earth/earth.regions/tectonic_plates.json",
       "target_path_sanitized": false
     },
     {
@@ -21260,7 +21260,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.surfaces/atmosphere.volume.json",
-      "target": "content/data/world/sol/earth/earth.surfaces/atmosphere.volume.json",
+      "target": "content/domains/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "target_path_sanitized": false
     },
     {
@@ -21277,7 +21277,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.surfaces/land.surface.json",
-      "target": "content/data/world/sol/earth/earth.surfaces/land.surface.json",
+      "target": "content/domains/world/sol/earth/earth.surfaces/land.surface.json",
       "target_path_sanitized": false
     },
     {
@@ -21294,7 +21294,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.surfaces/ocean.surface.json",
-      "target": "content/data/world/sol/earth/earth.surfaces/ocean.surface.json",
+      "target": "content/domains/world/sol/earth/earth.surfaces/ocean.surface.json",
       "target_path_sanitized": false
     },
     {
@@ -21311,7 +21311,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/earth/earth.surfaces/subsurface.volume.json",
-      "target": "content/data/world/sol/earth/earth.surfaces/subsurface.volume.json",
+      "target": "content/domains/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "target_path_sanitized": false
     },
     {
@@ -21328,7 +21328,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.belts/kuiper_belt.json",
-      "target": "content/data/world/sol/sol.belts/kuiper_belt.json",
+      "target": "content/domains/world/sol/sol.belts/kuiper_belt.json",
       "target_path_sanitized": false
     },
     {
@@ -21345,7 +21345,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.belts/main_belt.json",
-      "target": "content/data/world/sol/sol.belts/main_belt.json",
+      "target": "content/domains/world/sol/sol.belts/main_belt.json",
       "target_path_sanitized": false
     },
     {
@@ -21362,7 +21362,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.belts/oort_belt.json",
-      "target": "content/data/world/sol/sol.belts/oort_belt.json",
+      "target": "content/domains/world/sol/sol.belts/oort_belt.json",
       "target_path_sanitized": false
     },
     {
@@ -21379,7 +21379,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/earth.json",
-      "target": "content/data/world/sol/sol.bodies/earth.json",
+      "target": "content/domains/world/sol/sol.bodies/earth.json",
       "target_path_sanitized": false
     },
     {
@@ -21396,7 +21396,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/jupiter.json",
-      "target": "content/data/world/sol/sol.bodies/jupiter.json",
+      "target": "content/domains/world/sol/sol.bodies/jupiter.json",
       "target_path_sanitized": false
     },
     {
@@ -21413,7 +21413,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/mars.json",
-      "target": "content/data/world/sol/sol.bodies/mars.json",
+      "target": "content/domains/world/sol/sol.bodies/mars.json",
       "target_path_sanitized": false
     },
     {
@@ -21430,7 +21430,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/mercury.json",
-      "target": "content/data/world/sol/sol.bodies/mercury.json",
+      "target": "content/domains/world/sol/sol.bodies/mercury.json",
       "target_path_sanitized": false
     },
     {
@@ -21447,7 +21447,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/neptune.json",
-      "target": "content/data/world/sol/sol.bodies/neptune.json",
+      "target": "content/domains/world/sol/sol.bodies/neptune.json",
       "target_path_sanitized": false
     },
     {
@@ -21464,7 +21464,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/saturn.json",
-      "target": "content/data/world/sol/sol.bodies/saturn.json",
+      "target": "content/domains/world/sol/sol.bodies/saturn.json",
       "target_path_sanitized": false
     },
     {
@@ -21481,7 +21481,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/sol_star.json",
-      "target": "content/data/world/sol/sol.bodies/sol_star.json",
+      "target": "content/domains/world/sol/sol.bodies/sol_star.json",
       "target_path_sanitized": false
     },
     {
@@ -21498,7 +21498,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/uranus.json",
-      "target": "content/data/world/sol/sol.bodies/uranus.json",
+      "target": "content/domains/world/sol/sol.bodies/uranus.json",
       "target_path_sanitized": false
     },
     {
@@ -21515,7 +21515,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.bodies/venus.json",
-      "target": "content/data/world/sol/sol.bodies/venus.json",
+      "target": "content/domains/world/sol/sol.bodies/venus.json",
       "target_path_sanitized": false
     },
     {
@@ -21532,7 +21532,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/callisto.json",
-      "target": "content/data/world/sol/sol.moons/callisto.json",
+      "target": "content/domains/world/sol/sol.moons/callisto.json",
       "target_path_sanitized": false
     },
     {
@@ -21549,7 +21549,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/deimos.json",
-      "target": "content/data/world/sol/sol.moons/deimos.json",
+      "target": "content/domains/world/sol/sol.moons/deimos.json",
       "target_path_sanitized": false
     },
     {
@@ -21566,7 +21566,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/europa.json",
-      "target": "content/data/world/sol/sol.moons/europa.json",
+      "target": "content/domains/world/sol/sol.moons/europa.json",
       "target_path_sanitized": false
     },
     {
@@ -21583,7 +21583,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/ganymede.json",
-      "target": "content/data/world/sol/sol.moons/ganymede.json",
+      "target": "content/domains/world/sol/sol.moons/ganymede.json",
       "target_path_sanitized": false
     },
     {
@@ -21600,7 +21600,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/io.json",
-      "target": "content/data/world/sol/sol.moons/io.json",
+      "target": "content/domains/world/sol/sol.moons/io.json",
       "target_path_sanitized": false
     },
     {
@@ -21617,7 +21617,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/moon.json",
-      "target": "content/data/world/sol/sol.moons/moon.json",
+      "target": "content/domains/world/sol/sol.moons/moon.json",
       "target_path_sanitized": false
     },
     {
@@ -21634,7 +21634,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/phobos.json",
-      "target": "content/data/world/sol/sol.moons/phobos.json",
+      "target": "content/domains/world/sol/sol.moons/phobos.json",
       "target_path_sanitized": false
     },
     {
@@ -21651,7 +21651,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/titan.json",
-      "target": "content/data/world/sol/sol.moons/titan.json",
+      "target": "content/domains/world/sol/sol.moons/titan.json",
       "target_path_sanitized": false
     },
     {
@@ -21668,7 +21668,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.moons/triton.json",
-      "target": "content/data/world/sol/sol.moons/triton.json",
+      "target": "content/domains/world/sol/sol.moons/triton.json",
       "target_path_sanitized": false
     },
     {
@@ -21685,7 +21685,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.orbits.json",
-      "target": "content/data/world/sol/sol.orbits.json",
+      "target": "content/domains/world/sol/sol.orbits.json",
       "target_path_sanitized": false
     },
     {
@@ -21702,7 +21702,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.surfaces.json",
-      "target": "content/data/world/sol/sol.surfaces.json",
+      "target": "content/domains/world/sol/sol.surfaces.json",
       "target_path_sanitized": false
     },
     {
@@ -21719,7 +21719,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/world/sol/sol.system.json",
-      "target": "content/data/world/sol/sol.system.json",
+      "target": "content/domains/world/sol/sol.system.json",
       "target_path_sanitized": false
     },
     {
@@ -22195,7 +22195,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/checkpoint_c_xstack_aide_closure.json",
-      "target": "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "target": "archive/generated/xstack/checkpoint_c_xstack_aide_closure.json",
       "target_path_sanitized": false
     },
     {
@@ -22229,7 +22229,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/gate_definitions.json",
-      "target": "content/data/xstack/gate_definitions.json",
+      "target": "archive/generated/xstack/gate_definitions.json",
       "target_path_sanitized": false
     },
     {
@@ -22246,7 +22246,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/next_execution_order_post_xstack_aide.json",
-      "target": "content/data/xstack/next_execution_order_post_xstack_aide.json",
+      "target": "archive/generated/xstack/next_execution_order_post_xstack_aide.json",
       "target_path_sanitized": false
     },
     {
@@ -22263,7 +22263,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/xstack_inventory_and_classification.json",
-      "target": "content/data/xstack/xstack_inventory_and_classification.json",
+      "target": "archive/generated/xstack/xstack_inventory_and_classification.json",
       "target_path_sanitized": false
     },
     {
@@ -22280,7 +22280,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/xstack_scope_freeze.json",
-      "target": "content/data/xstack/xstack_scope_freeze.json",
+      "target": "archive/generated/xstack/xstack_scope_freeze.json",
       "target_path_sanitized": false
     },
     {
@@ -22297,7 +22297,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "data/xstack/xstack_to_aide_extraction_map.json",
-      "target": "content/data/xstack/xstack_to_aide_extraction_map.json",
+      "target": "archive/generated/xstack/xstack_to_aide_extraction_map.json",
       "target_path_sanitized": false
     },
     {
@@ -22348,7 +22348,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/__init__.py",
-      "target": "tools/libraries/__init__.py",
+      "target": "tools/package/libraries/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22365,7 +22365,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/artifact/__init__.py",
-      "target": "tools/libraries/artifact/__init__.py",
+      "target": "tools/package/libraries/artifact/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22382,7 +22382,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/artifact/artifact_validator.py",
-      "target": "tools/libraries/artifact/artifact_validator.py",
+      "target": "tools/package/libraries/artifact/artifact_validator.py",
       "target_path_sanitized": false
     },
     {
@@ -22399,7 +22399,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/bundle/__init__.py",
-      "target": "tools/libraries/bundle/__init__.py",
+      "target": "tools/package/libraries/bundle/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22416,7 +22416,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/bundle/bundle_manifest.py",
-      "target": "tools/libraries/bundle/bundle_manifest.py",
+      "target": "tools/package/libraries/bundle/bundle_manifest.py",
       "target_path_sanitized": false
     },
     {
@@ -22433,7 +22433,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/export/__init__.py",
-      "target": "tools/libraries/export/__init__.py",
+      "target": "tools/package/libraries/export/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22450,7 +22450,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/export/export_engine.py",
-      "target": "engine/export/export_engine.py",
+      "target": "tools/export/export_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -22467,7 +22467,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/import/__init__.py",
-      "target": "tools/libraries/import/__init__.py",
+      "target": "tools/package/libraries/import/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22484,7 +22484,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/import/import_engine.py",
-      "target": "engine/import/import_engine.py",
+      "target": "tools/import/import_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -22501,7 +22501,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/install/__init__.py",
-      "target": "tools/libraries/install/__init__.py",
+      "target": "tools/package/libraries/install/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22518,7 +22518,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/install/install_discovery_engine.py",
-      "target": "engine/install/install_discovery_engine.py",
+      "target": "runtime/package/install_discovery_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -22535,7 +22535,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/install/install_validator.py",
-      "target": "tools/libraries/install/install_validator.py",
+      "target": "tools/package/libraries/install/install_validator.py",
       "target_path_sanitized": false
     },
     {
@@ -22552,7 +22552,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/instance/__init__.py",
-      "target": "tools/libraries/instance/__init__.py",
+      "target": "tools/package/libraries/instance/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22569,7 +22569,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/instance/instance_clone.py",
-      "target": "tools/libraries/instance/instance_clone.py",
+      "target": "tools/package/libraries/instance/instance_clone.py",
       "target_path_sanitized": false
     },
     {
@@ -22586,7 +22586,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/instance/instance_validator.py",
-      "target": "tools/libraries/instance/instance_validator.py",
+      "target": "tools/package/libraries/instance/instance_validator.py",
       "target_path_sanitized": false
     },
     {
@@ -22603,7 +22603,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/provides/__init__.py",
-      "target": "tools/libraries/provides/__init__.py",
+      "target": "tools/package/libraries/provides/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22620,7 +22620,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/provides/provider_resolution.py",
-      "target": "tools/libraries/provides/provider_resolution.py",
+      "target": "tools/package/libraries/provides/provider_resolution.py",
       "target_path_sanitized": false
     },
     {
@@ -22637,7 +22637,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/save/__init__.py",
-      "target": "tools/libraries/save/__init__.py",
+      "target": "tools/package/libraries/save/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22654,7 +22654,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/save/save_validator.py",
-      "target": "tools/libraries/save/save_validator.py",
+      "target": "tools/package/libraries/save/save_validator.py",
       "target_path_sanitized": false
     },
     {
@@ -22671,7 +22671,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/store/__init__.py",
-      "target": "tools/libraries/store/__init__.py",
+      "target": "tools/package/libraries/store/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -22688,7 +22688,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "lib/store/gc_engine.py",
-      "target": "engine/store/gc_engine.py",
+      "target": "runtime/storage/gc_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -22739,7 +22739,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/CMakeLists.txt",
-      "target": "runtime/shell/appcore/CMakeLists.txt",
+      "target": "runtime/shell/CMakeLists.txt",
       "target_path_sanitized": false
     },
     {
@@ -22756,7 +22756,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/command/command_dispatch.c",
-      "target": "runtime/shell/appcore/command/command_dispatch.c",
+      "target": "runtime/shell/command/command_dispatch.c",
       "target_path_sanitized": false
     },
     {
@@ -22773,7 +22773,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/command/command_registry.c",
-      "target": "runtime/shell/appcore/command/command_registry.c",
+      "target": "runtime/shell/command/command_registry.c",
       "target_path_sanitized": false
     },
     {
@@ -22790,7 +22790,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/command/command_registry.h",
-      "target": "runtime/shell/appcore/command/command_registry.h",
+      "target": "runtime/shell/command/command_registry.h",
       "target_path_sanitized": false
     },
     {
@@ -22807,7 +22807,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/discover/appcore_discover.c",
-      "target": "runtime/shell/appcore/discover/appcore_discover.c",
+      "target": "runtime/shell/discover/appcore_discover.c",
       "target_path_sanitized": false
     },
     {
@@ -22824,7 +22824,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/discover/appcore_discover.h",
-      "target": "runtime/shell/appcore/discover/appcore_discover.h",
+      "target": "runtime/shell/discover/appcore_discover.h",
       "target_path_sanitized": false
     },
     {
@@ -22841,7 +22841,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/invoke/appcore_invoke.c",
-      "target": "runtime/shell/appcore/invoke/appcore_invoke.c",
+      "target": "runtime/shell/invoke/appcore_invoke.c",
       "target_path_sanitized": false
     },
     {
@@ -22858,7 +22858,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/invoke/appcore_invoke.h",
-      "target": "runtime/shell/appcore/invoke/appcore_invoke.h",
+      "target": "runtime/shell/invoke/appcore_invoke.h",
       "target_path_sanitized": false
     },
     {
@@ -22875,7 +22875,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/output/appcore_output.c",
-      "target": "runtime/shell/appcore/output/appcore_output.c",
+      "target": "runtime/shell/output/appcore_output.c",
       "target_path_sanitized": false
     },
     {
@@ -22892,7 +22892,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/output/appcore_output.h",
-      "target": "runtime/shell/appcore/output/appcore_output.h",
+      "target": "runtime/shell/output/appcore_output.h",
       "target_path_sanitized": false
     },
     {
@@ -22909,7 +22909,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/profile/appcore_profile.c",
-      "target": "runtime/shell/appcore/profile/appcore_profile.c",
+      "target": "runtime/shell/profile/appcore_profile.c",
       "target_path_sanitized": false
     },
     {
@@ -22926,7 +22926,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/profile/appcore_profile.h",
-      "target": "runtime/shell/appcore/profile/appcore_profile.h",
+      "target": "runtime/shell/profile/appcore_profile.h",
       "target_path_sanitized": false
     },
     {
@@ -22943,7 +22943,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/repox/appcore_repox.c",
-      "target": "runtime/shell/appcore/repox/appcore_repox.c",
+      "target": "tools/repo/repox/shell/appcore_repox.c",
       "target_path_sanitized": false
     },
     {
@@ -22960,7 +22960,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/repox/appcore_repox.h",
-      "target": "runtime/shell/appcore/repox/appcore_repox.h",
+      "target": "tools/repo/repox/shell/appcore_repox.h",
       "target_path_sanitized": false
     },
     {
@@ -22977,7 +22977,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/ui_bind/ui_accessibility_map.c",
-      "target": "runtime/shell/appcore/ui_bind/ui_accessibility_map.c",
+      "target": "tools/codegen/ui/bind/ui_accessibility_map.c",
       "target_path_sanitized": false
     },
     {
@@ -22994,7 +22994,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/ui_bind/ui_accessibility_map.h",
-      "target": "runtime/shell/appcore/ui_bind/ui_accessibility_map.h",
+      "target": "tools/codegen/ui/bind/ui_accessibility_map.h",
       "target_path_sanitized": false
     },
     {
@@ -23011,7 +23011,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/ui_bind/ui_command_binding_table.c",
-      "target": "runtime/shell/appcore/ui_bind/ui_command_binding_table.c",
+      "target": "tools/codegen/ui/bind/ui_command_binding_table.c",
       "target_path_sanitized": false
     },
     {
@@ -23028,7 +23028,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/ui_bind/ui_command_binding_table.h",
-      "target": "runtime/shell/appcore/ui_bind/ui_command_binding_table.h",
+      "target": "tools/codegen/ui/bind/ui_command_binding_table.h",
       "target_path_sanitized": false
     },
     {
@@ -23045,7 +23045,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/ui_bind/ui_localisation_usage_report.json",
-      "target": "runtime/shell/appcore/ui_bind/ui_localisation_usage_report.json",
+      "target": "tools/codegen/ui/bind/ui_localisation_usage_report.json",
       "target_path_sanitized": false
     },
     {
@@ -23062,7 +23062,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/validate/appcore_validate.c",
-      "target": "runtime/shell/appcore/validate/appcore_validate.c",
+      "target": "tools/validators/shell/appcore_validate.c",
       "target_path_sanitized": false
     },
     {
@@ -23079,7 +23079,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/appcore/validate/appcore_validate.h",
-      "target": "runtime/shell/appcore/validate/appcore_validate.h",
+      "target": "tools/validators/shell/appcore_validate.h",
       "target_path_sanitized": false
     },
     {
@@ -24031,7 +24031,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "libs/contracts/include/dom_contracts/tool_api.h",
-      "target": "tools/libraries/contracts/include/dom_contracts/tool_api.h",
+      "target": "tools/package/libraries/contracts/include/dom_contracts/tool_api.h",
       "target_path_sanitized": false
     },
     {
@@ -24711,7 +24711,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/__init__.py",
-      "target": "tools/network/__init__.py",
+      "target": "tools/validators/network/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24728,7 +24728,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/anti_cheat/__init__.py",
-      "target": "tools/network/anti_cheat/__init__.py",
+      "target": "tools/validators/network/anti_cheat/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24745,7 +24745,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/anti_cheat/anti_cheat_engine.py",
-      "target": "tools/network/anti_cheat/anti_cheat_engine.py",
+      "target": "tools/validators/network/anti_cheat/anti_cheat_engine.py",
       "target_path_sanitized": false
     },
     {
@@ -24762,7 +24762,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/policies/__init__.py",
-      "target": "tools/network/policies/__init__.py",
+      "target": "tools/validators/network/policies/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24779,7 +24779,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/policies/policy_lockstep.py",
-      "target": "tools/network/policies/policy_lockstep.py",
+      "target": "tools/validators/network/policies/policy_lockstep.py",
       "target_path_sanitized": false
     },
     {
@@ -24796,7 +24796,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/policies/policy_server_authoritative.py",
-      "target": "tools/network/policies/policy_server_authoritative.py",
+      "target": "tools/validators/network/policies/policy_server_authoritative.py",
       "target_path_sanitized": false
     },
     {
@@ -24813,7 +24813,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/policies/policy_srz_hybrid.py",
-      "target": "tools/network/policies/policy_srz_hybrid.py",
+      "target": "tools/validators/network/policies/policy_srz_hybrid.py",
       "target_path_sanitized": false
     },
     {
@@ -24830,7 +24830,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/srz/__init__.py",
-      "target": "tools/network/srz/__init__.py",
+      "target": "tools/validators/network/srz/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24847,7 +24847,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/srz/routing.py",
-      "target": "tools/network/srz/routing.py",
+      "target": "tools/validators/network/srz/routing.py",
       "target_path_sanitized": false
     },
     {
@@ -24864,7 +24864,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/srz/shard_coordinator.py",
-      "target": "tools/network/srz/shard_coordinator.py",
+      "target": "tools/validators/network/srz/shard_coordinator.py",
       "target_path_sanitized": false
     },
     {
@@ -24881,7 +24881,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/testing/__init__.py",
-      "target": "tools/network/testing/__init__.py",
+      "target": "tools/validators/network/testing/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24898,7 +24898,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/testing/net_disorder_sim.py",
-      "target": "tools/network/testing/net_disorder_sim.py",
+      "target": "tools/validators/network/testing/net_disorder_sim.py",
       "target_path_sanitized": false
     },
     {
@@ -24915,7 +24915,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/transport/__init__.py",
-      "target": "tools/network/transport/__init__.py",
+      "target": "tools/validators/network/transport/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -24932,7 +24932,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/transport/interface.py",
-      "target": "tools/network/transport/interface.py",
+      "target": "tools/validators/network/transport/interface.py",
       "target_path_sanitized": false
     },
     {
@@ -24949,7 +24949,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/transport/loopback.py",
-      "target": "tools/network/transport/loopback.py",
+      "target": "tools/validators/network/transport/loopback.py",
       "target_path_sanitized": false
     },
     {
@@ -24966,7 +24966,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/transport/tcp_stub.py",
-      "target": "tools/network/transport/tcp_stub.py",
+      "target": "tools/validators/network/transport/tcp_stub.py",
       "target_path_sanitized": false
     },
     {
@@ -24983,7 +24983,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "net/transport/udp_stub.py",
-      "target": "tools/network/transport/udp_stub.py",
+      "target": "tools/validators/network/transport/udp_stub.py",
       "target_path_sanitized": false
     },
     {
@@ -29998,7 +29998,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "validation/__init__.py",
-      "target": "tools/validators/validation/__init__.py",
+      "target": "tools/validators/suite/__init__.py",
       "target_path_sanitized": false
     },
     {
@@ -30015,7 +30015,7 @@
       "route_type": "canonical",
       "skip_reasons": [],
       "source": "validation/validation_engine.py",
-      "target": "tools/validators/validation/validation_engine.py",
+      "target": "tools/validators/suite/validation_engine.py",
       "target_path_sanitized": false
     }
   ],

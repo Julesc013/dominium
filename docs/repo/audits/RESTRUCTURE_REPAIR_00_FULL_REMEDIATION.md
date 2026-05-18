@@ -17,7 +17,7 @@ This was structural repair and proof only. No feature, gameplay, renderer, GUI, 
 
 ## Repairs Applied
 
-- App/client path expectations were updated to current `apps/client/core/**` and `runtime/app/**` homes.
+- App/client path expectations were updated to current `apps/apps/client/session/**` and `runtime/shell/lifecycle/**` homes.
 - RepoX helper test calls were updated for the current helper signature.
 - Ops compatibility JSON output no longer receives a Python 3.14 deprecation warning on stdout.
 - TestX host-path fixtures no longer trip source path hygiene while preserving leak-test semantics.
@@ -43,7 +43,7 @@ Partial/failing: full CTest remains not green due hardcoded-id findings, hardcod
 
 ## Generated Output Policy
 
-`.aide.local/**`, `.dominium.local/**`, `build/`, `out/`, `dist/`, and `tmp/` remain ignored local output and were not staged. Incomplete generated AuditX JSON from timed runs was not committed.
+`.aide.local/**`, `.dominium.local/**`, `build/`, `out/`, `archive/generated/dist/`, and `tmp/` remain ignored local output and were not staged. Incomplete generated AuditX JSON from timed runs was not committed.
 
 ## Readiness
 

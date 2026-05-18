@@ -1,4 +1,4 @@
-"""FAST test: every declared dist/bin product surface emits a descriptor."""
+"""FAST test: every declared archive/generated/dist/bin product surface emits a descriptor."""
 
 from __future__ import annotations
 
@@ -25,4 +25,4 @@ def run(repo_root: str):
         return {"status": "fail", "message": "descriptor emission failed for {}".format(", ".join(missing))}
     if mismatched:
         return {"status": "fail", "message": "wrapper/product mismatch: {}".format(", ".join(mismatched))}
-    return {"status": "pass", "message": "every dist/bin product surface emits a descriptor"}
+    return {"status": "pass", "message": "every archive/generated/dist/bin product surface emits a descriptor"}

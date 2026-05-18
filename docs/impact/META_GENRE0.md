@@ -11,7 +11,7 @@ Touched Paths:
 - contracts/meta/player_demand_matrix.json
 - docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md
 - tools/xstack/repox/check.py
-- tools/auditx/analyzers/e300_orphan_feature_smell.py
+- tools/xstack/auditx/analyzers/e300_orphan_feature_smell.py
 
 Demand IDs:
 - surv.knap_stone_tools

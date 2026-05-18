@@ -30,11 +30,11 @@ POST-CONVERGE-07 attempted canonical local runtime proof and is blocked:
 POST-CONVERGE-08 attempted product boot matrix proof at the user's request and is partial:
 
 - launcher AppShell help boots through `python tools/launcher/launch.py --help`
-- client AppShell help boots through `python dist/bin/dominium_client --help`
-- server AppShell help boots through `python dist/bin/dominium_server --help`
-- the attach-console tool stub help boots through `python tools/appshell/product_stub_cli.py --product-id tool.attach_console_stub --help`
+- client AppShell help boots through `python archive/generated/dist/bin/dominium_client --help`
+- server AppShell help boots through `python archive/generated/dist/bin/dominium_server --help`
+- the attach-console tool stub help boots through `python tools/validators/shell/product_stub_cli.py --product-id tool.attach_console_stub --help`
 - setup remains blocked before help through the Python bridge on local Python 3.8
-- `dist/bin/dom` remains blocked because `dist/bin/tool_attach_console_stub` is missing
+- `archive/generated/dist/bin/dom` remains blocked because `archive/generated/dist/bin/tool_attach_console_stub` is missing
 - no native product binary boot was proven
 
 POST-CONVERGE-09 attempted portable projection/package smoke proof and is partial:
@@ -79,7 +79,7 @@ POST-CONVERGE-10D fixed the UI bind generated-output freshness gate:
 POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers:
 
 - `tools_refusal_explain` and `tools_coverage_inspect` now pass after direct tool subprocesses resolve the repo root before importing `compat`
-- AuditX no longer assumes retired root `schema` as source authority; generated bundle projections now source schemas from `contracts/schemas/`
+- AuditX no longer assumes retired root `schema` as source authority; generated bundle projections now source schemas from `contracts/schema/`
 - generated wrapper smoke includes current converged `apps/` and `game/` runtime roots
 - missing generated release manifests now surface as deterministic refused verification results instead of uncaught AuditX crashes
 - focused AuditX CTest cases pass
@@ -103,7 +103,7 @@ Current priority order:
 2. repair or regenerate canonical `verify` CTest discovery so `ctest --preset verify` sees the expected tests
 3. partition or classify full CTest wall-time after semantic RepoX failures are resolved
 4. decide whether POST-CONVERGE-11 may proceed with build-green/CTest-warning status
-5. fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
+5. fix or classify setup Python bridge compatibility and the missing `archive/generated/dist/bin/dom` target
 6. fix or classify direct `apps/server/server_main.py` CLI argument forwarding
 7. add or prove a real portable projection assembly path that emits required manifests and roots
 8. rerun product boot and portable projection proof only after build, product command, and projection blockers are accepted or resolved
@@ -147,7 +147,7 @@ New naming authority:
 
 Naming validators live under `tools/validators/repo/` and are warning-oriented classifiers for current debt. They do not replace the strict layout/root/distribution/component validators.
 
-Future MOVE-BULK B-G refinement must not route files to `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets. Planned internal renames such as `runtime/appshell/ -> runtime/shell/`, `game/domains/ -> game/domain/`, and `contracts/schemas/ -> contracts/schema/` remain future reviewed migrations only.
+Future MOVE-BULK B-G refinement must not route files to `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets. Planned internal renames such as `runtime/shell/ -> runtime/shell/`, `game/domain/ -> game/domain/`, and `contracts/schema/ -> contracts/schema/` remain future reviewed migrations only.
 
 NAME-00 redo after MOVE-SCRIPT-00 refreshes the current numbers without changing scope:
 
@@ -233,7 +233,7 @@ The repository is ready for scoped work in these areas:
 - targeted RepoX FAST drift remediation
 - targeted command-surface remediation for script-level CLI argument forwarding, after build proof is available
 - targeted setup Python compatibility remediation if the Python setup bridge remains a product proof path
-- targeted `dist/bin/dom` wrapper remediation or retirement if that wrapper remains a shipped tool surface
+- targeted `archive/generated/dist/bin/dom` wrapper remediation or retirement if that wrapper remains a shipped tool surface
 - targeted portable projection assembly/manifest generation remediation
 - documentation updates that reflect the current validation state
 - narrowly scoped AIDE/tooling compatibility fixes
@@ -257,7 +257,7 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 2. Repair or regenerate canonical `verify` CTest discovery.
 3. Rerun CTest through `verify.winnt10.x64.msvc143.mt.debug` and the canonical `verify` lane.
 4. Run TEST-PERF-00 if semantic failures are clear but full CTest still exceeds local wall-time.
-5. Remediate or explicitly classify setup Python bridge compatibility and the missing `dist/bin/dom` target.
+5. Remediate or explicitly classify setup Python bridge compatibility and the missing `archive/generated/dist/bin/dom` target.
 6. Add or prove a portable projection assembly path that emits `install.manifest.json`, `semantic_contract_registry.json`, `release.manifest.json`, product binaries, and required portable roots.
 7. Rerun strict layout validators, docs/build/UI/ABI checks, FAST, and AIDE pack.
 8. Run POST-CONVERGE-11 product boot proof with native binaries after build output exists.
@@ -278,7 +278,7 @@ Platform, render, native shell, Universal Reality enforcement, worldgen, domain 
 Future domain work must use the split model:
 
 - schemas, registries, capabilities, and protocols under `contracts/`
-- implementation under `game/domains/`
+- implementation under `game/domain/`
 - authored data and packs under `content/`
 - human explanation under `docs/domains/`
 - fixtures, determinism, regression, and golden tests under `tests/`
@@ -333,7 +333,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Result: PARTIAL.
 - Focused RepoX baseline from POST-CONVERGE-10K remains 51 failures / 5 warnings after a transient 10K audit status-header failure was repaired.
 - `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` remains 7 failures and `INV-NO-ADHOC-MAIN` remains 5 failures.
-- All 12 target distribution/product failures were classified as missing portable projection wrapper/proof surfaces under `dist/bin/`.
+- All 12 target distribution/product failures were classified as missing portable projection wrapper/proof surfaces under `archive/generated/dist/bin/`.
 - No product boot proof, portable projection proof, package proof, release proof, dummy wrapper, or generated artifact was created.
 - POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance failures outside the product/projection family.
 - Next recommended task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.
@@ -344,7 +344,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings.
 - Safe stale RepoX rule paths for retired embodiment, geology, worldgen-refinement, universe, and diagnostics roots were updated to exact current locations.
 - RepoX group cache file-dependency hashing was repaired so rule edits invalidate stale cached group output.
-- Two retired-domain failures remain because `game.domains.embodiment` lazily imports retired `embodiment.*` modules during MW-4 fixture evaluation; fixing that would change product/runtime source behavior and was not authorized by 10M.
+- Two retired-domain failures remain because `game.domain.embodiment` lazily imports retired `embodiment.*` modules during MW-4 fixture evaluation; fixing that would change product/runtime source behavior and was not authorized by 10M.
 - POST-CONVERGE-11 remains blocked because focused RepoX still has non-proof governance failures.
 - Next recommended task: `POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`.
 
@@ -440,7 +440,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 ## MOVE-FAMILY-00B-APPLY Update - IDE Manifest Projection Migration
 
 - Result: PASS_WITH_WARNINGS.
-- The three tracked IDE manifest source files moved from `ide/manifests/**` to `contracts/projections/ide/**`.
+- The three tracked IDE manifest source files moved from `ide/manifests/**` to `contracts/projection/ide/**`.
 - Applied reference rewrite groups: 5.
 - `git ls-files ide`: empty.
 - The empty `ide/` directory tree was removed after verifying it contained no files.
@@ -455,7 +455,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - `git ls-files ide`: empty.
 - Filesystem `ide/`: absent.
 - `ide_root` source-layout exception: retired and accepted by strict validators.
-- Tracked replacement files under `contracts/projections/ide/**`: present and JSON parse PASS.
+- Tracked replacement files under `contracts/projection/ide/**`: present and JSON parse PASS.
 - Active stale references to retired tracked schema/example source paths: none.
 - Remaining old-path references are historical, planning, audit, AIDE evidence, root-recycling history, or generated-output references.
 - AIDE validation, strict validators, docs/build/UI/ABI checks, focused RepoX, manifest parsing, generated-output ignored/staging checks, and git diff checks passed with known warnings.
@@ -551,6 +551,24 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 - Blocked batch: H.
 - Ready for DOE-00: no.
 - Next recommended task: `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+## CANON-SPINE-NEW Update
+
+CANON-SPINE-NEW supersedes the remaining second-level source-spine cleanup
+prompt chain.
+
+- Result: PASS_WITH_WARNINGS.
+- Former bad roots: 0 tracked files.
+- Source-spine cleanup: shell/app/appshell/appcore collapsed toward
+  `runtime/shell/`; workbench modules moved under `apps/workbench/module/`;
+  engine/game/contracts/content/tools/docs duplicate buckets routed toward the
+  canonical grammar.
+- Passing lanes: AIDE, strict repo/root/distribution/component validators,
+  bad-root absence, docs sanity, UI shell purity, ABI boundaries, CMake
+  configure, smoke CTest, and focused spine CTest.
+- Remaining blockers: build target boundary warnings and broad full CTest.
+- Feature implementation authorized: no.
+- Next recommended task: `CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`.
 
 <!-- MOVE-ROUTER-00 -->
 

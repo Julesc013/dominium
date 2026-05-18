@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import copy
 
-from game.domains.geology import build_worldgen_request, worldgen_cache_clear
+from game.domain.geology import build_worldgen_request, worldgen_cache_clear
 from tools.xstack.sessionx.common import identity_hash_for_payload
 from tools.xstack.sessionx.process_runtime import execute_intent
 from tools.xstack.testx.tests.mobility_free_testlib import (

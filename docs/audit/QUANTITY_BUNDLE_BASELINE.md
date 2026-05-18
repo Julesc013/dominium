@@ -97,7 +97,7 @@ Implemented tests:
 Executed during this baseline:
 - RepoX (`python tools/xstack/repox/check.py --repo-root . --profile STRICT`): **REFUSAL**
   - blocked by pre-existing unrelated finding: `INV-NO-RANKED-FLAGS` in `tools/signals/tool_run_sig_stress.py`
-- AuditX (`python tools/auditx/auditx.py scan --repo-root . --format both`): **COMPLETE**
+- AuditX (`python tools/xstack/auditx/auditx.py scan --repo-root . --format both`): **COMPLETE**
 - TestX subset (`python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset ...`): **PASS (6/6)**
 - Strict build gate (`python scripts/dev/gate.py strict --repo-root . --only-gate build_strict`): **PASS**
 - Topology map (`python tools/governance/tool_topology_generate.py --repo-root .`): **PASS**

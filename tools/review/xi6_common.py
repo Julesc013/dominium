@@ -23,15 +23,15 @@ from tools.review.architecture_graph_bootstrap_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
 MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
-MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
-SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
+MODULE_DEP_GRAPH_REL = "archive/generated/architecture/module_dependency_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
+SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
 
-ARCHITECTURE_GRAPH_V1_REL = "content/data/architecture/architecture_graph.v1.json"
+ARCHITECTURE_GRAPH_V1_REL = "archive/generated/architecture/architecture_graph.v1.json"
 MODULE_REGISTRY_V1_REL = "contracts/registry/architecture/module_registry.v1.json"
-MODULE_BOUNDARY_RULES_V1_REL = "content/data/architecture/module_boundary_rules.v1.json"
+MODULE_BOUNDARY_RULES_V1_REL = "archive/generated/architecture/module_boundary_rules.v1.json"
 SINGLE_ENGINE_REGISTRY_REL = "contracts/registry/architecture/single_engine_registry.json"
 
 ARCHITECTURE_GRAPH_SPEC_V1_REL = "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md"
@@ -41,19 +41,19 @@ XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
 XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
 XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
 XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
-XI5X2_GATE_MODEL_REL = "content/data/restructure/xi5x2_xi6_gate_model.json"
+XI5X2_GATE_MODEL_REL = "archive/generated/restructure/xi5x2_xi6_gate_model.json"
 
 ARCH_GRAPH_UPDATE_TAG_REL = "data/architecture/arch_graph_update_request.json"
 
-VALIDATION_STRICT_REL = "content/data/audit/validation_report_STRICT.json"
-ARCH_AUDIT2_REL = "content/data/audit/arch_audit2_report.json"
-WORLDGEN_LOCK_VERIFY_REL = "content/data/audit/worldgen_lock_verify.json"
+VALIDATION_STRICT_REL = "archive/generated/audit/validation_report_STRICT.json"
+ARCH_AUDIT2_REL = "archive/generated/audit/arch_audit2_report.json"
+WORLDGEN_LOCK_VERIFY_REL = "archive/generated/audit/worldgen_lock_verify.json"
 BASELINE_UNIVERSE_VERIFY_REL = "tests/fixtures/audit/baseline_universe_verify.json"
-GAMEPLAY_VERIFY_REL = "content/data/audit/gameplay_verify.json"
-DISASTER_SUITE_RUN_REL = "content/data/audit/disaster_suite_run.json"
-ECOSYSTEM_VERIFY_RUN_REL = "content/data/audit/ecosystem_verify_run.json"
-UPDATE_SIM_RUN_REL = "content/data/audit/update_sim_run.json"
-TRUST_STRICT_RUN_REL = "content/data/audit/trust_strict_run.json"
+GAMEPLAY_VERIFY_REL = "archive/generated/audit/gameplay_verify.json"
+DISASTER_SUITE_RUN_REL = "archive/generated/audit/disaster_suite_run.json"
+ECOSYSTEM_VERIFY_RUN_REL = "archive/generated/audit/ecosystem_verify_run.json"
+UPDATE_SIM_RUN_REL = "archive/generated/audit/update_sim_run.json"
+TRUST_STRICT_RUN_REL = "archive/generated/audit/trust_strict_run.json"
 
 XI6_TARGETED_TESTS = (
     "test_arch_graph_v1_hash_stable",
@@ -84,8 +84,8 @@ NON_RUNTIME_DOMAINS = {
 }
 TRUTH_FORBIDDEN_PREFIXES = ("field", "fields", "process", "universe")
 UI_RENDER_PREFIXES = (
-    "apps.client.render",
-    "apps.client.ui",
+    "runtime.render.client",
+    "runtime.ui.client",
     "apps.client.presentation",
     "ui",
 )
@@ -93,7 +93,7 @@ APP_PREFIXES = ("apps.", "appshell")
 TOOLS_PREFIX = "tools."
 ARCH_UPDATE_TAG = "ARCH-GRAPH-UPDATE"
 STABLE_TOOL_SUPPORT_MODULES = {
-    "tools.compatx.core",
+    "tools.xstack.compatx.core",
     "tools.xstack.compatx",
 }
 
@@ -112,7 +112,7 @@ ENGINE_SPECS = (
         "semantic_area": "GEO",
         "canonical_module_id": "geo.overlay",
         "canonical_entrypoint_symbols": ("merge_overlay_view", "overlay_proof_surface"),
-        "canonical_file_paths": ("game/domains/geology/overlay/overlay_merge_engine.py",),
+        "canonical_file_paths": ("game/domain/geology/overlay/overlay_merge_engine.py",),
         "allowed_definition_modules": ("geo", "geo.overlay"),
         "description": "Overlay merge and proof synthesis must stay inside the GEO overlay engine surface.",
     },
@@ -121,7 +121,7 @@ ENGINE_SPECS = (
         "semantic_area": "GEO",
         "canonical_module_id": "geo.index",
         "canonical_entrypoint_symbols": ("geo_object_id",),
-        "canonical_file_paths": ("game/domains/geology/index/object_id_engine.py",),
+        "canonical_file_paths": ("game/domain/geology/index/object_id_engine.py",),
         "allowed_definition_modules": ("geo", "geo.index"),
         "description": "Deterministic spatial object identity must stay inside the GEO object-id engine surface.",
     },
@@ -130,7 +130,7 @@ ENGINE_SPECS = (
         "semantic_area": "MW",
         "canonical_module_id": "worldgen.refinement",
         "canonical_entrypoint_symbols": ("build_scheduler_plan",),
-        "canonical_file_paths": ("game/domains/worldgen/refinement/refinement_scheduler.py",),
+        "canonical_file_paths": ("game/domain/worldgen/refinement/refinement_scheduler.py",),
         "allowed_definition_modules": ("worldgen.refinement",),
         "description": "Worldgen refinement scheduling must stay inside the canonical MW refinement scheduler.",
     },
@@ -157,7 +157,7 @@ ENGINE_SPECS = (
         "semantic_area": "UPDATE",
         "canonical_module_id": "release",
         "canonical_entrypoint_symbols": ("resolve_update_plan",),
-        "canonical_file_paths": ("release/update_resolver.py",),
+        "canonical_file_paths": ("tools/release/update_resolver.py",),
         "allowed_definition_modules": ("release",),
         "description": "Update resolution must stay inside the release update resolver.",
     },
@@ -166,7 +166,7 @@ ENGINE_SPECS = (
         "semantic_area": "VPATH",
         "canonical_module_id": "appshell.paths",
         "canonical_entrypoint_symbols": ("vpath_resolve", "vpath_resolve_existing"),
-        "canonical_file_paths": ("runtime/appshell/paths/virtual_paths.py",),
+        "canonical_file_paths": ("runtime/shell/paths/virtual_paths.py",),
         "allowed_definition_modules": ("appshell.paths",),
         "description": "Virtual path resolution must stay inside the AppShell paths module.",
     },
@@ -946,7 +946,7 @@ def _render_architecture_graph_spec(
         "## Provisional Notes",
         "",
         "- `unknown.root` is retained as a provisional repo-support surface pending later non-runtime cleanup.",
-        "- transitional compat helpers still located under `tools.compatx.core` and `tools.xstack.compatx` are treated as explicit support bridges during Xi-6.",
+        "- transitional compat helpers still located under `tools.xstack.compatx.core` and `tools.xstack.compatx` are treated as explicit support bridges during Xi-6.",
     ]
     return "\n".join(lines) + "\n"
 
@@ -963,7 +963,7 @@ def _render_module_boundaries_doc(boundary_rules: Mapping[str, object]) -> str:
         "",
         "# Module Boundaries v1",
         "",
-        "The canonical per-module rule matrix lives in `content/data/architecture/module_boundary_rules.v1.json`.",
+        "The canonical per-module rule matrix lives in `archive/generated/architecture/module_boundary_rules.v1.json`.",
         "",
         "## Constitutional Alignment",
         "",

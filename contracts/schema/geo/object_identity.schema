@@ -1,0 +1,27 @@
+SCHEMA: geo/object_identity.schema
+schema_id: dominium.schema.geo.object_identity
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic identity envelope for GEO-derived spatial objects.
+- Bind object identity to universe lineage, topology, partition, cell key, and deterministic local subkey.
+
+NON-SEMANTICS:
+- This schema does not rewrite existing authored IDs.
+- This schema does not authorize nondeterministic local ordering.
+
+REQUIRED SHAPE:
+record object_identity
+  required:
+    - object_kind_id: id
+    - geo_cell_key: map
+    - local_subkey: scalar
+    - object_id_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- object_id_hash must be derived from canonical GEO lineage inputs
+- local_subkey must be deterministic inside the object kind and cell scope
+- geo_cell_key must remain the canonical spatial address

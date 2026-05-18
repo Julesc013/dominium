@@ -47,8 +47,8 @@ Searches found many tick annotations such as `tick: int`, `current_tick: int`, a
 Separate searches also found `u32` and `i32` usage in several native utilities. The audited examples were:
 
 - `tools/history/history_cli.cpp`
-- `tools/replay_analyzer/ra_parser.h`
-- `tools/universe_editor/ue_queries.h`
+- `apps/workbench/module/replay/analyzer/ra_parser.h`
+- `apps/workbench/module/domain/universe/ue_queries.h`
 - `tools/coredata_compile/*`
 
 These are not the authoritative truth mutation paths used by MVP server/process time advancement. They remain loadable and unchanged for TIME-ANCHOR-0, but they justify adding an explicit static check for mixed-width tick declarations in scoped truth/time paths.

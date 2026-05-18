@@ -1,0 +1,43 @@
+SCHEMA: budget_policy.schema
+schema_id: dominium.schema.budget_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic, policy-layer budgets for scaling admission control.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Budgets gate admission and scheduling only.
+- Budgets do NOT change simulation semantics.
+
+REQUIRED SHAPE:
+record budget_policy
+  required:
+    - schema_version: tag
+  optional:
+    - max_tier2_domains: u32
+    - max_tier1_domains: u32
+    - active_domain_budget: u32
+    - refinement_budget_per_tick: u32
+    - refinement_cost_units: u32
+    - planning_budget_per_tick: u32
+    - planning_cost_units: u32
+    - collapse_budget_per_tick: u32
+    - collapse_cost_units: u32
+    - expand_budget_per_tick: u32
+    - expand_cost_units: u32
+    - macro_event_budget_per_tick: u32
+    - macro_event_cost_units: u32
+    - macro_queue_limit: u32
+    - compaction_budget_per_tick: u32
+    - compaction_cost_units: u32
+    - snapshot_budget_per_tick: u32
+    - snapshot_cost_units: u32
+    - deferred_queue_limit: u32
+    - min_dwell_ticks: i64
+    - extensions: map

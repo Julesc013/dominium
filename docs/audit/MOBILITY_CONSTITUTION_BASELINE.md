@@ -99,7 +99,7 @@ Replacement Target: legacy reference surface retained without current binding au
   - fingerprint `231ac2790459fa9e8f5c07186149c804d771a538de8fe2a19f410692c2cd9792`
 - RepoX (`python tools/xstack/repox/check.py --repo-root . --profile FAST`):
   - PASS (`status: pass`, warn-only findings)
-- AuditX (`python tools/auditx/auditx.py scan --repo-root .`):
+- AuditX (`python tools/xstack/auditx/auditx.py scan --repo-root .`):
   - run complete (`result: scan_complete`, `findings_count: 1083`)
 - TestX doc/schema/topology subset (`python tools/xstack/testx/runner.py --repo-root . --profile FAST --subset test_topology_map_includes_all_registries,test_topology_map_includes_all_schemas,test_topology_map_deterministic`):
   - PASS (`status: pass`, `selected_tests: 3`)

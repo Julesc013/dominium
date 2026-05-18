@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: risky Φ-B tail, Υ-B, later Ζ checkpoints
-Binding Sources: `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `content/data/planning/checkpoints/checkpoint_c_ya_safe_review.json`, `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`
+Binding Sources: `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `contracts/planning/checkpoints/checkpoint_c_ya_safe_review.json`, `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`
 
 # Next Execution Order Post-Υ-A
 
@@ -77,7 +77,7 @@ The chosen order depends on these repo-grounded facts:
 
 - completed `Υ-A` now supplies explicit versioning, release-contract, archive/mirror, operator-transaction, downgrade, and publication/trust gate doctrine
 - `Φ-B3` was previously blocked specifically by that release-control band and is now the one risky `Φ-B` prompt materially reopened
-- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`
+- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/xstack/controlx/`, `tools/xstack/`, and `security/trust/`
 - trust and licensing execution posture remains gated because trust policies are provisional and `trust_root_registry.json` is empty
 
 ## G. Stop Conditions

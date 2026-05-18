@@ -25,7 +25,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/appshell/paths/virtual_paths.py`
 - `src/appshell/tui/tui_engine.py`
 - `src/diag/repro_bundle_builder.py`
-- `src/engine/install/install_discovery_engine.py`
+- `src/runtime/package/install_discovery_engine.py`
 - `src/content/packs/compatibility_payload/pack_compat_validator.py`
 - `src/content/packs/compatibility_payload/pack_verification_pipeline.py`
 - `src/ui/ui_model.py`
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/mvp/toolchain_matrix_common.py` disposition=`quarantine` rank=`2` total_score=`77.85` risk=`HIGH`
 - `src/appshell/command_registry.py` disposition=`quarantine` rank=`3` total_score=`76.55` risk=`HIGH`
 - `src/appshell/paths/virtual_paths.py` disposition=`quarantine` rank=`4` total_score=`73.87` risk=`HIGH`
-- `src/engine/install/install_discovery_engine.py` disposition=`quarantine` rank=`5` total_score=`73.09` risk=`HIGH`
+- `src/runtime/package/install_discovery_engine.py` disposition=`quarantine` rank=`5` total_score=`73.09` risk=`HIGH`
 - `src/appshell/diag/diag_snapshot.py` disposition=`merge` rank=`6` total_score=`69.46` risk=`HIGH`
 - `src/appshell/logging/log_engine.py` disposition=`merge` rank=`7` total_score=`69.46` risk=`HIGH`
 - `src/ui/ui_model.py` disposition=`merge` rank=`8` total_score=`68.57` risk=`HIGH`
@@ -55,8 +55,8 @@ Replacement Target: XI-4b manual review resolution
 
 ## Tests Involved
 
-- `python tools/appshell/tool_run_ipc_unify.py --repo-root .`
-- `python tools/appshell/tool_run_supervisor_hardening.py --repo-root .`
+- `python tools/validators/shell/tool_run_ipc_unify.py --repo-root .`
+- `python tools/validators/shell/tool_run_supervisor_hardening.py --repo-root .`
 - `python tools/compat/tool_run_interop_stress.py --repo-root .`
 - `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
 - `python tools/mvp/tool_run_all_stress.py --repo-root .`
@@ -64,7 +64,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

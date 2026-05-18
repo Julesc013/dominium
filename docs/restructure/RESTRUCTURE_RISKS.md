@@ -56,7 +56,7 @@ This document ranks the highest-risk move areas for the future repository restru
 - `tools/xstack/*`
   - Reason: deep CI/test orchestration tree with many references.
   - Move risk: large merge-conflict surface rather than runtime risk.
-- `dist/*` runtime data mirrors
+- `archive/generated/dist/*` runtime data mirrors
   - Reason: packs, locks, and profiles are portable-install critical.
   - Move risk: install discovery and vpath parity regressions if moved too early.
 
@@ -87,7 +87,7 @@ This document ranks the highest-risk move areas for the future repository restru
   - Evidence: Milky Way, Earth, galaxy stubs, and SOL surfaces are physically split even though they are now canon-linked.
   - Recommendation: move as bounded leaf packages after import shims exist.
 - Product wrapper cluster
-  - Evidence: product entries live across `src/server/*`, `tools/mvp/*`, `tools/launcher/*`, `tools/setup/*`, and `tools/appshell/*`.
+  - Evidence: product entries live across `src/server/*`, `tools/mvp/*`, `tools/launcher/*`, `tools/setup/*`, and `tools/validators/shell/*`.
   - Recommendation: converge wrappers before touching lower domain layers.
 
 ## Recommended Move Order

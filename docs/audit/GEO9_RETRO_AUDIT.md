@@ -20,7 +20,7 @@ Audit the current repository for pre-existing pack layering, save mutation, and 
 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `docs/geo/WORLDGEN_CONSTITUTION.md`
+- `docs/domains/geology/WORLDGEN_CONSTITUTION.md`
 - `src/geo/worldgen/worldgen_engine.py`
 - `tools/xstack/sessionx/creator.py`
 - `tools/xstack/sessionx/runner.py`
@@ -50,7 +50,7 @@ Implication:
   - `data/packs/org.dominium.worldgen.real.sol/pack_manifest.json`
   - `data/worldgen/real/*/content/refinement_plans.json`
   already describe refinement/override intent with tags like `precedence.overlay`.
-- GEO-8 explicitly deferred formal overlay semantics to GEO-9 in `docs/geo/WORLDGEN_CONSTITUTION.md`.
+- GEO-8 explicitly deferred formal overlay semantics to GEO-9 in `docs/domains/geology/WORLDGEN_CONSTITUTION.md`.
 
 Implication:
 - Current overlay intent exists in data, but merge precedence, explainability, and save interaction are not yet canonicalized in code.

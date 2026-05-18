@@ -1,0 +1,63 @@
+SCHEMA: domain.schema
+schema_id: dominium.schema.domain
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define domains, domain volumes, and abstract bounds.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Domain types and tags do NOT imply jurisdictional behavior.
+- Bounds describe shape only; they do NOT define geometry semantics.
+- Attachment references do NOT imply ownership or authority.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record domain
+  required:
+    - domain_id: id
+    - domain_type: tag
+  optional:
+    - domain_tags: [tag]
+    - volumes: [domain_volume]
+    - attached_node_refs: [topology_node_ref]
+    - jurisdiction_tags: [tag]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+record domain_volume
+  required:
+    - volume_id: id
+    - bounds: bounds
+  optional:
+    - volume_tags: [tag]
+    - attachment_tags: [tag]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record bounds
+  required:
+    - kind_tag: tag
+  optional:
+    - units: [tag]
+    - payload: map
+
+record topology_node_ref
+  required:
+    - node_id: id
+  optional:
+    - ref_tags: [tag]
+
+record provenance_ref
+  required:
+    - provenance_id: id

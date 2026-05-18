@@ -31,13 +31,13 @@ from tools.lib.content_store import (
     store_add_artifact,
     store_add_tree_artifact,
 )
-from tools.libraries.artifact import (
+from tools.package.libraries.artifact import (
     ARTIFACT_KIND_BLUEPRINT,
     canonicalize_artifact_manifest,
     deterministic_fingerprint as artifact_deterministic_fingerprint,
     evaluate_artifact_load,
 )
-from tools.libraries.instance import (
+from tools.package.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
@@ -220,7 +220,7 @@ def _primary_content_entry(container: dict, kind: str) -> Dict[str, object]:
 
 
 def _artifact_manifest_rel(bundle_type: str) -> str:
-    return "artifacts/{}/{}".format(str(bundle_type or "").strip(), SHAREABLE_ARTIFACT_MANIFEST_NAME)
+    return "archive/generated/artifacts/{}/{}".format(str(bundle_type or "").strip(), SHAREABLE_ARTIFACT_MANIFEST_NAME)
 
 
 def _build_bundle_artifact_manifest(bundle_type: str, artifact_path: str) -> Dict[str, object]:

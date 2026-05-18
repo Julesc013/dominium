@@ -1,0 +1,28 @@
+SCHEMA: worldgen/star_artifact.schema
+schema_id: dominium.schema.worldgen.star_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-2 primary-star artifact model emitted at refinement `L2`.
+- Preserve deterministic object identity and coarse stellar priors.
+
+NON-SEMANTICS:
+- This schema does not encode full stellar evolution.
+- This schema does not imply a catalog or authored star name.
+
+REQUIRED SHAPE:
+record star_artifact
+  required:
+    - object_id: sha256
+    - star_mass: map
+    - luminosity_proxy: map
+    - age_proxy: map
+    - metallicity_proxy: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `object_id` remains the stable GEO-derived `kind.star` identity
+- star priors remain replay-stable for identical system seeds
+- metallicity remains inherited from the parent star-system prior surface

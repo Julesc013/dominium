@@ -102,7 +102,7 @@ def _changed_files(repo_root: str) -> List[str]:
 def _impacted_tags(changed: List[str]) -> List[str]:
     tags = {"smoke"}
     for path in changed:
-        if path.startswith("contracts/schemas/"):
+        if path.startswith("contracts/schema/"):
             tags.add("schema")
         if path.startswith("packs/"):
             tags.add("pack")

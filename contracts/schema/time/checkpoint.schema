@@ -1,0 +1,22 @@
+SCHEMA: time/checkpoint.schema
+schema_id: dominium.schema.time.checkpoint
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic checkpoint metadata artifacts for RS-3 lineage/replay.
+
+REQUIRED SHAPE:
+record checkpoint
+  required:
+    - schema_version: semver
+    - checkpoint_id: id
+    - save_id: id
+    - tick: u64
+    - pack_lock_hash: sha256
+    - physics_profile_id: id
+    - registry_hashes: map
+    - truth_hash_anchor: sha256
+    - ledger_hash: sha256
+    - payload_ref: id
+    - extensions: map

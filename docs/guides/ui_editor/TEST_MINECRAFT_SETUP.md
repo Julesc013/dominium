@@ -37,9 +37,9 @@ cmake --build build\msvc-debug --config Debug --target ui_regen_setup
 Direct CLI path (equivalent):
 
 ```
-build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-apply tools\setup\ui\doc\setup_ui_doc.tlv --script tools\setup\ui\scripts\minecraft_setup_v1.ops.json --out tools\setup\ui\doc\setup_ui_doc.tlv --in-new
-build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-format tools\setup\ui\doc\setup_ui_doc.tlv
-build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-codegen --in tools\setup\ui\doc\setup_ui_doc.tlv --out tools\setup\ui\gen --registry tools\setup\ui\registry\setup_actions_registry.json --docname setup_ui
+build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-apply tools\codegen\ui\setup\doc\setup_ui_doc.tlv --script tools\codegen\ui\setup\scripts\minecraft_setup_v1.ops.json --out tools\codegen\ui\setup\doc\setup_ui_doc.tlv --in-new
+build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-format tools\codegen\ui\setup\doc\setup_ui_doc.tlv
+build\msvc-debug\out\bin\Debug\dominium-ui-editor.exe --headless-codegen --in tools\codegen\ui\setup\doc\setup_ui_doc.tlv --out tools\codegen\ui\setup\gen --registry tools\codegen\ui\setup\registry\setup_actions_registry.json --docname setup_ui
 ```
 
 ## Smoke Checklist

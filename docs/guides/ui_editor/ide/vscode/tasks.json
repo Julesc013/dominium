@@ -37,7 +37,7 @@
             "command": "${workspaceFolder}/build/linux-dev/dominium-ui-preview-host-linux",
             "args": [
                 "--ui",
-                "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+                "tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv",
                 "--watch"
             ],
             "options": {

@@ -26,5 +26,5 @@ Authority: canonical. All misinformation handling MUST follow this.
 - Corrections MUST be new artifacts; prior artifacts MUST remain preserved.
 
 ## References
-- `docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
+- `docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
 - `schema/knowledge.schema`

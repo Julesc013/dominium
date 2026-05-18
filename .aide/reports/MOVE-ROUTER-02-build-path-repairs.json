@@ -8,8 +8,8 @@
     {"path": "CMakeLists.txt", "old": "libs/ui_backends/win32", "new": "runtime/shell/ui_backends/win32"},
     {"path": "tests/ux/CMakeLists.txt", "old": "libs/contracts/include", "new": "contracts/abi/dom_contracts/include"},
     {"path": "scripts/verify_abi_boundaries.py", "old": "libs/contracts/include", "new": "contracts/abi/dom_contracts/include"},
-    {"path": "tools/ui_bind/CMakeLists.txt", "old": "libs/appcore/ui_bind", "new": "runtime/shell/appcore/ui_bind"},
-    {"path": "tools/ui_bind/ui_bind_main.cpp", "old": "libs/appcore/ui_bind", "new": "runtime/shell/appcore/ui_bind"}
+    {"path": "tools/codegen/ui/bind/CMakeLists.txt", "old": "libs/appcore/ui_bind", "new": "runtime/shell/appcore/ui_bind"},
+    {"path": "tools/codegen/ui/bind/ui_bind_main.cpp", "old": "libs/appcore/ui_bind", "new": "runtime/shell/appcore/ui_bind"}
   ],
   "remaining": [
     "Broader TestX path assumptions",

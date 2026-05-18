@@ -13,7 +13,7 @@ Touched Paths:
 - fields/field_engine.py
 - field/field_boundary_exchange.py
 - tools/xstack/sessionx/process_runtime.py
-- tools/geo/tool_replay_field_geo_window.py
+- tools/validators/domain/geology/tool_replay_field_geo_window.py
 
 Demand IDs:
 - fact.automated_factory

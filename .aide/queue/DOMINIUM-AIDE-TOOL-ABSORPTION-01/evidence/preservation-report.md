@@ -17,7 +17,7 @@ Status: needs_review
 ## Preserved Surfaces
 
 - `tools/xstack/**`
-- `tools/auditx/**`
+- `tools/xstack/auditx/**`
 - `repo/repox/**`
 - `scripts/repox/**`
 - `tools/xstack/testx/**`

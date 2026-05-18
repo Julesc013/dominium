@@ -38,7 +38,7 @@ Gap identified:
 
 ## Build ID Generation Logic
 
-Current `src/release/build_id_engine.py` derives `build_id` from:
+Current `src/tools/release/build_id_engine.py` derives `build_id` from:
 
 - `product_id`
 - `semantic_contract_registry_hash`
@@ -65,10 +65,10 @@ They are deterministic and content-addressed, but there is not yet a dedicated r
 
 Current governed manifest-like surfaces:
 
-- `dist/manifests/release_manifest.json`
-- `dist/install.manifest.json`
-- `dist/manifest.json`
-- pack alias and compatibility manifests under `dist/packs/**`
+- `archive/generated/dist/manifests/release_manifest.json`
+- `archive/generated/dist/install.manifest.json`
+- `archive/generated/dist/manifest.json`
+- pack alias and compatibility manifests under `archive/generated/dist/packs/**`
 
 Current RELEASE-1 manifest supports:
 

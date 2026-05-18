@@ -33,9 +33,9 @@ Define deterministic session lifecycle flow for lab bootstrap and scripted execu
 3. **Setup/packaging (optional but required for reproducible dist launch)**
    - `tools/setup/build --bundle bundle.base.lab --out dist`
    - Emits deterministic dist artifacts:
-     - `dist/manifest.json`
-     - `dist/lockfile.json`
-     - `dist/registries/*.json`
+     - `archive/generated/dist/manifest.json`
+     - `archive/generated/dist/lockfile.json`
+     - `archive/generated/dist/registries/*.json`
 4. **Compile lock + registries**
    - `tools/xstack/lockfile_build --bundle bundle.base.lab --out build/lockfile.json`
    - Registry hashes must match lockfile.

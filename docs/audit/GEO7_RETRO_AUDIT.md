@@ -32,12 +32,12 @@ Observed canonical contracts already present:
   - defines macro terrain capsule summaries for collapse and expand
 - `schema/terrain.field.schema`
   - treats terrain truth as field stack identifiers such as `terrain.phi`
-- `docs/worldgen/TERRAIN_GEOMETRY_BASELINE.md`
+- `docs/domains/worldgen/TERRAIN_GEOMETRY_BASELINE.md`
   - describes terrain truth in terms of SDF-style field layers
   - explicitly defers construction and destruction behavior
-- `docs/worldgen/MINING_AND_EXTRACTION_BASELINE.md`
+- `docs/domains/worldgen/MINING_AND_EXTRACTION_BASELINE.md`
   - describes mining as terrain overlays and process outputs, not direct mesh mutation
-- `docs/worldgen/BUILDING_AND_DESTRUCTION_BASELINE.md`
+- `docs/domains/worldgen/BUILDING_AND_DESTRUCTION_BASELINE.md`
   - routes building and destruction through fields, support, and process outcomes
 
 These documents establish intent, but there was no first-class GEO runtime for occupancy/material edits over `geo_cell_key`.

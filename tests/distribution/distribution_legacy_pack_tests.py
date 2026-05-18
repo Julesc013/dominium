@@ -19,7 +19,7 @@ def main():
     repo_root = os.path.abspath(args.repo_root)
 
     legacy_root = os.path.join("tests", "distribution", "fixtures", "packs_legacy")
-    compat = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                       ["--repo-root", repo_root, "--root", legacy_root,
                        "--engine-pack-format", "1", "--format", "json"])
     if compat.get("ok"):

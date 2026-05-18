@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -72,8 +72,8 @@ RWAM and grammar surfaces now include THERM mapping:
 Audit/docs:
 
 - `docs/audit/THERM0_RETRO_AUDIT.md`
-- `docs/thermal/THERMAL_CONSTITUTION.md`
-- `docs/thermal/LOSS_TO_HEAT_CONVENTION.md`
+- `docs/domains/thermal/THERMAL_CONSTITUTION.md`
+- `docs/domains/thermal/LOSS_TO_HEAT_CONVENTION.md`
 - `docs/audit/THERMAL_CONSTITUTION_BASELINE.md`
 
 Schema/text contracts:
@@ -116,7 +116,7 @@ Executed commands:
   - Result: **PASS** (`status=pass`, findings present as warnings only)
 
 - AuditX scan
-  - `python tools/auditx/auditx.py scan --repo-root . --format both`
+  - `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
   - Result: **COMPLETE** (`findings_count=1573`, reports refreshed in `docs/audit/auditx/`)
 
 - TestX targeted THERM-0 + affected governance checks

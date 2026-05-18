@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: XStack-to-AIDE extraction mapping, playable-baseline assembly follow-ups
 Replacement Target: later explicit repo-operating-contract checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `CMakePresets.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx_all.py`, `tools/validation/tool_run_validation.py`, `tools/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `runtime/process_spawn.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/data/session_templates/session.mvp_default.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `CMakePresets.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx_all.py`, `tools/validators/suite/tool_run_validation.py`, `tools/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `runtime/process_spawn.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`
 
 # Codex Repo Operating Contract
 
@@ -87,7 +87,7 @@ What Codex must not assume:
 
 Current validation rule:
 
-- the canonical minimum validation path is `python tools/validation/tool_run_validation.py --profile FAST`
+- the canonical minimum validation path is `python tools/validators/suite/tool_run_validation.py --profile FAST`
 - `python tools/xstack/testx_all.py --profile FAST` is the canonical XStack/TestX smoke companion when XStack tooling or validation surfaces are touched
 - `ctest --preset verify` is the canonical compiled-test companion when the task implicates the verify binary lane
 
@@ -178,7 +178,7 @@ Current session rules:
 - use `tools/xstack/session_create.py` as the canonical session materialization entrypoint
 - treat its default bundle assumption as `profile.bundle.mvp_default`
 - treat the corresponding default pack lock as `pack_lock.mvp_default`
-- treat the authored default template as `content/data/session_templates/session.mvp_default.json`
+- treat the authored default template as `content/templates/session/session.mvp_default.json`
 - treat `saves/<save_id>/` as the canonical bootable save layout for current repo-local work
 
 Operational rules Codex must follow:
@@ -250,7 +250,7 @@ The following directory families are authoritative for current work, with the li
 
 ### F5. Validation, Test, Release, And Trust Roots
 
-- `tools/validation/**`
+- `tools/validators/suite/**`
   - canonical validation entrypoint tooling
 - `validation/**`
   - authoritative validation engine and support logic
@@ -275,9 +275,9 @@ The following directory families are useful, but Codex must not treat them as th
   - machine-readable audit evidence and reports; not canonical law
 - `schemas/**`
   - validator-facing projections or advisory mirrors, not canonical semantic contract law
-- `build/**`, `out/**`, `artifacts/**`, `.xstack_cache/**`, `run_meta/**`, `tmp/**`, `archive/**`
+- `build/**`, `out/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, `run_meta/**`, `tmp/**`, `archive/**`
   - generated build, cache, report, and temporary outputs
-- `dist/**`, `bundles/**`
+- `archive/generated/dist/**`, `bundles/**`
   - built or packaged outputs, not authoring truth
 - `saves/**`
   - generated runtime session instances; currently the canonical boot location for session instances, but not a canonical authored source root

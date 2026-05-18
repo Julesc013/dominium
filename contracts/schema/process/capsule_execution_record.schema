@@ -1,0 +1,27 @@
+SCHEMA: process/capsule_execution_record.schema
+schema_id: dominium.schema.process.capsule_execution_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic ProcessCapsule macro execution outcomes.
+
+NON-SEMANTICS:
+- Does not replace process_run_record; capsule runs must still reference run artifacts.
+- Does not imply validity or certification permanence.
+
+REQUIRED SHAPE:
+record capsule_execution_record
+  required:
+    - exec_id: id
+    - capsule_id: id
+    - tick_range: map
+      required:
+        - start_tick: u64
+        - end_tick: u64
+    - inputs_hash: text
+    - outputs_hash: text
+    - qc_outcome_hash: text?
+    - deterministic_fingerprint: text
+    - extensions: map
+

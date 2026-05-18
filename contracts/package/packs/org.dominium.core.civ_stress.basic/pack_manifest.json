@@ -1,0 +1,43 @@
+{
+  "record": {
+    "dependencies": [
+      {
+        "capability_id": "org.dominium.core.units"
+      }
+    ],
+    "depends": [
+      {
+        "capability_id": "org.dominium.core.units"
+      }
+    ],
+    "entitlements": [],
+    "extensions": {},
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
+    "pack_id": "org.dominium.core.civ_stress.basic",
+    "pack_tags": [
+      "pack.class.core_ontology"
+    ],
+    "pack_version": "1.0.0",
+    "provides": [
+      {
+        "capability_id": "org.dominium.core.civ_stress"
+      }
+    ],
+    "provides_capabilities": [
+      {
+        "capability_id": "org.dominium.core.civ_stress"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "requires_capabilities": [
+      {
+        "capability_id": "org.dominium.core.units"
+      }
+    ],
+    "requires_engine": "0.0.0"
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
+}

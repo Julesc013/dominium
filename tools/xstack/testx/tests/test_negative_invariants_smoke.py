@@ -27,7 +27,7 @@ def run(repo_root: str):
             ),
             (
                 os.path.join(temp_root, "game", "bad_schema_read.py"),
-                'payload = open("contracts/schemas/session_spec.schema.json", "r", encoding="utf-8").read()\n',
+                'payload = open("contracts/schema/session_spec.schema.json", "r", encoding="utf-8").read()\n',
             ),
             (
                 os.path.join(temp_root, "client", "presentation", "bad_ui_call.py"),

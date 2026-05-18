@@ -65,7 +65,7 @@ Determinism checks operate on canonical artifacts only. TestX ignores RUN_META a
 
 ## Workspace Isolation Proof
 
-TestX validates that workspace-scoped outputs remain isolated under `out/build/<WS_ID>/` and `dist/ws/<WS_ID>/`, and that gate policy commands avoid hardcoded global output paths.
+TestX validates that workspace-scoped outputs remain isolated under `out/build/<WS_ID>/` and `archive/generated/dist/ws/<WS_ID>/`, and that gate policy commands avoid hardcoded global output paths.
 
 ## Regression Lock Philosophy
 

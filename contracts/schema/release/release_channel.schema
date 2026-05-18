@@ -1,0 +1,33 @@
+SCHEMA: release/release_channel.schema
+schema_id: dominium.schema.release.release_channel
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic release channel identifiers used by release tags and artifact naming policy.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record release_channel
+  required:
+    - schema_version: tag
+    - channel_id: tag
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - description: tag
+    - notes: map
+
+INVARIANTS:
+- channel_id must be one of the governed release channels declared in the registry.
+- deterministic_fingerprint is computed from canonical serialized content.

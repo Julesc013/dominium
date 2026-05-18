@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Affiliation Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic subject affiliation record.",
+  "x-doc-ref": [
+    "docs/civilisation/FACTIONS_AND_AFFILIATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "subject_id",
+    "faction_id",
+    "joined_tick",
+    "role_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "subject_id": {
+      "type": "string"
+    },
+    "faction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "joined_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "role_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "subject_id": "agent.seed.001",
+      "faction_id": "faction.seed.001",
+      "joined_tick": 12,
+      "role_id": "role.member",
+      "extensions": {}
+    }
+  ]
+}

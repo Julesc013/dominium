@@ -90,7 +90,7 @@ CIV-1 establishes deterministic, process-driven foundations for factions, affili
   - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - Result: `status=pass` (`repox scan passed`, findings=`1` warn-level only).
 - AuditX run:
-  - `py -3 tools/auditx/auditx.py scan --repo-root .`
+  - `py -3 tools/xstack/auditx/auditx.py scan --repo-root .`
   - Result: `result=scan_complete`, findings=`1532`.
 - TestX PASS (CIV-1 required suite):
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset testx.civilisation.faction_create_deterministic,testx.civilisation.affiliation_join_leave_deterministic,testx.civilisation.territory_claim_conflict_order,testx.civilisation.diplomacy_update_deterministic,testx.civilisation.no_agents_world_runs_ok,testx.civilisation.single_agent_world_runs_ok`

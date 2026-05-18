@@ -109,7 +109,7 @@ document is binding but still expected to grow or sharpen.
 | `docs/architecture/SEMANTIC_STABILITY_POLICY.md` | FROZEN | No reuse and no silent reinterpretation |
 | `docs/contracts/SEMANTIC_CONTRACT_MODEL.md` | FROZEN | Semantic behavior versioning and migration rules |
 | `docs/meta/EXTENSION_DISCIPLINE.md` | FROZEN | Namespaced extension discipline and deterministic ignore/refusal policy |
-| `docs/geo/OVERLAY_CONFLICT_POLICIES.md` | FROZEN | Deterministic overlay conflict-policy modes and refusal semantics |
+| `docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md` | FROZEN | Deterministic overlay conflict-policy modes and refusal semantics |
 | `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md` | FROZEN | Deterministic endpoint capability negotiation, degrade plans, and negotiation records |
 | `docs/modding/MOD_TRUST_AND_CAPABILITIES.md` | FROZEN | Deterministic mod trust levels, capability declarations, and refusal policy |
 
@@ -170,27 +170,27 @@ document is binding but still expected to grow or sharpen.
 | `docs/distribution/LAUNCHER_GUIDE.md` | EVOLVING | Launcher CLI guide |
 | `docs/architecture/PRODUCT_SHELL_CONTRACT.md` | EVOLVING | Product shell acceptance contract |
 | `docs/architecture/CHECKPOINTS.md` | EVOLVING | Acceptance checkpoints |
-| `docs/ui/UX_RULES.md` | EVOLVING | Global UX rules (CLI/TUI/GUI) |
-| `docs/ui/LAUNCHER_WALKTHROUGH.md` | EVOLVING | Launcher walkthrough and parity |
-| `docs/ui/CLIENT_OUT_OF_GAME_SCOPE.md` | EVOLVING | Client out-of-game scope (zero-asset) |
-| `docs/ui/CLIENT_MENU_GUIDE.md` | EVOLVING | Client menu behavior and rules |
-| `docs/ui/WORLD_CREATION_FLOW.md` | EVOLVING | World creation flow contract |
-| `docs/ui/SETTINGS_GUIDE.md` | EVOLVING | Settings contract and constraints |
-| `docs/ui/DEBUG_AND_INSPECT.md` | EVOLVING | Debug/inspect access contract |
-| `docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md` | EVOLVING | Debug and diagnostics model |
-| `docs/compat/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |
-| `docs/compat/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |
-| `docs/compat/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |
-| `docs/compat/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |
-| `docs/diag/REPRO_BUNDLE_MODEL.md` | EVOLVING | Deterministic offline repro bundle contents, privacy stripping, and replay verification workflow |
+| `docs/runtime/ui/UX_RULES.md` | EVOLVING | Global UX rules (CLI/TUI/GUI) |
+| `docs/runtime/ui/LAUNCHER_WALKTHROUGH.md` | EVOLVING | Launcher walkthrough and parity |
+| `docs/runtime/ui/CLIENT_OUT_OF_GAME_SCOPE.md` | EVOLVING | Client out-of-game scope (zero-asset) |
+| `docs/runtime/ui/CLIENT_MENU_GUIDE.md` | EVOLVING | Client menu behavior and rules |
+| `docs/runtime/ui/WORLD_CREATION_FLOW.md` | EVOLVING | World creation flow contract |
+| `docs/runtime/ui/SETTINGS_GUIDE.md` | EVOLVING | Settings contract and constraints |
+| `docs/runtime/ui/DEBUG_AND_INSPECT.md` | EVOLVING | Debug/inspect access contract |
+| `docs/development/DEBUG_AND_DIAGNOSTICS_MODEL.md` | EVOLVING | Debug and diagnostics model |
+| `docs/compatibility/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |
+| `docs/compatibility/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |
+| `docs/compatibility/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |
+| `docs/compatibility/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |
+| `docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md` | EVOLVING | Deterministic offline repro bundle contents, privacy stripping, and replay verification workflow |
 | `docs/ops/SERVER_SCOPE.md` | EVOLVING | Server scope and guarantees |
 | `docs/ops/LOGGING_MODEL.md` | EVOLVING | Server logging format and rotation |
 | `docs/ops/LONG_RUN_EXPECTATIONS.md` | EVOLVING | Long-run stability expectations |
 | `docs/ops/SERVER_OPERATIONS.md` | EVOLVING | Server CLI operations |
 | `docs/ops/MMO_SCALING_PLAYBOOK.md` | EVOLVING | SRZ scaling operations playbook |
-| `docs/dev/REPLAY_WORKFLOW.md` | EVOLVING | Replay-first workflow |
-| `docs/dev/TOOLS_GUIDE.md` | EVOLVING | Read-only tooling guide |
-| `docs/dev/REPLAY_DEBUGGING.md` | EVOLVING | Replay debugging process |
+| `docs/development/REPLAY_WORKFLOW.md` | EVOLVING | Replay-first workflow |
+| `docs/development/TOOLS_GUIDE.md` | EVOLVING | Read-only tooling guide |
+| `docs/development/REPLAY_DEBUGGING.md` | EVOLVING | Replay debugging process |
 
 
 | `docs/architecture/MACRO_TIME_MODEL.md` | EVOLVING | Macro stepping rules |
@@ -241,7 +241,7 @@ document is binding but still expected to grow or sharpen.
 
 AppShell shell-lifecycle anchor:
 
-- `docs/appshell/APPSHELL_CONSTITUTION.md`
+- `docs/runtime/shell/APPSHELL_CONSTITUTION.md`
 
 Schemas are the authoritative data-shape contracts. Start here:
 

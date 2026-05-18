@@ -22,7 +22,7 @@ from tools.governance import (
     parse_release_tag,
 )
 from tools.validators.stability import build_stability_marker
-from release import DEFAULT_RELEASE_INDEX_REL, load_release_index
+from tools.release import DEFAULT_RELEASE_INDEX_REL, load_release_index
 from tools.dist.dist_tree_common import build_dist_tree
 from tools.release.update_model_common import build_update_model_report
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256

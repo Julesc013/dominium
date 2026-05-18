@@ -165,7 +165,7 @@ def run_auditx_check(repo_root: str, profile: str) -> Dict[str, object]:
     token = str(profile or "").strip().upper() or "FAST"
     changed_only = token == "FAST"
 
-    from tools.auditx.auditx import run_auditx_scan
+    from tools.xstack.auditx.auditx import run_auditx_scan
 
     scan = run_auditx_scan(
         repo_root=repo_root,
@@ -199,7 +199,7 @@ def run_auditx_check(repo_root: str, profile: str) -> Dict[str, object]:
                 "severity": "warn",
                 "code": refusal_code or "auditx.refusal",
                 "message": refusal_reason or "auditx refused",
-                "file_path": "tools/auditx/auditx.py",
+                "file_path": "tools/xstack/auditx/auditx.py",
                 "line_number": 1,
             }
         )
@@ -214,7 +214,7 @@ def run_auditx_check(repo_root: str, profile: str) -> Dict[str, object]:
             "severity": "fail",
             "code": "auditx.scan_internal_error",
             "message": "auditx scan failed (exit_code={})".format(exit_code),
-            "file_path": "tools/auditx/auditx.py",
+            "file_path": "tools/xstack/auditx/auditx.py",
             "line_number": 1,
         }
     )

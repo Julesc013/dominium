@@ -3,17 +3,17 @@
   "level_name": "Civilization",
   "status": "UNSUPPORTED",
   "required_schemas": [
-    "contracts/schemas/authority.schema",
-    "contracts/schemas/capability_lockfile.schema",
-    "contracts/schemas/domain.schema",
-    "contracts/schemas/institution.schema",
-    "contracts/schemas/knowledge.schema",
-    "contracts/schemas/process_family.schema",
-    "contracts/schemas/refinement_plan.schema",
-    "contracts/schemas/standard.schema",
-    "contracts/schemas/topology.schema",
-    "contracts/schemas/world_definition.schema",
-    "contracts/schemas/worldgen_model.schema"
+    "contracts/schema/authority.schema",
+    "contracts/schema/capability_lockfile.schema",
+    "contracts/schema/domain.schema",
+    "contracts/schema/institution.schema",
+    "contracts/schema/knowledge.schema",
+    "contracts/schema/process_family.schema",
+    "contracts/schema/refinement_plan.schema",
+    "contracts/schema/standard.schema",
+    "contracts/schema/topology.schema",
+    "contracts/schema/world_definition.schema",
+    "contracts/schema/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-f.process.adjudicate",

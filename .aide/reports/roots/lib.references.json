@@ -77,97 +77,97 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3311,
-      "snippet": "\"contracts/schemas/lib/artifact_manifest.schema\","
+      "snippet": "\"contracts/schema/lib/artifact_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3312,
-      "snippet": "\"contracts/schemas/lib/artifact_reference.schema\","
+      "snippet": "\"contracts/schema/lib/artifact_reference.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3313,
-      "snippet": "\"contracts/schemas/lib/bundle_item.schema\","
+      "snippet": "\"contracts/schema/lib/bundle_item.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3314,
-      "snippet": "\"contracts/schemas/lib/bundle_manifest.schema\","
+      "snippet": "\"contracts/schema/lib/bundle_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3315,
-      "snippet": "\"contracts/schemas/lib/gc_policy.schema\","
+      "snippet": "\"contracts/schema/lib/gc_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3316,
-      "snippet": "\"contracts/schemas/lib/gc_report.schema\","
+      "snippet": "\"contracts/schema/lib/gc_report.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3317,
-      "snippet": "\"contracts/schemas/lib/install_manifest.schema\","
+      "snippet": "\"contracts/schema/lib/install_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3318,
-      "snippet": "\"contracts/schemas/lib/install_registry.schema\","
+      "snippet": "\"contracts/schema/lib/install_registry.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3319,
-      "snippet": "\"contracts/schemas/lib/instance_manifest.schema\","
+      "snippet": "\"contracts/schema/lib/instance_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3320,
-      "snippet": "\"contracts/schemas/lib/instance_settings.schema\","
+      "snippet": "\"contracts/schema/lib/instance_settings.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3321,
-      "snippet": "\"contracts/schemas/lib/migration_event.schema\","
+      "snippet": "\"contracts/schema/lib/migration_event.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3322,
-      "snippet": "\"contracts/schemas/lib/product_build_descriptor.schema\","
+      "snippet": "\"contracts/schema/lib/product_build_descriptor.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3323,
-      "snippet": "\"contracts/schemas/lib/provides_declaration.schema\","
+      "snippet": "\"contracts/schema/lib/provides_declaration.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3324,
-      "snippet": "\"contracts/schemas/lib/provides_resolution.schema\","
+      "snippet": "\"contracts/schema/lib/provides_resolution.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3325,
-      "snippet": "\"contracts/schemas/lib/save_manifest.schema\","
+      "snippet": "\"contracts/schema/lib/save_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3326,
-      "snippet": "\"contracts/schemas/lib/store_root.schema\","
+      "snippet": "\"contracts/schema/lib/store_root.schema\","
     },
     {
       "classification": "unknown",
@@ -527,19 +527,19 @@
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 3530,
-      "snippet": "\"source_tool\": \"contracts/schemas/lib/install_manifest.schema\","
+      "snippet": "\"source_tool\": \"contracts/schema/lib/install_manifest.schema\","
     },
     {
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 3539,
-      "snippet": "\"source_tool\": \"contracts/schemas/lib/install_registry.schema\","
+      "snippet": "\"source_tool\": \"contracts/schema/lib/install_registry.schema\","
     },
     {
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 3548,
-      "snippet": "\"source_tool\": \"contracts/schemas/lib/product_build_descriptor.schema\","
+      "snippet": "\"source_tool\": \"contracts/schema/lib/product_build_descriptor.schema\","
     },
     {
       "classification": "tools",
@@ -695,19 +695,19 @@
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 416,
-      "snippet": "- `contracts/schemas/lib/install_manifest.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
+      "snippet": "- `contracts/schema/lib/install_manifest.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
     },
     {
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 417,
-      "snippet": "- `contracts/schemas/lib/install_registry.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
+      "snippet": "- `contracts/schema/lib/install_registry.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, install_hint:install, medium_risk_hint:install"
     },
     {
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 418,
-      "snippet": "- `contracts/schemas/lib/product_build_descriptor.schema`: risk=medium fate=wrap reasons=build_hint:build, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:build"
+      "snippet": "- `contracts/schema/lib/product_build_descriptor.schema`: risk=medium fate=wrap reasons=build_hint:build, candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:build"
     },
     {
       "classification": "tools",
@@ -959,7 +959,7 @@
       "classification": "active_source",
       "file": "cmake/dominium_dist.cmake",
       "line": 196,
-      "snippet": "\"  dist/sys/<os>/<arch>/lib/*\\n\""
+      "snippet": "\"  archive/generated/dist/sys/<os>/<arch>/lib/*\\n\""
     },
     {
       "classification": "unknown",
@@ -975,97 +975,97 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/artifact_manifest.schema",
+      "file": "contracts/schema/lib/artifact_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/artifact_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/artifact_reference.schema",
+      "file": "contracts/schema/lib/artifact_reference.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/artifact_reference.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/bundle_item.schema",
+      "file": "contracts/schema/lib/bundle_item.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/bundle_item.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/bundle_manifest.schema",
+      "file": "contracts/schema/lib/bundle_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/bundle_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/gc_policy.schema",
+      "file": "contracts/schema/lib/gc_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/gc_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/gc_report.schema",
+      "file": "contracts/schema/lib/gc_report.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/gc_report.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/install_manifest.schema",
+      "file": "contracts/schema/lib/install_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/install_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/install_registry.schema",
+      "file": "contracts/schema/lib/install_registry.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/install_registry.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/instance_manifest.schema",
+      "file": "contracts/schema/lib/instance_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/instance_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/instance_settings.schema",
+      "file": "contracts/schema/lib/instance_settings.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/instance_settings.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/migration_event.schema",
+      "file": "contracts/schema/lib/migration_event.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/migration_event.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/product_build_descriptor.schema",
+      "file": "contracts/schema/lib/product_build_descriptor.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/product_build_descriptor.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/provides_declaration.schema",
+      "file": "contracts/schema/lib/provides_declaration.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/provides_declaration.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/provides_resolution.schema",
+      "file": "contracts/schema/lib/provides_resolution.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/provides_resolution.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/save_manifest.schema",
+      "file": "contracts/schema/lib/save_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/save_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/lib/store_root.schema",
+      "file": "contracts/schema/lib/store_root.schema",
       "line": 1,
       "snippet": "SCHEMA: lib/store_root.schema"
     },
@@ -1605,9 +1605,9 @@
     },
     {
       "classification": "docs",
-      "file": "dist/docs/readme.txt",
+      "file": "archive/generated/dist/docs/readme.txt",
       "line": 21,
-      "snippet": "dist/sys/<os>/<arch>/lib/*"
+      "snippet": "archive/generated/dist/sys/<os>/<arch>/lib/*"
     },
     {
       "classification": "docs",
@@ -6707,7 +6707,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 895,
-      "snippet": "`appshell/`, `release/`, `compat/`, `lib/install/`, `data/registries/virtual_root_registry.json`, `dist/`, repo-local `saves/`"
+      "snippet": "`appshell/`, `release/`, `compat/`, `lib/install/`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, repo-local `saves/`"
     },
     {
       "classification": "docs",
@@ -6933,193 +6933,193 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e435_binary_without_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e435_binary_without_descriptor_smell.py",
       "line": 12,
-      "snippet": "\"contracts/schemas/lib/product_build_descriptor.schema\": ("
+      "snippet": "\"contracts/schema/lib/product_build_descriptor.schema\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e435_binary_without_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e435_binary_without_descriptor_smell.py",
       "line": 16,
       "snippet": "\"lib/install/install_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e436_instance_without_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e436_instance_without_lock_smell.py",
       "line": 17,
-      "snippet": "\"contracts/schemas/lib/instance_manifest.schema\": ("
+      "snippet": "\"contracts/schema/lib/instance_manifest.schema\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e436_instance_without_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e436_instance_without_lock_smell.py",
       "line": 22,
       "snippet": "\"lib/instance/instance_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e438_save_without_contract_pin_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e438_save_without_contract_pin_smell.py",
       "line": 17,
-      "snippet": "\"contracts/schemas/lib/save_manifest.schema\": ("
+      "snippet": "\"contracts/schema/lib/save_manifest.schema\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e438_save_without_contract_pin_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e438_save_without_contract_pin_smell.py",
       "line": 22,
       "snippet": "\"lib/save/save_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 12,
       "snippet": "\"docs/lib/EXPORT_IMPORT_FORMAT.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 17,
       "snippet": "\"lib/bundle/bundle_manifest.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 22,
       "snippet": "\"tools/lib/tool_verify_bundle.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 28,
       "snippet": "\"lib/bundle/bundle_manifest.py\": (\"time.time(\", \"datetime.utcnow(\", \"uuid.uuid4(\", \"os.path.getmtime(\", \"random.\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 29,
       "snippet": "\"lib/export/export_engine.py\": (\"time.time(\", \"datetime.utcnow(\", \"uuid.uuid4(\", \"os.path.getmtime(\", \"random.\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_nondeterministic_archive_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_nondeterministic_archive_smell.py",
       "line": 30,
       "snippet": "\"tools/lib/tool_verify_bundle.py\": (\"time.time(\", \"datetime.utcnow(\", \"uuid.uuid4(\", \"random.\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_silent_save_upgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_silent_save_upgrade_smell.py",
       "line": 17,
-      "snippet": "\"contracts/schemas/lib/migration_event.schema\": ("
+      "snippet": "\"contracts/schema/lib/migration_event.schema\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e439_silent_save_upgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e439_silent_save_upgrade_smell.py",
       "line": 22,
       "snippet": "\"lib/save/save_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e440_import_without_hash_check_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e440_import_without_hash_check_smell.py",
       "line": 12,
       "snippet": "\"docs/lib/EXPORT_IMPORT_FORMAT.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e440_import_without_hash_check_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e440_import_without_hash_check_smell.py",
       "line": 17,
       "snippet": "\"lib/import/import_engine.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e440_import_without_hash_check_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e440_import_without_hash_check_smell.py",
       "line": 22,
       "snippet": "\"lib/bundle/bundle_manifest.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e440_import_without_hash_check_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e440_import_without_hash_check_smell.py",
       "line": 27,
       "snippet": "\"tools/lib/tool_verify_bundle.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e440_manifest_missing_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e440_manifest_missing_smell.py",
       "line": 17,
-      "snippet": "\"contracts/schemas/lib/artifact_manifest.schema\": ("
+      "snippet": "\"contracts/schema/lib/artifact_manifest.schema\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e441_artifact_hash_mismatch_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e441_artifact_hash_mismatch_smell.py",
       "line": 17,
       "snippet": "\"lib/artifact/artifact_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e442_silent_provider_selection_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e442_silent_provider_selection_smell.py",
       "line": 17,
       "snippet": "\"lib/provides/provider_resolution.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e443_pack_id_collision_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e443_pack_id_collision_smell.py",
       "line": 21,
       "snippet": "\"lib/provides/provider_resolution.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
       "line": 12,
       "snippet": "\"docs/lib/EXPORT_IMPORT_FORMAT.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
       "line": 22,
       "snippet": "\"tools/lib/lib_stress_common.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
       "line": 28,
       "snippet": "\"tools/lib/tool_run_lib_stress.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
       "line": 40,
       "snippet": "\"tools/lib/lib_stress_common.py\": (\"time.time(\", \"datetime.utcnow(\", \"uuid.uuid4(\", \"random.\", \"os.path.getmtime(\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py",
       "line": 41,
       "snippet": "\"tools/lib/tool_run_lib_stress.py\": (\"time.time(\", \"datetime.utcnow(\", \"uuid.uuid4(\", \"random.\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e482_install_root_hardcoded_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e482_install_root_hardcoded_smell.py",
       "line": 41,
       "snippet": "related_paths=[rel_path, \"lib/install/install_discovery_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e532_nondeterministic_gc_order_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e532_nondeterministic_gc_order_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"lib/store/gc_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e532_nondeterministic_gc_order_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e532_nondeterministic_gc_order_smell.py",
       "line": 43,
       "snippet": "related_paths=[rel_path or \"lib/store/gc_engine.py\", \"lib/store/reachability_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e533_delete_without_quarantine_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e533_delete_without_quarantine_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"lib/store/gc_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e533_delete_without_quarantine_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e533_delete_without_quarantine_smell.py",
       "line": 43,
       "snippet": "related_paths=[rel_path or \"lib/store/gc_engine.py\", \"docs/lib/STORE_INTEGRITY_AND_GC.md\"],"
     },
@@ -7241,13 +7241,13 @@
       "classification": "tools",
       "file": "tools/lib/store_gc_common.py",
       "line": 799,
-      "snippet": "(\"contracts/schemas/lib/gc_policy.schema\", \"gc_policy schema is required\", RULE_POLICY),"
+      "snippet": "(\"contracts/schema/lib/gc_policy.schema\", \"gc_policy schema is required\", RULE_POLICY),"
     },
     {
       "classification": "tools",
       "file": "tools/lib/store_gc_common.py",
       "line": 800,
-      "snippet": "(\"contracts/schemas/lib/gc_report.schema\", \"gc_report schema is required\", RULE_POLICY),"
+      "snippet": "(\"contracts/schema/lib/gc_report.schema\", \"gc_report schema is required\", RULE_POLICY),"
     },
     {
       "classification": "tools",
@@ -7289,7 +7289,7 @@
       "classification": "tools",
       "file": "tools/release/install_discovery_common.py",
       "line": 23,
-      "snippet": "INSTALL_DISCOVERY_SCHEMA_PATH = \"contracts/schemas/lib/install_registry.schema\""
+      "snippet": "INSTALL_DISCOVERY_SCHEMA_PATH = \"contracts/schema/lib/install_registry.schema\""
     },
     {
       "classification": "tools",
@@ -7337,7 +7337,7 @@
       "classification": "tools",
       "file": "tools/release/virtual_paths_common.py",
       "line": 508,
-      "snippet": "\"- Path resolution is centralized in `runtime/appshell/paths/virtual_paths.py` after install discovery is resolved by `lib/install/install_discovery_engine.py`.\","
+      "snippet": "\"- Path resolution is centralized in `runtime/shell/paths/virtual_paths.py` after install discovery is resolved by `lib/install/install_discovery_engine.py`.\","
     },
     {
       "classification": "tools",

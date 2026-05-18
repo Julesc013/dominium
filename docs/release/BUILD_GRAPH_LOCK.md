@@ -337,7 +337,7 @@ The following cautions remain binding:
 
 This lock also carries a build-specific caution:
 
-- `content/data/planning/final_prompt_inventory.json` contains stale `Υ` numbering for part of the release band, so active checkpoint and next-order artifacts outrank that drift for current prompt sequencing
+- `contracts/planning/final_prompt_inventory.json` contains stale `Υ` numbering for part of the release band, so active checkpoint and next-order artifacts outrank that drift for current prompt sequencing
 
 ## O. Anti-Patterns / Forbidden Shapes
 

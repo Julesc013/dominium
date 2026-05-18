@@ -1,0 +1,25 @@
+SCHEMA: earth/shadow_model.schema
+schema_id: dominium.schema.earth.shadow_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the EARTH-5 shadow model registry row shape.
+- Reserve deterministic model-selection surfaces for bounded shadow behavior.
+
+NON-SEMANTICS:
+- This schema does not define shadow-map allocation or GPU-only behavior.
+- This schema does not authorize unbounded terrain traversal.
+
+REQUIRED SHAPE:
+record shadow_model
+  required:
+    - shadow_model_id: id
+    - kind: enum[none|horizon_stub|future]
+    - parameters_ref: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- shadow model rows must declare bounded deterministic behavior
+- MVP shadow models must remain renderer-portable

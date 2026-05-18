@@ -20,7 +20,7 @@ Scope: Global deterministic numeric discipline baseline for authoritative simula
   - `src/`
   - `tools/xstack/sessionx/`
   - `tools/xstack/repox/`
-  - `tools/auditx/`
+  - `tools/xstack/auditx/`
 - Focused on authoritative paths:
   - momentum/velocity derivation
   - energy and conservation ledgers

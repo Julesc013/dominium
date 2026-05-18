@@ -4,9 +4,9 @@
 
 If rollback is explicitly approved later, move:
 
-- `contracts/projections/ide/projection_manifest.schema.json` back to `ide/manifests/projection_manifest.schema.json`
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` back to `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json`
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` back to `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json`
+- `contracts/projection/ide/projection_manifest.schema.json` back to `ide/manifests/projection_manifest.schema.json`
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` back to `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json`
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` back to `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json`
 
 ## Reverse Reference Rewrites
 

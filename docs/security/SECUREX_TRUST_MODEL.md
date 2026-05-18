@@ -82,8 +82,8 @@ No silent downgrade is allowed for ranked requirements.
 
 ## Cross-References
 
-- `docs/net/RANKED_SERVER_GOVERNANCE.md`
-- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
+- `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md`
+- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 - `schemas/pack_manifest.schema.json`
 - `schemas/securex_policy_registry.schema.json`
 - `contracts/registry/securex_policy_registry.json`

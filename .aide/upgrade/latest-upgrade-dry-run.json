@@ -65,9 +65,9 @@
       "conflict_id": "upgrade-conflict-9d1982520bd0",
       "conflict_type": "secret_like_path",
       "evidence_refs": [
-        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+        "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
-      "path": "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+      "path": "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py",
       "reason": "Tracked secret-like path blocks safe upgrade apply.",
       "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
       "status": "blocking"
@@ -77,9 +77,9 @@
       "conflict_id": "upgrade-conflict-231e4ad6fbd8",
       "conflict_type": "secret_like_path",
       "evidence_refs": [
-        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+        "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
-      "path": "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+      "path": "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py",
       "reason": "Tracked secret-like path blocks safe upgrade apply.",
       "recommended_next_action": "Preserve and review. Q45 does not overwrite, delete, migrate, repair, or upgrade files.",
       "status": "blocking"

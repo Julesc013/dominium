@@ -75,7 +75,7 @@
       "description": "Supports runtime execution over specific semantic domain families without redefining domain contracts.",
       "representative_evidence_roots": [
         "engine/modules/world",
-        "game/core/execution",
+        "game/rule/execution",
         "core/spatial",
         "core/hazards",
         "process/research"
@@ -209,7 +209,7 @@
     ],
     "architecture_evidence_surfaces": [
       "contracts/registry/architecture/module_registry.v1.json",
-      "content/data/architecture/module_boundary_rules.v1.json",
+      "archive/generated/architecture/module_boundary_rules.v1.json",
       "contracts/registry/component_graph_registry.json",
       "contracts/registry/xstack_components.json"
     ],
@@ -266,8 +266,8 @@
       "id": "planning_order_drift",
       "paths": [
         "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
-        "content/data/planning/final_prompt_inventory.json",
-        "content/data/planning/dependency_graph_post_pi.json"
+        "contracts/planning/final_prompt_inventory.json",
+        "contracts/planning/dependency_graph_post_pi.json"
       ],
       "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
     }

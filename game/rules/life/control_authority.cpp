@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/control_authority.cpp
+FILE: game/rule/life/control_authority.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements deterministic control authority evaluation.

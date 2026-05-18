@@ -1,0 +1,23 @@
+SCHEMA: thermal/thermal_policy.schema
+schema_id: dominium.schema.thermal.thermal_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic THERM policy row controlling tier selection, update cadence, and degrade behavior.
+
+REQUIRED SHAPE:
+record thermal_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - tier_selection: map
+    - update_frequency: map
+    - degrade_rules: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Policy selection must be deterministic and budget-compatible.
+- `therm.policy.none` must be legal and preserve null-boot operation.
+

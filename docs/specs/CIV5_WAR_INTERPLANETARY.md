@@ -54,7 +54,7 @@ Public headers live in `game/include/dominium/rules/war/`.
 - No omniscient blockade or route safety maps.
 
 ## Tests (WAR4)
-Implemented in `game/tests/civ5_war4_scale_tests.cpp`:
+Implemented in `tests/game/civ5_war4_scale_tests.cpp`:
 - Deterministic blockade effects.
 - Interdiction scheduling determinism.
 - Siege deprivation batch vs step equivalence.

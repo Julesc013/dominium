@@ -22,9 +22,9 @@ Replacement Target: XI-4b manual review resolution
 - `src/tools/governance/governance_profile.py`
 - `src/tools/validators/identity/identity_validator.py`
 - `src/platform/target_matrix.py`
-- `src/release/archive_policy.py`
-- `src/release/component_graph_resolver.py`
-- `src/release/update_resolver.py`
+- `src/tools/release/archive_policy.py`
+- `src/tools/release/component_graph_resolver.py`
+- `src/tools/release/update_resolver.py`
 - `tools/meta/observability_common.py`
 - `tools/mvp/toolchain_matrix_common.py`
 
@@ -35,15 +35,15 @@ Replacement Target: XI-4b manual review resolution
 - `src/tools/validators/compatibility/migration_lifecycle.py` disposition=`quarantine` rank=`3` total_score=`77.62` risk=`HIGH`
 - `src/platform/target_matrix.py` disposition=`quarantine` rank=`4` total_score=`75.0` risk=`HIGH`
 - `src/tools/governance/governance_profile.py` disposition=`drop` rank=`5` total_score=`73.87` risk=`HIGH`
-- `src/release/archive_policy.py` disposition=`drop` rank=`6` total_score=`72.38` risk=`HIGH`
+- `src/tools/release/archive_policy.py` disposition=`drop` rank=`6` total_score=`72.38` risk=`HIGH`
 - `src/tools/validators/identity/identity_validator.py` disposition=`drop` rank=`7` total_score=`69.64` risk=`HIGH`
-- `src/release/component_graph_resolver.py` disposition=`drop` rank=`8` total_score=`66.43` risk=`HIGH`
-- `src/release/update_resolver.py` disposition=`drop` rank=`9` total_score=`54.29` risk=`HIGH`
+- `src/tools/release/component_graph_resolver.py` disposition=`drop` rank=`8` total_score=`66.43` risk=`HIGH`
+- `src/tools/release/update_resolver.py` disposition=`drop` rank=`9` total_score=`54.29` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/app/CLIENT_IDE_START_POINTS.md, docs/app/CLIENT_READONLY_INTEGRATION.md, docs/app/CLI_CONTRACTS.md, docs/app/COMPATIBILITY_ENFORCEMENT.md, docs/app/OBSERVABILITY_PIPELINES.md, docs/app/README.md, docs/app/TOOLS_OBSERVABILITY.md, docs/architecture/AI_INTENT_MODEL.md`
+- Docs: `docs/apps/CLIENT_IDE_START_POINTS.md, docs/apps/CLIENT_READONLY_INTEGRATION.md, docs/apps/CLI_CONTRACTS.md, docs/apps/COMPATIBILITY_ENFORCEMENT.md, docs/apps/OBSERVABILITY_PIPELINES.md, docs/apps/README.md, docs/apps/TOOLS_OBSERVABILITY.md, docs/architecture/AI_INTENT_MODEL.md`
 
 ## Tests Involved
 
@@ -54,7 +54,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

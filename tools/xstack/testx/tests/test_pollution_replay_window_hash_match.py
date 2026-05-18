@@ -14,8 +14,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.fields import build_field_cell
-    from game.domains.pollution.dispersion_engine import concentration_field_id_for_pollutant
+    from game.domain.fields import build_field_cell
+    from game.domain.pollution.dispersion_engine import concentration_field_id_for_pollutant
     from tools.pollution.tool_replay_exposure_window import verify_exposure_replay_window
     from tools.xstack.testx.tests.pollution_dispersion_testlib import (
         build_pollution_field_inputs,

@@ -1,0 +1,36 @@
+SCHEMA: release/signature_block.schema
+schema_id: dominium.schema.release.signature_block
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the additive detached or inline signature hook used by RELEASE-2 verification.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- bytes: opaque canonical string encoding of external signature bytes.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record signature_block
+  required:
+    - signature_id: id
+    - signer_id: id
+    - signed_hash: sha256
+    - signature_bytes: bytes
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - notes: map
+
+INVARIANTS:
+- signed_hash references a canonical artifact or manifest hash.
+- signature material is additive and must not alter governed build or manifest identity fields.
+- deterministic_fingerprint is computed from canonical serialized content.

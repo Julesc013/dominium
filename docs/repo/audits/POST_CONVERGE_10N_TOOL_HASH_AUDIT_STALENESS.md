@@ -24,7 +24,7 @@ This was focused tool hash and audit evidence staleness remediation. It applied 
 POST-CONVERGE-10M left focused RepoX at 23 failures and 5 warnings. The remaining targetable 10N failures were:
 
 - `INV-IDENTITY-FINGERPRINT`: stale `docs/audit/identity_fingerprint.json`.
-- `INV-TOOL-VERSION-MISMATCH`: stale SecureX integrity manifest hashes for `tools/compatx/compatx.py` and `tools/securex/securex.py`.
+- `INV-TOOL-VERSION-MISMATCH`: stale SecureX integrity manifest hashes for `tools/xstack/compatx/compatx.py` and `tools/xstack/securex/securex.py`.
 - `INV-AUDITX-OUTPUT-STALE`: warning that AuditX findings lag HEAD by 199 commits.
 - four glossary warnings in generated or historical audit evidence.
 
@@ -50,7 +50,7 @@ POST-CONVERGE-10M left focused RepoX at 23 failures and 5 warnings. The remainin
 ## Changes Made
 
 - Refreshed `docs/audit/identity_fingerprint.json` with `tools/ci/tool_identity_fingerprint.py`.
-- Refreshed `docs/audit/security/INTEGRITY_MANIFEST.json` with `tools/securex/securex.py integrity-manifest`.
+- Refreshed `docs/audit/security/INTEGRITY_MANIFEST.json` with `tools/xstack/securex/securex.py integrity-manifest`.
 - Updated `scripts/ci/check_repox_rules.py` so `repox.docs.canon` and `repox.schema.compat` cache keys explicitly include tracked docs/audit evidence files they read.
 - Refreshed tracked RepoX proof/profile evidence after the focused run.
 - Added POST-CONVERGE-10N AIDE reports and audit evidence.
@@ -70,7 +70,7 @@ POST-CONVERGE-10M left focused RepoX at 23 failures and 5 warnings. The remainin
 ## Remaining Blockers
 
 - Distribution/product proof blockers: 12 failures.
-- Current `game.domains.embodiment` lazy import blocker: 2 failures.
+- Current `game.domain.embodiment` lazy import blocker: 2 failures.
 - Ruleset mapping gaps: 2 failures.
 - Canon superseded doc, extension registry gap, worldgen retry-loop policy, and shadow-bound policy failures: 4 failures.
 - AuditX stale-output warning plus four glossary warnings in generated/historical audit evidence.
@@ -84,7 +84,7 @@ POST-CONVERGE-11 is not ready. Product/projection proof failures should not circ
 - `ctest --preset verify -N`: PASS, 493 tests discovered.
 - `ctest --preset verify -R inv_repox_rules --output-on-failure`: FAIL_EXPECTED, 20 failures / 5 warnings after safe fixes.
 - `python tools/ci/tool_identity_fingerprint.py --repo-root . --check`: PASS.
-- `python tools/securex/securex.py integrity-manifest --repo-root . --output .dominium.local/securex-integrity-10n-after.json` plus `git diff --no-index`: PASS.
+- `python tools/xstack/securex/securex.py integrity-manifest --repo-root . --output .dominium.local/securex-integrity-10n-after.json` plus `git diff --no-index`: PASS.
 - `py -3 .aide/scripts/aide_lite.py commit check --latest` after initial 10N commit `e80dc704c`: FAIL due changelog category prefix formatting; recorded without amend in a follow-up evidence commit.
 - Final command details are recorded in `.aide/reports/POST-CONVERGE-10N-validation.md`.
 

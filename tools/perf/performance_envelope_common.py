@@ -975,7 +975,7 @@ def performance_envelope_violations(repo_root: str) -> list[dict]:
         ("tools/perf/tool_measure_memory.py", "memory measurement tool is required", RULE_BASELINE),
         ("tools/perf/tool_measure_store_size.py", "store-size measurement tool is required", RULE_BASELINE),
         ("tools/perf/tool_run_performance_envelope.py", "performance envelope runner is required", RULE_BASELINE),
-        ("tools/auditx/analyzers/e535_performance_regression_smell.py", "performance regression analyzer is required", RULE_BASELINE),
+        ("tools/xstack/auditx/analyzers/e535_performance_regression_smell.py", "performance regression analyzer is required", RULE_BASELINE),
     )
     for rel_path, message, rule_id in required_paths:
         if os.path.isfile(os.path.join(root, rel_path.replace("/", os.sep))):

@@ -90,7 +90,7 @@ Contract/schema impact:
 Validation runs:
 
 - RepoX STRICT: refusal due repository-wide pre-existing findings outside LIB-0 scope (`data/meta/real_world_affordance_matrix.json`, derived pack provenance gaps, embodiment/process runtime findings)
-- AuditX STRICT: `python tools/auditx/auditx.py verify --repo-root .` -> `scan_complete`
+- AuditX STRICT: `python tools/xstack/auditx/auditx.py verify --repo-root .` -> `scan_complete`
 - TestX: `python tests/ops/content_store_tests.py --repo-root .`
 - Compatibility smoke: `python tests/ops/ops_manifest_tests.py --repo-root .`
 - Compatibility smoke: `python tests/share/share_bundle_tests.py --repo-root .`

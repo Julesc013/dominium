@@ -18,7 +18,7 @@ Superseded By: none
 | `git ls-files ide` | PASS | empty. |
 | filesystem `ide` listing | PASS | `ide_path_exists=false`. |
 | `git status --short ide` | PASS | no dirty state. |
-| `git ls-files contracts/projections/ide` | PASS | all three moved manifest files are tracked. |
+| `git ls-files contracts/projection/ide` | PASS | all three moved manifest files are tracked. |
 | manifest JSON parse and required-field check | PASS | schema and both examples parse; examples include all schema-required fields. |
 | `py -3 .aide/scripts/aide_lite.py doctor` | PASS | AIDE doctor passed. |
 | `py -3 .aide/scripts/aide_lite.py validate` | PASS | AIDE validate passed. |

@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.processes.maturity.metrics_engine import build_process_metrics_state_row
+    from game.domain.processes.maturity.metrics_engine import build_process_metrics_state_row
     from tools.xstack.testx.tests.proc3_testlib import run_proc3_qc_case
 
     previous_metrics = build_process_metrics_state_row(

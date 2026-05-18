@@ -18,9 +18,9 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/release/release_manifest_engine.py`
+- `src/tools/release/release_manifest_engine.py`
 - `src/time/epoch_anchor_engine.py`
-- `src/tools/validators/validation/validation_engine.py`
+- `src/tools/validators/suite/validation_engine.py`
 - `tools/audit/arch_audit_common.py`
 - `tools/data/tool_spice_import.py`
 - `tools/data/tool_srtm_import.py`
@@ -34,7 +34,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/mvp/stress_gate_common.py`
 - `tools/mvp/toolchain_matrix_common.py`
 - `tools/mvp/update_sim_common.py`
-- `tools/performx/performx.py`
+- `tools/xstack/performx/performx.py`
 - `tools/release/offline_archive_common.py`
 - `tools/review/architecture_graph_bootstrap_common.py`
 - `tools/security/trust_strict_common.py`
@@ -62,18 +62,18 @@ Replacement Target: XI-4b manual review resolution
 - `tools/data/tool_srtm_import.py` disposition=`merge` rank=`15` total_score=`74.26` risk=`HIGH`
 - `tools/mvp/update_sim_common.py` disposition=`merge` rank=`16` total_score=`70.14` risk=`HIGH`
 - `worldgen/core/constraint_commands.py` disposition=`drop` rank=`17` total_score=`68.99` risk=`HIGH`
-- `tools/performx/performx.py` disposition=`merge` rank=`18` total_score=`68.93` risk=`HIGH`
+- `tools/xstack/performx/performx.py` disposition=`merge` rank=`18` total_score=`68.93` risk=`HIGH`
 - `tools/review/architecture_graph_bootstrap_common.py` disposition=`merge` rank=`19` total_score=`67.64` risk=`HIGH`
 - `tools/audit/arch_audit_common.py` disposition=`merge` rank=`20` total_score=`66.07` risk=`HIGH`
 - `tools/time/time_anchor_common.py` disposition=`merge` rank=`21` total_score=`66.07` risk=`HIGH`
-- `src/release/release_manifest_engine.py` disposition=`drop` rank=`22` total_score=`62.56` risk=`HIGH`
+- `src/tools/release/release_manifest_engine.py` disposition=`drop` rank=`22` total_score=`62.56` risk=`HIGH`
 - `src/time/epoch_anchor_engine.py` disposition=`drop` rank=`23` total_score=`52.71` risk=`HIGH`
-- `src/tools/validators/validation/validation_engine.py` disposition=`drop` rank=`24` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/suite/validation_engine.py` disposition=`drop` rank=`24` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/ARCHITECTURE.md, docs/STATUS_NOW.md, docs/appshell/CLI_REFERENCE.md, docs/appshell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/REPO_INTENT.md, docs/architecture/lockfile.md, docs/architecture/registry_compile.md`
+- Docs: `docs/ARCHITECTURE.md, docs/STATUS_NOW.md, docs/runtime/shell/CLI_REFERENCE.md, docs/runtime/shell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/REPO_INTENT.md, docs/architecture/lockfile.md, docs/architecture/registry_compile.md`
 
 ## Tests Involved
 
@@ -86,7 +86,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

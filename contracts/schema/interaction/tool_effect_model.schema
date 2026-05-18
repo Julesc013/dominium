@@ -1,0 +1,26 @@
+SCHEMA: interaction/tool_effect_model.schema
+schema_id: dominium.schema.interaction.tool_effect_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic ToolEffect parameter models passed into process intents.
+
+REQUIRED SHAPE:
+record tool_effect_model
+  required:
+    - schema_version: semver
+    - effect_model_id: id
+    - description: string
+    - parameters: map
+      required:
+        - efficiency_multiplier: fixed_point_int
+        - precision_level: enum(low|medium|high|lab)
+        - torque_limit: optional_fixed_point_int
+        - rate_limit: optional_fixed_point_int
+    - deterministic_rules: map
+    - extensions: map
+
+INVARIANTS:
+- Tool effect parameters are deterministic and no-randomness by contract.
+- Process runtime interprets effects; UI does not apply hidden semantics.

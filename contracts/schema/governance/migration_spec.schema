@@ -1,0 +1,32 @@
+SCHEMA: governance/migration_spec.schema
+schema_id: dominium.schema.governance.migration_spec
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic migration routes for governed compatibility transitions.
+
+NON-SEMANTICS:
+- Migration specs define transformation contracts only.
+- Specs do not authorize gameplay behavior changes.
+
+REQUIRED SHAPE:
+record migration_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - migrations: [migration_spec]
+    - extensions: map
+
+record migration_spec
+  required:
+    - migration_id: id
+    - from_version: semver
+    - to_version: semver
+    - component_type: tag
+    - deterministic_required: bool
+    - migration_tool: path_or_symbol
+    - notes: string
+    - version_field: tag_or_empty
+

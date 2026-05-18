@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.compatx.core.semantic_contract_validator import (
+    from tools.xstack.compatx.core.semantic_contract_validator import (
         build_default_universe_contract_bundle,
         bundle_hash,
         load_semantic_contract_registry,

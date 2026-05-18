@@ -6,7 +6,7 @@
       {
         "schema_version": "1.0.0",
         "deprecated_id": "legacy.runtime.graph_substrate",
-        "replacement_id": "tools/core/graph/network_graph_engine.py",
+        "replacement_id": "tools/validators/core/graph/network_graph_engine.py",
         "reason": "ABS core graph substrate is canonical",
         "removal_target_version": "2.0.0",
         "status": "active",

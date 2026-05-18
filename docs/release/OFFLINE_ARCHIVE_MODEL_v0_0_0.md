@@ -12,9 +12,9 @@ Replacement Target: signed historical release archives with retained channel bun
 
 The Ω-8 offline archive must contain a deterministic reconstruction tree with these required surfaces:
 
-1. `artifacts/`
+1. `archive/generated/artifacts/`
    - all CAS payloads referenced by the frozen `release_manifest.json`
-   - payloads are placed under `artifacts/<content_hash>`
+   - payloads are placed under `archive/generated/artifacts/<content_hash>`
 2. `release_index_history/`
    - the full retained history up to `v0.0.0-mock`
 3. `release_manifest.json`

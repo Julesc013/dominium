@@ -1,0 +1,25 @@
+SCHEMA: process/process_run_record.schema
+schema_id: dominium.schema.process.process_run_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic ProcessRun lifecycle state.
+
+NON-SEMANTICS:
+- No built-in yield/defect distribution semantics.
+- No implicit completion/approval semantics.
+
+REQUIRED SHAPE:
+record process_run_record
+  required:
+    - run_id: id
+    - process_id: id
+    - version: semver
+    - start_tick: u64
+    - end_tick: u64?
+    - status: enum(running|completed|failed|aborted)
+    - input_refs: list
+    - output_refs: list
+    - deterministic_fingerprint: text
+    - extensions: map

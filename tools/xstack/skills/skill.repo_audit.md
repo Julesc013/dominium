@@ -26,7 +26,7 @@ Run a targeted repository audit for canon drift, invariant breaks, and contract/
    - observer/renderer/truth boundary violations
    - nondeterministic authoritative behavior
    - renderer imports of TruthModel headers (`repox.renderer_truth_import`)
-5. Check contracts/schemas/compat obligations where contracts changed.
+5. Check contracts/schema/compat obligations where contracts changed.
 6. Check TestX/RepoX evidence expectations for changed invariants.
 7. Emit findings ordered by severity.
 8. Emit unresolved risks and TODO follow-ups.

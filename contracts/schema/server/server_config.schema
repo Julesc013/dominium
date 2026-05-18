@@ -1,0 +1,24 @@
+SCHEMA: server/server_config.schema
+schema_id: dominium.schema.server.server_config
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic headless server startup configuration.
+- Bind server policy to session-template, mod-policy, and proof-anchor cadence.
+
+NON-SEMANTICS:
+- ServerConfig does not change simulation meaning.
+- It only selects and validates already-pinned runtime inputs.
+
+REQUIRED SHAPE:
+record server_config
+  required:
+    - server_id: id
+    - session_template_id: id
+    - mod_policy_id: id
+    - overlay_conflict_policy_id: id
+    - max_clients: int
+    - proof_anchor_interval_ticks: int
+    - deterministic_fingerprint: tag
+    - extensions: map

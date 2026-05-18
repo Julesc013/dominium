@@ -1,0 +1,25 @@
+SCHEMA: earth/illumination_model.schema
+schema_id: dominium.schema.earth.illumination_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the EARTH-5 illumination model registry row shape.
+- Reserve a deterministic model-selection surface for MVP and future lighting models.
+
+NON-SEMANTICS:
+- This schema does not define authoritative light transport truth.
+- This schema does not imply a specific renderer backend.
+
+REQUIRED SHAPE:
+record illumination_model
+  required:
+    - illum_model_id: id
+    - kind: enum[basic_diffuse|future]
+    - parameters_ref: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- registry rows must remain deterministic and profile-driven
+- lighting behavior selection must not require renderer truth access

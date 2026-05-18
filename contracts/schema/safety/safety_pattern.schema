@@ -1,0 +1,24 @@
+SCHEMA: safety/safety_pattern.schema
+schema_id: dominium.schema.safety.safety_pattern
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical SAFETY-0 reusable safety pattern template contract.
+
+REQUIRED SHAPE:
+record safety_pattern
+  required:
+    - schema_version: semver
+    - pattern_id: id
+    - pattern_type: enum(interlock|failsafe|relief|breaker|redundancy|deadman|loto|graceful_degradation)
+    - triggering_conditions: list[deterministic_predicate]
+    - enforced_actions: list[deterministic_action]
+    - required_substrates: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Pattern behavior is data-driven and deterministic.
+- Pattern semantics must compose existing substrates only.
+- Any protective behavior in runtime code must map to a registered safety pattern.

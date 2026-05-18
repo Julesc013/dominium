@@ -10,7 +10,7 @@
     "planned_moves": 3,
     "deferred_files": 0,
     "blocked_files": 0,
-    "target_owner": "contracts/projections/ide",
+    "target_owner": "contracts/projection/ide",
     "target_owner_exists_now": false,
     "target_owner_creation_planned_for_apply": true,
     "ready_for_gate": true
@@ -18,15 +18,15 @@
   "ownership_basis": {
     "contracts_root_policy": "contracts/ owns machine-readable, version-pinned, compatibility-sensitive authority surfaces.",
     "projection_doctrine": "IDE projects and generated manifests remain projections; source schema/examples are authoritative projection metadata, not generated output.",
-    "slot_gap": "contracts/projections/ide does not exist yet and ownership_slots.toml has no projection_contract slot. The later apply task must create the scoped contract path and record the slot decision without changing schema semantics."
+    "slot_gap": "contracts/projection/ide does not exist yet and ownership_slots.toml has no projection_contract slot. The later apply task must create the scoped contract path and record the slot decision without changing schema semantics."
   },
   "items": [
     {
       "path": "ide/manifests/projection_manifest.schema.json",
       "ownership_kind": "projection_contract_metadata",
       "secondary_roles": ["ide_manifest", "tooling_input"],
-      "target_owner": "contracts/projections/ide",
-      "proposed_target_path": "contracts/projections/ide/projection_manifest.schema.json",
+      "target_owner": "contracts/projection/ide",
+      "proposed_target_path": "contracts/projection/ide/projection_manifest.schema.json",
       "migration_mode": "move_with_reference_rewrites",
       "shim_required": false,
       "validator_required": true,
@@ -40,8 +40,8 @@
       "path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
       "ownership_kind": "projection_contract_metadata",
       "secondary_roles": ["ide_manifest", "tooling_input", "contract_example"],
-      "target_owner": "contracts/projections/ide",
-      "proposed_target_path": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "target_owner": "contracts/projection/ide",
+      "proposed_target_path": "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json",
       "migration_mode": "move_with_reference_rewrites",
       "shim_required": false,
       "validator_required": true,
@@ -55,8 +55,8 @@
       "path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
       "ownership_kind": "projection_contract_metadata",
       "secondary_roles": ["ide_manifest", "tooling_input", "contract_example", "legacy_projection_example"],
-      "target_owner": "contracts/projections/ide",
-      "proposed_target_path": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target_owner": "contracts/projection/ide",
+      "proposed_target_path": "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
       "migration_mode": "move_with_reference_rewrites",
       "shim_required": false,
       "validator_required": true,

@@ -1,0 +1,24 @@
+SCHEMA: civilisation/territory.schema
+schema_id: dominium.schema.civilisation.territory
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic territory ownership/claim substrate.
+
+REQUIRED SHAPE:
+record territory
+  required:
+    - schema_version: semver
+    - territory_id: id
+    - region_scope: map
+    - owner_faction_id: nullable_id
+    - claim_status: enum(unclaimed|claimed|contested)
+    - created_tick: u64
+    - extensions: map
+
+INVARIANTS:
+- claim_status transitions are process-only and deterministic.
+- region_scope is structural metadata only in CIV-1.
+- No implicit ownership assignment is allowed.
+

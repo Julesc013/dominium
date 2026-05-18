@@ -2771,7 +2771,7 @@
     {
       "disposition": "uppercase_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "apps/setup/packages/scripts/packaging/linux/deb/DEBIAN",
+      "path": "release/packaging/setup/scripts/packaging/linux/deb/DEBIAN",
       "rule": "directory_case",
       "segment": "DEBIAN",
       "severity": "warning"
@@ -2779,7 +2779,7 @@
     {
       "disposition": "uppercase_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "apps/setup/packages/scripts/packaging/macos/Dominium.app",
+      "path": "release/packaging/setup/scripts/packaging/macos/Dominium.app",
       "rule": "directory_case",
       "segment": "Dominium.app",
       "severity": "warning"
@@ -2787,7 +2787,7 @@
     {
       "disposition": "uppercase_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents",
+      "path": "release/packaging/setup/scripts/packaging/macos/Dominium.app/Contents",
       "rule": "directory_case",
       "segment": "Dominium.app",
       "severity": "warning"
@@ -2899,7 +2899,7 @@
     {
       "disposition": "existing_evidence_or_archive",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/app_mode",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/app_mode",
       "rule": "directory_case",
       "segment": "_orphaned",
       "severity": "info"
@@ -2907,7 +2907,7 @@
     {
       "disposition": "existing_evidence_or_archive",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client",
       "rule": "directory_case",
       "segment": "_orphaned",
       "severity": "info"
@@ -2915,7 +2915,7 @@
     {
       "disposition": "existing_evidence_or_archive",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/input",
       "rule": "directory_case",
       "segment": "_orphaned",
       "severity": "info"
@@ -3107,7 +3107,7 @@
     {
       "disposition": "hyphenated_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026",
       "rule": "directory_case",
       "segment": "winnt-msvc-x86_64-vs2026",
       "severity": "warning"
@@ -3115,7 +3115,7 @@
     {
       "disposition": "hyphenated_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2",
+      "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2",
       "rule": "directory_case",
       "segment": "winnt-msvc-x86_64-vs2026",
       "severity": "warning"
@@ -3131,7 +3131,7 @@
     {
       "disposition": "hyphenated_directory",
       "message": "directory segment is not lower_snake_or_single_lowerword",
-      "path": "contracts/schemas/from-root-schemas",
+      "path": "contracts/schema/from-root-schemas",
       "rule": "directory_case",
       "segment": "from-root-schemas",
       "severity": "warning"

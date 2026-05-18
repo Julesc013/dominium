@@ -17,8 +17,8 @@ def _run_variant(repo_root: str, *, reverse_order: bool) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.fields import build_field_cell, build_field_layer
-    from tools.geo.tool_replay_field_geo_window import verify_geo_field_replay_window
+    from game.domain.fields import build_field_cell, build_field_layer
+    from tools.validators.domain.geology.tool_replay_field_geo_window import verify_geo_field_replay_window
     from tools.xstack.compatx.canonical_json import canonical_sha256
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_free_testlib import (

@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Iterable
 
-from runtime.appshell.mode_dispatcher import supported_modes_for_product
+from runtime.shell.mode_dispatcher import supported_modes_for_product
 
 from .common import SHIM_SUNSET_TARGET, build_shim_stability, stable_rows
 

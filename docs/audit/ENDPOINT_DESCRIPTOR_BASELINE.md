@@ -49,7 +49,7 @@ Each emitted `EndpointDescriptor` includes:
 
 ## Offline Surfaces
 - Dist wrappers emit descriptors via `--descriptor` and `--descriptor-file`.
-- `tools/compat/tool_generate_descriptor_manifest.py` produces `dist/manifests/endpoint_descriptors.json`.
+- `tools/compat/tool_generate_descriptor_manifest.py` produces `archive/generated/dist/manifests/endpoint_descriptors.json`.
 
 ## Readiness
 This baseline is ready for CAP-NEG-2 handshake integration, where live handshakes can consume the same emitted descriptors instead of registry-backed bootstrap descriptors.

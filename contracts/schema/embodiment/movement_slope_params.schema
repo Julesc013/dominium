@@ -1,0 +1,27 @@
+SCHEMA: embodiment/movement_slope_params.schema
+schema_id: dominium.schema.embodiment.movement_slope_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic slope-response parameters for embodied movement over terrain.
+- Keep uphill and downhill response data-declared and replay-stable.
+
+NON-SEMANTICS:
+- This schema does not authorize sliding or rigid-body friction solves.
+- This schema does not define animation responses.
+
+REQUIRED SHAPE:
+record movement_slope_params
+  required:
+    - slope_params_id: id
+    - uphill_slow_factor: integer
+    - downhill_speed_cap_factor: integer
+    - slide_angle_threshold_stub: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- slope response is deterministic and process-driven
+- uphill/downhill modifiers remain bounded by explicit data
+- slide threshold remains declarative only until a later movement extension activates it

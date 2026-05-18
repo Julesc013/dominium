@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/release/archive_policy.py`
+- `src/tools/release/archive_policy.py`
 - `tools/meta/observability_common.py`
 - `tools/release/arch_matrix_common.py`
 
@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/release/arch_matrix_common.py` disposition=`canonical` rank=`1` total_score=`67.13` risk=`LOW`
 - `tools/meta/observability_common.py` disposition=`merge` rank=`2` total_score=`61.83` risk=`LOW`
-- `src/release/archive_policy.py` disposition=`merge` rank=`3` total_score=`53.27` risk=`HIGH`
+- `src/tools/release/archive_policy.py` disposition=`merge` rank=`3` total_score=`53.27` risk=`HIGH`
 
 ## Usage Sites
 
@@ -41,8 +41,8 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

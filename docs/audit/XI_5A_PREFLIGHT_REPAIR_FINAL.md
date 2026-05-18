@@ -28,8 +28,8 @@ Replacement Target: XI-5 bounded src-removal execution against approved mapping 
 - `python -m py_compile tools/mvp/disaster_suite_common.py tools/xstack/testx/tests/test_disaster_harness_reuses_output_root.py tools/xstack/testx/tests/test_disaster_cleanup_removes_readonly_bytecode.py`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_all_registries_have_stability,test_all_registries_have_stability_markers,test_toolchain_registry_schema_valid`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_disaster_harness_reuses_output_root,test_disaster_cleanup_removes_readonly_bytecode`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 
 All listed checks passed.
 

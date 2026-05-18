@@ -1,0 +1,23 @@
+SCHEMA: core/spatial_node.schema
+schema_id: dominium.schema.core.spatial_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic hierarchical spatial nodes and transforms for nested world spaces.
+
+REQUIRED SHAPE:
+record spatial_node
+  required:
+    - schema_version: semver
+    - spatial_id: id
+    - parent_spatial_id: optional_id
+    - frame_id: id
+    - transform: map
+    - bounds: map
+    - extensions: map
+
+INVARIANTS:
+- Parent chains must be acyclic.
+- Transform composition is deterministic and side-effect free.
+

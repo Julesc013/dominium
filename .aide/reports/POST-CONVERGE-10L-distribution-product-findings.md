@@ -10,24 +10,24 @@ Checked 12 focused RepoX failures in the distribution/product-proof family:
 - `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR`: 7 failures
 - `INV-NO-ADHOC-MAIN`: 5 failures
 
-All 12 target failures are real missing `dist/bin` wrapper/projection surfaces. They were not safe to fix by adding dummy files, removing product aliases, or changing registry product names.
+All 12 target failures are real missing `archive/generated/dist/bin` wrapper/projection surfaces. They were not safe to fix by adding dummy files, removing product aliases, or changing registry product names.
 
 ## Findings
 
 | Path | Rule | Classification | Action |
 | --- | --- | --- | --- |
-| `dist/bin/client` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/engine` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/game` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/launcher` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/server` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/setup` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/tool_attach_console_stub` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/engine` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/game` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/launcher` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/setup` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
-| `dist/bin/tool_attach_console_stub` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/client` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/engine` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/game` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/launcher` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/server` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/setup` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/tool_attach_console_stub` | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/engine` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/game` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/launcher` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/setup` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
+| `archive/generated/dist/bin/tool_attach_console_stub` | `INV-NO-ADHOC-MAIN` | `portable_projection_proof_missing` | defer to POST-CONVERGE-12 |
 
 ## Safe Fix
 

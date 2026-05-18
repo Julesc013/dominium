@@ -156,10 +156,10 @@
       "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
       "docs/release/RELEASE_INDEX_MODEL.md",
       "docs/release/ARTIFACT_NAMING_RULES.md",
-      "release/update_resolver.py",
-      "release/archive_policy.py",
-      "release/release_manifest_engine.py",
-      "release/component_graph_resolver.py",
+      "tools/release/update_resolver.py",
+      "tools/release/archive_policy.py",
+      "tools/release/release_manifest_engine.py",
+      "tools/release/component_graph_resolver.py",
       "release/updates/changelog.json"
     ]
   },

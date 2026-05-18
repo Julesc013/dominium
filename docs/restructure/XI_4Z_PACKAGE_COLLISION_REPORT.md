@@ -19,23 +19,23 @@ Replacement Target: XI-5a bounded execution against v3 approved lock
 
 | Package | Row Count | Old Prefix | New Prefix | Domain | Module |
 | --- | --- | --- | --- | --- | --- |
-| `platform` | `10` | `src/platform/` | `engine/platform/` | `engine` | `engine.platform` |
+| `platform` | `10` | `src/platform/` | `runtime/platform/` | `engine` | `engine.platform` |
 | `time` | `6` | `src/time/` | `engine/time/` | `engine` | `engine.time` |
 
 ## Representative Rows
 
 | Source | Old Target | New Target |
 | --- | --- | --- |
-| `src/platform/__init__.py` | `platform/__init__.py` | `engine/platform/__init__.py` |
-| `src/platform/_canonical.py` | `platform/_canonical.py` | `engine/platform/_canonical.py` |
-| `src/platform/platform_audio.py` | `platform/platform_audio.py` | `engine/platform/platform_audio.py` |
-| `src/platform/platform_caps_probe.py` | `platform/platform_caps_probe.py` | `engine/platform/platform_caps_probe.py` |
-| `src/platform/platform_gfx.py` | `platform/platform_gfx.py` | `engine/platform/platform_gfx.py` |
-| `src/platform/platform_input.py` | `platform/platform_input.py` | `engine/platform/platform_input.py` |
-| `src/platform/platform_input_routing.py` | `platform/platform_input_routing.py` | `engine/platform/platform_input_routing.py` |
-| `src/platform/platform_probe.py` | `platform/platform_probe.py` | `engine/platform/platform_probe.py` |
-| `src/platform/platform_window.py` | `platform/platform_window.py` | `engine/platform/platform_window.py` |
-| `src/platform/target_matrix.py` | `platform/target_matrix.py` | `engine/platform/target_matrix.py` |
+| `src/platform/__init__.py` | `platform/__init__.py` | `runtime/platform/__init__.py` |
+| `src/platform/_canonical.py` | `platform/_canonical.py` | `runtime/platform/_canonical.py` |
+| `src/platform/platform_audio.py` | `platform/platform_audio.py` | `runtime/platform/platform_audio.py` |
+| `src/platform/platform_caps_probe.py` | `platform/platform_caps_probe.py` | `runtime/platform/platform_caps_probe.py` |
+| `src/platform/platform_gfx.py` | `platform/platform_gfx.py` | `runtime/platform/platform_gfx.py` |
+| `src/platform/platform_input.py` | `platform/platform_input.py` | `runtime/platform/platform_input.py` |
+| `src/platform/platform_input_routing.py` | `platform/platform_input_routing.py` | `runtime/platform/platform_input_routing.py` |
+| `src/platform/platform_probe.py` | `platform/platform_probe.py` | `runtime/platform/platform_probe.py` |
+| `src/platform/platform_window.py` | `platform/platform_window.py` | `runtime/platform/platform_window.py` |
+| `src/platform/target_matrix.py` | `platform/target_matrix.py` | `runtime/platform/target_matrix.py` |
 | `src/time/__init__.py` | `time/__init__.py` | `engine/time/__init__.py` |
 | `src/time/epoch_anchor_engine.py` | `time/epoch_anchor_engine.py` | `engine/time/epoch_anchor_engine.py` |
 | `src/time/tick_t.py` | `time/tick_t.py` | `engine/time/tick_t.py` |

@@ -1,0 +1,65 @@
+SCHEMA: ui_workspace.schema
+schema_id: dominium.schema.ui.workspace
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define workspace layouts bound to lifecycle stages and observable state.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Workspace data controls presentation composition only.
+- Workspaces do NOT mutate simulation or authority state.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record ui_workspace
+  required:
+    - workspace_id: id
+    - schema_version_ref: tag
+    - docking_rules: map
+    - panels: [workspace_panel]
+    - stage_bindings: [stage_binding]
+    - observable_bindings: [observable_binding]
+    - extensions: map
+  optional:
+    - metadata: map
+
+TYPE DEFINITIONS:
+record workspace_panel
+  required:
+    - panel_id: tag
+    - panel_kind: tag
+    - panel_title: tag
+    - dock: tag
+  optional:
+    - command_bindings: [tag]
+    - visibility_modes: [tag]
+    - metadata: map
+
+record stage_binding
+  required:
+    - stage_id: tag
+    - visible_panels: [tag]
+  optional:
+    - metadata: map
+
+record observable_binding
+  required:
+    - panel_id: tag
+    - source_key: tag
+  optional:
+    - formatter: tag
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.

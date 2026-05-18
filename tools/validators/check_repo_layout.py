@@ -132,35 +132,35 @@ SHIM_ROOTS = set(
 )
 
 DOMAIN_MOVE_TARGETS = {
-    "astro": "game/domains/astronomy",
-    "chem": "game/domains/chemistry",
-    "diegetics": "game/domains/diegetics",
-    "electric": "game/domains/electricity",
-    "embodiment": "game/domains/embodiment",
-    "epistemics": "game/domains/epistemics",
-    "field": "game/domains/fields/from_root_field",
-    "fields": "game/domains/fields",
-    "fluid": "game/domains/fluids",
-    "geo": "game/domains/geology",
-    "infrastructure": "game/domains/infrastructure",
-    "inspection": "game/domains/inspection",
-    "interaction": "game/domains/interaction",
-    "interior": "game/domains/interior",
-    "logic": "game/domains/logic",
-    "logistics": "game/domains/logistics",
-    "machines": "game/domains/machines",
-    "materials": "game/domains/materials",
-    "mechanics": "game/domains/mechanics",
-    "mobility": "game/domains/mobility",
-    "physics": "game/domains/physics",
-    "pollution": "game/domains/pollution",
-    "process": "game/domains/processes",
-    "reality": "game/domains/reality",
-    "signals": "game/domains/signals",
-    "system": "game/domains/systems",
-    "thermal": "game/domains/thermal",
-    "universe": "game/domains/universe",
-    "worldgen": "game/domains/worldgen",
+    "astro": "game/domain/astronomy",
+    "chem": "game/domain/chemistry",
+    "diegetics": "game/domain/diegetics",
+    "electric": "game/domain/electricity",
+    "embodiment": "game/domain/embodiment",
+    "epistemics": "game/domain/epistemics",
+    "field": "game/domain/fields/from_root_field",
+    "fields": "game/domain/fields",
+    "fluid": "game/domain/fluids",
+    "geo": "game/domain/geology",
+    "infrastructure": "game/domain/infrastructure",
+    "inspection": "game/domain/inspection",
+    "interaction": "game/domain/interaction",
+    "interior": "game/domain/interior",
+    "logic": "game/domain/logic",
+    "logistics": "game/domain/logistics",
+    "machines": "game/domain/machines",
+    "materials": "game/domain/materials",
+    "mechanics": "game/domain/mechanics",
+    "mobility": "game/domain/mobility",
+    "physics": "game/domain/physics",
+    "pollution": "game/domain/pollution",
+    "process": "game/domain/processes",
+    "reality": "game/domain/reality",
+    "signals": "game/domain/signals",
+    "system": "game/domain/systems",
+    "thermal": "game/domain/thermal",
+    "universe": "game/domain/universe",
+    "worldgen": "game/domain/worldgen",
 }
 
 
@@ -567,7 +567,7 @@ def _classify(name, kind, contract):
     if name in domains:
         info = domains[name]
         if info.get("status_after_phase") == "violation" and info.get("completed_phase"):
-            target = info.get("implementation_target", "contracts/game/content/docs/tests split")
+            target = info.get("implementation_target", "contracts/content/domains/game/docs/tests split")
             return {
                 "classification": CLASS_VIOLATION,
                 "target": target,
@@ -803,7 +803,7 @@ def current_role_for(classification):
 
 def proposed_target_for(name, classification, raw_target):
     if classification == CLASS_DOMAIN:
-        return "contracts/game/content/docs/tests split"
+        return "contracts/content/domains/game/docs/tests split"
     if classification == CLASS_GENERATED:
         if name == "dist":
             return "generated distribution output; future distribution contract review"
@@ -924,7 +924,7 @@ def dependencies_for(root):
     if cls == CLASS_TRANSITIONAL_CONTRACT:
         deps = ["requires contract convergence first", "requires docs cross-reference update"]
         if name in ("schema", "schemas"):
-            deps.append("requires contracts/schemas/projection ownership review")
+            deps.append("requires contracts/schema/projection ownership review")
         if name in ("compat", "locks"):
             deps.append("requires mixed contract-adjacent root review")
         if name in CONTRACT_REVIEW_ROOTS:
@@ -1050,14 +1050,14 @@ def completed_contract_move_entries(repo_root, roots):
         "schema": {
             "target": "contracts/schemas",
             "action": "merge",
-            "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schemas/.",
-            "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schemas/.",
+            "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/.",
+            "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schema/.",
         },
         "schemas": {
             "target": "contracts/schemas",
             "action": "merge",
-            "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schemas/.",
-            "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schemas/.",
+            "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/.",
+            "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schema/.",
         },
     }
     for name, info in sorted(contract_targets.items()):
@@ -1079,7 +1079,7 @@ def completed_contract_move_entries(repo_root, roots):
                 "risk_level": "medium",
                 "phase_hint": "CONVERGE-06",
                 "dependencies": [],
-                "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+                "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schema/.",
                 "shim_required": False,
                 "semantic_change_allowed": False,
                 "build_change_allowed": False,
@@ -1109,7 +1109,7 @@ def completed_contract_move_entries(repo_root, roots):
                 "shim_required": False,
                 "semantic_change_allowed": False,
                 "build_change_allowed": False,
-                "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+                "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registry/.",
                 "status": "completed",
                 "completed_phase": "CONVERGE-06",
                 "completed_target": "contracts/registries",
@@ -1126,14 +1126,14 @@ def completed_runtime_move_entries(repo_root, roots):
         "app": {
             "target": "runtime/app",
             "action": "move",
-            "notes": "Completed in CONVERGE-07; root-level app/ moved under runtime/app/.",
-            "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/app/.",
+            "notes": "Completed in CONVERGE-07; root-level app/ moved under runtime/shell/lifecycle/.",
+            "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/shell/lifecycle/.",
         },
         "appshell": {
             "target": "runtime/appshell",
             "action": "move",
-            "notes": "Completed in CONVERGE-07; root-level appshell/ moved under runtime/appshell/.",
-            "completed_notes": "Root-level appshell/ is retired; AppShell source lives under runtime/appshell/.",
+            "notes": "Completed in CONVERGE-07; root-level appshell/ moved under runtime/shell/.",
+            "completed_notes": "Root-level appshell/ is retired; AppShell source lives under runtime/shell/.",
         },
         "diag": {
             "target": "runtime/diagnostics",

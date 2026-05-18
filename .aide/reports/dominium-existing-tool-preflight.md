@@ -3,7 +3,7 @@
 Dominium has mature existing governance/tool systems:
 
 - XStack: `scripts/dev/gate.py`, `tools/xstack/**`, `data/registries/xstack_components.json`.
-- AuditX: `tools/auditx/**`, `docs/audit/auditx/**`, `data/registries/auditx_groups.json`.
+- AuditX: `tools/xstack/auditx/**`, `docs/audit/auditx/**`, `data/registries/auditx_groups.json`.
 - RepoX: `repo/repox/**`, `scripts/repox/**`, `scripts/ci/check_repox_rules.py`.
 - TestX: `tools/xstack/testx/**`, `tools/xstack/testx_all.py`, `data/registries/testx_groups.json`.
 - Build/validation: `CMakeLists.txt`, `CMakePresets.json`, `validation/validation_engine.py`, `tools/ci/**`, `scripts/verify_*.py`.

@@ -58,11 +58,11 @@ Updated analyzers:
 - `E226_COST_MODEL_MISSING_SMELL` (new)
 
 Implementation references:
-- `tools/auditx/analyzers/e216_missing_tier_contract_smell.py`
-- `tools/auditx/analyzers/e217_undeclared_coupling_smell.py`
-- `tools/auditx/analyzers/e218_missing_explain_contract_smell.py`
-- `tools/auditx/analyzers/e226_cost_model_missing_smell.py`
-- `tools/auditx/analyzers/__init__.py`
+- `tools/xstack/auditx/analyzers/e216_missing_tier_contract_smell.py`
+- `tools/xstack/auditx/analyzers/e217_undeclared_coupling_smell.py`
+- `tools/xstack/auditx/analyzers/e218_missing_explain_contract_smell.py`
+- `tools/xstack/auditx/analyzers/e226_cost_model_missing_smell.py`
+- `tools/xstack/auditx/analyzers/__init__.py`
 
 ### TestX hard-gate coverage
 Added/updated tests:

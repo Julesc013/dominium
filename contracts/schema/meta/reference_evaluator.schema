@@ -1,0 +1,28 @@
+SCHEMA: meta/reference_evaluator.schema
+schema_id: dominium.schema.meta.reference_evaluator
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic reference evaluator contracts for critical runtime subsystems.
+- Bind runtime/reference equivalence class and tolerance policy expectations.
+
+NON-SEMANTICS:
+- Does not execute runtime or reference evaluators.
+- Does not permit production-path substitution.
+
+REQUIRED SHAPE:
+record reference_evaluator
+  required:
+    - evaluator_id: id
+    - subsystem_id: id
+    - input_signature_ref: id
+    - output_signature_ref: id
+    - equivalence_kind: text
+    - tolerance_policy_id: id?
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- exact equivalence requires stable output hash match.
+- tolerance_bounded equivalence requires declared tolerance policy.

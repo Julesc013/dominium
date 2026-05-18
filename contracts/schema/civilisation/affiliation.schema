@@ -1,0 +1,23 @@
+SCHEMA: civilisation/affiliation.schema
+schema_id: dominium.schema.civilisation.affiliation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic subject affiliation state for agents and future cohorts.
+
+REQUIRED SHAPE:
+record affiliation
+  required:
+    - schema_version: semver
+    - subject_id: id
+    - faction_id: nullable_id
+    - joined_tick: u64
+    - role_id: id
+    - extensions: map
+
+INVARIANTS:
+- Subject affiliation changes are process-driven.
+- At most one active faction_id per subject in CIV-1.
+- joined_tick is monotonic for the active relation record.
+

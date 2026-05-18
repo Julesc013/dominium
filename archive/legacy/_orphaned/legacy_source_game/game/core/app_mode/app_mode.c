@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/app_mode/app_mode.c
+FILE: source/dominium/game/rule/app_mode/app_mode.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/app_mode/app_mode
+LAYER / SUBSYSTEM: Dominium impl / game/rule/app_mode/app_mode
 RESPONSIBILITY: Implements `app_mode`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

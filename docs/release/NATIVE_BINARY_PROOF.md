@@ -106,7 +106,7 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 
 - POST-CONVERGE-10L does not add product boot proof.
 - Focused RepoX remains at 51 failures / 5 warnings after repairing a transient audit status-header issue.
-- The remaining distribution/product target failures are missing `dist/bin` wrapper/projection surfaces for descriptor emission and AppShell-owned delegation.
+- The remaining distribution/product target failures are missing `archive/generated/dist/bin` wrapper/projection surfaces for descriptor emission and AppShell-owned delegation.
 - Native product binaries previously proven by build remain local build outputs and were not committed.
 - POST-CONVERGE-11 remains blocked until non-proof RepoX failures are remediated or explicitly accepted by a reviewed gate.
 

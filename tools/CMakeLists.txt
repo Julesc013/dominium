@@ -21,8 +21,8 @@ add_executable(dominium-tools
     tools_host_main.c
     scale/scale_cli.cpp
     mmo/mmo_cli.cpp
-    ../apps/server/net/dom_server_protocol.cpp
-    ../apps/server/net/dom_server_runtime.cpp
+    ../runtime/network/server/dom_server_protocol.cpp
+    ../runtime/network/server/dom_server_runtime.cpp
     ../apps/server/shard/dom_cross_shard_log.cpp
     ../apps/server/shard/dom_global_id.cpp
     ../apps/server/shard/dom_shard_lifecycle.cpp
@@ -37,6 +37,7 @@ target_include_directories(dominium-tools PRIVATE
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
     ${DOMINIUM_GAME_INCLUDE_DIR}
     ${CMAKE_SOURCE_DIR}/apps/server
+    ${CMAKE_SOURCE_DIR}/runtime/network/server
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 set_target_properties(dominium-tools PROPERTIES
@@ -107,7 +108,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_geology
-    geology/geology_cli.cpp
+    validators/domain/geology/geology_cli.cpp
 )
 target_link_libraries(dom_tool_geology PRIVATE domino_engine)
 target_include_directories(dom_tool_geology PRIVATE
@@ -215,7 +216,7 @@ if(NOT WIN32)
 endif()
 
 add_executable(dom_tool_network
-    network/network_cli.cpp
+    validators/network/network_cli.cpp
 )
 target_link_libraries(dom_tool_network PRIVATE domino_engine)
 target_include_directories(dom_tool_network PRIVATE
@@ -568,12 +569,12 @@ set_target_properties(data_validate PROPERTIES
 )
 
 add_executable(validate_all
-    validation/validate_all_main.cpp
-    validation/validator_common.cpp
-    validation/validator_reports.cpp
-    validation/validators_registry.cpp
-    validate/tool_validation.cpp
-    validate/policy_validation.cpp
+    validators/suite/validate_all_main.cpp
+    validators/suite/validator_common.cpp
+    validators/suite/validator_reports.cpp
+    validators/suite/validators_registry.cpp
+    validators/tool_validation.cpp
+    validators/policy_validation.cpp
 )
 target_include_directories(validate_all PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -586,7 +587,7 @@ set_target_properties(validate_all PROPERTIES
 )
 
 add_executable(registry_dump_cli
-    validate/registry_dump_cli.cpp
+    validators/registry_dump_cli.cpp
 )
 target_link_libraries(registry_dump_cli PRIVATE
     domino_engine
@@ -600,7 +601,7 @@ set_target_properties(registry_dump_cli PROPERTIES
 )
 
 add_executable(hygiene_validate_cli
-    validate/hygiene_validate_cli.cpp
+    validators/hygiene_validate_cli.cpp
 )
 target_link_libraries(hygiene_validate_cli PRIVATE
     domino_engine
@@ -701,7 +702,7 @@ add_test(NAME dominium_registry
 
 add_executable(mod_pack_builder
     modpack/mod_pack_builder.cpp
-    validation/validator_common.cpp
+    validators/suite/validator_common.cpp
 )
 target_include_directories(mod_pack_builder PRIVATE
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
@@ -718,7 +719,7 @@ set_target_properties(mod_pack_builder PROPERTIES
 
 add_executable(mod_pack_validator
     modpack/mod_pack_validator.cpp
-    validation/validator_common.cpp
+    validators/suite/validator_common.cpp
 )
 target_include_directories(mod_pack_validator PRIVATE
     ${DOMINIUM_ENGINE_INCLUDE_DIR}
@@ -741,42 +742,42 @@ add_executable(tools::validate_all ALIAS validate_all)
 
 add_test(NAME dominium_validate_all_bad_fallback
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_fallback
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_fallback
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_fallback PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_validate_all_bad_float
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_float
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_float
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_float PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_validate_all_bad_unbounded
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_unbounded
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_unbounded
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_unbounded PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_validate_all_bad_fabrication
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_fabrication
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_fabrication
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_fabrication PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_validate_all_bad_ui
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_ui
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_ui
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_ui PROPERTIES WILL_FAIL TRUE)
 
 add_test(NAME dominium_validate_all_bad_renderer
     COMMAND $<TARGET_FILE:validate_all>
-        --repo-root=${CMAKE_SOURCE_DIR}/tools/validation/fixtures/bad_renderer
+        --repo-root=${CMAKE_SOURCE_DIR}/tools/validators/suite/fixtures/bad_renderer
         --strict=1
 )
 set_tests_properties(dominium_validate_all_bad_renderer PROPERTIES WILL_FAIL TRUE)

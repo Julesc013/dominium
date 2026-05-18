@@ -71,7 +71,7 @@ Required registry surfaces:
 - Normal gate commands (`verify|strict|full|doctor`) are read-only for tracked files.
 - Run-meta outputs are written under:
   - `.xstack_cache/`
-  - `dist/ws/<WS_ID>/tmp/`
+  - `archive/generated/dist/ws/<WS_ID>/tmp/`
   - build/workspace temporary roots
 - Authoritative contract:
   - `docs/governance/XSTACK_TRACK_IGNORE_POLICY.md`
@@ -97,7 +97,7 @@ Required registry surfaces:
 - Define artifact-class filters per scope (`CANONICAL` only for structural dep hashes).
 - Define explicit non-canonical prefix exclusions per scope:
   - `docs/audit/`
-  - `dist/`
+  - `archive/generated/dist/`
   - `build/`
   - `tmp/`
   - `.xstack_cache/`

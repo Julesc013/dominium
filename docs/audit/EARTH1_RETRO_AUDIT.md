@@ -15,8 +15,8 @@ Authority:
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
-- `docs/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
-- `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
+- `docs/domains/worldgen/PLANET_SURFACE_MACRO_MODEL.md`
+- `docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 
 ## 1. Surface Tile Artifact Baseline
 

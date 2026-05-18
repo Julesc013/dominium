@@ -72,8 +72,8 @@ Historical references may remain as history. New path decisions must use the lay
 
 Older docs may still mention root-level `schema/` or `schemas/` as current roots. After CONVERGE-06 those path claims are stale for current source-layout purposes:
 
-- `schema/` is retired; retained schema law lives under `contracts/schemas/`.
-- `schemas/` is retired; retained schema projections live under `contracts/schemas/`.
+- `schema/` is retired; retained schema law lives under `contracts/schema/`.
+- `schemas/` is retired; retained schema projections live under `contracts/schema/`.
 
 The CONVERGE-03 move map is the operational planning artifact for physical moves. Old layout docs are not move maps and must not be used alone to decide whether contract, registry, compatibility, or lock material should move.
 
@@ -81,8 +81,8 @@ The CONVERGE-03 move map is the operational planning artifact for physical moves
 
 Older docs may still mention root-level `app/`, `appshell/`, `ui/`, or `diag/` as current roots. After CONVERGE-07 those path claims are stale for current source-layout purposes:
 
-- `app/` is retired; retained app runtime source lives under `runtime/app/`.
-- `appshell/` is retired; retained AppShell source lives under `runtime/appshell/`.
+- `app/` is retired; retained app runtime source lives under `runtime/shell/lifecycle/`.
+- `appshell/` is retired; retained AppShell source lives under `runtime/shell/`.
 - `ui/` is retired; retained shared UI runtime source lives under `runtime/ui/`.
 - `diag/` is retired; retained diagnostic source lives under `runtime/diagnostics/`.
 
@@ -90,6 +90,6 @@ The move map remains the operational planning artifact. Old layout docs are not 
 
 ## CONVERGE-09 Domain Path Note
 
-Older docs may still mention root-level domain folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, or `signals/` as current source roots. After CONVERGE-09, moved implementation source lives under `game/domains/`, and those root-level path claims are stale for current source-layout purposes.
+Older docs may still mention root-level domain folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, or `signals/` as current source roots. After CONVERGE-09, moved implementation source lives under `game/domain/`, and those root-level path claims are stale for current source-layout purposes.
 
-`tools/migration/root_move_map.json` and `docs/repo/DOMAIN_SPLIT_REPORT.md` record the operational domain split state. Old layout docs are not move maps and must not be used alone to decide whether domain material belongs in `contracts/`, `game/domains/`, `content/`, `docs/domains/`, or `tests/`.
+`tools/migration/root_move_map.json` and `docs/repo/DOMAIN_SPLIT_REPORT.md` record the operational domain split state. Old layout docs are not move maps and must not be used alone to decide whether domain material belongs in `contracts/`, `game/domain/`, `content/`, `docs/domains/`, or `tests/`.

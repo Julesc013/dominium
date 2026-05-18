@@ -19,8 +19,8 @@ def run(repo_root: str):
 
     needed = {
         "tools/validators/compatibility/capability_negotiation.py",
-        "game/domains/universe/universe_contract_enforcer.py",
-        "release/component_graph_resolver.py",
+        "game/domain/universe/universe_contract_enforcer.py",
+        "tools/release/component_graph_resolver.py",
     }
     rows = [row for row in list(lock_payload.get("approved_for_xi5") or []) if row.get("source_path") in needed]
     replacements = _build_replacement_maps(rows)

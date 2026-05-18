@@ -28,7 +28,7 @@ DOMINIUM_MEDIA/
   bootstrap/
     <platform>/
   docs/
-  redist/
+  rearchive/generated/dist/
   symbols/
   source/
   writable_template/
@@ -41,7 +41,7 @@ DOMINIUM_MEDIA/
 - `portable/<platform>/<arch>/` contains portable install projections if shipped.
 - `bootstrap/<platform>/` contains setup/bootstrap helpers for that platform.
 - `docs/`, `LICENSES/`, and `README_FIRST.txt` provide offline operator guidance.
-- `redist/` contains redistributables, not Dominium-owned source.
+- `rearchive/generated/dist/` contains redistributables, not Dominium-owned source.
 - `symbols/` and `source/` are optional and separate from runtime payload.
 - `writable_template/` may provide a copy target pattern, but it is not itself a mutable runtime root.
 

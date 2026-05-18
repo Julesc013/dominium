@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Model Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic migration model registry output.",
+  "x-doc-ref": [
+    "docs/civilisation/MIGRATION_AND_ASSIMILATION.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "migration_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "migration_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "migration_model_id",
+          "description",
+          "travel_time_policy_id",
+          "capacity_limits",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "migration_model_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "travel_time_policy_id": {
+            "type": "string"
+          },
+          "capacity_limits": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "migration_models": [],
+      "registry_hash": "f6306f2be18e6daed9916eec703c2efcecc373fa5b29947f4942d85797dc8f5b"
+    }
+  ]
+}
+

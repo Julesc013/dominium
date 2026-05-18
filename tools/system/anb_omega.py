@@ -157,11 +157,11 @@ def _tool_hashes(repo_root: str) -> List[Dict[str, str]]:
         "tool_ui_bind.cmd",
         "tool_ui_validate.cmd",
         "tool_ui_doc_annotate.cmd",
-        "tools/auditx/auditx.py",
-        "tools/controlx/controlx.py",
-        "tools/performx/performx.py",
-        "tools/compatx/compatx.py",
-        "tools/securex/securex.py",
+        "tools/xstack/auditx/auditx.py",
+        "tools/xstack/controlx/controlx.py",
+        "tools/xstack/performx/performx.py",
+        "tools/xstack/compatx/compatx.py",
+        "tools/xstack/securex/securex.py",
     ]
     rows: List[Dict[str, str]] = []
     for rel in tool_paths:
@@ -294,7 +294,7 @@ def _scenario_missing_tools_dir(repo_root: str) -> Dict[str, Any]:
         "scenario_id": "env.missing_tools_dir",
         "status": "pass" if result["returncode"] == 0 else "fail",
         "returncode": result["returncode"],
-        "evidence": ["gate.py precheck with missing dist/sys tools dir"],
+        "evidence": ["gate.py precheck with missing archive/generated/dist/sys tools dir"],
     }
 
 

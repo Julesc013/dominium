@@ -225,7 +225,7 @@ While DUAL:
 ## Tests
 
 
-`engine/tests/streaming_work_ir_tests.cpp` validates:
+`tests/engine/streaming_work_ir_tests.cpp` validates:
 
 
 - deterministic emission

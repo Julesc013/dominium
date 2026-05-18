@@ -75,7 +75,7 @@ def _attenuation_registry() -> dict:
 
 
 def _state_with_jam(*, jam: bool) -> str:
-    from game.domains.signals import (
+    from game.domain.signals import (
         build_signal_channel,
         process_signal_jam_start,
         process_signal_send,

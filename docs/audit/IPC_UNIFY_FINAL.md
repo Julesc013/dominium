@@ -9,16 +9,16 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 # IPC Unify Final
 ## Canonical Stack
 
-- Transport: `runtime/appshell/ipc/ipc_transport.py`
+- Transport: `runtime/shell/ipc/ipc_transport.py`
 - Handshake: `compat/handshake/handshake_engine.py`
-- Attach client: `runtime/appshell/ipc/ipc_client.py`
-- Endpoint server: `runtime/appshell/ipc/ipc_endpoint_server.py`
-- Consumers: `runtime/appshell/commands/command_engine.py`, `runtime/appshell/tui/tui_engine.py`, and `runtime/appshell/supervisor/supervisor_engine.py`
+- Attach client: `runtime/shell/ipc/ipc_client.py`
+- Endpoint server: `runtime/shell/ipc/ipc_endpoint_server.py`
+- Consumers: `runtime/shell/commands/command_engine.py`, `runtime/shell/tui/tui_engine.py`, and `runtime/shell/supervisor/supervisor_engine.py`
 
 ## Removed Duplicate IPC Paths
 
 - No duplicate runtime transport or attach protocol remains outside the canonical AppShell IPC stack.
-- Test-only raw frame access remains confined to `tools/appshell/appshell4_probe.py`.
+- Test-only raw frame access remains confined to `tools/validators/shell/appshell4_probe.py`.
 
 ## Attach Discipline Summary
 

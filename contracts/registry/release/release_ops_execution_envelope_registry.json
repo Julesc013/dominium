@@ -239,13 +239,13 @@
     "provisional_or_empty_trust_surfaces_treated_as_execution_maturity"
   ],
   "repo_evidence_surfaces": [
-    "tools/controlx/README.md",
-    "tools/controlx/controlx.py",
-    "tools/controlx/core/execution_router.py",
-    "tools/controlx/core/queue_runner.py",
+    "tools/xstack/controlx/README.md",
+    "tools/xstack/controlx/controlx.py",
+    "tools/xstack/controlx/core/execution_router.py",
+    "tools/xstack/controlx/core/queue_runner.py",
     "tools/xstack/sessionx/stage_parity.py",
     "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "contracts/repo/release_policy.toml",
     "docs/release/updates/README.md",
     "contracts/registry/release_resolution_policy_registry.json",

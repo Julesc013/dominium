@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model Binding Schema",
+  "version": "1.0.0",
+  "description": "Deterministic constitutive model binding row.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "binding_id",
+    "model_id",
+    "target_kind",
+    "target_id",
+    "tier",
+    "parameters",
+    "enabled",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "binding_id": {"type": "string", "minLength": 1},
+    "model_id": {"type": "string", "minLength": 1},
+    "target_kind": {"type": "string", "enum": ["node", "edge", "vehicle", "structure", "volume", "channel", "custom"]},
+    "target_id": {"type": "string", "minLength": 1},
+    "tier": {"type": "string", "enum": ["macro", "meso", "micro"]},
+    "parameters": {"type": "object", "additionalProperties": true},
+    "enabled": {"type": "boolean"},
+    "deterministic_fingerprint": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+    "extensions": {"type": "object", "additionalProperties": true}
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "binding_id": "binding.model.signal.001",
+      "model_id": "model.signal.attenuation.default",
+      "target_kind": "channel",
+      "target_id": "channel.sig.main",
+      "tier": "meso",
+      "parameters": {"scale_permille": 1000},
+      "enabled": true,
+      "deterministic_fingerprint": "5b5b3b50b2123a9a271da0b18b9f3fc78a0e491537e53d3481a6070af9c4a76e",
+      "extensions": {}
+    }
+  ]
+}

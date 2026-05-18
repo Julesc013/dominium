@@ -26,9 +26,9 @@ Superseded By: none
 
 Tracked replacement files:
 
-- `contracts/projections/ide/projection_manifest.schema.json`
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+- `contracts/projection/ide/projection_manifest.schema.json`
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 All three files exist, are tracked, parse as JSON, and remain non-empty. The schema remains schema-like with `$schema`, `type`, `properties`, and `required` keys. Both examples include all fields required by the schema.
 

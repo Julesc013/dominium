@@ -207,7 +207,7 @@ def _bin_stub_rows() -> List[Tuple[str, str]]:
         (
             "bin/setup.cmd",
             "@echo off\r\n"
-            "echo invoke repo tool: tools\\setup\\build --bundle bundle.base.lab --out dist\r\n",
+            "echo invoke repo tool: tools\\setup\\build --bundle bundle.base.lab --out archive\generated\archive\generated\dist\r\n",
         ),
         (
             "bin/launcher.cmd",
@@ -485,7 +485,7 @@ def build_dist_layout(
             [
                 {
                     "code": "REFUSE_DIST_SCHEMA_ROOT_MISSING",
-                    "message": "contracts/schemas/ is required for portable offline verification",
+                    "message": "contracts/schema/ is required for portable offline verification",
                     "path": "$.schemas",
                 }
             ]

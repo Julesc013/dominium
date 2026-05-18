@@ -64,7 +64,7 @@ Violation refusal code:
    - command: `tools/xstack/repox/check.py --repo-root . --profile STRICT`
    - result: PASS (`findings=0`)
 2. AuditX:
-   - command: `tools/auditx/auditx.py scan --repo-root . --format json`
+   - command: `tools/xstack/auditx/auditx.py scan --repo-root . --format json`
    - result: COMPLETE (`findings_count=1516`, non-gating semantic scan)
 3. TestX (LOD invariance suite):
    - command: `tools/xstack/testx_all.py --repo-root . --profile STRICT --cache off --subset testx.epistemics.lod_macro_to_micro_no_precision_gain,testx.epistemics.lod_precision_quantization_stable,testx.epistemics.lod_hidden_inventory_not_exposed,testx.epistemics.lod_memory_preserved_on_collapse,testx.epistemics.lod_strict_mode_violation_refusal`

@@ -13,7 +13,7 @@ Superseded By: none
 - Branch: `main`
 - HEAD SHA: `2aed29926182de61d9f5e20c8c6362b888f5152d`
 - origin/main SHA: `2aed29926182de61d9f5e20c8c6362b888f5152d`
-- Working tree status before task: clean tracked tree; ignored `.dominium.local/`, `dist/docs/`, and `dist/sys/` present
+- Working tree status before task: clean tracked tree; ignored `.dominium.local/`, `archive/generated/dist/docs/`, and `archive/generated/dist/sys/` present
 - Working tree status after task: CMake/test path remediation, build proof docs, and audit committed; generated local outputs remain ignored/uncommitted
 
 ## Scope
@@ -42,8 +42,8 @@ This task also found active related references to:
 - `client/presentation/render_prep_system.cpp`
 - `client/presentation` include directory
 - `server/authority/dom_server_authority.h`
-- `client/core/client_command_bridge.c`
-- `client/core/client_commands_registry.c`
+- `apps/client/session/client_command_bridge.c`
+- `apps/client/session/client_commands_registry.c`
 
 Those related references were only updated where they were active CMake, CTest, TestX, or RepoX rule inputs.
 
@@ -51,17 +51,17 @@ Those related references were only updated where they were active CMake, CTest, 
 
 | Reference | File | Classification | Action | Notes |
 | --- | --- | --- | --- | --- |
-| `client/presentation/frame_graph_builder.cpp` | `engine/tests/CMakeLists.txt` | active CMake test source list | updated | now `apps/client/presentation/frame_graph_builder.cpp` |
-| `client/presentation/render_prep_system.cpp` | `engine/tests/CMakeLists.txt` | active CMake test source list | updated | same moved presentation root |
-| `client/presentation` | `engine/tests/CMakeLists.txt` | active CMake test include dir | updated | now `apps/client/presentation` |
+| `client/presentation/frame_graph_builder.cpp` | `tests/engine/CMakeLists.txt` | active CMake test source list | updated | now `apps/client/presentation/frame_graph_builder.cpp` |
+| `client/presentation/render_prep_system.cpp` | `tests/engine/CMakeLists.txt` | active CMake test source list | updated | same moved presentation root |
+| `client/presentation` | `tests/engine/CMakeLists.txt` | active CMake test include dir | updated | now `apps/client/presentation` |
 | `server/authority/dom_server_authority.cpp` | `tests/authority/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.cpp` | `tests/tourist/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.cpp` | `tests/services/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.cpp` | `tests/piracy_containment/CMakeLists.txt` | active CMake test source list | updated | now `apps/server/authority/dom_server_authority.cpp` |
 | `server/authority/dom_server_authority.h` | authority/tourist/services/piracy C++ tests | active test include | updated | include now targets `apps/server/authority/dom_server_authority.h` |
 | `server/authority/dom_server_authority.*` | `tests/invariant/*.py` | active TestX path input | updated | now `apps/server/authority/...` |
-| `client/core/client_command_bridge.c` | `tests/invariant/*.py` | active TestX path input | updated | now `apps/client/core/client_command_bridge.c` |
-| `client/core/client_command_bridge.c` and `client/core/client_commands_registry.c` | `repo/repox/rulesets/core.json` | active RepoX rule scope input | updated | now `apps/client/core/...` |
+| `apps/client/session/client_command_bridge.c` | `tests/invariant/*.py` | active TestX path input | updated | now `apps/apps/client/session/client_command_bridge.c` |
+| `apps/client/session/client_command_bridge.c` and `apps/client/session/client_commands_registry.c` | `repo/repox/rulesets/core.json` | active RepoX rule scope input | updated | now `apps/apps/client/session/...` |
 
 Historical audit data and generated evidence references were not rewritten.
 
@@ -69,7 +69,7 @@ Historical audit data and generated evidence references were not rewritten.
 
 | File | Change | Reason | Semantics Changed? |
 | --- | --- | --- | --- |
-| `engine/tests/CMakeLists.txt` | rewired render prep test source/include paths to `apps/client/presentation` | fix moved client presentation sources | no |
+| `tests/engine/CMakeLists.txt` | rewired render prep test source/include paths to `apps/client/presentation` | fix moved client presentation sources | no |
 | `tests/authority/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
 | `tests/tourist/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
 | `tests/services/CMakeLists.txt` | rewired authority implementation source to `apps/server/authority` | fix moved server authority source | no |
@@ -121,7 +121,7 @@ The canonical `verify` build also produced `setup.exe`, `launcher.exe`, `client.
 ## Files Added/Changed
 
 - Added `docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md`.
-- Updated active CMake/test references under `engine/tests/`, `tests/authority/`, `tests/tourist/`, `tests/services/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`.
+- Updated active CMake/test references under `tests/engine/`, `tests/authority/`, `tests/tourist/`, `tests/services/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`.
 - Updated POST-CONVERGE-10/10B build proof docs, build verification docs, native binary proof, and next steps.
 
 ## Validation

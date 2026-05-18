@@ -48,7 +48,7 @@ The 10D CTest blockers were:
 
 | Test | Result | Failure Class | First Meaningful Failure | Notes |
 | --- | --- | --- | --- | --- |
-| `tools_refusal_explain` | fixed | stale_path | subprocess could not import root `compat` package | fixed by making `tools/distribution/distribution_lib.py` add repo root to `sys.path` for direct tool subprocesses |
+| `tools_refusal_explain` | fixed | stale_path | subprocess could not import root `compat` package | fixed by making `tools/package/distribution/distribution_lib.py` add repo root to `sys.path` for direct tool subprocesses |
 | `tools_coverage_inspect` | fixed | stale_path | subprocess could not import root `compat` package | same import-root fix |
 | `tools_auditx` | fixed | stale_path / missing_canonical_root | `FileNotFoundError: ... dominium\\schema`; then missing generated `release_manifest.json` escaped as an exception | fixed schema projection source and converted missing release manifest into deterministic refused verification |
 | `test_auditx_canonical_hash_stability` | fixed | stale_path / missing_canonical_root | same root `schema` and release manifest exception path | focused CTest passed after remediation |
@@ -61,24 +61,24 @@ The 10D CTest blockers were:
 
 | Reference | File | Classification | Action | Notes |
 | --- | --- | --- | --- | --- |
-| `compat.shims` | `tools/distribution/distribution_lib.py` | stale subprocess import assumption | fixed | direct script subprocesses now add repo root to import path |
-| `contracts/schemas` | `tools/dist/dist_tree_common.py` | current canonical schema root | fixed | portable projection still emits `schema/` and `schemas/` bundle projections from canonical source |
-| `schema` | `tools/dist/dist_tree_common.py` | generated bundle projection | preserved | destination only; not reintroduced as source authority |
-| `schemas` | `tools/dist/dist_tree_common.py` | generated bundle projection | preserved | destination only; not reintroduced as source authority |
-| `apps` runtime source | `tools/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current product Python modules |
-| `game` runtime source | `tools/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current game package imports |
+| `compat.shims` | `tools/package/distribution/distribution_lib.py` | stale subprocess import assumption | fixed | direct script subprocesses now add repo root to import path |
+| `contracts/schemas` | `tools/release/dist/dist_tree_common.py` | current canonical schema root | fixed | portable projection still emits `schema/` and `schemas/` bundle projections from canonical source |
+| `schema` | `tools/release/dist/dist_tree_common.py` | generated bundle projection | preserved | destination only; not reintroduced as source authority |
+| `schemas` | `tools/release/dist/dist_tree_common.py` | generated bundle projection | preserved | destination only; not reintroduced as source authority |
+| `apps` runtime source | `tools/release/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current product Python modules |
+| `game` runtime source | `tools/release/dist/dist_tree_common.py` | convergence root | fixed | portable wrapper smoke needs current game package imports |
 | `dict | None` annotations | `tools/setup/setup_cli.py` | Python 3.9 compatibility blocker | fixed | postponed annotation evaluation; no behavior change |
 | `verify_release_manifest` exception | `tools/mvp/ecosystem_verify_common.py` | generated manifest absence surfaced as crash | fixed | now returns deterministic refused result with blocking error |
-| `unit.mass_energy.stub` | `contracts/schemas/quantity.schema.json` | unit registry drift | classified | not changed in this task |
-| `unit.schema` | `contracts/schemas/materials/unit.schema` | false-positive unit-token/path-string drift | classified | not changed in this task |
+| `unit.mass_energy.stub` | `contracts/schema/quantity.schema.json` | unit registry drift | classified | not changed in this task |
+| `unit.schema` | `contracts/schema/materials/unit.schema` | false-positive unit-token/path-string drift | classified | not changed in this task |
 
 ## Changes Made
 
 | File | Change | Reason | Validation Strength Changed? |
 | --- | --- | --- | --- |
-| `tools/distribution/distribution_lib.py` | adds repo root to `sys.path` before importing `compat.shims` | direct CTest subprocesses run from build test directories | no |
-| `tools/dist/dist_tree_common.py` | copies canonical `contracts/schemas/` into generated `schema/` and `schemas/` bundle projections | avoid retired root `schema` as source while preserving bundle layout | no |
-| `tools/dist/dist_tree_common.py` | includes `apps` and `game` in runtime source roots | current portable wrapper smoke imports converged roots | no |
+| `tools/package/distribution/distribution_lib.py` | adds repo root to `sys.path` before importing `compat.shims` | direct CTest subprocesses run from build test directories | no |
+| `tools/release/dist/dist_tree_common.py` | copies canonical `contracts/schema/` into generated `schema/` and `schemas/` bundle projections | avoid retired root `schema` as source while preserving bundle layout | no |
+| `tools/release/dist/dist_tree_common.py` | includes `apps` and `game` in runtime source roots | current portable wrapper smoke imports converged roots | no |
 | `tools/setup/setup_cli.py` | adds postponed annotations | generated wrapper smoke runs under Python 3.9 | no |
 | `tools/mvp/ecosystem_verify_common.py` | wraps missing/unreadable release manifest verification as deterministic refused result | AuditX reports blocker instead of crashing | no |
 
@@ -114,15 +114,15 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 
 ## Remaining Blockers
 
-- `invariant_units_present` fails because the unit validation table does not declare `unit.mass_energy.stub`, and it treats `contracts/schemas/materials/unit.schema` as a `unit.schema` reference.
+- `invariant_units_present` fails because the unit validation table does not declare `unit.mass_energy.stub`, and it treats `contracts/schema/materials/unit.schema` as a `unit.schema` reference.
 - `inv_repox_rules` fails on broad existing RepoX drift. This includes missing generated distribution descriptors, canonical index drift, missing AppShell/embodiment/projection surfaces, stale generated audit evidence, rule map gaps, and root-structure drift.
 - `ctest --preset verify --output-on-failure` exceeds a 40-minute shell timeout because slow AuditX tests are part of the full test set, even though the focused AuditX tests now pass.
 
 ## Files Added/Changed
 
 - Added `docs/repo/audits/POST_CONVERGE_10E_CTEST_AUDITX_REMEDIATION.md`.
-- Updated `tools/distribution/distribution_lib.py`.
-- Updated `tools/dist/dist_tree_common.py`.
+- Updated `tools/package/distribution/distribution_lib.py`.
+- Updated `tools/release/dist/dist_tree_common.py`.
 - Updated `tools/setup/setup_cli.py`.
 - Updated `tools/mvp/ecosystem_verify_common.py`.
 - Updated POST-CONVERGE-10/10D build proof docs.
@@ -136,7 +136,7 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 | `python .aide/scripts/aide_lite.py doctor` | pass | warnings only |
 | `python .aide/scripts/aide_lite.py validate` | pass | warnings only |
 | `python .aide/scripts/aide_lite.py pack --task "POST-CONVERGE-10E CTest AuditX remediation"` | pass | task packet updated |
-| `python -m py_compile tools/build/build_contract_common.py tools/build/probe_toolchains.py tools/build/generate_user_presets.py tools/build/validate_build_contract.py tools/build/run_tuple.py tools/mvp/ecosystem_verify_common.py tools/distribution/distribution_lib.py tools/dist/dist_tree_common.py tools/setup/setup_cli.py` | pass | build and touched tools parse |
+| `python -m py_compile tools/build/build_contract_common.py tools/build/probe_toolchains.py tools/build/generate_user_presets.py tools/build/validate_build_contract.py tools/build/run_tuple.py tools/mvp/ecosystem_verify_common.py tools/package/distribution/distribution_lib.py tools/release/dist/dist_tree_common.py tools/setup/setup_cli.py` | pass | build and touched tools parse |
 | `python tests/tools/tools_coverage_inspect_tests.py --repo-root .` | pass | `coverage_inspect OK` |
 | `python tests/tools/tools_refusal_explain_tests.py --repo-root .` | pass | `refusal_explain OK` |
 | `python tools/build/validate_build_contract.py --repo-root . --strict` | pass | build contract valid |

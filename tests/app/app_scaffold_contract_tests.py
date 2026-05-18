@@ -5,10 +5,10 @@ import sys
 
 
 GUI_STUBS = [
-    ("launcher", "apps/launcher/gui/launcher_app_win32.cpp"),
-    ("setup", "apps/setup/gui/setup_app_win32.cpp"),
-    ("client", "apps/client/gui/client_app_win32.cpp"),
-    ("server", "apps/server/gui/server_app_win32.cpp"),
+    ("launcher", "runtime/platform/win32/launcher/launcher_app_win32.cpp"),
+    ("setup", "runtime/platform/win32/setup/setup_app_win32.cpp"),
+    ("client", "runtime/platform/win32/client/client_app_win32.cpp"),
+    ("server", "runtime/platform/win32/server/server_app_win32.cpp"),
     ("tools", "tools/gui/tools_app_win32.cpp"),
 ]
 
@@ -31,7 +31,9 @@ def read_text(path):
 
 
 def iter_contract_headers(repo_root):
-    base = os.path.join(repo_root, "libs", "contracts", "include", "dom_contracts")
+    base = os.path.join(
+        repo_root, "contracts", "abi", "dom_contracts", "include", "dom_contracts"
+    )
     for name in os.listdir(base):
         if not name.startswith("app_") or not name.endswith(".h"):
             continue
@@ -59,7 +61,7 @@ def check_contract_includes(repo_root, violations):
 
 def load_registry_commands(repo_root):
     registry_path = os.path.join(
-        repo_root, "libs", "appcore", "command", "command_registry.c"
+        repo_root, "runtime", "shell", "command", "command_registry.c"
     )
     text = read_text(registry_path)
     cmd_re = re.compile(r"\\{\\s*DOM_APP_CMD_[^,]+,\\s*\"([^\"]+)\"")
@@ -68,7 +70,7 @@ def load_registry_commands(repo_root):
 
 def check_ui_header(repo_root, violations):
     header_path = os.path.join(
-        repo_root, "libs", "ui_backends", "win32", "include", "dom_ui_win32", "ui_win32.h"
+        repo_root, "runtime", "shell", "ui_backends", "win32", "include", "dom_ui_win32", "ui_win32.h"
     )
     if not os.path.isfile(header_path):
         violations.append("missing shared UI header: {}".format(header_path))
@@ -85,7 +87,7 @@ def check_gui_stub(repo_root, name, rel_path, registry_names, violations):
         violations.append("missing GUI stub: {}".format(rel_path))
         return
     text = read_text(abs_path)
-    if "ui_bind/ui_command_binding_table.h" not in text:
+    if "ui_command_binding_table.h" not in text:
         violations.append("{}: missing ui_command_binding_table include".format(rel_path))
     if "appcore_dispatch_command" not in text:
         violations.append("{}: missing appcore_dispatch_command call".format(rel_path))
@@ -95,7 +97,7 @@ def check_gui_stub(repo_root, name, rel_path, registry_names, violations):
         violations.append("{}: forbidden appcore_command_find usage".format(rel_path))
     include_re = re.compile(r"#include\\s+\"([^\"]+)\"")
     for match in include_re.findall(text):
-        if match in ("ui_bind/ui_command_binding_table.h", "dom_ui_win32/ui_win32.h"):
+        if match in ("ui_command_binding_table.h", "dom_ui_win32/ui_win32.h"):
             continue
         if match.startswith("domino/") or match.startswith("dominium/"):
             violations.append("{}: forbidden include '{}'".format(rel_path, match))

@@ -109,7 +109,7 @@ Gate evidence:
 - Concrete exception: `ValueError: invalid mod policy registry`
 - Direct mod policy diagnostic: `load_mod_policy_registry('.')` returns schema errors, including `unknown schema: mod_policy_profile`
 
-Classification: likely stale schema-path fallout from CONVERGE-06. `contracts/schemas/mod_policy_profile.schema.json` exists, but `tools/xstack/compatx/schema_registry.py` still discovers schemas from root `schemas/`, which no longer exists. The smallest safe remediation direction is a scoped CompatX schema discovery update to prefer `contracts/schemas/` while preserving any required legacy fallback, then rerun the mod policy registry and worldgen lock checks.
+Classification: likely stale schema-path fallout from CONVERGE-06. `contracts/schema/mod_policy_profile.schema.json` exists, but `tools/xstack/compatx/schema_registry.py` still discovers schemas from root `schemas/`, which no longer exists. The smallest safe remediation direction is a scoped CompatX schema discovery update to prefer `contracts/schema/` while preserving any required legacy fallback, then rerun the mod policy registry and worldgen lock checks.
 
 ## AIDE Health
 

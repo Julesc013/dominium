@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Block Reservation Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-8 block reservation row.",
+  "x-doc-ref": [
+    "docs/mobility/SIGNALING_AND_INTERLOCKING.md",
+    "docs/audit/SIGNALING_INTERLOCKING_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "reservation_id",
+    "vehicle_id",
+    "edge_id",
+    "start_tick",
+    "end_tick",
+    "status",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "reservation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "start_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "active",
+        "released",
+        "expired",
+        "conflict"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "reservation_id": "block_reservation.mob.demo.001",
+      "vehicle_id": "vehicle.mob.demo.001",
+      "edge_id": "edge.mob.demo.001",
+      "start_tick": 10,
+      "end_tick": 25,
+      "status": "active",
+      "deterministic_fingerprint": "ad8ddcc85cb3e3b66a77d2dd2dc16f5a2749d97d35f850e85e1ebf4a6f5d4094",
+      "extensions": {}
+    }
+  ]
+}

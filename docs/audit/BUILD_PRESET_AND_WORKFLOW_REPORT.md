@@ -74,4 +74,4 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - RepoX: pass (`python scripts/ci/check_repox_rules.py --repo-root .`)
 - Strict build: pass (`cmake --build out/build/vs2026/verify --config Debug --target domino_engine dominium_game`)
 - Full TestX: pass (`cmake --build out/build/vs2026/verify --config Debug --target testx_all`)
-- UI bind freshness: pass (`dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`)
+- UI bind freshness: pass (`archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`)

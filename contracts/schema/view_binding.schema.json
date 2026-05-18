@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "View Binding Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-6 subject view-binding row.",
+  "x-doc-ref": [
+    "docs/audit/VIEW_EPISTEMIC_CONTROL_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "subject_id",
+    "current_view_policy_id",
+    "bound_spatial_id",
+    "bound_pose_slot_id",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_view_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "bound_spatial_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "bound_pose_slot_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "subject_id": "agent.alpha",
+      "current_view_policy_id": "view.first_person_diegetic",
+      "bound_spatial_id": "spatial.body.agent.alpha",
+      "bound_pose_slot_id": null,
+      "created_tick": 64,
+      "deterministic_fingerprint": "c0f1f8f66e8f5ec9a3bd7f0f8889ac30eb5a4dc617e8cf853ad57038f7f39092",
+      "extensions": {}
+    }
+  ]
+}

@@ -20,7 +20,7 @@ scalability, or epistemic boundaries.
 - Provenance MUST exist for any object that appears in the world.
 - UI/tools MUST use capability snapshots and epistemic interfaces only.
 - No OS time, non-deterministic RNG, or float math in authoritative code.
-- Rendering MUST remain non-authoritative and isolated to `engine/render/**`.
+- Rendering MUST remain non-authoritative and isolated to `runtime/render/**`.
 
 ## Schema and Validation Requirements
 - Every new schema MUST define Status + Version and follow DATA0 rules.

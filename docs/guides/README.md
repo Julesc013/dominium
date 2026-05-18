@@ -114,13 +114,13 @@ distinct directories. Start with `docs/architecture/` before diving into guides.
 ## Application / Platform / Render
 
 
-- App runtime docs: `docs/app/README.md`
+- App runtime docs: `docs/apps/README.md`
 
 
-- Platform runtime docs: `docs/platform/README.md`
+- Platform runtime docs: `docs/runtime/platform/README.md`
 
 
-- Renderer docs: `docs/render/README.md`
+- Renderer docs: `docs/runtime/render/README.md`
 
 
 

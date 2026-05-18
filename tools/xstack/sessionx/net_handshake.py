@@ -6,7 +6,7 @@ import os
 from typing import Dict, List, Tuple
 
 from tools.validators.compatibility import build_default_endpoint_descriptor, negotiate_endpoint_descriptors
-from tools.network.transport.loopback import LoopbackTransport
+from tools.validators.network.transport.loopback import LoopbackTransport
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.schema_registry import load_version_registry
 from tools.xstack.compatx.validator import validate_instance

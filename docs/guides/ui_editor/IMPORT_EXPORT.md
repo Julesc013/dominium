@@ -42,7 +42,7 @@ Replacement Target: legacy reference surface retained without current binding au
 ```json
 {
   "source": "source/dominium/launcher/ui_schema/launcher_ui_v1.tlv",
-  "destination": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+  "destination": "tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv",
   "warnings": [
     "legacy stack layout mapped to ABSOLUTE",
     "legacy id remapped [widget 12]"

@@ -5,13 +5,13 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2594,
-      "snippet": "\"contracts/locks/README.md\","
+      "snippet": "\"contracts/lock/README.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 5514,
-      "snippet": "\"dist/locks/pack_lock.mvp_default.json\","
+      "snippet": "\"archive/generated/dist/locks/pack_lock.mvp_default.json\","
     },
     {
       "classification": "unknown",
@@ -35,7 +35,7 @@
       "classification": "unknown",
       "file": "contracts/MANIFEST.md",
       "line": 36,
-      "snippet": "- `contracts/locks/`"
+      "snippet": "- `contracts/lock/`"
     },
     {
       "classification": "unknown",
@@ -53,7 +53,7 @@
       "classification": "unknown",
       "file": "contracts/README.md",
       "line": 42,
-      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+      "snippet": "- `contracts/lock/`: deterministic lockfile schemas and contract definitions."
     },
     {
       "classification": "unknown",
@@ -75,13 +75,13 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/locks/README.md",
+      "file": "contracts/lock/README.md",
       "line": 8,
       "snippet": "Concrete lock artifacts belong in install/runtime projections such as `store/locks/`. Process and IPC locks belong under `runtime/locks/`. Setup, update, and rollback transaction state belongs under `ops/transactions/`."
     },
     {
       "classification": "unknown",
-      "file": "contracts/locks/README.md",
+      "file": "contracts/lock/README.md",
       "line": 12,
       "snippet": "`locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity metadata and distribution copy behavior. Move only lockfile schemas or contract definitions here after protected lock ownership review."
     },
@@ -125,7 +125,7 @@
       "classification": "unknown",
       "file": "data/audit/dist_verify_win64.json",
       "line": 1,
-      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
+      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
     },
     {
       "classification": "unknown",
@@ -395,7 +395,7 @@
       "classification": "unknown",
       "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "line": 932,
-      "snippet": "\"dist/locks/\","
+      "snippet": "\"archive/generated/dist/locks/\","
     },
     {
       "classification": "unknown",
@@ -483,7 +483,7 @@
     },
     {
       "classification": "unknown",
-      "file": "dist/locks/pack_lock.mvp_default.json",
+      "file": "archive/generated/dist/locks/pack_lock.mvp_default.json",
       "line": 1,
       "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
     },
@@ -497,7 +497,7 @@
       "classification": "docs",
       "file": "docs/architecture/LOCKFILES.md",
       "line": 21,
-      "snippet": "- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_artifacts/locks/<hash>/`."
+      "snippet": "- Lock artifacts are immutable CAS entries under `store/locks/<hash>/` or `embedded_archive/generated/artifacts/locks/<hash>/`."
     },
     {
       "classification": "docs",
@@ -545,7 +545,7 @@
       "classification": "docs",
       "file": "docs/audit/MVP1_RETRO_AUDIT.md",
       "line": 23,
-      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `archive/generated/dist/`."
     },
     {
       "classification": "docs",
@@ -557,13 +557,13 @@
       "classification": "docs",
       "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
       "line": 64,
-      "snippet": "- `dist/locks/pack_lock.mvp_default.json`"
+      "snippet": "- `archive/generated/dist/locks/pack_lock.mvp_default.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 15,
-      "snippet": "- Existing lockfile and pack-lock outputs under `dist/locks/` and `dist/lockfile.json`"
+      "snippet": "- Existing lockfile and pack-lock outputs under `archive/generated/dist/locks/` and `archive/generated/dist/lockfile.json`"
     },
     {
       "classification": "docs",
@@ -575,13 +575,13 @@
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 35,
-      "snippet": "- pack lock `dist/locks/pack_lock.mvp_default.json`"
+      "snippet": "- pack lock `archive/generated/dist/locks/pack_lock.mvp_default.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 63,
-      "snippet": "- `dist/locks/pack_lock.mvp_default.json` includes:"
+      "snippet": "- `archive/generated/dist/locks/pack_lock.mvp_default.json` includes:"
     },
     {
       "classification": "docs",
@@ -767,7 +767,7 @@
       "classification": "docs",
       "file": "docs/repo/CONTRACT_CONVERGENCE.md",
       "line": 38,
-      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+      "snippet": "- `contracts/lock/`: deterministic lockfile schemas and contract definitions."
     },
     {
       "classification": "docs",
@@ -815,7 +815,7 @@
       "classification": "docs",
       "file": "docs/repo/OWNERSHIP_RULES.md",
       "line": 25,
-      "snippet": "- `contracts/locks/`: deterministic lockfile schemas and contract definitions."
+      "snippet": "- `contracts/lock/`: deterministic lockfile schemas and contract definitions."
     },
     {
       "classification": "docs",
@@ -839,7 +839,7 @@
       "classification": "docs",
       "file": "docs/repo/OWNERSHIP_RULES.md",
       "line": 133,
-      "snippet": "- `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/locks/`."
+      "snippet": "- `locks/` contains concrete deterministic pack lock artifacts, so it cannot be moved wholesale into `contracts/lock/`."
     },
     {
       "classification": "docs",
@@ -863,13 +863,13 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 141,
-      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
+      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 164,
-      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+      "snippet": "`runtime/process_spawn.py`, `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
     },
     {
       "classification": "docs",
@@ -941,7 +941,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -983,19 +983,19 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 167,
-      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
+      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 305,
-      "snippet": "`manifests/release_manifest.json`, `manifests/release_index.json`, `data/registries/component_graph_registry.json`, `data/registries/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `dist/`"
+      "snippet": "`manifests/release_manifest.json`, `manifests/release_index.json`, `data/registries/component_graph_registry.json`, `data/registries/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `archive/generated/dist/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 443,
-      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`"
+      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `archive/generated/dist/`"
     },
     {
       "classification": "docs",
@@ -1013,13 +1013,13 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 537,
-      "snippet": "`locks/pack_lock.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `release/update_resolver.py`"
+      "snippet": "`locks/pack_lock.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/release/update_resolver.py`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 719,
-      "snippet": "`dist/manifests/release_manifest.json`, `dist/packs/`, `dist/profiles/`, `dist/locks/`, AppShell install/store search roots"
+      "snippet": "`archive/generated/dist/manifests/release_manifest.json`, `archive/generated/dist/packs/`, `archive/generated/dist/profiles/`, `archive/generated/dist/locks/`, AppShell install/store search roots"
     },
     {
       "classification": "docs",
@@ -1061,7 +1061,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_FILE_POLICY.md",
       "line": 73,
-      "snippet": "Lock artifacts and lock contracts must not be confused. `contracts/locks/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC"
+      "snippet": "Lock artifacts and lock contracts must not be confused. `contracts/lock/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC"
     },
     {
       "classification": "docs",
@@ -1085,7 +1085,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -1103,7 +1103,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
       "line": 429,
-      "snippet": "CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schemas/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirm"
+      "snippet": "CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schema/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirm"
     },
     {
       "classification": "docs",
@@ -1133,7 +1133,7 @@
       "classification": "docs",
       "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
       "line": 156,
-      "snippet": "| `dist/profiles/*`, `dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |"
+      "snippet": "| `archive/generated/dist/profiles/*`, `archive/generated/dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |"
     },
     {
       "classification": "docs",
@@ -1173,7 +1173,7 @@
     },
     {
       "classification": "active_source",
-      "file": "release/update_resolver.py",
+      "file": "tools/release/update_resolver.py",
       "line": 492,
       "snippet": "return [\"store/locks/pack_lock.mvp_default.json\"]"
     },
@@ -1193,77 +1193,77 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 1239,
-      "snippet": "\"dist/locks/pack_lock.mvp_default.json\","
+      "snippet": "\"archive/generated/dist/locks/pack_lock.mvp_default.json\","
     },
     {
       "classification": "tests",
       "file": "tests/launcher/launcher_cli_tests.py",
       "line": 389,
-      "snippet": "\"artifact_path\": \"embedded_artifacts/locks/%s\" % pack_lock_hash,"
+      "snippet": "\"artifact_path\": \"embedded_archive/generated/artifacts/locks/%s\" % pack_lock_hash,"
     },
     {
       "classification": "tests",
       "file": "tests/ops/export_import_bundle_tests.py",
       "line": 159,
-      "snippet": "\"artifact_path\": slash(\"embedded_artifacts/locks/{}\".format(pack_lock_hash)),"
+      "snippet": "\"artifact_path\": slash(\"embedded_archive/generated/artifacts/locks/{}\".format(pack_lock_hash)),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e157_adhoc_interlocking_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e157_adhoc_interlocking_smell.py",
       "line": 21,
       "snippet": "re.compile(r\"\\broute_reserve_blocks\\b\", re.IGNORECASE),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
       "line": 95,
       "snippet": "related_paths=[rel_path, \"tools/mvp/runtime_bundle.py\", \"locks/pack_lock.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 11,
       "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 70,
       "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 89,
       "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\", \"profiles/bundles/bundle.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 121,
       "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist6_interop_common.py",
+      "file": "tools/release/dist/dist6_interop_common.py",
       "line": 561,
       "snippet": "\"pack_lock_a\": _load_bundle_json(bundle_root_a, \"store/locks/pack_lock.mvp_default.json\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist6_interop_common.py",
+      "file": "tools/release/dist/dist6_interop_common.py",
       "line": 562,
       "snippet": "\"pack_lock_b\": _load_bundle_json(bundle_root_b, \"store/locks/pack_lock.mvp_default.json\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_tree_common.py",
+      "file": "tools/release/dist/dist_tree_common.py",
       "line": 1232,
       "snippet": "rel_path for rel_path in _iter_bundle_files(root) if rel_path.startswith(\"store/locks/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_verify_common.py",
+      "file": "tools/release/dist/dist_verify_common.py",
       "line": 45,
       "snippet": "\"store/locks/pack_lock.mvp_default.json\","
     },
@@ -1271,7 +1271,7 @@
       "classification": "tools",
       "file": "tools/lib/lib_stress_common.py",
       "line": 1064,
-      "snippet": "\"artifact_path\": _slash(\"embedded_artifacts/locks/{}\".format(portable_lock_hash), slash_mode),"
+      "snippet": "\"artifact_path\": _slash(\"embedded_archive/generated/artifacts/locks/{}\".format(portable_lock_hash), slash_mode),"
     },
     {
       "classification": "tools",

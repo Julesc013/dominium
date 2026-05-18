@@ -12,24 +12,24 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/geo/tool_replay_geo_window.py`
+- Canonical Candidate: `tools/validators/domain/geology/tool_replay_geo_window.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `tools/geo/tool_replay_geo_window.py`
-- `tools/geo/tool_verify_overlay_identity.py`
+- `tools/validators/domain/geology/tool_replay_geo_window.py`
+- `tools/validators/domain/geology/tool_verify_overlay_identity.py`
 
 ## Scorecard
 
-- `tools/geo/tool_replay_geo_window.py` disposition=`canonical` rank=`1` total_score=`71.85` risk=`HIGH`
-- `tools/geo/tool_verify_overlay_identity.py` disposition=`quarantine` rank=`2` total_score=`63.17` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_geo_window.py` disposition=`canonical` rank=`1` total_score=`71.85` risk=`HIGH`
+- `tools/validators/domain/geology/tool_verify_overlay_identity.py` disposition=`quarantine` rank=`2` total_score=`63.17` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW_SYSTEM_L2_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/geo/SPATIAL_INDEX_AND_IDENTITY.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`
+- Docs: `docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW_SYSTEM_L2_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`
 
 ## Tests Involved
 
@@ -39,7 +39,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

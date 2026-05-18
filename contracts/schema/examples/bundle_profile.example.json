@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "bundle_id": "bundle.base.lab",
+  "description": "Baseline lab bundle for deterministic session bootstrap.",
+  "pack_ids": [
+    "pack.core.runtime",
+    "pack.law.observe_only",
+    "pack.domain.navigation",
+    "pack.experience.lab_galaxy"
+  ],
+  "optional_pack_ids": [
+    "pack.tool.inspector"
+  ]
+}

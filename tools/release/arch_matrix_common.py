@@ -8,14 +8,14 @@ import os
 from typing import Mapping
 
 from tools.validators.compatibility.descriptor.descriptor_engine import build_product_descriptor
-from engine.platform.target_matrix import (
+from runtime.platform.target_matrix import (
     TARGET_MATRIX_REGISTRY_REL,
     canonicalize_target_matrix_row,
     load_target_matrix_registry,
     select_target_matrix_row,
     target_matrix_registry_hash,
 )
-from release import load_release_index
+from tools.release import load_release_index
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -729,7 +729,7 @@ def render_arch_matrix_retro_audit(report: Mapping[str, object]) -> str:
         "## Existing Inputs",
         "",
         "- `contracts/registry/platform_capability_registry.json` already declares platform-family capability envelopes.",
-        "- `contracts/schemas/release/release_index.schema` already exposes `platform_matrix` rows with `{os, arch, abi, artifact_url_or_path}`.",
+        "- `contracts/schema/release/release_index.schema` already exposes `platform_matrix` rows with `{os, arch, abi, artifact_url_or_path}`.",
         "- `contracts/registry/install_profile_registry.json` already defines deterministic install profiles for full/client/server/tools/sdk.",
         "- CAP-NEG endpoint descriptors now expose `official.target_id`, `official.os_id`, `official.arch_id`, `official.abi_id`, and `official.target_tier`.",
         "",
@@ -747,7 +747,7 @@ def render_arch_matrix_retro_audit(report: Mapping[str, object]) -> str:
                 )
             )
     else:
-        lines.append("- None detected in `dist/` or `build/tmp/*/v0.0.0-mock`.")
+        lines.append("- None detected in `archive/generated/dist/` or `build/tmp/*/v0.0.0-mock`.")
     lines.extend(["", "## Declared but Unbuilt / Aspirational Targets", ""])
     for row in tier_rows:
         row_map = _as_map(row)
@@ -1045,7 +1045,7 @@ def arch_matrix_violations(repo_root: str, *, report_override: Mapping[str, obje
                 {
                     "code": "release_index_target_unmapped",
                     "message": "default release-index platform rows must resolve to declared target matrix rows",
-                    "file_path": _token(row_map.get("release_index_rel")) or "build/tmp/update_model_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json",
+                    "file_path": _token(row_map.get("release_index_rel")) or "build/tmp/update_model_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json",
                     "rule_id": RULE_TARGET_MATRIX,
                 }
             )
@@ -1056,7 +1056,7 @@ def arch_matrix_violations(repo_root: str, *, report_override: Mapping[str, obje
             {
                 "code": "tier3_target_in_release_index",
                 "message": "Tier 3 targets must not appear in the default release index",
-                "file_path": _token(row_map.get("release_index_rel")) or "build/tmp/update_model_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json",
+                "file_path": _token(row_map.get("release_index_rel")) or "build/tmp/update_model_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json",
                 "rule_id": RULE_TIER3_RELEASE_INDEX,
             }
         )

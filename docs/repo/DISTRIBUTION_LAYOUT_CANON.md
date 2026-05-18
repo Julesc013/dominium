@@ -13,7 +13,7 @@ This document explains that contract. It does not override the machine-readable 
 
 The source repository layout is governed by `contracts/repo/layout.contract.toml`. It is separate from:
 
-- build and release output under `dist/`
+- build and release output under `archive/generated/dist/`
 - `.dompkg` package internal export layout
 - compressed archive layout
 - portable install layout
@@ -23,7 +23,7 @@ The source repository layout is governed by `contracts/repo/layout.contract.toml
 - runtime IPC, lock, log, and temp layout
 - save, instance, replay, diagnostic, and compound bundle layout
 
-`dist/` is generated release/build output. It is not source repository authority.
+`archive/generated/dist/` is generated release/build output. It is not source repository authority.
 
 ## Unified Model
 
@@ -44,7 +44,7 @@ Logical roots describe ownership and mutability. Physical projections map those 
 | Projection | Role |
 | --- | --- |
 | `source_repo` | Current repository tree governed by `contracts/repo/layout.contract.toml`; not an install or package layout. |
-| `dist_output` | Generated CI/build/release output with separate `dist/pkg`, `dist/sys`, `dist/sym`, `dist/meta`, `dist/cfg`, `dist/redist`, and `dist/res` roles. |
+| `dist_output` | Generated CI/build/release output with separate `archive/generated/dist/pkg`, `archive/generated/dist/sys`, `archive/generated/dist/sym`, `archive/generated/dist/meta`, `archive/generated/dist/cfg`, `archive/generated/dist/redist`, and `archive/generated/dist/res` roles. |
 | `compressed_archive` | Downloadable archive whose extraction produces a valid portable install. |
 | `portable_install` | Self-describing runnable tree with manifests, binaries, store, instances, saves, exports, logs, runtime, cache, ops, docs, and licenses. |
 | `installed_desktop` | Immutable install root plus mutable store/user roots outside the immutable tree. |
@@ -67,7 +67,7 @@ Existing `VROOT_LOCKS` language in AppShell docs remains compatibility input. Ne
 
 ## No Physical Moves
 
-CONVERGE-04 adds a contract, validator, and explanatory docs only. It does not move folders, populate `dist/`, generate package bytes, change executable names, alter product IDs, change install IDs, or change virtual-root resolution implementation.
+CONVERGE-04 adds a contract, validator, and explanatory docs only. It does not move folders, populate `archive/generated/dist/`, generate package bytes, change executable names, alter product IDs, change install IDs, or change virtual-root resolution implementation.
 
 ## POST-CONVERGE-09 Proof Note
 

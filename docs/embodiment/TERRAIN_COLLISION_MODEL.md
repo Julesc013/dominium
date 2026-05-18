@@ -25,7 +25,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 - `docs/canon/constitution_v1.md` `E6` Replay equivalence
 - `docs/canon/constitution_v1.md` `E7` Cross-platform replay agreement
 - `docs/embodiment/EMBODIMENT_BASELINE.md`
-- `docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
+- `docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md`
 
 ## 1) Purpose
 

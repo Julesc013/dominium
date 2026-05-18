@@ -1,4 +1,4 @@
-"""Deterministic Ω-9 toolchain matrix helpers."""
+"""Deterministic Î©-9 toolchain matrix helpers."""
 
 from __future__ import annotations
 
@@ -26,7 +26,7 @@ from tools.validators.compatibility.capability_negotiation import (  # noqa: E40
     verify_negotiation_record,
 )
 from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
-from engine.platform.platform_probe import (  # noqa: E402
+from runtime.platform.platform_probe import (  # noqa: E402
     MODE_TO_CAPABILITY_ID,
     PLATFORM_CAPABILITY_KEYS,
     endpoint_descriptor_platform_snapshot,
@@ -34,7 +34,7 @@ from engine.platform.platform_probe import (  # noqa: E402
     platform_family_id,
     project_feature_capabilities_for_platform,
 )
-from release import (  # noqa: E402
+from tools.release import (  # noqa: E402
     build_product_build_metadata,
     build_release_manifest,
     product_capability_default_rows_by_id,
@@ -353,7 +353,7 @@ def _default_env_rows() -> list[dict]:
             "supported_products": full_products,
             "supported_profile_ids": all_profiles,
             "stability": _stability(
-                rationale="Current shipped mock lane and primary Ω-9 reference environment.",
+                rationale="Current shipped mock lane and primary Î©-9 reference environment.",
                 replacement_target="Replace with release-index pinned toolchain contracts once native multi-host CI exists.",
             ),
             "extensions": {
@@ -365,8 +365,8 @@ def _default_env_rows() -> list[dict]:
                 "target_matrix_target_id": "target.os_winnt.abi_msvc.arch_x86_64",
                 "target_matrix_reference_mode": "canonical_match",
                 "release_id": "v0.0.0-mock",
-                "dist_root_rel": "dist/v0.0.0-mock/win64/dominium",
-                "release_manifest_rel": "dist/v0.0.0-mock/win64/dominium/manifests/release_manifest.json",
+                "dist_root_rel": "archive/generated/dist/v0.0.0-mock/win64/dominium",
+                "release_manifest_rel": "archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_manifest.json",
                 "capability_overrides": {},
                 "official.source": "OMEGA-9",
             },
@@ -1929,16 +1929,16 @@ def compare_toolchain_runs(repo_root: str, left_run_dir: str, right_run_dir: str
 def render_toolchain_matrix_retro_audit(repo_root: str) -> str:
     target_matrix_exists = os.path.isfile(_repo_abs(repo_root, "contracts/registry/target_matrix_registry.json"))
     platform_registry_exists = os.path.isfile(_repo_abs(repo_root, "contracts/registry/platform_capability_registry.json"))
-    dist_exists = os.path.isdir(_repo_abs(repo_root, "dist/v0.0.0-mock/win64/dominium"))
+    dist_exists = os.path.isdir(_repo_abs(repo_root, "archive/generated/dist/v0.0.0-mock/win64/dominium"))
     lines = [
         "# TOOLCHAIN-MATRIX-0 Retro Audit",
         "",
         "## Scope",
         "",
         "- ARCH-MATRIX-0 target matrix source: `contracts/registry/target_matrix_registry.json` (`exists={}`)".format(target_matrix_exists),
-        "- PLATFORM-FORMALIZE capability source: `contracts/registry/platform_capability_registry.json` + `engine/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
-        "- RELEASE build identity source: `release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)",
-        "- Release manifest generation/verification source: `release/release_manifest_engine.py`",
+        "- PLATFORM-FORMALIZE capability source: `contracts/registry/platform_capability_registry.json` + `runtime/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
+        "- RELEASE build identity source: `tools/release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)",
+        "- Release manifest generation/verification source: `tools/release/release_manifest_engine.py`",
         "",
         "## Existing Gate Tooling",
         "",
@@ -1947,15 +1947,15 @@ def render_toolchain_matrix_retro_audit(repo_root: str) -> str:
         "- `BASELINE-UNIVERSE verify`: `tools/mvp/baseline_universe_common.py`",
         "- `GAMEPLAY verify`: `tools/mvp/gameplay_loop_common.py`",
         "- `DISASTER suite`: `tools/mvp/disaster_suite_common.py`",
-        "- `release manifest verify`: `release/release_manifest_engine.py`",
+        "- `release manifest verify`: `tools/release/release_manifest_engine.py`",
         "",
         "## Audit Notes",
         "",
         "- Current committed mock dist root exists only for the Windows NT x86_64 lane: `{}`".format(dist_exists),
         "- Existing target policy is product support policy, not an environment run registry.",
-        "- Existing platform probes are host-observed and therefore not suitable as the sole Ω-9 env descriptor source for offline cross-boot comparison.",
-        "- Existing build-id rules already provide deterministic identity inputs; Ω-9 needs a canonical env/profile wrapper around them.",
-        "- Existing Ω verifiers already cover worldgen/universe/gameplay/disaster semantics; Ω-9 only needs to orchestrate and archive comparable outputs.",
+        "- Existing platform probes are host-observed and therefore not suitable as the sole Î©-9 env descriptor source for offline cross-boot comparison.",
+        "- Existing build-id rules already provide deterministic identity inputs; Î©-9 needs a canonical env/profile wrapper around them.",
+        "- Existing Î© verifiers already cover worldgen/universe/gameplay/disaster semantics; Î©-9 only needs to orchestrate and archive comparable outputs.",
         "",
     ]
     return "\n".join(lines)
@@ -2020,7 +2020,7 @@ def render_toolchain_matrix_model_doc(repo_root: str) -> str:
             "",
             "## C) Output Artifacts",
             "",
-            "Each run writes canonical JSON under `artifacts/toolchain_runs/<env_id>/<run_id>/`:",
+            "Each run writes canonical JSON under `archive/generated/artifacts/toolchain_runs/<env_id>/<run_id>/`:",
             "",
             "- `run_manifest.json`",
             "- `results.json`",
@@ -2114,9 +2114,9 @@ def render_toolchain_matrix_baseline_doc(
             "",
             "## Readiness",
             "",
-            "- Ω-9 surfaces exist and one committed reference run is archived for deterministic comparison.",
+            "- Î©-9 surfaces exist and one committed reference run is archived for deterministic comparison.",
             "- Additional environments can be populated later without expanding Tier 1 commitments.",
-            "- Ready for Ω-10 distribution-plan integration.",
+            "- Ready for Î©-10 distribution-plan integration.",
             "",
         ]
     )

@@ -1,0 +1,18 @@
+SCHEMA: fluid/leak_state.schema
+schema_id: dominium.schema.fluid.leak_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic leak state emitted/consumed by FLUID containment processes.
+
+REQUIRED SHAPE:
+record leak_state
+  required:
+    - schema_version: semver
+    - target_id: id
+    - leak_rate: number
+    - active: bool
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map

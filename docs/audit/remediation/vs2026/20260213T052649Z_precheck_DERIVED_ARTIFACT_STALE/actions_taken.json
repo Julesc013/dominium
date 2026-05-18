@@ -32,7 +32,7 @@
         "--target",
         "ui_bind_phase"
       ],
-      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  appcore.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\appcore.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  dom_build_info.c\n  backend_detect.c\n  d_gfx.c\n  Generating Code...\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  domino_ui_ir.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_ui_ir.lib\n  tool_ui_bind.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\dist\\sys\\winnt\\x64\\bin\\tools\\tool_ui_bind.exe\n",
+      "output": "MSBuild version 18.0.5+e22287bf1 for .NET Framework\n\n  appcore.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\appcore.lib\n  Checking include boundaries for engine sources\n  Include sanity OK.\n  dom_build_info.c\n  backend_detect.c\n  d_gfx.c\n  Generating Code...\n  domino_engine.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_engine.lib\n  domino_ui_ir.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\out\\build\\vs2026\\verify\\lib\\domino_ui_ir.lib\n  tool_ui_bind.vcxproj -> C:\\Inbox\\Git Repos\\dominium\\archive\generated\archive\generated\dist\\sys\\winnt\\x64\\bin\\tools\\tool_ui_bind.exe\n",
       "returncode": 0,
       "strategy": "tooling_integration",
       "targets": [

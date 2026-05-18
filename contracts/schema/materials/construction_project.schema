@@ -1,0 +1,29 @@
+SCHEMA: materials/construction_project.schema
+schema_id: dominium.schema.materials.construction_project
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic construction project declarations.
+
+REQUIRED SHAPE:
+record construction_project
+  required:
+    - schema_version: semver
+    - project_id: id
+    - blueprint_id: id
+    - compiled_ag_id: id
+    - bom_id: id
+    - site_ref: string
+    - logistics_node_id: id
+    - created_tick: int
+    - status: enum(planned|executing|paused|completed|failed)
+    - milestone_commitment_ids: list<id>
+    - progress_state_ref: string|null
+    - extensions: map
+  optional:
+    - owner_faction_id: id|null
+
+INVARIANTS:
+- project_id must be deterministic for identical creation inputs.
+- milestone_commitment_ids must be stable and traceable.

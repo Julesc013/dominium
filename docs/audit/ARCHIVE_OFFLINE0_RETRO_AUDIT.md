@@ -16,7 +16,7 @@ Replacement Target: signed retained release archives with historical channel bun
 
 ## Release Artifact State
 
-- The current mock distribution exists at `dist/v0.0.0-mock/win64/dominium`.
+- The current mock distribution exists at `archive/generated/dist/v0.0.0-mock/win64/dominium`.
 - `release_manifest.json` is present and enumerates 25 artifacts: binaries, descriptors, pack lock, profile bundle, install manifests, and three pack payloads.
 - Pack artifacts are currently directory trees under `store/packs/...`, so any offline CAS export must support both file and directory artifacts.
 
@@ -29,8 +29,8 @@ Replacement Target: signed retained release archives with historical channel bun
 ## Artifact CAS Layout
 
 - There is no committed single-bundle offline CAS tree today.
-- Release artifacts are addressable by `content_hash` through `release_manifest.json`, but they remain stored in live distribution paths rather than under a dedicated `artifacts/<hash>` archive namespace.
-- The offline archive layer therefore needs a reconstruction-first CAS projection that copies each manifest artifact into a stable `artifacts/<hash>` location.
+- Release artifacts are addressable by `content_hash` through `release_manifest.json`, but they remain stored in live distribution paths rather than under a dedicated `archive/generated/artifacts/<hash>` archive namespace.
+- The offline archive layer therefore needs a reconstruction-first CAS projection that copies each manifest artifact into a stable `archive/generated/artifacts/<hash>` location.
 
 ## Trust / Governance / Migration Storage
 
@@ -56,7 +56,7 @@ Replacement Target: signed retained release archives with historical channel bun
 ## Gaps To Close In Ω-8
 
 - Build one deterministic archive tree that includes:
-  - `artifacts/<hash>` CAS payloads
+  - `archive/generated/artifacts/<hash>` CAS payloads
   - retained `release_index_history`
   - release/governance/trust/migration/contract snapshots
   - Ω baseline artifacts needed for reconstruction and regression

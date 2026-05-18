@@ -1,0 +1,26 @@
+SCHEMA: process/test_procedure.schema
+schema_id: dominium.schema.process.test_procedure
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic QC measurement/test procedure thresholds for process outputs.
+
+NON-SEMANTICS:
+- Does not define sampling policy selection.
+- Does not execute measurement instrumentation directly.
+
+REQUIRED SHAPE:
+record test_procedure
+  required:
+    - test_id: id
+    - measured_quantity_ids: list[id]
+    - thresholds: map
+    - tolerance_policy_id: id
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- `measured_quantity_ids` order is deterministic in evaluation.
+- `tolerance_policy_id` must resolve in tolerance policy registry.
+- Threshold interpretation must be deterministic under TOL discipline.

@@ -1,0 +1,57 @@
+SCHEMA: settings/launcher_settings.schema
+schema_id: dominium.schema.settings.launcher
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical launcher orchestration settings.
+
+REQUIRED SHAPE:
+record launcher_settings
+  required:
+    - settings_id: id
+    - schema_id: id
+    - schema_version: tag
+    - active_instance: id
+    - default_instance: id
+    - pack_enablement: [instance_pack_enablement]
+    - strict_compatibility_mode: bool
+    - local_server_defaults: launcher_local_server_defaults
+    - update_check_policy: enum(disabled|startup|interval)
+    - log_verbosity: enum(info|warn|error)
+    - soon: launcher_soon_settings
+    - later: launcher_later_settings
+    - extensions: map
+
+TYPE DEFINITIONS:
+record instance_pack_enablement
+  required:
+    - instance_id: id
+    - enabled_pack_ids: [id]
+
+record launcher_local_server_defaults
+  required:
+    - auto_start: bool
+    - headless: bool
+    - mode: enum(cli|tui|gui)
+
+record launcher_soon_settings
+  required:
+    - visual_dependency_graph: soon_stub
+    - instance_cloning_ui: soon_stub
+
+record launcher_later_settings
+  required:
+    - cloud_sync: later_stub
+    - visual_diff_dashboards: later_stub
+
+record soon_stub
+  required:
+    - availability: enum(stub)
+    - refusal_code: id
+
+record later_stub
+  required:
+    - availability: enum(deferred)
+    - note: tag
+

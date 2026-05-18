@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Controller Schema",
+  "version": "1.0.0",
+  "description": "Canonical controller contract for process-driven control bindings.",
+  "x-doc-ref": [
+    "docs/embodiment/CONTROL_SUBSTRATE_DOCTRINE.md",
+    "docs/contracts/authority_context.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "controller_id",
+    "controller_type",
+    "owner_peer_id",
+    "allowed_actions",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "controller_id": {
+      "type": "string"
+    },
+    "controller_type": {
+      "type": "string",
+      "enum": [
+        "player_input",
+        "ai_policy",
+        "script",
+        "spectator",
+        "admin"
+      ]
+    },
+    "owner_peer_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_bindings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "controller_id": "controller.client.default",
+      "controller_type": "player_input",
+      "owner_peer_id": "peer.client.local",
+      "allowed_actions": [
+        "control.action.bind_camera",
+        "control.action.unbind_camera",
+        "control.action.possess_agent",
+        "control.action.release_agent"
+      ],
+      "default_bindings": [
+        "binding.controller.client.camera.main"
+      ],
+      "extensions": {}
+    }
+  ]
+}

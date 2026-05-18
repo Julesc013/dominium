@@ -13,7 +13,7 @@ Sync state: local `main` is ahead of `origin/main`; `origin/main` is an ancestor
 ## Safe Repairs Applied
 
 - Updated stale AppShell GUI path expectations in scaffold and invariant tests.
-- Updated stale client command bridge and action registry paths to `apps/client/core/**`.
+- Updated stale client command bridge and action registry paths to `apps/apps/client/session/**`.
 - Updated RepoX run-meta dependency hash expectations for the current helper signature.
 - Fixed ops compatibility JSON smoke output by removing a Python 3.14 `utcnow()` deprecation warning from stdout.
 - Removed direct host path literals from TestX fixture sources while preserving leak-test semantics.

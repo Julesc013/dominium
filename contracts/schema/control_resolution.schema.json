@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control Resolution Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-1 control resolution payload.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "resolution_id",
+    "input_control_intent_id",
+    "allowed",
+    "resolved_vector",
+    "emitted_intent_envelopes",
+    "emitted_commitment_ids",
+    "refusal",
+    "downgrade_reasons",
+    "decision_log_ref",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "resolution_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "input_control_intent_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "resolved_vector": {
+      "type": "object",
+      "required": [
+        "abstraction_level_resolved",
+        "fidelity_resolved",
+        "view_resolved"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "abstraction_level_resolved": {
+          "type": "string",
+          "enum": [
+            "AL0",
+            "AL1",
+            "AL2",
+            "AL3",
+            "AL4"
+          ]
+        },
+        "fidelity_resolved": {
+          "type": "string",
+          "enum": [
+            "macro",
+            "meso",
+            "micro"
+          ]
+        },
+        "view_resolved": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "emitted_intent_envelopes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "emitted_commitment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "refusal": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "downgrade_reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_log_ref": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "resolution_id": "control.resolution.87d75f5c2af69f1673f09813",
+      "input_control_intent_id": "control.intent.f6f9ca5b0b9ad85472fbe57a",
+      "allowed": true,
+      "resolved_vector": {
+        "abstraction_level_resolved": "AL0",
+        "fidelity_resolved": "meso",
+        "view_resolved": "view.mode.first_person"
+      },
+      "emitted_intent_envelopes": [],
+      "emitted_commitment_ids": [],
+      "refusal": null,
+      "downgrade_reasons": [],
+      "decision_log_ref": "run_meta/control_decisions/control.log.abc.json",
+      "deterministic_fingerprint": "1e3605f70324a977f6b1e8fc4cb626cfbd7d5d6d045c28979d97d65716468ece",
+      "extensions": {}
+    }
+  ]
+}

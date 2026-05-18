@@ -36,9 +36,9 @@ SOURCE_EXTS = {
 
 RNG_SEED_CALL_RE = re.compile(r"\bd_rng_(seed|stream_seed|streams_seed)\s*\(")
 RNG_SEED_ALLOWLIST = {
-    "engine/modules/core/rng.c",
-    "engine/modules/core/rng_streams.c",
-    "engine/modules/core/rng_model.c",
+    "engine/kernel/rng.c",
+    "engine/kernel/rng_streams.c",
+    "engine/kernel/rng_model.c",
 }
 
 

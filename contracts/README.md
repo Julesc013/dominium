@@ -39,7 +39,7 @@ Authored packs, profiles, fixtures, datasets, and assets belong under `content/`
 
 ## Lock-Root Split
 
-- `contracts/locks/`: deterministic lockfile schemas and contract definitions.
+- `contracts/lock/`: deterministic lockfile schemas and contract definitions.
 - `store/locks/`: deterministic content, pack, capability, and compatibility lock artifacts in install/runtime projections.
 - `runtime/locks/`: process, IPC, and transient runtime locks.
 - `ops/transactions/`: setup, update, rollback plans, stages, commits, and rollback records.
@@ -48,10 +48,10 @@ Do not place mutable runtime lock files under `contracts/`.
 
 ## Retired Roots
 
-Root-level `schema/` and `schemas/` were retired in CONVERGE-06. Retained schema material now lives under `contracts/schemas/`.
+Root-level `schema/` and `schemas/` were retired in CONVERGE-06. Retained schema material now lives under `contracts/schema/`.
 
 ## CONVERGE-09 Domain Contract Note
 
-CONVERGE-09 moved root-level domain implementation packages under `game/domains/`. No domain schema, registry, capability, or protocol subsets were identified inside those moved roots during the safe split.
+CONVERGE-09 moved root-level domain implementation packages under `game/domain/`. No domain schema, registry, capability, or protocol subsets were identified inside those moved roots during the safe split.
 
-Future domain contracts must live under the appropriate contract class, such as `contracts/schemas/<domain>/`, `contracts/registries/<domain>/`, `contracts/capabilities/<domain>/`, or `contracts/protocols/<domain>/`. Domain implementation does not belong in `contracts/`.
+Future domain contracts must live under the appropriate contract class, such as `contracts/schema/<domain>/`, `contracts/registry/<domain>/`, `contracts/capability/<domain>/`, or `contracts/protocol/<domain>/`. Domain implementation does not belong in `contracts/`.

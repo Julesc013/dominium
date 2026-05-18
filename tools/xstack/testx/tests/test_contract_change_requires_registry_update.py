@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.compatx.core.semantic_contract_validator import contract_tokens_missing_entries, load_semantic_contract_registry
+    from tools.xstack.compatx.core.semantic_contract_validator import contract_tokens_missing_entries, load_semantic_contract_registry
 
     payload, error = load_semantic_contract_registry(repo_root)
     if error:

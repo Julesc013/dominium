@@ -18,8 +18,8 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `tools/auditx/analyzers/e231_undeclared_temporal_domain_smell.py`
-- `tools/auditx/analyzers/e531_secrets_in_log_smell.py`
+- `tools/xstack/auditx/analyzers/e231_undeclared_temporal_domain_smell.py`
+- `tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py`
 - `tools/governance/governance_model_common.py`
 - `tools/meta/observability_common.py`
 - `tools/release/platform_formalize_common.py`
@@ -36,14 +36,14 @@ Replacement Target: XI-4b manual review resolution
 - `tools/governance/governance_model_common.py` disposition=`merge` rank=`4` total_score=`82.5` risk=`HIGH`
 - `tools/release/ui_reconcile_common.py` disposition=`merge` rank=`5` total_score=`71.08` risk=`HIGH`
 - `tools/release/platform_formalize_common.py` disposition=`merge` rank=`6` total_score=`67.45` risk=`HIGH`
-- `tools/auditx/analyzers/e231_undeclared_temporal_domain_smell.py` disposition=`drop` rank=`7` total_score=`66.58` risk=`HIGH`
+- `tools/xstack/auditx/analyzers/e231_undeclared_temporal_domain_smell.py` disposition=`drop` rank=`7` total_score=`66.58` risk=`HIGH`
 - `tools/xstack/repox/check.py` disposition=`drop` rank=`8` total_score=`66.07` risk=`HIGH`
-- `tools/auditx/analyzers/e531_secrets_in_log_smell.py` disposition=`drop` rank=`9` total_score=`59.3` risk=`HIGH`
+- `tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py` disposition=`drop` rank=`9` total_score=`59.3` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/GLOSSARY.md, docs/appshell/UI_MODE_RESOLUTION.md, docs/appshell/VIRTUAL_PATHS.md, docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md, docs/architecture/CANON_INDEX.md, docs/architecture/COLLAPSE_EXPAND_SOLVERS.md, docs/architecture/COMPLEXITY_AND_SCALE.md, docs/architecture/CONTROL_LAYERS.md`
+- Docs: `docs/GLOSSARY.md, docs/runtime/shell/UI_MODE_RESOLUTION.md, docs/runtime/shell/VIRTUAL_PATHS.md, docs/architecture/BEHAVIORAL_COMPONENTS_STANDARD.md, docs/architecture/CANON_INDEX.md, docs/architecture/COLLAPSE_EXPAND_SOLVERS.md, docs/architecture/COMPLEXITY_AND_SCALE.md, docs/architecture/CONTROL_LAYERS.md`
 
 ## Tests Involved
 
@@ -53,7 +53,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -1,0 +1,27 @@
+SCHEMA: embodiment/body_state.schema
+schema_id: dominium.schema.embodiment.body_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical EMB-0 body state rows separate from raw body assemblies.
+- Anchor subject/frame/position/orientation state for lawful lens resolution and replay.
+
+NON-SEMANTICS:
+- This schema does not authorize direct UI mutation.
+- This schema does not replace PHYS momentum state.
+
+REQUIRED SHAPE:
+record body_state
+  required:
+    - subject_id: string
+    - frame_id: string
+    - position_ref: map
+    - orientation_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- body state rows are authoritative only when written through deterministic processes
+- body state remains aligned with the canonical body assembly transform
+- frame binding remains explicit and geometry-safe

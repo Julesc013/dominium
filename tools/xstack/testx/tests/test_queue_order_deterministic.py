@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "signals", "queue", "determinism"]
 
 
 def _channel():
-    from game.domains.signals import build_signal_channel
+    from game.domain.signals import build_signal_channel
 
     return [
         build_signal_channel(
@@ -26,7 +26,7 @@ def _channel():
 
 
 def _run_once() -> list[tuple[str, str]]:
-    from game.domains.signals import process_signal_send
+    from game.domain.signals import process_signal_send
 
     sent = process_signal_send(
         current_tick=11,

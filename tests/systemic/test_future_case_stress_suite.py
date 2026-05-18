@@ -35,7 +35,7 @@ def _scan_for_mode_flags(repo_root: str):
                     continue
                 path = os.path.join(dirpath, filename)
                 rel_norm = path.replace("\\", "/").lower()
-                if "/tools/auditx/cache/" in rel_norm:
+                if "/tools/xstack/auditx/cache/" in rel_norm:
                     continue
                 text = ""
                 try:

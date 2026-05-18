@@ -7,17 +7,17 @@
   "moves": [
     {
       "source": "ide/manifests/projection_manifest.schema.json",
-      "target": "contracts/projections/ide/projection_manifest.schema.json",
+      "target": "contracts/projection/ide/projection_manifest.schema.json",
       "status": "applied"
     },
     {
       "source": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
-      "target": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "target": "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json",
       "status": "applied"
     },
     {
       "source": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
-      "target": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target": "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
       "status": "applied"
     }
   ],

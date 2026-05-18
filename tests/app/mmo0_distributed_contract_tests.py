@@ -179,7 +179,7 @@ FAMILIES = {
 
 
 
-            "contracts/schemas/cross_shard_message.schema": [
+            "contracts/schema/cross_shard_message.schema": [
 
 
 

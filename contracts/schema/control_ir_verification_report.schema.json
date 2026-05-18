@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control IR Verification Report Schema",
+  "version": "1.0.0",
+  "description": "Deterministic static verification report for Control IR.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "ir_id",
+    "valid",
+    "violations",
+    "required_entitlements",
+    "required_capabilities",
+    "max_cost_estimate",
+    "deterministic_fingerprint"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "ir_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "valid": {
+      "type": "boolean"
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "path"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "max_cost_estimate": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "ir_id": "control.ir.autopilot.stub",
+      "valid": true,
+      "violations": [],
+      "required_entitlements": [
+        "entitlement.tool.operating"
+      ],
+      "required_capabilities": [],
+      "max_cost_estimate": 4,
+      "deterministic_fingerprint": "2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ]
+}

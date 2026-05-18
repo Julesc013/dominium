@@ -29,7 +29,7 @@ def main():
             "please advise",
             "tool_ui_bind --check",
             "scripts/ci/check_repox_rules.py --repo-root .",
-            "python tools/performx/performx.py run",
+            "python tools/xstack/performx/performx.py run",
             "real requested change: update docs only",
             "",
         ]

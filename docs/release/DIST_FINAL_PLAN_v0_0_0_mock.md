@@ -32,7 +32,7 @@ It documents the exact inputs, commands, outputs, gates, inclusion rules, archiv
   - `contracts/registry/archive_policy_registry.json`
   - `contracts/registry/trust_root_registry.json`
   - `contracts/registry/migration_policy_registry.json`
-  - `content/data/governance/governance_profile.json`
+  - `contracts/governance/governance_profile.json`
 - Ω baselines and reports:
   - worldgen lock
   - baseline universe
@@ -67,7 +67,7 @@ All of the following must pass before Ω-11 signoff is accepted:
 - TRUST strict suite pass when strict publication policy is exercised
   - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - STORE verify pass on the assembled authoritative release bundle
-  - `python tools/setup/setup_cli.py packs verify --root dist/v0.0.0-mock/win64/dominium`
+  - `python tools/setup/setup_cli.py packs verify --root archive/generated/dist/v0.0.0-mock/win64/dominium`
 - PERFORMANCE baseline capture retained and current
   - `python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
   - retained supporting baseline: `docs/audit/performance/PERFORMX_BASELINE.json`
@@ -108,7 +108,7 @@ Profile-to-bundle mapping:
 
 - `install.profile.full`
   - authoritative release-anchor bundle
-  - staging root: `dist/v0.0.0-mock/win64/dominium`
+  - staging root: `archive/generated/dist/v0.0.0-mock/win64/dominium`
 - `install.profile.server`
   - derivative server bundle
   - staging root: `build/dist.final/server/v0.0.0-mock/win64/dominium`
@@ -150,35 +150,35 @@ Profile-specific selector intent:
 Run the deterministic assembly tool once per packaged profile:
 
 - full:
-  - `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.full --output-root dist`
+  - `python tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.full --output-root dist`
 - server:
-  - `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.server --output-root build/dist.final/server`
+  - `python tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.server --output-root build/dist.final/server`
 - tools:
-  - `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.tools --output-root build/dist.final/tools`
+  - `python tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --install-profile-id install.profile.tools --output-root build/dist.final/tools`
 
 ### 2. Verify Dist
 
 Run DIST-2 verification against each assembled tree:
 
 - full:
-  - `python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root dist`
+  - `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root dist`
 - server:
-  - `python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/server`
+  - `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/server`
 - tools:
-  - `python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/tools`
+  - `python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root build/dist.final/tools`
 
 ### 3. Clean Room Test
 
 Run the clean-room harness against the authoritative full bundle:
 
-- `python tools/dist/tool_run_clean_room.py --repo-root . --dist-root dist --platform-tag win64 --mode-policy cli`
+- `python tools/release/dist/tool_run_clean_room.py --repo-root . --dist-root dist --platform-tag win64 --mode-policy cli`
 
 ### 4. Platform Matrix Test
 
 Run the DIST-4 matrix where target environments are available:
 
 - authoritative baseline lane:
-  - `python tools/dist/tool_run_platform_matrix.py --repo-root . --dist-spec win64=dist/v0.0.0-mock/win64/dominium --channel mock`
+  - `python tools/release/dist/tool_run_platform_matrix.py --repo-root . --dist-spec win64=archive/generated/dist/v0.0.0-mock/win64/dominium --channel mock`
 - additional Tier-1 lanes are appended with more `--dist-spec <platform_tag>=<bundle_root>` entries only after those bundles exist and their environments are available.
 
 ### 5. Interop Test
@@ -186,7 +186,7 @@ Run the DIST-4 matrix where target environments are available:
 Run the DIST-6 interop lane against the authoritative release bundle and any available peer Tier-1 build:
 
 - baseline same-build lane:
-  - `python tools/dist/tool_run_version_interop.py --repo-root . --dist-root-a dist --dist-root-b dist --platform-tag-a win64 --platform-tag-b win64 --channel mock`
+  - `python tools/release/dist/tool_run_version_interop.py --repo-root . --dist-root-a dist --dist-root-b dist --platform-tag-a win64 --platform-tag-b win64 --channel mock`
 - additional Tier-1 comparisons repeat the same command with the second bundle root and platform tag adjusted to the available peer bundle.
 
 ### 6. Build Deterministic Publication Archive
@@ -197,14 +197,14 @@ Build the publication archive tree and release-history snapshot from the authori
 
 This emits the publication archive root under:
 
-- `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive`
+- `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive`
 
 ### 7. Verify Archive Unpack
 
 Verify the offline reconstruction archive retained for extinction prevention:
 
 - build:
-  - `python tools/release/tool_build_offline_archive.py --repo-root . --release-id v0.0.0-mock --dist-root dist/v0.0.0-mock/win64/dominium`
+  - `python tools/release/tool_build_offline_archive.py --repo-root . --release-id v0.0.0-mock --dist-root archive/generated/dist/v0.0.0-mock/win64/dominium`
 - verify:
   - `python tools/release/tool_verify_offline_archive.py --repo-root . --archive-path build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
 
@@ -212,7 +212,7 @@ Verify the offline reconstruction archive retained for extinction prevention:
 
 The publication archive run in step 6 writes:
 
-- `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/archive_record.json`
+- `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/archive_record.json`
 
 The offline reconstruction archive build in step 7 stages:
 
@@ -230,9 +230,9 @@ The two archive records serve different purposes and must not be conflated:
 The authoritative release-index emission point is the full bundle:
 
 - current index:
-  - `dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+  - `archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
 - retained history snapshot:
-  - `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/manifests/release_index_history/mock/v0.0.0-mock.json`
+  - `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/manifests/release_index_history/mock/v0.0.0-mock.json`
 
 History rules:
 
@@ -259,21 +259,21 @@ History rules:
 The Ω-11 signoff must record hashes for all of the following:
 
 - release-anchor full bundle root:
-  - `dist/v0.0.0-mock/win64/dominium`
+  - `archive/generated/dist/v0.0.0-mock/win64/dominium`
 - server bundle root:
   - `build/dist.final/server/v0.0.0-mock/win64/dominium`
 - tools bundle root:
   - `build/dist.final/tools/v0.0.0-mock/win64/dominium`
 - release manifest hash:
-  - `dist/v0.0.0-mock/win64/dominium/manifests/release_manifest.json`
+  - `archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_manifest.json`
 - release index hash:
-  - `dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+  - `archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
 - publication archive record hash:
-  - `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/archive_record.json`
+  - `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/archive_record.json`
 - publication retained history hash:
-  - `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/manifests/release_index_history/mock/v0.0.0-mock.json`
+  - `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/manifests/release_index_history/mock/v0.0.0-mock.json`
 - publication archive bundle hash:
-  - `build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/dominium-archive-v0.0.0-mock.tar.gz`
+  - `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/dominium-archive-v0.0.0-mock.tar.gz`
 - offline reconstruction archive bundle hash:
   - `build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
 - baseline Ω artifact hashes:

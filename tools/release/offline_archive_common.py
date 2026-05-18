@@ -21,7 +21,7 @@ install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.compatibility.migration_lifecycle import load_migration_policy_registry
 from tools.governance import governance_profile_hash, load_governance_profile
-from release import (
+from tools.release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
     load_release_index,
@@ -29,9 +29,9 @@ from release import (
     release_index_hash,
     write_release_index,
 )
-from release.archive_policy import release_index_history_rel
+from tools.release.archive_policy import release_index_history_rel
 from tools.validators.security.trust import load_trust_root_registry
-from tools.compatx.core.semantic_contract_validator import (
+from tools.xstack.compatx.core.semantic_contract_validator import (
     load_semantic_contract_registry,
     registry_hash as semantic_contract_registry_hash,
 )

@@ -44,7 +44,7 @@ archive/
 ```
 
 Generated/local roots are `.aide.local/`, `.dominium.local/`, `build/`, `out/`,
-and `dist/`.
+and `archive/generated/dist/`.
 
 ## Bad Roots
 

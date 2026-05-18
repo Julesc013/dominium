@@ -35,7 +35,7 @@ def committed_structure_lock(repo_root: str) -> dict:
 
 
 def committed_gate_definitions(repo_root: str) -> dict:
-    return _read_json(repo_root, "content/data/xstack/gate_definitions.json")
+    return _read_json(repo_root, "archive/generated/xstack/gate_definitions.json")
 
 
 def committed_profile(repo_root: str, profile_id: str) -> dict:
@@ -43,7 +43,7 @@ def committed_profile(repo_root: str, profile_id: str) -> dict:
 
 
 def committed_ci_run_report(repo_root: str) -> dict:
-    return _read_json(repo_root, "content/data/audit/ci_run_report.json")
+    return _read_json(repo_root, "archive/generated/audit/ci_run_report.json")
 
 
 def live_snapshot(repo_root: str) -> dict:

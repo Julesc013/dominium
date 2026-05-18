@@ -1,0 +1,33 @@
+SCHEMA: mobility/vehicle.schema
+schema_id: dominium.schema.mobility.vehicle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic MOB-3 vehicle assembly descriptor.
+
+REQUIRED SHAPE:
+record vehicle
+  required:
+    - schema_version: semver
+    - vehicle_id: id
+    - vehicle_class_id: id
+    - spatial_id: id
+    - spec_ids: list[id]
+    - port_ids: list[id]
+    - pose_slot_ids: list[id]
+    - mount_point_ids: list[id]
+    - motion_state_ref: id
+    - hazard_ids: list[id]
+    - maintenance_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - parent_structure_instance_id: id
+    - capability_bindings: map
+    - interior_graph_id: id
+
+INVARIANTS:
+- Vehicle truth rows are authored through process-only mutation.
+- Vehicle type semantics are registry/spec driven; no hardcoded type branches.
+- Cross-system references (ports/interior/pose/mount/specs) must remain inspectable.

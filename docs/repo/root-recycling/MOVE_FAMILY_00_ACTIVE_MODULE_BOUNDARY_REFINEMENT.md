@@ -87,7 +87,7 @@ This refinement made no source-root moves, deletes, renames, import rewrites, re
 `MOVE-FAMILY-00B-PLAN` completed the IDE manifest contract/projection planning step.
 
 - Planned moves: 3 tracked manifest source files.
-- Target owner: `contracts/projections/ide/**`.
+- Target owner: `contracts/projection/ide/**`.
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
 - Apply allowed: false.
 - Generated `ide/manifests/*.projection.json` output may remain under `ide/` as ignored generated output.
@@ -95,7 +95,7 @@ This refinement made no source-root moves, deletes, renames, import rewrites, re
 
 ## MOVE-FAMILY-00B Apply Follow-up
 
-`MOVE-FAMILY-00B-APPLY` moved the three tracked IDE manifest source files to `contracts/projections/ide/**` and retired the `ide` source-layout exception after `git ls-files ide` became empty.
+`MOVE-FAMILY-00B-APPLY` moved the three tracked IDE manifest source files to `contracts/projection/ide/**` and retired the `ide` source-layout exception after `git ls-files ide` became empty.
 
 The remaining active-module ownership work is unchanged:
 

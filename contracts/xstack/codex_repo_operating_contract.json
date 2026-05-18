@@ -20,9 +20,9 @@
     "docs/planning/GATES_AND_PROOFS.md",
     "docs/planning/MERGED_PROGRAM_STATE.md",
     "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-    "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+    "contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
     "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-    "content/data/planning/next_execution_order_post_zeta.json",
+    "contracts/planning/next_execution_order_post_zeta.json",
     "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
     "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
     "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
@@ -32,9 +32,9 @@
     "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
     "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "content/data/xstack/xstack_scope_freeze.json",
+    "archive/generated/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "content/data/xstack/xstack_inventory_and_classification.json",
+    "archive/generated/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "contracts/xstack/aide_portable_task_contract.json",
     "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
@@ -53,7 +53,7 @@
     "tools/xstack/sessionx/creator.py",
     "tools/xstack/sessionx/runner.py",
     "tools/xstack/testx_all.py",
-    "tools/validation/tool_run_validation.py",
+    "tools/validators/suite/tool_run_validation.py",
     "tools/mvp/runtime_entry.py",
     "server/server_main.py",
     "client/local_server/local_server_controller.py",
@@ -61,7 +61,7 @@
     "runtime/process_spawn.py",
     "content/profiles/bundles/bundle.mvp_default.json",
     "contracts/package/locks/pack_lock.mvp_default.json",
-    "content/data/session_templates/session.mvp_default.json"
+    "content/templates/session/session.mvp_default.json"
   ],
   "current_program_context": {
     "admissible_zeta_doctrine_program_complete": true,
@@ -107,7 +107,7 @@
   },
   "canonical_validation_path": {
     "primary_fast_path": {
-      "command": "python tools/validation/tool_run_validation.py --profile FAST",
+      "command": "python tools/validators/suite/tool_run_validation.py --profile FAST",
       "status": "canonical_minimum"
     },
     "testx_companion": {
@@ -294,7 +294,7 @@
     {
       "category": "validation_test_release_and_trust",
       "paths": [
-        "tools/validation/**",
+        "tools/validators/suite/**",
         "validation/**",
         "tools/xstack/testx/**",
         "tests/**",
@@ -335,7 +335,7 @@
       "paths": [
         "build/**",
         "out/**",
-        "artifacts/**",
+        "archive/generated/artifacts/**",
         ".xstack_cache/**",
         "run_meta/**",
         "tmp/**",
@@ -346,7 +346,7 @@
     {
       "category": "built_bundle_and_runtime_state_outputs",
       "paths": [
-        "dist/**",
+        "archive/generated/dist/**",
         "bundles/**",
         "saves/**"
       ],

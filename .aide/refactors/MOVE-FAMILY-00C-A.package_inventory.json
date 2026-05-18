@@ -30,7 +30,7 @@
       "size_bytes": 949,
       "likely_role": "public validation package export surface",
       "target_owner_candidate": "tools/validators",
-      "target_path_candidate": "tools/validators/validation/__init__.py",
+      "target_path_candidate": "tools/validators/suite/__init__.py",
       "shim_path_after_move": "validation/__init__.py",
       "risk": "high"
     },
@@ -43,7 +43,7 @@
       "size_bytes": 78377,
       "likely_role": "unified validation pipeline implementation",
       "target_owner_candidate": "tools/validators",
-      "target_path_candidate": "tools/validators/validation/validation_engine.py",
+      "target_path_candidate": "tools/validators/suite/validation_engine.py",
       "shim_path_after_move": "validation/validation_engine.py",
       "risk": "high"
     },

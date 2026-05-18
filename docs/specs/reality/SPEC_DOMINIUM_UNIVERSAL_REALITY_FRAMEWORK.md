@@ -384,7 +384,7 @@ Later prompts may add domain detail, ladder detail, proof criteria, and operatio
 - `AGENTS.md`
 - `docs/architecture/truth_perceived_render.md`
 - `docs/architecture/macro_capsules.md`
-- `docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
+- `docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
 - `docs/knowledge/EPISTEMICS_OVERVIEW.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`
 - `docs/planning/MERGED_PROGRAM_STATE.md`

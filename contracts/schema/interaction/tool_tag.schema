@@ -1,0 +1,19 @@
+SCHEMA: interaction/tool_tag.schema
+schema_id: dominium.schema.interaction.tool_tag
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define tool compatibility tags used by ActionSurface affordance filtering.
+
+REQUIRED SHAPE:
+record tool_tag
+  required:
+    - schema_version: semver
+    - tool_tag_id: id
+    - description: string
+    - extensions: map
+
+INVARIANTS:
+- Tool tags are semantic compatibility labels only.
+- Tool tag matching cannot mutate authoritative state.

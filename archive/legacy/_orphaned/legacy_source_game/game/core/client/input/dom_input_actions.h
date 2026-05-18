@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/client/input/dom_input_actions.h
+FILE: source/dominium/game/rule/client/input/dom_input_actions.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/client/input/dom_input_actions
+LAYER / SUBSYSTEM: Dominium impl / game/rule/client/input/dom_input_actions
 RESPONSIBILITY: Defines internal contract for `dom_input_actions`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

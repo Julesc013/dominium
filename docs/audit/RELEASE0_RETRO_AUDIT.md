@@ -98,7 +98,7 @@ Legacy distribution/build surfaces still contain timestamp-oriented metadata out
 
 - `schema/distribution/build_manifest.schema`
   - requires `build_timestamp_utc`
-- `tools/distribution/build_manifest.py`
+- `tools/package/distribution/build_manifest.py`
   - uses `datetime.datetime.utcnow()`
 
 These surfaces are packaging-oriented legacy artifacts and are not currently authoritative inputs to CAP-NEG build identity.

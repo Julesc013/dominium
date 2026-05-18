@@ -25,7 +25,7 @@
       "game/CMakeLists.txt",
       "launcher/CMakeLists.txt",
       "cmake/legacy_libs/CMakeLists.txt",
-      "runtime/build_identity/CMakeLists.txt",
+      "tools/build/identity/CMakeLists.txt",
       "server/CMakeLists.txt",
       "setup/CMakeLists.txt",
       "setup/packages/scripts/packaging/CMakeLists.txt",
@@ -55,8 +55,8 @@
       "contracts/registry/target_matrix_registry.json",
       "contracts/registry/component_graph_registry.json",
       "contracts/registry/install_profile_registry.json",
-      "release/component_graph_resolver.py",
-      "release/release_manifest_engine.py"
+      "tools/release/component_graph_resolver.py",
+      "tools/release/release_manifest_engine.py"
     ]
   },
   "build_graph_element_classes": [

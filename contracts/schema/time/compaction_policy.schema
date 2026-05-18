@@ -1,0 +1,19 @@
+SCHEMA: time/compaction_policy.schema
+schema_id: dominium.schema.time.compaction_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic save/log compaction policy rows.
+
+REQUIRED SHAPE:
+record compaction_policy
+  required:
+    - schema_version: semver
+    - compaction_policy_id: id
+    - rules: map
+    - extensions: map
+
+INVARIANTS:
+- Compaction rules must preserve replayability from retained checkpoints.
+- Compaction is deterministic and non-semantic.

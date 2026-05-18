@@ -38,4 +38,4 @@ Implementation details are deferred to later phases.
 ## Prohibitions
 
 - Nondeterministic pass ordering is FORBIDDEN.
-- Backend-specific graph branching outside `engine/render/**` is FORBIDDEN.
+- Backend-specific graph branching outside `runtime/render/**` is FORBIDDEN.

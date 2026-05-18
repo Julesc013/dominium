@@ -1,0 +1,25 @@
+SCHEMA: diag/repro_bundle_index.schema
+schema_id: dominium.schema.diag.repro_bundle_index
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic file index for a DIAG-0 repro bundle.
+
+NON-SEMANTICS:
+- ReproBundleIndex does not mutate truth.
+
+REQUIRED SHAPE:
+record repro_bundle_index
+  required:
+    - schema_version: tag
+    - bundle_version: tag
+    - file_count: int
+    - files: [map]
+    - bundle_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- files ordering is deterministic by relative path
+- bundle_hash must match the paired repro bundle manifest

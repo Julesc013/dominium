@@ -1,0 +1,25 @@
+SCHEMA: scenario/scenario_spec.schema
+schema_id: dominium.schema.scenario.spec
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Scenario specification contract for profile-driven play selection.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown keys under `extensions` MUST be preserved.
+- No field removal/rename without MAJOR bump.
+
+REQUIRED SHAPE:
+record scenario_spec
+  required:
+    - scenario_id: id
+    - required_pack_ids: [id]
+    - required_capabilities: [id]
+    - required_experience_ids: [id]
+    - required_law_profile_ids: [id]
+    - deterministic_seed_stream: id
+    - lock_hash_expectation: tag
+    - extensions: map
+

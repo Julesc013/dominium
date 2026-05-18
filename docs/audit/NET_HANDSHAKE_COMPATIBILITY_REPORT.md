@@ -62,8 +62,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 4. Matchmaking and NAT traversal
 
 ## Cross-References
-- `docs/net/TRANSPORT_ABSTRACTION.md`
-- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
+- `docs/runtime/network/TRANSPORT_ABSTRACTION.md`
+- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 - `tools/xstack/sessionx/net_handshake.py`
 - `tools/net/net_cli.py`
 - `tools/net/tool_net_loopback_sim.py`

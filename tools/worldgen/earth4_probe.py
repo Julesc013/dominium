@@ -13,8 +13,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from game.domains.geology import build_position_ref  # noqa: E402
-from game.domains.worldgen.earth import build_sky_view_surface  # noqa: E402
+from game.domain.geology import build_position_ref  # noqa: E402
+from game.domain.worldgen.earth import build_sky_view_surface  # noqa: E402
 from tools.worldgen.earth0_probe import build_earth_probe_context, generate_earth_probe_tile  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 

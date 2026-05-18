@@ -5,21 +5,21 @@
     {
       "rule_id": "INV-COMMAND-CAPABILITY-METADATA",
       "severity": "FAIL",
-      "scope_paths": ["runtime/shell/appcore/command/command_registry.c"],
+      "scope_paths": ["runtime/shell/command/command_registry.c"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-command-capability-metadata",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-UI-CANONICAL-COMMAND",
       "severity": "FAIL",
-      "scope_paths": ["runtime/shell/appcore/ui_bind/ui_command_binding_table.c"],
+      "scope_paths": ["tools/codegen/ui/bind/ui_command_binding_table.c"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-ui-canonical-command",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-CAMERA-BLUEPRINT-METADATA",
       "severity": "FAIL",
-      "scope_paths": ["runtime/shell/appcore/command/command_registry.c"],
+      "scope_paths": ["runtime/shell/command/command_registry.c"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-camera-blueprint-metadata",
       "exemption_policy": "allow_with_expiry"
     },
@@ -33,7 +33,7 @@
     {
       "rule_id": "INV-CLIENT-CANONICAL-BRIDGE",
       "severity": "FAIL",
-      "scope_paths": ["client/app/main_client.c", "client/core", "client/modes"],
+      "scope_paths": ["apps/client/main_client.c", "apps/client/session", "client/modes"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-client-canonical-bridge",
       "exemption_policy": "allow_with_expiry"
     },

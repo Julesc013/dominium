@@ -1,0 +1,29 @@
+SCHEMA: civilisation/order.schema
+schema_id: dominium.schema.civilisation.order
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic governance order artifacts used by CIV-3 order queues.
+
+REQUIRED SHAPE:
+record order
+  required:
+    - schema_version: semver
+    - order_id: id
+    - order_type_id: id
+    - issuer_subject_id: id
+    - target_kind: enum(agent|cohort|faction|territory)
+    - target_id: id
+    - created_tick: u64
+    - status: enum(created|queued|executing|completed|failed|refused)
+    - priority: u32
+    - payload: map
+    - required_entitlements: list[id]
+    - refusal: nullable_map
+    - extensions: map
+
+INVARIANTS:
+- order_id is deterministic and stable for identical issuer/target/type/tick/payload.
+- Order status transitions are process-only and deterministic.
+- Order payload does not bypass LawProfile or AuthorityContext checks.

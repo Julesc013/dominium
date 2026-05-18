@@ -125,7 +125,7 @@ Executed commands:
     - `INV-NO-RANKED-FLAGS` in `tools/signals/tool_run_sig_stress.py` (`ranked_mode` flag usage).
   - ELEC-0-specific refusals introduced during implementation were resolved (action registry and topology registration fixes applied).
 - AuditX scan:
-  - `python tools/auditx/auditx.py scan --repo-root . --format both`
+  - `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
   - Result: **COMPLETE** (`findings_count=1390`), outputs refreshed under `docs/audit/auditx/`.
 - TestX (doc/registry validation):
   - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_elec0_docs_present,test_elec0_registry_presence`

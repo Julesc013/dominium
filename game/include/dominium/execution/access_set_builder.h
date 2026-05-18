@@ -9,6 +9,6 @@ FORBIDDEN DEPENDENCIES: engine internal headers; OS/platform headers.
 #ifndef DOMINIUM_EXECUTION_ACCESS_SET_BUILDER_H
 #define DOMINIUM_EXECUTION_ACCESS_SET_BUILDER_H
 
-#include "../../../core/execution/access_set_builder.h"
+#include "../../../rule/execution/access_set_builder.h"
 
 #endif /* DOMINIUM_EXECUTION_ACCESS_SET_BUILDER_H */

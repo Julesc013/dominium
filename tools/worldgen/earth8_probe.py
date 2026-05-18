@@ -13,8 +13,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from game.domains.geology import build_position_ref  # noqa: E402
-from game.domains.worldgen.earth import (  # noqa: E402
+from game.domain.geology import build_position_ref  # noqa: E402
+from game.domain.worldgen.earth import (  # noqa: E402
     DEFAULT_TIDE_PARAMS_ID,
     build_water_view_surface,
     evaluate_earth_tile_tide,

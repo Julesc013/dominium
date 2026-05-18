@@ -54,13 +54,13 @@ decades-long world building.
 - UPS registry implementation is deterministic and zero-pack safe in isolation
 
 
-  (`engine/modules/ups/d_ups.c`).
+  (`game/domain/systems/ups/d_ups.c`).
 
 
-- Domain volume runtime and tests exist (`engine/modules/world/domain_volume.cpp`,
+- Domain volume runtime and tests exist (`game/world/domain_volume.cpp`,
 
 
-  `engine/tests/domain_volume_tests.cpp`).
+  `tests/engine/domain_volume_tests.cpp`).
 
 
 
@@ -72,7 +72,7 @@ decades-long world building.
 - UPS is not integrated into engine/game startup; legacy package systems remain
 
 
-  active (`engine/modules/core/pkg.c`, `engine/modules/mod/package_registry.c`).
+  active (`engine/kernel/pkg.c`, `runtime/package/mod/package_registry.c`).
 
 
 - Authority tokens, process execution enforcement, and snapshots are declared

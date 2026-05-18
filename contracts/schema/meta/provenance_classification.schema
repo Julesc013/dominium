@@ -1,0 +1,23 @@
+SCHEMA: meta/provenance_classification.schema
+schema_id: dominium.schema.meta.provenance_classification
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical vs derived provenance classification for artifact types.
+- Gate compaction eligibility through explicit registry policy.
+
+REQUIRED SHAPE:
+record provenance_classification
+  required:
+    - schema_version: semver
+    - artifact_type_id: id
+    - classification: enum(canonical|derived)
+    - compaction_allowed: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- classification=canonical requires compaction_allowed=false.
+- all compacted artifact types must be declared in provenance classification registry.
+- deterministic_fingerprint must be derived from canonical payload fields.

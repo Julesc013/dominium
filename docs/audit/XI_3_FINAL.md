@@ -19,7 +19,7 @@ Superseded By: none
 - `duplicate.cluster.0284e66e92fa82a8` -> canonical `game/include/dominium/rules/governance/governance_system.h` vs secondary `game/include/dominium/rules/war/war_system.h` (quarantine)
 - `duplicate.cluster.02a76b808e9594ff` -> canonical `tools/ci/validate_earth_data.py` vs secondary `tools/ci/validate_milky_way_data.py` (quarantine)
 - `duplicate.cluster.03a31072d7ac07a9` -> canonical `src/system/templates/__init__.py` vs secondary `src/system/templates/template_compiler.py` (quarantine)
-- `duplicate.cluster.03ab149d795288bb` -> canonical `tools/distribution/profile_inspect.py` vs secondary `tools/fab/fab_validate.py` (quarantine)
+- `duplicate.cluster.03ab149d795288bb` -> canonical `tools/package/distribution/profile_inspect.py` vs secondary `tools/fab/fab_validate.py` (quarantine)
 - `duplicate.cluster.03d1718b6abbb996` -> canonical `tools/xstack/testx/tests/pack_compat0_testlib.py` vs secondary `tools/xstack/testx/tests/mod_policy0_testlib.py` (quarantine)
 - `duplicate.cluster.0631a59ef2fe2be3` -> canonical `src/meta/extensions/__init__.py` vs secondary `src/meta_extensions_engine.py` (quarantine)
 - `duplicate.cluster.065d7d23b936c46c` -> canonical `src/geo/overlay/__init__.py` vs secondary `src/geo/overlay/overlay_merge_engine.py` (quarantine)
@@ -31,7 +31,7 @@ Superseded By: none
 - `duplicate.cluster.0a8e71d06f3c5f95` -> canonical `src/server/runtime/tick_loop.py` vs secondary `src/server/net/loopback_transport.py` (quarantine)
 - `duplicate.cluster.0b7c5e4a1d1e1287` -> canonical `src/lib/bundle/__init__.py` vs secondary `src/lib/bundle/bundle_manifest.py` (quarantine)
 - `duplicate.cluster.0bb6cc4d90e796fb` -> canonical `tests/ops/ops_manifest_tests.py` vs secondary `tests/ops/compatibility_tests.py` (quarantine)
-- `duplicate.cluster.0bbdf1ddf2183c6a` -> canonical `setup/packages/scripts/gen_launcher_ui_schema_v1.py` vs secondary `game/tests/tests/vectors/gen_tlv_vectors.py` (quarantine)
+- `duplicate.cluster.0bbdf1ddf2183c6a` -> canonical `setup/packages/scripts/gen_launcher_ui_schema_v1.py` vs secondary `tests/tests/game/vectors/gen_tlv_vectors.py` (quarantine)
 - `duplicate.cluster.0c2a75870f52b0dd` -> canonical `src/worldgen/mw/mw_cell_generator.py` vs secondary `src/geo/worldgen/worldgen_engine.py` (quarantine)
 
 ## Recommended Manual Review
@@ -42,7 +42,7 @@ Superseded By: none
 - `duplicate.cluster.1df1d8bf8a458b7f` `tools/xstack/testx/tests/sol2_testlib.py` score delta `0.0`
 - `duplicate.cluster.247bcbbd2c68dad0` `tools/xstack/testx/tests/test_formalization_accept_creates_geometry.py` score delta `0.0`
 - `duplicate.cluster.3b31f4cda90f9694` `src/models/model_engine.py` score delta `0.0`
-- `duplicate.cluster.3da650173c632c38` `engine/modules/system/dsys_posix.c` score delta `0.0`
+- `duplicate.cluster.3da650173c632c38` `runtime/platform/system/dsys_posix.c` score delta `0.0`
 - `duplicate.cluster.415ed4b579603554` `tools/review/doc_inventory_common.py` score delta `0.0`
 - `duplicate.cluster.488b950540e0191a` `tests/app/scale0_contract_tests.py` score delta `0.0`
 - `duplicate.cluster.4bf0e6e0bfc79928` `tests/contract/public_header_cpp98_compile.py` score delta `0.0`

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order Move Payload Schema",
+  "version": "1.0.0",
+  "description": "CIV-3 movement/migration order payload.",
+  "x-doc-ref": [
+    "docs/civilisation/ORDER_LANGUAGE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "destination",
+    "speed_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "destination": {
+      "type": "string"
+    },
+    "speed_policy_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "destination": "region.alpha",
+      "speed_policy_id": "speed.default",
+      "extensions": {}
+    }
+  ]
+}

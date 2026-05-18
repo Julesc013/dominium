@@ -17,7 +17,7 @@ if REPO_ROOT not in sys.path:
 
 from tools.lib.content_store import canonical_sha256, initialize_store_root, store_add_artifact, store_verify
 from tools.validators.compatibility import build_product_build_metadata, build_product_descriptor
-from tools.libraries.install import (
+from tools.package.libraries.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
 )
@@ -297,12 +297,12 @@ def test_portable_export_import_roundtrip(tmp_root: str) -> None:
 
 def test_cross_platform_store_hash_match(tmp_root: str) -> None:
     windows_like = {
-        "artifact_path": "embedded_artifacts\\packs\\hash\\payload",
+        "artifact_path": "embedded_archive\generated\archive\generated\archive\generated\artifacts\\packs\\hash\\payload",
         "manifest_ref": "instance\\instance.manifest.json",
         "extensions": {},
     }
     posix_like = {
-        "artifact_path": "embedded_artifacts/packs/hash/payload",
+        "artifact_path": "embedded_archive/generated/artifacts/packs/hash/payload",
         "manifest_ref": "instance/instance.manifest.json",
         "extensions": {},
     }

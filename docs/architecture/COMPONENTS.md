@@ -153,7 +153,7 @@ products. It complements `docs/architecture/ARCHITECTURE.md` and
 - Tests: `validate_all` registers fixture tests against
 
 
-  `tools/validation/fixtures/**` when tools are built.
+  `tools/validators/suite/fixtures/**` when tools are built.
 
 
 

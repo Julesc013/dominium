@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -11,7 +11,7 @@ Replacement Target: legacy reference surface retained without current binding au
 Version: 1.0.0
 Date: 2026-02-15
 Scope: Prompt 18/20 deterministic real-data integration (SPICE + SRTM)
-Binding refs: `AGENTS.md`, `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md`
+Binding refs: `AGENTS.md`, `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/domains/worldgen/REAL_DATA_IMPORT_PIPELINE.md`
 
 ## 1. Summary
 

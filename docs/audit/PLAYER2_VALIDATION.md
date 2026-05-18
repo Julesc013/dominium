@@ -11,7 +11,7 @@ Replacement Target: legacy reference surface retained without current binding au
 Scope: engine/ + game/ + docs/player for PLAYER-2 (player embodiment as agent).
 
 Validation artifacts:
-- `engine/tests/player_embodiment_tests.cpp` (headless, no assets)
+- `tests/engine/player_embodiment_tests.cpp` (headless, no assets)
 
 Coverage matrix:
 - Player agent cannot bypass authority: `test_player_authority_block`

@@ -1,4 +1,4 @@
-﻿"""Deterministic SERVER-MVP-1 probe helpers for local singleplayer orchestration."""
+"""Deterministic SERVER-MVP-1 probe helpers for local singleplayer orchestration."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from apps.client.local_server import (  # noqa: E402
     start_local_singleplayer,
     supervise_spawned_server_process,
 )
-from apps.server.runtime.tick_loop import advance_server_tick  # noqa: E402
+from runtime.shell.server.tick_loop import advance_server_tick  # noqa: E402
 from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL, MVP_PROFILE_BUNDLE_REL  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 

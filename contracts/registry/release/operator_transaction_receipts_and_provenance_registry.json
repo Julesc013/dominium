@@ -202,8 +202,8 @@
     "receipt_chain_silently_rewrites_history"
   ],
   "repo_evidence_surfaces": [
-    "release/update_resolver.py",
-    "release/archive_policy.py",
+    "tools/release/update_resolver.py",
+    "tools/release/archive_policy.py",
     "contracts/repo/release_policy.toml",
     "docs/release/updates/README.md",
     "release/updates/changelog.json",

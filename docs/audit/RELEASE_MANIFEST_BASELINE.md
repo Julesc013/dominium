@@ -22,10 +22,10 @@ Replacement Target: release-pinned signed manifest surfaces and reproducible-bui
 
 ## Generation Steps
 
-1. Enumerate governed product binaries in `dist/bin` and capture:
+1. Enumerate governed product binaries in `archive/generated/dist/bin` and capture:
    binary content hash, deterministic `build_id`, and live `--descriptor` hash.
-2. Enumerate auxiliary shipped wrappers in `dist/bin` as binary artifacts without inventing descriptor semantics.
-3. Enumerate packs in `dist/packs` and compute:
+2. Enumerate auxiliary shipped wrappers in `archive/generated/dist/bin` as binary artifacts without inventing descriptor semantics.
+3. Enumerate packs in `archive/generated/dist/packs` and compute:
    canonical directory tree hash plus effective `pack.compat` hash.
 4. Enumerate profiles, locks, bundles, and shipped manifest files in stable sorted order.
 5. Resolve `semantic_contract_registry_hash` from the shipped distribution surface, falling back to descriptor agreement when required.
@@ -55,7 +55,7 @@ Replacement Target: release-pinned signed manifest surfaces and reproducible-bui
 
 ## Non-Guarantees
 
-- The committed baseline does not pin a live manifest hash from the repo-backed `dist/` tree.
+- The committed baseline does not pin a live manifest hash from the repo-backed `archive/generated/dist/` tree.
 - Bitwise-identical binaries across toolchains remain a later `RELEASE-3` concern; RELEASE-1 and RELEASE-2 govern semantic manifest reproducibility and offline verification.
 
 ## Readiness

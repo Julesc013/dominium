@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/tools/libraries/bundle/bundle_manifest.py`
+- `src/tools/package/libraries/bundle/bundle_manifest.py`
 - `src/platform/_canonical.py`
 - `tools/lib/content_store.py`
 - `tools/share/share_cli.py`
@@ -28,12 +28,12 @@ Replacement Target: XI-4b manual review resolution
 - `tools/lib/content_store.py` disposition=`canonical` rank=`1` total_score=`86.07` risk=`HIGH`
 - `src/platform/_canonical.py` disposition=`quarantine` rank=`2` total_score=`77.5` risk=`HIGH`
 - `tools/share/share_cli.py` disposition=`merge` rank=`3` total_score=`60.71` risk=`HIGH`
-- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`4` total_score=`46.76` risk=`HIGH`
+- `src/tools/package/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`4` total_score=`46.76` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/VIRTUAL_PATHS.md, docs/architecture/ARTIFACT_MODEL.md, docs/architecture/BUNDLE_MODEL.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTENT_AND_STORAGE_MODEL.md, docs/architecture/INSTALL_MODEL.md, docs/architecture/INSTANCE_MODEL.md, docs/architecture/INVARIANT_REGISTRY.md`
+- Docs: `docs/runtime/shell/VIRTUAL_PATHS.md, docs/architecture/ARTIFACT_MODEL.md, docs/architecture/BUNDLE_MODEL.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTENT_AND_STORAGE_MODEL.md, docs/architecture/INSTALL_MODEL.md, docs/architecture/INSTANCE_MODEL.md, docs/architecture/INVARIANT_REGISTRY.md`
 
 ## Tests Involved
 
@@ -45,7 +45,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

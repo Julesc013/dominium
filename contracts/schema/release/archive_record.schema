@@ -1,0 +1,31 @@
+SCHEMA: release/archive_record.schema
+schema_id: dominium.schema.release.archive_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the immutable release archive record that binds release retention metadata to a published release snapshot.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension fields MUST be preserved.
+- Historical archive records are immutable once published.
+
+REQUIRED SHAPE:
+record archive_record
+  required:
+    - release_id: id
+    - release_manifest_hash: sha256
+    - release_index_hash: sha256
+    - component_graph_hash: sha256
+    - governance_profile_hash: sha256
+    - mirror_list: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - source_archive_hash: sha256
+
+INVARIANTS:
+- mirror_list is canonically ordered.
+- release_index history snapshots are append-only and keyed by release identity.
+- archive records must not embed absolute host paths or timestamps.

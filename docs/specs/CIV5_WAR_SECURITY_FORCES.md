@@ -62,7 +62,7 @@ Public headers live in `game/include/dominium/rules/war/`.
 - No direct UI access to authoritative force state.
 
 ## Tests (WAR1)
-Implemented in `game/tests/civ5_war1_security_force_tests.cpp`:
+Implemented in `tests/game/civ5_war1_security_force_tests.cpp`:
 - Mobilization determinism.
 - No fabrication on missing population/equipment.
 - Readiness batch vs step equivalence.

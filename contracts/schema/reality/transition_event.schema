@@ -1,0 +1,29 @@
+SCHEMA: reality/transition_event.schema
+schema_id: dominium.schema.reality.transition_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic transition event artifacts for collapse/expand/refine/degrade boundaries.
+
+REQUIRED SHAPE:
+record transition_event
+  required:
+    - schema_version: semver
+    - event_id: id
+    - tick: u64
+    - shard_id: id
+    - region_id: id
+    - domain_id: id
+    - solver_id: id|null
+    - from_tier: id
+    - to_tier: id
+    - reason: enum(interest|budget|user_request|server_policy)
+    - invariant_checks: [invariant_check_result]
+    - ledger_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Event ordering is deterministic within tick/shard.
+- Fingerprints must be canonical-hash stable.

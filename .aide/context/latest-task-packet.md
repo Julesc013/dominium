@@ -2,167 +2,96 @@
 
 ## PHASE
 
-NAME-00 redo - Directory, File, Language, and Ownership Naming Canon
+CANON-SPINE-NEW - canonical source-spine cleanup.
 
 ## GOAL
 
-Refresh the NAME-00 naming canon evidence against current `main` after TEST-PERF-01, semantic lint repair, and MOVE-SCRIPT-00. Keep the task no-apply: no file moves, deletes, renames, import rewrites, reference rewrites, shims, move maps, salvage maps, generated outputs, release work, or exception retirement.
+Collapse second-level wrapper and duplicate source structures into the canonical
+spine: runtime shell, runtime UI/render/platform, thin apps, Workbench modules,
+deterministic engine, game domain, singular contracts, specific content roots,
+and non-interactive tools.
 
 ## WHY
 
-The repository has a naming canon, but the redo prompt requires current conflict counts, explicit answers to the naming-law questions, and a clear bridge from NAME-00 to MOVE-SCRIPT-00 and `MOVE-BULK-BG-REFINEMENT-00`.
+Top-level bad-root cleanup is complete, but the active source tree still carried
+second-level wrappers such as app/appshell/appcore/core/gui/ui/tool/data and
+singular/plural duplicate roots. CANON-SPINE-NEW makes the active ownership
+spine usable before feature work resumes.
 
 ## CONTEXT_REFS
 
 - `AGENTS.md`
-- `contracts/repo/layout.contract.toml`
-- `contracts/repo/root_allowlist.toml`
-- `contracts/repo/layout_exceptions.toml`
 - `contracts/repo/naming.contract.toml`
-- `docs/repo/directory_naming.md`
-- `docs/repo/file_naming.md`
-- `docs/repo/no_src_source_policy.md`
-- `docs/repo/module_layout.md`
-- `docs/repo/language_ownership.md`
-- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
-- `.aide/reports/NAME-00-status.md`
-- `.aide/reports/NAME-00-validation.md`
-- `.aide/reports/NAME-00-blockers.md`
-- `.aide/reports/NAME-00-path-conflicts.json`
-- `.aide/reports/NAME-00-language-ownership-findings.json`
-- `.aide/reports/MOVE-SCRIPT-00-routing-preview.json`
-- `.aide/reports/MOVE-SCRIPT-00-skipped-ledger.json`
-- `.aide/reports/MOVE-SCRIPT-00-batch-plan.json`
+- `contracts/repo/bad_root_routing.contract.toml`
+- `docs/repo/final_repository_structure.md`
+- `docs/repo/root-recycling/CANON_SPINE_NEW_RESULT.md`
+- `docs/repo/audits/CANON_SPINE_NEW_SOURCE_SPINE_CLEANUP.md`
+- `.aide/reports/CANON-SPINE-NEW-status.md`
+- `.aide/reports/CANON-SPINE-NEW-validation.md`
+- `.aide/reports/CANON-SPINE-NEW-blockers.md`
+- `.aide/reports/CANON-SPINE-NEW-summary.json`
 
 ## ALLOWED_PATHS
 
-- `contracts/repo/naming.contract.toml`
-- `docs/repo/**`
-- `tools/validators/repo/**`
-- `.aide/reports/**`
-- `.aide/context/**`
-- `.aide/ledgers/**`
+- active source files whose paths/imports/build references changed because of the spine move
+- `apps/**`, `engine/**`, `game/**`, `runtime/**`, `contracts/**`, `content/**`, `docs/**`, `tests/**`, `tools/**`, `scripts/**`, `cmake/**`, `release/**`, `archive/**`
+- `.aide/reports/**`, `.aide/context/**`, `.aide/ledgers/**`
 
 ## FORBIDDEN_PATHS
 
-- `.dominium.local/**`
 - `.aide.local/**`
-- generated build/projection/release outputs
-- product/runtime/engine/game behavior files
-- content/package/profile/bundle identity files unless explicitly required by naming evidence
+- `.dominium.local/**`
+- root `build/**`, `out/**`, `dist/**`, `artifacts/**`, `tmp/**`, `__pycache__/**`
+- public release/tag/upload surfaces
 
 ## IMPLEMENTATION
 
-- Read the current naming contract and root/layout authority first.
-- Keep changes inside allowed naming/status/evidence paths.
-- Preserve generated/manual boundaries.
-- Record current counts from validators and MOVE-SCRIPT-00 evidence.
-- Do not inline full raw validator output when summary counts and report paths are enough.
+- Use `git mv` for tracked structural moves.
+- Preserve file contents and semantic IDs.
+- Repair stale paths/imports/build references caused by the move.
+- Keep generated/local roots untracked.
+- Record evidence and remaining blockers.
 
 ## VALIDATION
 
-- `py -3 .aide/scripts/aide_lite.py doctor`
-- `py -3 .aide/scripts/aide_lite.py validate`
-- `py -3 .aide/scripts/aide_lite.py test`
-- `py -3 .aide/scripts/aide_lite.py selftest`
-- `py -3 .aide/scripts/aide_lite.py tools validate`
-- `py -3 .aide/scripts/aide_lite.py roots validate`
-- `py -3 .aide/scripts/aide_lite.py repo validate`
-- strict repo/root/distribution/component validators
-- NAME-00 validators
-- Python compile for NAME-00 validators
-- JSON parse for touched JSON
-- docs/build/UI/ABI supplemental checks
-- `git diff --check`
+- AIDE doctor/validate/test/selftest/tools/roots/repo.
+- Strict repo/root/distribution/component validators.
+- Bad-root absence and naming validators.
+- Docs/UI/ABI/include sanity.
+- CMake configure.
+- Smoke CTest and focused spine CTest.
+- Git diff checks.
 
 ## EVIDENCE
 
-- changed files
-- validation commands and results
-- current NAME-00 conflict counts
-- current MOVE-SCRIPT-00 dry-run counts
-- unresolved warnings and deferrals
-
-## ACCEPTANCE
-
-- Naming contract and human docs remain active.
-- Current conflict counts are recorded.
-- No naming migration is applied.
-- Future MOVE-BULK B-G refinement is bound to the naming contract and dry-run router evidence.
-- Validation is run and reported honestly.
+- `.aide/reports/CANON-SPINE-NEW-status.md`
+- `.aide/reports/CANON-SPINE-NEW-validation.md`
+- `.aide/reports/CANON-SPINE-NEW-blockers.md`
+- `.aide/reports/CANON-SPINE-NEW-summary.json`
 
 ## NON_GOALS
 
-- No root movement, deletion, rename, reference rewrite, import rewrite, shim, layout exception retirement, feature work, generated output commit, package/release generation, tag, or GitHub release.
+- no feature implementation
+- no public release/tag/upload
+- no deletion of tracked source
+- no semantic ID mutation
+- no final full-proof claim while boundary/full CTest blockers remain
 
-## NEXT
+## ACCEPTANCE
 
-`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
+PASS_WITH_WARNINGS is acceptable when AIDE and strict structural validators pass,
+former bad roots remain empty, smoke/focused spine tests pass, and remaining
+boundary/full-proof blockers are documented.
 
 ## OUTPUT_SCHEMA
 
-Return a compact final report with `STATUS`, `SUMMARY`, `COMMITS`, `VALIDATION`, `RISKS`, and `NEXT`.
-
-## MOVE-ROUTER-00 CURRENT PACKET ADDENDUM
-
-Current task: `MOVE-ROUTER-00 - Lock Naming Canon and Generate Deterministic Bad-Root Router`.
-
-Acceptance:
-
-- `contracts/repo/bad_root_routing.contract.toml` is active.
-- `tools/migration/route_bad_roots.py` is dry-run-only for this phase.
-- every tracked bad-root file receives either a canonical target or
-  `archive/quarantine/<root>/`.
-- target collisions are blockers.
-- no moves, deletes, renames, shims, rewrites, exception retirements, package
-  generation, release generation, tags, uploads, or feature work occur.
-
-Next task after commit:
-
-`MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`
-
-## MOVE-ROUTER-01 CURRENT PACKET ADDENDUM
-
-Current task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
-
-Result evidence expected:
-
-- 1,765 tracked bad-root files moved.
-- 1,694 semantic routes.
-- 71 quarantine routes.
-- 0 skipped moves.
-- 0 target collisions.
-- 0 tracked files remaining under configured former bad roots.
-- 23 active bad-root exceptions retired.
-
-Non-goals:
-
-- Do not repair broad references/imports/build in this task.
-- Do not run feature work.
-
-Next task after commit:
-
-`MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
-
-## MOVE-ROUTER-02 CLOSEOUT
-
-Current closeout status: PARTIAL.
-
-- Bad-root tracked files after repair: 0.
-- Path replacements recorded: 33,316.
-- Import replacements recorded: 76.
-- Runtime shim packages created: 3.
-- CMake configure: PASS.
-- Build/TestX: PARTIAL.
-
-Next task:
-
-`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`
+Evidence is Markdown plus compact JSON under `.aide/reports/CANON-SPINE-NEW-*`.
 
 ## TOKEN_ESTIMATE
 
-- method: approximate manual estimate
-- approx_tokens: 900
-- budget_status: PASS
-- warnings:
-  - none
+This packet is intentionally compact and references evidence by path.
+
+## STATUS
+
+PASS_WITH_WARNINGS. Feature work remains blocked. Next task is
+`CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`.

@@ -35,7 +35,7 @@ Secondary candidates if `ide/` proves unsuitable:
 - Product source roots: `runtime/**`, `engine/**`, `game/**`, `apps/**`, `content/**`.
 - Doctrine/protected roots: `AGENTS.md`, `docs/canon/**`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `specs/reality/**`, `data/reality/**`.
 - Tool roots: `tools/**`, `scripts/**`, `validation/**`, `repo/**`, `cmake/**` except read-only evidence.
-- `.github/**`, `.git/**`, `.aide.local/**`, secrets, generated build/dist/out directories.
+- `.github/**`, `.git/**`, `.aide.local/**`, secrets, generated build/archive/generated/dist/out directories.
 
 ## What Q52 Must Preserve
 

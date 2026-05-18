@@ -19,9 +19,9 @@ def run(repo_root: str):
 
     topology = generate_topology_map(repo_root=repo_root, commit_hash="", generated_tick=0)
     changed_files = [
-        "contracts/schemas/governance/topology_map.schema",
+        "contracts/schema/governance/topology_map.schema",
         "contracts/registry/inspection_section_registry.json",
-        "tools/core/graph/network_graph_engine.py",
+        "tools/validators/core/graph/network_graph_engine.py",
         "tools/xstack/sessionx/observation.py",
     ]
     first = compute_semantic_impact(

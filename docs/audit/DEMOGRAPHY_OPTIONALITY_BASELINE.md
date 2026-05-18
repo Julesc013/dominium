@@ -79,7 +79,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - Result: `status=pass`, findings=`0`.
 - AuditX run:
-  - `py -3 tools/auditx/auditx.py scan --repo-root . --changed-only --format json`
+  - `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format json`
   - Result: `result=scan_complete`, findings=`959`.
 - TestX PASS (CIV-4 required suite):
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset testx.civilisation.demography_tick_deterministic,testx.civilisation.births_disabled_policy,testx.civilisation.births_forbidden_by_law_refusal,testx.civilisation.population_never_negative,testx.civilisation.migration_delay_deterministic,testx.civilisation.quantized_population_observability,testx.civilisation.lod_invariance_population_size`

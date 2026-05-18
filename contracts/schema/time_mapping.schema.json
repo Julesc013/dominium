@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Mapping Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-0 mapping declaration from canonical tick to derived temporal domains.",
+  "x-doc-ref": [
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "mapping_id",
+    "from_domain_id",
+    "to_domain_id",
+    "model_id",
+    "scope_selector",
+    "parameters",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "mapping_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "drift_policy_id": {
+      "type": "string"
+    },
+    "scope_selector": {
+      "type": "string",
+      "enum": [
+        "global",
+        "per_spatial",
+        "per_assembly",
+        "per_session"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "mapping_id": "mapping.proper_default_stub",
+      "from_domain_id": "time.canonical_tick",
+      "to_domain_id": "time.proper",
+      "model_id": "model.time.proper_default_stub",
+      "scope_selector": "per_assembly",
+      "drift_policy_id": "drift.none",
+      "parameters": {
+        "rate_permille": 1000,
+        "offset_ticks": 0
+      },
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

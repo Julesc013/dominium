@@ -1,0 +1,21 @@
+SCHEMA: thermal/ambient_boundary.schema
+schema_id: dominium.schema.thermal.ambient_boundary
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic ambient-coupling contract for THERM boundary nodes.
+
+REQUIRED SHAPE:
+record ambient_boundary
+  required:
+    - schema_version: semver
+    - node_id: id
+    - ambient_coupling_coefficient: fixed_point
+    - insulation_factor: fixed_point
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Ambient exchange is model-driven and deterministic.
+- Coefficients are policy/spec inputs; no inline mutation outside model/process paths.

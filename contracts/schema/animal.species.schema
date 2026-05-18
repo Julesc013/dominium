@@ -1,0 +1,121 @@
+SCHEMA: animal.species.schema
+schema_id: dominium.schema.animal.species
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define animal species descriptors for deterministic agent placement and lifecycle constraints.
+- Species records are declarative inputs to Processes and provider chains.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Species records do NOT define economy, ownership, or domestication.
+- No per-tick AI loops or global scanning are implied.
+- No combat or loot systems are implied.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record animal_species_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - species: [animal_species]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record animal_species
+  required:
+    - species_id: id
+    - preferred_biomes: [id]
+    - climate_tolerance: climate_tolerance
+    - movement_mode: tag
+    - diet: [id]
+    - metabolism: metabolism
+    - reproduction: reproduction
+    - lifespan: quantity
+    - size_class: tag
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - movement_speed: quantity
+    - slope_max: quantity
+    - death_rate: quantity
+    - tags: [tag]
+    - metadata: map
+
+TYPE DEFINITIONS:
+record climate_tolerance
+  required:
+    - temperature_range: range
+    - moisture_range: range
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+record metabolism
+  required:
+    - energy_consumption_rate: quantity
+    - rest_requirement: quantity
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+record reproduction
+  required:
+    - maturity_age: quantity
+    - gestation: quantity
+    - offspring_count_range: range
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - reproduction_chance: quantity
+    - metadata: map
+
+record range
+  required:
+    - min: quantity
+    - max: quantity
+  optional:
+    - tags: [tag]
+
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- Temperature ranges use `unit.temperature.kelvin`.
+- Moisture, movement, and rates use `unit.dimensionless.ratio`.
+- Lifespan, maturity_age, and gestation use `unit.time.act_tick`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.

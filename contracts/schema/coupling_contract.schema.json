@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Coupling Contract Schema",
+  "version": "1.0.0",
+  "description": "Mandatory cross-domain coupling declaration bound to legal substrate mechanisms.",
+  "x-doc-ref": [
+    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
+    "docs/meta/CONSTITUTIVE_MODEL_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "contract_id",
+    "coupling_class_id",
+    "from_domain_id",
+    "to_domain_id",
+    "mechanism",
+    "mechanism_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "contract_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "coupling_class_id": {
+      "type": "string",
+      "enum": [
+        "energy_coupling",
+        "force_coupling",
+        "info_coupling",
+        "pollution_coupling",
+        "safety_coupling",
+        "compliance_coupling"
+      ]
+    },
+    "from_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mechanism": {
+      "type": "string",
+      "enum": [
+        "constitutive_model",
+        "energy_transform",
+        "field_policy",
+        "signal_policy"
+      ]
+    },
+    "mechanism_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "contract_id": "coupling.elec.loss_to_therm.heat",
+      "coupling_class_id": "energy_coupling",
+      "from_domain_id": "ELEC",
+      "to_domain_id": "THERM",
+      "mechanism": "energy_transform",
+      "mechanism_id": "transform.electrical_to_thermal",
+      "deterministic_fingerprint": "4f9d58d3e8f0522867c7c95a78f88f269241d1ae73b4d9643282d40f1265700f",
+      "extensions": {}
+    }
+  ]
+}
+

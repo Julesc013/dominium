@@ -260,17 +260,17 @@
         {
           "category": "capability_misuse",
           "finding_id": "A5_CAPABILITY_MISUSE:0001",
-          "location": "apps/client/app/main_client.c"
+          "location": "apps/client/main_client.c"
         },
         {
           "category": "capability_misuse",
           "finding_id": "A5_CAPABILITY_MISUSE:0002",
-          "location": "apps/client/gui/client_app_win32.cpp"
+          "location": "runtime/platform/win32/client/client_app_win32.cpp"
         },
         {
           "category": "capability_misuse",
           "finding_id": "A5_CAPABILITY_MISUSE:0003",
-          "location": "apps/client/shell/client_shell.c"
+          "location": "runtime/shell/client/client_shell.c"
         },
         {
           "category": "capability_misuse",
@@ -366,27 +366,27 @@
         {
           "category": "ui_parity",
           "finding_id": "A6_UI_PARITY_BYPASS:0001",
-          "location": "apps/client/gui/client_app_win32.cpp"
+          "location": "runtime/platform/win32/client/client_app_win32.cpp"
         },
         {
           "category": "ui_parity",
           "finding_id": "A6_UI_PARITY_BYPASS:0002",
-          "location": "apps/client/ui/inspect_panels.py"
+          "location": "runtime/ui/client/inspect_panels.py"
         },
         {
           "category": "ui_parity",
           "finding_id": "A6_UI_PARITY_BYPASS:0003",
-          "location": "apps/client/ui/inspect_panels.py"
+          "location": "runtime/ui/client/inspect_panels.py"
         },
         {
           "category": "ui_parity",
           "finding_id": "A6_UI_PARITY_BYPASS:0004",
-          "location": "apps/client/ui/inspect_panels.py"
+          "location": "runtime/ui/client/inspect_panels.py"
         },
         {
           "category": "ui_parity",
           "finding_id": "A6_UI_PARITY_BYPASS:0005",
-          "location": "apps/client/ui/inspect_panels.py"
+          "location": "runtime/ui/client/inspect_panels.py"
         }
       ],
       "severities": {
@@ -404,7 +404,7 @@
         {
           "category": "capability_bypass_smell",
           "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
-          "location": "apps/client/core/client_command_bridge.c"
+          "location": "apps/apps/client/session/client_command_bridge.c"
         }
       ],
       "severities": {
@@ -746,27 +746,27 @@
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0001",
-          "location": "apps/setup/packages/scripts/packaging/pipeline.py"
+          "location": "release/packaging/setup/scripts/packaging/pipeline.py"
         },
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0002",
-          "location": "tools/auditx/analyzers/a1_reachability_orphaned.py"
+          "location": "tools/xstack/auditx/analyzers/a1_reachability_orphaned.py"
         },
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0003",
-          "location": "tools/auditx/analyzers/a5_capability_misuse.py"
+          "location": "tools/xstack/auditx/analyzers/a5_capability_misuse.py"
         },
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0004",
-          "location": "tools/auditx/analyzers/a6_ui_parity_bypass.py"
+          "location": "tools/xstack/auditx/analyzers/a6_ui_parity_bypass.py"
         },
         {
           "category": "legacy_contamination",
           "finding_id": "A7_LEGACY_CONTAMINATION:0005",
-          "location": "tools/auditx/analyzers/a7_legacy_contamination.py"
+          "location": "tools/xstack/auditx/analyzers/a7_legacy_contamination.py"
         }
       ],
       "severities": {
@@ -970,22 +970,22 @@
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
-          "location": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
-          "location": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
-          "location": "tools/auditx/analyzers/e364_identity_override_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
-          "location": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py"
         }
       ],
       "severities": {
@@ -1059,12 +1059,12 @@
         {
           "category": "appshell.ad_hoc_entry_point_smell",
           "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0001",
-          "location": "dist/bin/dominium_client"
+          "location": "archive/generated/dist/bin/dominium_client"
         },
         {
           "category": "appshell.ad_hoc_entry_point_smell",
           "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0002",
-          "location": "dist/bin/dominium_server"
+          "location": "archive/generated/dist/bin/dominium_server"
         }
       ],
       "severities": {
@@ -1118,27 +1118,27 @@
         {
           "category": "geometry.adhoc_spatial_key_smell",
           "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0001",
-          "location": "game/domains/worldgen/earth/climate_field_engine.py"
+          "location": "game/domain/worldgen/earth/climate_field_engine.py"
         },
         {
           "category": "geometry.adhoc_spatial_key_smell",
           "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0002",
-          "location": "game/domains/worldgen/earth/material/material_proxy_engine.py"
+          "location": "game/domain/worldgen/earth/material/material_proxy_engine.py"
         },
         {
           "category": "geometry.adhoc_spatial_key_smell",
           "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0003",
-          "location": "game/domains/worldgen/earth/tide_field_engine.py"
+          "location": "game/domain/worldgen/earth/tide_field_engine.py"
         },
         {
           "category": "geometry.adhoc_spatial_key_smell",
           "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0004",
-          "location": "game/domains/worldgen/earth/water/water_view_engine.py"
+          "location": "game/domain/worldgen/earth/water/water_view_engine.py"
         },
         {
           "category": "geometry.adhoc_spatial_key_smell",
           "finding_id": "E334_ADHOC_SPATIAL_KEY_SMELL:0005",
-          "location": "game/domains/worldgen/earth/wind/wind_field_engine.py"
+          "location": "game/domain/worldgen/earth/wind/wind_field_engine.py"
         }
       ],
       "severities": {
@@ -1258,12 +1258,12 @@
         {
           "category": "architecture.silent_downgrade_smell",
           "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0001",
-          "location": "game/domains/inspection/inspection_engine.py"
+          "location": "game/domain/inspection/inspection_engine.py"
         },
         {
           "category": "architecture.silent_downgrade_smell",
           "finding_id": "E118_SILENT_DOWNGRADE_SMELL:0002",
-          "location": "game/domains/materials/materialization/materialization_engine.py"
+          "location": "game/domain/materials/materialization/materialization_engine.py"
         }
       ],
       "severities": {
@@ -1315,12 +1315,12 @@
         {
           "category": "control.player_special_case_smell",
           "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0001",
-          "location": "game/domains/materials/performance/mat_scale_engine.py"
+          "location": "game/domain/materials/performance/mat_scale_engine.py"
         },
         {
           "category": "control.player_special_case_smell",
           "finding_id": "E13_PLAYER_SPECIAL_CASE_SMELL:0002",
-          "location": "game/domains/materials/performance/mat_scale_engine.py"
+          "location": "game/domain/materials/performance/mat_scale_engine.py"
         }
       ],
       "severities": {
@@ -1498,7 +1498,7 @@
         {
           "category": "logic.random_failure_smell",
           "finding_id": "E323_RANDOM_FAILURE_SMELL:0001",
-          "location": "game/domains/logic/noise/noise_engine.py"
+          "location": "game/domain/logic/noise/noise_engine.py"
         }
       ],
       "severities": {
@@ -1535,27 +1535,27 @@
         {
           "category": "architecture.undeclared_schema_smell",
           "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0001",
-          "location": "contracts/schemas/accessibility_preset.schema"
+          "location": "contracts/schema/accessibility_preset.schema"
         },
         {
           "category": "architecture.undeclared_schema_smell",
           "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0002",
-          "location": "contracts/schemas/action_family.schema.json"
+          "location": "contracts/schema/action_family.schema.json"
         },
         {
           "category": "architecture.undeclared_schema_smell",
           "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0003",
-          "location": "contracts/schemas/action_surface.schema.json"
+          "location": "contracts/schema/action_surface.schema.json"
         },
         {
           "category": "architecture.undeclared_schema_smell",
           "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0004",
-          "location": "contracts/schemas/action_template.schema.json"
+          "location": "contracts/schema/action_template.schema.json"
         },
         {
           "category": "architecture.undeclared_schema_smell",
           "finding_id": "E107_UNDECLARED_SCHEMA_SMELL:0005",
-          "location": "contracts/schemas/activation_policy.schema.json"
+          "location": "contracts/schema/activation_policy.schema.json"
         }
       ],
       "severities": {
@@ -1603,22 +1603,22 @@
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0001",
-          "location": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0002",
-          "location": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0003",
-          "location": "tools/auditx/analyzers/e364_identity_override_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py"
         },
         {
           "category": "architecture.hardcoded_pack_path_smell",
           "finding_id": "E353_HARDCODED_PACK_PATH_SMELL:0004",
-          "location": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py"
+          "location": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py"
         }
       ],
       "severities": {
@@ -1650,12 +1650,12 @@
         {
           "category": "appshell.ad_hoc_entry_point_smell",
           "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0001",
-          "location": "dist/bin/dominium_client"
+          "location": "archive/generated/dist/bin/dominium_client"
         },
         {
           "category": "appshell.ad_hoc_entry_point_smell",
           "finding_id": "E420_AD_HOC_ENTRY_POINT_SMELL:0002",
-          "location": "dist/bin/dominium_server"
+          "location": "archive/generated/dist/bin/dominium_server"
         }
       ],
       "severities": {
@@ -1780,27 +1780,27 @@
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0001",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
         },
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0002",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
         },
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0003",
-          "location": "tools/auditx/analyzers/c1_security_boundary.py"
+          "location": "tools/xstack/auditx/analyzers/c1_security_boundary.py"
         },
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0004",
-          "location": "tools/securex/core/boundary_validator.py"
+          "location": "tools/xstack/securex/core/boundary_validator.py"
         },
         {
           "category": "security.privilege_bypass",
           "finding_id": "C1:0005",
-          "location": "tools/securex/core/boundary_validator.py"
+          "location": "tools/xstack/securex/core/boundary_validator.py"
         }
       ],
       "severities": {
@@ -1816,12 +1816,12 @@
         {
           "category": "ownership_boundary",
           "finding_id": "A2_OWNERSHIP_BOUNDARY:0001",
-          "location": "apps/client/app/main_client.c"
+          "location": "apps/client/main_client.c"
         },
         {
           "category": "ownership_boundary",
           "finding_id": "A2_OWNERSHIP_BOUNDARY:0002",
-          "location": "apps/client/shell/client_shell.c"
+          "location": "runtime/shell/client/client_shell.c"
         }
       ],
       "severities": {
@@ -1869,7 +1869,7 @@
         {
           "category": "worldgen.direct_system_spawn_smell",
           "finding_id": "E357_DIRECT_SYSTEM_SPAWN_SMELL:0001",
-          "location": "game/domains/worldgen/mw/sol_anchor.py"
+          "location": "game/domain/worldgen/mw/sol_anchor.py"
         }
       ],
       "severities": {
@@ -1974,7 +1974,7 @@
         {
           "category": "capability_bypass_smell",
           "finding_id": "C3_CAPABILITY_BYPASS_SMELL:0001",
-          "location": "apps/client/core/client_command_bridge.c"
+          "location": "apps/apps/client/session/client_command_bridge.c"
         }
       ],
       "severities": {
@@ -2032,17 +2032,17 @@
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0003",
-          "location": "apps/server/net/dom_server_protocol.cpp"
+          "location": "runtime/network/server/dom_server_protocol.cpp"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0004",
-          "location": "apps/server/net/dom_server_protocol.h"
+          "location": "runtime/network/server/dom_server_protocol.h"
         },
         {
           "category": "reachability",
           "finding_id": "A1_REACHABILITY_ORPHANED:0005",
-          "location": "apps/server/net/dom_server_runtime.cpp"
+          "location": "runtime/network/server/dom_server_runtime.cpp"
         }
       ],
       "severities": {

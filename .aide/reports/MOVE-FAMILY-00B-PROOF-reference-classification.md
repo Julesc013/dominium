@@ -24,7 +24,7 @@ Retired source paths checked:
 | Class | Status | Notes |
 | --- | --- | --- |
 | Generated-output producer references | warning-only | `scripts/ide_gen.sh`, `scripts/ide_gen.bat`, `cmake/ide/IdeProjectionManifest.cmake`, and `data/release/preset_and_toolchain_registry.json` still refer to generated `ide/manifests/*.projection.json` output. |
-| Current architecture generated-output docs | warning-only | `docs/architecture/IDE_PROJECTIONS.md` and `docs/architecture/PROJECTION_LIFECYCLE.md` intentionally preserve the generated output path while pointing schema authority at `contracts/projections/ide`. |
+| Current architecture generated-output docs | warning-only | `docs/architecture/IDE_PROJECTIONS.md` and `docs/architecture/PROJECTION_LIFECYCLE.md` intentionally preserve the generated output path while pointing schema authority at `contracts/projection/ide`. |
 | Root-recycling history | warning-only | MOVE-FAMILY plan/gate/apply docs preserve the old paths as move history. |
 | AIDE context/evidence | warning-only | `.aide/refactors/**`, `.aide/reports/**`, `.aide/roots/**`, `.aide/repo/**`, and related AIDE evidence preserve historical inventory and plan paths. |
 | Planning/audit evidence | warning-only | `docs/audit/**`, `docs/planning/**`, and `data/planning/**` preserve older scan and planning records. |
@@ -33,9 +33,9 @@ Retired source paths checked:
 
 Current active references now point at:
 
-- `contracts/projections/ide/projection_manifest.schema.json`
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+- `contracts/projection/ide/projection_manifest.schema.json`
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 ## Decision
 

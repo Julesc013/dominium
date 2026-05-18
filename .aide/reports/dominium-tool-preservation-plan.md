@@ -9,7 +9,7 @@ Preservation law for Q51 and Q52:
 ## Preserve By Default
 
 - XStack: `docs/XSTACK.md`, `tools/xstack/**`, registries, profiles, and gate scripts.
-- AuditX: `tools/auditx/**`, `tools/xstack/auditx/**`, audit docs and registries.
+- AuditX: `tools/xstack/auditx/**`, `tools/xstack/auditx/**`, audit docs and registries.
 - RepoX: `repo/repox/**`, `scripts/repox/**`, `scripts/ci/check_repox_rules.py`, RepoX rules.
 - TestX: `tools/xstack/testx/**`, `tools/xstack/testx_all.py`, TestX scripts, registries, docs, and tests.
 - Build/validation surfaces: `CMakeLists.txt`, `CMakePresets.json`, `cmake/**`, `validation/**`, documented validation profiles.

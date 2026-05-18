@@ -25,17 +25,17 @@ SCAN_DIRS = (
 
 SKIP_PREFIXES = (
     "docs/",
-    "contracts/schemas/",
+    "contracts/schema/",
     "data/",
     "tests/",
     "legacy/",
     "build/",
-    "dist/",
+    "archive/generated/dist/",
     "out/",
     "third_party/",
     "external/",
     "deps/",
-    "game/tests/",
+    "tests/game/",
 )
 
 ALLOWLIST = {

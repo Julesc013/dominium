@@ -12,7 +12,7 @@ POST-CONVERGE-11 is not ready.
 Focused RepoX still fails with 20 failures and 5 warnings after safe 10N fixes. Some remaining failures are product/projection proof blockers, but the set also includes non-proof governance and source-policy blockers:
 
 - `INV-CANON-NO-SUPERSEDED`
-- two MW-4 fixture failures through the stale `game.domains.embodiment` lazy import map
+- two MW-4 fixture failures through the stale `game.domain.embodiment` lazy import map
 - two missing ruleset mappings
 - extension registry gap for `capability_overrides`
 - worldgen retry-loop policy failure

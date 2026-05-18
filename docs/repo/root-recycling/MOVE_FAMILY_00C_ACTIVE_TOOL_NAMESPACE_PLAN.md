@@ -26,7 +26,7 @@ It applies no moves, deletes, renames, import rewrites, reference rewrites, shim
 
 ## Baseline
 
-MOVE-FAMILY-00B retired `ide/` as tracked source and moved projection manifest source metadata to `contracts/projections/ide/**`. The remaining MOVE-FAMILY-00 work is active Python/module ownership.
+MOVE-FAMILY-00B retired `ide/` as tracked source and moved projection manifest source metadata to `contracts/projection/ide/**`. The remaining MOVE-FAMILY-00 work is active Python/module ownership.
 
 ## Target Roots
 

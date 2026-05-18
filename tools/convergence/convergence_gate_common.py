@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.validators.stability.stability_validator import validate_all_registries  # noqa: E402
-from tools.validators.validation import build_validation_report  # noqa: E402
+from tools.validators.suite import build_validation_report  # noqa: E402
 from tools.appshell.appshell4_probe import run_ipc_attach_probe  # noqa: E402
 from tools.appshell.ipc_unify_common import IPC_UNIFY_TOOL_PATH  # noqa: E402
 from tools.appshell.supervisor_hardening_common import (  # noqa: E402
@@ -88,7 +88,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 CONVERGENCE_GATE_ID = "release.convergence.gate.v1"
 CONVERGENCE_TOOL_PATH = "tools/convergence/tool_run_convergence_gate.py"
 CONVERGENCE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
-CONVERGENCE_FINAL_JSON_PATH = "content/data/audit/convergence_final.json"
+CONVERGENCE_FINAL_JSON_PATH = "archive/generated/audit/convergence_final.json"
 CONVERGENCE_STEP_DOC_DIR = "docs/audit/convergence_steps"
 CONVERGENCE_STEP_JSON_DIR = "data/audit/convergence_steps"
 LAST_REVIEWED = "2026-03-13"
@@ -97,12 +97,12 @@ PACK_COMPAT_TOOL_PATH = "tools/mvp/tool_run_all_stress.py"
 LIB_TOOL_PATH = "tools/lib/tool_run_lib_stress.py"
 TIME_ANCHOR_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
 ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
-VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
+VALIDATION_TOOL_PATH = "tools/validators/suite/tool_run_validation.py"
 META_STABILITY_TOOL_PATH = "tools/validators/stability/stability_validator.py"
 MVP_SMOKE_TOOL_PATH = "tools/mvp/tool_run_mvp_smoke.py"
 MVP_STRESS_TOOL_PATH = "tools/mvp/tool_run_all_stress.py"
 MVP_CROSS_PLATFORM_TOOL_PATH = "tools/mvp/tool_run_cross_platform_matrix.py"
-DIST_VERIFY_TOOL_PATH = "tools/dist/tool_verify_distribution.py"
+DIST_VERIFY_TOOL_PATH = "tools/release/dist/tool_verify_distribution.py"
 DEFAULT_LIB_STRESS_OUT_REL = os.path.join("build", "tmp", "convergence", "lib_stress_workspace")
 
 
@@ -258,7 +258,7 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
             "title": "VALIDATION-UNIFY STRICT",
             "tool_path": VALIDATION_TOOL_PATH,
             "rule_id": "INV-VALIDATE-ALL-AVAILABLE",
-            "rerun_command": "python tools/validation/tool_run_validation.py --repo-root . --profile STRICT",
+            "rerun_command": "python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT",
         },
         {
             "step_id": "meta_stability",
@@ -279,7 +279,7 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
             "title": "ARCH-AUDIT tool",
             "tool_path": ARCH_AUDIT_TOOL_PATH,
             "rule_id": "INV-ARCH-AUDIT-MUST-PASS-BEFORE-RELEASE",
-            "rerun_command": "python tools/audit/tool_run_arch_audit.py --repo-root . --report-path docs/audit/ARCH_AUDIT_REPORT.md --json-path content/data/audit/arch_audit_report.json",
+            "rerun_command": "python tools/audit/tool_run_arch_audit.py --repo-root . --report-path docs/audit/ARCH_AUDIT_REPORT.md --json-path archive/generated/audit/arch_audit_report.json",
         },
         {
             "step_id": "cap_neg_interop",
@@ -314,14 +314,14 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
             "title": "IPC-UNIFY attach smoke",
             "tool_path": IPC_UNIFY_TOOL_PATH,
             "rule_id": "INV-IPC-REQUIRES-NEGOTIATION",
-            "rerun_command": "python tools/appshell/tool_run_ipc_unify.py --repo-root .",
+            "rerun_command": "python tools/validators/shell/tool_run_ipc_unify.py --repo-root .",
         },
         {
             "step_id": "supervisor_hardening",
             "title": "SUPERVISOR-HARDEN checks",
             "tool_path": SUPERVISOR_HARDENING_TOOL_PATH,
             "rule_id": "INV-SUPERVISOR-NO-WALLCLOCK",
-            "rerun_command": "python tools/appshell/tool_run_supervisor_hardening.py --repo-root .",
+            "rerun_command": "python tools/validators/shell/tool_run_supervisor_hardening.py --repo-root .",
         },
         {
             "step_id": "mvp_smoke",
@@ -355,7 +355,7 @@ def convergence_step_specs(*, include_cross_platform: bool = True, include_dist_
                 "title": "DIST-2 distribution integrity verification",
                 "tool_path": DIST_VERIFY_TOOL_PATH,
                 "rule_id": "INV-DIST-VERIFY-MUST-PASS",
-                "rerun_command": "python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64",
+                "rerun_command": "python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64",
             }
         )
     return list(rows)
@@ -531,7 +531,7 @@ def _validation_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
         source_paths=[
             "docs/audit/VALIDATION_REPORT_STRICT.md",
-            "content/data/audit/validation_report_STRICT.json",
+            "archive/generated/audit/validation_report_STRICT.json",
             "docs/audit/VALIDATION_UNIFY_FINAL.md",
         ],
         observed_refusal_count=len(errors),
@@ -628,9 +628,9 @@ def _arch_audit_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
         source_paths=[
             "docs/audit/ARCH_AUDIT_REPORT.md",
-            "content/data/audit/arch_audit_report.json",
+            "archive/generated/audit/arch_audit_report.json",
             "docs/audit/ARCH_AUDIT2_REPORT.md",
-            "content/data/audit/arch_audit2_report.json",
+            "archive/generated/audit/arch_audit2_report.json",
             "docs/audit/ARCH_AUDIT2_FINAL.md",
         ],
         observed_refusal_count=blocking,
@@ -857,7 +857,7 @@ def _supervisor_step(repo_root: str, spec: Mapping[str, object], *, step_no: int
         step_no=step_no,
         result=result,
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["content/data/audit/supervisor_hardening_report.json", "docs/audit/SUPERVISOR_HARDENING_FINAL.md"],
+        source_paths=["archive/generated/audit/supervisor_hardening_report.json", "docs/audit/SUPERVISOR_HARDENING_FINAL.md"],
         observed_refusal_count=len(violations),
         default_path_refusal_count=len(violations),
         key_hashes={
@@ -1064,7 +1064,7 @@ def _dist_verify_step(
         step_no=step_no,
         result="complete" if _token(report.get("result")) == "complete" else "refused",
         source_fingerprint=_token(report.get("deterministic_fingerprint")),
-        source_paths=["content/data/audit/dist_verify_win64.json", "docs/audit/DIST_VERIFY_win64.md"],
+        source_paths=["archive/generated/audit/dist_verify_win64.json", "docs/audit/DIST_VERIFY_win64.md"],
         observed_refusal_count=int(len(_as_list(report.get("errors")))),
         default_path_refusal_count=0,
         key_hashes={

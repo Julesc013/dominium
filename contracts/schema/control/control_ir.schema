@@ -1,0 +1,25 @@
+SCHEMA: control/control_ir.schema
+schema_id: dominium.schema.control.control_ir
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic Control IR program for bounded multi-step control.
+
+REQUIRED SHAPE:
+record control_ir
+  required:
+    - schema_version: semver
+    - control_ir_id: id
+    - root_block: id
+    - blocks: list[map]
+    - metadata: map
+      required:
+        - creator: id
+        - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Control IR must remain bounded and deterministic.
+- Control IR cannot mutate truth directly; it compiles to control-plane actions only.

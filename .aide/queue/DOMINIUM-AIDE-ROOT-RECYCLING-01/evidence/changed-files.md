@@ -25,7 +25,7 @@ Q52 modifies only `.aide` generated evidence, reports, root outputs, and generat
 
 ## Excluded
 
-No `ide/**`, product source, doctrine, tools, scripts, validators, CMake, `.github`, `.git`, `.aide.local`, or generated build/dist/out files are intentionally modified.
+No `ide/**`, product source, doctrine, tools, scripts, validators, CMake, `.github`, `.git`, `.aide.local`, or generated build/archive/generated/dist/out files are intentionally modified.
 
 ## Final Changed Path Proof
 

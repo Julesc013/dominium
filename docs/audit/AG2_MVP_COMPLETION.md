@@ -11,7 +11,7 @@ Replacement Target: legacy reference surface retained without current binding au
 Scope: engine/ + game/ + data/ + docs/agents for AG-2 (institutions, power, contracts, conflict, macro-history).
 
 Validation artifacts:
-- `engine/tests/agent_mvp_social_tests.cpp` (headless, no assets)
+- `tests/engine/agent_mvp_social_tests.cpp` (headless, no assets)
 
 Coverage matrix:
 - Institutions are agents: `test_institutions_are_agents`

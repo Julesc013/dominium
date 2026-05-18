@@ -19,14 +19,14 @@ from tools.validators.compatibility.migration_lifecycle import (
     DECISION_READ_ONLY,
     determine_migration_decision,
 )
-from tools.compatx.core.migration_runner import apply_migration, load_and_validate
+from tools.xstack.compatx.core.migration_runner import apply_migration, load_and_validate
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 
 
 CURRENT_ARTIFACT_FORMAT_VERSION = "2.0.0"
 LEGACY_ARTIFACT_FORMAT_VERSION = "1.0.0"
-MIGRATION_REGISTRY_REL = os.path.join("data", "registries", "migration_registry.json")
+MIGRATION_REGISTRY_REL = os.path.join("contracts", "registry", "migration_registry.json")
 UNIVERSAL_IDENTITY_FIELD = "universal_identity_block"
 
 REFUSAL_FORMAT_MISSING_VERSION = "refusal.format.missing_version"

@@ -19,21 +19,21 @@ Source: `data/audit/repo_inventory.json` + `src/tools/tool_surface_adapter.py`
 
 | Current Path | Function | Stable Namespace | Stable ID | Adapter | Required Capabilities |
 | --- | --- | --- | --- | --- | --- |
-| `tools/geo/tool_explain_property_origin.py` | tool.utility | `dom geo explain-property-origin` | `dom.geo.explain-property-origin.v1` | `python_subprocess` | - |
-| `tools/geo/tool_generate_geo_stress.py` | tool.utility | `dom geo generate-geo-stress` | `dom.geo.generate-geo-stress.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_field_geo_window.py` | tool.utility | `dom geo replay-field-geo-window` | `dom.geo.replay-field-geo-window.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_frame_window.py` | tool.utility | `dom geo replay-frame-window` | `dom.geo.replay-frame-window.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_geo_window.py` | tool.utility | `dom geo replay-geo-window` | `dom.geo.replay-geo-window.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_geometry_window.py` | tool.utility | `dom geo replay-geometry-window` | `dom.geo.replay-geometry-window.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_overlay_merge.py` | tool.utility | `dom geo replay-overlay-merge` | `dom.geo.replay-overlay-merge.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_path_request.py` | tool.utility | `dom geo replay-path-request` | `dom.geo.replay-path-request.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_view_window.py` | tool.utility | `dom geo replay-view-window` | `dom.geo.replay-view-window.v1` | `python_subprocess` | - |
-| `tools/geo/tool_replay_worldgen_cell.py` | tool.utility | `dom geo replay-worldgen-cell` | `dom.geo.replay-worldgen-cell.v1` | `python_subprocess` | - |
-| `tools/geo/tool_run_geo_stress.py` | tool.utility | `dom geo run-geo-stress` | `dom.geo.run-geo-stress.v1` | `python_subprocess` | - |
-| `tools/geo/tool_verify_id_stability.py` | tool.utility | `dom geo verify-id-stability` | `dom.geo.verify-id-stability.v1` | `python_subprocess` | - |
-| `tools/geo/tool_verify_metric_stability.py` | tool.utility | `dom geo verify-metric-stability` | `dom.geo.verify-metric-stability.v1` | `python_subprocess` | - |
-| `tools/geo/tool_verify_overlay_identity.py` | tool.utility | `dom geo verify-overlay-identity` | `dom.geo.verify-overlay-identity.v1` | `python_subprocess` | - |
-| `tools/geo/tool_verify_sol_pin_overlay.py` | tool.utility | `dom geo verify-sol-pin-overlay` | `dom.geo.verify-sol-pin-overlay.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_explain_property_origin.py` | tool.utility | `dom geo explain-property-origin` | `dom.geo.explain-property-origin.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_generate_geo_stress.py` | tool.utility | `dom geo generate-geo-stress` | `dom.geo.generate-geo-stress.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_field_geo_window.py` | tool.utility | `dom geo replay-field-geo-window` | `dom.geo.replay-field-geo-window.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_frame_window.py` | tool.utility | `dom geo replay-frame-window` | `dom.geo.replay-frame-window.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_geo_window.py` | tool.utility | `dom geo replay-geo-window` | `dom.geo.replay-geo-window.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_geometry_window.py` | tool.utility | `dom geo replay-geometry-window` | `dom.geo.replay-geometry-window.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_overlay_merge.py` | tool.utility | `dom geo replay-overlay-merge` | `dom.geo.replay-overlay-merge.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_path_request.py` | tool.utility | `dom geo replay-path-request` | `dom.geo.replay-path-request.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_view_window.py` | tool.utility | `dom geo replay-view-window` | `dom.geo.replay-view-window.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_replay_worldgen_cell.py` | tool.utility | `dom geo replay-worldgen-cell` | `dom.geo.replay-worldgen-cell.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_run_geo_stress.py` | tool.utility | `dom geo run-geo-stress` | `dom.geo.run-geo-stress.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_verify_id_stability.py` | tool.utility | `dom geo verify-id-stability` | `dom.geo.verify-id-stability.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_verify_metric_stability.py` | tool.utility | `dom geo verify-metric-stability` | `dom.geo.verify-metric-stability.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_verify_overlay_identity.py` | tool.utility | `dom geo verify-overlay-identity` | `dom.geo.verify-overlay-identity.v1` | `python_subprocess` | - |
+| `tools/validators/domain/geology/tool_verify_sol_pin_overlay.py` | tool.utility | `dom geo verify-sol-pin-overlay` | `dom.geo.verify-sol-pin-overlay.v1` | `python_subprocess` | - |
 
 ## `worldgen`
 

@@ -50,7 +50,7 @@ REQUIRED_PROJECTIONS = [
 ]
 
 OPTIONAL_INPUT_DOCS = [
-    "docs/appshell/VIRTUAL_PATHS.md",
+    "docs/runtime/shell/VIRTUAL_PATHS.md",
     "docs/architecture/INSTALL_MODEL.md",
     "docs/architecture/CONTENT_AND_STORAGE_MODEL.md",
     "docs/distribution/DIST_TREE_CONTRACT.md",
@@ -237,8 +237,8 @@ def doc_warnings(repo_root):
             warnings.append("CONVERGE repo doc missing for distribution note: {0}".format(rel_path))
             continue
         text = open(path, "r", encoding="utf-8").read().lower()
-        if "dist/" in text and "generated" not in text:
-            warnings.append("repo doc mentions dist/ without generated-output wording: {0}".format(rel_path))
+        if "archive/generated/dist/" in text and "generated" not in text:
+            warnings.append("repo doc mentions archive/generated/dist/ without generated-output wording: {0}".format(rel_path))
     return warnings
 
 

@@ -141,7 +141,7 @@ Each checkbox maps an acceptance criterion to code, tests, and a verification co
   Code: scripts/packaging/pipeline.py
   Tests: dsu_packaging_validation_test
   Commits: a44e0e2
-  Verify: python scripts/packaging/pipeline.py steam --artifact dist/artifacts/dominium-0.1.0 --out dist/steam --version 0.1.0 --appid 0 --depotid 0
+  Verify: python scripts/packaging/pipeline.py steam --artifact archive/generated/dist/archive/generated/artifacts/dominium-0.1.0 --out archive/generated/dist/steam --version 0.1.0 --appid 0 --depotid 0
 
 ## A4) Documentation readiness
 

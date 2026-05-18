@@ -15,7 +15,7 @@ Q50 should proceed only as an upgrade dry-run with warnings. Dominium already ha
 - `AGENTS.md` manual and managed content.
 - `docs/canon/**`, `docs/planning/**`, `specs/reality/**`, `data/reality/**`, `data/planning/**`, `contracts/**`, `schema/**`, `schemas/**`.
 - XStack/AuditX/RepoX/TestX systems under `tools/**`, `scripts/**`, `repo/**`, `docs/audit/**`, `data/registries/**`, `validation/**`, and CMake configuration.
-- Ignored local state including `.aide.local/**`, `.dominium.local/**`, `out/**`, `dist/**`, `build/**`, and `__pycache__/**`.
+- Ignored local state including `.aide.local/**`, `.dominium.local/**`, `out/**`, `archive/generated/dist/**`, `build/**`, and `__pycache__/**`.
 
 ## Must Avoid
 

@@ -1,0 +1,202 @@
+{
+  "materials": [],
+  "interfaces": [],
+  "parts": [],
+  "assemblies": [],
+  "process_families": [
+    {
+      "process_family_id": "org.dominium.core.process_family.contract.offer",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.offer_window": 40
+      },
+      "yield_distribution": {
+        "org.dominium.yield.accept": 700,
+        "org.dominium.yield.reject": 300
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.offer_window": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.accept": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.reject": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Offer window for voluntary contracts."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.contract.sign",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {},
+      "yield_distribution": {
+        "org.dominium.yield.signed": 1
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "yield_distribution.org.dominium.yield.signed": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Contract signing step."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.contract.fulfill",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.deadline": 200
+      },
+      "yield_distribution": {
+        "org.dominium.yield.fulfilled": 850,
+        "org.dominium.yield.breached": 150
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.deadline": {
+          "unit": "unit.time.act_tick",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.fulfilled": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.breached": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Fulfillment envelope; breach is data-defined."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.contract.breach",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {},
+      "yield_distribution": {
+        "org.dominium.yield.breach_recorded": 1
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "yield_distribution.org.dominium.yield.breach_recorded": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Record breach as an explicit process."
+      }
+    },
+    {
+      "process_family_id": "org.dominium.core.process_family.contract.remedy",
+      "inputs": [],
+      "outputs": [],
+      "wastes": [],
+      "energy_flows": {},
+      "parameter_space": {
+        "org.dominium.param.remedy_units": 300
+      },
+      "yield_distribution": {
+        "org.dominium.yield.remedy_applied": 1
+      },
+      "failure_modes": {},
+      "required_instruments": [],
+      "required_standards": [],
+      "unit_annotations": {
+        "parameter_space.org.dominium.param.remedy_units": {
+          "unit": "unit.currency.credit",
+          "scale": 100,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        },
+        "yield_distribution.org.dominium.yield.remedy_applied": {
+          "unit": "unit.dimensionless.ratio",
+          "scale": 1,
+          "overflow_behavior": "org.dominium.overflow.refuse"
+        }
+      },
+      "extensions": {
+        "notes": "Remedy process, typically penalties or restorative actions."
+      }
+    }
+  ],
+  "instruments": [],
+  "standards": [],
+  "qualities": [],
+  "batches": [],
+  "hazards": [],
+  "substances": [],
+  "contracts": [
+    {
+      "contract_id": "org.dominium.core.contract.template.delivery",
+      "obligation_process_family_id": "org.dominium.core.process_family.contract.fulfill",
+      "breach_process_family_id": "org.dominium.core.process_family.contract.breach",
+      "remedy_process_family_id": "org.dominium.core.process_family.contract.remedy",
+      "deadline": {
+        "value": 200,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Generic delivery-style contract template."
+      }
+    },
+    {
+      "contract_id": "org.dominium.core.contract.template.service",
+      "obligation_process_family_id": "org.dominium.core.process_family.contract.fulfill",
+      "breach_process_family_id": "org.dominium.core.process_family.contract.breach",
+      "remedy_process_family_id": "org.dominium.core.process_family.contract.remedy",
+      "deadline": {
+        "value": 120,
+        "unit": "unit.time.act_tick",
+        "overflow_behavior": "org.dominium.overflow.refuse"
+      },
+      "unit_annotations": {},
+      "extensions": {
+        "notes": "Generic service contract template."
+      }
+    }
+  ],
+  "extensions": {
+    "notes": "Voluntary agreements expressed as process families and contract templates."
+  }
+}

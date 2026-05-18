@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Logistics Edge Schema",
+  "version": "1.0.0",
+  "description": "Canonical logistics edge declaration.",
+  "x-doc-ref": [
+    "docs/materials/LOGISTICS_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "edge_id",
+    "from_node_id",
+    "to_node_id",
+    "transport_mode",
+    "capacity_mass_per_tick",
+    "delay_ticks",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "edge_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transport_mode": {
+      "type": "string",
+      "enum": [
+        "road",
+        "rail",
+        "sea",
+        "air",
+        "space",
+        "abstract"
+      ]
+    },
+    "capacity_mass_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "delay_ticks": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "loss_fraction": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "cost_units_per_mass": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "edge_id": "edge.alpha",
+      "from_node_id": "node.site.alpha",
+      "to_node_id": "node.depot.beta",
+      "transport_mode": "road",
+      "capacity_mass_per_tick": 25000,
+      "delay_ticks": 4,
+      "loss_fraction": 0,
+      "cost_units_per_mass": 10,
+      "tags": [
+        "baseline"
+      ],
+      "extensions": {}
+    }
+  ]
+}

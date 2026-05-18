@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Micro Motion State Schema",
+  "version": "1.0.0",
+  "description": "Deterministic MOB-6 micro constrained motion state row.",
+  "x-doc-ref": [
+    "docs/mobility/MICRO_CONSTRAINED_MOTION.md",
+    "docs/audit/MICRO_CONSTRAINED_MOTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "vehicle_id",
+    "geometry_id",
+    "s_param",
+    "velocity",
+    "acceleration",
+    "direction",
+    "last_update_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "vehicle_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "geometry_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "s_param": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "velocity": {
+      "type": "integer"
+    },
+    "acceleration": {
+      "type": "integer"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "forward",
+        "back"
+      ]
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "vehicle_id": "vehicle.demo.micro.001",
+      "geometry_id": "geometry.demo.rail.001",
+      "s_param": 4200,
+      "velocity": 200,
+      "acceleration": 0,
+      "direction": "forward",
+      "last_update_tick": 128,
+      "deterministic_fingerprint": "8d7a65094d5e6ad98f50ef8ce597ce4126a87bb6218dc897ccfde6ef1f0a1adf",
+      "extensions": {}
+    }
+  ]
+}

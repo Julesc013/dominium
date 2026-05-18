@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/death_scene_observation_hooks.cpp
+FILE: game/rule/life/death_scene_observation_hooks.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements death scene observation hooks.

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Inspection Cache Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic cache policy for RS-5 derived inspection snapshots.",
+  "x-doc-ref": [
+    "docs/reality/PERFORMANCE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "cache_policy_id",
+    "enable_caching",
+    "invalidation_rules",
+    "max_cache_entries",
+    "eviction_rule_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "cache_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "enable_caching": {
+      "type": "boolean"
+    },
+    "invalidation_rules": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "max_cache_entries": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "eviction_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "cache_policy_id": "cache.default",
+      "enable_caching": true,
+      "invalidation_rules": [
+        "invalidate.on_target_truth_hash_change",
+        "invalidate.on_policy_context_hash_change"
+      ],
+      "max_cache_entries": 1024,
+      "eviction_rule_id": "evict.deterministic_lru",
+      "extensions": {}
+    }
+  ]
+}

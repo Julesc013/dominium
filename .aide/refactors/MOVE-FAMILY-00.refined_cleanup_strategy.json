@@ -39,7 +39,7 @@
         "migration_mode": "move_with_temporary_shim",
         "next_task": "MOVE-FAMILY-00C-PLAN - Governance Release/Tooling Helper Namespace Plan",
         "apply_ready": false,
-        "required_before_apply": ["release-control import proof", "setup/dist/governance tool rewrite plan", "temporary shim policy"]
+        "required_before_apply": ["release-control import proof", "setup/archive/generated/dist/governance tool rewrite plan", "temporary shim policy"]
       }
     ],
     "deferred_groups": [

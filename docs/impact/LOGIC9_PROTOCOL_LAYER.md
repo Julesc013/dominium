@@ -22,9 +22,9 @@ Touched Paths:
 - logic/protocol/protocol_engine.py
 - logic/protocol/rows.py
 - logic/signal/signal_store.py
-- tools/auditx/analyzers/e326_nondeterministic_arbitration_smell.py
-- tools/auditx/analyzers/e327_protocol_security_bypass_smell.py
-- tools/auditx/analyzers/e328_protocol_bypass_smell.py
+- tools/xstack/auditx/analyzers/e326_nondeterministic_arbitration_smell.py
+- tools/xstack/auditx/analyzers/e327_protocol_security_bypass_smell.py
+- tools/xstack/auditx/analyzers/e328_protocol_bypass_smell.py
 - tools/logic/tool_replay_logic_window.py
 - tools/logic/tool_replay_protocol_window.py
 - tools/logic/tool_run_logic_protocol_stress.py

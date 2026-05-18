@@ -91,7 +91,7 @@ Proof and replay surfaces:
 
 Replay tooling:
 
-- `tools/geo/tool_replay_worldgen_cell.py`
+- `tools/validators/domain/geology/tool_replay_worldgen_cell.py`
 
 ## Integration Status
 

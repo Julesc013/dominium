@@ -18,17 +18,17 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SERIES_EXECUTION_STRATEGY_REL = "content/data/blueprint/series_execution_strategy.json"
-FOUNDATION_PHASES_REL = "content/data/blueprint/foundation_phases.json"
-MANUAL_REVIEW_GATES_REL = "content/data/blueprint/manual_review_gates.json"
-STOP_CONDITIONS_REL = "content/data/blueprint/stop_conditions.json"
-SERIES_DEP_GRAPH_REL = "content/data/blueprint/series_dependency_graph.json"
+SERIES_EXECUTION_STRATEGY_REL = "archive/generated/blueprint/series_execution_strategy.json"
+FOUNDATION_PHASES_REL = "archive/generated/blueprint/foundation_phases.json"
+MANUAL_REVIEW_GATES_REL = "archive/generated/blueprint/manual_review_gates.json"
+STOP_CONDITIONS_REL = "archive/generated/blueprint/stop_conditions.json"
+SERIES_DEP_GRAPH_REL = "archive/generated/blueprint/series_dependency_graph.json"
 
-FINAL_PROMPT_INVENTORY_REL = "content/data/blueprint/final_prompt_inventory.json"
-SNAPSHOT_MAPPING_TEMPLATE_REL = "content/data/blueprint/snapshot_mapping_template.json"
-PROMPT_DEPENDENCY_TREE_REL = "content/data/blueprint/prompt_dependency_tree.json"
+FINAL_PROMPT_INVENTORY_REL = "archive/generated/blueprint/final_prompt_inventory.json"
+SNAPSHOT_MAPPING_TEMPLATE_REL = "archive/generated/blueprint/snapshot_mapping_template.json"
+PROMPT_DEPENDENCY_TREE_REL = "archive/generated/blueprint/prompt_dependency_tree.json"
 PROMPT_RISK_MATRIX_REL = "contracts/blueprint/prompt_risk_matrix.json"
-RECONCILIATION_RULES_REL = "content/data/blueprint/repo_reality_reconciliation_rules.json"
+RECONCILIATION_RULES_REL = "archive/generated/blueprint/repo_reality_reconciliation_rules.json"
 
 FINAL_PROMPT_INVENTORY_DOC_REL = "docs/blueprint/FINAL_PROMPT_INVENTORY.md"
 SNAPSHOT_MAPPING_TEMPLATE_DOC_REL = "docs/blueprint/SNAPSHOT_MAPPING_TEMPLATE.md"
@@ -402,13 +402,13 @@ def _prompt_inputs(seed: Mapping[str, object]) -> list[str]:
     series_key = _token(seed.get("series_key"))
     family = _token(seed.get("family"))
     inputs = [
-        "content/data/architecture/architecture_graph.v1.json",
-        "content/data/architecture/module_boundary_rules.v1.json",
-        "content/data/architecture/repository_structure_lock.json",
+        "archive/generated/architecture/architecture_graph.v1.json",
+        "archive/generated/architecture/module_boundary_rules.v1.json",
+        "archive/generated/architecture/repository_structure_lock.json",
         "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
         "docs/blueprint/PRE_AND_POST_SNAPSHOT_PHASES.md",
         "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
-        "content/data/blueprint/series_execution_strategy.json",
+        "archive/generated/blueprint/series_execution_strategy.json",
     ]
     if _token(seed.get("snapshot_requirement")) == "post_snapshot_required":
         inputs.append("snapshot-mapping rows for the target prompt")
@@ -417,7 +417,7 @@ def _prompt_inputs(seed: Mapping[str, object]) -> list[str]:
     elif series_key == "PHI":
         inputs.extend(["contracts/registry/architecture/single_engine_registry.json", "docs/blueprint/RUNTIME_ARCHITECTURE_DIAGRAM.md", "engine", "game", "apps", "ui", "platform", "compat"])
     elif series_key == "UPSILON":
-        inputs.extend(["content/data/audit/build_graph.json", "content/data/xstack/gate_definitions.json", "dist", "release", "tools/xstack"])
+        inputs.extend(["archive/generated/audit/build_graph.json", "archive/generated/xstack/gate_definitions.json", "dist", "release", "tools/xstack"])
     elif series_key == "ZETA":
         inputs.extend(["OMEGA baseline artifacts", "PHI runtime foundation outputs", "UPSILON control-plane outputs", "contracts/registry/architecture/single_engine_registry.json", "engine", "apps", "ui", "platform", "tools/xstack"])
         if family == "distributed":
@@ -1228,11 +1228,11 @@ def _render_pi_2_final_doc(
         "- `docs/blueprint/PROMPT_DEPENDENCY_TREE.md`",
         "- `docs/blueprint/PROMPT_RISK_MATRIX.md`",
         "- `docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md`",
-        "- `content/data/blueprint/final_prompt_inventory.json`",
-        "- `content/data/blueprint/snapshot_mapping_template.json`",
-        "- `content/data/blueprint/prompt_dependency_tree.json`",
+        "- `archive/generated/blueprint/final_prompt_inventory.json`",
+        "- `archive/generated/blueprint/snapshot_mapping_template.json`",
+        "- `archive/generated/blueprint/prompt_dependency_tree.json`",
         "- `contracts/blueprint/prompt_risk_matrix.json`",
-        "- `content/data/blueprint/repo_reality_reconciliation_rules.json`",
+        "- `archive/generated/blueprint/repo_reality_reconciliation_rules.json`",
         "",
         "## Fingerprints",
         "",

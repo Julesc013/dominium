@@ -77,25 +77,25 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3860,
-      "snippet": "\"contracts/schemas/security/license_capability_artifact.schema\","
+      "snippet": "\"contracts/schema/security/license_capability_artifact.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3861,
-      "snippet": "\"contracts/schemas/security/signature_record.schema\","
+      "snippet": "\"contracts/schema/security/signature_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3862,
-      "snippet": "\"contracts/schemas/security/trust_policy.schema\","
+      "snippet": "\"contracts/schema/security/trust_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3863,
-      "snippet": "\"contracts/schemas/security/trust_root.schema\","
+      "snippet": "\"contracts/schema/security/trust_root.schema\","
     },
     {
       "classification": "unknown",
@@ -513,37 +513,37 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/securex_policy.schema.json",
+      "file": "contracts/schema/securex_policy.schema.json",
       "line": 7,
       "snippet": "\"docs/security/SECUREX_TRUST_MODEL.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/securex_policy_registry.schema.json",
+      "file": "contracts/schema/securex_policy_registry.schema.json",
       "line": 7,
       "snippet": "\"docs/security/SECUREX_TRUST_MODEL.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/security/license_capability_artifact.schema",
+      "file": "contracts/schema/security/license_capability_artifact.schema",
       "line": 1,
       "snippet": "SCHEMA: security/license_capability_artifact.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/security/signature_record.schema",
+      "file": "contracts/schema/security/signature_record.schema",
       "line": 1,
       "snippet": "SCHEMA: security/signature_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/security/trust_policy.schema",
+      "file": "contracts/schema/security/trust_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: security/trust_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/security/trust_root.schema",
+      "file": "contracts/schema/security/trust_root.schema",
       "line": 1,
       "snippet": "SCHEMA: security/trust_root.schema"
     },
@@ -1085,13 +1085,13 @@
       "classification": "unknown",
       "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
       "line": 683,
-      "snippet": "\"path_or_cluster\": \"release/, security/trust/, dist/, and manifest/store path conventions\","
+      "snippet": "\"path_or_cluster\": \"release/, security/trust/, archive/generated/dist/, and manifest/store path conventions\","
     },
     {
       "classification": "unknown",
       "file": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
       "line": 815,
-      "snippet": "\"release/, security/trust/, dist/, and manifest/registry path conventions\","
+      "snippet": "\"release/, security/trust/, archive/generated/dist/, and manifest/registry path conventions\","
     },
     {
       "classification": "unknown",
@@ -1377,7 +1377,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/app/README.md",
+      "file": "docs/apps/README.md",
       "line": 38,
       "snippet": "- `docs/security/CHEAT_THREAT_MODEL.md` - cheat classes and countermeasures."
     },
@@ -1451,7 +1451,7 @@
       "classification": "docs",
       "file": "docs/audit/ARCHITECTURE_GRAPH_REPORT.md",
       "line": 33,
-      "snippet": "- `ARTIFACT_KIND_PACK` -> release/release_manifest_engine.py, security/trust/__init__.py"
+      "snippet": "- `ARTIFACT_KIND_PACK` -> tools/release/release_manifest_engine.py, security/trust/__init__.py"
     },
     {
       "classification": "docs",
@@ -1487,7 +1487,7 @@
       "classification": "docs",
       "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
       "line": 1808,
-      "snippet": "- `ARTIFACT_KIND_PACK` -> release/release_manifest_engine.py, security/trust/__init__.py"
+      "snippet": "- `ARTIFACT_KIND_PACK` -> tools/release/release_manifest_engine.py, security/trust/__init__.py"
     },
     {
       "classification": "docs",
@@ -1787,13 +1787,13 @@
       "classification": "docs",
       "file": "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
       "line": 25,
-      "snippet": "| Release manifest, update resolver, and trust verifier | release/release_manifest_engine.py<br>release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should b"
+      "snippet": "| Release manifest, update resolver, and trust verifier | tools/release/release_manifest_engine.py<br>tools/release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should b"
     },
     {
       "classification": "docs",
       "file": "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
       "line": 13,
-      "snippet": "| Release manifest, update resolver, and trust verifier | release/release_manifest_engine.py<br>release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should b"
+      "snippet": "| Release manifest, update resolver, and trust verifier | tools/release/release_manifest_engine.py<br>tools/release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should b"
     },
     {
       "classification": "docs",
@@ -1893,13 +1893,13 @@
     },
     {
       "classification": "docs",
-      "file": "docs/net/ESPORTS_PROOF_ARTIFACTS.md",
+      "file": "docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md",
       "line": 77,
       "snippet": "- `docs/security/SECUREX_TRUST_MODEL.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/RANKED_SERVER_GOVERNANCE.md",
+      "file": "docs/runtime/network/RANKED_SERVER_GOVERNANCE.md",
       "line": 92,
       "snippet": "- `docs/security/SECUREX_TRUST_MODEL.md`"
     },
@@ -1973,7 +1973,7 @@
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
       "line": 66,
-      "snippet": "| Is completed `\u03a5-A` sufficient to begin selected `\u03a5-B` work? | `yes_for_selected_families` | The repo already has strong operational substrate in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`, so a narro"
+      "snippet": "| Is completed `\u03a5-A` sufficient to begin selected `\u03a5-B` work? | `yes_for_selected_families` | The repo already has strong operational substrate in `release/`, `updates/`, `tools/xstack/controlx/`, `tools/xstack/`, and `security/trust/`, so a narro"
     },
     {
       "classification": "docs",
@@ -2003,7 +2003,7 @@
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md",
       "line": 150,
-      "snippet": "- `security/trust/trust_verifier.py` and `release/update_resolver.py` prove local trust-bearing control-plane handling exists, but not distributed trust convergence or distributed revocation choreography"
+      "snippet": "- `security/trust/trust_verifier.py` and `tools/release/update_resolver.py` prove local trust-bearing control-plane handling exists, but not distributed trust convergence or distributed revocation choreography"
     },
     {
       "classification": "docs",
@@ -2015,7 +2015,7 @@
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md",
       "line": 77,
-      "snippet": "- `release/update_resolver.py`, `security/trust/trust_verifier.py`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, and `data/registries/prove"
+      "snippet": "- `tools/release/update_resolver.py`, `security/trust/trust_verifier.py`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, and `data/registries/prove"
     },
     {
       "classification": "docs",
@@ -2033,7 +2033,7 @@
       "classification": "docs",
       "file": "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md",
       "line": 61,
-      "snippet": "| operator and trust tooling | `governance`, `security/trust`, `tools/compatx`, `tools/controlx`, `tools/distribution`, `tools/release`, `tools/securex` | `extend` | these tools already embody operator, trust, compat, and release flows that"
+      "snippet": "| operator and trust tooling | `governance`, `security/trust`, `tools/xstack/compatx`, `tools/xstack/controlx`, `tools/distribution`, `tools/release`, `tools/xstack/securex` | `extend` | these tools already embody operator, trust, compat, and release flows that"
     },
     {
       "classification": "docs",
@@ -2081,7 +2081,7 @@
       "classification": "docs",
       "file": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
       "line": 80,
-      "snippet": "- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`"
+      "snippet": "- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/xstack/controlx/`, `tools/xstack/`, and `security/trust/`"
     },
     {
       "classification": "docs",
@@ -2117,7 +2117,7 @@
       "classification": "docs",
       "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
       "line": 193,
-      "snippet": "Most strongly in `release`, `repo`, `updates`, `security/trust`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/controlx`, `tools/securex`, and scoped docs under `docs/release` and `docs/governance`."
+      "snippet": "Most strongly in `release`, `repo`, `updates`, `security/trust`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/xstack/compatx`, `tools/xstack/controlx`, `tools/xstack/securex`, and scoped docs under `docs/release` and `docs/governance`."
     },
     {
       "classification": "docs",
@@ -2147,7 +2147,7 @@
       "classification": "docs",
       "file": "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
       "line": 251,
-      "snippet": "- Evidence surfaces: `data/registries/trust_root_registry.json` is empty, `data/registries/trust_policy_registry.json` remains provisional, `release/update_resolver.py`, `security/trust/trust_verifier.py`"
+      "snippet": "- Evidence surfaces: `data/registries/trust_root_registry.json` is empty, `data/registries/trust_policy_registry.json` remains provisional, `tools/release/update_resolver.py`, `security/trust/trust_verifier.py`"
     },
     {
       "classification": "docs",
@@ -3197,7 +3197,7 @@
       "classification": "docs",
       "file": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
       "line": 353,
-      "snippet": "- thin operational roots such as `tools/controlx/`, `tools/xstack/`, `release/`, `updates/`, or `security/trust/` are important evidence surfaces, but none of them alone becomes execution canon by convenience"
+      "snippet": "- thin operational roots such as `tools/xstack/controlx/`, `tools/xstack/`, `release/`, `updates/`, or `security/trust/` are important evidence surfaces, but none of them alone becomes execution canon by convenience"
     },
     {
       "classification": "docs",
@@ -3287,7 +3287,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 187,
-      "snippet": "`appshell/`, `release/`, `security/trust/`, `data/registries/`, `dist/`, install discovery, repo-local `saves/`, compiled wrapper expectations"
+      "snippet": "`appshell/`, `release/`, `security/trust/`, `data/registries/`, `archive/generated/dist/`, install discovery, repo-local `saves/`, compiled wrapper expectations"
     },
     {
       "classification": "docs",
@@ -3299,25 +3299,25 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 316,
-      "snippet": "`release/release_manifest_engine.py`, `release/component_graph_resolver.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `tools/setup/setup_cli.py`"
+      "snippet": "`tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `security/trust/trust_verifier.py`, `tools/setup/setup_cli.py`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 586,
-      "snippet": "`release/`, `security/trust/`, `dist/`, manifest and store path conventions"
+      "snippet": "`release/`, `security/trust/`, `archive/generated/dist/`, manifest and store path conventions"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 691,
-      "snippet": "- `release/`, `security/trust/`, `dist/`, and manifest/registry path conventions"
+      "snippet": "- `release/`, `security/trust/`, `archive/generated/dist/`, and manifest/registry path conventions"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md",
       "line": 321,
-      "snippet": "`release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `dist/`, and related registries or manifests"
+      "snippet": "`release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `archive/generated/dist/`, and related registries or manifests"
     },
     {
       "classification": "docs",
@@ -3329,7 +3329,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -3377,7 +3377,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 581,
-      "snippet": "`appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `release/component_graph_resolver.py`, `security/trust/trust_verifier.py`, `validation/validation_engine.py`"
+      "snippet": "`appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `tools/release/component_graph_resolver.py`, `security/trust/trust_verifier.py`, `validation/validation_engine.py`"
     },
     {
       "classification": "docs",
@@ -3389,7 +3389,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 914,
-      "snippet": "`tools/setup/setup_cli.py`, `security/trust/trust_verifier.py`, `release/update_resolver.py`"
+      "snippet": "`tools/setup/setup_cli.py`, `security/trust/trust_verifier.py`, `tools/release/update_resolver.py`"
     },
     {
       "classification": "docs",
@@ -3401,7 +3401,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -3593,7 +3593,7 @@
       "classification": "docs",
       "file": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
       "line": 49,
-      "snippet": "- direct inspection of live implementation roots under `tools/xstack/`, `appshell/`, `tools/validation/`, `validation/`, `tools/launcher/`, `tools/setup/`, `runtime/`, `release/`, `security/`, `server/`, and `client/`"
+      "snippet": "- direct inspection of live implementation roots under `tools/xstack/`, `appshell/`, `tools/validators/suite/`, `validation/`, `tools/launcher/`, `tools/setup/`, `runtime/`, `release/`, `security/`, `server/`, and `client/`"
     },
     {
       "classification": "docs",
@@ -3611,7 +3611,7 @@
       "classification": "docs",
       "file": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
       "line": 430,
-      "snippet": "- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_"
+      "snippet": "- Repo Paths: `tools/release/archive_policy.py`, `tools/release/build_id_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_"
     },
     {
       "classification": "docs",
@@ -3647,7 +3647,7 @@
       "classification": "docs",
       "file": "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
       "line": 327,
-      "snippet": "- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_"
+      "snippet": "- Repo Paths: `tools/release/archive_policy.py`, `tools/release/build_id_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_"
     },
     {
       "classification": "docs",
@@ -3675,67 +3675,67 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/c1_security_boundary.py",
+      "file": "tools/xstack/auditx/analyzers/c1_security_boundary.py",
       "line": 13,
       "snippet": "WATCH_PREFIXES = (\"engine/\", \"game/\", \"apps/client/\", \"apps/server/\", \"apps/launcher/\", \"apps/setup/\", \"tools/\", \"docs/security/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e12_signature_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e12_signature_bypass_smell.py",
       "line": 15,
       "snippet": "\"tools/security/tool_securex_verify_pack.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e12_signature_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e12_signature_bypass_smell.py",
       "line": 16,
       "snippet": "\"tools/security/tool_securex_verify_lockfile.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e12_signature_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e12_signature_bypass_smell.py",
       "line": 147,
       "snippet": "\"tools/security/tool_securex_verify_pack.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e12_signature_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e12_signature_bypass_smell.py",
       "line": 148,
       "snippet": "\"tools/security/tool_securex_verify_lockfile.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e515_artifact_accepted_without_hash_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e515_artifact_accepted_without_hash_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"security/trust/trust_verifier.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e515_artifact_accepted_without_hash_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e515_artifact_accepted_without_hash_smell.py",
       "line": 43,
       "snippet": "related_paths=[rel_path or \"security/trust/trust_verifier.py\", \"tools/security/trust_model_common.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e516_signature_required_but_missing_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e516_signature_required_but_missing_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"security/trust/trust_verifier.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e516_signature_required_but_missing_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e516_signature_required_but_missing_smell.py",
       "line": 43,
       "snippet": "related_paths=[rel_path or \"security/trust/trust_verifier.py\", \"tools/security/trust_model_common.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e518_trust_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e518_trust_bypass_smell.py",
       "line": 37,
       "snippet": "file_path=rel_path or \"security/trust/trust_verifier.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e518_trust_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e518_trust_bypass_smell.py",
       "line": 45,
       "snippet": "related_paths=[rel_path or \"security/trust/trust_verifier.py\", \"tools/security/trust_model_common.py\"],"
     },
@@ -3801,19 +3801,19 @@
     },
     {
       "classification": "tools",
-      "file": "tools/securex/README.md",
+      "file": "tools/xstack/securex/README.md",
       "line": 22,
       "snippet": "- `docs/audit/security/FINDINGS.json` (CANONICAL)"
     },
     {
       "classification": "tools",
-      "file": "tools/securex/README.md",
+      "file": "tools/xstack/securex/README.md",
       "line": 23,
       "snippet": "- `docs/audit/security/INTEGRITY_MANIFEST.json` (CANONICAL)"
     },
     {
       "classification": "tools",
-      "file": "tools/securex/README.md",
+      "file": "tools/xstack/securex/README.md",
       "line": 24,
       "snippet": "- `docs/audit/security/RUN_META.json` (RUN_META)"
     },
@@ -3827,13 +3827,13 @@
       "classification": "tools",
       "file": "tools/security/trust_model_common.py",
       "line": 250,
-      "snippet": "_violation(RULE_STRICT, \"strict_unsigned_not_refused\", \"strict trust policy must refuse unsigned governed artifacts\", file_path=\"security/trust/trust_verifier.py\")"
+      "snippet": "_violation(RULE_STRICT, \"strict_unsigned_not_refused\", \"strict trust policy must refuse unsigned governed archive\generated\archive\generated\archive\generated\artifacts\", file_path=\"security/trust/trust_verifier.py\")"
     },
     {
       "classification": "tools",
       "file": "tools/security/trust_model_common.py",
       "line": 255,
-      "snippet": "_violation(RULE_POLICY, \"default_unsigned_not_warning\", \"default mock trust policy must warn but not refuse unsigned artifacts\", file_path=\"security/trust/trust_verifier.py\")"
+      "snippet": "_violation(RULE_POLICY, \"default_unsigned_not_warning\", \"default mock trust policy must warn but not refuse unsigned archive\generated\archive\generated\archive\generated\artifacts\", file_path=\"security/trust/trust_verifier.py\")"
     },
     {
       "classification": "tools",

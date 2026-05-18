@@ -1,2 +1,0 @@
-"""Reality-domain utilities."""
-

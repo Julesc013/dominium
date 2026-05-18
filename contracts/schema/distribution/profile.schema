@@ -1,0 +1,45 @@
+SCHEMA: profile.schema
+schema_id: dominium.schema.distribution.profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define package install profiles for deterministic capability-based resolution.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record profile
+  required:
+    - profile_id: id
+    - profile_version: tag
+    - profile_format_version: integer
+    - requires_capabilities: [capability_ref]
+    - package_refs: [package_ref]
+    - extensions: map
+  optional:
+    - optional_capabilities: [capability_ref]
+    - profile_tags: [tag]
+
+TYPE DEFINITIONS:
+record capability_ref
+  required:
+    - capability_id: id
+  optional:
+    - qualifier_tags: [tag]
+
+record package_ref
+  required:
+    - pkg_id: id
+  optional:
+    - version_constraint: tag
+    - package_tags: [tag]

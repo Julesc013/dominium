@@ -1,0 +1,42 @@
+SCHEMA: worldgen_module.schema
+schema_id: dominium.schema.worldgen.module
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define worldgen module declarations used by registry-driven planning.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Module declarations do NOT define simulation algorithms.
+- Runtime behavior remains in explicit execution code paths.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record worldgen_module
+  required:
+    - module_id: id
+    - module_status: tag
+    - inputs: [tag]
+    - outputs: [tag]
+    - rng_stream: tag
+    - preview_layers: [tag]
+    - depends_on: [id]
+    - refusal_codes: [tag]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+

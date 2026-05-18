@@ -1,0 +1,36 @@
+SCHEMA: net/intent_envelope.schema
+schema_id: dominium.schema.net.intent_envelope
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic, authority-scoped network intent envelope artifacts.
+- Preserve SRZ routing compatibility without transport implementation coupling.
+
+REQUIRED SHAPE:
+record net_intent_envelope
+  required:
+    - schema_version: semver
+    - envelope_id: id
+    - source_peer_id: id
+    - source_shard_id: id
+    - target_shard_id: id
+    - submission_tick: u64
+    - deterministic_sequence_number: u64
+    - intent_id: id
+    - payload_schema_id: id
+    - payload: map
+    - pack_lock_hash: hash64
+    - signature: text
+    - extensions: map
+  optional:
+    - authority_summary: map
+    - registry_hashes: map
+
+INVARIANTS:
+- Envelope ordering is deterministic under ordering policy.
+- No transport timing input may alter envelope semantics.
+- Unknown top-level fields are forbidden.
+
+MIGRATION:
+- Breaking field changes require explicit CompatX migration or refusal route.

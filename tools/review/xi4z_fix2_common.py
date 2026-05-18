@@ -35,10 +35,10 @@ from tools.review.xi4z_fix1_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL = "content/data/restructure/src_domain_mapping_lock_approved_v3.json"
+SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL = "archive/generated/restructure/src_domain_mapping_lock_approved_v3.json"
 XI5_READINESS_CONTRACT_V3_REL = "contracts/restructure/xi5_readiness_contract_v3.json"
-SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL = "content/data/restructure/src_domain_mapping_target_paths_v3.json"
-XI4Z_FIX2_REPORT_JSON_REL = "content/data/restructure/xi4z_fix2_report.json"
+SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL = "archive/generated/restructure/src_domain_mapping_target_paths_v3.json"
+XI4Z_FIX2_REPORT_JSON_REL = "archive/generated/restructure/xi4z_fix2_report.json"
 
 XI_4Z_PACKAGE_COLLISION_REPORT_REL = "docs/restructure/XI_4Z_PACKAGE_COLLISION_REPORT.md"
 XI_4Z_FIX2_FINAL_REL = "docs/audit/XI_4Z_FIX2_FINAL.md"
@@ -62,9 +62,9 @@ FIX2_OUTPUT_RELS = (
 PACKAGE_COLLISION_RULES = {
     "platform": {
         "approved_domain": "engine",
-        "approved_module_id": "engine.platform",
+        "approved_module_id": "runtime.platform",
         "source_prefix": "src/platform/",
-        "target_prefix": "engine/platform/",
+        "target_prefix": "runtime/platform/",
     },
     "time": {
         "approved_domain": "engine",
@@ -278,7 +278,7 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
         "mapping_version": 1,
         "missing_inputs": sorted(set(lock_v2.get("missing_inputs") or [])),
         "normalization_basis": "Option C exact target-path binding with stdlib-collision package-root rebinding",
-        "replacement_target": "consumed by Ξ-5a; superseded by repository_structure_lock after Ξ-8",
+        "replacement_target": "consumed by Îž-5a; superseded by repository_structure_lock after Îž-8",
         "report_id": "xi.4z.src_domain_mapping_lock_approved.v3",
         "selected_layout_option": "C",
         "source_evidence_hashes": source_hashes,
@@ -310,8 +310,8 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
 
     readiness_v3 = {
         "allowed_actions": [
-            "move only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v3.json approved_for_xi5 using their explicit source_path and target_path values",
-            "route only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v3.json approved_to_attic using their explicit source_path and target_path values",
+            "move only rows listed in archive/generated/restructure/src_domain_mapping_lock_approved_v3.json approved_for_xi5 using their explicit source_path and target_path values",
+            "route only rows listed in archive/generated/restructure/src_domain_mapping_lock_approved_v3.json approved_to_attic using their explicit source_path and target_path values",
             "update include paths and build references only for explicitly listed approved rows",
             "refuse if additional unmapped runtime-critical source-like paths are encountered outside the approved or deferred sets",
         ],
@@ -328,11 +328,11 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
         "selected_layout_option": "C",
         "stop_conditions": [
             "encounter unmapped runtime-critical source-like paths outside the approved/deferred sets",
-            "attempt to move or remap a deferred Ξ-5b row",
+            "attempt to move or remap a deferred Îž-5b row",
             "need to invent a new target path that is not listed in the v3 approved lock",
             "need to overwrite an occupied target path",
             "build breaks after approved moves",
-            "any STRICT or Ω verification fails",
+            "any STRICT or Î© verification fails",
         ],
     }
     readiness_v3["deterministic_fingerprint"] = canonical_sha256(readiness_v3)

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Grounding Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-2 grounding behavior and ground fault detection policy.",
+  "x-doc-ref": [
+    "docs/electric/PROTECTION_AND_FAULT_MODEL.md",
+    "docs/audit/ELECTRICAL_PROTECTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "grounding_policy_id",
+    "default_mode",
+    "gfci_required",
+    "fault_detection_rule_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "grounding_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_mode": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "floating"
+      ]
+    },
+    "gfci_required": {
+      "type": "boolean"
+    },
+    "fault_detection_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "grounding_policy_id": "ground.basic_grounded",
+      "default_mode": "grounded",
+      "gfci_required": true,
+      "fault_detection_rule_id": "rule.ground.imbalance_basic",
+      "deterministic_fingerprint": "13389c4e7f31f2526a0f592ef8436ed8c583ec93c9b6f1bbab31f3872dcf91af",
+      "extensions": {}
+    }
+  ]
+}

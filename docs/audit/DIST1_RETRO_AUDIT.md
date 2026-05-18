@@ -11,17 +11,17 @@ Replacement Target: DIST-2 artifact integrity verification baseline
 ## Scope
 
 DIST-1 assembles portable distribution trees for `v0.0.0-mock` without changing runtime semantics.
-This audit records the current staging assumptions and the gaps between the checked-in `dist/` tree and the canonical DIST-0 bundle shape.
+This audit records the current staging assumptions and the gaps between the checked-in `archive/generated/dist/` tree and the canonical DIST-0 bundle shape.
 
 ## Current Dist Staging Logic
 
-- The checked-in `dist/` tree is a staging surface, not a canonical portable bundle.
-- Existing `dist/bin/*` wrappers still point back into repo paths such as `tools/mvp/runtime_entry.py`, `tools/setup/setup_cli.py`, and `tools/launcher/launch.py`.
-- The staged tree contains historical directories such as `cfg/`, `pkg/`, `redist/`, `registries/`, `runtime/`, `sym/`, `sys/`, and `ws/` that are not part of the DIST-0 canonical portable layout.
+- The checked-in `archive/generated/dist/` tree is a staging surface, not a canonical portable bundle.
+- Existing `archive/generated/dist/bin/*` wrappers still point back into repo paths such as `tools/mvp/runtime_entry.py`, `tools/setup/setup_cli.py`, and `tools/launcher/launch.py`.
+- The staged tree contains historical directories such as `cfg/`, `pkg/`, `rearchive/generated/dist/`, `registries/`, `runtime/`, `sym/`, `sys/`, and `ws/` that are not part of the DIST-0 canonical portable layout.
 
 ## Binary Output Surface
 
-- Stable product wrapper names already exist in `dist/bin/`:
+- Stable product wrapper names already exist in `archive/generated/dist/bin/`:
   - `engine`
   - `game`
   - `client`
@@ -29,7 +29,7 @@ This audit records the current staging assumptions and the gaps between the chec
   - `setup`
   - `launcher`
 - These wrappers are not standalone today because they resolve their runtime from the repository worktree.
-- `src/release/release_manifest_engine.py` currently scans `dist/bin/` for descriptor-bearing product binaries.
+- `src/tools/release/release_manifest_engine.py` currently scans `archive/generated/dist/bin/` for descriptor-bearing product binaries.
 
 ## Store Artifact Sources
 
@@ -38,9 +38,9 @@ This audit records the current staging assumptions and the gaps between the chec
   - `profiles/bundles/bundle.mvp_default.json`
   - `data/session_templates/session.mvp_default.json`
 - The required default pack set is represented by alias-pack trees under the current staging surface:
-  - `dist/packs/base/pack.base.procedural/pack.alias.json`
-  - `dist/packs/official/pack.sol.pin_minimal/pack.alias.json`
-  - `dist/packs/official/pack.earth.procedural/pack.alias.json`
+  - `archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json`
+  - `archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json`
+  - `archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json`
 - These alias pack trees can be regenerated deterministically from repo packs through `tools.mvp.runtime_bundle`, so DIST-1 must not depend on the dirty staging tree.
 
 ## Install and Manifest Surfaces
@@ -65,7 +65,7 @@ This audit records the current staging assumptions and the gaps between the chec
 
 ## Stray Dev-Only Content To Exclude
 
-- The current staging `dist/` tree still contains dev-only or staging-only content that must not ship:
+- The current staging `archive/generated/dist/` tree still contains dev-only or staging-only content that must not ship:
   - `__pycache__`
   - `.gitkeep`
   - staging-era helper directories not listed in DIST-0
@@ -74,6 +74,6 @@ This audit records the current staging assumptions and the gaps between the chec
 
 ## DIST-1 Implications
 
-- DIST-1 must assemble `dist/v0.0.0-mock/<platform>/dominium/` from canonical inputs, not from the checked-in staging surface.
+- DIST-1 must assemble `archive/generated/dist/v0.0.0-mock/<platform>/dominium/` from canonical inputs, not from the checked-in staging surface.
 - The assembled bundle must contain its own runtime payload and must not require the repository, Git metadata, or XStack tooling to run.
 - Wrapper scripts must inject bundle-local install roots and any required offline defaults so `bin/client`, `bin/server`, `bin/setup`, and `bin/launcher` can run directly from the portable bundle.

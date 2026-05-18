@@ -1,0 +1,155 @@
+{
+  "artifact_id": "P-1.agent_instruction_surfaces",
+  "post_state": "post-\u03a9/\u039e/\u03a0",
+  "authority_basis": [
+    "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+    "docs/planning/AUTHORITY_ORDER.md",
+    "data/planning/snapshot_intake_policy.json"
+  ],
+  "ordering_rules": [
+    "Present surfaces are sorted by path ascending.",
+    "Absent surfaces are listed only when explicitly searched for and not found.",
+    "Planning authority is scoped; presence does not imply semantic supremacy."
+  ],
+  "present_surfaces": [
+    {
+      "path": "AGENTS.md",
+      "guidance_scope": "repo_execution_contract",
+      "status_class": "authoritative",
+      "authority_domains": [
+        "planning",
+        "semantic"
+      ],
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Root execution contract for repository changes; binding beneath canon/glossary."
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "guidance_scope": "human_collaboration_guidance",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "medium",
+      "notes": "Contributor-facing surface."
+    },
+    {
+      "path": "docs/agents",
+      "guidance_scope": "agent_model_identity_lifecycle_and_planning_docs",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning",
+        "semantic"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Contains AGENT_CONTRACTS, AGENT_LIFECYCLE, AGENT_MODEL, AGENT_PLANNING, and related files."
+    },
+    {
+      "path": "docs/blueprint",
+      "guidance_scope": "current_blueprint_and_series_planning_archive",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "likely canonical",
+      "confidence": "high",
+      "notes": "Conditional planning surface for \u03a1-2 and \u03a1-3 reconciliation."
+    },
+    {
+      "path": "docs/governance",
+      "guidance_scope": "governance_policy_docs",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning",
+        "semantic"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Contains prompt-firewall, semantic escalation, and audit/gate policy docs."
+    },
+    {
+      "path": "docs/planning",
+      "guidance_scope": "post-\u03a0 planning and intake governance",
+      "status_class": "authoritative",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "canonical",
+      "confidence": "high",
+      "notes": "Contains P-0 intake doctrine and, after this prompt, P-1 reality extraction artifacts."
+    },
+    {
+      "path": "docs/xstack",
+      "guidance_scope": "xstack process guardrails",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "high",
+      "notes": "Observed files include ARCH_DRIFT_POLICY.md and CI_GUARDRAILS.md."
+    },
+    {
+      "path": "DOMINIUM.md",
+      "guidance_scope": "project_orientation",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "medium",
+      "notes": "Project-facing orientation document."
+    },
+    {
+      "path": "GOVERNANCE.md",
+      "guidance_scope": "repo_governance_summary",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "medium",
+      "notes": "Top-level governance guidance surface."
+    },
+    {
+      "path": "README.md",
+      "guidance_scope": "project_entrypoint",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "medium",
+      "notes": "General orientation rather than conflict-resolving doctrine."
+    },
+    {
+      "path": "SECURITY.md",
+      "guidance_scope": "security_and_reporting_guidance",
+      "status_class": "advisory",
+      "authority_domains": [
+        "planning",
+        "release"
+      ],
+      "canonicality_assessment": "advisory-only",
+      "confidence": "medium",
+      "notes": "Human-facing security guidance surface."
+    }
+  ],
+  "absent_or_not_observed": [
+    {
+      "path": "CLAUDE.md",
+      "classification": "not_observed"
+    },
+    {
+      "path": ".github/copilot-instructions.md",
+      "classification": "not_observed"
+    },
+    {
+      "path": "COPILOT*.md",
+      "classification": "not_observed"
+    }
+  ]
+}

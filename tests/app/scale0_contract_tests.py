@@ -82,7 +82,7 @@ FAMILIES = {
 
 
 
-            "contracts/schemas/macro_capsule.schema": [
+            "contracts/schema/macro_capsule.schema": [
 
 
 

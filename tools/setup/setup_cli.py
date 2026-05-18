@@ -20,10 +20,10 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from runtime.appshell import appshell_main
-from runtime.appshell.logging import log_emit
-from runtime.appshell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
-from runtime.appshell.paths import (
+from runtime.shell import appshell_main
+from runtime.shell.logging import log_emit
+from runtime.shell.pack_verifier_adapter import verify_pack_root as appshell_verify_pack_root
+from runtime.shell.paths import (
     VROOT_INSTANCES,
     VROOT_PACKS,
     vpath_candidate_roots,
@@ -43,7 +43,7 @@ from tools.governance import (
     select_governance_mode_row,
 )
 from tools.validators.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
-from tools.libraries.install import (
+from tools.package.libraries.install import (
     build_product_build_descriptor,
     default_install_registry_path,
     discover_install,
@@ -58,12 +58,12 @@ from tools.libraries.install import (
     validate_install_manifest,
     verify_install_registry,
 )
-from tools.libraries.export import (
+from tools.package.libraries.export import (
     export_instance_bundle,
     export_pack_bundle,
     export_save_bundle,
 )
-from release import (
+from tools.release import (
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_RESOLUTION_POLICY_ID,
     DEFAULT_INSTALL_TRANSACTION_LOG_REL,
@@ -99,8 +99,8 @@ from tools.validators.security.trust import (
     select_trust_policy,
     write_trust_root_registry,
 )
-from tools.libraries.save import resolve_save_manifest_path
-from tools.libraries.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
+from tools.package.libraries.save import resolve_save_manifest_path
+from tools.package.libraries.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
 from tools.lib.content_store import initialize_store_root
 
 
@@ -317,7 +317,7 @@ def resolve_apply_migration_cli() -> str:
 
 
 def resolve_import_engine_module():
-    return importlib.import_module("lib.import")
+    return importlib.import_module("tools.package.libraries.import")
 
 
 def _setup_vpath_context(store_root: str = "", install_root: str = "") -> dict:
@@ -526,7 +526,7 @@ PRODUCT_BINARY_SPECS = (
 
 
 def _semantic_contract_registry_payload() -> dict:
-    path = os.path.join(REPO_ROOT_HINT, "data", "registries", "semantic_contract_registry.json")
+    path = os.path.join(REPO_ROOT_HINT, "contracts", "registry", "semantic_contract_registry.json")
     return load_json(path)
 
 
@@ -3691,13 +3691,17 @@ def _legacy_main(argv: list[str] | None = None) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    delegate_argv = list(sys.argv[1:] if argv is None else argv)
+    if delegate_argv:
+        return _legacy_main(delegate_argv)
+
     def appshell_product_bootstrap(context: dict) -> int:
         delegate_argv = list(context.get("delegate_argv") or [])
         return _legacy_main(delegate_argv)
 
     return appshell_main(
         product_id="setup",
-        argv=list(sys.argv[1:] if argv is None else argv),
+        argv=delegate_argv,
         repo_root_hint=REPO_ROOT_HINT,
         product_bootstrap=appshell_product_bootstrap,
     )

@@ -1,0 +1,24 @@
+SCHEMA: meta/control_point.schema
+schema_id: dominium.schema.meta.control_point
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic control-point metadata for instrumentation surfaces.
+
+NON-SEMANTICS:
+- Does not execute actions.
+- Does not grant authority by itself.
+
+REQUIRED SHAPE:
+record control_point
+  required:
+    - control_point_id: id
+    - action_template_id: id
+    - required_access_policy_id: id
+    - safety_interlock_refs: list
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- Action template id must map to META-ACTION registry.
+- Access policy id must resolve through instrumentation access policy registry.

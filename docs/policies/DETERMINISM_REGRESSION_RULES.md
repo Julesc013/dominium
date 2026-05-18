@@ -20,10 +20,10 @@ The following rules are enforced by `tools/ci/arch_checks.py` (via the
 `check_arch` target):
 
 **Scope (deterministic core only)**
-- `engine/modules/core/**`
-- `engine/modules/sim/**`
-- `engine/modules/world/**`
-- `game/core/**`
+- `engine/kernel/**`
+- `game/domain/simulation/**`
+- `game/world/**`
+- `game/rule/**`
 - `game/rules/**`
 - `game/economy/**`
 

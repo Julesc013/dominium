@@ -1,0 +1,22 @@
+SCHEMA: materials/construction_policy.schema
+schema_id: dominium.schema.materials.construction_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic construction scheduling policy entries.
+
+REQUIRED SHAPE:
+record construction_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - default_step_duration_ticks: map|int
+    - allow_parallel_steps: bool
+    - max_parallel_steps: int
+    - deterministic_scheduling_rule_id: id
+    - extensions: map
+
+INVARIANTS:
+- max_parallel_steps must be >= 1.
+- scheduling rule ids must map to deterministic policy semantics.

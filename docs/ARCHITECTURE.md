@@ -60,7 +60,7 @@ Session composition is explicit and schema-driven:
 - `schema/session/session_spec.schema`
 - `schema/authority/authority_context.schema`
 
-`SessionSpec` includes `experience_id`, `parameter_bundle_id`, `pack_lock_hash`, and `authority_context`.  
+`SessionSpec` includes `experience_id`, `parameter_bundle_id`, `pack_lock_hash`, and `authority_context`.
 `AuthorityContext` carries law binding, entitlements, origin (`client|server|tool|replay`), and server-authoritative flags.
 
 Relevant registries:
@@ -103,9 +103,9 @@ Client lifecycle is pipeline-based and command-driven:
 
 - `schema/client/session_pipeline.schema`
 - `schema/client/session_artifacts.schema`
-- `client/core/session_pipeline.c`
-- `client/core/session_stage_registry.c`
-- `client/core/session_refusal_codes.c`
+- `apps/client/session/session_pipeline.c`
+- `apps/client/session/session_stage_registry.c`
+- `apps/client/session/session_refusal_codes.c`
 
 Canonical stages include `ResolveSession`, `AcquireWorld`, `VerifyWorld`, warmup stages, `SessionReady`, and `SessionRunning`.
 
@@ -138,7 +138,7 @@ The model boundary is:
 TruthModel --(LawProfile + AuthorityContext + Lens)--> PerceivedModel --> RenderModel
 ```
 
-`TruthModel` is canonical state. `PerceivedModel` is entitlement/law filtered projection.  
+`TruthModel` is canonical state. `PerceivedModel` is entitlement/law filtered projection.
 `RenderModel` is UI/backend-targeted projection for CLI/TUI/GUI.
 
 Reference docs:

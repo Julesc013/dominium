@@ -3,14 +3,14 @@
   "level_name": "Abiotic world",
   "status": "PARTIAL",
   "required_schemas": [
-    "contracts/schemas/domain.schema",
-    "contracts/schemas/field.schema",
-    "contracts/schemas/interface.schema",
-    "contracts/schemas/material.schema",
-    "contracts/schemas/process_family.schema",
-    "contracts/schemas/topology.schema",
-    "contracts/schemas/world_definition.schema",
-    "contracts/schemas/worldgen_model.schema"
+    "contracts/schema/domain.schema",
+    "contracts/schema/field.schema",
+    "contracts/schema/interface.schema",
+    "contracts/schema/material.schema",
+    "contracts/schema/process_family.schema",
+    "contracts/schema/topology.schema",
+    "contracts/schema/world_definition.schema",
+    "contracts/schema/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-a.process.decay",

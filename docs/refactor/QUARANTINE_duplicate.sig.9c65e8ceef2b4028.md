@@ -19,17 +19,17 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `engine/include/domino/system/d_system.h`
-- `engine/modules/system/d_system.h`
+- `runtime/platform/system/d_system.h`
 
 ## Scorecard
 
 - `engine/include/domino/system/d_system.h` disposition=`canonical` rank=`1` total_score=`79.88` risk=`HIGH`
-- `engine/modules/system/d_system.h` disposition=`quarantine` rank=`2` total_score=`77.2` risk=`HIGH`
+- `runtime/platform/system/d_system.h` disposition=`quarantine` rank=`2` total_score=`77.2` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md`
+- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md`
 
 ## Tests Involved
 
@@ -37,7 +37,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

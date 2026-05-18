@@ -28,10 +28,10 @@ IGNORE_CHANGED_PREFIXES: Tuple[str, ...] = (
     "docs/audit/",
     "docs/audit/remediation/",
     ".xstack_cache/",
-    "tools/auditx/cache/",
-    "tools/compatx/cache/",
-    "tools/performx/cache/",
-    "tools/securex/cache/",
+    "tools/xstack/auditx/cache/",
+    "tools/xstack/compatx/cache/",
+    "tools/xstack/performx/cache/",
+    "tools/xstack/securex/cache/",
 )
 
 

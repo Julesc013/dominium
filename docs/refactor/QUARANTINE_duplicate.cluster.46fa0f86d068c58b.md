@@ -12,16 +12,16 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/tools/core/graph/network_graph_engine.py`
+- Canonical Candidate: `src/tools/validators/core/graph/network_graph_engine.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/tools/core/constraints/constraint_engine.py`
-- `src/tools/core/flow/flow_engine.py`
-- `src/tools/core/graph/network_graph_engine.py`
-- `src/tools/core/graph/routing_engine.py`
+- `src/tools/validators/core/constraints/constraint_engine.py`
+- `src/tools/validators/core/flow/flow_engine.py`
+- `src/tools/validators/core/graph/network_graph_engine.py`
+- `src/tools/validators/core/graph/routing_engine.py`
 - `src/interior/compartment_flow_builder.py`
 - `src/interior/compartment_flow_engine.py`
 - `src/interior/interior_engine.py`
@@ -30,11 +30,11 @@ Replacement Target: XI-4b manual review resolution
 
 ## Scorecard
 
-- `src/tools/core/graph/network_graph_engine.py` disposition=`canonical` rank=`1` total_score=`64.17` risk=`HIGH`
-- `src/tools/core/graph/routing_engine.py` disposition=`quarantine` rank=`2` total_score=`62.74` risk=`HIGH`
-- `src/tools/core/flow/flow_engine.py` disposition=`quarantine` rank=`3` total_score=`59.29` risk=`HIGH`
+- `src/tools/validators/core/graph/network_graph_engine.py` disposition=`canonical` rank=`1` total_score=`64.17` risk=`HIGH`
+- `src/tools/validators/core/graph/routing_engine.py` disposition=`quarantine` rank=`2` total_score=`62.74` risk=`HIGH`
+- `src/tools/validators/core/flow/flow_engine.py` disposition=`quarantine` rank=`3` total_score=`59.29` risk=`HIGH`
 - `src/interior/interior_engine.py` disposition=`quarantine` rank=`4` total_score=`56.59` risk=`HIGH`
-- `src/tools/core/constraints/constraint_engine.py` disposition=`merge` rank=`5` total_score=`55.48` risk=`HIGH`
+- `src/tools/validators/core/constraints/constraint_engine.py` disposition=`merge` rank=`5` total_score=`55.48` risk=`HIGH`
 - `src/interior/compartment_flow_builder.py` disposition=`drop` rank=`6` total_score=`53.31` risk=`HIGH`
 - `src/materials/materialization/materialization_engine.py` disposition=`drop` rank=`7` total_score=`52.93` risk=`HIGH`
 - `src/interior/compartment_flow_engine.py` disposition=`drop` rank=`8` total_score=`52.72` risk=`HIGH`
@@ -52,7 +52,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

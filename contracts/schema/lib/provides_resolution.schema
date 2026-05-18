@@ -1,0 +1,36 @@
+SCHEMA: lib/provides_resolution.schema
+schema_id: dominium.schema.lib.provides_resolution
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic instance-scoped provider selections for ambiguous provides surfaces.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
+
+NON-SEMANTICS:
+- Resolution records pin a choice; they do not imply capability success by themselves.
+- Resolution policy selection does not mutate authoritative simulation law.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record provides_resolution
+  required:
+    - instance_id: id
+    - provides_id: id
+    - chosen_pack_id: id
+    - resolution_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- resolution_policy_id must be a registered deterministic resolution policy.
+- chosen_pack_id must be a stable namespaced pack id.
+- deterministic_fingerprint is computed from canonical serialized content.

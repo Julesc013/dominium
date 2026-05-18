@@ -1,0 +1,50 @@
+SCHEMA: bugreport.observation.schema
+schema_id: dominium.schema.bugreport_observation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define clip/voice backed bug observation artifacts for governed issue intake.
+- Keep reports deterministic, auditable, and machine-checkable.
+
+STABILITY GUARANTEES:
+- Required fields MUST remain present.
+- Unknown fields MUST round-trip unchanged.
+- No semantic field deletion without MAJOR version bump.
+
+NON-SEMANTICS:
+- Reports do not mutate simulation state.
+- Reports do not grant capabilities or entitlements.
+- Reports do not bypass RepoX/TestX enforcement.
+
+CONVENTIONS:
+- id: stable namespaced string.
+- path_ref: relative repository path or opaque external locator.
+- timestamp: ISO-8601 UTC string.
+- map: open key/value map; unknown keys preserved.
+- tag: namespaced lowercase token.
+
+REQUIRED SHAPE:
+record bugreport_observation
+  required:
+    - bugreport_id: id
+    - observed_behavior: tag
+    - expected_behavior: tag
+    - build_identity: map
+    - capability_set: [tag]
+    - packs_enabled: [tag]
+    - created_at: timestamp
+    - status: tag
+    - extensions: map
+  optional:
+    - clip_path: path_ref
+    - voice_note_path: path_ref
+    - timestamps: [tag]
+    - reproduction_steps: [tag]
+    - regression_test: tag
+    - deferred_reason: tag
+    - notes: map
+
+VALIDATION NOTES:
+- At least one of clip_path or voice_note_path SHOULD be present.
+- status=resolved requires regression_test or deferred_reason.

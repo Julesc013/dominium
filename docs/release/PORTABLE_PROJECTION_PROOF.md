@@ -64,7 +64,7 @@ The prerequisite RepoX and native command-surface blockers have improved:
 Portable projection proof is now locally proven:
 
 - Projection root: `.dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium`.
-- Assembler: `tools/dist/tool_assemble_dist_tree.py`.
+- Assembler: `tools/release/dist/tool_assemble_dist_tree.py`.
 - Validator: `tools/validators/check_portable_projection.py`.
 - Validator status: `proof_status: proven`, blockers: none.
 - Native binaries included in projection `bin/`: `setup.exe`, `launcher.exe`, `client.exe`, `server.exe`, `tools.exe`.

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DT Quantization Rule Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-3 dt quantization rule row.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "dt_rule_id",
+    "allowed_dt_values",
+    "default_dt",
+    "deterministic_rounding_rule",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "dt_rule_id": {
+      "type": "string"
+    },
+    "allowed_dt_values": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "integer",
+        "minimum": 1
+      }
+    },
+    "default_dt": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "deterministic_rounding_rule": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "dt_rule_id": "dt.rule.standard",
+      "allowed_dt_values": [
+        250,
+        500,
+        1000,
+        2000
+      ],
+      "default_dt": 1000,
+      "deterministic_rounding_rule": "round.nearest.lower_tie",
+      "extensions": {}
+    }
+  ]
+}

@@ -11,7 +11,7 @@ Replacement Target: legacy reference surface retained without current binding au
 Scope: engine/ + game/ + docs/agents/ for AG-1 (intent, planning, knowledge, memory, failure).
 
 Validation artifacts:
-- `engine/tests/agent_mvp_core_tests.cpp` (headless, no assets)
+- `tests/engine/agent_mvp_core_tests.cpp` (headless, no assets)
 
 Coverage matrix:
 - Multiple goals and arbitration: `test_multiple_goals`

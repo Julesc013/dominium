@@ -53,13 +53,13 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3835,
-      "snippet": "\"contracts/schemas/safety/safety_instance.schema\","
+      "snippet": "\"contracts/schema/safety/safety_instance.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3836,
-      "snippet": "\"contracts/schemas/safety/safety_pattern.schema\","
+      "snippet": "\"contracts/schema/safety/safety_pattern.schema\","
     },
     {
       "classification": "unknown",
@@ -93,49 +93,49 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/safety_instance.schema.json",
+      "file": "contracts/schema/safety_instance.schema.json",
       "line": 7,
       "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/safety_pattern.schema.json",
+      "file": "contracts/schema/safety_pattern.schema.json",
       "line": 7,
       "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/safety_pattern_registry.schema.json",
+      "file": "contracts/schema/safety_pattern_registry.schema.json",
       "line": 7,
       "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/chem/process_equipment_profile.schema",
+      "file": "contracts/schema/chem/process_equipment_profile.schema",
       "line": 12,
       "snippet": "- Runtime/process layers enforce reaction execution and safety/compliance behavior."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/fluid/fluid_node_payload.schema",
+      "file": "contracts/schema/fluid/fluid_node_payload.schema",
       "line": 8,
       "snippet": "- Declare fluid node behavior through model/safety/state references, not inline device logic."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/safety/safety_instance.schema",
+      "file": "contracts/schema/safety/safety_instance.schema",
       "line": 1,
       "snippet": "SCHEMA: safety/safety_instance.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/safety/safety_pattern.schema",
+      "file": "contracts/schema/safety/safety_pattern.schema",
       "line": 1,
       "snippet": "SCHEMA: safety/safety_pattern.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/system/system_template.schema",
+      "file": "contracts/schema/system/system_template.schema",
       "line": 8,
       "snippet": "- Bind template declarations to interface/invariant/macro/tier/safety/spec contracts."
     },
@@ -167,7 +167,7 @@
       "classification": "unknown",
       "file": "data/audit/release_index_policy_report.json",
       "line": 1,
-      "snippet": "{\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"changelog_files\":[\"CHANGELOG.md\",\"docs/architecture/CHANGELOG_ARCH.md\",\"docs/engine/CODE_1_CHANGELOG.md\"],\"default_resolution_policy_id\":\"policy.exact_suite\",\"determinism_replay_match\":true,"
+      "snippet": "{\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"changelog_files\":[\"CHANGELOG.md\",\"docs/architecture/CHANGELOG_ARCH.md\",\"docs/engine/CODE_1_CHANGELOG.md\"],\"default_resolution_policy_id\":\"policy.exact_suite\",\"determinism_replay_match\":true,"
     },
     {
       "classification": "unknown",
@@ -719,7 +719,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.03d1474e0c2ba6ec.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/VALIDATION_STACK_MAP.md, docs/release/PROVISIONAL_FEATURE_LIST.md, "
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/VALIDATION_STACK_MAP.md, docs/release/PROVISIONAL_FEATURE_LIST.md, "
     },
     {
       "classification": "docs",
@@ -993,61 +993,61 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e177_inline_protection_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e177_inline_protection_smell.py",
       "line": 55,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e177_inline_protection_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e177_inline_protection_smell.py",
       "line": 92,
       "snippet": "related_paths=[rel_path, \"safety/safety_engine.py\", \"tools/xstack/sessionx/process_runtime.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e178_missing_failsafe_smell.py",
       "line": 36,
       "snippet": "\"docs/safety/SAFETY_PATTERN_LIBRARY.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e178_missing_failsafe_smell.py",
       "line": 46,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e178_missing_failsafe_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e178_missing_failsafe_smell.py",
       "line": 85,
       "snippet": "related_paths=[rel_path, \"docs/safety/SAFETY_PATTERN_LIBRARY.md\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e184_breaker_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e184_breaker_bypass_smell.py",
       "line": 53,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e184_breaker_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e184_breaker_bypass_smell.py",
       "line": 92,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e187_inline_trip_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e187_inline_trip_smell.py",
       "line": 55,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e189_unlogged_trip_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e189_unlogged_trip_smell.py",
       "line": 83,
       "snippet": "\"safety/safety_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e191_direct_breaker_toggle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e191_direct_breaker_toggle_smell.py",
       "line": 54,
       "snippet": "\"safety/safety_engine.py\","
     }

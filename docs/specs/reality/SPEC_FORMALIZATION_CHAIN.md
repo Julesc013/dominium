@@ -44,7 +44,7 @@ This framework does not yet define:
 
 This framework inherits from `Λ-0` through `Λ-3`.
 It does not create a parallel ontology.
-It formalizes repo-grounded direction already visible in surfaces such as `materials/blueprint_engine.py`, `materials/maintenance/decay_engine.py`, `infrastructure/formalization/inference_engine.py`, `docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`, `docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`, `docs/knowledge/EPISTEMICS_OVERVIEW.md`, and existing planning artifacts that already treat standards, blueprints, protocols, institutions, and diffusion as first-class future concerns.
+It formalizes repo-grounded direction already visible in surfaces such as `materials/blueprint_engine.py`, `materials/maintenance/decay_engine.py`, `infrastructure/formalization/inference_engine.py`, `docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`, `docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`, `docs/knowledge/EPISTEMICS_OVERVIEW.md`, and existing planning artifacts that already treat standards, blueprints, protocols, institutions, and diffusion as first-class future concerns.
 
 ## B. Core Definition
 
@@ -617,6 +617,6 @@ Any future change to the meaning of the formalization chain requires:
 - `materials/blueprint_engine.py`
 - `materials/maintenance/decay_engine.py`
 - `infrastructure/formalization/inference_engine.py`
-- `docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
-- `docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`
+- `docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
+- `docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`
 - `docs/knowledge/EPISTEMICS_OVERVIEW.md`

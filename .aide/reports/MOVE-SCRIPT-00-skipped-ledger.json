@@ -1397,7 +1397,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/architecture/repository_structure_lock.json",
-      "target": "content/data/architecture/repository_structure_lock.json",
+      "target": "archive/generated/architecture/repository_structure_lock.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1422,7 +1422,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/defaults/profiles/modern_2020.tlv",
-      "target": "content/data/defaults/profiles/modern_2020.tlv",
+      "target": "content/defaults/profiles/modern_2020.tlv",
       "validation_tier": "Tier 2"
     },
     {
@@ -1447,7 +1447,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/defaults/profiles/retro_1990s.tlv",
-      "target": "content/data/defaults/profiles/retro_1990s.tlv",
+      "target": "content/defaults/profiles/retro_1990s.tlv",
       "validation_tier": "Tier 2"
     },
     {
@@ -1472,7 +1472,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/defaults/profiles/server_mmo.tlv",
-      "target": "content/data/defaults/profiles/server_mmo.tlv",
+      "target": "content/defaults/profiles/server_mmo.tlv",
       "validation_tier": "Tier 2"
     },
     {
@@ -1497,7 +1497,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/governance/governance_profile.json",
-      "target": "content/data/governance/governance_profile.json",
+      "target": "contracts/governance/governance_profile.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1522,7 +1522,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/repo/repo_phased_migration_shims_validation_and_rollback.json",
-      "target": "content/data/repo/repo_phased_migration_shims_validation_and_rollback.json",
+      "target": "archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1547,7 +1547,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/xstack/checkpoint_c_xstack_aide_closure.json",
-      "target": "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "target": "archive/generated/xstack/checkpoint_c_xstack_aide_closure.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1572,7 +1572,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/xstack/next_execution_order_post_xstack_aide.json",
-      "target": "content/data/xstack/next_execution_order_post_xstack_aide.json",
+      "target": "archive/generated/xstack/next_execution_order_post_xstack_aide.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1597,7 +1597,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "data/xstack/xstack_to_aide_extraction_map.json",
-      "target": "content/data/xstack/xstack_to_aide_extraction_map.json",
+      "target": "archive/generated/xstack/xstack_to_aide_extraction_map.json",
       "validation_tier": "Tier 2"
     },
     {
@@ -1673,7 +1673,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/__init__.py",
-      "target": "tools/libraries/__init__.py",
+      "target": "tools/package/libraries/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1698,7 +1698,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/artifact/__init__.py",
-      "target": "tools/libraries/artifact/__init__.py",
+      "target": "tools/package/libraries/artifact/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1724,7 +1724,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/artifact/artifact_validator.py",
-      "target": "tools/libraries/artifact/artifact_validator.py",
+      "target": "tools/package/libraries/artifact/artifact_validator.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1750,7 +1750,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/bundle/__init__.py",
-      "target": "tools/libraries/bundle/__init__.py",
+      "target": "tools/package/libraries/bundle/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1776,7 +1776,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/bundle/bundle_manifest.py",
-      "target": "tools/libraries/bundle/bundle_manifest.py",
+      "target": "tools/package/libraries/bundle/bundle_manifest.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1801,7 +1801,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/export/__init__.py",
-      "target": "tools/libraries/export/__init__.py",
+      "target": "tools/package/libraries/export/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1826,7 +1826,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/export/export_engine.py",
-      "target": "tools/libraries/export/export_engine.py",
+      "target": "tools/package/libraries/export/export_engine.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1851,7 +1851,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/import/__init__.py",
-      "target": "tools/libraries/import/__init__.py",
+      "target": "tools/package/libraries/import/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1876,7 +1876,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/import/import_engine.py",
-      "target": "tools/libraries/import/import_engine.py",
+      "target": "tools/package/libraries/import/import_engine.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1901,7 +1901,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/install/__init__.py",
-      "target": "tools/libraries/install/__init__.py",
+      "target": "tools/package/libraries/install/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1926,7 +1926,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/install/install_discovery_engine.py",
-      "target": "tools/libraries/install/install_discovery_engine.py",
+      "target": "tools/package/libraries/install/install_discovery_engine.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1952,7 +1952,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/install/install_validator.py",
-      "target": "tools/libraries/install/install_validator.py",
+      "target": "tools/package/libraries/install/install_validator.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -1977,7 +1977,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/instance/__init__.py",
-      "target": "tools/libraries/instance/__init__.py",
+      "target": "tools/package/libraries/instance/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2002,7 +2002,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/instance/instance_clone.py",
-      "target": "tools/libraries/instance/instance_clone.py",
+      "target": "tools/package/libraries/instance/instance_clone.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2028,7 +2028,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/instance/instance_validator.py",
-      "target": "tools/libraries/instance/instance_validator.py",
+      "target": "tools/package/libraries/instance/instance_validator.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2054,7 +2054,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/provides/__init__.py",
-      "target": "tools/libraries/provides/__init__.py",
+      "target": "tools/package/libraries/provides/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2080,7 +2080,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/provides/provider_resolution.py",
-      "target": "tools/libraries/provides/provider_resolution.py",
+      "target": "tools/package/libraries/provides/provider_resolution.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2105,7 +2105,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/save/__init__.py",
-      "target": "tools/libraries/save/__init__.py",
+      "target": "tools/package/libraries/save/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2131,7 +2131,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "lib/save/save_validator.py",
-      "target": "tools/libraries/save/save_validator.py",
+      "target": "tools/package/libraries/save/save_validator.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2156,7 +2156,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/store/__init__.py",
-      "target": "tools/libraries/store/__init__.py",
+      "target": "tools/package/libraries/store/__init__.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -2181,7 +2181,7 @@
         "active_python_package_requires_import_rewrite_or_shim_plan"
       ],
       "source": "lib/store/gc_engine.py",
-      "target": "tools/libraries/store/gc_engine.py",
+      "target": "tools/package/libraries/store/gc_engine.py",
       "validation_tier": "Tier 3"
     },
     {
@@ -4333,7 +4333,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "validation/__init__.py",
-      "target": "tools/validators/validation/__init__.py",
+      "target": "tools/validators/suite/__init__.py",
       "validation_tier": "Tier 1"
     },
     {
@@ -4359,7 +4359,7 @@
         "identity_sensitive_without_clear_identity_safe_route"
       ],
       "source": "validation/validation_engine.py",
-      "target": "tools/validators/validation/validation_engine.py",
+      "target": "tools/validators/suite/validation_engine.py",
       "validation_tier": "Tier 1"
     }
   ],

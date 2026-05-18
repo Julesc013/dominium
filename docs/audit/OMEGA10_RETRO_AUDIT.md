@@ -22,11 +22,11 @@ It does not change runtime semantics, packaging semantics, or Ω-stage baselines
 - `docs/release/DISTRIBUTION_MODEL.md`
 - `docs/release/DIST_BUNDLE_ASSEMBLY.md`
 - `docs/release/DIST_VERIFICATION_RULES.md`
-- `tools/dist/tool_assemble_dist_tree.py`
-- `tools/dist/tool_verify_distribution.py`
-- `tools/dist/tool_run_clean_room.py`
-- `tools/dist/tool_run_platform_matrix.py`
-- `tools/dist/tool_run_version_interop.py`
+- `tools/release/dist/tool_assemble_dist_tree.py`
+- `tools/release/dist/tool_verify_distribution.py`
+- `tools/release/dist/tool_run_clean_room.py`
+- `tools/release/dist/tool_run_platform_matrix.py`
+- `tools/release/dist/tool_run_version_interop.py`
 - `docs/audit/DIST6_FINAL.md`
 
 ### RELEASE-0 through RELEASE-3 / update / archive
@@ -61,11 +61,11 @@ It does not change runtime semantics, packaging semantics, or Ω-stage baselines
 
 ### 1. DIST tooling already covers the execution lane Ω-10 must orchestrate
 
-- DIST-1 assembly exists via `tools/dist/tool_assemble_dist_tree.py`.
-- DIST-2 offline verification exists via `tools/dist/tool_verify_distribution.py`.
-- DIST-3 clean-room validation exists via `tools/dist/tool_run_clean_room.py`.
-- DIST-4 platform matrix validation exists via `tools/dist/tool_run_platform_matrix.py`.
-- DIST-6 interop validation exists via `tools/dist/tool_run_version_interop.py`.
+- DIST-1 assembly exists via `tools/release/dist/tool_assemble_dist_tree.py`.
+- DIST-2 offline verification exists via `tools/release/dist/tool_verify_distribution.py`.
+- DIST-3 clean-room validation exists via `tools/release/dist/tool_run_clean_room.py`.
+- DIST-4 platform matrix validation exists via `tools/release/dist/tool_run_platform_matrix.py`.
+- DIST-6 interop validation exists via `tools/release/dist/tool_run_version_interop.py`.
 
 ### 2. Release publication inputs are already deterministic and offline
 

@@ -989,7 +989,7 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
       "line": 32,
-      "snippet": "- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/auditx/**`."
+      "snippet": "- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/xstack/auditx/**`."
     },
     {
       "classification": "unknown",
@@ -1013,7 +1013,7 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
       "line": 20,
-      "snippet": "- release: `repo/release_policy.toml`, `docs/release/**`, `tools/distribution/**`, release/update/security roots."
+      "snippet": "- release: `repo/release_policy.toml`, `docs/release/**`, `tools/package/distribution/**`, release/update/security roots."
     },
     {
       "classification": "unknown",
@@ -1223,7 +1223,7 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/validation.md",
       "line": 52,
-      "snippet": "- Directory-level and non-tool data paths such as `tools/xstack/`, `tools/auditx/`, `repo/repox/`, and `validation/validation_engine.py`: MISSING/unsupported as direct explain-tool targets."
+      "snippet": "- Directory-level and non-tool data paths such as `tools/xstack/`, `tools/xstack/auditx/`, `repo/repox/`, and `validation/validation_engine.py`: MISSING/unsupported as direct explain-tool targets."
     },
     {
       "classification": "unknown",
@@ -3447,43 +3447,43 @@
     },
     {
       "classification": "unknown",
-      "file": "apps/setup/packages/scripts/packaging/CMakeLists.txt",
+      "file": "release/packaging/setup/scripts/packaging/CMakeLists.txt",
       "line": 10,
       "snippet": "set(DOMINIUM_PACKAGE_VERSION \"${DOM_BUILD_ID}\" CACHE STRING \"Version string used in portable package names and repo/products/<version> layout\")"
     },
     {
       "classification": "unknown",
-      "file": "apps/setup/packages/scripts/packaging/CMakeLists.txt",
+      "file": "release/packaging/setup/scripts/packaging/CMakeLists.txt",
       "line": 13,
       "snippet": "set(DOMINIUM_PACKAGE_VERSION \"0.0.0\" CACHE STRING \"Version string used in portable package names and repo/products/<version> layout\" FORCE)"
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/packaging/stage_dist.cmake",
+      "file": "release/packaging/setup/scripts/packaging/stage_dist.cmake",
       "line": 5,
       "snippet": "#   - VERSION: version string for repo/products/<version>."
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/packaging/stage_dist.cmake",
+      "file": "release/packaging/setup/scripts/packaging/stage_dist.cmake",
       "line": 31,
       "snippet": "\"${_stage}/repo/products/game/${VERSION}/bin\""
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/packaging/stage_dist.cmake",
+      "file": "release/packaging/setup/scripts/packaging/stage_dist.cmake",
       "line": 32,
       "snippet": "\"${_stage}/repo/mods\""
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/packaging/stage_dist.cmake",
+      "file": "release/packaging/setup/scripts/packaging/stage_dist.cmake",
       "line": 33,
       "snippet": "\"${_stage}/repo/packs\""
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/packaging/stage_dist.cmake",
+      "file": "release/packaging/setup/scripts/packaging/stage_dist.cmake",
       "line": 59,
       "snippet": "_dom_copy_sidecars(\"${GAME_BIN}\" \"${_stage}/repo/products/game/${VERSION}/bin\")"
     },
@@ -3587,7 +3587,7 @@
       "classification": "active_source",
       "file": "cmake/dominium_dist.cmake",
       "line": 187,
-      "snippet": "\"  dist/sys/<os>/<arch>/repo/{products,packs,mods}\\n\""
+      "snippet": "\"  archive/generated/dist/sys/<os>/<arch>/repo/{products,packs,mods}\\n\""
     },
     {
       "classification": "active_source",
@@ -4347,9 +4347,9 @@
     },
     {
       "classification": "docs",
-      "file": "dist/docs/readme.txt",
+      "file": "archive/generated/dist/docs/readme.txt",
       "line": 12,
-      "snippet": "dist/sys/<os>/<arch>/repo/{products,packs,mods}"
+      "snippet": "archive/generated/dist/sys/<os>/<arch>/repo/{products,packs,mods}"
     },
     {
       "classification": "docs",
@@ -4389,7 +4389,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/VIRTUAL_PATHS.md",
+      "file": "docs/runtime/shell/VIRTUAL_PATHS.md",
       "line": 13,
       "snippet": "This document remains an input/partial contract for AppShell virtual-root resolution. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/la"
     },
@@ -4619,7 +4619,7 @@
       "classification": "docs",
       "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
       "line": 78,
-      "snippet": "| Release manifest and update resolution control plane | release/<br>updates/<br>dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, la"
+      "snippet": "| Release manifest and update resolution control plane | release/<br>updates/<br>archive/generated/dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, la"
     },
     {
       "classification": "docs",
@@ -4691,7 +4691,7 @@
       "classification": "docs",
       "file": "docs/distribution/DIST_TREE_CONTRACT.md",
       "line": 13,
-      "snippet": "This document remains an input/partial contract for generated `dist/` output roles. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layo"
+      "snippet": "This document remains an input/partial contract for generated `archive/generated/dist/` output roles. CONVERGE-04 reconciles distribution, install, media, package, bundle, cache, staging, symbols, and runtime projection layout at `contracts/distribution/layo"
     },
     {
       "classification": "docs",
@@ -4811,7 +4811,7 @@
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
       "line": 99,
-      "snippet": "| `upsilon.release_ops` | `\u03a5-B0 \u2014 RELEASE_OPS_ALIGNMENT-0` | `ready` | `tools/controlx/README.md`, `tools/xstack/run.py`, `repo/release_policy.toml`, `release/update_resolver.py`, and `release/release_manifest_engine.py` already form a real"
+      "snippet": "| `upsilon.release_ops` | `\u03a5-B0 \u2014 RELEASE_OPS_ALIGNMENT-0` | `ready` | `tools/xstack/controlx/README.md`, `tools/xstack/run.py`, `repo/release_policy.toml`, `tools/release/update_resolver.py`, and `tools/release/release_manifest_engine.py` already form a real"
     },
     {
       "classification": "docs",
@@ -4841,7 +4841,7 @@
       "classification": "docs",
       "file": "docs/planning/FOUNDATION_READINESS_REPORT.md",
       "line": 59,
-      "snippet": "This axis is the strongest after semantic readiness. The repo already has `release`, `repo`, `updates`, `data/architecture`, `data/registries`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/securex`, `repo/r"
+      "snippet": "This axis is the strongest after semantic readiness. The repo already has `release`, `repo`, `updates`, `data/architecture`, `data/registries`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/xstack/compatx`, `tools/xstack/securex`, `repo/r"
     },
     {
       "classification": "docs",
@@ -4865,7 +4865,7 @@
       "classification": "docs",
       "file": "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
       "line": 167,
-      "snippet": "Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: \u03a5-2, `release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`"
+      "snippet": "Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: \u03a5-2, `tools/release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`"
     },
     {
       "classification": "docs",
@@ -5105,7 +5105,7 @@
       "classification": "docs",
       "file": "docs/repo/DOMAIN_SPLIT_RULES.md",
       "line": 57,
-      "snippet": "CONVERGE-09 moved safe Python-only implementation roots to `game/domains/` and retired those root-level aliases. The full report is `docs/repo/DOMAIN_SPLIT_REPORT.md`."
+      "snippet": "CONVERGE-09 moved safe Python-only implementation roots to `game/domain/` and retired those root-level aliases. The full report is `docs/repo/DOMAIN_SPLIT_REPORT.md`."
     },
     {
       "classification": "docs",
@@ -5693,7 +5693,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md",
       "line": 321,
-      "snippet": "`release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `dist/`, and related registries or manifests"
+      "snippet": "`release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `archive/generated/dist/`, and related registries or manifests"
     },
     {
       "classification": "docs",
@@ -5705,7 +5705,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -5837,7 +5837,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -6005,7 +6005,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
       "line": 441,
-      "snippet": "CONVERGE-09 completed the safe portion of the domain-root split by moving root-level Python domain implementation packages under `game/domains/`. It added `game/domains/README.md`, `game/domains/MANIFEST.md`, and `docs/repo/DOMAIN_SPLIT_REP"
+      "snippet": "CONVERGE-09 completed the safe portion of the domain-root split by moving root-level Python domain implementation packages under `game/domain/`. It added `game/domain/README.md`, `game/domain/MANIFEST.md`, and `docs/repo/DOMAIN_SPLIT_REP"
     },
     {
       "classification": "docs",
@@ -6215,7 +6215,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
       "line": 59,
-      "snippet": "| `client/core/client_command_bridge.c` and `client/core/client_commands_registry.c` | `repo/repox/rulesets/core.json` | active RepoX rule scope input | updated | now `apps/client/core/...` |"
+      "snippet": "| `apps/client/session/client_command_bridge.c` and `apps/client/session/client_commands_registry.c` | `repo/repox/rulesets/core.json` | active RepoX rule scope input | updated | now `apps/apps/client/session/...` |"
     },
     {
       "classification": "docs",
@@ -6233,7 +6233,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
       "line": 119,
-      "snippet": "- Updated active CMake/test references under `engine/tests/`, `tests/authority/`, `tests/tourist/`, `tests/services/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`."
+      "snippet": "- Updated active CMake/test references under `tests/engine/`, `tests/authority/`, `tests/tourist/`, `tests/services/`, `tests/piracy_containment/`, `tests/invariant/`, and `repo/repox/rulesets/core.json`."
     },
     {
       "classification": "docs",
@@ -6365,7 +6365,7 @@
       "classification": "docs",
       "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
       "line": 150,
-      "snippet": "| `tools/audit/*`, `tools/auditx/*` | `/tools/audit/*` | architecture/repo/document audit stack | `provisional` | runtime inspection only; no runtime importers | `low` |"
+      "snippet": "| `tools/audit/*`, `tools/xstack/auditx/*` | `/tools/audit/*` | architecture/repo/document audit stack | `provisional` | runtime inspection only; no runtime importers | `low` |"
     },
     {
       "classification": "docs",
@@ -6491,7 +6491,7 @@
       "classification": "tools",
       "file": "scripts/ci/check_repox_rules.py",
       "line": 12552,
-      "snippet": "data_first_roots = (\"contracts/schemas/\", \"data/\", \"docs/\", \"repo/\", \"tests/fixtures/\")"
+      "snippet": "data_first_roots = (\"contracts/schema/\", \"data/\", \"docs/\", \"repo/\", \"tests/fixtures/\")"
     },
     {
       "classification": "tools",
@@ -6641,7 +6641,7 @@
       "classification": "tools",
       "file": "tools/xstack/core/plan.py",
       "line": 63,
-      "snippet": "deep_prefixes = (\"contracts/schemas/\", \"data/registries/\", \"repo/repox/\", \"scripts/ci/\")"
+      "snippet": "deep_prefixes = (\"contracts/schema/\", \"data/registries/\", \"repo/repox/\", \"scripts/ci/\")"
     }
   ],
   "references_rewritten": false,

@@ -1,0 +1,22 @@
+SCHEMA: logistics/shipment_commitment.schema
+schema_id: dominium.schema.logistics.shipment_commitment
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic commitment artifact for shipment lifecycle.
+
+REQUIRED SHAPE:
+record shipment_commitment
+  required:
+    - schema_version: semver
+    - commitment_id: id
+    - manifest_id: id
+    - actor_subject_id: id
+    - created_tick: int
+    - status: enum(planned|scheduled|executing|completed|failed)
+    - extensions: map
+
+INVARIANTS:
+- commitment_id is stable and unique.
+- created_tick must be >= 0.

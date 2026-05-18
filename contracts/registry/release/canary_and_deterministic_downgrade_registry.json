@@ -205,8 +205,8 @@
     "tool convenience silently redefining deterministic downgrade semantics"
   ],
   "repo_evidence_surfaces": [
-    "release/update_resolver.py",
-    "release/component_graph_resolver.py",
+    "tools/release/update_resolver.py",
+    "tools/release/component_graph_resolver.py",
     "contracts/repo/release_policy.toml",
     "release/updates/stable.json",
     "release/updates/beta.json",
@@ -220,7 +220,7 @@
     "contracts/registry/trust_root_registry.json",
     "contracts/registry/refusal_code_registry.json",
     "contracts/registry/remediation_playbooks.json",
-    "tools/controlx/README.md",
+    "tools/xstack/controlx/README.md",
     "tools/xstack/testx/tests/test_rollback_restores_previous_component_set.py",
     "tools/xstack/testx/tests/test_update_plan_excludes_yanked.py",
     "tools/xstack/testx/tests/test_yanked_excluded_from_latest.py",

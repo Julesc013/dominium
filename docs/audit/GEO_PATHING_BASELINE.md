@@ -23,7 +23,7 @@ GEO-6 freezes the geometry-portable traversal substrate on top of:
 
 The authoritative doctrine is:
 
-- `docs/geo/PATHING_AND_TRAVERSAL_MODEL.md`
+- `docs/domains/geology/PATHING_AND_TRAVERSAL_MODEL.md`
 
 Relevant invariants and contracts upheld:
 
@@ -158,7 +158,7 @@ This establishes the shard-safe contract GEO-8 worldgen and future SYS/PROC plan
 
 Proof and replay surfaces added:
 
-- `tools/geo/tool_replay_path_request.py`
+- `tools/validators/domain/geology/tool_replay_path_request.py`
 - `path_result_proof_surface(...)`
 
 Proof context now supports:

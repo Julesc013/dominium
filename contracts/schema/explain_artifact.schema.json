@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explain Artifact Schema",
+  "version": "1.0.0",
+  "description": "Canonical derived explain artifact with bounded cause-chain and remediation hints.",
+  "x-doc-ref": [
+    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md",
+    "docs/meta/INFORMATION_GRAMMAR_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "explain_id",
+    "cause_chain",
+    "referenced_artifacts",
+    "remediation_hints",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "anyOf": [
+    {
+      "required": [
+        "event_id"
+      ]
+    },
+    {
+      "required": [
+        "target_id"
+      ]
+    }
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "explain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cause_chain": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "referenced_artifacts": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "remediation_hints": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "explain_id": "explain.13fcb2fa08bb2a21",
+      "event_id": "event.trip.00112233",
+      "target_id": "device.breaker.main",
+      "cause_chain": [
+        "cause.fault.overcurrent",
+        "cause.policy.trip_threshold"
+      ],
+      "referenced_artifacts": [
+        "artifact.decision:decision.trip.00112233",
+        "artifact.record:event.trip.00112233"
+      ],
+      "remediation_hints": [
+        "hint.inspect.breaker_panel",
+        "hint.reduce.load"
+      ],
+      "deterministic_fingerprint": "dc6b0f3ca69dd4ec0e4ae6f14f69d9cf146a58d6525c6be203bdf95d57fcf6db",
+      "extensions": {}
+    }
+  ]
+}
+

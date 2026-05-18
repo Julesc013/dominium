@@ -54,12 +54,12 @@ What is branded or named XStack now:
 What is functionally part of the live XStack control/tooling layer now:
 
 - `scripts/dev/gate.py`, which imports `tools.xstack.core.*`
-- repo-local validation surfaces that consume XStack contracts, especially `tools/validators/validation/validation_engine.py` and `tools/validation/tool_run_validation.py`
+- repo-local validation surfaces that consume XStack contracts, especially `tools/validators/suite/validation_engine.py` and `tools/validators/suite/tool_run_validation.py`
 - product-shell and session-adjacent surfaces that directly import XStack helpers, including `appshell/**`, `server/server_boot.py`, and `client/local_server/local_server_controller.py`
 
 What resembles XStack concerns but is not the same as current XStack scope:
 
-- sibling roots such as `tools/controlx/**` and `tools/compatx/**`
+- sibling roots such as `tools/xstack/controlx/**` and `tools/xstack/compatx/**`
 - broad runtime/domain roots such as `engine/**`, `game/**`, `geo/**`, `logic/**`, `materials/**`, and `worldgen/**`
 - launcher/setup compiled shells and other product wrappers that consume XStack-adjacent flows but are not themselves XStack
 
@@ -72,7 +72,7 @@ What is better understood as future AIDE material rather than current XStack:
 Repo-grounded caution:
 
 - `tools/xstack/run.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/session_create.py`, `tools/xstack/sessionx/**`, `tools/xstack/testx/**`, and `tools/xstack/ci/**` prove that XStack is live implementation, not just prose
-- `tools/validators/validation/validation_engine.py` and `appshell/**` import XStack helpers directly
+- `tools/validators/suite/validation_engine.py` and `appshell/**` import XStack helpers directly
 - a repo search over `engine/`, `game/`, `client/`, and `server/` finds live `tools.xstack` references, especially `compatx` helpers and `sessionx` helpers
 - `docs/governance/XSTACK_PORTABILITY.md` still describes a removability discipline that the live repo does not currently satisfy as a universal fact
 - a repo search for `AIDE` or `aide` returns no current repo-local AIDE implementation root
@@ -124,9 +124,9 @@ A path may appear again in Section H as a later extraction candidate without cha
 | `tools/xstack/controlx/` | `orchestrator.py` coordinates pack, bundle, compile, audit, test, session, and UI checks as repo operations. |
 | `tools/xstack/testx/` and `tools/xstack/testx_all.py` | Deterministic test harness and large suite selection are validation/evidence operations. |
 | `tools/xstack/auditx/`, `tools/xstack/repox/`, `tools/xstack/securex/`, and `tools/xstack/performx/` | Audit, static checks, trust checks, and profile/budget checks are operator-facing gate families. |
-| `tools/xstack/ci/`, `content/data/xstack/gate_definitions.json`, `docs/xstack/CI_GUARDRAILS.md`, and `docs/xstack/ARCH_DRIFT_POLICY.md` | These surfaces define and drive CI/guardrail policy rather than gameplay or product runtime. |
+| `tools/xstack/ci/`, `archive/generated/xstack/gate_definitions.json`, `docs/xstack/CI_GUARDRAILS.md`, and `docs/xstack/ARCH_DRIFT_POLICY.md` | These surfaces define and drive CI/guardrail policy rather than gameplay or product runtime. |
 | `scripts/dev/gate.py` | Imports `tools.xstack.core.*` and functionally participates in the live XStack control layer even though it does not live under `tools/xstack/`. |
-| `tools/validators/validation/validation_engine.py` and `tools/validation/tool_run_validation.py` | Repo-local unified validation surface that consumes XStack compatx contracts and emits audit/validation evidence. |
+| `tools/validators/suite/validation_engine.py` and `tools/validators/suite/tool_run_validation.py` | Repo-local unified validation surface that consumes XStack compatx contracts and emits audit/validation evidence. |
 | `tools/xstack/compatx/check.py` | Profile-driven CompatX check surface is an operational contract-check entrypoint rather than a low-level primitive. |
 
 ### `dominium_specific_concern`
@@ -139,15 +139,15 @@ A path may appear again in Section H as a later extraction candidate without cha
 | `appshell/` | Product bootstrap, supervisor, IPC, compatibility, and virtual-path logic import XStack helpers but remain product-shell integration. |
 | `server/server_boot.py` | Directly imports `tools.xstack.sessionx.*` and pack/session helpers; server boot remains Dominium-owned even when it uses XStack helpers. |
 | `client/local_server/local_server_controller.py` | Loopback local-singleplayer controller is baseline gameplay glue, not current AIDE extraction material. |
-| `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/data/session_templates/session.mvp_default.json` | Live baseline content/config pair and session template called out by the audit as the near-term playable slice. |
+| `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/templates/session/session.mvp_default.json` | Live baseline content/config pair and session template called out by the audit as the near-term playable slice. |
 
 ### `legacy_transitional`
 
 | Paths | Why this bucket fits now |
 | --- | --- |
-| `tools/controlx/` | Older autonomous control-plane wrapper outside `tools/xstack/`; still useful evidence, but not the current branded XStack root. |
-| `tools/compatx/` | Older compatibility CLI/core; `tools/validators/validation/validation_engine.py` maps it as legacy or adapter surface rather than the current XStack canon. |
-| `tools/validation/validate_all_main.cpp`, `tools/validation/validator_common.*`, `tools/validation/validator_reports.*`, and `tools/validation/validators_registry.*` | Explicitly represented by the unified validation engine as legacy coverage adapters or deprecated aggregate validator surfaces. |
+| `tools/xstack/controlx/` | Older autonomous control-plane wrapper outside `tools/xstack/`; still useful evidence, but not the current branded XStack root. |
+| `tools/xstack/compatx/` | Older compatibility CLI/core; `tools/validators/suite/validation_engine.py` maps it as legacy or adapter surface rather than the current XStack canon. |
+| `tools/validators/suite/validate_all_main.cpp`, `tools/validators/suite/validator_common.*`, `tools/validators/suite/validator_reports.*`, and `tools/validators/suite/validators_registry.*` | Explicitly represented by the unified validation engine as legacy coverage adapters or deprecated aggregate validator surfaces. |
 | `tools/mvp/runtime_entry.py` | Audit marks this as a transitional wrapper rather than the dependable canonical playtest bootstrap. |
 | `docs/XSTACK.md` | Useful reference, but still describes an older gate-centric model and does not cleanly reflect current live coupling. |
 | `docs/governance/XSTACK_PORTABILITY.md`, `docs/governance/XSTACK_INCREMENTAL_MODEL.md`, `docs/governance/XSTACK_EXTENSION_MODEL.md`, `docs/governance/XSTACK_PRODUCTION_CRITERIA.md`, `docs/governance/XSTACK_TEMPLATE_CHECKLIST.md`, and `docs/governance/XSTACK_SCOPE_TEMPLATE.json` | Derived portability/removability guidance; several files say they are only partially aligned, and live imports show stronger coupling than the docs claim. |
@@ -159,7 +159,7 @@ A path may appear again in Section H as a later extraction candidate without cha
 | `tools/xstack/core/` and `tools/xstack/compatx/` | Strongest reusable contract substrate, but extracting it now would still require uncoupling discipline and would compete with baseline assembly. |
 | `tools/xstack/testx/`, `tools/xstack/auditx/`, `tools/xstack/repox/`, `tools/xstack/securex/`, `tools/xstack/performx/`, and `tools/xstack/ci/` | Coherent tool families that may later support AIDE-style extraction, but current scope is documentation, mapping, and contract freezing only. |
 | `docs/xstack/` and `data/xstack/` | Useful support surfaces for later extracted policy/catalog packaging, but docs/data do not justify a standalone platform by themselves. |
-| `tools/controlx/` | Plausible later convergence target after scope is frozen, but still a sibling/transitional surface now. |
+| `tools/xstack/controlx/` | Plausible later convergence target after scope is frozen, but still a sibling/transitional surface now. |
 
 ### `explicitly_outside_current_scope`
 
@@ -167,7 +167,7 @@ A path may appear again in Section H as a later extraction candidate without cha
 | --- | --- |
 | `aide/`, `tools/aide/`, and `apps/aide/` | No such repo roots exist; a full AIDE implementation is not present and is not authorized by this series. |
 | `engine/`, `game/`, `geo/`, `worldgen/`, `logic/`, `materials/`, `signals/`, and `reality/` as broad implementation targets | These roots may be read as evidence, but XStack/AIDE work may not broaden into general product/runtime implementation work here. |
-| `tools/network/transport/tcp_stub.py` and `tools/network/transport/udp_stub.py` | Audit explicitly says non-loopback multiplayer transport is not part of the near-term playable baseline. |
+| `tools/validators/network/transport/tcp_stub.py` and `tools/validators/network/transport/udp_stub.py` | Audit explicitly says non-loopback multiplayer transport is not part of the near-term playable baseline. |
 | `launcher/` and `setup/` native GUI/TUI completion work | Audit explicitly says compiled launcher/setup shells should stay wrappers for now. |
 | `legacy/`, `quarantine/`, and `attic/` broad convergence/rename work | Audit explicitly says to retire or ignore broad convergence work during playable-baseline assembly. |
 
@@ -268,7 +268,7 @@ The following are definitely Dominium-specific for now:
 - `client/local_server/local_server_controller.py`
 - `content/profiles/bundles/bundle.mvp_default.json`
 - `contracts/package/locks/pack_lock.mvp_default.json`
-- `content/data/session_templates/session.mvp_default.json`
+- `content/templates/session/session.mvp_default.json`
 
 These are too bound to current baseline assembly, product-shell behavior, or Dominium runtime semantics to be treated as current AIDE material.
 
@@ -280,8 +280,8 @@ The following remain mixed and need later review rather than immediate extractio
 - `tools/xstack/pack_loader/`
 - `tools/xstack/pack_contrib/`
 - `tools/xstack/packagingx/`
-- `tools/validators/validation/validation_engine.py`
-- `tools/controlx/`
+- `tools/validators/suite/validation_engine.py`
+- `tools/xstack/controlx/`
 - `tools/xstack/ui_bind.py`
 
 These surfaces show reusable patterns, but they also carry strong Dominium vocabulary, bundle assumptions, validation aggregation, or product-shell coupling.
@@ -290,7 +290,7 @@ These surfaces show reusable patterns, but they also carry strong Dominium vocab
 
 The following should be documented now and deferred until after the playable baseline exists:
 
-- convergence between `tools/controlx/` and `tools/xstack/controlx/`
+- convergence between `tools/xstack/controlx/` and `tools/xstack/controlx/`
 - any cleanup intended to make `sessionx` more separable from Dominium runtime semantics
 - any portability/removability repair work needed to reconcile live imports with older portability docs
 - any extraction packaging, publishable AIDE layout, or repo-independent distribution story
@@ -304,7 +304,7 @@ The following distinctions are binding for this series:
 - current utility inside Dominium does not equal future AIDE ownership
 - a path living under `tools/xstack/` does not automatically make it portable core
 - a derived portability document does not outrank live implementation evidence
-- generated or cached outputs such as `.xstack_cache/**`, `tools/xstack/out/**`, `build/**`, and `artifacts/**` are evidence only, not scope owners
+- generated or cached outputs such as `.xstack_cache/**`, `tools/xstack/out/**`, `build/**`, and `archive/generated/artifacts/**` are evidence only, not scope owners
 
 ## J. Anti-Patterns and Forbidden Shapes
 

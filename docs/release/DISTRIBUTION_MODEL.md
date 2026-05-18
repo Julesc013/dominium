@@ -12,7 +12,7 @@ Replacement Target: DIST-1 packaged bundle baseline and DIST-2 installer constit
 
 DIST-0 freezes what a Dominium distribution means for `v0.0.0-mock`.
 It defines the bundle types, required artifacts, and exclusion rules that DIST-1 packaging must satisfy.
-This document does not require the current repository-backed `dist/` staging tree to already be the final shipped bundle.
+This document does not require the current repository-backed `archive/generated/dist/` staging tree to already be the final shipped bundle.
 
 ## Canonical Distribution Types
 

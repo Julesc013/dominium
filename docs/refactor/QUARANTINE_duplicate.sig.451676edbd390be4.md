@@ -23,15 +23,15 @@ Replacement Target: XI-4b manual review resolution
 - `setup/packages/scripts/repro/verify_reproducible_builds.py`
 - `src/archive/deterministic_bundle.py`
 - `src/contracts/abi/store/reachability_engine.py`
-- `src/release/release_manifest_engine.py`
-- `tools/dist/dist_verify_common.py`
+- `src/tools/release/release_manifest_engine.py`
+- `tools/release/dist/dist_verify_common.py`
 - `tools/mvp/toolchain_matrix_common.py`
 - `tools/release/archive_policy_common.py`
 - `tools/release/component_graph_common.py`
 - `tools/release/offline_archive_common.py`
 - `tools/release/update_model_common.py`
-- `tools/securex/core/integrity_manifest.py`
-- `tools/securex/core/reproducible_build_check.py`
+- `tools/xstack/securex/core/integrity_manifest.py`
+- `tools/xstack/securex/core/reproducible_build_check.py`
 - `tools/system/anb_omega.py`
 - `tools/xstack/core/execution_ledger.py`
 - `tools/xstack/core/repo_health.py`
@@ -41,9 +41,9 @@ Replacement Target: XI-4b manual review resolution
 ## Scorecard
 
 - `tools/xstack/core/repo_health.py` disposition=`canonical` rank=`1` total_score=`79.28` risk=`HIGH`
-- `tools/dist/dist_verify_common.py` disposition=`quarantine` rank=`2` total_score=`77.8` risk=`HIGH`
-- `tools/securex/core/integrity_manifest.py` disposition=`merge` rank=`3` total_score=`74.46` risk=`HIGH`
-- `tools/securex/core/reproducible_build_check.py` disposition=`merge` rank=`4` total_score=`74.1` risk=`HIGH`
+- `tools/release/dist/dist_verify_common.py` disposition=`quarantine` rank=`2` total_score=`77.8` risk=`HIGH`
+- `tools/xstack/securex/core/integrity_manifest.py` disposition=`merge` rank=`3` total_score=`74.46` risk=`HIGH`
+- `tools/xstack/securex/core/reproducible_build_check.py` disposition=`merge` rank=`4` total_score=`74.1` risk=`HIGH`
 - `tools/release/component_graph_common.py` disposition=`merge` rank=`5` total_score=`73.1` risk=`HIGH`
 - `tools/release/archive_policy_common.py` disposition=`quarantine` rank=`6` total_score=`72.74` risk=`HIGH`
 - `tools/release/offline_archive_common.py` disposition=`merge` rank=`7` total_score=`71.13` risk=`HIGH`
@@ -56,7 +56,7 @@ Replacement Target: XI-4b manual review resolution
 - `setup/packages/scripts/packaging/tests/packaging_validation_test.py` disposition=`drop` rank=`14` total_score=`61.23` risk=`HIGH`
 - `setup/packages/scripts/repro/verify_reproducible_builds.py` disposition=`drop` rank=`15` total_score=`58.11` risk=`HIGH`
 - `tools/xstack/packagingx/dist_build.py` disposition=`merge` rank=`16` total_score=`56.29` risk=`HIGH`
-- `src/release/release_manifest_engine.py` disposition=`merge` rank=`17` total_score=`55.42` risk=`HIGH`
+- `src/tools/release/release_manifest_engine.py` disposition=`merge` rank=`17` total_score=`55.42` risk=`HIGH`
 - `src/contracts/abi/store/reachability_engine.py` disposition=`drop` rank=`18` total_score=`47.23` risk=`HIGH`
 - `tools/system/anb_omega.py` disposition=`drop` rank=`19` total_score=`45.71` risk=`HIGH`
 
@@ -75,7 +75,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

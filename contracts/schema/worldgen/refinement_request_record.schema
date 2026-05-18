@@ -1,0 +1,31 @@
+SCHEMA: worldgen/refinement_request_record.schema
+schema_id: dominium.schema.worldgen.refinement_request_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-4 refinement request record emitted by ROI, teleport,
+  inspect, and path-driven refinement sources.
+- Preserve deterministic scheduling inputs without changing GEO-8 refinement
+  meaning.
+
+NON-SEMANTICS:
+- This schema does not define worldgen artifact content.
+- This schema does not authorize blocking generation in UI or renderer code.
+
+REQUIRED SHAPE:
+record refinement_request_record
+  required:
+    - request_id: id
+    - request_kind: enum(roi|teleport|inspect|path)
+    - geo_cell_key: map
+    - refinement_level: int
+    - priority_class: id
+    - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- request records are canonical and replay-relevant
+- request meaning is pinned by `contract.worldgen.refinement.v1`
+- request ordering must remain deterministic under identical inputs

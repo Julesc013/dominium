@@ -15,10 +15,10 @@ Violations are merge-blocking.
 ## Scope
 
 Applies to authoritative directories:
-- `engine/modules/core/**`
-- `engine/modules/sim/**`
-- `engine/modules/world/**`
-- `game/core/**` (simulation paths only)
+- `engine/kernel/**`
+- `game/domain/simulation/**`
+- `game/world/**`
+- `game/rule/**` (simulation paths only)
 - `game/rules/**`
 - `game/economy/**`
 

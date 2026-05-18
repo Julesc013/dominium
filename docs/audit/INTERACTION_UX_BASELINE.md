@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -92,7 +92,7 @@ Caching path:
 1. RepoX PASS
    - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
 2. AuditX run
-   - `py -3 tools/auditx/auditx.py scan --repo-root . --format json`
+   - `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --format json`
 3. TestX PASS (interaction UX suite)
    - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset testx.interaction.affordance_list_deterministic,testx.interaction.affordance_respects_entitlements,testx.interaction.dispatch_creates_intent,testx.interaction.preview_budget_degrades_not_lags,testx.performance.inspection_cache_reuse,testx.interaction.refusal_display_consistent`
 4. strict build PASS

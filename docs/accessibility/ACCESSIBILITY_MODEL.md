@@ -61,5 +61,5 @@ If a preset is provided, its fields override defaults for the current session on
 - `schema/accessibility_preset.schema`
 
 ## References
-- docs/ui/CLI_CANON.md
-- docs/ui/UX_OVERVIEW.md
+- docs/runtime/ui/CLI_CANON.md
+- docs/runtime/ui/UX_OVERVIEW.md

@@ -33,8 +33,8 @@ def _read(repo_root: str, rel_path: str) -> str:
 
 def _logic_paths(repo_root: str):
     for rel_path in (
-        "contracts/schemas/logic/signal_type.schema",
-        "contracts/schemas/logic/logic_policy.schema",
+        "contracts/schema/logic/signal_type.schema",
+        "contracts/schema/logic/logic_policy.schema",
         "contracts/registry/signal_type_registry.json",
     ):
         yield rel_path

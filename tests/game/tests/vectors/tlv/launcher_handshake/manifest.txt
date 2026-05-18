@@ -1,0 +1,5 @@
+schema_id=4
+version=1
+vector=handshake_v1_basic.tlv
+summary=handshake_v1_basic.expected.txt
+sha256=handshake_v1_basic.sha256

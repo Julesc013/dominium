@@ -12,8 +12,8 @@
     "restore_exceptions_if_changed": true
   },
   "reverse_moves": [
-    {"from":"tools/validators/validation/__init__.py","to":"validation/__init__.py"},
-    {"from":"tools/validators/validation/validation_engine.py","to":"validation/validation_engine.py"},
+    {"from":"tools/validators/suite/__init__.py","to":"validation/__init__.py"},
+    {"from":"tools/validators/suite/validation_engine.py","to":"validation/validation_engine.py"},
     {"from":"tools/validators/identity/__init__.py","to":"meta/identity/__init__.py"},
     {"from":"tools/validators/identity/identity_validator.py","to":"meta/identity/identity_validator.py"},
     {"from":"tools/validators/stability/__init__.py","to":"meta/stability/__init__.py"},

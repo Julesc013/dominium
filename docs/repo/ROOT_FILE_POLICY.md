@@ -65,16 +65,16 @@ Allowed root files are included in the root inventory with `classification = "al
 Do not add new root-level product, domain, schema, runtime-adapter, or generated-output folders. New work should bind to the existing contract targets:
 
 - product entrypoints under `apps/`
-- domain implementation under `game/domains/`
+- domain implementation under `game/domain/`
 - schemas and registries under `contracts/`
 - runtime adapters under `runtime/`
 - generated output only under explicitly governed output roots
 
-Root-level `schema/` and `schemas/` are retired after CONVERGE-06. New schemas, schema projections, validation schemas, and registry schemas belong under `contracts/schemas/` or another explicit `contracts/` class directory.
+Root-level `schema/` and `schemas/` are retired after CONVERGE-06. New schemas, schema projections, validation schemas, and registry schemas belong under `contracts/schema/` or another explicit `contracts/` class directory.
 
-Do not add a new root-level `compat/`, `registry/`, or `registries/` authority. Existing `compat/` remains a review root because it contains implementation and shim code. Future compatibility law belongs under `contracts/compatibility/` after file-level split. Future registry contracts belong under `contracts/registries/`.
+Do not add a new root-level `compat/`, `registry/`, or `registries/` authority. Existing `compat/` remains a review root because it contains implementation and shim code. Future compatibility law belongs under `contracts/compatibility/` after file-level split. Future registry contracts belong under `contracts/registry/`.
 
-Lock artifacts and lock contracts must not be confused. `contracts/locks/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC locks belong under `runtime/locks/`; setup/update/rollback state belongs under `ops/transactions/`.
+Lock artifacts and lock contracts must not be confused. `contracts/lock/` is for deterministic lockfile schemas and contract definitions. Concrete lock artifacts belong to install/runtime projections such as `store/locks/`; process and IPC locks belong under `runtime/locks/`; setup/update/rollback state belongs under `ops/transactions/`.
 
 Generated schema outputs require explicit generated-output policy before they are committed or treated as source authority.
 
@@ -86,15 +86,15 @@ Generated runtime output belongs in install/runtime projection roots, not in sou
 
 Root-level `client/`, `server/`, `setup/`, and `launcher/` are retired after CONVERGE-08. New product entrypoint source must live under `apps/<product>/`. Developer tools remain under `tools/`; shipped product tools require explicit classification before using `apps/tools/`.
 
-Root-level domain folders moved in CONVERGE-09 are retired aliases. Do not add new top-level folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, `signals/`, `mobility/`, or similar domain roots. Use `game/domains/`, `contracts/`, `content/domain-data/`, `docs/domains/`, and `tests/` according to file ownership.
+Root-level domain folders moved in CONVERGE-09 are retired aliases. Do not add new top-level folders such as `geo/`, `chem/`, `worldgen/`, `materials/`, `field/`, `fields/`, `process/`, `signals/`, `mobility/`, or similar domain roots. Use `game/domain/`, `contracts/`, `content/domains/`, `docs/domains/`, and `tests/` according to file ownership.
 
 If a temporary root-level domain redirect is ever required, it must contain only a minimal non-authoritative README or shim, be recorded in the move map, and identify the target ownership locations. CONVERGE-09 retained no root-level domain compatibility redirects.
 
 ## Generated Roots
 
-Generated roots are evidence or output, not source ownership. `build/`, `out/`, `dist/`, and `artifacts/` must not become canonical source roots merely because tooling emits them.
+Generated roots are evidence or output, not source ownership. `build/`, `out/`, `archive/generated/dist/`, and `archive/generated/artifacts/` must not become canonical source roots merely because tooling emits them.
 
-POST-CONVERGE-01 removed ignored, untracked `.xstack_cache/`, `build/`, and `out/` generated/cache roots. `artifacts/` and `dist/` remain active review exceptions because they contain tracked provenance or distribution-projection files.
+POST-CONVERGE-01 removed ignored, untracked `.xstack_cache/`, `build/`, and `out/` generated/cache roots. `archive/generated/artifacts/` and `archive/generated/dist/` remain active review exceptions because they contain tracked provenance or distribution-projection files.
 
 ## Archive-Family Roots
 
@@ -108,9 +108,9 @@ Do not create new root-level archive-family directories. Use the canonical archi
 
 Root-level `attic/`, `legacy/`, and `quarantine/` were retired in CONVERGE-05. If a future tool needs to quarantine material, it must place it under `archive/quarantine/` or a later explicit quarantine contract.
 
-## `dist/`
+## `archive/generated/dist/`
 
-`dist/` is a distribution/build projection unless a stronger release contract explicitly says otherwise. It is not the source repo layout and must not define source ownership.
+`archive/generated/dist/` is a distribution/build projection unless a stronger release contract explicitly says otherwise. It is not the source repo layout and must not define source ownership.
 
 ## `build/` And `out/`
 
@@ -126,7 +126,7 @@ In CONVERGE-03, `repo/` remains transitional and review-sensitive. It is not a d
 
 Source root policy does not authorize runtime, install, media, package cache, staging, save-store, or package export roots at the repository root.
 
-Distribution projections are governed by `contracts/distribution/layout.contract.toml`. `dist/` is generated release/build output unless an explicit stronger exception says otherwise. Package caches, staging directories, runtime stores, media payloads, save stores, and rollback transaction roots are projections, not source repository ownership roots.
+Distribution projections are governed by `contracts/distribution/layout.contract.toml`. `archive/generated/dist/` is generated release/build output unless an explicit stronger exception says otherwise. Package caches, staging directories, runtime stores, media payloads, save stores, and rollback transaction roots are projections, not source repository ownership roots.
 
 ## Version And Project Policy Files
 
@@ -148,7 +148,7 @@ Strict modes are explicit and may fail until convergence removes or classifies t
 
 After CONVERGE-10, root files and root directories not covered by `contracts/repo/layout.contract.toml`, `contracts/repo/root_allowlist.toml`, or `contracts/repo/layout_exceptions.toml` fail strict validation.
 
-Generated roots require explicit generated policy or an active exception. After POST-CONVERGE-01, only `dist/` and `artifacts/` remain active generated or generated-adjacent exceptions; `.xstack_cache/`, `build/`, and `out/` are retired generated/cache exceptions and must not regrow as source authority.
+Generated roots require explicit generated policy or an active exception. After POST-CONVERGE-01, only `archive/generated/dist/` and `archive/generated/artifacts/` remain active generated or generated-adjacent exceptions; `.xstack_cache/`, `build/`, and `out/` are retired generated/cache exceptions and must not regrow as source authority.
 
 After POST-CONVERGE-02, the root package marker `__init__.py` and root `labs/` directory are retired. The three `tool_ui_*.cmd` files remain explicit compatibility shims for documented developer workflow and must continue to resolve canonical tools through `scripts/dev/tool_shim.py`.
 
@@ -156,7 +156,7 @@ After POST-CONVERGE-03, content/package/profile/bundle review did not retire add
 
 After POST-CONVERGE-04, high-risk contract/security/update review did not retire additional roots. `compat/`, `lib/`, `libs/`, `locks/`, `repo/`, `safety/`, `security/`, `specs/`, and `updates/` remain explicit active exceptions because they are implementation-backed, build/ABI-sensitive, identity-sensitive, generated-feed-backed, or protected semantics surfaces. New pure contracts should use `contracts/`, release/update recipes should use reviewed `release/` ownership, and no new root-level compatibility, security, safety, spec, lock, repo, or update authority should be added.
 
-After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domains/` when domain-specific; new control or network contracts should land under `contracts/`; new runtime adapters should land under reviewed runtime ownership; new human explanation should land under `docs/`. Do not add new root-level core/control/net authority.
+After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domain/` when domain-specific; new control or network contracts should land under `contracts/`; new runtime adapters should land under reviewed runtime ownership; new human explanation should land under `docs/`. Do not add new root-level core/control/net authority.
 
 No broad wildcard exceptions are allowed without a reviewed task. Add one exception per root, file, or tightly scoped pattern, and include a reason, target or review target, risk, and retirement phase.
 

@@ -1,0 +1,880 @@
+{
+  "collisions": [],
+  "mode": "dry_run",
+  "move_result": {
+    "applied": [],
+    "failed": []
+  },
+  "post_segment_findings": {
+    "appcore": 2,
+    "appshell": 26,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "pre_segment_findings": {
+    "appcore": 2,
+    "appshell": 26,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "reason_counts": {
+    "UPS systems domain mechanics": 1,
+    "compatibility runtime capability service": 5,
+    "deterministic state substrate": 1,
+    "game world mechanics": 54,
+    "runtime TUI service": 1,
+    "runtime UI service": 3,
+    "runtime system platform service": 36,
+    "runtime view service": 2,
+    "shell command documentation codegen": 1,
+    "shell validation and replay tooling": 11,
+    "structure domain mechanics": 9,
+    "transport domain mechanics": 8,
+    "vehicle mobility mechanics": 5
+  },
+  "rewrite_result": {
+    "files": [],
+    "files_changed": 0,
+    "replacement_count": 0
+  },
+  "routes": [
+    {
+      "action": "move",
+      "reason": "compatibility runtime capability service",
+      "source": "engine/modules/compat/CMakeLists.txt",
+      "target": "runtime/capability/compatibility/CMakeLists.txt"
+    },
+    {
+      "action": "move",
+      "reason": "compatibility runtime capability service",
+      "source": "engine/modules/compat/capability_set.c",
+      "target": "runtime/capability/compatibility/capability_set.c"
+    },
+    {
+      "action": "move",
+      "reason": "compatibility runtime capability service",
+      "source": "engine/modules/compat/compat_core.c",
+      "target": "runtime/capability/compatibility/compat_core.c"
+    },
+    {
+      "action": "move",
+      "reason": "compatibility runtime capability service",
+      "source": "engine/modules/compat/compat_modes.c",
+      "target": "runtime/capability/compatibility/compat_modes.c"
+    },
+    {
+      "action": "move",
+      "reason": "compatibility runtime capability service",
+      "source": "engine/modules/compat/fixed_debug.c",
+      "target": "runtime/capability/compatibility/fixed_debug.c"
+    },
+    {
+      "action": "move",
+      "reason": "deterministic state substrate",
+      "source": "engine/modules/state/state.c",
+      "target": "engine/state/state.c"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/README.md",
+      "target": "game/domain/structure/README.md"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct.c",
+      "target": "game/domain/structure/d_struct.c"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct.h",
+      "target": "game/domain/structure/d_struct.h"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_blueprint.c",
+      "target": "game/domain/structure/d_struct_blueprint.c"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_blueprint.h",
+      "target": "game/domain/structure/d_struct_blueprint.h"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_instance.c",
+      "target": "game/domain/structure/d_struct_instance.c"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_instance.h",
+      "target": "game/domain/structure/d_struct_instance.h"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_proto.h",
+      "target": "game/domain/structure/d_struct_proto.h"
+    },
+    {
+      "action": "move",
+      "reason": "structure domain mechanics",
+      "source": "engine/modules/struct/d_struct_validate.c",
+      "target": "game/domain/structure/d_struct_validate.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/sys/sys_caps.cpp",
+      "target": "runtime/platform/system/sys_caps.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/sys/thread_pool.cpp",
+      "target": "runtime/platform/system/thread_pool.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/sys/thread_pool.h",
+      "target": "runtime/platform/system/thread_pool.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/sys/work_steal_deque.cpp",
+      "target": "runtime/platform/system/work_steal_deque.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/sys/work_steal_deque.h",
+      "target": "runtime/platform/system/work_steal_deque.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/CMakeLists.txt",
+      "target": "runtime/platform/system/CMakeLists.txt"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/d_system.c",
+      "target": "runtime/platform/system/d_system.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/d_system.h",
+      "target": "runtime/platform/system/d_system.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/d_system_input.c",
+      "target": "runtime/platform/system/d_system_input.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/d_system_input.h",
+      "target": "runtime/platform/system/d_system_input.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_dir_sorted.c",
+      "target": "runtime/platform/system/dsys_dir_sorted.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_dir_sorted.h",
+      "target": "runtime/platform/system/dsys_dir_sorted.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_guard.c",
+      "target": "runtime/platform/system/dsys_guard.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_internal.h",
+      "target": "runtime/platform/system/dsys_internal.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_perf.c",
+      "target": "runtime/platform/system/dsys_perf.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_platform_stub.c",
+      "target": "runtime/platform/system/dsys_platform_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_posix.c",
+      "target": "runtime/platform/system/dsys_posix.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_proc_stub.c",
+      "target": "runtime/platform/system/dsys_proc_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_proc_winnt.c",
+      "target": "runtime/platform/system/dsys_proc_winnt.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_sdl2_stub.c",
+      "target": "runtime/platform/system/dsys_sdl2_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_stub.c",
+      "target": "runtime/platform/system/dsys_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_term.c",
+      "target": "runtime/platform/system/dsys_term.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_terminal_detect_posix.c",
+      "target": "runtime/platform/system/dsys_terminal_detect_posix.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_terminal_detect_stub.c",
+      "target": "runtime/platform/system/dsys_terminal_detect_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_terminal_detect_winnt.c",
+      "target": "runtime/platform/system/dsys_terminal_detect_winnt.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_win32_headless.c",
+      "target": "runtime/platform/system/dsys_win32_headless.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_window_stub.c",
+      "target": "runtime/platform/system/dsys_window_stub.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/dsys_window_winnt.c",
+      "target": "runtime/platform/system/dsys_window_winnt.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/input/input_trace.c",
+      "target": "runtime/platform/system/input/input_trace.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/input/input_trace.h",
+      "target": "runtime/platform/system/input/input_trace.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/plat/cocoa/cocoa_sys.h",
+      "target": "runtime/platform/system/plat/cocoa/cocoa_sys.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/plat/posix/posix_sys.h",
+      "target": "runtime/platform/system/plat/posix/posix_sys.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/plat/sdl1/sdl1_sys.h",
+      "target": "runtime/platform/system/plat/sdl1/sdl1_sys.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/plat/wayland/wayland_sys.h",
+      "target": "runtime/platform/system/plat/wayland/wayland_sys.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/plat/x11/x11_sys.h",
+      "target": "runtime/platform/system/plat/x11/x11_sys.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime system platform service",
+      "source": "engine/modules/system/sys.c",
+      "target": "runtime/platform/system/sys.c"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/README.md",
+      "target": "game/domain/transport/README.md"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans.c",
+      "target": "game/domain/transport/d_trans.c"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans.h",
+      "target": "game/domain/transport/d_trans.h"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans_model.h",
+      "target": "game/domain/transport/d_trans_model.h"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans_mover.h",
+      "target": "game/domain/transport/d_trans_mover.h"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans_proto.h",
+      "target": "game/domain/transport/d_trans_proto.h"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans_spline.h",
+      "target": "game/domain/transport/d_trans_spline.h"
+    },
+    {
+      "action": "move",
+      "reason": "transport domain mechanics",
+      "source": "engine/modules/trans/d_trans_validate.c",
+      "target": "game/domain/transport/d_trans_validate.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime TUI service",
+      "source": "engine/modules/tui/tui.c",
+      "target": "runtime/ui/tui/tui.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime UI service",
+      "source": "engine/modules/ui/d_ui.c",
+      "target": "runtime/ui/core/d_ui.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime UI service",
+      "source": "engine/modules/ui/d_ui.h",
+      "target": "runtime/ui/core/d_ui.h"
+    },
+    {
+      "action": "move",
+      "reason": "runtime UI service",
+      "source": "engine/modules/ui/ui.c",
+      "target": "runtime/ui/core/ui.c"
+    },
+    {
+      "action": "move",
+      "reason": "UPS systems domain mechanics",
+      "source": "engine/modules/ups/d_ups.c",
+      "target": "game/domain/systems/ups/d_ups.c"
+    },
+    {
+      "action": "move",
+      "reason": "vehicle mobility mechanics",
+      "source": "engine/modules/vehicle/d_vehicle.c",
+      "target": "game/domain/mobility/vehicle/d_vehicle.c"
+    },
+    {
+      "action": "move",
+      "reason": "vehicle mobility mechanics",
+      "source": "engine/modules/vehicle/d_vehicle.h",
+      "target": "game/domain/mobility/vehicle/d_vehicle.h"
+    },
+    {
+      "action": "move",
+      "reason": "vehicle mobility mechanics",
+      "source": "engine/modules/vehicle/d_vehicle_model.h",
+      "target": "game/domain/mobility/vehicle/d_vehicle_model.h"
+    },
+    {
+      "action": "move",
+      "reason": "vehicle mobility mechanics",
+      "source": "engine/modules/vehicle/d_vehicle_proto.h",
+      "target": "game/domain/mobility/vehicle/d_vehicle_proto.h"
+    },
+    {
+      "action": "move",
+      "reason": "vehicle mobility mechanics",
+      "source": "engine/modules/vehicle/d_vehicle_validate.c",
+      "target": "game/domain/mobility/vehicle/d_vehicle_validate.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime view service",
+      "source": "engine/modules/view/d_view.c",
+      "target": "runtime/ui/view/d_view.c"
+    },
+    {
+      "action": "move",
+      "reason": "runtime view service",
+      "source": "engine/modules/view/d_view.h",
+      "target": "runtime/ui/view/d_view.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/README.md",
+      "target": "game/world/README.md"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/animal_agents.cpp",
+      "target": "game/world/animal_agents.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/autonomy_fields.cpp",
+      "target": "game/world/autonomy_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/climate_fields.cpp",
+      "target": "game/world/climate_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/conflict_fields.cpp",
+      "target": "game/world/conflict_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/crafting_fields.cpp",
+      "target": "game/world/crafting_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_litho.c",
+      "target": "game/world/d_litho.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_litho.h",
+      "target": "game/world/d_litho.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_litho_validate.c",
+      "target": "game/world/d_litho_validate.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_serialize.c",
+      "target": "game/world/d_serialize.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_serialize.h",
+      "target": "game/world/d_serialize.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_world.c",
+      "target": "game/world/d_world.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_world.h",
+      "target": "game/world/d_world.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_world_terrain.c",
+      "target": "game/world/d_world_terrain.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_world_terrain.h",
+      "target": "game/world/d_world_terrain.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_worldgen.c",
+      "target": "game/world/d_worldgen.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/d_worldgen.h",
+      "target": "game/world/d_worldgen.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/domain_cache.cpp",
+      "target": "game/world/domain_cache.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/domain_query.cpp",
+      "target": "game/world/domain_query.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/domain_streaming_hints.cpp",
+      "target": "game/world/domain_streaming_hints.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/domain_tile.cpp",
+      "target": "game/world/domain_tile.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/domain_volume.cpp",
+      "target": "game/world/domain_volume.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/economy_fields.cpp",
+      "target": "game/world/economy_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/energy_fields.cpp",
+      "target": "game/world/energy_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/fluid_fields.cpp",
+      "target": "game/world/fluid_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/README.md",
+      "target": "game/world/frame/README.md"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/d_world_frame.c",
+      "target": "game/world/frame/d_world_frame.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/d_world_frame.h",
+      "target": "game/world/frame/d_world_frame.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_anchor.c",
+      "target": "game/world/frame/dg_anchor.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_anchor.h",
+      "target": "game/world/frame/dg_anchor.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame.c",
+      "target": "game/world/frame/dg_frame.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame.h",
+      "target": "game/world/frame/dg_frame.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame_eval.c",
+      "target": "game/world/frame/dg_frame_eval.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame_eval.h",
+      "target": "game/world/frame/dg_frame_eval.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame_graph.c",
+      "target": "game/world/frame/dg_frame_graph.c"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/frame/dg_frame_graph.h",
+      "target": "game/world/frame/dg_frame_graph.h"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/geology_fields.cpp",
+      "target": "game/world/geology_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/hazard_fields.cpp",
+      "target": "game/world/hazard_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/heat_fields.cpp",
+      "target": "game/world/heat_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/history_fields.cpp",
+      "target": "game/world/history_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/information_fields.cpp",
+      "target": "game/world/information_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/institution_fields.cpp",
+      "target": "game/world/institution_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/knowledge_fields.cpp",
+      "target": "game/world/knowledge_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/mining_fields.cpp",
+      "target": "game/world/mining_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/risk_fields.cpp",
+      "target": "game/world/risk_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/srz_fields.cpp",
+      "target": "game/world/srz_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/standard_fields.cpp",
+      "target": "game/world/standard_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/structure_fields.cpp",
+      "target": "game/world/structure_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/terrain_mesh.cpp",
+      "target": "game/world/terrain_mesh.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/terrain_surface.cpp",
+      "target": "game/world/terrain_surface.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/travel_fields.cpp",
+      "target": "game/world/travel_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/trust_fields.cpp",
+      "target": "game/world/trust_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/vegetation_fields.cpp",
+      "target": "game/world/vegetation_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "game world mechanics",
+      "source": "engine/modules/world/weather_fields.cpp",
+      "target": "game/world/weather_fields.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/appshell4_probe.py",
+      "target": "tools/validators/shell/appshell4_probe.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/appshell6_probe.py",
+      "target": "tools/validators/shell/appshell6_probe.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/ipc_unify_common.py",
+      "target": "tools/validators/shell/ipc_unify_common.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/product_stub_cli.py",
+      "target": "tools/validators/shell/product_stub_cli.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/supervised_product_host.py",
+      "target": "tools/validators/shell/supervised_product_host.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/supervisor_hardening_common.py",
+      "target": "tools/validators/shell/supervisor_hardening_common.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/supervisor_service.py",
+      "target": "tools/validators/shell/supervisor_service.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell command documentation codegen",
+      "source": "tools/appshell/tool_generate_command_docs.py",
+      "target": "tools/codegen/shell/tool_generate_command_docs.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/tool_replay_ipc_attach.py",
+      "target": "tools/validators/shell/tool_replay_ipc_attach.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/tool_replay_supervisor.py",
+      "target": "tools/validators/shell/tool_replay_supervisor.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/tool_run_ipc_unify.py",
+      "target": "tools/validators/shell/tool_run_ipc_unify.py"
+    },
+    {
+      "action": "move",
+      "reason": "shell validation and replay tooling",
+      "source": "tools/appshell/tool_run_supervisor_hardening.py",
+      "target": "tools/validators/shell/tool_run_supervisor_hardening.py"
+    }
+  ],
+  "schema_version": "dominium.canon_spine_new.v1",
+  "status": "PASS",
+  "summary": {
+    "applied_moves": 0,
+    "candidate_routes": 137,
+    "collision_reroutes": 0,
+    "failed_moves": 0,
+    "text_files_changed": 0,
+    "text_replacements": 0
+  }
+}

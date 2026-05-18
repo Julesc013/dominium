@@ -175,11 +175,11 @@ Not implemented in MP-1:
 5. replication runtime behavior beyond schema/registry/stage contracts
 
 ## Cross-References
-- `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`
-- `docs/net/REPLICATION_POLICIES.md`
-- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
-- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`
-- `docs/net/EPISTEMICS_OVER_NETWORK.md`
+- `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md`
+- `docs/runtime/network/REPLICATION_POLICIES.md`
+- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
+- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`
+- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`
 - `docs/contracts/refusal_contract.md`
 - `data/registries/session_stage_registry.json`
 - `data/registries/session_pipeline_registry.json`

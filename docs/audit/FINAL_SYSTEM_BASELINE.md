@@ -16,7 +16,7 @@ Replacement Target: legacy reference surface retained without current binding au
 | Gate | Command | Result |
 |---|---|---|
 | RepoX strict | `python tools/xstack/repox/check.py --repo-root . --profile STRICT` | `pass` (`findings=0`) |
-| AuditX full | `python tools/auditx/auditx.py scan --repo-root . --format both` | `scan_complete` (`findings=746`) |
+| AuditX full | `python tools/xstack/auditx/auditx.py scan --repo-root . --format both` | `scan_complete` (`findings=746`) |
 | TestX strict full | `python tools/xstack/testx_all.py --repo-root . --profile STRICT --cache on` | `pass` (`selected_tests=93`) |
 | Strict build/profile | `python tools/xstack/run.py strict --repo-root . --cache on` | `pass` |
 | UI bind check | `python tools/xstack/ui_bind.py --repo-root . --check` | `complete` (`checked_windows=7`) |

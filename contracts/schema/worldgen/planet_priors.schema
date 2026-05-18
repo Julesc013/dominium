@@ -1,0 +1,30 @@
+SCHEMA: worldgen/planet_priors.schema
+schema_id: dominium.schema.worldgen.planet_priors
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic MW-2 coarse planet-body priors.
+- Keep planet body classes data-declared while leaving detailed surfaces for later work.
+
+NON-SEMANTICS:
+- This schema does not encode terrain or climate.
+- This schema does not encode authored planets.
+
+REQUIRED SHAPE:
+record planet_priors
+  required:
+    - priors_id: id
+    - radius_params: map
+    - density_class_params: map
+    - atmosphere_class_params: map
+    - ocean_fraction_params: map
+    - rotation_params: map
+    - axial_tilt_params: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- coarse planet classes remain deterministic and low-data
+- unknown fields must preserve forward-compatible extensions
+- body-prior meaning drift requires explicit registry/profile or generator-version change

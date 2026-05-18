@@ -65,7 +65,7 @@ Replacement Target: Ω-9 toolchain matrix verification and Ω-11 mock release ar
 
 - Runtime worldgen semantics are unchanged; Ω-1 freezes and verifies the existing deterministic pipeline.
 - Added and locked governance artifacts:
-  - `docs/worldgen/WORLDGEN_LOCK_v0_0_0.md`
+  - `docs/domains/worldgen/WORLDGEN_LOCK_v0_0_0.md`
   - `data/registries/worldgen_lock_registry.json`
   - `data/baselines/worldgen/baseline_seed.txt`
   - `data/baselines/worldgen/baseline_worldgen_snapshot.json`

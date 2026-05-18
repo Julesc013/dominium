@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from game.domains.geology import geo_neighbors
+from game.domain.geology import geo_neighbors
 
 
 TEST_ID = "test_sphere_surface_stub_neighbors_deterministic"

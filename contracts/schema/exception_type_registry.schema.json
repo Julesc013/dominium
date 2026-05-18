@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Exception Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic conservation exception-type registry output.",
+  "x-doc-ref": [
+    "docs/reality/CONSERVATION_AND_EXCEPTIONS.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "exception_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {"type": "string", "const": "1.0.0"},
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pack_id", "version", "canonical_hash", "signature_status"],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {"type": "string"},
+          "version": {"type": "string"},
+          "canonical_hash": {"type": "string"},
+          "signature_status": {"type": "string"}
+        }
+      }
+    },
+    "exception_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["exception_type_id", "description", "extensions"],
+        "additionalProperties": false,
+        "properties": {
+          "exception_type_id": {"type": "string"},
+          "description": {"type": "string"},
+          "extensions": {"type": "object", "additionalProperties": true}
+        }
+      }
+    },
+    "registry_hash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"}
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "exception_types": [],
+      "registry_hash": "49b3c74f309f1d4506d29f7de2a4ef003d8ad25f2c1fd6fcc7e5fe8f6f3d5e53"
+    }
+  ]
+}

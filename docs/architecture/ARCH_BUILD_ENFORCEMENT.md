@@ -93,7 +93,7 @@ validate_all (tools/)     -> (no engine link)
 - `engine/include/**` is the ONLY public engine API surface.
 
 
-- `engine/modules/**` and `engine/render/**` are internal and FORBIDDEN outside `engine/`.
+- `engine/modules/**` and `runtime/render/**` are internal and FORBIDDEN outside `engine/`.
 
 
 - `game/` MUST NOT include from `engine/modules/**` or platform headers (ARCH-INC-001).
@@ -153,7 +153,7 @@ Enforcement is done via target-scoped includes and configure-time assertions:
 - **Data validation**: `data_validate` and `engine_data_validate` validate data invariants (see `docs/guides/DATA_VALIDATION_GUIDE.md`).
 
 
-- **Governance validation**: `tools/validation/validate_all` validates schema governance and policy enforcement.
+- **Governance validation**: `tools/validators/suite/validate_all` validates schema governance and policy enforcement.
 
 
 
@@ -276,10 +276,10 @@ data_validate --input=<path> --schema-id=<u64> --schema-version=MAJOR.MINOR.PATC
   - **Fix**: remove the dependency and route through `domino_engine` public interfaces.
 
 
-- **Error**: renderer backend token detected outside `engine/render/**` (ARCH-RENDER-001).
+- **Error**: renderer backend token detected outside `runtime/render/**` (ARCH-RENDER-001).
 
 
-  - **Fix**: move backend code into `engine/render/**`.
+  - **Fix**: move backend code into `runtime/render/**`.
 
 
 - **Error**: top-level `source/` or `src/` directories found (ARCH-TOP-001).

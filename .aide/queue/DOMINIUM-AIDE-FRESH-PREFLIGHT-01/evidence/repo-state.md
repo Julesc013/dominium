@@ -22,7 +22,7 @@
 - `.aide.local/` ignore check: PASS (`git check-ignore .aide.local/` returned `.aide.local/`).
 - `.aide.local/` tracked paths: none (`git ls-files .aide.local` returned no paths).
 - `.aide.local.example/**` is tracked example state and must be preserved.
-- Ignored local/generated paths observed include `.dominium.local/`, `out/`, `dist/docs/`, `dist/sym/`, `dist/sys/`, many `__pycache__/` folders, and `.aide/scripts/__pycache__/`.
+- Ignored local/generated paths observed include `.dominium.local/`, `out/`, `archive/generated/dist/docs/`, `archive/generated/dist/sym/`, `archive/generated/dist/sys/`, many `__pycache__/` folders, and `.aide/scripts/__pycache__/`.
 - These ignored paths are not Q49 evidence and must not be committed, cleaned, moved, or treated as AIDE install candidates.
 
 ## Q49 Working Tree Notes

@@ -55,7 +55,7 @@
     "server/shard/dom_cross_shard_log.h",
     "server/net/dom_server_protocol.h",
     "server/net/dom_server_runtime.h",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "tools/validators/security/trust/trust_verifier.py",
     "contracts/registry/net_replication_policy_registry.json",
     "contracts/registry/trust_policy_registry.json",

@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.geo.tool_replay_frame_window import verify_frame_window
+    from tools.validators.domain.geology.tool_replay_frame_window import verify_frame_window
 
     first = verify_frame_window()
     second = verify_frame_window()

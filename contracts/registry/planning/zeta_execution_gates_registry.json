@@ -15,9 +15,9 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
-      "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "contracts/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
-      "content/data/planning/next_execution_order_post_phib5.json"
+      "contracts/planning/next_execution_order_post_phib5.json"
     ],
     "gate_baseline_inputs": [
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",

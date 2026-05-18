@@ -19,17 +19,17 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `engine/include/domino/tui/tui.h`
-- `engine/modules/tui/tui.c`
+- `runtime/ui/tui/tui.c`
 
 ## Scorecard
 
 - `engine/include/domino/tui/tui.h` disposition=`canonical` rank=`1` total_score=`90.89` risk=`HIGH`
-- `engine/modules/tui/tui.c` disposition=`quarantine` rank=`2` total_score=`85.24` risk=`HIGH`
+- `runtime/ui/tui/tui.c` disposition=`quarantine` rank=`2` total_score=`85.24` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/ARCHITECTURE.md, docs/app/CLI_CONTRACTS.md, docs/app/GUI_MODE.md, docs/app/TESTX_COMPLIANCE.md, docs/app/TESTX_INVENTORY.md, docs/app/TIMING_AND_CLOCKS.md, docs/app/UI_MODES.md, docs/appshell/APPSHELL_CONSTITUTION.md`
+- Docs: `docs/ARCHITECTURE.md, docs/apps/CLI_CONTRACTS.md, docs/apps/GUI_MODE.md, docs/apps/TESTX_COMPLIANCE.md, docs/apps/TESTX_INVENTORY.md, docs/apps/TIMING_AND_CLOCKS.md, docs/apps/UI_MODES.md, docs/runtime/shell/APPSHELL_CONSTITUTION.md`
 
 ## Tests Involved
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

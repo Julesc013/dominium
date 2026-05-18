@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "example.multicosmology",
+      "capability_tags": [
+        "example.world",
+        "example.multicosmology"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.multicosmology.v1"
+      }
+    }
+  ]
+}

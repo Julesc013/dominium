@@ -27,7 +27,7 @@ Authoritative fidelity state is represented by:
 - `dom_fidelity_state` (tier, last transition tick, pin flags, provenance hash)
 - `dom_fidelity_object` (identity + counts/inventory/obligations)
 
-Implementation lives in `game/include/dominium/fidelity.h` and `game/core/dom_fidelity.c`.
+Implementation lives in `game/include/dominium/fidelity.h` and `game/rule/dom_fidelity.c`.
 
 ## Transition Lifecycle
 

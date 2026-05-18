@@ -77,7 +77,7 @@ def run(repo_root: str):
                     continue
                 abs_path = os.path.join(walk_root, name)
                 rel_path = _norm(os.path.relpath(abs_path, repo_root))
-                if rel_path.startswith(("tools/xstack/testx/tests/", "tools/xstack/out/", "tools/auditx/analyzers/", "tests/")):
+                if rel_path.startswith(("tools/xstack/testx/tests/", "tools/xstack/out/", "tools/xstack/auditx/analyzers/", "tests/")):
                     continue
                 try:
                     text = open(abs_path, "r", encoding="utf-8", errors="ignore").read()

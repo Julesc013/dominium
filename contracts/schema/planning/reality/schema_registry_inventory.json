@@ -156,7 +156,7 @@
       "notes": "Generated schema echoes inside build outputs."
     },
     {
-      "path": "artifacts/**",
+      "path": "archive/generated/artifacts/**",
       "classification": "derived",
       "notes": "Emitted audit or toolchain artifacts with no inherent canonical authority."
     },

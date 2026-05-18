@@ -7,47 +7,47 @@
   "stubs": [
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_platform_stub.c",
+      "path": "runtime/platform/system/dsys_platform_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_proc_stub.c",
+      "path": "runtime/platform/system/dsys_proc_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_sdl2_stub.c",
+      "path": "runtime/platform/system/dsys_sdl2_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_stub.c",
+      "path": "runtime/platform/system/dsys_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_terminal_detect_stub.c",
+      "path": "runtime/platform/system/dsys_terminal_detect_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/modules/system/dsys_window_stub.c",
+      "path": "runtime/platform/system/dsys_window_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/render/d_gfx_caps_stub.c",
+      "path": "runtime/render/d_gfx_caps_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/render/stub/d_gfx_stub.c",
+      "path": "runtime/render/stub/d_gfx_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "engine/render/stub/d_gfx_stub.h",
+      "path": "runtime/render/stub/d_gfx_stub.h",
       "reason": "stub marker"
     },
     {
@@ -87,12 +87,12 @@
     },
     {
       "classification": "temporary_stub",
-      "path": "game/tests/test_stub.c",
+      "path": "tests/game/test_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "game/tests/tests/domino_sys/test_dsys_stub.c",
+      "path": "tests/tests/game/domino_sys/test_dsys_stub.c",
       "reason": "stub marker"
     },
     {
@@ -132,7 +132,7 @@
     },
     {
       "classification": "temporary_stub",
-      "path": "legacy/_orphaned/legacy_source_game/game/core/game_stub.c",
+      "path": "legacy/_orphaned/legacy_source_game/game/rule/game_stub.c",
       "reason": "stub marker"
     },
     {
@@ -152,17 +152,17 @@
     },
     {
       "classification": "temporary_stub",
-      "path": "legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
+      "path": "legacy/engine_modules_engine/runtime/render/api/gfx_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "legacy/engine_modules_engine/engine/render/dgfx_stub.c",
+      "path": "legacy/engine_modules_engine/runtime/render/dgfx_stub.c",
       "reason": "stub marker"
     },
     {
       "classification": "temporary_stub",
-      "path": "legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c",
+      "path": "legacy/engine_modules_engine/runtime/render/null/dom_rend_stub.c",
       "reason": "stub marker"
     },
     {
@@ -268,9 +268,9 @@
   ],
   "todos": [
     "engine/include/domino/dspace_env.h",
-    "engine/modules/content/d_blueprint.c",
-    "engine/modules/view/d_view.c",
-    "engine/modules/world/d_world.h",
+    "runtime/package/content/d_blueprint.c",
+    "runtime/ui/view/d_view.c",
+    "game/world/d_world.h",
     "legacy/_orphaned/legacy_source_common/common/dom_compat.cpp",
     "legacy/_orphaned/legacy_source_common/common/dom_packset.cpp",
     "legacy/_orphaned/legacy_source_common/common/dom_paths.cpp",
@@ -284,11 +284,11 @@
     "legacy/engine_modules_engine/engine/dspace_env.c",
     "legacy/engine_modules_engine/engine/dspace_graph.c",
     "legacy/engine_modules_engine/engine/dworld.c",
-    "legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c",
-    "legacy/engine_modules_engine/engine/render/api/domino_gfx_core.c",
-    "legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
-    "legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c",
-    "legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c",
+    "legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c",
+    "legacy/engine_modules_engine/runtime/render/api/domino_gfx_core.c",
+    "legacy/engine_modules_engine/runtime/render/api/gfx_stub.c",
+    "legacy/engine_modules_engine/runtime/render/null/dom_rend_stub.c",
+    "legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c",
     "legacy/engine_modules_engine/engine/system/core/base/shared/process.cpp",
     "legacy/engine_modules_engine/engine/system/core/sys_stub.c",
     "legacy/engine_modules_engine/engine/system/plat/null/dom_plat_sys_stub.c",
@@ -314,7 +314,7 @@
     "scripts/ci/check_todo_blockers.py",
     "tools/audit/scan_markers.py",
     "tools/modcheck/dom_modcheck.cpp",
-    "tools/replay_viewer/dom_replay_viewer_controller.cpp",
-    "tools/save_inspector/dom_save_inspector_controller.cpp"
+    "apps/workbench/module/replay/viewer/dom_replay_viewer_controller.cpp",
+    "apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp"
   ]
 }

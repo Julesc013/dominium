@@ -12,7 +12,7 @@
     {
       "rule_id": "INV-RENDER-NO-TRUTH-ACCESS",
       "severity": "FAIL",
-      "scope_paths": ["client", "libs/appcore", "runtime/shell/appcore/command/command_registry.c", "tests/integration/freecam_epistemics_tests.py"],
+      "scope_paths": ["client", "libs/appcore", "runtime/shell/command/command_registry.c", "tests/integration/freecam_epistemics_tests.py"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-render-no-truth-access",
       "exemption_policy": "deny"
     },

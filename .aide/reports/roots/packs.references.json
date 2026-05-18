@@ -65,7 +65,7 @@
       "classification": "unknown",
       "file": ".aide/context/repo-map.md",
       "line": 115,
-      "snippet": "- `game/tests/tests/fixtures/missing_packs/README.md` (priority 80, document, manual)"
+      "snippet": "- `tests/tests/game/fixtures/missing_packs/README.md` (priority 80, document, manual)"
     },
     {
       "classification": "unknown",
@@ -275,25 +275,25 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2595,
-      "snippet": "\"contracts/packs/README.md\","
+      "snippet": "\"contracts/package/packs/README.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3648,
-      "snippet": "\"contracts/schemas/packs/pack_compat_manifest.schema\","
+      "snippet": "\"contracts/schema/packs/pack_compat_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3649,
-      "snippet": "\"contracts/schemas/packs/pack_compatibility_report.schema\","
+      "snippet": "\"contracts/schema/packs/pack_compatibility_report.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3650,
-      "snippet": "\"contracts/schemas/packs/pack_lock.schema\","
+      "snippet": "\"contracts/schema/packs/pack_lock.schema\","
     },
     {
       "classification": "unknown",
@@ -2549,19 +2549,19 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 5516,
-      "snippet": "\"dist/packs/base/pack.base.procedural/pack.alias.json\","
+      "snippet": "\"archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 5517,
-      "snippet": "\"dist/packs/official/pack.earth.procedural/pack.alias.json\","
+      "snippet": "\"archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 5518,
-      "snippet": "\"dist/packs/official/pack.sol.pin_minimal/pack.alias.json\","
+      "snippet": "\"archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json\","
     },
     {
       "classification": "unknown",
@@ -2585,7 +2585,7 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 11053,
-      "snippet": "\"game/tests/tests/fixtures/missing_packs/README.md\","
+      "snippet": "\"tests/tests/game/fixtures/missing_packs/README.md\","
     },
     {
       "classification": "unknown",
@@ -5289,7 +5289,7 @@
     },
     {
       "classification": "unknown",
-      "file": "content/domain-data/README.md",
+      "file": "content/domains/README.md",
       "line": 10,
       "snippet": "Pack content belongs under `content/packs/` when it is actual pack material. Test-only fixtures belong under `tests/fixtures/`."
     },
@@ -5297,7 +5297,7 @@
       "classification": "unknown",
       "file": "contracts/MANIFEST.md",
       "line": 31,
-      "snippet": "- `contracts/packs/`"
+      "snippet": "- `contracts/package/packs/`"
     },
     {
       "classification": "unknown",
@@ -5349,37 +5349,37 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/domain_registry.schema.json",
+      "file": "contracts/schema/domain_registry.schema.json",
       "line": 98,
       "snippet": "\"path\": \"packs/domain/pack.domain.navigation/data/domain.navigation.json\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/packs/pack_compatibility_report.schema",
+      "file": "contracts/schema/packs/pack_compatibility_report.schema",
       "line": 1,
       "snippet": "SCHEMA: packs/pack_compatibility_report.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/packs/pack_compat_manifest.schema",
+      "file": "contracts/schema/packs/pack_compat_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: packs/pack_compat_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/packs/pack_lock.schema",
+      "file": "contracts/schema/packs/pack_lock.schema",
       "line": 1,
       "snippet": "SCHEMA: packs/pack_lock.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/reality/domain_contract.schema.json",
+      "file": "contracts/schema/reality/domain_contract.schema.json",
       "line": 1191,
       "snippet": "\"packs/domain\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/reality/domain_contract.schema.json",
+      "file": "contracts/schema/reality/domain_contract.schema.json",
       "line": 1235,
       "snippet": "\"packs/domain\""
     },
@@ -5807,7 +5807,7 @@
       "classification": "unknown",
       "file": "data/audit/virtual_paths_report.json",
       "line": 157,
-      "snippet": "\"line\": \"dist_packs_root = _runtime_abs(repo_root, os.path.join(\\\"dist\\\", \\\"packs\\\"))\","
+      "snippet": "\"line\": \"dist_packs_root = _runtime_abs(repo_root, os.path.join(\\\"archive\generated\archive\generated\dist\\\", \\\"packs\\\"))\","
     },
     {
       "classification": "unknown",
@@ -5891,7 +5891,7 @@
       "classification": "unknown",
       "file": "data/perf/perf_report_win64.json",
       "line": 1,
-      "snippet": "{\"bundle_roots\":{\"portable_full\":\"build/tmp/dist3_bundle_c/v0.0.0-mock/win64/dominium\",\"server_profile\":\"build/tmp/performance_envelope_server_dist/v0.0.0-mock/win64/dominium\"},\"declared_targets\":{\"base_pack_bundle_mb\":4,\"clean_room_seconds"
+      "snippet": "{\"bundle_roots\":{\"portable_full\":\"build/tmp/dist3_bundle_c/v0.0.0-mock/win64/dominium\",\"server_profile\":\"build/tmp/performance_envelope_server_archive/generated/dist/v0.0.0-mock/win64/dominium\"},\"declared_targets\":{\"base_pack_bundle_mb\":4,\"clean_room_seconds"
     },
     {
       "classification": "unknown",
@@ -7007,7 +7007,7 @@
       "classification": "unknown",
       "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "line": 930,
-      "snippet": "\"dist/packs/\","
+      "snippet": "\"archive/generated/dist/packs/\","
     },
     {
       "classification": "unknown",
@@ -7263,25 +7263,25 @@
     },
     {
       "classification": "unknown",
-      "file": "dist/locks/pack_lock.mvp_default.json",
+      "file": "archive/generated/dist/locks/pack_lock.mvp_default.json",
       "line": 1,
       "snippet": "{\"deterministic_fingerprint\":\"877287372128f9094d47e98fdebc2f465d3323a399bea5e07cd207b6183a5dd8\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"extensions\":{\"pack_count\":3,\"source\":\"MVP-1\"},\"format_version\":\"2.0.0\",\"mod_policy_id\":"
     },
     {
       "classification": "unknown",
-      "file": "dist/packs/base/pack.base.procedural/pack.alias.json",
+      "file": "archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json",
       "line": 1,
       "snippet": "{\"canonical_hash\":\"7cc5704c8f47bc0cb4e6ce3901eaf4f99763fc1169aa3afa5d3b30f2dfebad6c\",\"deterministic_fingerprint\":\"f0da68452b1698c76509c7dfe5f202c7a039a178bf2850f7480d996a6227a54f\",\"distribution_channel\":\"base\",\"pack_alias_id\":\"pack.base.pro"
     },
     {
       "classification": "unknown",
-      "file": "dist/packs/official/pack.earth.procedural/pack.alias.json",
+      "file": "archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json",
       "line": 1,
       "snippet": "{\"canonical_hash\":\"35b37ea4cccbf6ccf739ab5fe3ab16ec9bc1fd67c30198f7ccb5ce9eefa5ba0d\",\"deterministic_fingerprint\":\"7e0bb2e48e3daed10c2ab5f4dc78a78719535ebce8f613505f49d3b37494285f\",\"distribution_channel\":\"official\",\"pack_alias_id\":\"pack.eart"
     },
     {
       "classification": "unknown",
-      "file": "dist/packs/official/pack.sol.pin_minimal/pack.alias.json",
+      "file": "archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json",
       "line": 1,
       "snippet": "{\"canonical_hash\":\"3ed4a56385660a1a6f7bcafbc1acf94fbf75ed6114d1640945dd7494f95bdd5f\",\"deterministic_fingerprint\":\"9e0a730574d6b58214992d020a3823986494e6a63fe14759f6a53f4a3b2fb8b5\",\"distribution_channel\":\"official\",\"pack_alias_id\":\"pack.sol."
     },
@@ -7341,21 +7341,21 @@
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/APPSHELL_CONSTITUTION.md",
+      "file": "docs/runtime/shell/APPSHELL_CONSTITUTION.md",
       "line": 6,
       "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`."
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/COMMANDS_AND_REFUSALS.md",
+      "file": "docs/runtime/shell/COMMANDS_AND_REFUSALS.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`."
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`."
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/SUPERVISOR_MODEL.md",
+      "file": "docs/runtime/shell/SUPERVISOR_MODEL.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/appshell/IPC_ATTACH_CONSOLES.md`, `docs/appshell/LOGGING_AND_TRACING.md`, `docs/packs/PACK_VERIFICATION_PI"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/runtime/shell/IPC_ATTACH_CONSOLES.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, `docs/packs/PACK_VERIFICATION_PI"
     },
     {
       "classification": "docs",
@@ -7409,7 +7409,7 @@
       "classification": "docs",
       "file": "docs/architecture/deterministic_packaging.md",
       "line": 19,
-      "snippet": "- `dist/packs/`"
+      "snippet": "- `archive/generated/dist/packs/`"
     },
     {
       "classification": "docs",
@@ -8585,19 +8585,19 @@
       "classification": "docs",
       "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
       "line": 349,
-      "snippet": "- `dist.packs.base.pack.base.procedural` -> `dist/packs/base/pack.base.procedural`"
+      "snippet": "- `dist.packs.base.pack.base.procedural` -> `archive/generated/dist/packs/base/pack.base.procedural`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
       "line": 350,
-      "snippet": "- `dist.packs.official.pack.earth.procedural` -> `dist/packs/official/pack.earth.procedural`"
+      "snippet": "- `dist.packs.official.pack.earth.procedural` -> `archive/generated/dist/packs/official/pack.earth.procedural`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
       "line": 351,
-      "snippet": "- `dist.packs.official.pack.sol.pin_minimal` -> `dist/packs/official/pack.sol.pin_minimal`"
+      "snippet": "- `dist.packs.official.pack.sol.pin_minimal` -> `archive/generated/dist/packs/official/pack.sol.pin_minimal`"
     },
     {
       "classification": "docs",
@@ -9605,7 +9605,7 @@
       "classification": "docs",
       "file": "docs/audit/DISASTER_TEST0_RETRO_AUDIT.md",
       "line": 67,
-      "snippet": "- `src/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists"
+      "snippet": "- `src/tools/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists"
     },
     {
       "classification": "docs",
@@ -9617,19 +9617,19 @@
       "classification": "docs",
       "file": "docs/audit/DIST1_RETRO_AUDIT.md",
       "line": 41,
-      "snippet": "- `dist/packs/base/pack.base.procedural/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DIST1_RETRO_AUDIT.md",
       "line": 42,
-      "snippet": "- `dist/packs/official/pack.sol.pin_minimal/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DIST1_RETRO_AUDIT.md",
       "line": 43,
-      "snippet": "- `dist/packs/official/pack.earth.procedural/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json`"
     },
     {
       "classification": "docs",
@@ -11405,19 +11405,19 @@
       "classification": "docs",
       "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
       "line": 353,
-      "snippet": "- `dist.packs.base.pack.base.procedural` :: root=`dist/packs/base/pack.base.procedural` domain=`dist` files=`1` confidence=`0.92`"
+      "snippet": "- `dist.packs.base.pack.base.procedural` :: root=`archive/generated/dist/packs/base/pack.base.procedural` domain=`dist` files=`1` confidence=`0.92`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
       "line": 354,
-      "snippet": "- `dist.packs.official.pack.earth.procedural` :: root=`dist/packs/official/pack.earth.procedural` domain=`dist` files=`1` confidence=`0.92`"
+      "snippet": "- `dist.packs.official.pack.earth.procedural` :: root=`archive/generated/dist/packs/official/pack.earth.procedural` domain=`dist` files=`1` confidence=`0.92`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MODULE_DISCOVERY_REPORT.md",
       "line": 355,
-      "snippet": "- `dist.packs.official.pack.sol.pin_minimal` :: root=`dist/packs/official/pack.sol.pin_minimal` domain=`dist` files=`1` confidence=`0.92`"
+      "snippet": "- `dist.packs.official.pack.sol.pin_minimal` :: root=`archive/generated/dist/packs/official/pack.sol.pin_minimal` domain=`dist` files=`1` confidence=`0.92`"
     },
     {
       "classification": "docs",
@@ -12101,7 +12101,7 @@
       "classification": "docs",
       "file": "docs/audit/MVP1_RETRO_AUDIT.md",
       "line": 23,
-      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `archive/generated/dist/`."
     },
     {
       "classification": "docs",
@@ -12173,25 +12173,25 @@
       "classification": "docs",
       "file": "docs/audit/MVP1_RETRO_AUDIT.md",
       "line": 193,
-      "snippet": "- hardcoded `dist/packs/...` usage"
+      "snippet": "- hardcoded `archive/generated/dist/packs/...` usage"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
       "line": 60,
-      "snippet": "- `dist/packs/base/pack.base.procedural/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
       "line": 61,
-      "snippet": "- `dist/packs/official/pack.sol.pin_minimal/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
       "line": 62,
-      "snippet": "- `dist/packs/official/pack.earth.procedural/pack.alias.json`"
+      "snippet": "- `archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json`"
     },
     {
       "classification": "docs",
@@ -12695,13 +12695,13 @@
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 32,
-      "snippet": "- pack alias artifacts in `dist/packs/*/*/pack.alias.json`"
+      "snippet": "- pack alias artifacts in `archive/generated/dist/packs/*/*/pack.alias.json`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/RELEASE2_RETRO_AUDIT.md",
       "line": 71,
-      "snippet": "- pack alias and compatibility manifests under `dist/packs/**`"
+      "snippet": "- pack alias and compatibility manifests under `archive/generated/dist/packs/**`"
     },
     {
       "classification": "docs",
@@ -13491,7 +13491,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/compat/DATA_FORMAT_VERSIONING.md",
+      "file": "docs/compatibility/DATA_FORMAT_VERSIONING.md",
       "line": 6,
       "snippet": "Compatibility: Bound to `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`, and `docs/packs/PACK_VERIFICATION_PIPELINE.md`."
     },
@@ -13521,37 +13521,37 @@
     },
     {
       "classification": "docs",
-      "file": "docs/dev/TOOLS_OVERVIEW.md",
+      "file": "docs/development/TOOLS_OVERVIEW.md",
       "line": 39,
       "snippet": "- `python tools/pack/pack_validate.py --pack-root data/packs/org.dominium.core.units --format json`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/TOOLS_OVERVIEW.md",
+      "file": "docs/development/TOOLS_OVERVIEW.md",
       "line": 54,
       "snippet": "- `python tools/fab/fab_validate.py --input data/packs/org.dominium.core.parts.basic/data/fab_pack.json --pack-root data/packs/org.dominium.core.parts.basic --format json`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/TOOLS_OVERVIEW.md",
+      "file": "docs/development/TOOLS_OVERVIEW.md",
       "line": 108,
       "snippet": "- `python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data data/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/TOOLS_OVERVIEW.md",
+      "file": "docs/development/TOOLS_OVERVIEW.md",
       "line": 118,
       "snippet": "- `python tools/fab/fab_diff.py --left data/packs/org.dominium.core.parts.basic --right data/packs/org.dominium.core.parts.extended --format json`"
     },
     {
       "classification": "docs",
-      "file": "docs/diag/REPRO_BUNDLE_MODEL.md",
+      "file": "docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/LOGGING_AND_TRACING.md`, `docs/appshell/SUPERVISOR_MODEL.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/packs/PACK_VERIFICATIO"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, `docs/runtime/shell/SUPERVISOR_MODEL.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `docs/packs/PACK_VERIFICATIO"
     },
     {
       "classification": "docs",
-      "file": "docs/diag/REPRO_BUNDLE_MODEL.md",
+      "file": "docs/runtime/diagnostics/REPRO_BUNDLE_MODEL.md",
       "line": 38,
       "snippet": "- `packs/`"
     },
@@ -13583,7 +13583,7 @@
       "classification": "docs",
       "file": "docs/domains/README.md",
       "line": 8,
-      "snippet": "Machine-readable domain contracts belong under `contracts/`. Domain implementation belongs under `game/domains/`. Domain content and datasets belong under `content/domain-data/` or `content/packs/`. Test fixtures, determinism cases, regress"
+      "snippet": "Machine-readable domain contracts belong under `contracts/`. Domain implementation belongs under `game/domain/`. Domain content and datasets belong under `content/domains/` or `content/packs/`. Test fixtures, determinism cases, regress"
     },
     {
       "classification": "docs",
@@ -13601,7 +13601,7 @@
       "classification": "docs",
       "file": "docs/governance/REPOX_RULESETS.md",
       "line": 867,
-      "snippet": "- Fails when `dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set."
+      "snippet": "- Fails when `archive/generated/dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set."
     },
     {
       "classification": "docs",
@@ -14279,7 +14279,7 @@
       "classification": "docs",
       "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
       "line": 197,
-      "snippet": "Across `game/content/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, and pack families under `packs/domain`, `p"
+      "snippet": "Across `content/domains/game/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, and pack families under `packs/domain`, `p"
     },
     {
       "classification": "docs",
@@ -14291,7 +14291,7 @@
       "classification": "docs",
       "file": "docs/planning/REALITY_EXTRACTION_REPORT.md",
       "line": 212,
-      "snippet": "- semantic pack and domain roots in `packs/**`, `game/content/core`, `worldgen`, `geo`, and related domain roots"
+      "snippet": "- semantic pack and domain roots in `packs/**`, `content/domains/game/core`, `worldgen`, `geo`, and related domain roots"
     },
     {
       "classification": "docs",
@@ -14471,7 +14471,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.dacae9a559fa7c8a.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
     },
     {
       "classification": "docs",
@@ -14531,7 +14531,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d4587536ebe3d700.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/COMPAT_SEM3_RETRO_AUDIT.md, docs/audit/DISASTER_SUITE_RUN.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/mvp/DISASTER_SUITE_MODEL_v0_0_0.md, docs/packs/PA"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/COMPAT_SEM3_RETRO_AUDIT.md, docs/audit/DISASTER_SUITE_RUN.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/mvp/DISASTER_SUITE_MODEL_v0_0_0.md, docs/packs/PA"
     },
     {
       "classification": "docs",
@@ -14573,7 +14573,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.eae737b84bb84661.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
     },
     {
       "classification": "docs",
@@ -14669,13 +14669,13 @@
       "classification": "docs",
       "file": "docs/repo/DOMAIN_SPLIT_RULES.md",
       "line": 15,
-      "snippet": "- content, datasets, authored fixtures, and pack data go to `content/domain-data/<domain>/` or `content/packs/`."
+      "snippet": "- content, datasets, authored fixtures, and pack data go to `content/domains/<domain>/` or `content/packs/`."
     },
     {
       "classification": "docs",
       "file": "docs/repo/DOMAIN_SPLIT_RULES.md",
       "line": 83,
-      "snippet": "- `content/domain-data/<domain>/` or `content/packs/`"
+      "snippet": "- `content/domains/<domain>/` or `content/packs/`"
     },
     {
       "classification": "docs",
@@ -14723,7 +14723,7 @@
       "classification": "docs",
       "file": "docs/repo/OWNERSHIP_RULES.md",
       "line": 149,
-      "snippet": "- `content/domain-data/<domain>/` and `content/packs/` for authored source data, datasets, and pack material."
+      "snippet": "- `content/domains/<domain>/` and `content/packs/` for authored source data, datasets, and pack material."
     },
     {
       "classification": "docs",
@@ -14789,7 +14789,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 141,
-      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
+      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
@@ -14813,7 +14813,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_LAYOUT_TARGET.md",
       "line": 100,
-      "snippet": "- `content/domain-data/` and `content/packs/` for authored data and pack content."
+      "snippet": "- `content/domains/` and `content/packs/` for authored data and pack content."
     },
     {
       "classification": "docs",
@@ -14867,7 +14867,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -14921,7 +14921,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 167,
-      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
+      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
@@ -14963,7 +14963,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 719,
-      "snippet": "`dist/manifests/release_manifest.json`, `dist/packs/`, `dist/profiles/`, `dist/locks/`, AppShell install/store search roots"
+      "snippet": "`archive/generated/dist/manifests/release_manifest.json`, `archive/generated/dist/packs/`, `archive/generated/dist/profiles/`, `archive/generated/dist/locks/`, AppShell install/store search roots"
     },
     {
       "classification": "docs",
@@ -15011,7 +15011,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -15047,7 +15047,7 @@
       "classification": "docs",
       "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
       "line": 157,
-      "snippet": "| `dist/packs/*` | `/packs/*` with portable mirrors retained via vpath | pack storage and distribution content | `provisional` | lib, pack-compat, install discovery | `medium` |"
+      "snippet": "| `archive/generated/dist/packs/*` | `/packs/*` with portable mirrors retained via vpath | pack storage and distribution content | `provisional` | lib, pack-compat, install discovery | `medium` |"
     },
     {
       "classification": "docs",
@@ -15483,13 +15483,13 @@
     },
     {
       "classification": "docs",
-      "file": "docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md",
+      "file": "docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md",
       "line": 20,
       "snippet": "- `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md",
+      "file": "docs/domains/worldgen/EARTH_PROCEDURAL_CONSTITUTION.md",
       "line": 32,
       "snippet": "- `docs/packs/sol/PACK_SOL_PIN_MINIMAL.md`"
     },
@@ -15543,7 +15543,7 @@
     },
     {
       "classification": "active_source",
-      "file": "release/update_resolver.py",
+      "file": "tools/release/update_resolver.py",
       "line": 486,
       "snippet": "if rel_token.startswith(\"store/\") or rel_token.startswith(\"packs/\"):"
     },
@@ -15767,233 +15767,233 @@
       "classification": "tests",
       "file": "tests/launcher/launcher_cli_tests.py",
       "line": 322,
-      "snippet": "\"artifact_path\": \"embedded_artifacts/packs/%s\" % pack_hash,"
+      "snippet": "\"artifact_path\": \"embedded_archive/generated/artifacts/packs/%s\" % pack_hash,"
     },
     {
       "classification": "tests",
       "file": "tests/ops/content_store_tests.py",
       "line": 300,
-      "snippet": "\"artifact_path\": \"embedded_artifacts\\\\packs\\\\hash\\\\payload\","
+      "snippet": "\"artifact_path\": \"embedded_archive\generated\archive\generated\archive\generated\artifacts\\\\packs\\\\hash\\\\payload\","
     },
     {
       "classification": "tests",
       "file": "tests/ops/content_store_tests.py",
       "line": 305,
-      "snippet": "\"artifact_path\": \"embedded_artifacts/packs/hash/payload\","
+      "snippet": "\"artifact_path\": \"embedded_archive/generated/artifacts/packs/hash/payload\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b2_schema_shadowing.py",
+      "file": "tools/xstack/auditx/analyzers/b2_schema_shadowing.py",
       "line": 10,
-      "snippet": "WATCH_PREFIXES = (\"contracts/schemas/\", \"data/packs/\", \"data/registries/\")"
+      "snippet": "WATCH_PREFIXES = (\"contracts/schema/\", \"data/packs/\", \"data/registries/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b5_cross_pack_entropy.py",
+      "file": "tools/xstack/auditx/analyzers/b5_cross_pack_entropy.py",
       "line": 10,
       "snippet": "WATCH_PREFIXES = (\"data/packs/\", \"data/registries/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/d1_constraint_drift.py",
+      "file": "tools/xstack/auditx/analyzers/d1_constraint_drift.py",
       "line": 14,
       "snippet": "\"packs/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/d2_seed_policy.py",
+      "file": "tools/xstack/auditx/analyzers/d2_seed_policy.py",
       "line": 17,
       "snippet": "\"packs/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e146_hardcoded_track_spec_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e146_hardcoded_track_spec_smell.py",
       "line": 87,
       "snippet": "related_paths=[rel_path, \"packs/specs/specs.default.realistic.m1/data/spec_sheets.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e21_unauthorized_cosmetic_pack_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e21_unauthorized_cosmetic_pack_smell.py",
       "line": 14,
       "snippet": "REPRESENTATION_PACK_MANIFEST = \"packs/representation/pack.representation.base/pack.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e268_unversioned_template_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e268_unversioned_template_smell.py",
       "line": 47,
       "snippet": "pack_registry_rel = \"packs/system_templates/base/data/system_template_registry.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e26_diegetic_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e26_diegetic_bypass_smell.py",
       "line": 12,
       "snippet": "PLAYER_LAW_PATH = \"packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e26_diegetic_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e26_diegetic_bypass_smell.py",
       "line": 13,
       "snippet": "PLAYER_EXPERIENCE_PATH = \"packs/experience/profile.player.default/data/experience_profile.player.default.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e27_hidden_nondiegetic_window_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e27_hidden_nondiegetic_window_smell.py",
       "line": 12,
       "snippet": "PLAYER_WORKSPACE_PACK_PATH = \"packs/tool/workspace.player.diegetic_default/pack.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e27_hidden_nondiegetic_window_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e27_hidden_nondiegetic_window_smell.py",
       "line": 13,
       "snippet": "PLAYER_WORKSPACE_ROOT = \"packs/tool/workspace.player.diegetic_default\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e300_orphan_feature_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e300_orphan_feature_smell.py",
       "line": 30,
       "snippet": "\"packs/system_templates/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e312_hardcoded_logic_behavior_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e312_hardcoded_logic_behavior_smell.py",
       "line": 16,
       "snippet": "\"packs/core/pack.core.logic_base/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e312_hardcoded_logic_behavior_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e312_hardcoded_logic_behavior_smell.py",
       "line": 73,
       "snippet": "related_paths=[rel_path, \"packs/core/pack.core.logic_base/data/logic_element_registry.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e313_missing_state_vector_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e313_missing_state_vector_smell.py",
       "line": 15,
       "snippet": "\"packs/core/pack.core.logic_base/data/logic_element_registry.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e313_missing_state_vector_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e313_missing_state_vector_smell.py",
       "line": 16,
       "snippet": "\"packs/core/pack.core.logic_base/data/logic_state_vectors.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e313_missing_state_vector_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e313_missing_state_vector_smell.py",
       "line": 42,
       "snippet": "element_rel = \"packs/core/pack.core.logic_base/data/logic_element_registry.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e313_missing_state_vector_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e313_missing_state_vector_smell.py",
       "line": 43,
       "snippet": "statevec_rel = \"packs/core/pack.core.logic_base/data/logic_state_vectors.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
       "line": 18,
-      "snippet": "\"dist/packs/\","
+      "snippet": "\"archive/generated/dist/packs/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
       "line": 19,
       "snippet": "\"packs/base/pack.base.procedural\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
       "line": 20,
       "snippet": "\"packs/official/pack.sol.pin_minimal\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
       "line": 21,
       "snippet": "\"packs/official/pack.earth.procedural\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
       "line": 12,
       "snippet": "PACK_MANIFEST_REL = \"packs/official/pack.sol.pin_minimal/pack.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
       "line": 13,
       "snippet": "PATCH_DOC_REL = \"packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e363_large_data_in_pin_pack_smell.py",
       "line": 14,
       "snippet": "DOC_REL = \"docs/packs/sol/PACK_SOL_PIN_MINIMAL.md\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e364_identity_override_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py",
       "line": 12,
       "snippet": "PATCH_DOC_REL = \"packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e364_identity_override_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e364_identity_override_smell.py",
       "line": 13,
       "snippet": "DOC_REL = \"docs/packs/sol/PACK_SOL_PIN_MINIMAL.md\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py",
       "line": 12,
       "snippet": "\"docs/packs/PACK_COMPATIBILITY_MANIFEST.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py",
       "line": 27,
       "snippet": "\"packs/compat/pack_compat_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py",
       "line": 34,
       "snippet": "\"packs/official/pack.sol.pin_minimal/pack.compat.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e415_pack_loaded_without_compat_validation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e415_pack_loaded_without_compat_validation_smell.py",
       "line": 12,
       "snippet": "\"packs/compat/pack_compat_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
       "line": 12,
       "snippet": "\"docs/packs/PACK_VERIFICATION_PIPELINE.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
       "line": 16,
       "snippet": "\"packs/compat/pack_verification_pipeline.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
       "line": 12,
       "snippet": "\"docs/packs/PACK_VERIFICATION_PIPELINE.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
       "line": 16,
       "snippet": "\"packs/compat/pack_verification_pipeline.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e60_hardcoded_blueprint_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e60_hardcoded_blueprint_smell.py",
       "line": 14,
       "snippet": "\"packs/blueprints/\","
     },
@@ -16031,7 +16031,7 @@
       "classification": "tools",
       "file": "tools/lib/lib_stress_common.py",
       "line": 1083,
-      "snippet": "\"embedded_artifacts/packs/{}\".format(str(embed_result.get(\"artifact_hash\", \"\")).strip()),"
+      "snippet": "\"embedded_archive/generated/artifacts/packs/{}\".format(str(embed_result.get(\"artifact_hash\", \"\")).strip()),"
     },
     {
       "classification": "tools",
@@ -16115,19 +16115,19 @@
       "classification": "tools",
       "file": "tools/review/doc_inventory_common.py",
       "line": 320,
-      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/worldgen/\", \"docs/geo/\", \"docs/logic/\", \"docs/appshell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compat/\", \"docs/net/\", \"d"
+      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/domains/worldgen/\", \"docs/domains/geology/\", \"docs/logic/\", \"docs/runtime/shell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compatibility/\", \"docs/runtime/network/\", \"d"
     },
     {
       "classification": "tools",
       "file": "tools/review/implementation_scoring_common.py",
       "line": 595,
-      "snippet": "and _norm_rel(rel_path).startswith((\"contracts/schemas/\", \"contracts/schemas/\", \"data/\", \"packs/\", \"src/\"))"
+      "snippet": "and _norm_rel(rel_path).startswith((\"contracts/schema/\", \"contracts/schema/\", \"data/\", \"packs/\", \"src/\"))"
     },
     {
       "classification": "tools",
       "file": "tools/review/repo_inventory_common.py",
       "line": 473,
-      "snippet": "if rel_norm.startswith((\"tools/launcher/\", \"tools/setup/\", \"tools/pack/\", \"tools/distribution/\", \"data/packs/\")):"
+      "snippet": "if rel_norm.startswith((\"tools/launcher/\", \"tools/setup/\", \"tools/pack/\", \"tools/package/distribution/\", \"data/packs/\")):"
     },
     {
       "classification": "tools",

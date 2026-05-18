@@ -105,7 +105,7 @@ This baseline is ready for CHEM-0 coupling work without changing FLUID core sema
   - Command: `python tools/xstack/repox/check.py --profile STRICT`
   - Result: `pass` (warnings only, no blocking findings)
 - AuditX STRICT-equivalent scan:
-  - Command: `python tools/auditx/auditx.py scan --repo-root . --output-root build/fluid/auditx --format both`
+  - Command: `python tools/xstack/auditx/auditx.py scan --repo-root . --output-root build/fluid/auditx --format both`
   - Result: `scan_complete`
   - Findings: `2106` (workspace-global, includes pre-existing non-FLUID findings; cache mode `full_reuse`)
 - TestX STRICT (FLUID-3 target subset):

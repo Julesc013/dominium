@@ -1,0 +1,23 @@
+SCHEMA: mechanics/structural_graph.schema
+schema_id: dominium.schema.mechanics.structural_graph
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic StructuralGraph overlay contract.
+- Defines graph membership linking assembly structure to mechanics nodes/edges.
+
+REQUIRED SHAPE:
+record structural_graph
+  required:
+    - schema_version: semver
+    - structural_graph_id: id
+    - assembly_id: id
+    - node_ids: [id]
+    - edge_ids: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- StructuralGraph ordering is deterministic by structural_graph_id.
+- Node and edge memberships are deterministic sets represented as sorted lists.

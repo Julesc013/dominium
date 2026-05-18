@@ -56,14 +56,14 @@ The default bundle freezes:
 
 Canonical dist skeleton now ships:
 
-- `dist/bin/dominium_client` and `dist/bin/dominium_server`
-- `dist/packs/base/pack.base.procedural/pack.alias.json`
-- `dist/packs/official/pack.sol.pin_minimal/pack.alias.json`
-- `dist/packs/official/pack.earth.procedural/pack.alias.json`
-- `dist/profiles/bundle.mvp_default.json`
-- `dist/locks/pack_lock.mvp_default.json`
-- `dist/saves/`
-- `dist/logs/`
+- `archive/generated/dist/bin/dominium_client` and `archive/generated/dist/bin/dominium_server`
+- `archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json`
+- `archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json`
+- `archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json`
+- `archive/generated/dist/profiles/bundle.mvp_default.json`
+- `archive/generated/dist/locks/pack_lock.mvp_default.json`
+- `archive/generated/dist/saves/`
+- `archive/generated/dist/logs/`
 
 Entrypoint expectations:
 

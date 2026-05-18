@@ -1,0 +1,46 @@
+SCHEMA: budget_snapshot.schema
+schema_id: dominium.schema.budget_snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define observable budget usage and refusal counters for audit and tooling.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+REQUIRED SHAPE:
+record budget_snapshot
+  required:
+    - schema_version: tag
+    - tick: i64
+  optional:
+    - active_tier1_domains: u32
+    - active_tier2_domains: u32
+    - tier1_limit: u32
+    - tier2_limit: u32
+    - refinement_used: u32
+    - refinement_limit: u32
+    - planning_used: u32
+    - planning_limit: u32
+    - collapse_used: u32
+    - collapse_limit: u32
+    - expand_used: u32
+    - expand_limit: u32
+    - macro_event_used: u32
+    - macro_event_limit: u32
+    - snapshot_used: u32
+    - snapshot_limit: u32
+    - deferred_count: u32
+    - deferred_overflow: u32
+    - deferred_limit: u32
+    - refusal_active_domain_limit: u32
+    - refusal_refinement_budget: u32
+    - refusal_macro_event_budget: u32
+    - refusal_agent_planning_budget: u32
+    - refusal_snapshot_budget: u32
+    - refusal_collapse_budget: u32
+    - refusal_defer_queue_limit: u32
+    - extensions: map

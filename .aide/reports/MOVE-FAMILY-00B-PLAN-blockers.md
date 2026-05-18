@@ -7,13 +7,13 @@ Last Reviewed: 2026-05-17
 
 None.
 
-All three tracked files under `ide/manifests/**` are classifiable as projection contract metadata and have proposed target paths under `contracts/projections/ide/**`.
+All three tracked files under `ide/manifests/**` are classifiable as projection contract metadata and have proposed target paths under `contracts/projection/ide/**`.
 
 ## Gate Requirements
 
 Apply remains blocked until a later gate explicitly approves:
 
-- creating `contracts/projections/ide/**`;
+- creating `contracts/projection/ide/**`;
 - moving all three tracked manifest source files;
 - updating required current references;
 - narrowing `.gitignore` so generated IDE output stays ignored;
@@ -21,7 +21,7 @@ Apply remains blocked until a later gate explicitly approves:
 
 ## Warning-Only Conditions
 
-- `contracts/projections/ide/**` is a planned scoped contract slot, not an existing path.
+- `contracts/projection/ide/**` is a planned scoped contract slot, not an existing path.
 - Generated projection output references to `ide/manifests/*.projection.json` may remain if they are documented as generated/local output.
 - Historical audit evidence may continue to reference old paths.
 

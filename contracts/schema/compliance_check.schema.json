@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Compliance Check Schema",
+  "version": "1.0.0",
+  "description": "Deterministic SPEC-1 compliance check declaration.",
+  "x-doc-ref": [
+    "docs/specs/SPECSHEET_CONSTITUTION.md",
+    "docs/audit/SPECSHEET_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "check_id",
+    "description",
+    "applies_to_target_kinds",
+    "required_inputs",
+    "output_grade",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "check_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "applies_to_target_kinds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "structure",
+          "ag",
+          "geometry",
+          "vehicle",
+          "network_edge"
+        ]
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "output_grade": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "warn",
+        "fail"
+      ]
+    },
+    "failure_refusal_code": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "check_id": "check.geometry.clearance",
+      "description": "Verifies minimum clearance constraints.",
+      "applies_to_target_kinds": [
+        "structure",
+        "geometry"
+      ],
+      "required_inputs": [
+        "section.interior.layout",
+        "derived.geometry.clearance_summary"
+      ],
+      "output_grade": "warn",
+      "failure_refusal_code": "refusal.spec.noncompliant",
+      "extensions": {}
+    }
+  ]
+}

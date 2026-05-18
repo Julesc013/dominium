@@ -540,7 +540,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_life_continuation_tests.exe"
       ]
@@ -551,7 +551,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_life_death_tests.exe"
       ]
@@ -562,7 +562,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_life_birth_tests.exe"
       ]
@@ -573,7 +573,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_life_remains_tests.exe"
       ]
@@ -584,7 +584,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ0a_survival_tests.exe"
       ]
@@ -595,7 +595,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ0_population_tests.exe"
       ]
@@ -606,7 +606,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ1_city_infra_tests.exe"
       ]
@@ -617,7 +617,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ2_governance_tests.exe"
       ]
@@ -628,7 +628,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ3_knowledge_tests.exe"
       ]
@@ -639,7 +639,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_civ4_scale_tests.exe"
       ]
@@ -650,7 +650,7 @@
       "labels": [],
       "category": "full_unlabeled",
       "timeout": null,
-      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/game/tests/phase6",
+      "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/game/phase6",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/dominium_mp0_parity_tests.exe"
       ]
@@ -697,7 +697,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_fallback",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_fallback",
         "--strict=1"
       ]
     },
@@ -710,7 +710,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_float",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_float",
         "--strict=1"
       ]
     },
@@ -723,7 +723,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_unbounded",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_unbounded",
         "--strict=1"
       ]
     },
@@ -736,7 +736,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_fabrication",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_fabrication",
         "--strict=1"
       ]
     },
@@ -749,7 +749,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_ui",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_ui",
         "--strict=1"
       ]
     },
@@ -762,7 +762,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tools",
       "command": [
         "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/bin/validate_all.exe",
-        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validation/fixtures/bad_renderer",
+        "--repo-root=C:/Inbox/Git Repos/dominium/tools/validators/suite/fixtures/bad_renderer",
         "--strict=1"
       ]
     },
@@ -6713,7 +6713,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/auditx_canonical_hash_stability_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/auditx_canonical_hash_stability_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6730,7 +6730,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/auditx_environment_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/auditx_environment_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium",
         "--case",
@@ -6749,7 +6749,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/auditx_environment_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/auditx_environment_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium",
         "--case",
@@ -6768,7 +6768,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/controlx_smoke_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/controlx_smoke_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6836,7 +6836,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/controlx_adversarial_queue_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/controlx_adversarial_queue_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6853,7 +6853,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/controlx_parallel_workspace_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/controlx_parallel_workspace_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6887,7 +6887,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_smoke_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_smoke_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6904,7 +6904,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_determinism_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_determinism_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6921,7 +6921,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_regression_detection_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_regression_detection_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6938,7 +6938,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_workspace_isolation_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_workspace_isolation_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -6955,7 +6955,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_environment_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_environment_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium",
         "--case",
@@ -6974,7 +6974,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/performx_environment_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/performx_environment_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium",
         "--case",
@@ -6993,7 +6993,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/compatx_schema_diff_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/compatx_schema_diff_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7010,7 +7010,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/compatx_migration_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/compatx_migration_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7027,7 +7027,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/compatx_save_replay_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/compatx_save_replay_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7044,7 +7044,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/compatx_pack_matrix_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/compatx_pack_matrix_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7061,7 +7061,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/securex_pack_signature_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/securex_pack_signature_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7078,7 +7078,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/securex_privilege_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/securex_privilege_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7095,7 +7095,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/securex_boundary_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/securex_boundary_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]
@@ -7112,7 +7112,7 @@
       "working_directory": "C:/Inbox/Git Repos/dominium/out/build/vs2026/verify/tests/tools",
       "command": [
         "C:/Users/Jules/AppData/Local/Python/pythoncore-3.14-64/python.exe",
-        "C:/Inbox/Git Repos/dominium/tests/tools/securex_reproducible_build_tests.py",
+        "C:/Inbox/Git Repos/dominium/tests/tools/xstack/securex_reproducible_build_tests.py",
         "--repo-root",
         "C:/Inbox/Git Repos/dominium"
       ]

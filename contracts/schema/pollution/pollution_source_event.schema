@@ -1,0 +1,25 @@
+SCHEMA: pollution/pollution_source_event.schema
+schema_id: dominium.schema.pollution.pollution_source_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical process-emitted pollutant source events for deterministic provenance and replay.
+- Provide source lineage for explainability and accounting.
+
+NON-SEMANTICS:
+- No direct field mutation instructions.
+- No dispersion implementation.
+
+REQUIRED SHAPE:
+record pollution_source_event
+  required:
+    - source_event_id: id
+    - tick: int
+    - origin_kind: enum(reaction|fire|leak|industrial)
+    - origin_id: id
+    - pollutant_id: id
+    - emitted_mass: number
+    - spatial_scope_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

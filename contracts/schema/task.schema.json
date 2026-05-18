@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Task Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ACT-3 task/work row.",
+  "x-doc-ref": [
+    "docs/interaction/TASK_AND_WORK_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "task_id",
+    "task_type_id",
+    "actor_subject_id",
+    "target_semantic_id",
+    "surface_id",
+    "tool_id",
+    "process_id_to_execute",
+    "parameters",
+    "created_tick",
+    "started_tick",
+    "last_progress_tick",
+    "status",
+    "progress_units_total",
+    "progress_units_done",
+    "cost_units_per_tick",
+    "linked_commitment_id",
+    "linked_event_ids",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "actor_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_semantic_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "tool_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "process_id_to_execute": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "started_tick": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "last_progress_tick": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "planned",
+        "running",
+        "paused",
+        "completed",
+        "failed",
+        "cancelled"
+      ]
+    },
+    "progress_units_total": {
+      "type": "integer"
+    },
+    "progress_units_done": {
+      "type": "integer"
+    },
+    "cost_units_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "linked_commitment_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "linked_event_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "task_id": "task.f5bd26f0177e0c3e",
+      "task_type_id": "task.tighten_fastener",
+      "actor_subject_id": "agent.alpha",
+      "target_semantic_id": "assembly.test.fastener",
+      "surface_id": "surface.abc",
+      "tool_id": "tool.instance.wrench.alpha",
+      "process_id_to_execute": "process.fastener_turn",
+      "parameters": {
+        "direction": "tighten",
+        "tool_effect": {
+          "efficiency_multiplier": 1000
+        }
+      },
+      "created_tick": 10,
+      "started_tick": 10,
+      "last_progress_tick": 10,
+      "status": "running",
+      "progress_units_total": 16777216,
+      "progress_units_done": 0,
+      "cost_units_per_tick": 2,
+      "linked_commitment_id": null,
+      "linked_event_ids": [],
+      "deterministic_fingerprint": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84",
+      "extensions": {}
+    }
+  ]
+}

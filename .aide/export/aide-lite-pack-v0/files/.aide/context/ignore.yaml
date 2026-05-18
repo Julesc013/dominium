@@ -16,7 +16,7 @@ exclude:
   - .mypy_cache/**
   - .ruff_cache/**
   - node_modules/**
-  - dist/**
+  - archive/generated/dist/**
   - build/**
   - out/**
   - target/**

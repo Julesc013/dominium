@@ -394,9 +394,9 @@ class Router:
 
     def route_ide(self, rest: str, source: str) -> Tuple[Optional[str], str, str]:
         if rest == "manifests/projection_manifest.schema.json":
-            return "contracts/projections/ide/projection_manifest.schema.json", "IDE projection manifest schema", "canonical"
+            return "contracts/projection/ide/projection_manifest.schema.json", "IDE projection manifest schema", "canonical"
         if rest.startswith("manifests/projection_manifest_examples/") and source.endswith(".projection.json"):
-            return join_target("contracts/projections/ide/examples", rest.split("/", 2)[-1]), "IDE projection manifest example", "canonical"
+            return join_target("contracts/projection/ide/examples", rest.split("/", 2)[-1]), "IDE projection manifest example", "canonical"
         if rest.lower() == "readme.md":
             return "docs/architecture/IDE_PROJECTIONS.md", "IDE projection documentation", "canonical"
         return None, "unknown IDE material", "quarantine"
@@ -727,7 +727,7 @@ class Router:
     def route_libs(self, rest: str, source: str) -> Tuple[Optional[str], str, str]:
         first = first_part(rest)
         if first == "appcore":
-            return join_target("runtime/shell/appcore", drop_first(rest)), "AppCore runtime shell library", "canonical"
+            return join_target("runtime/shell", drop_first(rest)), "shell runtime library", "canonical"
         if has_any(source, {"abi"}):
             return join_target("contracts/abi", rest), "library ABI", "canonical"
         if has_any(source, {"external", "third_party", "vendor"}):

@@ -1,0 +1,26 @@
+SCHEMA: ipc/ipc_frame.schema
+schema_id: dominium.schema.ipc.ipc_frame
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic AppShell IPC frame envelope.
+
+NON-SEMANTICS:
+- IPCFrame does not mutate truth.
+- IPCFrame does not imply authorization without negotiation.
+
+REQUIRED SHAPE:
+record ipc_frame
+  required:
+    - schema_version: tag
+    - channel_id: enum[log|console|status|negotiation]
+    - seq_no: int
+    - payload_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- seq_no must be monotonic per channel for a given endpoint
+- payload_ref must serialize deterministically
+- frame ordering must not depend on wall-clock timing

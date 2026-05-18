@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `content/data/planning/reconciliation/subsystem_classification.json`, `content/data/planning/reconciliation/assumption_invalidations.json`, `content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `contracts/planning/reconciliation/subsystem_classification.json`, `contracts/planning/reconciliation/assumption_invalidations.json`, `contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`
 
 # Foundation Readiness Report
 
@@ -235,7 +235,7 @@ Equivalent live support already exists in:
 - `schema/identity/artifact_identity.schema`
 - `schema/release/release_channel.schema`
 - `docs/specs/SPEC_IDENTITY.md`
-- `release/update_resolver.py`
+- `tools/release/update_resolver.py`
 - `updates/*.json`
 
 So the P-3 conclusion is: these Υ artifacts are absent as named constitutions, but clearly needed, strongly supported, and mostly consolidation work.
@@ -303,7 +303,7 @@ Later prompts should not reinvent:
 - the live semantic/domain roots already present across reality, worldgen, geo, materials, logic, signals, system, universe, and pack surfaces
 - existing rollback, yanked-release, transaction-log, checkpoint, and replay primitives
 
-P-4 should also avoid consuming `docs/blueprint/FINAL_PROMPT_INVENTORY.md` or `content/data/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
+P-4 should also avoid consuming `docs/blueprint/FINAL_PROMPT_INVENTORY.md` or `archive/generated/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
 
 ## 7. What Later Prompts Should Extend Instead of Replace
 

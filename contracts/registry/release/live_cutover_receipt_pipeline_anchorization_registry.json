@@ -26,7 +26,7 @@
       "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
       "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
       "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
-      "content/data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
+      "contracts/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
       "contracts/registry/planning/later_wave_execution_gates_registry.json"
     ],
     "runtime_doctrine": [

@@ -16,7 +16,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.geo.tool_replay_path_request import verify_path_request_replay
+    from tools.validators.domain.geology.tool_replay_path_request import verify_path_request_replay
 
     first = verify_path_request_replay()
     second = verify_path_request_replay()

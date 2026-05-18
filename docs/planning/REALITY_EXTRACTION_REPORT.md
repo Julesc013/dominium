@@ -42,7 +42,7 @@ This means later prompts should plan for convergence and extension, not pretend 
 | Products | `client`, `server`, `launcher`, `setup`, `tools`, `appshell` | Concrete app/operator surfaces already exist; most C/C++ products are registered in CMake and `appshell` adds a Python orchestration shell. |
 | Shared runtime and platform | `engine`, `game`, `app`, `runtime`, `compat`, `control`, `core`, `net`, `process`, `lib`, `libs` | Mixed runtime backbone with both compiled and Python surfaces. |
 | Control-plane and release | `release`, `repo`, `updates`, `security`, `governance`, `data/architecture`, `data/registries`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/controlx`, `tools/securex` | Strong evidence that release, compat, update, archive, and governance directions are already embodied. |
-| Semantic and world domains | `game/content/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, `pollution` | Broad domain surface already exists in raw form and is not confined to one root. |
+| Semantic and world domains | `content/domains/game/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, `pollution` | Broad domain surface already exists in raw form and is not confined to one root. |
 | Schemas, registries, and manifests | `schema`, `schemas`, `data/registries`, `data/architecture`, `packs`, `data/packs`, `updates`, `repo` | Extensive machine-readable declaration layer, but with visible dual-structure coexistence. |
 | Toolchain and automation | `CMakeLists.txt`, `CMakePresets.json`, `cmake`, `scripts`, `tools/ci`, `setup/packages/scripts`, `.github/workflows/ci.yml` | Strong automation surface spanning build, validation, IDE projection, packaging, and CI profiles. |
 | Governance and planning | `AGENTS.md`, `docs/planning`, `docs/blueprint`, `docs/agents`, `docs/xstack`, `docs/governance`, `GOVERNANCE.md` | Repo contains multiple instruction layers; only some are planning-authoritative. |
@@ -52,8 +52,8 @@ This means later prompts should plan for convergence and extension, not pretend 
 
 The compiled product family is concrete rather than hypothetical:
 
-- `client` defines `dominium_client` from `client/app/main_client.c` and related app, input, UI, presentation, and observability sources, then registers the product through `dom_register_product(client dominium_client)`.
-- `server` defines `dominium_server` from `server/app/main_server.c` plus authority, net, shard, persistence, and runtime code, then registers the product through `dom_register_product(server dominium_server)`.
+- `client` defines `dominium_client` from `apps/client/main_client.c` and related app, input, UI, presentation, and observability sources, then registers the product through `dom_register_product(client dominium_client)`.
+- `server` defines `dominium_server` from `apps/server/main_server.c` plus authority, net, shard, persistence, and runtime code, then registers the product through `dom_register_product(server dominium_server)`.
 - `launcher` provides a shared `launcher_core` plus CLI, GUI, TUI, and Win32 entrypoints, with `launcher_cli` registered as the product entry.
 - `setup` mirrors that pattern with `setup_core`, CLI, GUI, TUI, and Win32 entrypoints, with `setup_cli` registered as the product entry.
 - `tools` is a real product root, not just incidental utilities. `tools/CMakeLists.txt` defines `dominium-tools`, registers it as `tools`, and also builds many specialized domain/operator executables.
@@ -99,7 +99,7 @@ This area looks like one of the strongest extension-over-replacement zones in th
 
 The semantic/domain landscape is already broad and non-trivial:
 
-- `game/content/core` provides a clear baseline content surface with `astro`, `cosmo`, and `mechanics` data.
+- `content/domains/game/core` provides a clear baseline content surface with `astro`, `cosmo`, and `mechanics` data.
 - `worldgen` is a strong domain root with `core`, `earth`, `galaxy`, `mw`, and refinement surfaces.
 - `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, and `universe` are all live top-level semantic roots with engine-like files, not empty placeholders.
 - `astro`, `chem`, `electric`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, and `pollution` expand the domain model rather than merely documenting it.
@@ -137,7 +137,7 @@ The toolchain surface is large and active:
 - `.github/workflows/ci.yml` runs repo sanity, xstack FAST/STRICT/FULL profiles, projection sanity, docs sanity, and matrix build/test jobs
 - `scripts/**` and `tools/ci/**` contain a wide set of verification scripts
 - `setup/packages/scripts/**` contains packaging, staging, schema freeze, layer-check, and launcher invariant automation
-- `tools/xstack/out/**`, `artifacts/toolchain_runs/**`, and many `build/**` subtrees show generated output and audit residue
+- `tools/xstack/out/**`, `archive/generated/artifacts/toolchain_runs/**`, and many `build/**` subtrees show generated output and audit residue
 
 This repo already behaves like a governed toolchain and distribution workspace, not just a code tree.
 
@@ -161,7 +161,7 @@ Several areas are explicitly risky for silent planning errors:
 - `legacy/**` contains multiple mirrored product/core families such as `engine_core_dominium`, `launcher_core_launcher`, and `setup_core_setup`
 - `attic/src_quarantine/**` is an explicit quarantine root and must stay non-canonical without manual review
 - `quarantine/README.md` signals an explicit quarantine surface even though the root is currently small
-- `build/**`, `artifacts/**`, `out/**`, `run_meta/**`, and `.xstack_cache/**` contain large generated or cached evidence surfaces
+- `build/**`, `archive/generated/artifacts/**`, `out/**`, `run_meta/**`, and `.xstack_cache/**` contain large generated or cached evidence surfaces
 - `field/**` and `fields/**` both exist with overlapping `field_engine.py` naming, which is a duplicate-shadow risk
 - `schema/**` versus `schemas/**` is an explicit P-0 quarantine trigger if material disagreements appear
 - `packs/**` versus `data/packs/**` is not automatically a conflict, but it is a clear coexistence zone that later prompts must classify carefully
@@ -194,7 +194,7 @@ Most strongly in `release`, `repo`, `updates`, `security/trust`, `tools/xstack`,
 
 ### 13.4 Where do semantic/world/domain roots already exist in raw form?
 
-Across `game/content/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, and pack families under `packs/domain`, `packs/experience`, and `packs/law`.
+Across `content/domains/game/core`, `worldgen`, `geo`, `reality`, `materials`, `machines`, `logic`, `signals`, `system`, `universe`, `astro`, `embodiment`, `epistemics`, `diegetics`, `mobility`, `physics`, and pack families under `packs/domain`, `packs/experience`, and `packs/law`.
 
 ### 13.5 Where do old and new structures appear to coexist?
 
@@ -209,7 +209,7 @@ Most clearly in `legacy/**` versus live roots, `schema/**` versus `schemas/**`, 
 - registered product roots in `client`, `server`, `launcher`, `setup`, and `tools`
 - shared support surfaces in `app`, `engine`, `game`, `libs/contracts`, and `libs/appcore`
 - release/control surfaces in `release`, `repo`, `updates`, `data/architecture`, `data/registries`, and `tools/xstack`
-- semantic pack and domain roots in `packs/**`, `game/content/core`, `worldgen`, `geo`, and related domain roots
+- semantic pack and domain roots in `packs/**`, `content/domains/game/core`, `worldgen`, `geo`, and related domain roots
 
 ## 14. Care Rules For Ρ-2 And Ρ-3
 

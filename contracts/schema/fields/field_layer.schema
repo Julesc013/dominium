@@ -1,0 +1,25 @@
+SCHEMA: fields/field_layer.schema
+schema_id: dominium.schema.fields.field_layer
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic FIELD-1 field layer descriptor.
+- Declares spatial scope, resolution tier, and update policy for a field.
+
+REQUIRED SHAPE:
+record field_layer
+  required:
+    - schema_version: semver
+    - field_id: id
+    - field_type_id: id
+    - spatial_scope_id: id
+    - resolution_level: enum(macro|meso|micro)
+    - update_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Field layers are process-authored and deterministic.
+- Layer identity is stable across replay.
+- Update policy is explicit and law/process governed.

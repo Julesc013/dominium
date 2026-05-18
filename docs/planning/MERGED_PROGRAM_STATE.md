@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `content/data/planning/final_prompt_inventory.json`, `content/data/planning/dependency_graph_post_pi.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `contracts/planning/final_prompt_inventory.json`, `contracts/planning/dependency_graph_post_pi.json`
 
 # Merged Program State
 
@@ -96,7 +96,7 @@ These still matter because:
 The current highest-priority extension-over-replacement zones are:
 
 - `client`, `server`, `launcher`, `setup` as stable product anchors
-- `engine`, `game`, and `game/content/core` as the strongest runtime foundation
+- `engine`, `game`, and `content/domains/game/core` as the strongest runtime foundation
 - `app`, `compat`, `control`, `core`, `net`, `process`, `server/runtime`, and `server/persistence` as the real runtime substrate cluster
 - `release`, `repo`, `updates`, `data/architecture`, `data/registries`, and `tools/xstack` as the control-plane backbone
 - `tools/controlx`, `tools/release`, `tools/distribution`, `tools/compatx`, and `tools/securex` as operator and trust tooling to consolidate rather than replace
@@ -152,7 +152,7 @@ P-0 through P-4 converted doctrine and repo evidence into the current execution 
 
 If a future chat needs one-page orientation, it should use this document plus:
 
-- `content/data/planning/merged_series_state.json`
+- `contracts/planning/merged_series_state.json`
 - `docs/planning/GATES_AND_PROOFS.md`
 - `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`

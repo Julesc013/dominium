@@ -1,0 +1,31 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "surface_records": [
+      {
+        "biome_tags": [
+          "stub_biome"
+        ],
+        "body_ref": "earth",
+        "climate_map_ref": "earth_land_climate",
+        "coordinate_frame_ref": "earth_frame",
+        "heightmap_ref": "earth_land_height",
+        "provenance_ref": "stub_provenance",
+        "region_ids": [
+          "earth_land_region",
+          "earth_continent_stub",
+          "earth_polar_north_region",
+          "earth_polar_south_region",
+          "earth_plate_stub"
+        ],
+        "surface_id": "earth_land_surface",
+        "surface_type": "land"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

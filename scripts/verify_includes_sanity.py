@@ -135,7 +135,7 @@ SKIP_DIRS = {
 }
 
 SKIP_PATH_PREFIXES = {
-    "tools/validation/fixtures",
+    "tools/validators/suite/fixtures",
 }
 
 

@@ -1,0 +1,17 @@
+SCHEMA: universe/time_model.schema
+schema_id: dominium.schema.universe.time_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic universe time-axis capabilities and constraints.
+
+REQUIRED SHAPE:
+record time_model
+  required:
+    - time_model_id: id
+    - single_tick_axis: bool
+    - allow_variable_dt: bool
+    - allow_branching: bool
+    - allow_retroactive_mutation: bool
+    - extensions: map

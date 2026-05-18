@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Component Edge Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "from_component_id",
+    "edge_kind",
+    "to_component_selector",
+    "filters",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "from_component_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edge_kind": {
+      "type": "string",
+      "enum": [
+        "requires",
+        "recommends",
+        "suggests",
+        "conflicts",
+        "provides"
+      ]
+    },
+    "to_component_selector": {
+      "type": "string",
+      "minLength": 1
+    },
+    "filters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "edge_kind": "requires",
+      "extensions": {},
+      "filters": {},
+      "from_component_id": "from_component_id.example",
+      "to_component_selector": "example"
+    }
+  ]
+}

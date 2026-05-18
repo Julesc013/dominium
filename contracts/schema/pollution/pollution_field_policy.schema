@@ -1,0 +1,22 @@
+SCHEMA: pollution/pollution_field_policy.schema
+schema_id: dominium.schema.pollution.pollution_field_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic POLL tier policy and field-cell update rule bindings.
+- Keep POLL optional with explicit no-op policy for null boot.
+
+NON-SEMANTICS:
+- No atmospheric CFD implementation.
+- No direct field update behavior implementation.
+
+REQUIRED SHAPE:
+record pollution_field_policy
+  required:
+    - policy_id: id
+    - tier: enum(P0|P1|P2)
+    - cell_update_rule_id: id
+    - wind_modifier_enabled: bool
+    - deterministic_fingerprint: text
+    - extensions: map

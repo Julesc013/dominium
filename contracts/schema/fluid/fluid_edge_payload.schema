@@ -1,0 +1,28 @@
+SCHEMA: fluid/fluid_edge_payload.schema
+schema_id: dominium.schema.fluid.fluid_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for FLUID-1 FluidNetworkGraph edges.
+- Declare pipe/hose/channel transport proxies for F1 head/flow solving.
+
+REQUIRED SHAPE:
+record fluid_edge_payload
+  required:
+    - schema_version: semver
+    - edge_kind: enum(pipe|hose|channel)
+    - length: number
+    - diameter_proxy: number
+    - roughness_proxy: number
+    - capacity_rating: number
+    - model_bindings: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Head-loss behavior is model-driven through model_bindings.
+- Capacity and roughness proxies must remain explicit and deterministic.
+

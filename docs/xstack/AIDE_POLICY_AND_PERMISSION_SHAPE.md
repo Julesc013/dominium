@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-5, AIDE extraction review
 Replacement Target: later explicit portable policy and permission checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `content/data/xstack/gate_definitions.json`, `contracts/registry/control_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/securex_policy_registry.json`, `contracts/registry/access_policy_registry.json`, `contracts/registry/tool_capability_registry.json`, `contracts/registry/role_registry.json`, `contracts/registry/security_roles.json`, `contracts/registry/law_profiles.json`, `contracts/registry/controlx_policy.json`, `contracts/registry/refusal_code_registry.json`, `contracts/registry/refusal_to_exit_registry.json`, `tools/xstack/registry_compile/compiler.py`, `tools/xstack/securex/check.py`, `tools/validators/security/trust/trust_verifier.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `appshell/pack_verifier_adapter.py`, `tools/xstack/sessionx/pipeline_contract.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `archive/generated/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `archive/generated/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `archive/generated/xstack/gate_definitions.json`, `contracts/registry/control_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/securex_policy_registry.json`, `contracts/registry/access_policy_registry.json`, `contracts/registry/tool_capability_registry.json`, `contracts/registry/role_registry.json`, `contracts/registry/security_roles.json`, `contracts/registry/law_profiles.json`, `contracts/registry/controlx_policy.json`, `contracts/registry/refusal_code_registry.json`, `contracts/registry/refusal_to_exit_registry.json`, `tools/xstack/registry_compile/compiler.py`, `tools/xstack/securex/check.py`, `tools/validators/security/trust/trust_verifier.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `appshell/pack_verifier_adapter.py`, `tools/xstack/sessionx/pipeline_contract.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`
 
 # AIDE Policy and Permission Shape
 
@@ -77,7 +77,7 @@ In the live repo, canonical policy is already implied by registry-backed policy 
 - `contracts/registry/trust_policy_registry.json`
 - `contracts/registry/securex_policy_registry.json`
 - `contracts/registry/access_policy_registry.json`
-- `content/data/xstack/gate_definitions.json`
+- `archive/generated/xstack/gate_definitions.json`
 - `contracts/registry/controlx_policy.json`
 - `contracts/registry/law_profiles.json`
 
@@ -114,7 +114,7 @@ Policy bundles or profiles are named selections that package several rule decisi
 
 The live repo already shows this shape through:
 
-- `FAST`, `STRICT`, and `FULL` gate profiles in `content/data/xstack/gate_definitions.json`
+- `FAST`, `STRICT`, and `FULL` gate profiles in `archive/generated/xstack/gate_definitions.json`
 - `law_profiles.json`, which bundles grants, revocations, allowed and forbidden intents, audit requirements, and refusal codes
 - trust policy selection in `tools/validators/security/trust/trust_verifier.py`
 
@@ -176,7 +176,7 @@ The live repo shows this through:
 
 - enabled affordance rows in `client/interaction/affordance_generator.py`
 - trust results that complete with warnings or bridge allowances in `tools/validators/security/trust/trust_verifier.py`
-- declared allowances in `content/data/xstack/gate_definitions.json`
+- declared allowances in `archive/generated/xstack/gate_definitions.json`
 
 ### Permission Denial and Refusal Posture
 
@@ -330,7 +330,7 @@ These fields and distinctions are the portable minimum because the live repo alr
 ### Policy Registries and Gate Catalogs
 
 - `contracts/registry/control_policy_registry.json` already declares policy ids, allowed actions, allowed abstraction levels, view policies, fidelity ranges, strictness, and explicit meta-law allowances
-- `content/data/xstack/gate_definitions.json` already declares required profiles, provisional allowances, required invariants, rule ids, and validation gates
+- `archive/generated/xstack/gate_definitions.json` already declares required profiles, provisional allowances, required invariants, rule ids, and validation gates
 - `contracts/registry/controlx_policy.json` already declares forbidden patterns, allowed operation categories, mutation locality rules, and semantic escalation keywords
 
 These surfaces justify freezing policy identity, scope, action classes, gate classes, decision classes, and escalation classes now.

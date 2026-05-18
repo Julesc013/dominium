@@ -14,7 +14,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from game.domains.worldgen.core.constraint_commands import (  # noqa: E402
+from game.domain.worldgen.core.constraint_commands import (  # noqa: E402
     worldgen_constraints_clear,
     worldgen_constraints_set,
     worldgen_search_commit,

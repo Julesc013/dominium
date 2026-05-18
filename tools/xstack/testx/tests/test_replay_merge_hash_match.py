@@ -15,7 +15,7 @@ _HASH64 = re.compile(r"^[0-9a-f]{64}$")
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.geo.tool_replay_overlay_merge import verify_overlay_merge_fixture
+    from tools.validators.domain.geology.tool_replay_overlay_merge import verify_overlay_merge_fixture
 
     report = verify_overlay_merge_fixture()
     if str(report.get("result", "")) != "complete":

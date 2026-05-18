@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Route Query Schema",
+  "version": "1.0.0",
+  "description": "Deterministic NetworkGraph route query request.",
+  "x-doc-ref": [
+    "docs/architecture/NETWORKGRAPH_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "graph_id",
+    "from_node_id",
+    "to_node_id",
+    "route_policy_id",
+    "constraints",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to_node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "graph_id": "graph.logistics.alpha",
+      "from_node_id": "node.a",
+      "to_node_id": "node.b",
+      "route_policy_id": "route.shortest_delay",
+      "constraints": {
+        "required_capacity": 100
+      },
+      "extensions": {}
+    }
+  ]
+}

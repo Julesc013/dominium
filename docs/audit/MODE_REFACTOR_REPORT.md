@@ -24,7 +24,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `INV-DEFAULTS-OPTIONAL`
 
 ## Usable Scaffolding
-- Profile-driven selection state in `client/core/client_command_bridge.c` with law binding and default parameter resolution.
+- Profile-driven selection state in `apps/client/session/client_command_bridge.c` with law binding and default parameter resolution.
 - Optional bundle declarations in `data/registries/bundle_profiles.json` with explicit `extensions.optional` policy.
 - AuditX analyzers for:
   - `ModeFlagSmell`

@@ -46,7 +46,7 @@ def main() -> int:
             print("{} missing runner_command".format(group_id))
             return 1
         command = " ".join(str(item) for item in row.get("runner_command"))
-        if "tools/auditx/auditx.py" not in command:
+        if "tools/xstack/auditx/auditx.py" not in command:
             print("{} runner_command must invoke auditx".format(group_id))
             return 1
     missing = sorted(required_ids - seen)

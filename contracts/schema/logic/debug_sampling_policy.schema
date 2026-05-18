@@ -1,0 +1,28 @@
+SCHEMA: logic/debug_sampling_policy.schema
+schema_id: dominium.schema.logic.debug_sampling_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic policy bounds for LOGIC debug sampling and throttling.
+- Limit trace point count, time window, total samples, and throttle strategy.
+
+NON-SEMANTICS:
+- This schema does not authorize debug access by itself.
+- It does not define protocol semantics or compiled execution behavior.
+
+REQUIRED SHAPE:
+record logic_debug_sampling_policy
+  required:
+    - policy_id: id
+    - max_points: u64
+    - max_ticks: u64
+    - max_samples: u64
+    - throttle_strategy: enum(deterministic_subsample|reduce_points|refuse)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- All maxima must be greater than zero.
+- `max_samples` must not exceed `max_points * max_ticks` after policy normalization.
+- `throttle_strategy` must remain deterministic.

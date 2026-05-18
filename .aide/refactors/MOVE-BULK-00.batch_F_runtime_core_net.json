@@ -13,7 +13,7 @@
   },
   "roots": ["core", "control", "net"],
   "included_moves": [
-    {"salvage_id": "F-CORE-CONTROL-NET", "source_path": "core/** control/** net/**", "target_path": "engine/ runtime/ contracts/protocols/ contracts/capabilities/ tools/ tests/", "action": "move_with_temporary_shim", "file_count": 54}
+    {"salvage_id": "F-CORE-CONTROL-NET", "source_path": "core/** control/** net/**", "target_path": "engine/ runtime/ contracts/protocol/ contracts/capability/ tools/ tests/", "action": "move_with_temporary_shim", "file_count": 54}
   ],
   "deferred_items": ["runtime/source semantics require ownership review and build/product proof gate"],
   "blocked_items": ["cannot move deterministic substrate or protocol surfaces in a docs-only cleanup gate"],

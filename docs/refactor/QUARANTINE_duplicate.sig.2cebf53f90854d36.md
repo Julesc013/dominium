@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `engine/include/domino/core/rng_streams.h`
-- `engine/modules/core/rng_streams.c`
+- `engine/kernel/rng_streams.c`
 
 ## Scorecard
 
 - `engine/include/domino/core/rng_streams.h` disposition=`canonical` rank=`1` total_score=`78.63` risk=`HIGH`
-- `engine/modules/core/rng_streams.c` disposition=`quarantine` rank=`2` total_score=`76.67` risk=`HIGH`
+- `engine/kernel/rng_streams.c` disposition=`quarantine` rank=`2` total_score=`76.67` risk=`HIGH`
 
 ## Usage Sites
 
@@ -37,7 +37,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

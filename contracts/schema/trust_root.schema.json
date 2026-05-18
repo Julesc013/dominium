@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Trust Root Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "signer_id",
+    "public_key_bytes",
+    "trust_level_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "signer_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "public_key_bytes": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trust_level_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "public_key_bytes": "example",
+      "signer_id": "signer_id.example",
+      "trust_level_id": "trust_level_id.example"
+    }
+  ]
+}

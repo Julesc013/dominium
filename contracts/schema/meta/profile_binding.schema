@@ -1,0 +1,26 @@
+SCHEMA: meta/profile_binding.schema
+schema_id: dominium.schema.meta.profile_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Bind profiles to deterministic scopes for runtime resolution.
+
+NON-SEMANTICS:
+- Binding rows do not imply entitlement by themselves.
+- Binding rows do not mutate canonical state.
+
+REQUIRED SHAPE:
+record profile_binding
+  required:
+    - binding_id: id
+    - scope: enum(universe|session|authority|system)
+    - target_id: id
+    - profile_id: id
+    - tick_applied: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Resolution order uses scope precedence + stable tie-break rules.
+- profile_id must resolve to a declared profile row at runtime.

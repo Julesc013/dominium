@@ -25,7 +25,7 @@ def _ensure_repo_root(repo_root: str) -> None:
 @lru_cache(maxsize=4)
 def _scenario_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.geo.geo10_stress_common import DEFAULT_GEO10_SEED, generate_geo_stress_scenario
+    from tools.validators.domain.geology.geo10_stress_common import DEFAULT_GEO10_SEED, generate_geo_stress_scenario
 
     return generate_geo_stress_scenario(seed=DEFAULT_GEO10_SEED, include_cctv=True)
 
@@ -58,7 +58,7 @@ def _suite_by_id(scenario: Mapping[str, object], suite_id: str) -> dict:
 @lru_cache(maxsize=4)
 def _stress_report_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.geo.geo10_stress_runtime import verify_geo_stress_scenario
+    from tools.validators.domain.geology.geo10_stress_runtime import verify_geo_stress_scenario
 
     scenario = copy.deepcopy(_scenario_cached(repo_root))
     return verify_geo_stress_scenario(
@@ -74,7 +74,7 @@ def geo10_stress_report(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _overlay_identity_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.geo.tool_verify_overlay_identity import verify_overlay_identity
+    from tools.validators.domain.geology.tool_verify_overlay_identity import verify_overlay_identity
 
     return verify_overlay_identity(scenario=copy.deepcopy(_scenario_cached(repo_root)))
 
@@ -86,7 +86,7 @@ def geo10_overlay_identity_report(repo_root: str) -> dict:
 @lru_cache(maxsize=4)
 def _replay_report_cached(repo_root: str) -> dict:
     _ensure_repo_root(repo_root)
-    from tools.geo.tool_replay_geo_window import replay_geo_window
+    from tools.validators.domain.geology.tool_replay_geo_window import replay_geo_window
 
     return replay_geo_window(scenario=copy.deepcopy(_scenario_cached(repo_root)))
 
@@ -97,7 +97,7 @@ def geo10_replay_report(repo_root: str) -> dict:
 
 def geo10_projection_redaction_fixture(repo_root: str, suite_id: str = "geo10.suite.r3_grid") -> dict:
     _ensure_repo_root(repo_root)
-    from tools.geo.geo10_stress_runtime import _suite_geometry_and_compaction, _suite_projection_and_views
+    from tools.validators.domain.geology.geo10_stress_runtime import _suite_geometry_and_compaction, _suite_projection_and_views
 
     scenario = geo10_scenario(repo_root)
     suite = _suite_by_id(scenario, suite_id)

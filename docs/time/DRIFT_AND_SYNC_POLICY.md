@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Drift and Sync Policy
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: TEMP-2
 
 ## Drift
@@ -40,4 +40,4 @@ Scope: TEMP-2
 
 - No wall-clock APIs in authoritative sync logic.
 - Deterministic ordering remains canonical tick first, then stable subject ordering.
-- Every adjustment attempt emits deterministic artifacts/hashes for replay.
+- Every adjustment attempt emits deterministic archive/generated/artifacts/hashes for replay.

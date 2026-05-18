@@ -27,7 +27,7 @@ def _belief_registry() -> dict:
 
 
 def _run_once() -> dict:
-    from game.domains.signals import process_trust_decay_tick
+    from game.domain.signals import process_trust_decay_tick
 
     return process_trust_decay_tick(
         current_tick=200,

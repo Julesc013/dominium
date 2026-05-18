@@ -7,15 +7,15 @@ Last Reviewed: 2026-05-17
 
 | Path | Classification | Target Owner | Target Path | Risk |
 | --- | --- | --- | --- | --- |
-| `ide/manifests/projection_manifest.schema.json` | projection contract metadata | `contracts/projections/ide` | `contracts/projections/ide/projection_manifest.schema.json` | medium |
-| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | projection contract metadata / example fixture | `contracts/projections/ide` | `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` | medium |
-| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | projection contract metadata / legacy example fixture | `contracts/projections/ide` | `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | medium |
+| `ide/manifests/projection_manifest.schema.json` | projection contract metadata | `contracts/projection/ide` | `contracts/projection/ide/projection_manifest.schema.json` | medium |
+| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | projection contract metadata / example fixture | `contracts/projection/ide` | `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` | medium |
+| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | projection contract metadata / legacy example fixture | `contracts/projection/ide` | `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | medium |
 
 ## Ownership Boundary
 
 The tracked schema and examples are source metadata. They are not generated release/projection proof output and should not be archived as generated evidence.
 
-`contracts/projections/ide/**` is the preferred owner because:
+`contracts/projection/ide/**` is the preferred owner because:
 
 - `contracts/` owns machine-readable and compatibility-sensitive authority surfaces;
 - projection manifest shape is the primary identity, with IDE as a projection family qualifier;
@@ -34,4 +34,4 @@ Those generated files must remain ignored and uncommitted. The planned move only
 
 ## Contract Slot Note
 
-`contracts/projections/ide/**` does not exist yet. A later apply task should create it as a scoped contract/projection ownership path and update the relevant references. This plan does not modify `contracts/**`.
+`contracts/projection/ide/**` does not exist yet. A later apply task should create it as a scoped contract/projection ownership path and update the relevant references. This plan does not modify `contracts/**`.

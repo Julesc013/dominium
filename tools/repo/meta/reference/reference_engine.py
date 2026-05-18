@@ -17,11 +17,11 @@ from tools.models import (
     normalize_constitutive_model_rows,
     normalize_model_binding_rows,
 )
-from game.domains.physics.energy.energy_ledger_engine import (
+from game.domain.physics.energy.energy_ledger_engine import (
     evaluate_energy_balance,
     normalize_energy_ledger_entry_rows,
 )
-from game.domains.systems import validate_boundary_invariants
+from game.domain.systems import validate_boundary_invariants
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

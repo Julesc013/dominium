@@ -17,7 +17,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `docs/canon/constitution_v1.md` A9 Pack-driven integration
 - `docs/canon/constitution_v1.md` C1 Version semantics
 - `docs/canon/constitution_v1.md` C3 CompatX obligations
-- `docs/geo/GEO_CONSTITUTION.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
 
 ## 2) Existing Identity Schemes
 

@@ -76,8 +76,8 @@
     "server/persistence/dom_checkpointing.cpp",
     "server/persistence/dom_checkpoint_policy.h",
     "server/server_console.py",
-    "engine/modules/net/d_net_proto.h",
-    "engine/tests/player_embodiment_tests.cpp",
+    "runtime/network/d_net_proto.h",
+    "tests/engine/player_embodiment_tests.cpp",
     "app/readonly_format.c",
     "app/readonly_adapter.c"
   ],

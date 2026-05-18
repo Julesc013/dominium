@@ -18,8 +18,8 @@ Touched Paths:
 - `geo/projection/projection_engine.py`
 - `system/roi/system_roi_scheduler.py`
 - `tools/governance/proof/control_proof_bundle.py`
-- `tools/network/policies/policy_server_authoritative.py`
-- `tools/network/srz/shard_coordinator.py`
+- `tools/validators/network/policies/policy_server_authoritative.py`
+- `tools/validators/network/srz/shard_coordinator.py`
 
 Demand IDs:
 - `space.interplanetary_supply_windows`

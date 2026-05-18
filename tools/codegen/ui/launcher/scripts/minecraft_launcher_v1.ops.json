@@ -1,0 +1,600 @@
+{
+  "version": 1,
+  "docname": "launcher_ui",
+  "defaults": {
+    "root_name": "root"
+  },
+  "ops": [
+    { "op": "ensure_root", "name": "root", "type": "CONTAINER", "out": "$root" },
+    { "op": "set_rect", "target": { "id": "$root" }, "x": 0, "y": 0, "w": 1280, "h": 720 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$root" },
+      "dock": "NONE",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 800, "min_h": 480, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root" }, "type": "CONTAINER", "name": "header", "if_exists": "reuse", "out": "$header" },
+    { "op": "set_rect", "target": { "id": "$header" }, "x": 0, "y": 0, "w": 0, "h": 96 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$header" },
+      "dock": "TOP",
+      "anchors": ["L", "T", "R"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 0, "min_h": 80, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root" }, "type": "CONTAINER", "name": "main", "if_exists": "reuse", "out": "$main" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$main" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 400, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root" }, "type": "CONTAINER", "name": "footer", "if_exists": "reuse", "out": "$footer" },
+    { "op": "set_rect", "target": { "id": "$footer" }, "x": 0, "y": 0, "w": 0, "h": 32 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$footer" },
+      "dock": "BOTTOM",
+      "anchors": ["L", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 0, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/header" }, "type": "IMAGE", "name": "header_logo", "if_exists": "reuse", "out": "$header_logo" },
+    { "op": "set_rect", "target": { "id": "$header_logo" }, "x": 16, "y": 16, "w": 64, "h": 64 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$header_logo" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 0, "r": 8, "t": 0, "b": 0 },
+      "constraints": { "min_w": 32, "min_h": 32, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/header" }, "type": "STATIC_TEXT", "name": "header_title", "if_exists": "reuse", "out": "$header_title" },
+    { "op": "set_rect", "target": { "id": "$header_title" }, "x": 96, "y": 20, "w": 480, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$header_title" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$header_title" }, "key": "text", "value": { "type": "string", "v": "Dominium Launcher" } },
+
+    { "op": "create_widget", "parent": { "path": "root/header" }, "type": "STATIC_TEXT", "name": "header_version", "if_exists": "reuse", "out": "$header_version" },
+    { "op": "set_rect", "target": { "id": "$header_version" }, "x": 96, "y": 50, "w": 480, "h": 18 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$header_version" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 16, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$header_version" }, "key": "text", "value": { "type": "string", "v": "Minecraft-style layout (structure only)" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main" }, "type": "CONTAINER", "name": "sidebar", "if_exists": "reuse", "out": "$sidebar" },
+    { "op": "set_rect", "target": { "id": "$sidebar" }, "x": 0, "y": 0, "w": 220, "h": 0 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$sidebar" },
+      "dock": "LEFT",
+      "anchors": ["L", "T", "B"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 8 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": 280, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main" }, "type": "CONTAINER", "name": "primary", "if_exists": "reuse", "out": "$primary" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$primary" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 4, "r": 8, "t": 8, "b": 8 },
+      "constraints": { "min_w": 300, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar" }, "type": "CONTAINER", "name": "sidebar_top", "if_exists": "reuse", "out": "$sidebar_top" },
+    { "op": "set_rect", "target": { "id": "$sidebar_top" }, "x": 0, "y": 0, "w": 0, "h": 260 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$sidebar_top" },
+      "dock": "TOP",
+      "anchors": ["L", "T"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 8 },
+      "constraints": { "min_w": 180, "min_h": 120, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$sidebar_top" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar" }, "type": "CONTAINER", "name": "sidebar_bottom", "if_exists": "reuse", "out": "$sidebar_bottom" },
+    { "op": "set_rect", "target": { "id": "$sidebar_bottom" }, "x": 0, "y": 0, "w": 0, "h": 140 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$sidebar_bottom" },
+      "dock": "BOTTOM",
+      "anchors": ["L", "B"],
+      "margins": { "l": 0, "r": 0, "t": 8, "b": 0 },
+      "constraints": { "min_w": 180, "min_h": 80, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$sidebar_bottom" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_top" }, "type": "BUTTON", "name": "nav_play", "if_exists": "reuse", "out": "$nav_play" },
+    { "op": "set_rect", "target": { "id": "$nav_play" }, "x": 0, "y": 0, "w": 200, "h": 36 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_play" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 4, "b": 4 },
+      "constraints": { "min_w": 180, "min_h": 32, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_play" }, "key": "text", "value": { "type": "string", "v": "Play" } },
+    { "op": "bind_event", "target": { "id": "$nav_play" }, "event": "on_click", "action": "launcher.nav.play" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_top" }, "type": "BUTTON", "name": "nav_instances", "if_exists": "reuse", "out": "$nav_instances" },
+    { "op": "set_rect", "target": { "id": "$nav_instances" }, "x": 0, "y": 0, "w": 200, "h": 36 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_instances" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 4, "b": 4 },
+      "constraints": { "min_w": 180, "min_h": 32, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_instances" }, "key": "text", "value": { "type": "string", "v": "Instances" } },
+    { "op": "bind_event", "target": { "id": "$nav_instances" }, "event": "on_click", "action": "launcher.nav.instances" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_top" }, "type": "BUTTON", "name": "nav_settings", "if_exists": "reuse", "out": "$nav_settings" },
+    { "op": "set_rect", "target": { "id": "$nav_settings" }, "x": 0, "y": 0, "w": 200, "h": 36 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_settings" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 4, "b": 4 },
+      "constraints": { "min_w": 180, "min_h": 32, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_settings" }, "key": "text", "value": { "type": "string", "v": "Settings" } },
+    { "op": "bind_event", "target": { "id": "$nav_settings" }, "event": "on_click", "action": "launcher.nav.settings" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_top" }, "type": "BUTTON", "name": "nav_mods", "if_exists": "reuse", "out": "$nav_mods" },
+    { "op": "set_rect", "target": { "id": "$nav_mods" }, "x": 0, "y": 0, "w": 200, "h": 32 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_mods" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 4, "b": 4 },
+      "constraints": { "min_w": 180, "min_h": 28, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_mods" }, "key": "text", "value": { "type": "string", "v": "Mods" } },
+    { "op": "bind_event", "target": { "id": "$nav_mods" }, "event": "on_click", "action": "launcher.nav.mods" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_bottom" }, "type": "BUTTON", "name": "nav_accounts", "if_exists": "reuse", "out": "$nav_accounts" },
+    { "op": "set_rect", "target": { "id": "$nav_accounts" }, "x": 0, "y": 0, "w": 200, "h": 28 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_accounts" },
+      "dock": "NONE",
+      "anchors": ["L", "B"],
+      "margins": { "l": 6, "r": 6, "t": 2, "b": 2 },
+      "constraints": { "min_w": 180, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_accounts" }, "key": "text", "value": { "type": "string", "v": "Accounts" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_bottom" }, "type": "BUTTON", "name": "nav_help", "if_exists": "reuse", "out": "$nav_help" },
+    { "op": "set_rect", "target": { "id": "$nav_help" }, "x": 0, "y": 0, "w": 200, "h": 28 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_help" },
+      "dock": "NONE",
+      "anchors": ["L", "B"],
+      "margins": { "l": 6, "r": 6, "t": 2, "b": 2 },
+      "constraints": { "min_w": 180, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_help" }, "key": "text", "value": { "type": "string", "v": "Help" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/sidebar/sidebar_bottom" }, "type": "BUTTON", "name": "nav_logs", "if_exists": "reuse", "out": "$nav_logs" },
+    { "op": "set_rect", "target": { "id": "$nav_logs" }, "x": 0, "y": 0, "w": 200, "h": 28 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$nav_logs" },
+      "dock": "NONE",
+      "anchors": ["L", "B"],
+      "margins": { "l": 6, "r": 6, "t": 2, "b": 2 },
+      "constraints": { "min_w": 180, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$nav_logs" }, "key": "text", "value": { "type": "string", "v": "Logs" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary" }, "type": "TABS", "name": "primary_tabs", "if_exists": "reuse", "out": "$tabs" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$tabs" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 300, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$tabs" }, "key": "tabs.placement", "value": { "type": "string", "v": "top" } },
+    { "op": "set_prop", "target": { "id": "$tabs" }, "key": "tabs.selected_index", "value": { "type": "int", "v": 0 } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs" }, "type": "TAB_PAGE", "name": "tab_home", "if_exists": "reuse", "out": "$tab_home" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$tab_home" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$tab_home" }, "key": "tab.title", "value": { "type": "string", "v": "Home" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs" }, "type": "TAB_PAGE", "name": "tab_instances", "if_exists": "reuse", "out": "$tab_instances" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$tab_instances" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$tab_instances" }, "key": "tab.title", "value": { "type": "string", "v": "Instances" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs" }, "type": "TAB_PAGE", "name": "tab_settings", "if_exists": "reuse", "out": "$tab_settings" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$tab_settings" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$tab_settings" }, "key": "tab.title", "value": { "type": "string", "v": "Settings" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home" }, "type": "SCROLLPANEL", "name": "home_scroll", "if_exists": "reuse", "out": "$home_scroll" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$home_scroll" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 8 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll" }, "type": "CONTAINER", "name": "home_scroll_content", "if_exists": "reuse", "out": "$home_scroll_content" },
+    { "op": "set_rect", "target": { "id": "$home_scroll_content" }, "x": 0, "y": 0, "w": 900, "h": 600 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$home_scroll_content" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 400, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$home_scroll_content" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content" }, "type": "CONTAINER", "name": "news_item_1", "if_exists": "reuse", "out": "$news_item_1" },
+    { "op": "set_rect", "target": { "id": "$news_item_1" }, "x": 0, "y": 0, "w": 860, "h": 120 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_1" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 4, "r": 4, "t": 4, "b": 4 },
+      "constraints": { "min_w": 300, "min_h": 100, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$news_item_1" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content/news_item_1" }, "type": "STATIC_TEXT", "name": "news_item_1_title", "if_exists": "reuse", "out": "$news_item_1_title" },
+    { "op": "set_rect", "target": { "id": "$news_item_1_title" }, "x": 0, "y": 0, "w": 840, "h": 20 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_1_title" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 6, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 18, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$news_item_1_title" }, "key": "text", "value": { "type": "string", "v": "Launcher update: new UI structure" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content/news_item_1" }, "type": "STATIC_TEXT", "name": "news_item_1_body", "if_exists": "reuse", "out": "$news_item_1_body" },
+    { "op": "set_rect", "target": { "id": "$news_item_1_body" }, "x": 0, "y": 0, "w": 840, "h": 72 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_1_body" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 2, "b": 6 },
+      "constraints": { "min_w": 200, "min_h": 40, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$news_item_1_body" }, "key": "text", "value": { "type": "string", "v": "This is a structure-only placeholder. Content and theming will be added later." } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content" }, "type": "CONTAINER", "name": "news_item_2", "if_exists": "reuse", "out": "$news_item_2" },
+    { "op": "set_rect", "target": { "id": "$news_item_2" }, "x": 0, "y": 0, "w": 860, "h": 120 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_2" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 4, "r": 4, "t": 4, "b": 4 },
+      "constraints": { "min_w": 300, "min_h": 100, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$news_item_2" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content/news_item_2" }, "type": "STATIC_TEXT", "name": "news_item_2_title", "if_exists": "reuse", "out": "$news_item_2_title" },
+    { "op": "set_rect", "target": { "id": "$news_item_2_title" }, "x": 0, "y": 0, "w": 840, "h": 20 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_2_title" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 6, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 18, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$news_item_2_title" }, "key": "text", "value": { "type": "string", "v": "News feed placeholder" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_home/home_scroll/home_scroll_content/news_item_2" }, "type": "STATIC_TEXT", "name": "news_item_2_body", "if_exists": "reuse", "out": "$news_item_2_body" },
+    { "op": "set_rect", "target": { "id": "$news_item_2_body" }, "x": 0, "y": 0, "w": 840, "h": 72 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$news_item_2_body" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 6, "r": 6, "t": 2, "b": 6 },
+      "constraints": { "min_w": 200, "min_h": 40, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$news_item_2_body" }, "key": "text", "value": { "type": "string", "v": "More items will be populated by the launcher at runtime." } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances" }, "type": "SPLITTER", "name": "instances_split", "if_exists": "reuse", "out": "$instances_split" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_split" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 8 },
+      "constraints": { "min_w": 300, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_split" }, "key": "splitter.orientation", "value": { "type": "string", "v": "v" } },
+    { "op": "set_prop", "target": { "id": "$instances_split" }, "key": "splitter.pos", "value": { "type": "int", "v": 320 } },
+    { "op": "set_prop", "target": { "id": "$instances_split" }, "key": "splitter.thickness", "value": { "type": "int", "v": 6 } },
+    { "op": "set_prop", "target": { "id": "$instances_split" }, "key": "splitter.min_a", "value": { "type": "int", "v": 200 } },
+    { "op": "set_prop", "target": { "id": "$instances_split" }, "key": "splitter.min_b", "value": { "type": "int", "v": 240 } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split" }, "type": "CONTAINER", "name": "instances_left", "if_exists": "reuse", "out": "$instances_left" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_left" },
+      "dock": "NONE",
+      "anchors": ["L", "T", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split" }, "type": "CONTAINER", "name": "instances_right", "if_exists": "reuse", "out": "$instances_right" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_right" },
+      "dock": "NONE",
+      "anchors": ["L", "T", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$instances_right" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_left" }, "type": "LISTVIEW", "name": "instances_list", "if_exists": "reuse", "out": "$instances_list" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_list" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 0, "r": 0, "t": 0, "b": 0 },
+      "constraints": { "min_w": 200, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "bind_event", "target": { "id": "$instances_list" }, "event": "on_change", "action": "launcher.instances.select" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_right" }, "type": "STATIC_TEXT", "name": "instances_detail_title", "if_exists": "reuse", "out": "$instances_detail_title" },
+    { "op": "set_rect", "target": { "id": "$instances_detail_title" }, "x": 0, "y": 0, "w": 420, "h": 22 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_detail_title" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 2 },
+      "constraints": { "min_w": 240, "min_h": 18, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_detail_title" }, "key": "text", "value": { "type": "string", "v": "Selected Instance" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_right" }, "type": "STATIC_TEXT", "name": "instances_detail_desc", "if_exists": "reuse", "out": "$instances_detail_desc" },
+    { "op": "set_rect", "target": { "id": "$instances_detail_desc" }, "x": 0, "y": 0, "w": 420, "h": 42 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_detail_desc" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 6 },
+      "constraints": { "min_w": 240, "min_h": 36, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_detail_desc" }, "key": "text", "value": { "type": "string", "v": "Details appear here when an instance is selected." } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_right" }, "type": "BUTTON", "name": "instances_play", "if_exists": "reuse", "out": "$instances_play" },
+    { "op": "set_rect", "target": { "id": "$instances_play" }, "x": 0, "y": 0, "w": 240, "h": 32 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_play" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 6, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 28, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_play" }, "key": "text", "value": { "type": "string", "v": "Play Selected" } },
+    { "op": "bind_event", "target": { "id": "$instances_play" }, "event": "on_click", "action": "launcher.instances.play_selected" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_right" }, "type": "BUTTON", "name": "instances_edit", "if_exists": "reuse", "out": "$instances_edit" },
+    { "op": "set_rect", "target": { "id": "$instances_edit" }, "x": 0, "y": 0, "w": 240, "h": 28 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_edit" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_edit" }, "key": "text", "value": { "type": "string", "v": "Edit Selected" } },
+    { "op": "bind_event", "target": { "id": "$instances_edit" }, "event": "on_click", "action": "launcher.instances.edit_selected" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_instances/instances_split/instances_right" }, "type": "BUTTON", "name": "instances_delete", "if_exists": "reuse", "out": "$instances_delete" },
+    { "op": "set_rect", "target": { "id": "$instances_delete" }, "x": 0, "y": 0, "w": 240, "h": 28 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$instances_delete" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 6 },
+      "constraints": { "min_w": 200, "min_h": 24, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$instances_delete" }, "key": "text", "value": { "type": "string", "v": "Delete Selected" } },
+    { "op": "bind_event", "target": { "id": "$instances_delete" }, "event": "on_click", "action": "launcher.instances.delete_selected" },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings" }, "type": "CONTAINER", "name": "settings_stack", "if_exists": "reuse", "out": "$settings_stack" },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_stack" },
+      "dock": "FILL",
+      "anchors": ["L", "T", "R", "B"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 8 },
+      "constraints": { "min_w": 300, "min_h": 200, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_container_layout", "target": { "id": "$settings_stack" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack" }, "type": "GROUPBOX", "name": "settings_group_general", "if_exists": "reuse", "out": "$settings_group_general" },
+    { "op": "set_rect", "target": { "id": "$settings_group_general" }, "x": 0, "y": 0, "w": 860, "h": 140 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_group_general" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 4, "r": 4, "t": 4, "b": 4 },
+      "constraints": { "min_w": 300, "min_h": 120, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$settings_group_general" }, "key": "text", "value": { "type": "string", "v": "General" } },
+    { "op": "set_container_layout", "target": { "id": "$settings_group_general" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack/settings_group_general" }, "type": "CHECKBOX", "name": "settings_auto_update", "if_exists": "reuse", "out": "$settings_auto_update" },
+    { "op": "set_rect", "target": { "id": "$settings_auto_update" }, "x": 0, "y": 0, "w": 420, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_auto_update" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 2 },
+      "constraints": { "min_w": 240, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$settings_auto_update" }, "key": "text", "value": { "type": "string", "v": "Auto-update launcher" } },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack/settings_group_general" }, "type": "COMBOBOX", "name": "settings_channel", "if_exists": "reuse", "out": "$settings_channel" },
+    { "op": "set_rect", "target": { "id": "$settings_channel" }, "x": 0, "y": 0, "w": 420, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_channel" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack/settings_group_general" }, "type": "EDIT", "name": "settings_install_path", "if_exists": "reuse", "out": "$settings_install_path" },
+    { "op": "set_rect", "target": { "id": "$settings_install_path" }, "x": 0, "y": 0, "w": 520, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_install_path" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 6 },
+      "constraints": { "min_w": 260, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack" }, "type": "GROUPBOX", "name": "settings_group_runtime", "if_exists": "reuse", "out": "$settings_group_runtime" },
+    { "op": "set_rect", "target": { "id": "$settings_group_runtime" }, "x": 0, "y": 0, "w": 860, "h": 140 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_group_runtime" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 4, "r": 4, "t": 4, "b": 4 },
+      "constraints": { "min_w": 300, "min_h": 120, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$settings_group_runtime" }, "key": "text", "value": { "type": "string", "v": "Runtime" } },
+    { "op": "set_container_layout", "target": { "id": "$settings_group_runtime" }, "mode": "STACK_COL", "params": {} },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack/settings_group_runtime" }, "type": "COMBOBOX", "name": "settings_renderer", "if_exists": "reuse", "out": "$settings_renderer" },
+    { "op": "set_rect", "target": { "id": "$settings_renderer" }, "x": 0, "y": 0, "w": 420, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_renderer" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 8, "b": 2 },
+      "constraints": { "min_w": 200, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack/settings_group_runtime" }, "type": "EDIT", "name": "settings_mem_limit", "if_exists": "reuse", "out": "$settings_mem_limit" },
+    { "op": "set_rect", "target": { "id": "$settings_mem_limit" }, "x": 0, "y": 0, "w": 200, "h": 24 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_mem_limit" },
+      "dock": "NONE",
+      "anchors": ["L", "T"],
+      "margins": { "l": 8, "r": 8, "t": 2, "b": 6 },
+      "constraints": { "min_w": 160, "min_h": 20, "max_w": -1, "max_h": -1 }
+    },
+
+    { "op": "create_widget", "parent": { "path": "root/main/primary/primary_tabs/tab_settings/settings_stack" }, "type": "BUTTON", "name": "settings_apply", "if_exists": "reuse", "out": "$settings_apply" },
+    { "op": "set_rect", "target": { "id": "$settings_apply" }, "x": 0, "y": 0, "w": 200, "h": 32 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$settings_apply" },
+      "dock": "NONE",
+      "anchors": ["L", "B"],
+      "margins": { "l": 8, "r": 8, "t": 6, "b": 2 },
+      "constraints": { "min_w": 160, "min_h": 28, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$settings_apply" }, "key": "text", "value": { "type": "string", "v": "Apply Settings" } },
+    { "op": "bind_event", "target": { "id": "$settings_apply" }, "event": "on_click", "action": "launcher.settings.apply" },
+
+    { "op": "create_widget", "parent": { "path": "root/footer" }, "type": "STATIC_TEXT", "name": "footer_status", "if_exists": "reuse", "out": "$footer_status" },
+    { "op": "set_rect", "target": { "id": "$footer_status" }, "x": 0, "y": 0, "w": 400, "h": 18 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$footer_status" },
+      "dock": "LEFT",
+      "anchors": ["L", "B"],
+      "margins": { "l": 8, "r": 4, "t": 6, "b": 6 },
+      "constraints": { "min_w": 200, "min_h": 16, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$footer_status" }, "key": "text", "value": { "type": "string", "v": "Status: idle" } },
+
+    { "op": "create_widget", "parent": { "path": "root/footer" }, "type": "STATIC_TEXT", "name": "footer_build", "if_exists": "reuse", "out": "$footer_build" },
+    { "op": "set_rect", "target": { "id": "$footer_build" }, "x": 0, "y": 0, "w": 240, "h": 18 },
+    {
+      "op": "set_layout",
+      "target": { "id": "$footer_build" },
+      "dock": "RIGHT",
+      "anchors": ["R", "B"],
+      "margins": { "l": 4, "r": 8, "t": 6, "b": 6 },
+      "constraints": { "min_w": 160, "min_h": 16, "max_w": -1, "max_h": -1 }
+    },
+    { "op": "set_prop", "target": { "id": "$footer_build" }, "key": "text", "value": { "type": "string", "v": "Build: dev" } },
+
+    { "op": "validate", "targets": ["win32_t1"], "fail_on_warning": false }
+  ]
+}

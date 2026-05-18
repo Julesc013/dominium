@@ -1,0 +1,28 @@
+SCHEMA: time/time_adjust_event.schema
+schema_id: dominium.schema.time.time_adjust_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Record deterministic domain-time adjustments performed by explicit sync processes.
+
+REQUIRED SHAPE:
+record time_adjust_event
+  required:
+    - schema_version: semver
+    - adjust_id: id
+    - target_id: id
+    - temporal_domain_id: id
+    - canonical_tick: u64
+    - previous_domain_time: quantity
+    - new_domain_time: quantity
+    - adjustment_delta: quantity
+    - originating_receipt_id: id
+    - sync_policy_id: id
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Each adjustment is tied to a deterministic originating receipt.
+- Adjustment rows must be replayable and hash-stable.
+- Canonical tick remains authoritative and unmodified.

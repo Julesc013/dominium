@@ -48,7 +48,7 @@ POST-CONVERGE-10K started from 59, not the prior 10J-reported 60, because the pr
 | --- | ---: | --- | --- |
 | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | 7 | product/projection proof blocker | Defer to product/projection proof or distribution wrapper task after non-proof blockers are resolved. |
 | `INV-NO-ADHOC-MAIN` | 5 | product/projection proof blocker | Defer to product/projection proof or distribution wrapper task after non-proof blockers are resolved. |
-| MW-4 fixture import failures through `game.domains.embodiment` | 2 | real governance/source-policy blocker | Focused residual RepoX governance/source-policy remediation. |
+| MW-4 fixture import failures through `game.domain.embodiment` | 2 | real governance/source-policy blocker | Focused residual RepoX governance/source-policy remediation. |
 | `INV-REPOX-RULESET-MISSING` | 2 | real governance/ruleset blocker | Add or classify missing mappings for `INV-NO-UNNAMED-RNG` and `INV-WORLDGEN-LOCK-REQUIRED`. |
 | `INV-CANON-NO-SUPERSEDED` | 1 | real governance/canon blocker | Review `docs/architecture/DIRECTORY_CONTEXT.md` canonical/superseded status. |
 | `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY` | 1 | real governance/registry blocker | Add or classify the `capability_overrides` registry entry. |

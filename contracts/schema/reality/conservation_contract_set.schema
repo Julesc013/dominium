@@ -1,0 +1,31 @@
+SCHEMA: reality/conservation_contract_set.schema
+schema_id: dominium.schema.reality.conservation_contract_set
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define conservation contract-set policy across quantities.
+- Declare enforcement mode, tolerance, and allowed exception types per quantity.
+
+REQUIRED SHAPE:
+record conservation_contract_set
+  required:
+    - schema_version: semver
+    - contract_set_id: id
+    - description: text
+    - quantities: [quantity_contract]
+    - version_introduced: tag
+    - deprecated: bool
+    - extensions: map
+
+record quantity_contract
+  required:
+    - quantity_id: id
+    - mode: enum(enforce_strict|enforce_local|allow_with_ledger|track_only|ignore)
+    - tolerance: fixed_point
+    - allowed_exception_types: [id]
+    - notes: text
+
+INVARIANTS:
+- contract_set_id is deterministic and stable.
+- Per-quantity mode governs refusal/tracking behavior.

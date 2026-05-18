@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/lineage.cpp
+FILE: game/rule/life/lineage.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements lineage registry with deterministic ordering.

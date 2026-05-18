@@ -12,18 +12,18 @@ from tools.validators.compatibility.capability_negotiation import (
     product_default_degrade_ladders,
     semantic_contract_rows_by_category,
 )
-from engine.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
-from engine.platform.platform_probe import endpoint_descriptor_platform_snapshot
-from engine.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
-from release.build_id_engine import (
+from runtime.platform.platform_probe import probe_platform_descriptor, project_feature_capabilities_for_platform
+from runtime.platform.platform_probe import endpoint_descriptor_platform_snapshot
+from runtime.platform.target_matrix import TARGET_MATRIX_REGISTRY_REL, select_target_matrix_row
+from tools.release.build_id_engine import (
     DEFAULT_PRODUCT_SEMVER,
     build_product_build_metadata as release_build_product_build_metadata,
 )
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-PRODUCT_CAPABILITY_DEFAULTS_REL = os.path.join("data", "registries", "product_capability_defaults.json")
-SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+PRODUCT_CAPABILITY_DEFAULTS_REL = os.path.join("contracts", "registry", "product_capability_defaults.json")
+SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("contracts", "registry", "semantic_contract_registry.json")
 _BUILD_ID_TEMPLATE = "build.{}"
 
 

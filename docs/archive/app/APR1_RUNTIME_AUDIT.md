@@ -24,9 +24,9 @@ Do not use for implementation.
 Archived: point-in-time audit.
 Reason: APR audit snapshot; current product contracts supersede it.
 Superseded by:
-- `docs/app/README.md`
-- `docs/app/PRODUCT_BOUNDARIES.md`
-- `docs/app/RUNTIME_LOOP.md`
+- `docs/apps/README.md`
+- `docs/apps/PRODUCT_BOUNDARIES.md`
+- `docs/apps/RUNTIME_LOOP.md`
 Still useful: background on early runtime inventory.
 
 # APR1 Runtime Audit

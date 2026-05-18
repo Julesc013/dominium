@@ -61,8 +61,8 @@ CompatX version registry includes these schema keys and keeps `1.0.0` as current
 - Existing logistics refusal semantics remain mapped to:
   - `refusal.logistics.invalid_route`
 - Graph tooling added:
-  - `tools/core/tool_graph_validate.py`
-  - `tools/core/tool_route_query.py`
+  - `tools/validators/core/tool_graph_validate.py`
+  - `tools/validators/core/tool_route_query.py`
 - Enforcement added:
   - RepoX `INV-NETWORKGRAPH-ONLY`
   - AuditX analyzers:

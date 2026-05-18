@@ -1,0 +1,29 @@
+SCHEMA: logic/logic_eval_record.schema
+schema_id: dominium.schema.logic.logic_eval_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic derived LOGIC-4 evaluation summary rows.
+- Provide replay-safe aggregate accounting per tick per network.
+
+NON-SEMANTICS:
+- This schema does not replace canonical throttle or state update records.
+- It does not authorize direct signal or state mutation.
+
+REQUIRED SHAPE:
+record logic_eval_record
+  required:
+    - record_id: id
+    - tick: u64
+    - network_id: id
+    - elements_evaluated_count: u64
+    - compute_units_used: u64
+    - throttled: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `record_id` must be deterministic from tick, network, and summary payload.
+- `compute_units_used` must agree with the compute decisions recorded for the same evaluation window.
+- Eval records are derived and compactable; they must not hide canonical behavior changes.

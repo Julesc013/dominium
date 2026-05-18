@@ -83,7 +83,7 @@ Each row is a required matrix cell. If a row is marked "future", it is planned b
 ## Fixtures (required)
 
 All fixtures are required and MUST be versioned and stable. Minimal data packs are listed per fixture.
-EXEC-AUDIT1 fixture configs live under `game/tests/fixtures/`.
+EXEC-AUDIT1 fixture configs live under `tests/game/fixtures/`.
 
 - Minimal Earth-only scenario
   - Data packs: core/astro, core/biomes, core/time, core/economy (minimal)

@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(launcher_core STATIC
-    core/launcher_core.c
-    core/launcher_config_stub.c
-    core/launcher_authority.c
-    core/launcher_profile_stub.c
-    core/launcher_mods_stub.c
-    core/launcher_process_stub.c
+    lifecycle/launcher_core.c
+    lifecycle/launcher_config_stub.c
+    lifecycle/launcher_authority.c
+    lifecycle/launcher_profile_stub.c
+    lifecycle/launcher_mods_stub.c
+    lifecycle/launcher_process_stub.c
 )
 target_include_directories(launcher_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -39,7 +39,7 @@ set_target_properties(launcher_cli PROPERTIES
     C_EXTENSIONS OFF
 )
 add_executable(launcher_gui
-    gui/launcher_gui_stub.c
+    ${CMAKE_SOURCE_DIR}/runtime/platform/win32/launcher/launcher_gui_stub.c
 )
 set_target_properties(launcher_gui PROPERTIES
     OUTPUT_NAME "launcher_gui"
@@ -49,7 +49,7 @@ set_target_properties(launcher_gui PROPERTIES
 )
 if(WIN32)
     add_executable(launcher_app_win32 WIN32
-        gui/launcher_app_win32.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/platform/win32/launcher/launcher_app_win32.cpp
     )
     target_link_libraries(launcher_app_win32 PRIVATE
         libs::appcore

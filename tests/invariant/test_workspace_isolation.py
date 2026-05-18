@@ -67,7 +67,7 @@ def main() -> int:
         workspace_id=actual,
     )
     joined = " ".join(str(item) for item in routed).replace("\\", "/")
-    expected_fragment = "/.xstack_cache/{}/artifacts/".format(actual)
+    expected_fragment = "/.xstack_cache/{}/archive/generated/artifacts/".format(actual)
     if expected_fragment not in joined:
         print("runner output root is not workspace-scoped: {}".format(joined))
         return 1

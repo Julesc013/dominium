@@ -58,8 +58,8 @@ add_library(launcher_frontend_cli STATIC
     launcher_control_plane.cpp
     launcher_coredata_sim.cpp
     launcher_launch_plumbing.cpp
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.cpp
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.cpp
 )
 
 target_include_directories(launcher_frontend_cli PRIVATE
@@ -68,8 +68,8 @@ target_include_directories(launcher_frontend_cli PRIVATE
     ${CMAKE_SOURCE_DIR}/source/domino
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/source/dominium/common
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/gen
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/user
 )
 
 target_link_libraries(launcher_frontend_cli
@@ -181,8 +181,8 @@ target_include_directories(dominium-launcher PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/source/dominium/common
     ${CMAKE_SOURCE_DIR}/source/dominium/setup/kernel/include
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/gen
-    ${CMAKE_SOURCE_DIR}/tools/launcher/ui/user
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/gen
+    ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/user
 )
 
 target_link_libraries(dominium-launcher

@@ -3,23 +3,26 @@ import json
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "distribution")))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "package", "distribution")))
 
 from distribution_lib import discover_pack_manifests  # noqa: E402
 
 
 SCHEMA_MAP = {
-    "materials": "contracts/schemas/material.schema",
-    "interfaces": "contracts/schemas/interface.schema",
-    "parts": "contracts/schemas/part.schema",
-    "assemblies": "contracts/schemas/assembly.schema",
-    "process_families": "contracts/schemas/process_family.schema",
-    "instruments": "contracts/schemas/instrument.schema",
-    "standards": "contracts/schemas/standard.schema",
-    "qualities": "contracts/schemas/quality.schema",
-    "batches": "contracts/schemas/batch_lot.schema",
-    "hazards": "contracts/schemas/hazard.schema",
-    "substances": "contracts/schemas/substance.schema",
+    "materials": "contracts/schema/material.schema",
+    "interfaces": "contracts/schema/interface.schema",
+    "parts": "contracts/schema/part.schema",
+    "assemblies": "contracts/schema/assembly.schema",
+    "process_families": "contracts/schema/process_family.schema",
+    "instruments": "contracts/schema/instrument.schema",
+    "standards": "contracts/schema/standard.schema",
+    "qualities": "contracts/schema/quality.schema",
+    "batches": "contracts/schema/batch_lot.schema",
+    "hazards": "contracts/schema/hazard.schema",
+    "substances": "contracts/schema/substance.schema",
 }
 
 

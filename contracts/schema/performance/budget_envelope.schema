@@ -1,0 +1,22 @@
+SCHEMA: performance/budget_envelope.schema
+schema_id: dominium.schema.performance.budget_envelope
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic shard-level workload budget ceilings used by RS-5 arbitration/degradation.
+
+REQUIRED SHAPE:
+record budget_envelope
+  required:
+    - schema_version: semver
+    - envelope_id: id
+    - max_micro_entities_per_shard: u64
+    - max_micro_regions_per_shard: u32
+    - max_solver_cost_units_per_tick: u64
+    - max_inspection_cost_units_per_tick: u64
+    - extensions: map
+
+INVARIANTS:
+- Envelope values are declarative constraints only.
+- Envelope does not encode runtime wall-clock behavior.

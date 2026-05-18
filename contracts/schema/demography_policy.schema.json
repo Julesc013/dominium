@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Demography Policy Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic CIV-4 demography policy record.",
+  "x-doc-ref": [
+    "docs/civilisation/DEMOGRAPHY_OPTIONALITY.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "demography_policy_id",
+    "births_enabled",
+    "death_model_id",
+    "birth_model_id",
+    "migration_model_id",
+    "tick_rate",
+    "deterministic_tie_break_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "demography_policy_id": {
+      "type": "string"
+    },
+    "births_enabled": {
+      "type": "boolean"
+    },
+    "death_model_id": {
+      "type": "string"
+    },
+    "birth_model_id": {
+      "type": "string"
+    },
+    "migration_model_id": {
+      "type": "string"
+    },
+    "tick_rate": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "deterministic_tie_break_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "demography_policy_id": "demo.policy.basic_births",
+      "births_enabled": true,
+      "death_model_id": "demo.death.basic",
+      "birth_model_id": "demo.birth.basic",
+      "migration_model_id": "demo.migration.banded",
+      "tick_rate": 1,
+      "deterministic_tie_break_id": "tie.cohort_id.asc",
+      "extensions": {}
+    }
+  ]
+}
+

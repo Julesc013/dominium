@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Install Profile Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "install_profile_id",
+    "required_selectors",
+    "optional_selectors",
+    "default_mod_policy_id",
+    "default_overlay_conflict_policy_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "install_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_selectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "optional_selectors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "default_mod_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "default_overlay_conflict_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "default_mod_policy_id": "default_mod_policy_id.example",
+      "default_overlay_conflict_policy_id": "default_overlay_conflict_policy_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "install_profile_id": "install_profile_id.example",
+      "optional_selectors": [],
+      "required_selectors": []
+    }
+  ]
+}

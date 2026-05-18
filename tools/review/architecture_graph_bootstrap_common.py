@@ -21,13 +21,13 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
 MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
-MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
-SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
-INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
-ARCHITECTURE_SCAN_REPORT_REL = "content/data/audit/architecture_scan_report.json"
+MODULE_DEP_GRAPH_REL = "archive/generated/architecture/module_dependency_graph.json"
+SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
+INCLUDE_GRAPH_REL = "archive/generated/audit/include_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
+ARCHITECTURE_SCAN_REPORT_REL = "archive/generated/audit/architecture_scan_report.json"
 ARCHITECTURE_GRAPH_REPORT_REL = "docs/audit/ARCHITECTURE_GRAPH_REPORT.md"
 MODULE_DISCOVERY_REPORT_REL = "docs/audit/MODULE_DISCOVERY_REPORT.md"
 ARCH_GRAPH_BOOTSTRAP_REL = "docs/audit/ARCH_GRAPH_BOOTSTRAP.md"
@@ -75,9 +75,9 @@ C_FAMILY_EXTENSIONS = SOURCE_EXTENSIONS - PYTHON_EXTENSIONS
 BUILD_FILE_NAMES = {"CMakeLists.txt", "CMakePresets.json"}
 BUILD_EXTENSIONS = {".cmake"}
 GENERATED_SOURCE_PREFIXES = (
-    "artifacts/toolchain_runs/",
+    "archive/generated/artifacts/toolchain_runs/",
     "build/",
-    "dist/",
+    "archive/generated/dist/",
     "out/",
     "tmp/",
 )

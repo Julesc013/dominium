@@ -1,0 +1,21 @@
+SCHEMA: machines/machine_type.schema
+schema_id: dominium.schema.machines.machine_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define machine capabilities as data-only contract rows.
+
+REQUIRED SHAPE:
+record machine_type
+  required:
+    - schema_version: semver
+    - machine_type_id: id
+    - description: text
+    - required_ports: list[id]
+    - supported_process_ids: list[id]
+    - default_rate_params: map
+    - extensions: map
+
+INVARIANTS:
+- Machine capabilities are data-driven and process-gated.

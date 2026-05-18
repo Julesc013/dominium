@@ -1,0 +1,35 @@
+SCHEMA: governance/testx_suites.schema
+schema_id: dominium.schema.governance.testx_suites
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define TestX suite tiers and deterministic execution constraints.
+- Allow manifest-driven selective execution for fast lanes.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Unknown extension keys MUST be preserved.
+- No field removal/rename without MAJOR version bump.
+
+NON-SEMANTICS:
+- Suite policy governs validation orchestration only.
+- It does not alter simulation semantics.
+
+REQUIRED SHAPE:
+record testx_suite_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - suites: [testx_suite]
+    - extensions: map
+
+record testx_suite
+  required:
+    - suite_id: id
+    - test_tags: [tag]
+    - required_gates: [id]
+    - deterministic_required: bool
+    - environment_constraints: [tag]
+    - extensions: map

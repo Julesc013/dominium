@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: canonical constraint packet for later repo-structure discovery, design, migration-planning, and decision prompts; downstream of stronger canon, planning law, audit evidence, and live implementation evidence
 Replacement Target: later explicit repo-structure follow-up after new playable-baseline evidence or an approved redesign checkpoint
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `content/data/audit/ultra_repo_audit_system_inventory.json`, `content/data/audit/ultra_repo_audit_entrypoints.json`, `content/data/audit/ultra_repo_audit_product_assembly_plan.json`, `content/data/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `content/data/audit/ultra_repo_audit_wiring_map.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `content/data/xstack/xstack_to_aide_extraction_map.json`, `CMakePresets.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/validation/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/net/loopback_transport.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/data/session_templates/session.mvp_default.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_entrypoints.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `archive/generated/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `archive/generated/audit/ultra_repo_audit_wiring_map.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `archive/generated/xstack/xstack_to_aide_extraction_map.json`, `CMakePresets.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/mvp/runtime_entry.py`, `server/server_main.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/net/loopback_transport.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`
 
 # Repo Non-Negotiables And Current Reality
 
@@ -46,10 +46,10 @@ Later prompts must treat the following as the current reality baseline.
 - Post-`Ζ` doctrine and gating closure is complete, no further internal `Ζ` prompt is required, and the next broader mode is post-`Ζ` reconciliation and consolidation rather than more internal `Ζ` expansion.
 - The XStack/AIDE narrowing-and-contract phase is complete, no further XStack/AIDE prompt is required before the playable baseline exists, and the existing X-series artifacts now act as a constraint packet rather than a competing implementation track.
 - `CMakePresets.json` still defines aligned `verify` configure, build, and test presets, and the audit freezes that lane as the canonical compiled baseline.
-- `tools/validation/tool_run_validation.py` exposes `FAST | STRICT | FULL` with `FAST` as the current default, and `tools/xstack/testx_all.py` exposes `FAST | STRICT | FULL` as the TestX entry surface.
+- `tools/validators/suite/tool_run_validation.py` exposes `FAST | STRICT | FULL` with `FAST` as the current default, and `tools/xstack/testx_all.py` exposes `FAST | STRICT | FULL` as the TestX entry surface.
 - `tools/launcher/launch.py` and `tools/setup/setup_cli.py` are real repo-rooted AppShell shells, and the audit identifies them as the strongest repo-local operator surfaces now.
 - `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, and `server/net/loopback_transport.py` together define a real session-plus-loopback authority path, even though parts of that path are still fragile.
-- The authored MVP baseline asset trio exists and is live: `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/data/session_templates/session.mvp_default.json`.
+- The authored MVP baseline asset trio exists and is live: `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/templates/session/session.mvp_default.json`.
 
 ### Likely But Not Fully Re-Verified In This Prompt
 
@@ -133,7 +133,7 @@ Later prompts must treat the following as the current reality baseline.
 - Why it exists:
   post-`Ζ` doctrine closure already states that the admissible `Ζ` program is complete and that the next broader mode is reconciliation and consolidation.
 - Supporting evidence/source:
-  `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`
+  `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`
 - What must be preserved:
   no further internal `Ζ` prompt before post-`Ζ` reconciliation, and no silent widening of bounded-only, proof-only, guarded, blocked, or future-only frontier families.
 - What later prompts may vary:
@@ -149,7 +149,7 @@ Later prompts must treat the following as the current reality baseline.
 - Why it exists:
   the XStack/AIDE narrowing-and-contract phase is closed, and its own closure packet explicitly subordinates it to the playable-baseline priority.
 - Supporting evidence/source:
-  `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`
+  `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`
 - What must be preserved:
   no new XStack/AIDE prompt before the playable baseline exists, no pre-baseline platformization or migration, and no extraction of baseline-critical Dominium surfaces.
 - What later prompts may vary:
@@ -181,9 +181,9 @@ Later prompts must treat the following as the current reality baseline.
 - Why it exists:
   later prompts need one honest validation spine and one stable way to report `verified`, `likely`, `partial`, and `blocked` instead of flattening them.
 - Supporting evidence/source:
-  `AGENTS.md`, `tools/validation/tool_run_validation.py`, `tools/xstack/testx_all.py`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
+  `AGENTS.md`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
 - What must be preserved:
-  `python tools/validation/tool_run_validation.py --profile FAST` as the minimum canonical validation path, `python tools/xstack/testx_all.py --profile FAST` as the XStack/TestX companion when relevant, `ctest --preset verify` as the compiled companion when the compiled lane is implicated, and explicit status-class language.
+  `python tools/validators/suite/tool_run_validation.py --profile FAST` as the minimum canonical validation path, `python tools/xstack/testx_all.py --profile FAST` as the XStack/TestX companion when relevant, `ctest --preset verify` as the compiled companion when the compiled lane is implicated, and explicit status-class language.
 - What later prompts may vary:
   stronger validation, narrower smoke slices, helper wrappers, or post-baseline validation reshaping after explicit proof.
 - What later prompts may not vary:
@@ -213,7 +213,7 @@ Later prompts must treat the following as the current reality baseline.
 - Why it exists:
   later prompts must not use path moves to pretend that a blocked startup entrypoint is already ready.
 - Supporting evidence/source:
-  `server/server_main.py`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `content/data/audit/ultra_repo_audit_entrypoints.json`, `content/data/audit/ultra_repo_audit_gap_ledger.json`
+  `server/server_main.py`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `archive/generated/audit/ultra_repo_audit_entrypoints.json`, `archive/generated/audit/ultra_repo_audit_gap_ledger.json`
 - What must be preserved:
   the current reality that `python server/server_main.py` and `python -m server.server_main` are not safe baseline commands today.
 - What later prompts may vary:
@@ -245,7 +245,7 @@ Later prompts must treat the following as the current reality baseline.
 - Why it exists:
   the repo contains real authored MVP baseline assets, but the live session-create default still points at a different bundle id.
 - Supporting evidence/source:
-  `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/xstack/session_create.py`, `tools/xstack/registry_compile/constants.py`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
+  `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/xstack/session_create.py`, `tools/xstack/registry_compile/constants.py`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`
 - What must be preserved:
   the existence and path stability of the authored MVP bundle, pack lock, and session template; the ability to target them explicitly; and the explicit note that `session_create.py` defaults `--bundle` to `bundle.base.lab` while the baseline recipe leans on `profile.bundle.mvp_default`.
 - What later prompts may vary:
@@ -326,7 +326,7 @@ Any future relayout must preserve the following flows, either literally or throu
 | Survival Rule ID | Current anchor | Current status | Survival rule |
 | --- | --- | --- | --- |
 | `survive.build.verify` | `cmake --preset verify`, `cmake --build --preset verify`, `ctest --preset verify` | canonical lane frozen by audit and presets; not re-executed here | Preserve one verify-aligned configure/build/test lane and do not silently demote `verify` during this series. |
-| `survive.validation.fast` | `python tools/validation/tool_run_validation.py --profile FAST` | live entrypoint verified; full green status remains task-dependent | Preserve the `FAST` validation entry surface and its report semantics. |
+| `survive.validation.fast` | `python tools/validators/suite/tool_run_validation.py --profile FAST` | live entrypoint verified; full green status remains task-dependent | Preserve the `FAST` validation entry surface and its report semantics. |
 | `survive.validation.testx_fast` | `python tools/xstack/testx_all.py --profile FAST` | live entrypoint verified; full suite not re-run here | Preserve TestX as the XStack validation companion when tooling, session, compat, or validation surfaces are touched. |
 | `survive.validation.ctest_verify` | `ctest --preset verify` | audited compiled harness; broad tree enumerated, not fully rerun here | Preserve a compiled-test companion aligned with the verify lane. |
 | `survive.shell.launcher_appshell` | `python tools/launcher/launch.py compat-status|profiles list|packs list|launcher status` | strongest current launcher/operator shell | Preserve the launcher AppShell flow as a canonical repo-local operator surface until a stronger proved replacement exists. |

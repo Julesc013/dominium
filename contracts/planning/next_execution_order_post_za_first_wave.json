@@ -1,0 +1,149 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE",
+  "checkpoint_state": "post-bounded-zeta-a-first-wave / pre-later-wave-or-other-next-block",
+  "recommended_next_prompt": {
+    "prompt_id": "Ζ-B0",
+    "title": "LATER_WAVE_BOUNDARY_RECONCILIATION-0",
+    "readiness_status": "ready"
+  },
+  "ordering_mode": "final_narrow_work_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "Ζ-B0",
+      "title": "LATER_WAVE_BOUNDARY_RECONCILIATION-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
+        "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
+        "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
+        "docs/planning/ZETA_EXECUTION_GATES.md",
+        "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+        "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "data/registries/net_replication_policy_registry.json",
+        "server/net/dom_server_runtime.h",
+        "security/trust/trust_verifier.py"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review if later-wave reconciliation reinterprets handoff transfer proof-anchor or convergence posture",
+        "trust_root_governance_changes FULL review if later-wave reconciliation drifts into live trust execution or trust-root promotion"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-B0 tries to admit any later-wave family from implementation evidence alone",
+        "stop if Ζ-B0 widens first-wave doctrine into realization claims",
+        "stop if authority handoff trust convergence or receipt-pipeline blockers are restated as solved without new proof"
+      ],
+      "notes": [
+        "This prompt should normalize the later-wave boundary against the completed first-wave doctrine packet.",
+        "Outputs must remain planning and admission law rather than later-wave execution."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "Ζ-B1",
+      "title": "LATER_WAVE_PREREQUISITE_MATRIX_REFRESH-0",
+      "readiness_status": "ready_after_zeta_b0",
+      "dependencies": [
+        "completed Ζ-B0 later-wave boundary reconciliation outputs",
+        "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
+        "docs/runtime/HOTSWAP_BOUNDARIES.md",
+        "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
+        "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
+        "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
+        "data/registries/trust_policy_registry.json",
+        "data/registries/trust_root_registry.json",
+        "data/registries/net_replication_policy_registry.json",
+        "data/registries/provenance_classification_registry.json"
+      ],
+      "human_review_requirements": [
+        "receipt_and_provenance_reclassification FULL review if later-wave matrix work tries to promote local traces or mirrors into canonical live receipts",
+        "lifecycle_manager_semantics FULL review if later-wave matrix work tries to widen cutover legality from rehearsal doctrine"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-B1 erases the distinction between doctrine admission and realization",
+        "stop if Ζ-B1 treats trust or replication substrate as proof of later-wave readiness",
+        "stop if Ζ-B1 downgrades blocked or future-only families without explicit rationale"
+      ],
+      "notes": [
+        "This prompt should refresh family-level later-wave prerequisites rather than reopening first-wave law.",
+        "Outputs must preserve first-wave freeze and active blocker truth."
+      ]
+    },
+    {
+      "order": 3,
+      "prompt_id": "Ζ-B2",
+      "title": "LATER_WAVE_EXECUTION_GATES_REFRESH-0",
+      "readiness_status": "ready_after_zeta_b0_and_zeta_b1",
+      "dependencies": [
+        "completed Ζ-B0 later-wave boundary reconciliation outputs",
+        "completed Ζ-B1 later-wave prerequisite matrix outputs",
+        "docs/planning/ZETA_EXECUTION_GATES.md",
+        "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+        "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md"
+      ],
+      "human_review_requirements": [
+        "distributed_authority_model_changes FULL review if refreshed later-wave gates imply authority movement or convergence beyond proven scope",
+        "trust_root_governance_changes FULL review if refreshed later-wave gates imply live trust execution"
+      ],
+      "stop_conditions": [
+        "stop if Ζ-B2 admits later-wave family execution without explicit blocker narrowing recorded in Ζ-B0 and Ζ-B1",
+        "stop if Ζ-B2 loosens first-wave proof-only or bounded-only guardrails",
+        "stop if Ζ-B2 treats admission as realization"
+      ],
+      "notes": [
+        "This prompt should freeze later-wave consequences only after the reconciliation and matrix refresh exist.",
+        "Outputs must remain gate law and not later-wave execution."
+      ]
+    },
+    {
+      "order": 4,
+      "prompt_id": "C-ZETA_B_ADMISSION_REVIEW",
+      "title": "POST_LATER_WAVE_GATE_FREEZE_REASSESSMENT-0",
+      "readiness_status": "required_after_zeta_b0_b1_b2",
+      "dependencies": [
+        "completed Ζ-B0..Ζ-B2 artifacts"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify first-wave families remained bounded-only or proof-only",
+        "checkpoint must verify no later-wave family execution was smuggled in during the planning and gate-refresh band"
+      ],
+      "stop_conditions": [
+        "stop before any later-wave family prompt until this checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint decides whether any later-wave family can even be reconsidered."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "zeta.family.trust_aware_refusal_and_containment",
+      "status": "held_back_pending_later_wave_reconciliation"
+    },
+    {
+      "item": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "status": "held_back_pending_later_wave_reconciliation"
+    },
+    {
+      "item": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "status": "held_back_pending_later_wave_reconciliation"
+    },
+    {
+      "item": "zeta.family.live_trust_revocation_and_publication_execution",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_shard_relocation",
+      "status": "future_only_prohibited"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-05",
+    "replacement_target": "later post-Ζ-B next-order artifact may refine sequence without replacing the ordering law frozen here"
+  }
+}

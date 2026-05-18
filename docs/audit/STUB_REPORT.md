@@ -21,9 +21,9 @@ Source: `docs/audit/MARKER_SCAN.txt`
 ## Acceptable permanent stubs (non-authoritative or quarantined)
 
 - `legacy/**` stubs (archived/quarantined legacy sources).
-- `game/tests/**` stubs (test scaffolding only).
+- `tests/game/**` stubs (test scaffolding only).
 - `game/rules/*/*_stub.*` (explicit refusal paths; see `docs/audit/BR0_STUB_RESOLUTION.md`).
-- `engine/render/stub/*` and `engine/render/d_gfx_caps_stub.c` (null render backend).
+- `runtime/render/stub/*` and `runtime/render/d_gfx_caps_stub.c` (null render backend).
 - UI backend placeholders:
   - `libs/ui_backends/win32/src/*_stub.c`
   - `tools/ui_shared/src/dui_gtk.c`
@@ -42,7 +42,7 @@ Source: `docs/audit/MARKER_SCAN.txt`
   - `tools/coredata_*_stub.c`
   - `tools/_shared/tools_shared_stub.c`
 - Platform system stubs (ensure supported OS does not bind to stub module):
-  - `engine/modules/system/dsys_*_stub.c`
+  - `runtime/platform/system/dsys_*_stub.c`
 
 ## Forbidden stubs
 

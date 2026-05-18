@@ -140,4 +140,4 @@ Targeted remediation before POST-CONVERGE-08:
 
 ## POST-CONVERGE-08 Follow-up Note
 
-POST-CONVERGE-08 was attempted on 2026-05-12 at the user's request. It recorded partial script/wrapper help proof for launcher, client, server, and the attach-console tool stub, but no native product binary proof. Setup remains blocked in the Python bridge on local Python 3.8, and `dist/bin/dom` points at a missing wrapper target. See `docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md`.
+POST-CONVERGE-08 was attempted on 2026-05-12 at the user's request. It recorded partial script/wrapper help proof for launcher, client, server, and the attach-console tool stub, but no native product binary proof. Setup remains blocked in the Python bridge on local Python 3.8, and `archive/generated/dist/bin/dom` points at a missing wrapper target. See `docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md`.

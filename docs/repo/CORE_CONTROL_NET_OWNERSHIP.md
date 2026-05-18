@@ -19,7 +19,7 @@ This note documents the ownership result from POST-CONVERGE-05. It does not chan
 ## Ownership Rules
 
 - Engine owns universal deterministic substrate and primitives.
-- Game owns Dominium-specific domain logic under `game/` or `game/domains/<domain>/`.
+- Game owns Dominium-specific domain logic under `game/` or `game/domain/<domain>/`.
 - Runtime owns host-facing adapters and runtime transport/control surfaces.
 - `apps/server` owns product entrypoint and server composition only.
 - Contracts own machine-readable protocols, capabilities, control definitions, and network definitions.

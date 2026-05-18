@@ -1,0 +1,30 @@
+SCHEMA: logic/protocol_frame.schema
+schema_id: dominium.schema.logic.protocol_frame
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic framed payloads emitted on LOGIC protocol buses.
+- Support arbitration, SIG-backed transport, replay, and bounded protocol inspection.
+
+NON-SEMANTICS:
+- This schema does not define a full network stack.
+- It does not authorize direct delivery bypassing protocol arbitration or SIG receipts.
+
+REQUIRED SHAPE:
+record protocol_frame
+  required:
+    - frame_id: id
+    - protocol_id: id
+    - src_endpoint_id: id
+    - dst_address: map
+    - payload_ref: map
+    - checksum: string
+    - tick_sent: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `frame_id` must be deterministic from canonical frame content.
+- `dst_address` must encode only declared addressing modes.
+- `payload_ref` must reference canonical bus or message payload content.

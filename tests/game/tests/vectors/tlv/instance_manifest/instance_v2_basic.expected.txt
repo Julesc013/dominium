@@ -1,0 +1,8 @@
+schema_version=2
+instance_id=inst_alpha
+content_entries=2
+content[0].id=pack.base
+content[1].id=pack.core
+known_good=1
+unknown_root_tags=1
+unknown_entry_tags=1

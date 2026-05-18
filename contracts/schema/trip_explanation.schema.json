@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Trip Explanation Schema",
+  "version": "1.0.0",
+  "description": "Deterministic derived trip explanation artifact for ELEC-4 UI and inspection workflows.",
+  "x-doc-ref": [
+    "docs/electric/ELECTRICAL_UX_MODEL.md",
+    "docs/audit/ELECTRICAL_UX_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "explanation_id",
+    "device_id",
+    "fault_ids",
+    "contributing_edges",
+    "thresholds_exceeded",
+    "policy_ids_applied",
+    "generated_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "explanation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "device_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "fault_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "contributing_edges": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "thresholds_exceeded": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "threshold_id",
+          "threshold_value",
+          "observed_value",
+          "exceeded"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "threshold_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "threshold_value": {
+            "type": "integer"
+          },
+          "observed_value": {
+            "type": "integer"
+          },
+          "exceeded": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "policy_ids_applied": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "generated_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "explanation_id": "trip.expl.1f23ab45cd67ef89",
+      "device_id": "device.elec.breaker.main",
+      "fault_ids": [
+        "fault.elec.0011223344556677"
+      ],
+      "contributing_edges": [
+        "edge.elec.main"
+      ],
+      "thresholds_exceeded": [
+        {
+          "threshold_id": "trip_threshold_S",
+          "threshold_value": 240,
+          "observed_value": 310,
+          "exceeded": true
+        }
+      ],
+      "policy_ids_applied": [
+        "coord.downstream_first"
+      ],
+      "generated_tick": 88,
+      "deterministic_fingerprint": "ca9b3ee0a2d12f1c7312bca9f68bb6a9ed75db8e4d3f050eebf6cd95ac8a16ef",
+      "extensions": {}
+    }
+  ]
+}

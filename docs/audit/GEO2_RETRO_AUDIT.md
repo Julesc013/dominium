@@ -26,8 +26,8 @@ Relevant governing constraints:
 - `docs/canon/constitution_v1.md` A2 Process-only mutation
 - `docs/canon/constitution_v1.md` A3 Observer/renderer/truth separation
 - `docs/canon/constitution_v1.md` A4 No runtime mode flags
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
 
 ## 2) Summary
 

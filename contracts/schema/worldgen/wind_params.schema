@@ -1,0 +1,30 @@
+SCHEMA: worldgen/wind_params.schema
+schema_id: dominium.schema.worldgen.wind_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-7 macro wind parameters for Earth surface tile refresh.
+- Keep latitude-band speeds, seasonal band shifts, perturbation bounds, and cadence explicit data rather than hidden code constants.
+
+NON-SEMANTICS:
+- This schema does not encode atmospheric PDE coefficients.
+- This schema does not encode cloud simulation or storm cells.
+- This schema does not authorize wall-clock wind updates.
+
+REQUIRED SHAPE:
+record wind_params
+  required:
+    - wind_params_id: id
+    - base_speed_by_band: map
+    - seasonal_shift_amplitude: integer
+    - noise_magnitude: integer
+    - update_interval_ticks: integer
+    - noise_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- wind evaluation derives from canonical tick only
+- latitude-band behavior remains explicit data, never hidden renderer logic
+- perturbation policy must remain deterministic and bounded

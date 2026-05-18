@@ -31949,7 +31949,7 @@
       "exact_moved_source": false,
       "file": ".aide/context/repo-map.json",
       "line": 230145,
-      "reference": "validation/fixtures/bad_fallback/engine/render/features/feature_a.txt",
+      "reference": "validation/fixtures/bad_fallback/runtime/render/features/feature_a.txt",
       "root": "validation"
     },
     {
@@ -31965,7 +31965,7 @@
       "exact_moved_source": false,
       "file": ".aide/context/repo-map.json",
       "line": 230169,
-      "reference": "validation/fixtures/bad_renderer/engine/render/backends/implicit/placeholder.txt",
+      "reference": "validation/fixtures/bad_renderer/runtime/render/backends/implicit/placeholder.txt",
       "root": "validation"
     },
     {

@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Safety Pattern Schema",
+  "version": "1.0.0",
+  "description": "SAFETY-0 canonical reusable safety pattern template.",
+  "x-doc-ref": [
+    "docs/safety/SAFETY_PATTERN_LIBRARY.md",
+    "docs/audit/SAFETY_PATTERN_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "pattern_id",
+    "pattern_type",
+    "triggering_conditions",
+    "enforced_actions",
+    "required_substrates",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "pattern_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pattern_type": {
+      "type": "string",
+      "enum": [
+        "interlock",
+        "failsafe",
+        "relief",
+        "breaker",
+        "redundancy",
+        "deadman",
+        "loto",
+        "graceful_degradation"
+      ]
+    },
+    "triggering_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "predicate_id",
+          "operator",
+          "left_operand"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "predicate_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "operator": {
+            "type": "string",
+            "enum": [
+              "eq",
+              "ne",
+              "gt",
+              "gte",
+              "lt",
+              "lte",
+              "present",
+              "absent"
+            ]
+          },
+          "left_operand": {
+            "type": "string",
+            "minLength": 1
+          },
+          "right_operand": {
+            "type": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "enforced_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "action_id",
+          "action_type"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action_type": {
+            "type": "string",
+            "enum": [
+              "state_transition",
+              "constraint_lock",
+              "apply_effect",
+              "flow_disconnect",
+              "emit_refusal",
+              "emit_warning"
+            ]
+          },
+          "process_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "required_substrates": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "StateMachineComponent",
+          "ConstraintComponent",
+          "HazardModel",
+          "ScheduleComponent",
+          "Effect",
+          "SpecSheet",
+          "ActionGrammar"
+        ]
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "pattern_id": "safety.interlock_block",
+      "pattern_type": "interlock",
+      "triggering_conditions": [
+        {
+          "predicate_id": "pred.block_occupied",
+          "operator": "eq",
+          "left_operand": "mob.edge.current_occupancy",
+          "right_operand": 1
+        }
+      ],
+      "enforced_actions": [
+        {
+          "action_id": "act.switch_lock",
+          "action_type": "constraint_lock",
+          "process_id": "process.switch_lock",
+          "target_ref": "switch.node",
+          "parameters": {}
+        }
+      ],
+      "required_substrates": [
+        "StateMachineComponent",
+        "ConstraintComponent"
+      ],
+      "deterministic_fingerprint": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+      "extensions": {}
+    }
+  ]
+}

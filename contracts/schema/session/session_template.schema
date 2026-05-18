@@ -1,0 +1,20 @@
+SCHEMA: session/session_template.schema
+schema_id: dominium.schema.session.template
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define metadata required for versioned session template artifacts.
+
+REQUIRED SHAPE:
+record session_template_metadata
+  required:
+    - format_version: semver
+    - engine_version_created: tag
+    - deterministic_fingerprint: sha256
+  optional:
+    - migration_history: [map]
+    - extensions: map
+
+INVARIANTS:
+- Session template interpretation may not drift silently across format versions.

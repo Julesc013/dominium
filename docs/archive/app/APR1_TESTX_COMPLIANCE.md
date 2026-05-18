@@ -24,7 +24,7 @@ Do not use for implementation.
 Archived: point-in-time compliance snapshot.
 Reason: APR compliance snapshot; current enforcement supersedes it.
 Superseded by:
-- `docs/app/TESTX_COMPLIANCE.md`
+- `docs/apps/TESTX_COMPLIANCE.md`
 - `docs/ci/CI_ENFORCEMENT_MATRIX.md`
 Still useful: background on early TESTX coverage.
 

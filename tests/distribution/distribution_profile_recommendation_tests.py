@@ -25,7 +25,7 @@ def main():
         "org.dominium.worldgen.minimal",
     ])
 
-    profile = run_tool(repo_root, "tools/distribution/profile_inspect.py",
+    profile = run_tool(repo_root, "tools/package/distribution/profile_inspect.py",
                        ["--input", profile_path, "--format", "json"])
     if not profile.get("ok"):
         print("profile recommendation: expected ok")
@@ -34,7 +34,7 @@ def main():
         print("profile recommendation: mismatch")
         return 1
 
-    compat = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                       ["--repo-root", repo_root, "--root", bundle_root, "--profile", profile_path, "--format", "json"])
     present = sorted(compat.get("recommended_packs_present", []))
     missing = sorted(compat.get("recommended_packs_missing", []))

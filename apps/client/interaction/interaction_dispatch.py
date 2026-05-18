@@ -6,17 +6,17 @@ import json
 import os
 from typing import Dict, List
 
-from tools.network.anti_cheat.anti_cheat_engine import (
+from tools.validators.network.anti_cheat.anti_cheat_engine import (
     check_authority_integrity,
     check_input_integrity,
 )
-from tools.network.policies.policy_lockstep import POLICY_ID_LOCKSTEP
-from tools.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
-from tools.network.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
+from tools.validators.network.policies.policy_lockstep import POLICY_ID_LOCKSTEP
+from tools.validators.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
+from tools.validators.network.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
-from runtime.control import build_control_intent, build_control_resolution
-from game.domains.interaction.task import resolve_task_type_for_completion_process
+from tools.governance.control_plane_engine import build_control_intent, build_control_resolution
+from game.domain.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
 from .inspection_overlays import build_inspection_overlays

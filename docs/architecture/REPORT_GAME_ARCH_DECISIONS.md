@@ -56,7 +56,7 @@ Evidence:
 - docs/specs/SPEC_DOMINO_GFX.md:8 backend list (SOFT/DX*/GL*/VK1/etc) and dgfx_init; 20 soft backend is reference; 169-170 world_surface draws a 10x10 top-down grid.
 - source/dominium/game/game_app.cpp:505-509 selects backend and falls back to D_GFX_BACKEND_SOFT.
 - source/dominium/game/dom_game_camera.cpp:90-98 camera dir_y = -1 and up_z = 1.
-- source/dominium/game/core/client/dom_client_main.c:444-483 2D grid draw; 507-529 3D grid draw.
+- source/dominium/game/rule/client/dom_client_main.c:444-483 2D grid draw; 507-529 3D grid draw.
 Notes/uncertainty:
 - There is no tile renderer beyond grid placeholders; dom_sdl_stub and frontend placeholders indicate UI rendering is still skeletal.
 
@@ -95,7 +95,7 @@ Notes/uncertainty:
 - Packs/mods are TLV bundles under DOMINIUM_HOME repo roots: packs at repo/packs/<id>/<version>/pack.tlv and mods at repo/mods/<id>/<version>/mod.tlv; base pack autoloads first. Evidence: docs/specs/SPEC_CONTENT.md:6-8; source/dominium/common/dom_packset.cpp:117-126.
 - Content roots are resolved from DOMINIUM_HOME: repo/products, repo/packs, repo/mods, instances. Evidence: source/dominium/common/dom_paths.cpp:75-78.
 - Instance configuration uses TLV (instance.tlv) and stores pack/mod refs. Evidence: source/dominium/common/dom_instance.cpp:164-166, 277-281.
-- Non-core data uses JSON where appropriate (input bindings). Evidence: source/dominium/game/core/client/input/default_bindings.json:1-2.
+- Non-core data uses JSON where appropriate (input bindings). Evidence: source/dominium/game/rule/client/input/default_bindings.json:1-2.
 
 ### Q8 Game CLI contract
 - Game CLI (dom_game_cli.cpp) supports: --mode=gui|tui|headless, --server/--listen/--server=off|listen|dedicated, --connect=, --port=, --instance=, --platform=, --gfx=, --tickrate=, --home=, --demo, --devmode, --deterministic-test, --record-replay=, --play-replay=, --smoke-gui. Evidence: source/dominium/game/dom_game_cli.cpp:381-499.
@@ -117,7 +117,7 @@ Notes/uncertainty:
 - Low: Backends currently route through the soft pipeline, so renderer selection is mostly soft today. Evidence: docs/specs/SPEC_DOMINO_GFX.md:21.
 
 ## Recommendation
-- Adopt 60 Hz fixed tick as the default (matches SPEC_GAME_PRODUCT, Domino sim defaults, and game CLI). 
+- Adopt 60 Hz fixed tick as the default (matches SPEC_GAME_PRODUCT, Domino sim defaults, and game CLI).
 - Treat the MVP world model as mixed: authoritative WPosExact fixed-point positions with derived tile/chunk addressing for grid-like domains.
 - For saves, adopt DTLV containers with versioned chunks, skip-unknown, and explicit migration as the default compatibility policy until SPEC_SAVE is defined.
 - For multiplayer/replay, continue with command-stream lockstep and replay by re-injecting recorded D_NET_MSG_CMD packets before d_sim_step.

@@ -588,7 +588,7 @@ def classify_reference_file(path):
         return "tests"
     if rel.startswith("tools/") or rel.startswith("scripts/") or "/tools/" in rel:
         return "tools"
-    if rel.startswith("archive/") or rel.startswith("artifacts/"):
+    if rel.startswith("archive/") or rel.startswith("archive/generated/artifacts/"):
         return "generated_or_archive"
     if rel.endswith((".py", ".c", ".cpp", ".h", ".hpp", ".cmake")):
         return "active_source"

@@ -1,0 +1,26 @@
+SCHEMA: mechanics/connection_type.schema
+schema_id: dominium.schema.mechanics.connection_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic mechanics connection profile contract.
+- Declares default structural behavior for connection families.
+
+REQUIRED SHAPE:
+record connection_type
+  required:
+    - schema_version: semver
+    - connection_type_id: id
+    - description: string
+    - default_stiffness: fixed
+    - default_max_load: fixed
+    - supports_rotation: bool
+    - supports_translation: bool
+    - extensions: map
+  optional:
+    - requires_part_classes: [id]
+
+INVARIANTS:
+- Connection profiles are declarative defaults consumed by mechanics processes.
+- Runtime behavior must remain deterministic regardless of registry entry order.

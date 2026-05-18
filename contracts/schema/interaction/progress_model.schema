@@ -1,0 +1,22 @@
+SCHEMA: interaction/progress_model.schema
+schema_id: dominium.schema.interaction.progress_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic progress-rate behavior for ACT-3 task ticking.
+
+REQUIRED SHAPE:
+record progress_model
+  required:
+    - schema_version: semver
+    - progress_model_id: id
+    - description: string
+    - progress_rate_base: fixed_point_raw
+    - tool_efficiency_applies: bool
+    - actor_efficiency_applies: bool
+    - extensions: map
+
+INVARIANTS:
+- progress_rate_base is fixed-point invariant quantity.
+- stochastic progress is forbidden.

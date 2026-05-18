@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Update Plan Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "plan_id",
+    "from_release_id",
+    "to_release_id",
+    "target_platform",
+    "install_profile_id",
+    "resolution_policy_id",
+    "components_to_add",
+    "components_to_remove",
+    "components_to_upgrade",
+    "verification_steps",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_release_id": {
+      "type": "string"
+    },
+    "to_release_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_platform": {
+      "type": "string",
+      "minLength": 1
+    },
+    "install_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolution_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "components_to_add": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "components_to_remove": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "components_to_upgrade": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "verification_steps": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "components_to_add": [],
+      "components_to_remove": [],
+      "components_to_upgrade": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "from_release_id": "from_release_id.example",
+      "install_profile_id": "install_profile_id.example",
+      "plan_id": "plan_id.example",
+      "resolution_policy_id": "resolution_policy_id.example",
+      "target_platform": "example",
+      "to_release_id": "to_release_id.example",
+      "verification_steps": []
+    }
+  ]
+}

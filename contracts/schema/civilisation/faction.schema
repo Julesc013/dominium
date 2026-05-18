@@ -1,0 +1,28 @@
+SCHEMA: civilisation/faction.schema
+schema_id: dominium.schema.civilisation.faction
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic faction assembly records for CIV-1 substrate.
+
+REQUIRED SHAPE:
+record faction
+  required:
+    - schema_version: semver
+    - faction_id: id
+    - human_name: text
+    - description: text
+    - created_tick: u64
+    - founder_agent_id: nullable_id
+    - governance_type_id: id
+    - territory_ids: list[id]
+    - diplomatic_relations: map
+    - status: enum(active|dissolved)
+    - extensions: map
+
+INVARIANTS:
+- faction_id is stable and never reused.
+- Mutations are process-only.
+- Territory and diplomacy references are deterministic-order lists/maps.
+

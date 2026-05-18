@@ -76,7 +76,7 @@ Current pack/modpack handling is also partial.
 Current CAS/store layout is already defined by LIB-0 in [docs/architecture/CONTENT_AND_STORAGE_MODEL.md](/d:/Projects/Dominium/dominium/docs/architecture/CONTENT_AND_STORAGE_MODEL.md) and implemented in [tools/lib/content_store.py](/d:/Projects/Dominium/dominium/tools/lib/content_store.py).
 
 - Reusable artifacts live under `store/<category>/<hash>/`.
-- Portable instances vendor reusable artifacts under `embedded_artifacts/<category>/<hash>/`.
+- Portable instances vendor reusable artifacts under `embedded_archive/generated/artifacts/<category>/<hash>/`.
 - Instances and saves already pin authoritative artifact identity by content hash instead of path.
 - Current store helpers already support JSON artifacts, tree artifacts, verification, and linked/portable materialization.
 

@@ -1,0 +1,40 @@
+SCHEMA: localization_pack.schema
+schema_id: dominium.schema.localization_pack
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define localization bundles mapping stable string ids to presentation text.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Localization MUST NOT affect simulation or determinism.
+- Localization is presentation-only and hot-swappable.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- text: UTF-8 presentation text (may include whitespace).
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record localization_pack
+  required:
+    - locale_id: tag
+    - strings: map
+    - extensions: map
+  optional:
+    - pack_id: id
+    - pack_version: tag
+    - description: tag
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

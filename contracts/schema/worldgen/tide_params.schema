@@ -1,0 +1,28 @@
+SCHEMA: worldgen/tide_params.schema
+schema_id: dominium.schema.worldgen.tide_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic EARTH-3 tide proxy parameters for Moon-driven macro tide field refresh.
+- Keep amplitude, cadence, and inland damping explicit data rather than hidden code constants.
+
+NON-SEMANTICS:
+- This schema does not encode ocean transport PDE coefficients.
+- This schema does not encode shoreline fluid meshes.
+- This schema does not authorize wall-clock tide updates.
+
+REQUIRED SHAPE:
+record tide_params
+  required:
+    - tide_params_id: id
+    - amplitude: integer
+    - update_interval_ticks: integer
+    - inland_damping_factor: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- tide phase derives from canonical tick only
+- tide cadence remains deterministic and budgeted
+- inland damping remains explicit data, never an implicit renderer hack

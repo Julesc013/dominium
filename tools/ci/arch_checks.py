@@ -31,7 +31,7 @@ SKIP_DIRS = {
 
 SKIP_SUBDIRS = (
     "game/tests",
-    "tools/validation/fixtures",
+    "tools/validators/suite/fixtures",
 )
 
 INCLUDE_RE = re.compile(r'^\s*#\s*include\s*[<"]([^">]+)[">]')
@@ -99,9 +99,9 @@ RNG_STD_RE = re.compile(
 )
 RNG_SEED_CALL_RE = re.compile(r"\bd_rng_(seed|stream_seed|streams_seed)\s*\(")
 RNG_SEED_ALLOWLIST = {
-    "engine/modules/core/rng.c",
-    "engine/modules/core/rng_streams.c",
-    "engine/modules/core/rng_model.c",
+    "engine/kernel/rng.c",
+    "engine/kernel/rng_streams.c",
+    "engine/kernel/rng_model.c",
 }
 
 UNORDERED_RE = re.compile(r"\bunordered_(map|set|multimap|multiset)\b")
@@ -175,7 +175,7 @@ FIDELITY_SPAWN_RE = re.compile(r"\b(despawn|respawn|spawn|destroy|delete)\b", re
 FIDELITY_APPROX_RE = re.compile(r"\b(approx(?:imate|imation)?|simplif\w*|placeholder|coarse|lod)\b",
                                 re.IGNORECASE)
 FIDELITY_ALLOWLIST = {
-    "game/core/dom_fidelity.c",
+    "game/rule/dom_fidelity.c",
     "game/include/dominium/fidelity.h",
 }
 
@@ -488,10 +488,10 @@ def check_arch_dep_002(repo_root):
 def check_arch_render_001(repo_root):
     check = Check(
         "ARCH-RENDER-001",
-        "render backend identifiers outside engine/render (forbidden)",
-        "Move backend code under engine/render only.",
+        "render backend identifiers outside runtime/render (forbidden)",
+        "Move backend code under runtime/render only.",
     )
-    engine_render_root = os.path.join(repo_root, "engine", "render")
+    runtime_render_root = os.path.join(repo_root, "runtime", "render")
 
     def segment_has_token(segment, token):
         if token in ("gl", "sw", "vk"):
@@ -522,7 +522,7 @@ def check_arch_render_001(repo_root):
             dirnames[:] = []
             continue
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
-        if os.path.abspath(dirpath).startswith(os.path.abspath(engine_render_root)):
+        if os.path.abspath(dirpath).startswith(os.path.abspath(runtime_render_root)):
             continue
         for filename in filenames:
             _, ext = os.path.splitext(filename)

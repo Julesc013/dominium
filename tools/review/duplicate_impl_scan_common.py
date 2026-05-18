@@ -19,17 +19,17 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
 MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
-MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
-SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
-INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+MODULE_DEP_GRAPH_REL = "archive/generated/architecture/module_dependency_graph.json"
+SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
+INCLUDE_GRAPH_REL = "archive/generated/audit/include_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
 
-DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
-SHADOW_MODULES_REL = "content/data/audit/shadow_modules.json"
-DUPLICATE_CLUSTERS_REL = "content/data/audit/duplicate_clusters.json"
-SRC_DIRECTORY_REPORT_REL = "content/data/audit/src_directory_report.json"
+DUPLICATE_IMPLS_REL = "archive/generated/audit/duplicate_impls.json"
+SHADOW_MODULES_REL = "archive/generated/audit/shadow_modules.json"
+DUPLICATE_CLUSTERS_REL = "archive/generated/audit/duplicate_clusters.json"
+SRC_DIRECTORY_REPORT_REL = "archive/generated/audit/src_directory_report.json"
 
 DUPLICATE_IMPLS_REPORT_REL = "docs/audit/DUPLICATE_IMPLEMENTATIONS_REPORT.md"
 SRC_SHADOW_REPORT_REL = "docs/audit/SRC_SHADOW_REPORT.md"
@@ -56,7 +56,7 @@ REQUIRED_INPUTS = {
 
 ENTRYPOINT_PRODUCTS = {"app", "client", "launcher", "server", "setup"}
 SRC_DIR_NAMES = {"src", "source"}
-TEST_PATH_PREFIXES = ("tests/", "game/tests/", "tools/xstack/testx/tests/")
+TEST_PATH_PREFIXES = ("tests/", "tests/game/", "tools/xstack/testx/tests/")
 MAX_SYMBOL_WINDOW_LINES = 40
 MAX_FINGERPRINT_TOKENS = 160
 MAX_EVIDENCE_SYMBOLS = 12

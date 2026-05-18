@@ -28,8 +28,8 @@ Date: 2026-02-07
   - `game/rules/city/city_services_stub.cpp`
   - `game/rules/life/life_events_stub.cpp`
   - `game/rules/logistics/routing_stub.cpp`
-  - `game/tests/civ1/dom_civ1_stub_refusal_tests.cpp`
-  - `game/tests/life/dom_life_continuation_tests.cpp`
+  - `tests/game/civ1/dom_civ1_stub_refusal_tests.cpp`
+  - `tests/game/life/dom_life_continuation_tests.cpp`
   - `docs/audit/BR0_STUB_RESOLUTION.md`
 - Header compile fixes:
   - `engine/include/domino/provenance.h`

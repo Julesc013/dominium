@@ -16,9 +16,9 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
-      "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "contracts/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
-      "content/data/planning/next_execution_order_post_za_first_wave.json"
+      "contracts/planning/next_execution_order_post_za_first_wave.json"
     ],
     "later_wave_inputs": [
       "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",

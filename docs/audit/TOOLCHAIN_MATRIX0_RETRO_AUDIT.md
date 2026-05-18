@@ -9,8 +9,8 @@ Superseded By: none
 
 - ARCH-MATRIX-0 target matrix source: `data/registries/target_matrix_registry.json` (`exists=True`)
 - PLATFORM-FORMALIZE capability source: `data/registries/platform_capability_registry.json` + `src/platform/platform_probe.py` (`exists=True`)
-- RELEASE build identity source: `src/release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)
-- Release manifest generation/verification source: `src/release/release_manifest_engine.py`
+- RELEASE build identity source: `src/tools/release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)
+- Release manifest generation/verification source: `src/tools/release/release_manifest_engine.py`
 
 ## Existing Gate Tooling
 
@@ -19,7 +19,7 @@ Superseded By: none
 - `BASELINE-UNIVERSE verify`: `tools/mvp/baseline_universe_common.py`
 - `GAMEPLAY verify`: `tools/mvp/gameplay_loop_common.py`
 - `DISASTER suite`: `tools/mvp/disaster_suite_common.py`
-- `release manifest verify`: `src/release/release_manifest_engine.py`
+- `release manifest verify`: `src/tools/release/release_manifest_engine.py`
 
 ## Audit Notes
 

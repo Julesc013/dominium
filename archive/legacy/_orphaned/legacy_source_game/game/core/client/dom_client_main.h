@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/client/dom_client_main.h
+FILE: source/dominium/game/rule/client/dom_client_main.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/client/dom_client_main
+LAYER / SUBSYSTEM: Dominium impl / game/rule/client/dom_client_main
 RESPONSIBILITY: Defines internal contract for `dom_client_main`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

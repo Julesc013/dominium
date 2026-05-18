@@ -1,0 +1,20 @@
+SCHEMA: appshell/message_key_registry.schema
+schema_id: dominium.schema.appshell.message_key_registry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the registry of canonical AppShell message keys.
+
+REQUIRED SHAPE:
+record message_key_registry
+  required:
+    - schema_version: tag
+    - registry_id: id
+    - messages: [record]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- message_key ids must be unique
+- message_key ids must remain stable for a pinned AppShell contract version

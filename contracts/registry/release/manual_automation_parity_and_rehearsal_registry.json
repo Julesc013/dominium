@@ -235,9 +235,9 @@
     "automation_bypassing_transaction_typing_or_release_contract_profile"
   ],
   "repo_evidence_surfaces": [
-    "tools/controlx/README.md",
-    "tools/controlx/controlx.py",
-    "tools/controlx/core/execution_router.py",
+    "tools/xstack/controlx/README.md",
+    "tools/xstack/controlx/controlx.py",
+    "tools/xstack/controlx/core/execution_router.py",
     "tools/xstack/run.py",
     "tools/xstack/controlx/README.md",
     "tools/xstack/sessionx/README.md",
@@ -248,7 +248,7 @@
     "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
     "docs/blueprint/FOUNDATION_PHASES.md",
     "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "contracts/repo/release_policy.toml",
     "docs/release/updates/README.md"
   ],

@@ -19,17 +19,17 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `engine/include/domino/input/input.h`
-- `engine/modules/input/input.c`
+- `runtime/input/input.c`
 
 ## Scorecard
 
 - `engine/include/domino/input/input.h` disposition=`canonical` rank=`1` total_score=`63.91` risk=`HIGH`
-- `engine/modules/input/input.c` disposition=`quarantine` rank=`2` total_score=`63.01` risk=`HIGH`
+- `runtime/input/input.c` disposition=`quarantine` rank=`2` total_score=`63.01` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/app/TESTX_INVENTORY.md, docs/archive/platform/APR2_EXTENSION_AUDIT.md, docs/platform/EXTENSIONS.md, docs/platform/PLATFORM_RUNTIME.md, docs/platform/WINDOW_MODES_DPI_INPUT.md`
+- Docs: `docs/apps/TESTX_INVENTORY.md, docs/archive/platform/APR2_EXTENSION_AUDIT.md, docs/runtime/platform/EXTENSIONS.md, docs/runtime/platform/PLATFORM_RUNTIME.md, docs/runtime/platform/WINDOW_MODES_DPI_INPUT.md`
 
 ## Tests Involved
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

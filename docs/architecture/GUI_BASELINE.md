@@ -171,19 +171,19 @@ UI TestX MUST cover:
 ## References
 
 
-- docs/ui/UI_PHILOSOPHY.md
+- docs/runtime/ui/UI_PHILOSOPHY.md
 
 
-- docs/ui/CLI_TUI_GUI_PARITY.md
+- docs/runtime/ui/CLI_TUI_GUI_PARITY.md
 
 
-- docs/ui/ZERO_ASSET_GUI.md
+- docs/runtime/ui/ZERO_ASSET_GUI.md
 
 
-- docs/ui/UI_FORBIDDEN_BEHAVIORS.md
+- docs/runtime/ui/UI_FORBIDDEN_BEHAVIORS.md
 
 
-- docs/tools/TOOL_UI_GUIDELINES.md
+- docs/development/tools/TOOL_UI_GUIDELINES.md
 
 
 - docs/architecture/INVARIANTS.md

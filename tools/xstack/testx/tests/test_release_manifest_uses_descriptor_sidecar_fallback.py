@@ -22,7 +22,7 @@ def _write_json(path: str, payload: dict) -> None:
 
 def run(repo_root: str):
     from tools.xstack.testx.tests.release1_testlib import _descriptor_payload, build_manifest_payload, release_fixture
-    from release import verify_release_manifest, write_release_manifest
+    from tools.release import verify_release_manifest, write_release_manifest
 
     with release_fixture() as dist_root:
         client_path = os.path.join(dist_root, "bin", "client")

@@ -578,7 +578,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/__init__.py",
+      "new_target": "tools/validators/core/__init__.py",
       "old_reference_or_import": "core/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -592,7 +592,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/constraints/__init__.py",
+      "new_target": "tools/validators/core/constraints/__init__.py",
       "old_reference_or_import": "core/constraints/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -606,7 +606,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/constraints/constraint_engine.py",
+      "new_target": "tools/validators/core/constraints/constraint_engine.py",
       "old_reference_or_import": "core/constraints/constraint_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -620,7 +620,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/flow/__init__.py",
+      "new_target": "tools/validators/core/flow/__init__.py",
       "old_reference_or_import": "core/flow/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -634,7 +634,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/flow/flow_engine.py",
+      "new_target": "tools/validators/core/flow/flow_engine.py",
       "old_reference_or_import": "core/flow/flow_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -648,7 +648,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/graph/__init__.py",
+      "new_target": "tools/validators/core/graph/__init__.py",
       "old_reference_or_import": "core/graph/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -662,7 +662,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/graph/network_graph_engine.py",
+      "new_target": "tools/validators/core/graph/network_graph_engine.py",
       "old_reference_or_import": "core/graph/network_graph_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -676,7 +676,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/graph/routing_engine.py",
+      "new_target": "tools/validators/core/graph/routing_engine.py",
       "old_reference_or_import": "core/graph/routing_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -690,7 +690,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/hazards/__init__.py",
+      "new_target": "tools/validators/core/hazards/__init__.py",
       "old_reference_or_import": "core/hazards/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -704,7 +704,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/hazards/hazard_engine.py",
+      "new_target": "tools/validators/core/hazards/hazard_engine.py",
       "old_reference_or_import": "core/hazards/hazard_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -718,7 +718,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/schedule/__init__.py",
+      "new_target": "tools/validators/core/schedule/__init__.py",
       "old_reference_or_import": "core/schedule/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -732,7 +732,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/schedule/schedule_engine.py",
+      "new_target": "tools/validators/core/schedule/schedule_engine.py",
       "old_reference_or_import": "core/schedule/schedule_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -746,7 +746,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/spatial/__init__.py",
+      "new_target": "tools/validators/core/spatial/__init__.py",
       "old_reference_or_import": "core/spatial/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -760,7 +760,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/core/spatial/spatial_engine.py",
+      "new_target": "tools/validators/core/spatial/spatial_engine.py",
       "old_reference_or_import": "core/spatial/spatial_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -816,7 +816,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/agents/agent_context.json",
+      "new_target": "archive/generated/agents/agent_context.json",
       "old_reference_or_import": "data/agents/agent_context.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -830,7 +830,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/agents/task_intent_map.json",
+      "new_target": "archive/generated/agents/task_intent_map.json",
       "old_reference_or_import": "data/agents/task_intent_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -844,7 +844,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/analysis/duplicate_cluster_rankings.json",
+      "new_target": "archive/generated/analysis/duplicate_cluster_rankings.json",
       "old_reference_or_import": "data/analysis/duplicate_cluster_rankings.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -858,7 +858,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/analysis/implementation_scores.json",
+      "new_target": "archive/generated/analysis/implementation_scores.json",
       "old_reference_or_import": "data/analysis/implementation_scores.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -872,7 +872,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/architecture/architecture_graph.json",
+      "new_target": "archive/generated/architecture/architecture_graph.json",
       "old_reference_or_import": "data/architecture/architecture_graph.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -886,7 +886,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/architecture/architecture_graph.v1.json",
+      "new_target": "archive/generated/architecture/architecture_graph.v1.json",
       "old_reference_or_import": "data/architecture/architecture_graph.v1.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -900,7 +900,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/architecture/module_boundary_rules.v1.json",
+      "new_target": "archive/generated/architecture/module_boundary_rules.v1.json",
       "old_reference_or_import": "data/architecture/module_boundary_rules.v1.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -914,7 +914,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/architecture/module_dependency_graph.json",
+      "new_target": "archive/generated/architecture/module_dependency_graph.json",
       "old_reference_or_import": "data/architecture/module_dependency_graph.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -956,7 +956,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/architecture/repository_structure_lock.json",
+      "new_target": "archive/generated/architecture/repository_structure_lock.json",
       "old_reference_or_import": "data/architecture/repository_structure_lock.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1054,7 +1054,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/milky_way/milky_way.anchors.json",
+      "new_target": "archive/historical/content/world/milky_way/milky_way.anchors.json",
       "old_reference_or_import": "data/archive/world/milky_way/milky_way.anchors.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1068,7 +1068,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/milky_way/milky_way.arms.json",
+      "new_target": "archive/historical/content/world/milky_way/milky_way.arms.json",
       "old_reference_or_import": "data/archive/world/milky_way/milky_way.arms.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1082,7 +1082,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/milky_way/milky_way.galaxy.json",
+      "new_target": "archive/historical/content/world/milky_way/milky_way.galaxy.json",
       "old_reference_or_import": "data/archive/world/milky_way/milky_way.galaxy.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1096,7 +1096,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/milky_way/milky_way.procedural_rules.json",
+      "new_target": "archive/historical/content/world/milky_way/milky_way.procedural_rules.json",
       "old_reference_or_import": "data/archive/world/milky_way/milky_way.procedural_rules.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1110,7 +1110,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/milky_way/milky_way.regions.json",
+      "new_target": "archive/historical/content/world/milky_way/milky_way.regions.json",
       "old_reference_or_import": "data/archive/world/milky_way/milky_way.regions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1152,7 +1152,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.body.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.body.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.body.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1166,7 +1166,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.climate/biome_tags.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.climate/biome_tags.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.climate/biome_tags.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1180,7 +1180,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.climate/climate_zones.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.climate/climate_zones.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.climate/climate_zones.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1208,7 +1208,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.orbits.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.orbits.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.orbits.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1222,7 +1222,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.regions/continents.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.regions/continents.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.regions/continents.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1236,7 +1236,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.regions/oceans.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.regions/oceans.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.regions/oceans.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1250,7 +1250,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.regions/polar_regions.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.regions/polar_regions.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.regions/polar_regions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1264,7 +1264,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.regions/tectonic_plates.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.regions/tectonic_plates.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.regions/tectonic_plates.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1278,7 +1278,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.surfaces/atmosphere.volume.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1292,7 +1292,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.surfaces/land.surface.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.surfaces/land.surface.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.surfaces/land.surface.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1306,7 +1306,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.surfaces/ocean.surface.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.surfaces/ocean.surface.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.surfaces/ocean.surface.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1320,7 +1320,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/earth/earth.surfaces/subsurface.volume.json",
+      "new_target": "archive/historical/content/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "old_reference_or_import": "data/archive/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1334,7 +1334,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.belts/asteroid_belt.json",
+      "new_target": "archive/historical/content/world/sol/sol.belts/asteroid_belt.json",
       "old_reference_or_import": "data/archive/world/sol/sol.belts/asteroid_belt.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1348,7 +1348,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.belts/kuiper_belt.json",
+      "new_target": "archive/historical/content/world/sol/sol.belts/kuiper_belt.json",
       "old_reference_or_import": "data/archive/world/sol/sol.belts/kuiper_belt.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1362,7 +1362,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.belts/oort_cloud.json",
+      "new_target": "archive/historical/content/world/sol/sol.belts/oort_cloud.json",
       "old_reference_or_import": "data/archive/world/sol/sol.belts/oort_cloud.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1376,7 +1376,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/earth.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/earth.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/earth.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1390,7 +1390,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/jupiter.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/jupiter.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/jupiter.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1404,7 +1404,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/mars.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/mars.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/mars.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1418,7 +1418,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/mercury.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/mercury.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/mercury.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1432,7 +1432,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/neptune.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/neptune.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/neptune.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1446,7 +1446,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/saturn.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/saturn.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/saturn.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1460,7 +1460,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/sun.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/sun.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/sun.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1474,7 +1474,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/uranus.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/uranus.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/uranus.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1488,7 +1488,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.bodies/venus.json",
+      "new_target": "archive/historical/content/world/sol/sol.bodies/venus.json",
       "old_reference_or_import": "data/archive/world/sol/sol.bodies/venus.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1502,7 +1502,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/callisto.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/callisto.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/callisto.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1516,7 +1516,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/deimos.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/deimos.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/deimos.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1530,7 +1530,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/enceladus.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/enceladus.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/enceladus.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1544,7 +1544,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/europa.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/europa.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/europa.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1558,7 +1558,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/ganymede.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/ganymede.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/ganymede.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1572,7 +1572,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/io.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/io.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/io.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1586,7 +1586,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/moon.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/moon.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/moon.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1600,7 +1600,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/phobos.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/phobos.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/phobos.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1614,7 +1614,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.moons/titan.json",
+      "new_target": "archive/historical/content/world/sol/sol.moons/titan.json",
       "old_reference_or_import": "data/archive/world/sol/sol.moons/titan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1628,7 +1628,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.orbits.json",
+      "new_target": "archive/historical/content/world/sol/sol.orbits.json",
       "old_reference_or_import": "data/archive/world/sol/sol.orbits.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1642,7 +1642,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.surfaces.json",
+      "new_target": "archive/historical/content/world/sol/sol.surfaces.json",
       "old_reference_or_import": "data/archive/world/sol/sol.surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1656,7 +1656,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/archive/world/sol/sol.system.json",
+      "new_target": "archive/historical/content/world/sol/sol.system.json",
       "old_reference_or_import": "data/archive/world/sol/sol.system.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1684,7 +1684,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/arch_audit2_report.json",
+      "new_target": "archive/generated/audit/arch_audit2_report.json",
       "old_reference_or_import": "data/audit/arch_audit2_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1698,7 +1698,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/arch_audit_report.json",
+      "new_target": "archive/generated/audit/arch_audit_report.json",
       "old_reference_or_import": "data/audit/arch_audit_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1726,7 +1726,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/architecture_scan_report.json",
+      "new_target": "archive/generated/audit/architecture_scan_report.json",
       "old_reference_or_import": "data/audit/architecture_scan_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1768,7 +1768,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/build_graph.json",
+      "new_target": "archive/generated/audit/build_graph.json",
       "old_reference_or_import": "data/audit/build_graph.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1782,7 +1782,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ci_run_report.json",
+      "new_target": "archive/generated/audit/ci_run_report.json",
       "old_reference_or_import": "data/audit/ci_run_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1796,7 +1796,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/clean_room_win64.json",
+      "new_target": "archive/generated/audit/clean_room_win64.json",
       "old_reference_or_import": "data/audit/clean_room_win64.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1810,7 +1810,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/component_graph_report.json",
+      "new_target": "archive/generated/audit/component_graph_report.json",
       "old_reference_or_import": "data/audit/component_graph_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1838,7 +1838,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_final.json",
+      "new_target": "archive/generated/audit/convergence_final.json",
       "old_reference_or_import": "data/audit/convergence_final.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1852,7 +1852,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/arch_audit.json",
+      "new_target": "archive/generated/audit/convergence_steps/arch_audit.json",
       "old_reference_or_import": "data/audit/convergence_steps/arch_audit.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1866,7 +1866,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/cap_neg_interop.json",
+      "new_target": "archive/generated/audit/convergence_steps/cap_neg_interop.json",
       "old_reference_or_import": "data/audit/convergence_steps/cap_neg_interop.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1880,7 +1880,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/dist_verify.json",
+      "new_target": "archive/generated/audit/convergence_steps/dist_verify.json",
       "old_reference_or_import": "data/audit/convergence_steps/dist_verify.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1894,7 +1894,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/ipc_attach_smoke.json",
+      "new_target": "archive/generated/audit/convergence_steps/ipc_attach_smoke.json",
       "old_reference_or_import": "data/audit/convergence_steps/ipc_attach_smoke.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1908,7 +1908,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/lib_stress.json",
+      "new_target": "archive/generated/audit/convergence_steps/lib_stress.json",
       "old_reference_or_import": "data/audit/convergence_steps/lib_stress.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1922,7 +1922,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/meta_stability.json",
+      "new_target": "archive/generated/audit/convergence_steps/meta_stability.json",
       "old_reference_or_import": "data/audit/convergence_steps/meta_stability.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1936,7 +1936,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/mvp_cross_platform.json",
+      "new_target": "archive/generated/audit/convergence_steps/mvp_cross_platform.json",
       "old_reference_or_import": "data/audit/convergence_steps/mvp_cross_platform.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1950,7 +1950,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/mvp_smoke.json",
+      "new_target": "archive/generated/audit/convergence_steps/mvp_smoke.json",
       "old_reference_or_import": "data/audit/convergence_steps/mvp_smoke.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1964,7 +1964,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/mvp_stress.json",
+      "new_target": "archive/generated/audit/convergence_steps/mvp_stress.json",
       "old_reference_or_import": "data/audit/convergence_steps/mvp_stress.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -1978,7 +1978,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/pack_compat_stress.json",
+      "new_target": "archive/generated/audit/convergence_steps/pack_compat_stress.json",
       "old_reference_or_import": "data/audit/convergence_steps/pack_compat_stress.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2006,7 +2006,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/supervisor_hardening.json",
+      "new_target": "archive/generated/audit/convergence_steps/supervisor_hardening.json",
       "old_reference_or_import": "data/audit/convergence_steps/supervisor_hardening.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2020,7 +2020,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/time_anchor.json",
+      "new_target": "archive/generated/audit/convergence_steps/time_anchor.json",
       "old_reference_or_import": "data/audit/convergence_steps/time_anchor.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2034,7 +2034,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/convergence_steps/validation_strict.json",
+      "new_target": "archive/generated/audit/convergence_steps/validation_strict.json",
       "old_reference_or_import": "data/audit/convergence_steps/validation_strict.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2048,7 +2048,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/disaster_suite_run.json",
+      "new_target": "archive/generated/audit/disaster_suite_run.json",
       "old_reference_or_import": "data/audit/disaster_suite_run.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2062,7 +2062,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist5_ux_smoke.json",
+      "new_target": "archive/generated/audit/dist5_ux_smoke.json",
       "old_reference_or_import": "data/audit/dist5_ux_smoke.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2104,7 +2104,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist6_interop_minor_protocol_drift.json",
+      "new_target": "archive/generated/audit/dist6_interop_minor_protocol_drift.json",
       "old_reference_or_import": "data/audit/dist6_interop_minor_protocol_drift.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2118,7 +2118,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist6_interop_pack_lock_mismatch.json",
+      "new_target": "archive/generated/audit/dist6_interop_pack_lock_mismatch.json",
       "old_reference_or_import": "data/audit/dist6_interop_pack_lock_mismatch.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2132,7 +2132,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist6_interop_same_build_identical_rebuild.json",
+      "new_target": "archive/generated/audit/dist6_interop_same_build_identical_rebuild.json",
       "old_reference_or_import": "data/audit/dist6_interop_same_build_identical_rebuild.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2146,7 +2146,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist6_interop_same_build_same_build.json",
+      "new_target": "archive/generated/audit/dist6_interop_same_build_same_build.json",
       "old_reference_or_import": "data/audit/dist6_interop_same_build_same_build.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2160,7 +2160,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist6_interop_same_version_cross_platform.json",
+      "new_target": "archive/generated/audit/dist6_interop_same_version_cross_platform.json",
       "old_reference_or_import": "data/audit/dist6_interop_same_version_cross_platform.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2174,7 +2174,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist_content_audit.json",
+      "new_target": "archive/generated/audit/dist_content_audit.json",
       "old_reference_or_import": "data/audit/dist_content_audit.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2202,7 +2202,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist_tree_assembly_report.json",
+      "new_target": "archive/generated/audit/dist_tree_assembly_report.json",
       "old_reference_or_import": "data/audit/dist_tree_assembly_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2216,7 +2216,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/dist_verify_win64.json",
+      "new_target": "archive/generated/audit/dist_verify_win64.json",
       "old_reference_or_import": "data/audit/dist_verify_win64.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2230,7 +2230,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/distribution_architecture_report.json",
+      "new_target": "archive/generated/audit/distribution_architecture_report.json",
       "old_reference_or_import": "data/audit/distribution_architecture_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2244,7 +2244,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/doc_inventory.json",
+      "new_target": "archive/generated/audit/doc_inventory.json",
       "old_reference_or_import": "data/audit/doc_inventory.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2258,7 +2258,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/duplicate_clusters.json",
+      "new_target": "archive/generated/audit/duplicate_clusters.json",
       "old_reference_or_import": "data/audit/duplicate_clusters.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2272,7 +2272,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/duplicate_impls.json",
+      "new_target": "archive/generated/audit/duplicate_impls.json",
       "old_reference_or_import": "data/audit/duplicate_impls.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2286,7 +2286,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ecosystem_verify_run.json",
+      "new_target": "archive/generated/audit/ecosystem_verify_run.json",
       "old_reference_or_import": "data/audit/ecosystem_verify_run.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2300,7 +2300,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/gameplay_verify.json",
+      "new_target": "archive/generated/audit/gameplay_verify.json",
       "old_reference_or_import": "data/audit/gameplay_verify.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2328,7 +2328,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/include_graph.json",
+      "new_target": "archive/generated/audit/include_graph.json",
       "old_reference_or_import": "data/audit/include_graph.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2342,7 +2342,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/install_discovery_report.json",
+      "new_target": "archive/generated/audit/install_discovery_report.json",
       "old_reference_or_import": "data/audit/install_discovery_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2356,7 +2356,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/install_profile_report.json",
+      "new_target": "archive/generated/audit/install_profile_report.json",
       "old_reference_or_import": "data/audit/install_profile_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2370,7 +2370,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ipc_unify_report.json",
+      "new_target": "archive/generated/audit/ipc_unify_report.json",
       "old_reference_or_import": "data/audit/ipc_unify_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2384,7 +2384,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/migration_lifecycle_report.json",
+      "new_target": "archive/generated/audit/migration_lifecycle_report.json",
       "old_reference_or_import": "data/audit/migration_lifecycle_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2398,7 +2398,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/numeric_discipline_report.json",
+      "new_target": "archive/generated/audit/numeric_discipline_report.json",
       "old_reference_or_import": "data/audit/numeric_discipline_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2412,7 +2412,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/observability_report.json",
+      "new_target": "archive/generated/audit/observability_report.json",
       "old_reference_or_import": "data/audit/observability_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2426,7 +2426,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/offline_archive_verify.json",
+      "new_target": "archive/generated/audit/offline_archive_verify.json",
       "old_reference_or_import": "data/audit/offline_archive_verify.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2440,7 +2440,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/platform_formalize_report.json",
+      "new_target": "archive/generated/audit/platform_formalize_report.json",
       "old_reference_or_import": "data/audit/platform_formalize_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2468,7 +2468,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/release_identity_report.json",
+      "new_target": "archive/generated/audit/release_identity_report.json",
       "old_reference_or_import": "data/audit/release_identity_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2496,7 +2496,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/repo_inventory.json",
+      "new_target": "archive/generated/audit/repo_inventory.json",
       "old_reference_or_import": "data/audit/repo_inventory.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2510,7 +2510,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/shadow_modules.json",
+      "new_target": "archive/generated/audit/shadow_modules.json",
       "old_reference_or_import": "data/audit/shadow_modules.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2524,7 +2524,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/src_directory_report.json",
+      "new_target": "archive/generated/audit/src_directory_report.json",
       "old_reference_or_import": "data/audit/src_directory_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2538,7 +2538,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/store_gc_report.json",
+      "new_target": "archive/generated/audit/store_gc_report.json",
       "old_reference_or_import": "data/audit/store_gc_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2552,7 +2552,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/store_verify_report.json",
+      "new_target": "archive/generated/audit/store_verify_report.json",
       "old_reference_or_import": "data/audit/store_verify_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2566,7 +2566,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/supervisor_hardening_report.json",
+      "new_target": "archive/generated/audit/supervisor_hardening_report.json",
       "old_reference_or_import": "data/audit/supervisor_hardening_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2580,7 +2580,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/symbol_index.json",
+      "new_target": "archive/generated/audit/symbol_index.json",
       "old_reference_or_import": "data/audit/symbol_index.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2608,7 +2608,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/trust_model_report.json",
+      "new_target": "archive/generated/audit/trust_model_report.json",
       "old_reference_or_import": "data/audit/trust_model_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2622,7 +2622,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/trust_strict_run.json",
+      "new_target": "archive/generated/audit/trust_strict_run.json",
       "old_reference_or_import": "data/audit/trust_strict_run.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2636,7 +2636,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ui_surface_report.json",
+      "new_target": "archive/generated/audit/ui_surface_report.json",
       "old_reference_or_import": "data/audit/ui_surface_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2664,7 +2664,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_entrypoints.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_entrypoints.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_entrypoints.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2678,7 +2678,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_gap_ledger.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_gap_ledger.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_gap_ledger.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2692,7 +2692,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_product_assembly_plan.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_product_assembly_plan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2706,7 +2706,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_reuse_plan.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_reuse_plan.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_reuse_plan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2720,7 +2720,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_system_inventory.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_system_inventory.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_system_inventory.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2734,7 +2734,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/ultra_repo_audit_wiring_map.json",
+      "new_target": "archive/generated/audit/ultra_repo_audit_wiring_map.json",
       "old_reference_or_import": "data/audit/ultra_repo_audit_wiring_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2748,7 +2748,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/universal_identity_report.json",
+      "new_target": "archive/generated/audit/universal_identity_report.json",
       "old_reference_or_import": "data/audit/universal_identity_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2762,7 +2762,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/update_model_report.json",
+      "new_target": "archive/generated/audit/update_model_report.json",
       "old_reference_or_import": "data/audit/update_model_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2776,7 +2776,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/update_sim_run.json",
+      "new_target": "archive/generated/audit/update_sim_run.json",
       "old_reference_or_import": "data/audit/update_sim_run.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2790,7 +2790,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/validation_report_FAST.json",
+      "new_target": "archive/generated/audit/validation_report_FAST.json",
       "old_reference_or_import": "data/audit/validation_report_FAST.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2804,7 +2804,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/validation_report_STRICT.json",
+      "new_target": "archive/generated/audit/validation_report_STRICT.json",
       "old_reference_or_import": "data/audit/validation_report_STRICT.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2818,7 +2818,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/virtual_paths_report.json",
+      "new_target": "archive/generated/audit/virtual_paths_report.json",
       "old_reference_or_import": "data/audit/virtual_paths_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2832,7 +2832,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/worldgen_lock_verify.json",
+      "new_target": "archive/generated/audit/worldgen_lock_verify.json",
       "old_reference_or_import": "data/audit/worldgen_lock_verify.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2846,7 +2846,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/xi5a_preflight_archive_fix.json",
+      "new_target": "archive/generated/audit/xi5a_preflight_archive_fix.json",
       "old_reference_or_import": "data/audit/xi5a_preflight_archive_fix.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2860,7 +2860,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/xi5a_preflight_disaster_cleanup_fix.json",
+      "new_target": "archive/generated/audit/xi5a_preflight_disaster_cleanup_fix.json",
       "old_reference_or_import": "data/audit/xi5a_preflight_disaster_cleanup_fix.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -2874,7 +2874,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/audit/xi5a_preflight_repair.json",
+      "new_target": "archive/generated/audit/xi5a_preflight_repair.json",
       "old_reference_or_import": "data/audit/xi5a_preflight_repair.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3140,7 +3140,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/final_prompt_inventory.json",
+      "new_target": "archive/generated/blueprint/final_prompt_inventory.json",
       "old_reference_or_import": "data/blueprint/final_prompt_inventory.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3154,7 +3154,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/foundation_phases.json",
+      "new_target": "archive/generated/blueprint/foundation_phases.json",
       "old_reference_or_import": "data/blueprint/foundation_phases.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3168,7 +3168,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/manual_review_gates.json",
+      "new_target": "archive/generated/blueprint/manual_review_gates.json",
       "old_reference_or_import": "data/blueprint/manual_review_gates.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3196,7 +3196,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/prompt_dependency_tree.json",
+      "new_target": "archive/generated/blueprint/prompt_dependency_tree.json",
       "old_reference_or_import": "data/blueprint/prompt_dependency_tree.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3238,7 +3238,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/repo_reality_reconciliation_rules.json",
+      "new_target": "archive/generated/blueprint/repo_reality_reconciliation_rules.json",
       "old_reference_or_import": "data/blueprint/repo_reality_reconciliation_rules.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3252,7 +3252,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/series_dependency_graph.json",
+      "new_target": "archive/generated/blueprint/series_dependency_graph.json",
       "old_reference_or_import": "data/blueprint/series_dependency_graph.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3266,7 +3266,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/series_execution_strategy.json",
+      "new_target": "archive/generated/blueprint/series_execution_strategy.json",
       "old_reference_or_import": "data/blueprint/series_execution_strategy.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3280,7 +3280,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/snapshot_mapping_template.json",
+      "new_target": "archive/generated/blueprint/snapshot_mapping_template.json",
       "old_reference_or_import": "data/blueprint/snapshot_mapping_template.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3294,7 +3294,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/blueprint/stop_conditions.json",
+      "new_target": "archive/generated/blueprint/stop_conditions.json",
       "old_reference_or_import": "data/blueprint/stop_conditions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3378,7 +3378,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/defaults/profiles/modern_2020.tlv",
+      "new_target": "content/defaults/profiles/modern_2020.tlv",
       "old_reference_or_import": "data/defaults/profiles/modern_2020.tlv",
       "path": null,
       "safe_to_fix_now": true,
@@ -3392,7 +3392,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/defaults/profiles/retro_1990s.tlv",
+      "new_target": "content/defaults/profiles/retro_1990s.tlv",
       "old_reference_or_import": "data/defaults/profiles/retro_1990s.tlv",
       "path": null,
       "safe_to_fix_now": true,
@@ -3406,7 +3406,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/defaults/profiles/server_mmo.tlv",
+      "new_target": "content/defaults/profiles/server_mmo.tlv",
       "old_reference_or_import": "data/defaults/profiles/server_mmo.tlv",
       "path": null,
       "safe_to_fix_now": true,
@@ -3434,7 +3434,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/governance/deprecations.json",
+      "new_target": "contracts/governance/deprecations.json",
       "old_reference_or_import": "data/governance/deprecations.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3448,7 +3448,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/governance/governance_profile.json",
+      "new_target": "contracts/governance/governance_profile.json",
       "old_reference_or_import": "data/governance/governance_profile.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3602,7 +3602,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.body.earth_macro/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.body.earth_macro/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.body.earth_macro/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3616,7 +3616,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.body.earth_macro/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3630,7 +3630,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.rules/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.base.rules/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.base.rules/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3672,7 +3672,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.rules/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.rules/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.rules/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3686,7 +3686,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.rules/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.rules/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.rules/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3714,7 +3714,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.scenarios.minimal/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.scenarios.minimal/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.scenarios.minimal/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3728,7 +3728,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.scenarios.minimal/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3770,7 +3770,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.system.sol/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.system.sol/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.system.sol/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3784,7 +3784,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.system.sol/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.system.sol/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.system.sol/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3826,7 +3826,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.topology/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.topology/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.topology/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3840,7 +3840,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.topology/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.topology/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.topology/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3896,7 +3896,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.universe.milkyway/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.base.universe.milkyway/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.base.universe.milkyway/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -3910,7 +3910,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.base.universe.milkyway/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -3966,7 +3966,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.content.institutions.placeholder/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4022,7 +4022,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.content.resources.placeholder/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4078,7 +4078,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.content.terrain.placeholder/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4134,7 +4134,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.content.worldgen.placeholder/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4190,7 +4190,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.assemblies.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4246,7 +4246,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.civ_stress.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4260,7 +4260,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
+      "new_target": "contracts/package/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
       "old_reference_or_import": "data/packs/org.dominium.core.contracts.basic/data/fab_pack.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4274,7 +4274,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.contracts.basic/docs/README.md",
+      "new_target": "contracts/package/packs/org.dominium.core.contracts.basic/docs/README.md",
       "old_reference_or_import": "data/packs/org.dominium.core.contracts.basic/docs/README.md",
       "path": null,
       "safe_to_fix_now": true,
@@ -4288,7 +4288,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.contracts.basic/pack.toml",
+      "new_target": "contracts/package/packs/org.dominium.core.contracts.basic/pack.toml",
       "old_reference_or_import": "data/packs/org.dominium.core.contracts.basic/pack.toml",
       "path": null,
       "safe_to_fix_now": true,
@@ -4302,7 +4302,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.contracts.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.contracts.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.contracts.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4358,7 +4358,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.ecology.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.ecology.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.ecology.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4414,7 +4414,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.enforcement.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4470,7 +4470,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.hazards.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.hazards.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.hazards.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4526,7 +4526,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.infrastructure.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4582,7 +4582,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.institutions.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.institutions.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.institutions.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4638,7 +4638,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.instruments.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.instruments.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.instruments.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4694,7 +4694,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.instruments.inspection/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4750,7 +4750,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.interaction.baseline/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4806,7 +4806,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.interfaces/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.interfaces/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.interfaces/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4862,7 +4862,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.law.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.law.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.law.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4918,7 +4918,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.materials.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.materials.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.materials.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -4974,7 +4974,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.materials.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.materials.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.materials.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5030,7 +5030,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.parts.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.parts.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.parts.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5086,7 +5086,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.parts.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.parts.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.parts.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5142,7 +5142,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.population.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.population.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.population.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5198,7 +5198,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.processes.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.processes.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.processes.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5254,7 +5254,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.processes.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.processes.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.processes.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5310,7 +5310,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.quality.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.quality.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.quality.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5366,7 +5366,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.settlements.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.settlements.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.settlements.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5436,7 +5436,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.signals.baseline/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.signals.baseline/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.signals.baseline/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5506,7 +5506,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.signals.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.signals.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.signals.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5562,7 +5562,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.standards.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.standards.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.standards.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5618,7 +5618,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.standards.certification/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.standards.certification/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.standards.certification/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5674,7 +5674,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.standards.extended/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.standards.extended/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.standards.extended/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5730,7 +5730,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.trade.basic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.trade.basic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.trade.basic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5800,7 +5800,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.core.units/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.core.units/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.core.units/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5814,7 +5814,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.epistemics.core/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.epistemics.core/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.epistemics.core/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5926,7 +5926,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.epistemics.core/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.epistemics.core/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.epistemics.core/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -5940,7 +5940,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.epistemics.core/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.epistemics.core/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.epistemics.core/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -5968,7 +5968,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.false_science/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.false_science/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.false_science/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6080,7 +6080,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.false_science/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.examples.false_science/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.examples.false_science/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6094,7 +6094,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.false_science/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.false_science/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.false_science/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6122,7 +6122,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.lost_civilization/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6234,7 +6234,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.lost_civilization/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.examples.lost_civilization/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.examples.lost_civilization/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6248,7 +6248,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.lost_civilization/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6262,7 +6262,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.magic_earth/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.magic_earth/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.magic_earth/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6360,7 +6360,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.magic_earth/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.examples.magic_earth/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.examples.magic_earth/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6374,7 +6374,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.magic_earth/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.magic_earth/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.magic_earth/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6388,7 +6388,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.multicosmology/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.multicosmology/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.multicosmology/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6472,7 +6472,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.multicosmology/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.examples.multicosmology/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.examples.multicosmology/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6486,7 +6486,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.multicosmology/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.multicosmology/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.multicosmology/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6500,7 +6500,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.realistic_earth/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6598,7 +6598,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.realistic_earth/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.examples.realistic_earth/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.examples.realistic_earth/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6612,7 +6612,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.examples.realistic_earth/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6640,7 +6640,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.lib.on_planet.primitives/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6752,7 +6752,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.lib.on_planet.primitives/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6766,7 +6766,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.lib.on_planet.primitives/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6906,7 +6906,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.lib.on_planet.processes/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.lib.on_planet.processes/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.lib.on_planet.processes/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -6920,7 +6920,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.lib.on_planet.processes/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -6934,7 +6934,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alchemy/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.alchemy/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.alchemy/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7074,7 +7074,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alchemy/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.realities.alchemy/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.realities.alchemy/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7088,7 +7088,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alchemy/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.alchemy/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.alchemy/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7102,7 +7102,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alt_physics/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.alt_physics/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.alt_physics/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7214,7 +7214,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alt_physics/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.realities.alt_physics/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.realities.alt_physics/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7228,7 +7228,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.alt_physics/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.alt_physics/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.alt_physics/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7242,7 +7242,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.astrology/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.astrology/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.astrology/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7382,7 +7382,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.astrology/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.realities.astrology/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.realities.astrology/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7396,7 +7396,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.astrology/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.astrology/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.astrology/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7410,7 +7410,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.hyperspace/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.hyperspace/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.hyperspace/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7550,7 +7550,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.hyperspace/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.realities.hyperspace/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.realities.hyperspace/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7564,7 +7564,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.hyperspace/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.hyperspace/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.hyperspace/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7578,7 +7578,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.magic/content/capabilities.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.magic/content/capabilities.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.magic/content/capabilities.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7718,7 +7718,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.magic/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.realities.magic/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.realities.magic/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7732,7 +7732,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.realities.magic/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.realities.magic/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.realities.magic/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7802,7 +7802,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.anchors.planetary/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7872,7 +7872,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.anchors.system/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -7956,7 +7956,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.body/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.body/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.body/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -7970,7 +7970,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.body/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.body/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.body/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8082,7 +8082,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.cosmology/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8096,7 +8096,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.cosmology/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8180,7 +8180,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.galaxy/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8194,7 +8194,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.galaxy/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8278,7 +8278,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.surface_micro/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8292,7 +8292,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.surface_micro/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8376,7 +8376,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.system/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.system/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.system/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8390,7 +8390,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.base.system/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.base.system/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.base.system/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8460,7 +8460,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.minimal/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.minimal/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.minimal/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8572,7 +8572,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.earth_macro/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8586,7 +8586,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.earth_macro/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8670,7 +8670,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.milkyway/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8684,7 +8684,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.milkyway/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8782,7 +8782,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.sol/pack.manifest",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.sol/pack.manifest",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.sol/pack.manifest",
       "path": null,
       "safe_to_fix_now": true,
@@ -8796,7 +8796,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
+      "new_target": "contracts/package/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
       "old_reference_or_import": "data/packs/org.dominium.worldgen.real.sol/pack_manifest.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8824,7 +8824,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/perf/perf_report_win64.json",
+      "new_target": "archive/generated/performance/perf_report_win64.json",
       "old_reference_or_import": "data/perf/perf_report_win64.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8838,7 +8838,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8852,7 +8852,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8866,7 +8866,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8880,7 +8880,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_post_zeta_b3_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8894,7 +8894,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8908,7 +8908,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8922,7 +8922,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_ya_safe_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_ya_safe_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8936,7 +8936,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_yc_safe_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_yc_safe_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_yc_safe_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8950,7 +8950,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8964,7 +8964,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8978,7 +8978,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
+      "new_target": "contracts/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
       "old_reference_or_import": "data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -8992,7 +8992,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/dependency_graph_post_pi.json",
+      "new_target": "contracts/planning/dependency_graph_post_pi.json",
       "old_reference_or_import": "data/planning/dependency_graph_post_pi.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9020,7 +9020,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/final_prompt_inventory.json",
+      "new_target": "contracts/planning/final_prompt_inventory.json",
       "old_reference_or_import": "data/planning/final_prompt_inventory.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9104,7 +9104,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/merged_series_state.json",
+      "new_target": "contracts/planning/merged_series_state.json",
       "old_reference_or_import": "data/planning/merged_series_state.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9118,7 +9118,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/next_execution_order_post_phib5.json",
+      "new_target": "contracts/planning/next_execution_order_post_phib5.json",
       "old_reference_or_import": "data/planning/next_execution_order_post_phib5.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9132,7 +9132,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/next_execution_order_post_za_first_wave.json",
+      "new_target": "contracts/planning/next_execution_order_post_za_first_wave.json",
       "old_reference_or_import": "data/planning/next_execution_order_post_za_first_wave.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9146,7 +9146,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/next_execution_order_post_zeta.json",
+      "new_target": "contracts/planning/next_execution_order_post_zeta.json",
       "old_reference_or_import": "data/planning/next_execution_order_post_zeta.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9160,7 +9160,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/next_execution_order_post_zp.json",
+      "new_target": "contracts/planning/next_execution_order_post_zp.json",
       "old_reference_or_import": "data/planning/next_execution_order_post_zp.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9174,7 +9174,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/next_two_series_plan_phib_upsilon.json",
+      "new_target": "contracts/planning/next_two_series_plan_phib_upsilon.json",
       "old_reference_or_import": "data/planning/next_two_series_plan_phib_upsilon.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9216,7 +9216,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/agent_instruction_surfaces.json",
+      "new_target": "contracts/planning/reality/agent_instruction_surfaces.json",
       "old_reference_or_import": "data/planning/reality/agent_instruction_surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9230,7 +9230,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/content_domain_surfaces.json",
+      "new_target": "contracts/planning/reality/content_domain_surfaces.json",
       "old_reference_or_import": "data/planning/reality/content_domain_surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9244,7 +9244,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/control_plane_surfaces.json",
+      "new_target": "contracts/planning/reality/control_plane_surfaces.json",
       "old_reference_or_import": "data/planning/reality/control_plane_surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9258,7 +9258,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/module_map.json",
+      "new_target": "contracts/planning/reality/module_map.json",
       "old_reference_or_import": "data/planning/reality/module_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9272,7 +9272,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/product_entrypoints.json",
+      "new_target": "contracts/planning/reality/product_entrypoints.json",
       "old_reference_or_import": "data/planning/reality/product_entrypoints.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9286,7 +9286,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/runtime_surfaces.json",
+      "new_target": "contracts/planning/reality/runtime_surfaces.json",
       "old_reference_or_import": "data/planning/reality/runtime_surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9314,7 +9314,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reality/toolchain_and_preset_map.json",
+      "new_target": "contracts/planning/reality/toolchain_and_preset_map.json",
       "old_reference_or_import": "data/planning/reality/toolchain_and_preset_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9328,7 +9328,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reconciliation/assumption_invalidations.json",
+      "new_target": "contracts/planning/reconciliation/assumption_invalidations.json",
       "old_reference_or_import": "data/planning/reconciliation/assumption_invalidations.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9342,7 +9342,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+      "new_target": "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
       "old_reference_or_import": "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9356,7 +9356,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/reconciliation/subsystem_classification.json",
+      "new_target": "contracts/planning/reconciliation/subsystem_classification.json",
       "old_reference_or_import": "data/planning/reconciliation/subsystem_classification.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9426,7 +9426,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/planning/zeta_final_admissible_scope.json",
+      "new_target": "contracts/planning/zeta_final_admissible_scope.json",
       "old_reference_or_import": "data/planning/zeta_final_admissible_scope.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9762,7 +9762,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/refactor/convergence_actions.json",
+      "new_target": "archive/generated/refactor/convergence_actions.json",
       "old_reference_or_import": "data/refactor/convergence_actions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9776,7 +9776,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/refactor/convergence_execution_log.json",
+      "new_target": "archive/generated/refactor/convergence_execution_log.json",
       "old_reference_or_import": "data/refactor/convergence_execution_log.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9790,7 +9790,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/refactor/convergence_plan.json",
+      "new_target": "archive/generated/refactor/convergence_plan.json",
       "old_reference_or_import": "data/refactor/convergence_plan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -9804,7 +9804,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/refactor/convergence_risk_map.json",
+      "new_target": "archive/generated/refactor/convergence_risk_map.json",
       "old_reference_or_import": "data/refactor/convergence_risk_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -14158,7 +14158,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "contracts/schema/registries/schema_version_policy.json",
+      "new_target": "contracts/schema/registry/schema_version_policy.json",
       "old_reference_or_import": "data/registries/schema_version_policy.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16020,7 +16020,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/release/dist_final_expected_artifacts.json",
+      "new_target": "archive/generated/release/dist_final_expected_artifacts.json",
       "old_reference_or_import": "data/release/dist_final_expected_artifacts.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16244,7 +16244,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/checkpoint_c_repo_mega_structure_review.json",
+      "new_target": "archive/generated/repo/checkpoint_c_repo_mega_structure_review.json",
       "old_reference_or_import": "data/repo/checkpoint_c_repo_mega_structure_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16258,7 +16258,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+      "new_target": "archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json",
       "old_reference_or_import": "data/repo/repo_authoritative_boundary_model_and_preferred_target.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16272,7 +16272,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+      "new_target": "archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
       "old_reference_or_import": "data/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16286,7 +16286,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_non_negotiables_and_current_reality.json",
+      "new_target": "archive/generated/repo/repo_non_negotiables_and_current_reality.json",
       "old_reference_or_import": "data/repo/repo_non_negotiables_and_current_reality.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16300,7 +16300,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_phased_migration_shims_validation_and_rollback.json",
+      "new_target": "archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json",
       "old_reference_or_import": "data/repo/repo_phased_migration_shims_validation_and_rollback.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16314,7 +16314,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_target_topology_options_and_comparison.json",
+      "new_target": "archive/generated/repo/repo_target_topology_options_and_comparison.json",
       "old_reference_or_import": "data/repo/repo_target_topology_options_and_comparison.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16328,7 +16328,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "new_target": "archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json",
       "old_reference_or_import": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16342,7 +16342,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16356,7 +16356,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_attic_approved.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_attic_approved.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_attic_approved.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16370,7 +16370,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_candidates.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_candidates.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_candidates.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16384,7 +16384,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_conflicts.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_conflicts.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_conflicts.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16398,7 +16398,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_decisions.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_decisions.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_decisions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16412,7 +16412,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_deferred.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_deferred.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_deferred.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16426,7 +16426,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_lock_approved.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_lock_approved.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_lock_approved.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16440,7 +16440,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_lock_approved_v2.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_lock_approved_v2.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_lock_approved_v2.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16454,7 +16454,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_lock_approved_v3.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_lock_approved_v3.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_lock_approved_v3.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16468,7 +16468,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_lock_approved_v4.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_lock_approved_v4.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_lock_approved_v4.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16482,7 +16482,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_lock_proposal.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_lock_proposal.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_lock_proposal.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16496,7 +16496,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_target_paths.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_target_paths.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_target_paths.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16510,7 +16510,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_target_paths_v3.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_target_paths_v3.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_target_paths_v3.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16524,7 +16524,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_domain_mapping_target_paths_v4.json",
+      "new_target": "archive/generated/restructure/src_domain_mapping_target_paths_v4.json",
       "old_reference_or_import": "data/restructure/src_domain_mapping_target_paths_v4.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16538,7 +16538,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_generated_set.json",
+      "new_target": "archive/generated/restructure/src_generated_set.json",
       "old_reference_or_import": "data/restructure/src_generated_set.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16552,7 +16552,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_legacy_set.json",
+      "new_target": "archive/generated/restructure/src_legacy_set.json",
       "old_reference_or_import": "data/restructure/src_legacy_set.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16566,7 +16566,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_runtime_critical_set.json",
+      "new_target": "archive/generated/restructure/src_runtime_critical_set.json",
       "old_reference_or_import": "data/restructure/src_runtime_critical_set.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16594,7 +16594,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/src_tool_only_set.json",
+      "new_target": "archive/generated/restructure/src_tool_only_set.json",
       "old_reference_or_import": "data/restructure/src_tool_only_set.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16636,7 +16636,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi4z_fix1_report.json",
+      "new_target": "archive/generated/restructure/xi4z_fix1_report.json",
       "old_reference_or_import": "data/restructure/xi4z_fix1_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16650,7 +16650,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi4z_fix2_report.json",
+      "new_target": "archive/generated/restructure/xi4z_fix2_report.json",
       "old_reference_or_import": "data/restructure/xi4z_fix2_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16664,7 +16664,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi4z_fix3_report.json",
+      "new_target": "archive/generated/restructure/xi4z_fix3_report.json",
       "old_reference_or_import": "data/restructure/xi4z_fix3_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16678,7 +16678,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi4z_fix_report.json",
+      "new_target": "archive/generated/restructure/xi4z_fix_report.json",
       "old_reference_or_import": "data/restructure/xi4z_fix_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16748,7 +16748,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5a_attic_map.json",
+      "new_target": "archive/generated/restructure/xi5a_attic_map.json",
       "old_reference_or_import": "data/restructure/xi5a_attic_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16762,7 +16762,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5a_execution_log.json",
+      "new_target": "archive/generated/restructure/xi5a_execution_log.json",
       "old_reference_or_import": "data/restructure/xi5a_execution_log.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16776,7 +16776,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5a_move_map.json",
+      "new_target": "archive/generated/restructure/xi5a_move_map.json",
       "old_reference_or_import": "data/restructure/xi5a_move_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16790,7 +16790,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5a_postmove_residual_src_report.json",
+      "new_target": "archive/generated/restructure/xi5a_postmove_residual_src_report.json",
       "old_reference_or_import": "data/restructure/xi5a_postmove_residual_src_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16804,7 +16804,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x1_batch_plan.json",
+      "new_target": "archive/generated/restructure/xi5x1_batch_plan.json",
       "old_reference_or_import": "data/restructure/xi5x1_batch_plan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16818,7 +16818,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x1_execution_log.json",
+      "new_target": "archive/generated/restructure/xi5x1_execution_log.json",
       "old_reference_or_import": "data/restructure/xi5x1_execution_log.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16832,7 +16832,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x1_postmove_residual_src_report.json",
+      "new_target": "archive/generated/restructure/xi5x1_postmove_residual_src_report.json",
       "old_reference_or_import": "data/restructure/xi5x1_postmove_residual_src_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16846,7 +16846,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x1_residual_classification_lock.json",
+      "new_target": "archive/generated/restructure/xi5x1_residual_classification_lock.json",
       "old_reference_or_import": "data/restructure/xi5x1_residual_classification_lock.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16860,7 +16860,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x1_xi6_gate_model.json",
+      "new_target": "archive/generated/restructure/xi5x1_xi6_gate_model.json",
       "old_reference_or_import": "data/restructure/xi5x1_xi6_gate_model.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16874,7 +16874,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_batch_plan.json",
+      "new_target": "archive/generated/restructure/xi5x2_batch_plan.json",
       "old_reference_or_import": "data/restructure/xi5x2_batch_plan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16888,7 +16888,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_blocked_preconditions.json",
+      "new_target": "archive/generated/restructure/xi5x2_blocked_preconditions.json",
       "old_reference_or_import": "data/restructure/xi5x2_blocked_preconditions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16902,7 +16902,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_blocker_delta.json",
+      "new_target": "archive/generated/restructure/xi5x2_blocker_delta.json",
       "old_reference_or_import": "data/restructure/xi5x2_blocker_delta.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16916,7 +16916,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_execution_log.json",
+      "new_target": "archive/generated/restructure/xi5x2_execution_log.json",
       "old_reference_or_import": "data/restructure/xi5x2_execution_log.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16930,7 +16930,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_manual_review_queue.json",
+      "new_target": "archive/generated/restructure/xi5x2_manual_review_queue.json",
       "old_reference_or_import": "data/restructure/xi5x2_manual_review_queue.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16944,7 +16944,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_platform_adapter_review.json",
+      "new_target": "archive/generated/restructure/xi5x2_platform_adapter_review.json",
       "old_reference_or_import": "data/restructure/xi5x2_platform_adapter_review.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16958,7 +16958,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_postmove_residual_src_report.json",
+      "new_target": "archive/generated/restructure/xi5x2_postmove_residual_src_report.json",
       "old_reference_or_import": "data/restructure/xi5x2_postmove_residual_src_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16972,7 +16972,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_residual_classification_lock.json",
+      "new_target": "archive/generated/restructure/xi5x2_residual_classification_lock.json",
       "old_reference_or_import": "data/restructure/xi5x2_residual_classification_lock.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -16986,7 +16986,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_residual_reality_refresh.json",
+      "new_target": "archive/generated/restructure/xi5x2_residual_reality_refresh.json",
       "old_reference_or_import": "data/restructure/xi5x2_residual_reality_refresh.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17014,7 +17014,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/restructure/xi5x2_xi6_gate_model.json",
+      "new_target": "archive/generated/restructure/xi5x2_xi6_gate_model.json",
       "old_reference_or_import": "data/restructure/xi5x2_xi6_gate_model.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17238,7 +17238,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/session_templates/session.mvp_default.json",
+      "new_target": "content/templates/session/session.mvp_default.json",
       "old_reference_or_import": "data/session_templates/session.mvp_default.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17280,7 +17280,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/milky_way/milky_way.anchors.json",
+      "new_target": "content/domains/world/milky_way/milky_way.anchors.json",
       "old_reference_or_import": "data/world/milky_way/milky_way.anchors.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17294,7 +17294,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/milky_way/milky_way.arms.json",
+      "new_target": "content/domains/world/milky_way/milky_way.arms.json",
       "old_reference_or_import": "data/world/milky_way/milky_way.arms.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17308,7 +17308,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/milky_way/milky_way.galaxy.json",
+      "new_target": "content/domains/world/milky_way/milky_way.galaxy.json",
       "old_reference_or_import": "data/world/milky_way/milky_way.galaxy.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17322,7 +17322,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/milky_way/milky_way.procedural_rules.json",
+      "new_target": "content/domains/world/milky_way/milky_way.procedural_rules.json",
       "old_reference_or_import": "data/world/milky_way/milky_way.procedural_rules.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17336,7 +17336,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/milky_way/milky_way.regions.json",
+      "new_target": "content/domains/world/milky_way/milky_way.regions.json",
       "old_reference_or_import": "data/world/milky_way/milky_way.regions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17364,7 +17364,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.body.json",
+      "new_target": "content/domains/world/sol/earth/earth.body.json",
       "old_reference_or_import": "data/world/sol/earth/earth.body.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17378,7 +17378,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.climate/biome_tags.json",
+      "new_target": "content/domains/world/sol/earth/earth.climate/biome_tags.json",
       "old_reference_or_import": "data/world/sol/earth/earth.climate/biome_tags.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17392,7 +17392,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.climate/climate_zones.json",
+      "new_target": "content/domains/world/sol/earth/earth.climate/climate_zones.json",
       "old_reference_or_import": "data/world/sol/earth/earth.climate/climate_zones.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17420,7 +17420,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.orbits.json",
+      "new_target": "content/domains/world/sol/earth/earth.orbits.json",
       "old_reference_or_import": "data/world/sol/earth/earth.orbits.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17434,7 +17434,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.regions/continents.json",
+      "new_target": "content/domains/world/sol/earth/earth.regions/continents.json",
       "old_reference_or_import": "data/world/sol/earth/earth.regions/continents.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17448,7 +17448,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.regions/oceans.json",
+      "new_target": "content/domains/world/sol/earth/earth.regions/oceans.json",
       "old_reference_or_import": "data/world/sol/earth/earth.regions/oceans.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17462,7 +17462,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.regions/polar_regions.json",
+      "new_target": "content/domains/world/sol/earth/earth.regions/polar_regions.json",
       "old_reference_or_import": "data/world/sol/earth/earth.regions/polar_regions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17476,7 +17476,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.regions/tectonic_plates.json",
+      "new_target": "content/domains/world/sol/earth/earth.regions/tectonic_plates.json",
       "old_reference_or_import": "data/world/sol/earth/earth.regions/tectonic_plates.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17490,7 +17490,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.surfaces/atmosphere.volume.json",
+      "new_target": "content/domains/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "old_reference_or_import": "data/world/sol/earth/earth.surfaces/atmosphere.volume.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17504,7 +17504,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.surfaces/land.surface.json",
+      "new_target": "content/domains/world/sol/earth/earth.surfaces/land.surface.json",
       "old_reference_or_import": "data/world/sol/earth/earth.surfaces/land.surface.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17518,7 +17518,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.surfaces/ocean.surface.json",
+      "new_target": "content/domains/world/sol/earth/earth.surfaces/ocean.surface.json",
       "old_reference_or_import": "data/world/sol/earth/earth.surfaces/ocean.surface.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17532,7 +17532,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/earth/earth.surfaces/subsurface.volume.json",
+      "new_target": "content/domains/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "old_reference_or_import": "data/world/sol/earth/earth.surfaces/subsurface.volume.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17546,7 +17546,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.belts/kuiper_belt.json",
+      "new_target": "content/domains/world/sol/sol.belts/kuiper_belt.json",
       "old_reference_or_import": "data/world/sol/sol.belts/kuiper_belt.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17560,7 +17560,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.belts/main_belt.json",
+      "new_target": "content/domains/world/sol/sol.belts/main_belt.json",
       "old_reference_or_import": "data/world/sol/sol.belts/main_belt.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17574,7 +17574,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.belts/oort_belt.json",
+      "new_target": "content/domains/world/sol/sol.belts/oort_belt.json",
       "old_reference_or_import": "data/world/sol/sol.belts/oort_belt.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17588,7 +17588,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/earth.json",
+      "new_target": "content/domains/world/sol/sol.bodies/earth.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/earth.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17602,7 +17602,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/jupiter.json",
+      "new_target": "content/domains/world/sol/sol.bodies/jupiter.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/jupiter.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17616,7 +17616,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/mars.json",
+      "new_target": "content/domains/world/sol/sol.bodies/mars.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/mars.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17630,7 +17630,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/mercury.json",
+      "new_target": "content/domains/world/sol/sol.bodies/mercury.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/mercury.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17644,7 +17644,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/neptune.json",
+      "new_target": "content/domains/world/sol/sol.bodies/neptune.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/neptune.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17658,7 +17658,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/saturn.json",
+      "new_target": "content/domains/world/sol/sol.bodies/saturn.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/saturn.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17672,7 +17672,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/sol_star.json",
+      "new_target": "content/domains/world/sol/sol.bodies/sol_star.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/sol_star.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17686,7 +17686,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/uranus.json",
+      "new_target": "content/domains/world/sol/sol.bodies/uranus.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/uranus.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17700,7 +17700,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.bodies/venus.json",
+      "new_target": "content/domains/world/sol/sol.bodies/venus.json",
       "old_reference_or_import": "data/world/sol/sol.bodies/venus.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17714,7 +17714,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/callisto.json",
+      "new_target": "content/domains/world/sol/sol.moons/callisto.json",
       "old_reference_or_import": "data/world/sol/sol.moons/callisto.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17728,7 +17728,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/deimos.json",
+      "new_target": "content/domains/world/sol/sol.moons/deimos.json",
       "old_reference_or_import": "data/world/sol/sol.moons/deimos.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17742,7 +17742,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/europa.json",
+      "new_target": "content/domains/world/sol/sol.moons/europa.json",
       "old_reference_or_import": "data/world/sol/sol.moons/europa.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17756,7 +17756,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/ganymede.json",
+      "new_target": "content/domains/world/sol/sol.moons/ganymede.json",
       "old_reference_or_import": "data/world/sol/sol.moons/ganymede.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17770,7 +17770,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/io.json",
+      "new_target": "content/domains/world/sol/sol.moons/io.json",
       "old_reference_or_import": "data/world/sol/sol.moons/io.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17784,7 +17784,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/moon.json",
+      "new_target": "content/domains/world/sol/sol.moons/moon.json",
       "old_reference_or_import": "data/world/sol/sol.moons/moon.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17798,7 +17798,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/phobos.json",
+      "new_target": "content/domains/world/sol/sol.moons/phobos.json",
       "old_reference_or_import": "data/world/sol/sol.moons/phobos.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17812,7 +17812,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/titan.json",
+      "new_target": "content/domains/world/sol/sol.moons/titan.json",
       "old_reference_or_import": "data/world/sol/sol.moons/titan.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17826,7 +17826,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.moons/triton.json",
+      "new_target": "content/domains/world/sol/sol.moons/triton.json",
       "old_reference_or_import": "data/world/sol/sol.moons/triton.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17840,7 +17840,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.orbits.json",
+      "new_target": "content/domains/world/sol/sol.orbits.json",
       "old_reference_or_import": "data/world/sol/sol.orbits.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17854,7 +17854,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.surfaces.json",
+      "new_target": "content/domains/world/sol/sol.surfaces.json",
       "old_reference_or_import": "data/world/sol/sol.surfaces.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -17868,7 +17868,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/world/sol/sol.system.json",
+      "new_target": "content/domains/world/sol/sol.system.json",
       "old_reference_or_import": "data/world/sol/sol.system.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18260,7 +18260,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "new_target": "archive/generated/xstack/checkpoint_c_xstack_aide_closure.json",
       "old_reference_or_import": "data/xstack/checkpoint_c_xstack_aide_closure.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18288,7 +18288,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/gate_definitions.json",
+      "new_target": "archive/generated/xstack/gate_definitions.json",
       "old_reference_or_import": "data/xstack/gate_definitions.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18302,7 +18302,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/next_execution_order_post_xstack_aide.json",
+      "new_target": "archive/generated/xstack/next_execution_order_post_xstack_aide.json",
       "old_reference_or_import": "data/xstack/next_execution_order_post_xstack_aide.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18316,7 +18316,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/xstack_inventory_and_classification.json",
+      "new_target": "archive/generated/xstack/xstack_inventory_and_classification.json",
       "old_reference_or_import": "data/xstack/xstack_inventory_and_classification.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18330,7 +18330,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/xstack_scope_freeze.json",
+      "new_target": "archive/generated/xstack/xstack_scope_freeze.json",
       "old_reference_or_import": "data/xstack/xstack_scope_freeze.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18344,7 +18344,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "content/data/xstack/xstack_to_aide_extraction_map.json",
+      "new_target": "archive/generated/xstack/xstack_to_aide_extraction_map.json",
       "old_reference_or_import": "data/xstack/xstack_to_aide_extraction_map.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18386,7 +18386,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/__init__.py",
+      "new_target": "tools/package/libraries/__init__.py",
       "old_reference_or_import": "lib/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18400,7 +18400,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/artifact/__init__.py",
+      "new_target": "tools/package/libraries/artifact/__init__.py",
       "old_reference_or_import": "lib/artifact/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18414,7 +18414,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/artifact/artifact_validator.py",
+      "new_target": "tools/package/libraries/artifact/artifact_validator.py",
       "old_reference_or_import": "lib/artifact/artifact_validator.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18428,7 +18428,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/bundle/__init__.py",
+      "new_target": "tools/package/libraries/bundle/__init__.py",
       "old_reference_or_import": "lib/bundle/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18442,7 +18442,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/bundle/bundle_manifest.py",
+      "new_target": "tools/package/libraries/bundle/bundle_manifest.py",
       "old_reference_or_import": "lib/bundle/bundle_manifest.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18456,7 +18456,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/export/__init__.py",
+      "new_target": "tools/package/libraries/export/__init__.py",
       "old_reference_or_import": "lib/export/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18470,7 +18470,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "engine/export/export_engine.py",
+      "new_target": "tools/export/export_engine.py",
       "old_reference_or_import": "lib/export/export_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18484,7 +18484,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/import/__init__.py",
+      "new_target": "tools/package/libraries/import/__init__.py",
       "old_reference_or_import": "lib/import/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18498,7 +18498,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "engine/import/import_engine.py",
+      "new_target": "tools/import/import_engine.py",
       "old_reference_or_import": "lib/import/import_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18512,7 +18512,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/install/__init__.py",
+      "new_target": "tools/package/libraries/install/__init__.py",
       "old_reference_or_import": "lib/install/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18526,7 +18526,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "engine/install/install_discovery_engine.py",
+      "new_target": "runtime/package/install_discovery_engine.py",
       "old_reference_or_import": "lib/install/install_discovery_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18540,7 +18540,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/install/install_validator.py",
+      "new_target": "tools/package/libraries/install/install_validator.py",
       "old_reference_or_import": "lib/install/install_validator.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18554,7 +18554,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/instance/__init__.py",
+      "new_target": "tools/package/libraries/instance/__init__.py",
       "old_reference_or_import": "lib/instance/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18568,7 +18568,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/instance/instance_clone.py",
+      "new_target": "tools/package/libraries/instance/instance_clone.py",
       "old_reference_or_import": "lib/instance/instance_clone.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18582,7 +18582,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/instance/instance_validator.py",
+      "new_target": "tools/package/libraries/instance/instance_validator.py",
       "old_reference_or_import": "lib/instance/instance_validator.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18596,7 +18596,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/provides/__init__.py",
+      "new_target": "tools/package/libraries/provides/__init__.py",
       "old_reference_or_import": "lib/provides/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18610,7 +18610,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/provides/provider_resolution.py",
+      "new_target": "tools/package/libraries/provides/provider_resolution.py",
       "old_reference_or_import": "lib/provides/provider_resolution.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18624,7 +18624,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/save/__init__.py",
+      "new_target": "tools/package/libraries/save/__init__.py",
       "old_reference_or_import": "lib/save/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18638,7 +18638,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/save/save_validator.py",
+      "new_target": "tools/package/libraries/save/save_validator.py",
       "old_reference_or_import": "lib/save/save_validator.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18652,7 +18652,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/store/__init__.py",
+      "new_target": "tools/package/libraries/store/__init__.py",
       "old_reference_or_import": "lib/store/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18666,7 +18666,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "engine/store/gc_engine.py",
+      "new_target": "runtime/storage/gc_engine.py",
       "old_reference_or_import": "lib/store/gc_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -18708,7 +18708,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/CMakeLists.txt",
+      "new_target": "runtime/shell/CMakeLists.txt",
       "old_reference_or_import": "libs/appcore/CMakeLists.txt",
       "path": null,
       "safe_to_fix_now": true,
@@ -18722,7 +18722,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/command/command_dispatch.c",
+      "new_target": "runtime/shell/command/command_dispatch.c",
       "old_reference_or_import": "libs/appcore/command/command_dispatch.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18736,7 +18736,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/command/command_registry.c",
+      "new_target": "runtime/shell/command/command_registry.c",
       "old_reference_or_import": "libs/appcore/command/command_registry.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18750,7 +18750,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/command/command_registry.h",
+      "new_target": "runtime/shell/command/command_registry.h",
       "old_reference_or_import": "libs/appcore/command/command_registry.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18764,7 +18764,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/discover/appcore_discover.c",
+      "new_target": "runtime/shell/discover/appcore_discover.c",
       "old_reference_or_import": "libs/appcore/discover/appcore_discover.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18778,7 +18778,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/discover/appcore_discover.h",
+      "new_target": "runtime/shell/discover/appcore_discover.h",
       "old_reference_or_import": "libs/appcore/discover/appcore_discover.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18792,7 +18792,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/invoke/appcore_invoke.c",
+      "new_target": "runtime/shell/invoke/appcore_invoke.c",
       "old_reference_or_import": "libs/appcore/invoke/appcore_invoke.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18806,7 +18806,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/invoke/appcore_invoke.h",
+      "new_target": "runtime/shell/invoke/appcore_invoke.h",
       "old_reference_or_import": "libs/appcore/invoke/appcore_invoke.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18820,7 +18820,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/output/appcore_output.c",
+      "new_target": "runtime/shell/output/appcore_output.c",
       "old_reference_or_import": "libs/appcore/output/appcore_output.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18834,7 +18834,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/output/appcore_output.h",
+      "new_target": "runtime/shell/output/appcore_output.h",
       "old_reference_or_import": "libs/appcore/output/appcore_output.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18848,7 +18848,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/profile/appcore_profile.c",
+      "new_target": "runtime/shell/profile/appcore_profile.c",
       "old_reference_or_import": "libs/appcore/profile/appcore_profile.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18862,7 +18862,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/profile/appcore_profile.h",
+      "new_target": "runtime/shell/profile/appcore_profile.h",
       "old_reference_or_import": "libs/appcore/profile/appcore_profile.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18876,7 +18876,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/repox/appcore_repox.c",
+      "new_target": "tools/repo/repox/shell/appcore_repox.c",
       "old_reference_or_import": "libs/appcore/repox/appcore_repox.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18890,7 +18890,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/repox/appcore_repox.h",
+      "new_target": "tools/repo/repox/shell/appcore_repox.h",
       "old_reference_or_import": "libs/appcore/repox/appcore_repox.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18904,7 +18904,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/ui_bind/ui_accessibility_map.c",
+      "new_target": "tools/codegen/ui/bind/ui_accessibility_map.c",
       "old_reference_or_import": "libs/appcore/ui_bind/ui_accessibility_map.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18918,7 +18918,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/ui_bind/ui_accessibility_map.h",
+      "new_target": "tools/codegen/ui/bind/ui_accessibility_map.h",
       "old_reference_or_import": "libs/appcore/ui_bind/ui_accessibility_map.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18932,7 +18932,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/ui_bind/ui_command_binding_table.c",
+      "new_target": "tools/codegen/ui/bind/ui_command_binding_table.c",
       "old_reference_or_import": "libs/appcore/ui_bind/ui_command_binding_table.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18946,7 +18946,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/ui_bind/ui_command_binding_table.h",
+      "new_target": "tools/codegen/ui/bind/ui_command_binding_table.h",
       "old_reference_or_import": "libs/appcore/ui_bind/ui_command_binding_table.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -18960,7 +18960,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/ui_bind/ui_localisation_usage_report.json",
+      "new_target": "tools/codegen/ui/bind/ui_localisation_usage_report.json",
       "old_reference_or_import": "libs/appcore/ui_bind/ui_localisation_usage_report.json",
       "path": null,
       "safe_to_fix_now": true,
@@ -18974,7 +18974,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/validate/appcore_validate.c",
+      "new_target": "tools/validators/shell/appcore_validate.c",
       "old_reference_or_import": "libs/appcore/validate/appcore_validate.c",
       "path": null,
       "safe_to_fix_now": true,
@@ -18988,7 +18988,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "runtime/shell/appcore/validate/appcore_validate.h",
+      "new_target": "tools/validators/shell/appcore_validate.h",
       "old_reference_or_import": "libs/appcore/validate/appcore_validate.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -19772,7 +19772,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/libraries/contracts/include/dom_contracts/tool_api.h",
+      "new_target": "tools/package/libraries/contracts/include/dom_contracts/tool_api.h",
       "old_reference_or_import": "libs/contracts/include/dom_contracts/tool_api.h",
       "path": null,
       "safe_to_fix_now": true,
@@ -20332,7 +20332,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/__init__.py",
+      "new_target": "tools/validators/network/__init__.py",
       "old_reference_or_import": "net/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20346,7 +20346,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/anti_cheat/__init__.py",
+      "new_target": "tools/validators/network/anti_cheat/__init__.py",
       "old_reference_or_import": "net/anti_cheat/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20360,7 +20360,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/anti_cheat/anti_cheat_engine.py",
+      "new_target": "tools/validators/network/anti_cheat/anti_cheat_engine.py",
       "old_reference_or_import": "net/anti_cheat/anti_cheat_engine.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20374,7 +20374,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/policies/__init__.py",
+      "new_target": "tools/validators/network/policies/__init__.py",
       "old_reference_or_import": "net/policies/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20388,7 +20388,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/policies/policy_lockstep.py",
+      "new_target": "tools/validators/network/policies/policy_lockstep.py",
       "old_reference_or_import": "net/policies/policy_lockstep.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20402,7 +20402,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/policies/policy_server_authoritative.py",
+      "new_target": "tools/validators/network/policies/policy_server_authoritative.py",
       "old_reference_or_import": "net/policies/policy_server_authoritative.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20416,7 +20416,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/policies/policy_srz_hybrid.py",
+      "new_target": "tools/validators/network/policies/policy_srz_hybrid.py",
       "old_reference_or_import": "net/policies/policy_srz_hybrid.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20430,7 +20430,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/srz/__init__.py",
+      "new_target": "tools/validators/network/srz/__init__.py",
       "old_reference_or_import": "net/srz/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20444,7 +20444,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/srz/routing.py",
+      "new_target": "tools/validators/network/srz/routing.py",
       "old_reference_or_import": "net/srz/routing.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20458,7 +20458,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/srz/shard_coordinator.py",
+      "new_target": "tools/validators/network/srz/shard_coordinator.py",
       "old_reference_or_import": "net/srz/shard_coordinator.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20472,7 +20472,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/testing/__init__.py",
+      "new_target": "tools/validators/network/testing/__init__.py",
       "old_reference_or_import": "net/testing/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20486,7 +20486,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/testing/net_disorder_sim.py",
+      "new_target": "tools/validators/network/testing/net_disorder_sim.py",
       "old_reference_or_import": "net/testing/net_disorder_sim.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20500,7 +20500,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/transport/__init__.py",
+      "new_target": "tools/validators/network/transport/__init__.py",
       "old_reference_or_import": "net/transport/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20514,7 +20514,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/transport/interface.py",
+      "new_target": "tools/validators/network/transport/interface.py",
       "old_reference_or_import": "net/transport/interface.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20528,7 +20528,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/transport/loopback.py",
+      "new_target": "tools/validators/network/transport/loopback.py",
       "old_reference_or_import": "net/transport/loopback.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20542,7 +20542,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/transport/tcp_stub.py",
+      "new_target": "tools/validators/network/transport/tcp_stub.py",
       "old_reference_or_import": "net/transport/tcp_stub.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -20556,7 +20556,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/network/transport/udp_stub.py",
+      "new_target": "tools/validators/network/transport/udp_stub.py",
       "old_reference_or_import": "net/transport/udp_stub.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -24686,7 +24686,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/validators/validation/__init__.py",
+      "new_target": "tools/validators/suite/__init__.py",
       "old_reference_or_import": "validation/__init__.py",
       "path": null,
       "safe_to_fix_now": true,
@@ -24700,7 +24700,7 @@
     {
       "fix_action": "rewrite_active_exact_path_references",
       "issue_class": "stale_path_reference",
-      "new_target": "tools/validators/validation/validation_engine.py",
+      "new_target": "tools/validators/suite/validation_engine.py",
       "old_reference_or_import": "validation/validation_engine.py",
       "path": null,
       "safe_to_fix_now": true,

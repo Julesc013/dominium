@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/geo/geo10_stress_common.py`
+- Canonical Candidate: `tools/validators/domain/geology/geo10_stress_common.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `tools/geo/geo10_stress_common.py`
-- `tools/geo/geo10_stress_runtime.py`
+- `tools/validators/domain/geology/geo10_stress_common.py`
+- `tools/validators/domain/geology/geo10_stress_runtime.py`
 
 ## Scorecard
 
-- `tools/geo/geo10_stress_common.py` disposition=`canonical` rank=`1` total_score=`73.54` risk=`HIGH`
-- `tools/geo/geo10_stress_runtime.py` disposition=`quarantine` rank=`2` total_score=`67.27` risk=`HIGH`
+- `tools/validators/domain/geology/geo10_stress_common.py` disposition=`canonical` rank=`1` total_score=`73.54` risk=`HIGH`
+- `tools/validators/domain/geology/geo10_stress_runtime.py` disposition=`quarantine` rank=`2` total_score=`67.27` risk=`HIGH`
 
 ## Usage Sites
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

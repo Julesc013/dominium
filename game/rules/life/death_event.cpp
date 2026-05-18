@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/death_event.cpp
+FILE: game/rule/life/death_event.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements death event append-only storage.

@@ -45,7 +45,7 @@ The bundle assembler may consume only governed inputs:
 The canonical portable output root is:
 
 ```text
-dist/v0.0.0-mock/<platform_tag>/dominium/
+archive/generated/dist/v0.0.0-mock/<platform_tag>/dominium/
 ```
 
 All generated paths inside the bundle must be relative to that root.

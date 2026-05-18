@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Field Discipline Report
 
-Date: 2026-03-04  
-Patch: `PATCH-A3`  
+Date: 2026-03-04
+Patch: `PATCH-A3`
 Scope: Field mutation purity, sampling discipline, shard-boundary enforcement
 
 ## Summary
@@ -28,7 +28,7 @@ Scope: Field mutation purity, sampling discipline, shard-boundary enforcement
 - Added strict RepoX rule `INV-FIELD-SAMPLE-API-ONLY`.
 
 3. Boundary enforcement
-- Added doctrine: `docs/physics/FIELD_SHARD_BOUNDARY_ENFORCEMENT.md`.
+- Added doctrine: `docs/domains/physics/FIELD_SHARD_BOUNDARY_ENFORCEMENT.md`.
 - Added strict RepoX rule `INV-NO-CROSS-SHARD-FIELD-DIRECT`.
 - Added AuditX `CrossShardFieldAccessSmell`.
 
@@ -39,7 +39,7 @@ Scope: Field mutation purity, sampling discipline, shard-boundary enforcement
   - `boundary_field_exchange_hash_chain`
 - Integrated chains into control proof bundle schema + emitters.
 - Added replay utility:
-  - `tools/physics/tool_replay_field_window(.py/.cmd)`
+  - `tools/validators/domain/physics/tool_replay_field_window(.py/.cmd)`
 
 5. Test coverage additions
 - `test_no_direct_field_writes`

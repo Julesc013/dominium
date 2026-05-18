@@ -27,7 +27,7 @@
       "current_status": "active exception",
       "can_shrink_after_batch": "maybe",
       "can_retire_after_batch": false,
-      "required_evidence": ["release/setup/dist/tool import rewrites", "temporary shim lifecycle accepted", "strict validators pass"],
+      "required_evidence": ["release/setup/archive/generated/dist/tool import rewrites", "temporary shim lifecycle accepted", "strict validators pass"],
       "current_blocker": "Future governance move would likely leave a temporary shim under governance/."
     },
     {

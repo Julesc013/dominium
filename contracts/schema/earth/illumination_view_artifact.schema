@@ -1,0 +1,34 @@
+SCHEMA: earth/illumination_view_artifact.schema
+schema_id: dominium.schema.earth.illumination_view_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the compactable EARTH-5 derived illumination-view artifact.
+- Preserve deterministic cache keys, bounded shadow sampling, and renderer-facing light parameters.
+
+NON-SEMANTICS:
+- This schema does not encode authoritative lighting truth.
+- This schema does not require hardware rendering or shadow-map resources.
+
+REQUIRED SHAPE:
+record illumination_view_artifact
+  required:
+    - view_id: id
+    - tick: integer
+    - observer_ref: map
+    - illum_model_id: id
+    - shadow_model_id: id
+    - sun_dir: map
+    - sun_intensity: integer
+    - moon_dir: map
+    - moon_intensity: integer
+    - ambient_intensity: integer
+    - shadow_factor: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- the artifact is derived-only and compactable
+- horizon-shadow sampling metadata must remain bounded
+- identical cache inputs must reproduce the same fingerprint

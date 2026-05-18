@@ -1,0 +1,30 @@
+SCHEMA: worldgen/planet_basic_artifact.schema
+schema_id: dominium.schema.worldgen.planet_basic_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical MW-2 coarse planet-body prior model emitted at refinement `L2`.
+- Preserve deterministic body identity and coarse class metadata without surfaces.
+
+NON-SEMANTICS:
+- This schema does not encode topography, climate, or biosphere.
+- This schema does not imply a habitable guarantee.
+
+REQUIRED SHAPE:
+record planet_basic_artifact
+  required:
+    - object_id: sha256
+    - radius: map
+    - density_class_id: id
+    - atmosphere_class_id: id
+    - ocean_fraction: map
+    - rotation_period: map
+    - axial_tilt: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `object_id` remains the stable GEO-derived `kind.planet` identity
+- coarse body classes remain deterministic and overlay-safe
+- body-prior rows do not imply surface instantiation

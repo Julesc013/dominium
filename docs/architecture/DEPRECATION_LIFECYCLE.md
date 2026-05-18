@@ -36,7 +36,7 @@ Deprecation exists to enable deterministic, auditable migration from old contrac
 ## Adapter Contract
 - Adapter shells map an old interface to a new canonical substrate.
 - Adapters are temporary migration bridges, not permanent facades.
-- Adapter usage must be declared in `content/data/governance/deprecations.json` via `adapter_path`.
+- Adapter usage must be declared in `contracts/governance/deprecations.json` via `adapter_path`.
 - Adapters must be deterministic and side-effect free except for canonical process dispatch.
 
 ## Quarantine Policy

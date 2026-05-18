@@ -1,0 +1,30 @@
+SCHEMA: process/drift_policy.schema
+schema_id: dominium.schema.process.drift_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic drift scoring weights, threshold bands, and remediation policy.
+
+NON-SEMANTICS:
+- Does not execute process runs.
+- Does not bypass QC/certification/capsule policy checks.
+
+REQUIRED SHAPE:
+record drift_policy
+  required:
+    - drift_policy_id: id
+    - weights: map
+    - thresholds: map
+      required:
+        - normal: fixed_point_nonnegative
+        - warning: fixed_point_nonnegative
+        - critical: fixed_point_nonnegative
+    - qc_escalation_rules: map
+    - revalidation_trial_count: nonnegative_int
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Drift score evaluation must be deterministic for identical inputs.
+- Threshold updates must be explicit and versioned.

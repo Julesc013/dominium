@@ -108,7 +108,7 @@ o Win32 → DX9 or DX11
 o Linux → GL1 or GL2
 o macOS → GL2 (or Metal via engine-port)
 o Retro ports → custom renderer selection
-• Must not include any OS headers directly; leave that to /engine/platform/<os>.
+• Must not include any OS headers directly; leave that to /runtime/platform/<os>.
 Prohibitions:
 • No UI code, no simulation code.
 • No persistent config loading here.

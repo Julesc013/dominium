@@ -120,16 +120,16 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | ARCH-INC-003 | Public headers MUST live in `engine/include/**` only. | CMake configure-time public-include assertion (`domino_engine`) | Configure | CI fail: ARCH-INC-003 | Move or re-export headers via `engine/include/**`. | Prevents accidental API exposure. |
 
 
-| ARCH-RENDER-001 | Renderer-specific code outside `engine/render/**` is FORBIDDEN. | Path-based static scan (tools/ci/arch_checks.py) | Configure | CI fail: ARCH-RENDER-001 | Move code into `engine/render/**` and expose public API. | Centralizes renderer ownership. |
+| ARCH-RENDER-001 | Renderer-specific code outside `runtime/render/**` is FORBIDDEN. | Path-based static scan (tools/ci/arch_checks.py) | Configure | CI fail: ARCH-RENDER-001 | Move code into `runtime/render/**` and expose public API. | Centralizes renderer ownership. |
 
 
 | ARCH-REN-002 | `game/` MUST NOT branch on graphics APIs. | Static scan for backend tokens | Configure | CI fail: ARCH-REN-002 | Move backend choice to engine render layer. | Keeps game logic renderer-agnostic. |
 
 
-| ARCH-REN-003 | `client/` MUST NOT own renderer backends. | Target graph + path scan | Configure | CI fail: ARCH-REN-003 | Relocate backend code to `engine/render/**`. | Prevents client-only renderer forks. |
+| ARCH-REN-003 | `client/` MUST NOT own renderer backends. | Target graph + path scan | Configure | CI fail: ARCH-REN-003 | Relocate backend code to `runtime/render/**`. | Prevents client-only renderer forks. |
 
 
-| REND-DIR-001 | Backend directories outside `engine/render/backends/**` are FORBIDDEN. | Path-based scan (future hook) | Configure | CI fail: REND-DIR-001 | Move backend code under `engine/render/backends/**`. | Enforces renderer ownership boundaries. |
+| REND-DIR-001 | Backend directories outside `runtime/render/backends/**` are FORBIDDEN. | Path-based scan (future hook) | Configure | CI fail: REND-DIR-001 | Move backend code under `runtime/render/backends/**`. | Enforces renderer ownership boundaries. |
 
 
 | REND-DIR-002 | Capability-named backend folders are FORBIDDEN (`implicit/`, `legacy/`, etc.). | Path-based scan (future hook) | Configure | CI fail: REND-DIR-002 | Use renderer identity folders only. | Prevents capability-based layout drift. |
@@ -398,7 +398,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | EXEC-AUDIT0-ACCESS-REQ-004 | AccessSet conflicts MUST be detected and Work IR must declare access. | CTest `execution_contract` + CTest `dominium_work_ir_completeness` | Test | CI fail: EXEC-AUDIT0-ACCESS-REQ-004 | Declare AccessSets and resolve conflicts deterministically. | Prevents undeclared access and conflicts. |
 
 
-| EXEC-AUDIT1-FIX-001 | Canonical regression fixtures MUST exist. | Repo layout lint (future hook) | Configure | CI fail: EXEC-AUDIT1-FIX-001 | Add missing fixture folders under `game/tests/fixtures/`. | Ensures deterministic fixture availability. |
+| EXEC-AUDIT1-FIX-001 | Canonical regression fixtures MUST exist. | Repo layout lint (future hook) | Configure | CI fail: EXEC-AUDIT1-FIX-001 | Add missing fixture folders under `tests/game/fixtures/`. | Ensures deterministic fixture availability. |
 
 
 | EXEC-AUDIT1-DET-002 | Determinism regression suite must pass for fixtures. | CTest `execution_perf_regression` | Test | CI fail: EXEC-AUDIT1-DET-002 | Fix step/batch/EXEC2/EXEC3 determinism for fixtures. | Prevents determinism regressions. |
@@ -617,19 +617,19 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | DATA-MIGRATE-001 | Missing migration for MAJOR schema bump is FORBIDDEN. | `data_validate` CLI + `engine_data_validate` CTest | Configure | CI fail: DATA-MIGRATE-001 | Add explicit version-to-version migration or refuse. | Prevents silent breaking changes. |
 
 
-| GOV-VAL-001 | Unified governance validator MUST pass (schema metadata + determinism safety). | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-001 | Add Status/Version metadata; remove float schema fields. | Prevents unversioned or nondeterministic schema drift. |
+| GOV-VAL-001 | Unified governance validator MUST pass (schema metadata + determinism safety). | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-001 | Add Status/Version metadata; remove float schema fields. | Prevents unversioned or nondeterministic schema drift. |
 
 
-| GOV-VAL-REND-002 | Rendering canon violations are FORBIDDEN (backend dirs + API refs in game). | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-REND-002 | Move backends under `engine/render/backends/**`; remove backend API usage in game. | Enforces REND0 rendering canon. |
+| GOV-VAL-REND-002 | Rendering canon violations are FORBIDDEN (backend dirs + API refs in game). | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-REND-002 | Move backends under `runtime/render/backends/**`; remove backend API usage in game. | Enforces REND0 rendering canon. |
 
 
-| GOV-VAL-EPIS-003 | Epistemic UI boundary violations are FORBIDDEN. | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-EPIS-003 | Use EIL/capability snapshots; remove authoritative includes/calls in UI/tools. | Prevents UI bypass of knowledge gates. |
+| GOV-VAL-EPIS-003 | Epistemic UI boundary violations are FORBIDDEN. | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-EPIS-003 | Use EIL/capability snapshots; remove authoritative includes/calls in UI/tools. | Prevents UI bypass of knowledge gates. |
 
 
-| GOV-VAL-PROV-004 | Provenance / non-fabrication violations are FORBIDDEN. | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-PROV-004 | Remove fabrication markers; require provenance-backed construction. | Enforces FP1 non-fabrication law. |
+| GOV-VAL-PROV-004 | Provenance / non-fabrication violations are FORBIDDEN. | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-PROV-004 | Remove fabrication markers; require provenance-backed construction. | Enforces FP1 non-fabrication law. |
 
 
-| GOV-VAL-PERF-005 | Performance schema violations are FORBIDDEN (unbounded lists, missing fallbacks). | `tools/validation/validate_all` | Configure | CI fail: GOV-VAL-PERF-005 | Add bounded sizes and render feature requires/fallback/cost. | Prevents unbounded or non-scalable content. |
+| GOV-VAL-PERF-005 | Performance schema violations are FORBIDDEN (unbounded lists, missing fallbacks). | `tools/validators/suite/validate_all` | Configure | CI fail: GOV-VAL-PERF-005 | Add bounded sizes and render feature requires/fallback/cost. | Prevents unbounded or non-scalable content. |
 
 
 | PH6-AUDIT-001 | Phase 6 audit gates MUST pass (docs, CI IDs, test assets). | `tools/ci/phase6_audit_checks.py` (CTest `phase6_audit`) | Test | CI fail: PH6-AUDIT-001 | Restore required Phase 6 docs/tests and CI matrix IDs. | Ensures Phase 6 coverage stays complete. |
@@ -896,22 +896,22 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | CONTENT0-SPEC-008 | World schema index is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT0-SPEC-008 | Add/update `schema/world/README.md`. | Ensures world schema index and versioning. |
 
 
-| CONTENT1-DATA-001 | Sol system data files are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-001 | Add `content/data/world/sol/sol.system.json` and related files. | Establishes canonical Sol content baseline. |
+| CONTENT1-DATA-001 | Sol system data files are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-001 | Add `content/domains/world/sol/sol.system.json` and related files. | Establishes canonical Sol content baseline. |
 
 
-| CONTENT1-DATA-002 | Sol orbital rails data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-002 | Add `content/data/world/sol/sol.orbits.json`. | Defines deterministic orbital rails for Sol. |
+| CONTENT1-DATA-002 | Sol orbital rails data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-002 | Add `content/domains/world/sol/sol.orbits.json`. | Defines deterministic orbital rails for Sol. |
 
 
 | CONTENT1-DATA-003 | Sol bodies, moons, and belts data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-003 | Add `data/world/sol/sol.bodies/`, `sol.moons/`, `sol.belts/`. | Provides canonical celestial body records. |
 
 
-| CONTENT1-DATA-004 | Sol surfaces and regions data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-004 | Add `content/data/world/sol/sol.surfaces.json`. | Defines surfaces and regions for gameplay. |
+| CONTENT1-DATA-004 | Sol surfaces and regions data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-004 | Add `content/domains/world/sol/sol.surfaces.json`. | Defines surfaces and regions for gameplay. |
 
 
 | CONTENT1-TEST-001 | Sol data validation must pass. | CTest `dominium_content1_sol_data` | Test | CI fail: CONTENT1-TEST-001 | Fix data structure or references in `data/world/sol`. | Enforces schema-aligned Sol content. |
 
 
-| CONTENT2-DATA-001 | Earth body data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-001 | Add `content/data/world/sol/earth/earth.body.json`. | Defines Earth body baseline. |
+| CONTENT2-DATA-001 | Earth body data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-001 | Add `content/domains/world/sol/earth/earth.body.json`. | Defines Earth body baseline. |
 
 
 | CONTENT2-DATA-002 | Earth surface and volume data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-002 | Add `data/world/sol/earth/earth.surfaces/`. | Defines layered Earth surfaces and volumes. |
@@ -929,16 +929,16 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | CONTENT2-TEST-001 | Earth data validation must pass. | CTest `dominium_content2_earth_data` | Test | CI fail: CONTENT2-TEST-001 | Fix Earth data structure or references. | Enforces schema-aligned Earth content. |
 
 
-| CONTENT3-DATA-001 | Milky Way galaxy data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-001 | Add `content/data/world/milky_way/milky_way.galaxy.json`. | Defines Milky Way galaxy metadata. |
+| CONTENT3-DATA-001 | Milky Way galaxy data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-001 | Add `content/domains/world/milky_way/milky_way.galaxy.json`. | Defines Milky Way galaxy metadata. |
 
 
-| CONTENT3-DATA-002 | Milky Way arms and regions data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-002 | Add `content/data/world/milky_way/milky_way.arms.json` and `milky_way.regions.json`. | Defines arms and galactic regions. |
+| CONTENT3-DATA-002 | Milky Way arms and regions data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-002 | Add `content/domains/world/milky_way/milky_way.arms.json` and `milky_way.regions.json`. | Defines arms and galactic regions. |
 
 
-| CONTENT3-DATA-003 | Milky Way anchors data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-003 | Add `content/data/world/milky_way/milky_way.anchors.json`. | Defines canonical anchor systems. |
+| CONTENT3-DATA-003 | Milky Way anchors data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-003 | Add `content/domains/world/milky_way/milky_way.anchors.json`. | Defines canonical anchor systems. |
 
 
-| CONTENT3-DATA-004 | Milky Way procedural rules data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-004 | Add `content/data/world/milky_way/milky_way.procedural_rules.json`. | Defines deterministic fill rules. |
+| CONTENT3-DATA-004 | Milky Way procedural rules data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-004 | Add `content/domains/world/milky_way/milky_way.procedural_rules.json`. | Defines deterministic fill rules. |
 
 
 | CONTENT3-TEST-001 | Milky Way data validation must pass. | CTest `dominium_content3_milky_way_data` | Test | CI fail: CONTENT3-TEST-001 | Fix Milky Way data structure or references. | Enforces schema-aligned Milky Way content. |
@@ -1007,19 +1007,19 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | MOD0-HASH-005 | Mod graph identity hash MUST be stable. | CTest `dominium_mod0_compat` | Test | CI fail: MOD0-HASH-005 | Normalize hashing inputs and ordering. | Binds replays/saves to mod identity. |
 
 
-| FINAL-COMPAT-001 | Schema major bump requires migration or refusal policy. | `tools/validation/validate_all` | Configure | CI fail: FINAL-COMPAT-001 | Update compatibility promises and migration notes. | Prevents silent schema breaks. |
+| FINAL-COMPAT-001 | Schema major bump requires migration or refusal policy. | `tools/validators/suite/validate_all` | Configure | CI fail: FINAL-COMPAT-001 | Update compatibility promises and migration notes. | Prevents silent schema breaks. |
 
 
-| FINAL-API-001 | Engine public API changes require ABI notes. | `tools/validation/validate_all` | Configure | CI fail: FINAL-API-001 | Update long-term support policy with ABI notes. | Preserves ABI stability. |
+| FINAL-API-001 | Engine public API changes require ABI notes. | `tools/validators/suite/validate_all` | Configure | CI fail: FINAL-API-001 | Update long-term support policy with ABI notes. | Preserves ABI stability. |
 
 
-| FINAL-EPOCH-001 | Sim-affecting change requires epoch bump policy. | `tools/validation/validate_all` | Configure | CI fail: FINAL-EPOCH-001 | Update feature epoch policy for sim changes. | Prevents hidden semantic drift. |
+| FINAL-EPOCH-001 | Sim-affecting change requires epoch bump policy. | `tools/validators/suite/validate_all` | Configure | CI fail: FINAL-EPOCH-001 | Update feature epoch policy for sim changes. | Prevents hidden semantic drift. |
 
 
-| FINAL-RENDER-001 | Backend removal requires lifecycle doc update. | `tools/validation/validate_all` | Configure | CI fail: FINAL-RENDER-001 | Update render backend lifecycle policy. | Enforces renderer lifecycle discipline. |
+| FINAL-RENDER-001 | Backend removal requires lifecycle doc update. | `tools/validators/suite/validate_all` | Configure | CI fail: FINAL-RENDER-001 | Update render backend lifecycle policy. | Enforces renderer lifecycle discipline. |
 
 
-| FINAL-DOC-001 | FINAL0 policy docs and schema references must exist. | `tools/validation/validate_all` | Configure | CI fail: FINAL-DOC-001 | Restore policy docs and schema governance references. | Keeps maintenance governance explicit. |
+| FINAL-DOC-001 | FINAL0 policy docs and schema references must exist. | `tools/validators/suite/validate_all` | Configure | CI fail: FINAL-DOC-001 | Restore policy docs and schema governance references. | Keeps maintenance governance explicit. |
 
 
 | TOOL0-REPLAY-DET-001 | Replay inspection MUST not alter hash or ordering. | CTest `dominium_tool0_inspection` | Test | CI fail: TOOL0-REPLAY-DET-001 | Ensure replay inspection is read-only and deterministic. | Preserves replay auditability. |
@@ -1034,7 +1034,7 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | TOOL0-NOMUT-004 | Tool mutation requests MUST be refused. | CTest `dominium_tool0_inspection` | Test | CI fail: TOOL0-NOMUT-004 | Block any tool-side mutation paths. | Prevents privileged backdoors. |
 
 
-| TOOL0-VAL-001 | Tooling inventory MUST be present. | `tools/validation/validate_all` | Configure | CI fail: TOOL0-VAL-001 | Restore required TOOL0 files and docs. | Keeps tooling substrate complete. |
+| TOOL0-VAL-001 | Tooling inventory MUST be present. | `tools/validators/suite/validate_all` | Configure | CI fail: TOOL0-VAL-001 | Restore required TOOL0 files and docs. | Keeps tooling substrate complete. |
 
 
 | HYGIENE-SCAN-001 | Hygiene scan queue MUST be up to date. | `scripts/ci/check_hygiene_scan.py` (check mode) | Configure | CI fail: HYGIENE-SCAN-001 | Run scan in write mode and commit updated queue. | Keeps hygiene queue current. |

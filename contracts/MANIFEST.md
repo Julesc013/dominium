@@ -8,8 +8,8 @@ CONVERGE-06 converged safe schema and schema-projection roots under `contracts/`
 
 | Previous Root | New Location | Action | Notes |
 | --- | --- | --- | --- |
-| `schema/` | `contracts/schemas/` | moved | Source schema law and adjacent schema documentation moved with history preserved. |
-| `schemas/` | `contracts/schemas/` | merged | Validator-facing schema projections merged into `contracts/schemas/`; filename conflicts were preserved under `contracts/schemas/from-root-schemas/`. |
+| `schema/` | `contracts/schema/` | moved | Source schema law and adjacent schema documentation moved with history preserved. |
+| `schemas/` | `contracts/schema/` | merged | Validator-facing schema projections merged into `contracts/schema/`; filename conflicts were preserved under `contracts/schema/from-root-schemas/`. |
 | `compat/` | `compat/` | review | Left in place because it contains Python compatibility implementation and shim code, not only contract definitions. |
 | `locks/` | `locks/` | review | Left in place because it contains concrete deterministic pack lock artifacts, not only lockfile schemas. |
 | `registry/` | none | absent | No root-level `registry/` was present during CONVERGE-06. |
@@ -19,29 +19,29 @@ CONVERGE-06 converged safe schema and schema-projection roots under `contracts/`
 ## Current Contract Classes
 
 - `contracts/abi/`
-- `contracts/schemas/`
-- `contracts/registries/`
-- `contracts/protocols/`
-- `contracts/capabilities/`
+- `contracts/schema/`
+- `contracts/registry/`
+- `contracts/protocol/`
+- `contracts/capability/`
 - `contracts/compatibility/`
 - `contracts/stability/`
 - `contracts/replay/`
 - `contracts/repo/`
 - `contracts/distribution/`
-- `contracts/packs/`
+- `contracts/package/packs/`
 - `contracts/install/`
-- `contracts/instances/`
-- `contracts/saves/`
-- `contracts/bundles/`
-- `contracts/locks/`
+- `contracts/instance/`
+- `contracts/save/`
+- `contracts/package/bundles/`
+- `contracts/lock/`
 
 ## Conflicts
 
-The root `schemas/README.md` collided with the moved `schema/README.md` target and was preserved at `contracts/schemas/from-root-schemas/README.md`.
+The root `schemas/README.md` collided with the moved `schema/README.md` target and was preserved at `contracts/schema/from-root-schemas/README.md`.
 
 ## References Updated
 
-Active tooling, script, test, CMake, and GitHub automation references to root-level `schema/` and `schemas/` were updated to `contracts/schemas/` where they referred to the moved roots.
+Active tooling, script, test, CMake, and GitHub automation references to root-level `schema/` and `schemas/` were updated to `contracts/schema/` where they referred to the moved roots.
 
 ## Material Not Moved
 
@@ -49,13 +49,13 @@ Active tooling, script, test, CMake, and GitHub automation references to root-le
 
 ## CONVERGE-09 Domain Split Note
 
-CONVERGE-09 inspected root-level domain packages and moved Python implementation source to `game/domains/<domain>/`. The moved roots did not contain identified schema, registry, capability, protocol, content, docs, or test subsets during this pass.
+CONVERGE-09 inspected root-level domain packages and moved Python implementation source to `game/domain/<domain>/`. The moved roots did not contain identified schema, registry, capability, protocol, content, docs, or test subsets during this pass.
 
 Domain contract authority remains under:
 
-- `contracts/schemas/<domain>/`
-- `contracts/registries/<domain>/`
-- `contracts/capabilities/<domain>/`
-- `contracts/protocols/<domain>/`
+- `contracts/schema/<domain>/`
+- `contracts/registry/<domain>/`
+- `contracts/capability/<domain>/`
+- `contracts/protocol/<domain>/`
 
-Domain implementation must stay under `game/domains/`, not `contracts/`.
+Domain implementation must stay under `game/domain/`, not `contracts/`.

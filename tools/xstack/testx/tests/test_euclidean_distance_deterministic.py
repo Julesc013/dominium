@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from game.domains.geology import geo_distance
+from game.domain.geology import geo_distance
 
 
 TEST_ID = "test_euclidean_distance_deterministic"

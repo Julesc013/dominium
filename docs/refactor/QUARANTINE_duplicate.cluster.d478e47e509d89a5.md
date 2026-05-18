@@ -31,7 +31,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/CLI_REFERENCE.md, docs/appshell/TUI_FRAMEWORK.md, docs/architecture/ARCH0_CONSTITUTION.md, docs/architecture/CANON_INDEX.md, docs/audit/APPSHELL_TUI_BASELINE.md, docs/audit/CANON_MAP.md, docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/audit/CHEM1_RETRO_AUDIT.md`
+- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/runtime/shell/TUI_FRAMEWORK.md, docs/architecture/ARCH0_CONSTITUTION.md, docs/architecture/CANON_INDEX.md, docs/audit/APPSHELL_TUI_BASELINE.md, docs/audit/CANON_MAP.md, docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/audit/CHEM1_RETRO_AUDIT.md`
 
 ## Tests Involved
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

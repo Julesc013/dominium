@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from game.domains.geology import (
+from game.domain.geology import (
     build_default_overlay_manifest,
     build_effective_object_view,
     build_property_patch,

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Decision Record Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "decision_record_id",
+    "artifact_kind_id",
+    "observed_version",
+    "target_version",
+    "decision_action_id",
+    "read_only_applied",
+    "migration_chain",
+    "refusal_code",
+    "remediation_hint",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "decision_record_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_kind_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "observed_version": {
+      "type": "string"
+    },
+    "target_version": {
+      "type": "string"
+    },
+    "decision_action_id": {
+      "type": "string",
+      "enum": [
+        "decision.load",
+        "decision.migrate",
+        "decision.read_only",
+        "decision.refuse"
+      ]
+    },
+    "read_only_applied": {
+      "type": "boolean"
+    },
+    "migration_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "migration_id",
+          "from_version",
+          "to_version",
+          "artifact_kind_id"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "migration_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "from_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "artifact_kind_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "refusal_code": {
+      "type": "string"
+    },
+    "remediation_hint": {
+      "type": "string"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "artifact_kind_id": "artifact_kind_id.example",
+      "decision_action_id": "decision.load",
+      "decision_record_id": "decision_record_id.example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "migration_chain": [],
+      "observed_version": "1.0.0",
+      "read_only_applied": false,
+      "refusal_code": "example",
+      "remediation_hint": "example",
+      "target_version": "1.0.0"
+    }
+  ]
+}

@@ -20,7 +20,7 @@ The main mismatches are:
 
 - Active runtime bundles are legacy `bundle.*` pack selections under `bundles/<bundle_id>/bundle.json`; there is no dedicated MVP runtime bundle artifact carrying profile selections.
 - Active runtime packs are loaded from top-level `packs/` with `pack.json`, while historical content also exists under `data/packs/` with `pack_manifest.json`.
-- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`.
+- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `archive/generated/dist/`.
 - Existing `pack_lock_hash` is computed from resolved pack rows only; it does not yet incorporate a profile bundle hash.
 - Session creation and launcher paths hardcode several repo-relative defaults (`build/lockfile.json`, `build/registries`, `saves`, `dist`, `packs`) that must be documented and then constrained by MVP-1 governance.
 
@@ -34,7 +34,7 @@ The main mismatches are:
 
 ### Active runtime/dist contract
 
-- `tools/xstack/packagingx/dist_build.py` manages a deterministic source-dist layout rooted at `dist/` (or another output root).
+- `tools/xstack/packagingx/dist_build.py` manages a deterministic source-dist layout rooted at `archive/generated/dist/` (or another output root).
 - Managed dist subdirectories today are:
   - `bin/`
   - `packs/`
@@ -44,9 +44,9 @@ The main mismatches are:
   - `manifest.json`
   - `lockfile.json`
 - `tools/launcher/launch.py` expects:
-  - `dist/manifest.json`
-  - `dist/lockfile.json`
-  - `dist/registries/*.json`
+  - `archive/generated/dist/manifest.json`
+  - `archive/generated/dist/lockfile.json`
+  - `archive/generated/dist/registries/*.json`
   - `saves/<save_id>/session_spec.json`
 
 ### Session bootstrap assumptions
@@ -159,12 +159,12 @@ The main mismatches are:
 - `tools/xstack/packagingx/dist_build.py`
   - defaults to output root `dist`
   - assumes root `lockfile.json` and `manifest.json`
-  - assumes `dist/registries` mirrors compiled runtime registries
+  - assumes `archive/generated/dist/registries` mirrors compiled runtime registries
 - `tools/launcher/launch.py`
   - defaults to `dist`
   - defaults to `saves`
-  - enforces `dist/lockfile.json` and `dist/registries`
-- `client/app/main_client.c`
+  - enforces `archive/generated/dist/lockfile.json` and `archive/generated/dist/registries`
+- `apps/client/main_client.c`
   - hardcodes `data/scenarios/default.scenario`
   - hardcodes `data/variants/default.variant`
 
@@ -182,7 +182,7 @@ The main mismatches are:
 
 ## Audit Conclusions
 
-- MVP-1 should not replace the existing bundle/lock/dist/session machinery outright.
+- MVP-1 should not replace the existing bundle/lock/archive/generated/dist/session machinery outright.
 - MVP-1 should introduce a new authoritative runtime-bundle layer that sits above the existing pack bundle and lockfile surfaces.
 - MVP-1 must document and constrain the coexistence of:
   - active top-level `packs/`
@@ -190,7 +190,7 @@ The main mismatches are:
   - legacy dist bundle/registry layout
   - new MVP install layout requirements
 - MVP-1 enforcement must explicitly guard against:
-  - hardcoded `dist/packs/...` usage
+  - hardcoded `archive/generated/dist/packs/...` usage
   - missing MVP pack lock references
   - missing MVP profile bundle references
   - silent fallback to implicit seeds outside the documented dev default

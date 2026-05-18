@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 
-from release import (
+from tools.release import (
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_INDEX_REL,
     load_release_index,

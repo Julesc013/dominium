@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SRZ Shard Schema",
+  "version": "1.0.0",
+  "description": "Simulation Responsibility Zone shard contract for deterministic ownership and scheduling boundaries.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §4 E8",
+    "docs/canon/glossary_v1.md SRZ",
+    "docs/architecture/srz_contract.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "shard_id",
+    "authority_origin",
+    "region_scope",
+    "active",
+    "parent_shard_id",
+    "compatibility_version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "shard_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_origin": {
+      "type": "string",
+      "enum": [
+        "client",
+        "server",
+        "tool",
+        "replay"
+      ]
+    },
+    "region_scope": {
+      "type": "object",
+      "required": [
+        "object_ids",
+        "spatial_bounds"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "object_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "spatial_bounds": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "required": [
+            "kind",
+            "frame_id",
+            "center_mm",
+            "radius_mm"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "sphere"
+              ]
+            },
+            "frame_id": {
+              "type": "string"
+            },
+            "center_mm": {
+              "type": "object",
+              "required": [
+                "x",
+                "y",
+                "z"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                },
+                "z": {
+                  "type": "integer"
+                }
+              }
+            },
+            "radius_mm": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "active": {
+      "type": "boolean"
+    },
+    "parent_shard_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compatibility_version": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "shard_id": "shard.0",
+      "authority_origin": "server",
+      "region_scope": {
+        "object_ids": [
+          "object.milky_way",
+          "object.sol"
+        ],
+        "spatial_bounds": null
+      },
+      "active": true,
+      "parent_shard_id": null,
+      "compatibility_version": "1.0.0"
+    }
+  ]
+}

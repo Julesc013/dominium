@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.validators.compatibility.descriptor import build_product_descriptor  # noqa: E402
-from release import build_product_build_metadata, DEFAULT_PRODUCT_SEMVER  # noqa: E402
+from tools.release import build_product_build_metadata, DEFAULT_PRODUCT_SEMVER  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
@@ -23,10 +23,10 @@ RELEASE0_RETRO_AUDIT_PATH = "docs/audit/RELEASE0_RETRO_AUDIT.md"
 RELEASE_IDENTITY_CONSTITUTION_PATH = "docs/release/RELEASE_IDENTITY_CONSTITUTION.md"
 ARTIFACT_NAMING_RULES_PATH = "docs/release/ARTIFACT_NAMING_RULES.md"
 RELEASE_IDENTITY_BASELINE_PATH = "docs/audit/RELEASE_IDENTITY_BASELINE.md"
-RELEASE_IDENTITY_REPORT_PATH = "content/data/audit/release_identity_report.json"
+RELEASE_IDENTITY_REPORT_PATH = "archive/generated/audit/release_identity_report.json"
 RELEASE_CHANNEL_REGISTRY_PATH = "contracts/registry/release_channel_registry.json"
 ARTIFACT_KIND_REGISTRY_PATH = "contracts/registry/artifact_kind_registry.json"
-BUILD_ID_ENGINE_PATH = "release/build_id_engine.py"
+BUILD_ID_ENGINE_PATH = "tools/release/build_id_engine.py"
 DESCRIPTOR_ENGINE_PATH = "tools/validators/compatibility/descriptor/descriptor_engine.py"
 
 REQUIRED_RELEASE_CHANNELS = ("mock", "alpha", "beta", "rc", "stable")
@@ -140,7 +140,7 @@ def _baseline_payload(report: Mapping[str, object]) -> dict:
 
 
 def _product_rows(repo_root: str) -> list[dict]:
-    payload, error = _read_json(os.path.join(repo_root, "data", "registries", "product_registry.json"))
+    payload, error = _read_json(os.path.join(repo_root, "contracts", "registry", "product_registry.json"))
     if error:
         return []
     rows = []

@@ -55,7 +55,7 @@ Scope: deterministic projection requests, epistemic-gated lens derivation, UI ad
   - `view_type_registry_hash`
 - Control proof GEO identity extensions include the new registry hashes when present.
 - Server-authoritative and SRZ proof surfaces propagate the same registry hashes into mobility/control proof bundles.
-- `tools/geo/tool_replay_view_window.py` regenerates canonical projected views and verifies stable fingerprints across repeated runs.
+- `tools/validators/domain/geology/tool_replay_view_window.py` regenerates canonical projected views and verifies stable fingerprints across repeated runs.
 - Derived view caching is keyed by deterministic projection request, lens request, truth hash anchor, epistemic policy, and registry surfaces.
 
 ## Validation Summary

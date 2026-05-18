@@ -1,0 +1,27 @@
+SCHEMA: logic/timing_constraint.schema
+schema_id: dominium.schema.logic.timing_constraint
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define explicit network-level timing limits for LOGIC-5 evaluation.
+- Bound propagation and cycle expectations without introducing a global clock subsystem.
+
+NON-SEMANTICS:
+- This schema does not encode wall-clock units.
+- It does not authorize hidden timing state.
+
+REQUIRED SHAPE:
+record timing_constraint
+  required:
+    - constraint_id: id
+    - max_propagation_ticks: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - max_cycle_ticks: u64
+
+INVARIANTS:
+- `max_propagation_ticks` is interpreted against canonical tick visibility rules.
+- `max_cycle_ticks`, when present, must be greater than zero.
+- Timing constraints are declarative and must be enforced through LOGIC policy, not ad hoc engine branches.

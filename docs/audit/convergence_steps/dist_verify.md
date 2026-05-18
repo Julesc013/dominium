@@ -25,7 +25,7 @@ Replacement Target: regenerated convergence step summary for dist_verify
 ## Notes
 
 - platform_tag=win64
-- bundle_root=dist/v0.0.0-mock/win64/dominium
+- bundle_root=archive/generated/dist/v0.0.0-mock/win64/dominium
 
 ## Source Paths
 
@@ -34,4 +34,4 @@ Replacement Target: regenerated convergence step summary for dist_verify
 
 ## Remediation
 
-- module=`tools/dist/tool_verify_distribution.py` rule=`INV-DIST-VERIFY-MUST-PASS` refusal=`none` command=`python tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64`
+- module=`tools/release/dist/tool_verify_distribution.py` rule=`INV-DIST-VERIFY-MUST-PASS` refusal=`none` command=`python tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64`

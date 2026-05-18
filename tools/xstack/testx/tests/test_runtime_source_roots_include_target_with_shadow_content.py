@@ -32,8 +32,8 @@ def run(repo_root: str):
                 {
                     "approved_for_xi5": [
                         {
-                            "source_path": "game/domains/worldgen/earth.py",
-                            "target_path": "game/domains/worldgen/earth.py",
+                            "source_path": "game/domain/worldgen/earth.py",
+                            "target_path": "game/domain/worldgen/earth.py",
                         }
                     ]
                 },

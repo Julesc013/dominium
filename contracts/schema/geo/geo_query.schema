@@ -1,0 +1,25 @@
+SCHEMA: geo/geo_query.schema
+schema_id: dominium.schema.geo.geo_query
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic GEO query artifact shape for cache/proof surfaces.
+- Record canonical input/output hashes for GEO kernel requests.
+
+NON-SEMANTICS:
+- This schema does not define authoritative state mutation.
+- This schema does not define geometry editing.
+
+REQUIRED SHAPE:
+record geo_query
+  required:
+    - query_kind: enum(neighbors|distance|transform|project)
+    - inputs_hash: sha256
+    - outputs_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- identical inputs must produce identical outputs_hash
+- query artifacts must be cache-safe and replay-safe

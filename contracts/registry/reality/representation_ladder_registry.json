@@ -16,25 +16,25 @@
     "docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
     "docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
     "docs/architecture/macro_capsules.md",
-    "docs/worldgen/REFINEMENT_CONTRACT.md",
-    "docs/worldgen/REFINEMENT_LATTICE.md",
-    "docs/worldgen/UNIVERSE_SCALE_STRATEGY.md",
+    "docs/domains/worldgen/REFINEMENT_CONTRACT.md",
+    "docs/domains/worldgen/REFINEMENT_LATTICE.md",
+    "docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md",
     "docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md",
     "docs/specs/SPEC_LOD.md",
-    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md"
+    "docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md"
   ],
   "repo_embodiment_surfaces": [
     "docs/architecture/macro_capsules.md",
     "docs/architecture/truth_perceived_render.md",
-    "docs/worldgen/REFINEMENT_CONTRACT.md",
-    "docs/worldgen/REFINEMENT_LATTICE.md",
-    "docs/worldgen/UNIVERSE_SCALE_STRATEGY.md",
+    "docs/domains/worldgen/REFINEMENT_CONTRACT.md",
+    "docs/domains/worldgen/REFINEMENT_LATTICE.md",
+    "docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md",
     "docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md",
     "docs/specs/SPEC_LOD.md",
-    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
-    "docs/worldgen/WEATHER_BASELINE.md",
-    "docs/worldgen/NETWORKS_AND_DATA_BASELINE.md",
-    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md"
+    "docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/domains/worldgen/WEATHER_BASELINE.md",
+    "docs/domains/worldgen/NETWORKS_AND_DATA_BASELINE.md",
+    "docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md"
   ],
   "broader_than_graphics_lod": true,
   "core_definition": {

@@ -12,7 +12,7 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `engine/modules/core/d_subsystem.h`
+- Canonical Candidate: `engine/kernel/d_subsystem.h`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
@@ -21,28 +21,28 @@ Replacement Target: XI-4b manual review resolution
 - `engine/include/domino/scale/macro_capsule_store.h`
 - `engine/include/domino/scale/macro_event_queue.h`
 - `engine/include/domino/scale/macro_schedule_store.h`
-- `engine/modules/core/d_org.h`
-- `engine/modules/core/d_subsystem.h`
-- `engine/modules/net/d_net_apply.h`
-- `engine/modules/policy/d_policy.h`
-- `engine/modules/research/d_research_state.h`
-- `engine/modules/sim/sim.c`
-- `engine/modules/world/d_serialize.c`
-- `engine/modules/world/d_serialize.h`
-- `engine/modules/world/d_worldgen.h`
+- `engine/kernel/d_org.h`
+- `engine/kernel/d_subsystem.h`
+- `runtime/network/d_net_apply.h`
+- `game/rule/policy/d_policy.h`
+- `game/domain/research/d_research_state.h`
+- `game/domain/simulation/sim.c`
+- `game/world/d_serialize.c`
+- `game/world/d_serialize.h`
+- `game/world/d_worldgen.h`
 
 ## Scorecard
 
-- `engine/modules/core/d_subsystem.h` disposition=`canonical` rank=`1` total_score=`90.48` risk=`HIGH`
-- `engine/modules/world/d_worldgen.h` disposition=`quarantine` rank=`2` total_score=`89.4` risk=`HIGH`
-- `engine/modules/core/d_org.h` disposition=`quarantine` rank=`3` total_score=`87.86` risk=`HIGH`
-- `engine/modules/world/d_serialize.h` disposition=`quarantine` rank=`4` total_score=`87.38` risk=`HIGH`
-- `engine/modules/net/d_net_apply.h` disposition=`quarantine` rank=`5` total_score=`86.67` risk=`HIGH`
-- `engine/modules/world/d_serialize.c` disposition=`quarantine` rank=`6` total_score=`84.64` risk=`HIGH`
-- `engine/modules/policy/d_policy.h` disposition=`quarantine` rank=`7` total_score=`84.23` risk=`HIGH`
-- `engine/modules/sim/sim.c` disposition=`quarantine` rank=`8` total_score=`81.43` risk=`HIGH`
+- `engine/kernel/d_subsystem.h` disposition=`canonical` rank=`1` total_score=`90.48` risk=`HIGH`
+- `game/world/d_worldgen.h` disposition=`quarantine` rank=`2` total_score=`89.4` risk=`HIGH`
+- `engine/kernel/d_org.h` disposition=`quarantine` rank=`3` total_score=`87.86` risk=`HIGH`
+- `game/world/d_serialize.h` disposition=`quarantine` rank=`4` total_score=`87.38` risk=`HIGH`
+- `runtime/network/d_net_apply.h` disposition=`quarantine` rank=`5` total_score=`86.67` risk=`HIGH`
+- `game/world/d_serialize.c` disposition=`quarantine` rank=`6` total_score=`84.64` risk=`HIGH`
+- `game/rule/policy/d_policy.h` disposition=`quarantine` rank=`7` total_score=`84.23` risk=`HIGH`
+- `game/domain/simulation/sim.c` disposition=`quarantine` rank=`8` total_score=`81.43` risk=`HIGH`
 - `engine/include/domino/scale/macro_event_queue.h` disposition=`drop` rank=`9` total_score=`73.33` risk=`HIGH`
-- `engine/modules/research/d_research_state.h` disposition=`merge` rank=`10` total_score=`71.55` risk=`HIGH`
+- `game/domain/research/d_research_state.h` disposition=`merge` rank=`10` total_score=`71.55` risk=`HIGH`
 - `engine/include/domino/scale/macro_capsule_store.h` disposition=`drop` rank=`11` total_score=`71.49` risk=`HIGH`
 - `engine/include/domino/scale/macro_schedule_store.h` disposition=`drop` rank=`12` total_score=`70.95` risk=`HIGH`
 
@@ -58,7 +58,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

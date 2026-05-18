@@ -5,56 +5,56 @@
     {
       "rule_id": "INV-PKG-MANIFEST-FIELDS",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "schema/distribution/pkg_manifest.schema"],
+      "scope_paths": ["archive/generated/dist/pkg", "schema/distribution/pkg_manifest.schema"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-manifest-fields",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PKG-CAPABILITY-METADATA",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "data/profiles", "contracts/registry/product_graph.json"],
+      "scope_paths": ["archive/generated/dist/pkg", "data/profiles", "contracts/registry/product_graph.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-capability-metadata",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PKG-SIGNATURE-POLICY",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "schema/distribution/trust_policy.schema"],
+      "scope_paths": ["archive/generated/dist/pkg", "schema/distribution/trust_policy.schema"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-signature-policy",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-DIST-SYS-SHIPPING",
       "severity": "FAIL",
-      "scope_paths": ["dist/sys", "dist/pkg", "dist/meta"],
+      "scope_paths": ["archive/generated/dist/sys", "archive/generated/dist/pkg", "archive/generated/dist/meta"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-dist-sys-shipping",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-DERIVED-PKG-INDEX-FRESHNESS",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "dist/meta", "tools/distribution"],
+      "scope_paths": ["archive/generated/dist/pkg", "archive/generated/dist/meta", "tools/distribution"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-derived-pkg-index-freshness",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PLATFORM-REGISTRY",
       "severity": "FAIL",
-      "scope_paths": ["contracts/registry/platform_registry.json", "schema/distribution/platform_registry.schema", "dist/pkg"],
+      "scope_paths": ["contracts/registry/platform_registry.json", "schema/distribution/platform_registry.schema", "archive/generated/dist/pkg"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-registry",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PLATFORM-ID-CANONICAL",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "dist/meta", "dist/sym", "dist/sys", "contracts/registry/platform_registry.json", "contracts/registry/mode_backend.json"],
+      "scope_paths": ["archive/generated/dist/pkg", "archive/generated/dist/meta", "archive/generated/dist/sym", "archive/generated/dist/sys", "contracts/registry/platform_registry.json", "contracts/registry/mode_backend.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-id-canonical",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-DIST-SYS-DERIVED",
       "severity": "FAIL",
-      "scope_paths": ["tools/distribution/pkg_pack_all.py", "CMakeLists.txt", "dist/sys", "dist/pkg"],
+      "scope_paths": ["tools/package/distribution/pkg_pack_all.py", "CMakeLists.txt", "archive/generated/dist/sys", "archive/generated/dist/pkg"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-dist-sys-derived",
       "exemption_policy": "allow_with_expiry"
     },
@@ -82,14 +82,14 @@
     {
       "rule_id": "INV-PORTABLE-RUN-CONTRACT",
       "severity": "FAIL",
-      "scope_paths": ["tools/launcher/launcher_cli.py", "tools/setup/setup_cli.py", "docs/dev/PORTABLE_TESTING.md"],
+      "scope_paths": ["tools/launcher/launcher_cli.py", "tools/setup/setup_cli.py", "docs/development/PORTABLE_TESTING.md"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-portable-run-contract",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-BUILD-PRESET-CONTRACT",
       "severity": "FAIL",
-      "scope_paths": ["CMakePresets.json", ".vscode/tasks.json", "docs/dev/IDE_BUILD_DEFAULTS.md", "docs/build/BUILD_LANES.md"],
+      "scope_paths": ["CMakePresets.json", ".vscode/tasks.json", "docs/development/IDE_BUILD_DEFAULTS.md", "docs/build/BUILD_LANES.md"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-build-preset-contract",
       "exemption_policy": "allow_with_expiry"
     },

@@ -69,7 +69,7 @@ Compatibility preserved:
 ## Proof, Replay, And Enforcement
 
 Proof/replay:
-- `tools/geo/tool_replay_field_geo_window.py`
+- `tools/validators/domain/geology/tool_replay_field_geo_window.py`
 - field replay hashes now include sampled GEO cell-key identity
 - control proof GEO context now carries `field_binding_registry_hash`
 

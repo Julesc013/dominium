@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Field Cell Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FIELD-1 field cell value row.",
+  "x-doc-ref": [
+    "docs/fields/FIELD_LAYER_MODEL.md",
+    "docs/audit/FIELD_LAYER_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "field_id",
+    "cell_id",
+    "value",
+    "last_updated_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "field_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cell_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        }
+      ]
+    },
+    "last_updated_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "field_id": "field.layer.wind.global",
+      "cell_id": "cell.0001",
+      "value": {
+        "x": 120,
+        "y": 0,
+        "z": -25
+      },
+      "last_updated_tick": 42,
+      "deterministic_fingerprint": "c94b5f5ce265f8f9bdb8ff015de7d252f6d40f3a2de80f5f3834ceb6eb9b8f1f",
+      "extensions": {}
+    }
+  ]
+}

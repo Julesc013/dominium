@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """Minimal deterministic RepoX policy scan for XStack profile runs."""
 
 from __future__ import annotations
@@ -81,7 +81,7 @@ SCAN_ROOTS = (
     "tools/xstack/session_boot.py",
     "tools/worldgen_offline",
     "schemas",
-    "contracts/schemas/worldgen",
+    "contracts/schema/worldgen",
     "contracts/registry/domain_registry.json",
     "contracts/registry/domain_contract_registry.json",
     "contracts/registry/solver_registry.json",
@@ -132,9 +132,9 @@ RENDERER_TRUTH_INCLUDE_FORBIDDEN = {
 }
 
 SESSION_PIPELINE_REQUIRED_FILES = (
-    "contracts/schemas/session_spec.schema.json",
-    "contracts/schemas/session_stage.schema.json",
-    "contracts/schemas/session_pipeline.schema.json",
+    "contracts/schema/session_spec.schema.json",
+    "contracts/schema/session_stage.schema.json",
+    "contracts/schema/session_pipeline.schema.json",
     "contracts/registry/session_stage_registry.json",
     "contracts/registry/session_pipeline_registry.json",
 )
@@ -160,9 +160,9 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
     "contracts/registry/solver_registry.json",
     "packs/system_templates/",
     "docs/scale/",
-    "contracts/schemas/scale/",
-    "contracts/schemas/domain_",
-    "contracts/schemas/solver_registry.schema.json",
+    "contracts/schema/scale/",
+    "contracts/schema/domain_",
+    "contracts/schema/solver_registry.schema.json",
     "tools/domain/",
 )
 
@@ -171,10 +171,10 @@ CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES = (
     "contracts/registry/domain_contract_registry.json",
     "contracts/registry/solver_registry.json",
     "docs/scale/",
-    "contracts/schemas/scale/",
-    "contracts/schemas/domain_foundation_registry.schema.json",
-    "contracts/schemas/domain_contract_registry.schema.json",
-    "contracts/schemas/solver_registry.schema.json",
+    "contracts/schema/scale/",
+    "contracts/schema/domain_foundation_registry.schema.json",
+    "contracts/schema/domain_contract_registry.schema.json",
+    "contracts/schema/solver_registry.schema.json",
     "tools/domain/",
     "tools/xstack/testx/tests/",
 )
@@ -193,9 +193,9 @@ NEGATIVE_SCAN_EXCLUDED_PREFIXES = (
     "tools/xstack/out/",
     "tools/xstack/testdata/",
     "tools/xstack/testx/tests/",
-    "tools/auditx/cache/",
+    "tools/xstack/auditx/cache/",
     "build/",
-    "dist/",
+    "archive/generated/dist/",
     "docs/",
     "data/",
 )
@@ -237,7 +237,7 @@ BODY_MUTATION_ALLOWED_PREFIXES = (
     "tools/xstack/testx/tests/",
     "tools/embodiment/earth6_probe.py",
     "tools/embodiment/emb2_probe.py",
-    "tools/auditx/analyzers/",
+    "tools/xstack/auditx/analyzers/",
 )
 
 CIV_MUTATION_ALLOWED_PREFIXES = (
@@ -247,31 +247,31 @@ CIV_MUTATION_ALLOWED_PREFIXES = (
 )
 
 REPRESENTATION_RENDER_ONLY_FILES = (
-    "apps/client/render/render_model_adapter.py",
-    "apps/client/render/representation_resolver.py",
+    "runtime/render/client/render_model_adapter.py",
+    "runtime/render/client/representation_resolver.py",
     "tools/xstack/sessionx/render_model.py",
 )
 
 RENDERER_RENDERMODEL_ONLY_FILES = (
-    "apps/client/render/render_model_adapter.py",
-    "apps/client/render/representation_resolver.py",
-    "apps/client/render/snapshot_capture.py",
-    "apps/client/render/renderers/null_renderer.py",
-    "apps/client/render/renderers/software_renderer.py",
+    "runtime/render/client/render_model_adapter.py",
+    "runtime/render/client/representation_resolver.py",
+    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/client/renderers/null_renderer.py",
+    "runtime/render/client/renderers/software_renderer.py",
     "tools/xstack/sessionx/render_model.py",
-    "tools/render/tool_render_capture.py",
-    "tools/render/render_cli.py",
+    "tools/validators/render/tool_render_capture.py",
+    "tools/validators/render/render_cli.py",
 )
 
 RENDER_SNAPSHOT_DERIVED_FILES = (
-    "apps/client/render/snapshot_capture.py",
-    "apps/client/render/renderers/null_renderer.py",
-    "apps/client/render/renderers/software_renderer.py",
-    "tools/render/tool_render_capture.py",
+    "runtime/render/client/snapshot_capture.py",
+    "runtime/render/client/renderers/null_renderer.py",
+    "runtime/render/client/renderers/software_renderer.py",
+    "tools/validators/render/tool_render_capture.py",
 )
 
 INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "contracts/registry/intent_dispatch_whitelist.json"
-DEPRECATIONS_REGISTRY_REL = "content/data/governance/deprecations.json"
+DEPRECATIONS_REGISTRY_REL = "contracts/governance/deprecations.json"
 WORKTREE_LEFTOVERS_REL = "docs/audit/WORKTREE_LEFTOVERS.md"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
@@ -566,20 +566,20 @@ BOUNDARY_BLOCKER_RULE_IDS = (
 )
 
 PLATFORM_ABSTRACTION_FILES = (
-    "engine/platform/__init__.py",
-    "engine/platform/platform_window.py",
-    "engine/platform/platform_input.py",
-    "engine/platform/platform_gfx.py",
-    "engine/platform/platform_audio.py",
-    "engine/platform/platform_input_routing.py",
+    "runtime/platform/__init__.py",
+    "runtime/platform/platform_window.py",
+    "runtime/platform/platform_input.py",
+    "runtime/platform/platform_gfx.py",
+    "runtime/platform/platform_audio.py",
+    "runtime/platform/platform_input_routing.py",
 )
 
 HW_RENDERER_RENDERMODEL_ONLY_FILES = (
-    "apps/client/render/renderers/hw_renderer_gl.py",
-    "apps/client/render/snapshot_capture.py",
+    "runtime/render/client/renderers/hw_renderer_gl.py",
+    "runtime/render/client/snapshot_capture.py",
 )
 
-REPRESENTATION_DATA_DRIVEN_FILE = "apps/client/render/representation_resolver.py"
+REPRESENTATION_DATA_DRIVEN_FILE = "runtime/render/client/representation_resolver.py"
 REPRESENTATION_DATA_DRIVEN_REQUIRED_TOKENS = (
     "representation_rule_registry",
     "_rule_rows(",
@@ -630,12 +630,12 @@ UI_DIRECT_PROCESS_ALLOWED_FILES = (
     "apps/client/interaction/interaction_dispatch.py",
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/testx/tests/",
-    "tools/auditx/analyzers/",
+    "tools/xstack/auditx/analyzers/",
 )
 
 INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "apps/client/interaction/interaction_dispatch.py"
 INTERACTION_AFFORDANCE_FILE = "apps/client/interaction/affordance_generator.py"
-ACTION_SURFACE_ENGINE_FILE = "game/domains/interaction/action_surface_engine.py"
+ACTION_SURFACE_ENGINE_FILE = "game/domain/interaction/action_surface_engine.py"
 ACTION_SURFACE_REGISTRY_FILES = (
     "contracts/registry/surface_type_registry.json",
     "contracts/registry/tool_tag_registry.json",
@@ -675,8 +675,8 @@ INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
 PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
-    "contracts/schemas/",
-    "tools/auditx/",
+    "contracts/schema/",
+    "tools/xstack/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
 )
@@ -684,8 +684,8 @@ PLAYER_LITERAL_ALLOWED_PATH_PREFIXES = (
 PLAYER_FACTION_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/",
     "docs/",
-    "contracts/schemas/",
-    "tools/auditx/",
+    "contracts/schema/",
+    "tools/xstack/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
 )
@@ -725,8 +725,8 @@ PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS = (
 )
 
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
-    "contracts/schemas/worldgen_constraints.schema.json",
-    "contracts/schemas/worldgen_search_plan.schema.json",
+    "contracts/schema/worldgen_constraints.schema.json",
+    "contracts/schema/worldgen_search_plan.schema.json",
     "contracts/registry/worldgen_constraints_registry.json",
 )
 
@@ -734,16 +734,16 @@ WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "bundles/",
     "contracts/registry/worldgen_constraints_registry.json",
-    "docs/worldgen/",
-    "contracts/schemas/worldgen/",
-    "contracts/schemas/",
-    "contracts/schemas/worldgen_constraints.schema.json",
-    "contracts/schemas/worldgen_search_plan.schema.json",
-    "contracts/schemas/worldgen_constraints_registry.schema.json",
+    "docs/domains/worldgen/",
+    "contracts/schema/worldgen/",
+    "contracts/schema/",
+    "contracts/schema/worldgen_constraints.schema.json",
+    "contracts/schema/worldgen_search_plan.schema.json",
+    "contracts/schema/worldgen_constraints_registry.schema.json",
     "tools/xstack/testx/tests/",
     "tools/worldgen_offline/",
-    "game/domains/worldgen/core/constraint_solver.py",
-    "game/domains/worldgen/core/constraint_commands.py",
+    "game/domain/worldgen/core/constraint_solver.py",
+    "game/domain/worldgen/core/constraint_commands.py",
 )
 
 WORLDGEN_SEED_POLICY_FORBIDDEN_TOKENS = (
@@ -797,11 +797,11 @@ ANTI_CHEAT_ALLOWED_ACTIONS = (
 
 NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
     "data/registries/",
-    "docs/net/",
+    "docs/runtime/network/",
     "docs/contracts/",
-    "contracts/schemas/",
+    "contracts/schema/",
     "tools/xstack/testx/tests/",
-    "tools/auditx/",
+    "tools/xstack/auditx/",
     "tools/xstack/registry_compile/",
     "tools/xstack/sessionx/",
     "tools/xstack/repox/",
@@ -811,8 +811,8 @@ PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "data/registries/",
     "docs/",
-    "contracts/schemas/",
-    "tools/auditx/",
+    "contracts/schema/",
+    "tools/xstack/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
 )
@@ -821,9 +821,9 @@ BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "data/registries/",
     "docs/",
-    "contracts/schemas/",
-    "contracts/schemas/",
-    "tools/auditx/",
+    "contracts/schema/",
+    "contracts/schema/",
+    "tools/xstack/auditx/",
     "tools/xstack/testx/tests/",
     "tools/xstack/repox/check.py",
 )
@@ -921,7 +921,7 @@ CI_DEV_FORBIDDEN_PACKAGING_TOKENS = (
     "tools/setup/build.py",
     "build_dist_layout",
     "packaging.verify",
-    "dist/",
+    "archive/generated/dist/",
     "build/dist",
 )
 
@@ -1043,8 +1043,8 @@ META_STABILITY_RETRO_AUDIT_PATH = "docs/audit/META_STABILITY1_RETRO_AUDIT.md"
 META_STABILITY_FIX_PLAN_PATH = "docs/audit/META_STABILITY1_FIX_PLAN.md"
 META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
 META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
-META_STABILITY_SCHEMA_DOC_PATH = "contracts/schemas/meta/stability_marker.schema"
-META_STABILITY_SCHEMA_JSON_PATH = "contracts/schemas/stability_marker.schema.json"
+META_STABILITY_SCHEMA_DOC_PATH = "contracts/schema/meta/stability_marker.schema"
+META_STABILITY_SCHEMA_JSON_PATH = "contracts/schema/stability_marker.schema.json"
 META_STABILITY_CLASS_REGISTRY_PATH = "contracts/registry/stability_class_registry.json"
 META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "contracts/registry/stability_requirements_registry.json"
 META_STABILITY_VALIDATOR_PATH = "tools/validators/stability/stability_validator.py"
@@ -1053,10 +1053,10 @@ META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
 TIME_ANCHOR_DOCTRINE_PATH = "docs/time/TIME_ANCHOR_MODEL.md"
-TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schemas/time/tick_t.schema"
-TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schemas/time/epoch_anchor_record.schema"
-TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schemas/tick_t.schema.json"
-TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "contracts/schemas/epoch_anchor_record.schema.json"
+TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schema/time/tick_t.schema"
+TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schema/time/epoch_anchor_record.schema"
+TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schema/tick_t.schema.json"
+TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "contracts/schema/epoch_anchor_record.schema.json"
 TIME_ANCHOR_POLICY_REGISTRY_PATH = "contracts/registry/time_anchor_policy_registry.json"
 TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
 TIME_ANCHOR_ENGINE_PATH = "engine/time/epoch_anchor_engine.py"
@@ -1068,17 +1068,17 @@ ARCH_AUDIT_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT0_RETRO_AUDIT.md"
 ARCH_AUDIT_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT_CONSTITUTION.md"
 ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
 ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
-ARCH_AUDIT_REPORT_JSON_PATH = "content/data/audit/arch_audit_report.json"
+ARCH_AUDIT_REPORT_JSON_PATH = "archive/generated/audit/arch_audit_report.json"
 ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
 ARCH_AUDIT2_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md"
 ARCH_AUDIT2_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT2_CONSTITUTION.md"
 ARCH_AUDIT2_REPORT_PATH = "docs/audit/ARCH_AUDIT2_REPORT.md"
-ARCH_AUDIT2_REPORT_JSON_PATH = "content/data/audit/arch_audit2_report.json"
+ARCH_AUDIT2_REPORT_JSON_PATH = "archive/generated/audit/arch_audit2_report.json"
 ARCH_AUDIT2_FINAL_PATH = "docs/audit/ARCH_AUDIT2_FINAL.md"
 
 REPO_INVENTORY_TOOL_PATH = "tools/review/tool_repo_inventory.py"
 REPO_INVENTORY_COMMON_PATH = "tools/review/repo_inventory_common.py"
-REPO_INVENTORY_JSON_PATH = "content/data/audit/repo_inventory.json"
+REPO_INVENTORY_JSON_PATH = "archive/generated/audit/repo_inventory.json"
 REPO_TREE_INDEX_PATH = "docs/audit/REPO_TREE_INDEX.md"
 MODULE_DUPLICATION_REPORT_PATH = "docs/audit/MODULE_DUPLICATION_REPORT.md"
 ENTRYPOINT_MAP_PATH = "docs/audit/ENTRYPOINT_MAP.md"
@@ -1089,46 +1089,46 @@ REPO_REVIEW_2_FINAL_PATH = "docs/audit/REPO_REVIEW_2_FINAL.md"
 ENTRYPOINT_UNIFY_TOOL_PATH = "tools/release/tool_run_entrypoint_unify.py"
 ENTRYPOINT_UNIFY_COMMON_PATH = "tools/release/entrypoint_unify_common.py"
 ENTRYPOINT_UNIFY_MAP_PATH = "docs/audit/ENTRYPOINT_UNIFY_MAP.md"
-FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
+FLAG_MIGRATION_DOC_PATH = "docs/runtime/shell/FLAG_MIGRATION.md"
 ENTRYPOINT_UNIFY_FINAL_PATH = "docs/audit/ENTRYPOINT_UNIFY_FINAL.md"
 UI_MODE_RESOLUTION_TOOL_PATH = "tools/release/tool_run_ui_mode_resolution.py"
 UI_MODE_RESOLUTION_COMMON_PATH = "tools/release/ui_mode_resolution_common.py"
-UI_MODE_RESOLUTION_DOC_PATH = "docs/appshell/UI_MODE_RESOLUTION.md"
+UI_MODE_RESOLUTION_DOC_PATH = "docs/runtime/shell/UI_MODE_RESOLUTION.md"
 UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
 UI_MODE_POLICY_REGISTRY_PATH = "contracts/registry/ui_mode_policy_registry.json"
 PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
-PLATFORM_PROBE_PATH = "engine/platform/platform_probe.py"
-PLATFORM_CAPS_PROBE_PATH = "engine/platform/platform_caps_probe.py"
+PLATFORM_PROBE_PATH = "runtime/platform/platform_probe.py"
+PLATFORM_CAPS_PROBE_PATH = "runtime/platform/platform_caps_probe.py"
 PLATFORM_FORMALIZE_TOOL_PATH = "tools/release/tool_run_platform_formalize.py"
 PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
-PLATFORM_FORMALIZE_REPORT_PATH = "content/data/audit/platform_formalize_report.json"
-UI_MODE_SELECTOR_PATH = "runtime/appshell/ui_mode_selector.py"
+PLATFORM_FORMALIZE_REPORT_PATH = "archive/generated/audit/platform_formalize_report.json"
+UI_MODE_SELECTOR_PATH = "runtime/shell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
-UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
+UI_ADAPTER_CONTRACT_PATH = "docs/runtime/ui/UI_ADAPTER_CONTRACT.md"
 UI_SURFACE_MAP_AUDIT_PATH = "docs/audit/UI_SURFACE_MAP.md"
 UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
-UI_SURFACE_REPORT_JSON_PATH = "content/data/audit/ui_surface_report.json"
+UI_SURFACE_REPORT_JSON_PATH = "archive/generated/audit/ui_surface_report.json"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
 TOOL_SURFACE_ADAPTER_PATH = "tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
-TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
+TOOL_SURFACE_REFERENCE_PATH = "docs/runtime/shell/TOOL_REFERENCE.md"
 VIRTUAL_ROOT_REGISTRY_PATH = "contracts/registry/virtual_root_registry.json"
-VIRTUAL_PATHS_ENGINE_PATH = "runtime/appshell/paths/virtual_paths.py"
-VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
+VIRTUAL_PATHS_ENGINE_PATH = "runtime/shell/paths/virtual_paths.py"
+VIRTUAL_PATHS_DOC_PATH = "docs/runtime/shell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
-VIRTUAL_PATHS_REPORT_PATH = "content/data/audit/virtual_paths_report.json"
-INSTALL_DISCOVERY_ENGINE_PATH = "engine/install/install_discovery_engine.py"
-INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
+VIRTUAL_PATHS_REPORT_PATH = "archive/generated/audit/virtual_paths_report.json"
+INSTALL_DISCOVERY_ENGINE_PATH = "runtime/package/install_discovery_engine.py"
+INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
-INSTALL_DISCOVERY_REPORT_PATH = "content/data/audit/install_discovery_report.json"
+INSTALL_DISCOVERY_REPORT_PATH = "archive/generated/audit/install_discovery_report.json"
 PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
 PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/mvp/tool_run_product_boot_matrix.py"
 PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/mvp/prod_gate0_common.py"
@@ -1136,8 +1136,8 @@ PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
 PRODUCT_BOOT_MATRIX_JSON_PATH = "contracts/audit/product_boot_matrix.json"
 PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
 DIST_PLATFORM_MATRIX_MODEL_PATH = "docs/release/DIST_PLATFORM_MATRIX_MODEL.md"
-DIST_PLATFORM_MATRIX_TOOL_PATH = "tools/dist/tool_run_platform_matrix.py"
-DIST_PLATFORM_MATRIX_COMMON_PATH = "tools/dist/dist_platform_matrix_common.py"
+DIST_PLATFORM_MATRIX_TOOL_PATH = "tools/release/dist/tool_run_platform_matrix.py"
+DIST_PLATFORM_MATRIX_COMMON_PATH = "tools/release/dist/dist_platform_matrix_common.py"
 DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
 DIST_PLATFORM_MATRIX_JSON_PATH = "contracts/audit/dist_platform_matrix.json"
 SUPPORTED_PLATFORMS_V0_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
@@ -1145,7 +1145,7 @@ DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
 CONVERGENCE_GATE_COMMON_PATH = "tools/convergence/convergence_gate_common.py"
 CONVERGENCE_GATE_TOOL_PATH = "tools/convergence/tool_run_convergence_gate.py"
 CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
-CONVERGENCE_GATE_FINAL_JSON_PATH = "content/data/audit/convergence_final.json"
+CONVERGENCE_GATE_FINAL_JSON_PATH = "archive/generated/audit/convergence_final.json"
 SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
@@ -1154,17 +1154,17 @@ PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
 FLAG_SHIMS_PATH = "tools/validators/compatibility/shims/flag_shims.py"
 TOOL_SHIMS_PATH = "tools/validators/compatibility/shims/tool_shims.py"
 VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.py"
-VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
+VALIDATION_PIPELINE_DOC_PATH = "docs/testing/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
-VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schemas/validation/validation_result.schema"
-VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schemas/validation_result.schema.json"
+VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schema/validator/validation_result.schema"
+VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schema/validation_result.schema.json"
 VALIDATION_SUITE_REGISTRY_PATH = "contracts/registry/validation_suite_registry.json"
-VALIDATION_ENGINE_PATH = "tools/validators/validation/validation_engine.py"
-VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
+VALIDATION_ENGINE_PATH = "tools/validators/suite/validation_engine.py"
+VALIDATION_TOOL_PATH = "tools/validators/suite/tool_run_validation.py"
 DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
-DOC_INVENTORY_JSON_PATH = "content/data/audit/doc_inventory.json"
+DOC_INVENTORY_JSON_PATH = "archive/generated/audit/doc_inventory.json"
 DOC_INDEX_PATH = "docs/audit/DOC_INDEX.md"
 CANON_MAP_PATH = "docs/audit/CANON_MAP.md"
 DOC_DRIFT_MATRIX_PATH = "docs/audit/DOC_DRIFT_MATRIX.md"
@@ -1172,7 +1172,7 @@ DOC_GAPS_PATH = "docs/audit/DOC_GAPS.md"
 REPO_REVIEW_3_FINAL_PATH = "docs/audit/REPO_REVIEW_3_FINAL.md"
 
 EARTH10_RETRO_AUDIT_PATH = "docs/audit/EARTH10_RETRO_AUDIT.md"
-EARTH10_DOCTRINE_PATH = "docs/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
+EARTH10_DOCTRINE_PATH = "docs/domains/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
 EARTH10_MATERIAL_REGISTRY_PATH = "contracts/registry/material_proxy_registry.json"
 EARTH10_SURFACE_FLAG_REGISTRY_PATH = "contracts/registry/surface_flag_registry.json"
 EARTH10_PROBE_PATH = "tools/worldgen/earth10_probe.py"
@@ -1182,48 +1182,48 @@ EARTH10_BASELINE_PATH = "docs/audit/EARTH_MATERIAL_PROXY_BASELINE.md"
 
 SOL1_RETRO_AUDIT_PATH = "docs/audit/SOL1_RETRO_AUDIT.md"
 SOL1_DOCTRINE_PATH = "docs/sol/ILLUMINATION_GEOMETRY_MODEL.md"
-SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schemas/astro/emitter.schema"
-SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schemas/astro/receiver.schema"
-SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/illumination_view_artifact.schema"
-SOL1_EMITTER_SCHEMA_JSON_PATH = "contracts/schemas/emitter.schema.json"
-SOL1_RECEIVER_SCHEMA_JSON_PATH = "contracts/schemas/receiver.schema.json"
-SOL1_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/illumination_view_artifact.schema.json"
+SOL1_EMITTER_SCHEMA_DOC_PATH = "contracts/schema/astro/emitter.schema"
+SOL1_RECEIVER_SCHEMA_DOC_PATH = "contracts/schema/astro/receiver.schema"
+SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/illumination_view_artifact.schema"
+SOL1_EMITTER_SCHEMA_JSON_PATH = "contracts/schema/emitter.schema.json"
+SOL1_RECEIVER_SCHEMA_JSON_PATH = "contracts/schema/receiver.schema.json"
+SOL1_VIEW_SCHEMA_JSON_PATH = "contracts/schema/illumination_view_artifact.schema.json"
 SOL1_EMITTER_REGISTRY_PATH = "contracts/registry/emitter_kind_registry.json"
 SOL1_RECEIVER_REGISTRY_PATH = "contracts/registry/receiver_kind_registry.json"
 SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "contracts/registry/occlusion_policy_registry.json"
-SOL1_ENGINE_PATH = "game/domains/astronomy/illumination/illumination_geometry_engine.py"
+SOL1_ENGINE_PATH = "game/domain/astronomy/illumination/illumination_geometry_engine.py"
 SOL1_REPLAY_TOOL_PATH = "tools/astro/tool_replay_illumination_view.py"
 SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
 
 SOL2_RETRO_AUDIT_PATH = "docs/audit/SOL2_RETRO_AUDIT.md"
 SOL2_DOCTRINE_PATH = "docs/sol/ORBIT_VISUALIZATION_MODEL.md"
-SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schemas/astro/ephemeris_provider.schema"
-SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schemas/astro/orbit_path_policy.schema"
-SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/orbit_view_artifact.schema"
-SOL2_PROVIDER_SCHEMA_JSON_PATH = "contracts/schemas/ephemeris_provider.schema.json"
-SOL2_POLICY_SCHEMA_JSON_PATH = "contracts/schemas/orbit_path_policy.schema.json"
-SOL2_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/orbit_view_artifact.schema.json"
+SOL2_PROVIDER_SCHEMA_DOC_PATH = "contracts/schema/astro/ephemeris_provider.schema"
+SOL2_POLICY_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_path_policy.schema"
+SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schema/astro/orbit_view_artifact.schema"
+SOL2_PROVIDER_SCHEMA_JSON_PATH = "contracts/schema/ephemeris_provider.schema.json"
+SOL2_POLICY_SCHEMA_JSON_PATH = "contracts/schema/orbit_path_policy.schema.json"
+SOL2_VIEW_SCHEMA_JSON_PATH = "contracts/schema/orbit_view_artifact.schema.json"
 SOL2_PROVIDER_REGISTRY_PATH = "contracts/registry/ephemeris_provider_registry.json"
 SOL2_POLICY_REGISTRY_PATH = "contracts/registry/orbit_path_policy_registry.json"
-SOL2_ENGINE_PATH = "game/domains/astronomy/ephemeris/kepler_proxy_engine.py"
-SOL2_VIEW_ENGINE_PATH = "game/domains/astronomy/views/orbit_view_engine.py"
+SOL2_ENGINE_PATH = "game/domain/astronomy/ephemeris/kepler_proxy_engine.py"
+SOL2_VIEW_ENGINE_PATH = "game/domain/astronomy/views/orbit_view_engine.py"
 SOL2_REPLAY_TOOL_PATH = "tools/astro/tool_replay_orbit_view.py"
 SOL2_RUNTIME_COMMON_PATH = "tools/astro/sol2_runtime_common.py"
 SOL2_AUDIT_COMMON_PATH = "tools/astro/sol2_audit_common.py"
 GAL0_RETRO_AUDIT_PATH = "docs/audit/GAL0_RETRO_AUDIT.md"
-GAL0_DOCTRINE_PATH = "docs/worldgen/GALAXY_METADATA_PROXIES.md"
+GAL0_DOCTRINE_PATH = "docs/domains/worldgen/GALAXY_METADATA_PROXIES.md"
 GAL0_REGION_REGISTRY_PATH = "contracts/registry/galactic_region_registry.json"
-GAL0_ENGINE_PATH = "game/domains/worldgen/galaxy/galaxy_proxy_field_engine.py"
+GAL0_ENGINE_PATH = "game/domain/worldgen/galaxy/galaxy_proxy_field_engine.py"
 GAL0_PROBE_PATH = "tools/worldgen/gal0_probe.py"
 GAL0_AUDIT_COMMON_PATH = "tools/worldgen/gal0_audit_common.py"
 GAL0_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_proxies.py"
 GAL0_BASELINE_PATH = "docs/audit/GALAXY_PROXY_BASELINE.md"
 GAL1_RETRO_AUDIT_PATH = "docs/audit/GAL1_RETRO_AUDIT.md"
-GAL1_DOCTRINE_PATH = "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
-GAL1_SCHEMA_DOC_PATH = "contracts/schemas/worldgen/galaxy_object_stub.schema"
-GAL1_SCHEMA_JSON_PATH = "contracts/schemas/galaxy_object_stub.schema.json"
+GAL1_DOCTRINE_PATH = "docs/domains/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
+GAL1_SCHEMA_DOC_PATH = "contracts/schema/worldgen/galaxy_object_stub.schema"
+GAL1_SCHEMA_JSON_PATH = "contracts/schema/galaxy_object_stub.schema.json"
 GAL1_OBJECT_KIND_REGISTRY_PATH = "contracts/registry/object_kind_registry.json"
-GAL1_ENGINE_PATH = "game/domains/worldgen/galaxy/galaxy_object_stub_generator.py"
+GAL1_ENGINE_PATH = "game/domain/worldgen/galaxy/galaxy_object_stub_generator.py"
 GAL1_PROBE_PATH = "tools/worldgen/gal1_probe.py"
 GAL1_AUDIT_COMMON_PATH = "tools/worldgen/gal1_audit_common.py"
 GAL1_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_galaxy_objects.py"
@@ -1658,7 +1658,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="contracts/schemas/{}.schema.json".format(schema_name),
+                        file_path="contracts/schema/{}.schema.json".format(schema_name),
                         line_number=1,
                         snippet="",
                         message="multiplayer schema example validation failed for '{}'".format(schema_name),
@@ -2179,7 +2179,7 @@ def _append_multiplayer_contract_invariant_findings(
         rel_norm = _norm(rel_path)
         if rel_norm == "tools/xstack/repox/check.py":
             continue
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/", "tools/xstack/auditx/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/", "tools/xstack/auditx/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_norm):
             lower = str(line).lower()
@@ -2208,8 +2208,8 @@ def _append_multiplayer_contract_invariant_findings(
                 )
 
     perceived_required = (
-        ("tools/network/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
-        ("tools/network/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("tools/validators/network/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("tools/validators/network/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
     )
     for rel_path, required_tokens in perceived_required:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -2321,7 +2321,7 @@ def _append_multiplayer_contract_invariant_findings(
                         )
                     )
 
-    authoritative_rel = "tools/network/policies/policy_server_authoritative.py"
+    authoritative_rel = "tools/validators/network/policies/policy_server_authoritative.py"
     authoritative_abs = os.path.join(repo_root, authoritative_rel.replace("/", os.sep))
     if not os.path.isfile(authoritative_abs):
         findings.append(
@@ -2373,7 +2373,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_routing_rel = "tools/network/srz/routing.py"
+    srz_routing_rel = "tools/validators/network/srz/routing.py"
     srz_routing_abs = os.path.join(repo_root, srz_routing_rel.replace("/", os.sep))
     if not os.path.isfile(srz_routing_abs):
         findings.append(
@@ -2405,7 +2405,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_coordinator_rel = "tools/network/srz/shard_coordinator.py"
+    srz_coordinator_rel = "tools/validators/network/srz/shard_coordinator.py"
     srz_coordinator_abs = os.path.join(repo_root, srz_coordinator_rel.replace("/", os.sep))
     if not os.path.isfile(srz_coordinator_abs):
         findings.append(
@@ -2889,7 +2889,7 @@ def _append_worldgen_constraint_invariant_findings(
             )
         )
 
-    constraint_solver_rel = "game/domains/worldgen/core/constraint_solver.py"
+    constraint_solver_rel = "game/domain/worldgen/core/constraint_solver.py"
     for line_no, line in _iter_lines(repo_root, constraint_solver_rel):
         lower = str(line).lower()
         for token in WORLDGEN_SEED_POLICY_FORBIDDEN_TOKENS:
@@ -3394,9 +3394,9 @@ def _append_profile_override_invariant_findings(
 
     required_paths = (
         "tools/repo/meta/profile/profile_engine.py",
-        "contracts/schemas/meta/profile.schema",
-        "contracts/schemas/meta/profile_binding.schema",
-        "contracts/schemas/meta/exception_event.schema",
+        "contracts/schema/meta/profile.schema",
+        "contracts/schema/meta/profile_binding.schema",
+        "contracts/schema/meta/exception_event.schema",
         "contracts/registry/profile_registry.json",
     )
     for rel_path in required_paths:
@@ -3489,7 +3489,7 @@ def _append_profile_override_invariant_findings(
             )
         )
 
-    collapse_rel = "game/domains/systems/system_collapse_engine.py"
+    collapse_rel = "game/domain/systems/system_collapse_engine.py"
     collapse_text = _file_text(repo_root, collapse_rel)
     collapse_required = (
         "_statevec_output_guard_status(",
@@ -3522,8 +3522,8 @@ def _append_compute_budget_invariant_findings(
     severity = _strict_only_severity(profile)
 
     required_paths = (
-        "contracts/schemas/meta/compute_budget_profile.schema",
-        "contracts/schemas/meta/compute_consumption_record.schema",
+        "contracts/schema/meta/compute_budget_profile.schema",
+        "contracts/schema/meta/compute_consumption_record.schema",
         "contracts/registry/compute_budget_profile_registry.json",
         "contracts/registry/compute_degrade_policy_registry.json",
         "tools/repo/meta/compute/compute_budget_engine.py",
@@ -3544,7 +3544,7 @@ def _append_compute_budget_invariant_findings(
 
     hook_specs = (
         (
-            "game/domains/systems/macro/macro_capsule_engine.py",
+            "game/domain/systems/macro/macro_capsule_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_rows",
@@ -3560,7 +3560,7 @@ def _append_compute_budget_invariant_findings(
             ),
         ),
         (
-            "game/domains/processes/software/pipeline_engine.py",
+            "game/domain/processes/software/pipeline_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_rows",
@@ -3671,8 +3671,8 @@ def _append_logic_constitution_invariant_findings(
     carrier_bias_rule_id = "INV-NO-CARRIER-SEMANTIC-BIAS"
 
     constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
-    signal_schema_rel = "contracts/schemas/logic/signal_type.schema"
-    logic_policy_schema_rel = "contracts/schemas/logic/logic_policy.schema"
+    signal_schema_rel = "contracts/schema/logic/signal_type.schema"
+    logic_policy_schema_rel = "contracts/schema/logic/logic_policy.schema"
     signal_registry_rel = "contracts/registry/signal_type_registry.json"
     carrier_registry_rel = "contracts/registry/carrier_type_registry.json"
     bus_encoding_rel = "contracts/registry/bus_encoding_registry.json"
@@ -3680,15 +3680,15 @@ def _append_logic_constitution_invariant_findings(
     signal_delay_policy_rel = "contracts/registry/signal_delay_policy_registry.json"
     signal_noise_policy_rel = "contracts/registry/signal_noise_policy_registry.json"
     process_registry_rel = "contracts/registry/process_registry.json"
-    signal_store_rel = "game/domains/logic/signal/signal_store.py"
-    carrier_adapter_rel = "game/domains/logic/signal/carrier_adapters.py"
-    observation_rel = "game/domains/logic/signal/observation.py"
+    signal_store_rel = "game/domain/logic/signal/signal_store.py"
+    carrier_adapter_rel = "game/domain/logic/signal/carrier_adapters.py"
+    observation_rel = "game/domain/logic/signal/observation.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     logic_policy_rel = "contracts/registry/logic_policy_registry.json"
     compute_registry_rel = "contracts/registry/compute_budget_profile_registry.json"
     instrument_registry_rel = "contracts/registry/instrument_type_registry.json"
     profile_registry_rel = "contracts/registry/profile_registry.json"
-    exception_schema_rel = "contracts/schemas/meta/exception_event.schema"
+    exception_schema_rel = "contracts/schema/meta/exception_event.schema"
 
     constitution_text = _file_text(repo_root, constitution_rel)
     if not constitution_text:
@@ -3910,7 +3910,7 @@ def _append_logic_constitution_invariant_findings(
             )
             break
 
-    logic_roots = ("game/domains/logic/", "tools/logic/")
+    logic_roots = ("game/domain/logic/", "tools/logic/")
     logic_execution_tokens = ("evaluate_logic", "logic_tick", "propagate_signal", "commit_logic", "compute_next")
     truth_debug_pattern = re.compile(r"\b(truth_model|universe_state|render_model)\b", re.IGNORECASE)
     override_pattern = re.compile(r"\b(?:ignore_loop|force_roi|allow_with_caps|allow_combinational_loops|override)\b", re.IGNORECASE)
@@ -3920,7 +3920,7 @@ def _append_logic_constitution_invariant_findings(
             continue
         if not any(rel_norm.startswith(prefix) for prefix in logic_roots):
             continue
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/")):
             continue
         rel_lower = rel_norm.lower()
         if "transducer" in rel_lower or "carrier" in rel_lower:
@@ -4085,15 +4085,15 @@ def _append_logic_element_invariant_findings(
 
     required_files = (
         ("docs/logic/LOGIC_ELEMENT_MODEL.md", statevec_rule_id),
-        ("contracts/schemas/logic/logic_element_definition.schema", statevec_rule_id),
-        ("contracts/schemas/logic/logic_behavior_model.schema", statevec_rule_id),
-        ("contracts/schemas/logic/state_machine_definition.schema", statevec_rule_id),
+        ("contracts/schema/logic/logic_element_definition.schema", statevec_rule_id),
+        ("contracts/schema/logic/logic_behavior_model.schema", statevec_rule_id),
+        ("contracts/schema/logic/state_machine_definition.schema", statevec_rule_id),
         ("contracts/registry/logic_element_registry.json", compute_rule_id),
         ("contracts/registry/logic_behavior_model_registry.json", hardcoded_rule_id),
         ("contracts/registry/logic_state_machine_registry.json", statevec_rule_id),
         ("content/packs/core/pack.core.logic_base/data/logic_element_registry.json", compute_rule_id),
         ("content/packs/core/pack.core.logic_base/data/logic_state_vectors.json", statevec_rule_id),
-        ("game/domains/logic/element/logic_element_validator.py", statevec_rule_id),
+        ("game/domain/logic/element/logic_element_validator.py", statevec_rule_id),
     )
     for rel_path, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -4179,7 +4179,7 @@ def _append_logic_element_invariant_findings(
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
-        if (not rel_norm.startswith("game/domains/logic/")) or (not rel_norm.endswith(".py")):
+        if (not rel_norm.startswith("game/domain/logic/")) or (not rel_norm.endswith(".py")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_norm):
             snippet = str(line).strip()
@@ -4213,14 +4213,14 @@ def _append_logic_network_invariant_findings(
     required_files = (
         ("docs/logic/LOGIC_NETWORKGRAPH.md", substrate_rule_id),
         ("docs/logic/LOGIC_SHARD_BOUNDARY_RULES.md", loop_rule_id),
-        ("contracts/schemas/logic/logic_node_payload.schema", substrate_rule_id),
-        ("contracts/schemas/logic/logic_edge_payload.schema", substrate_rule_id),
-        ("contracts/schemas/logic/logic_network_binding.schema", substrate_rule_id),
+        ("contracts/schema/logic/logic_node_payload.schema", substrate_rule_id),
+        ("contracts/schema/logic/logic_edge_payload.schema", substrate_rule_id),
+        ("contracts/schema/logic/logic_network_binding.schema", substrate_rule_id),
         ("contracts/registry/logic_node_kind_registry.json", substrate_rule_id),
         ("contracts/registry/logic_edge_kind_registry.json", substrate_rule_id),
         ("contracts/registry/logic_network_policy_registry.json", loop_rule_id),
-        ("game/domains/logic/network/logic_network_engine.py", substrate_rule_id),
-        ("game/domains/logic/network/logic_network_validator.py", loop_rule_id),
+        ("game/domain/logic/network/logic_network_engine.py", substrate_rule_id),
+        ("game/domain/logic/network/logic_network_validator.py", loop_rule_id),
     )
     for rel_path, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -4236,7 +4236,7 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    engine_rel = "game/domains/logic/network/logic_network_engine.py"
+    engine_rel = "game/domain/logic/network/logic_network_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     if "core.graph.network_graph_engine" not in engine_text or "normalize_network_graph" not in engine_text:
         findings.append(
@@ -4289,7 +4289,7 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    validator_rel = "game/domains/logic/network/logic_network_validator.py"
+    validator_rel = "game/domain/logic/network/logic_network_validator.py"
     validator_text = _file_text(repo_root, validator_rel)
     validator_requirements = (
         ("REFUSAL_LOGIC_LOOP_DETECTED", "logic loop policy must refuse forbidden topologies explicitly"),
@@ -4386,14 +4386,14 @@ def _append_logic_network_invariant_findings(
         "commit_logic_network",
     )
     allowed_eval_paths = {
-        "game/domains/logic/network/logic_network_engine.py",
-        "game/domains/logic/network/logic_network_validator.py",
-        "game/domains/logic/network/instrumentation_binding.py",
-        "game/domains/logic/network/__init__.py",
+        "game/domain/logic/network/logic_network_engine.py",
+        "game/domain/logic/network/logic_network_validator.py",
+        "game/domain/logic/network/instrumentation_binding.py",
+        "game/domain/logic/network/__init__.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
-        if (not rel_norm.startswith("game/domains/logic/network/")) or (not rel_norm.endswith(".py")):
+        if (not rel_norm.startswith("game/domain/logic/network/")) or (not rel_norm.endswith(".py")):
             continue
         if rel_norm in allowed_eval_paths:
             continue
@@ -4433,14 +4433,14 @@ def _append_logic_eval_invariant_findings(
 
     required_files = (
         ("docs/logic/LOGIC_EVALUATION_ENGINE.md", budget_rule_id),
-        ("contracts/schemas/logic/logic_network_runtime_state.schema", budget_rule_id),
-        ("contracts/schemas/logic/logic_eval_record.schema", budget_rule_id),
-        ("contracts/schemas/logic/logic_throttle_event.schema", budget_rule_id),
-        ("game/domains/logic/eval/sense_engine.py", budget_rule_id),
-        ("game/domains/logic/eval/compute_engine.py", budget_rule_id),
-        ("game/domains/logic/eval/commit_engine.py", state_rule_id),
-        ("game/domains/logic/eval/propagate_engine.py", signal_rule_id),
-        ("game/domains/logic/eval/logic_eval_engine.py", budget_rule_id),
+        ("contracts/schema/logic/logic_network_runtime_state.schema", budget_rule_id),
+        ("contracts/schema/logic/logic_eval_record.schema", budget_rule_id),
+        ("contracts/schema/logic/logic_throttle_event.schema", budget_rule_id),
+        ("game/domain/logic/eval/sense_engine.py", budget_rule_id),
+        ("game/domain/logic/eval/compute_engine.py", budget_rule_id),
+        ("game/domain/logic/eval/commit_engine.py", state_rule_id),
+        ("game/domain/logic/eval/propagate_engine.py", signal_rule_id),
+        ("game/domain/logic/eval/logic_eval_engine.py", budget_rule_id),
         ("tools/logic/tool_replay_logic_window.py", budget_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -4457,7 +4457,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    compute_rel = "game/domains/logic/eval/compute_engine.py"
+    compute_rel = "game/domain/logic/eval/compute_engine.py"
     compute_text = _file_text(repo_root, compute_rel)
     for token, message in (
         ("request_logic_element_compute(", "logic evaluation must meter every element through META-COMPUTE"),
@@ -4477,7 +4477,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    engine_rel = "game/domains/logic/eval/logic_eval_engine.py"
+    engine_rel = "game/domain/logic/eval/logic_eval_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, message, rule_id in (
         ("build_logic_sense_snapshot(", "logic evaluation must begin with deterministic SENSE snapshots", budget_rule_id),
@@ -4500,7 +4500,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    commit_rel = "game/domains/logic/eval/commit_engine.py"
+    commit_rel = "game/domain/logic/eval/commit_engine.py"
     commit_text = _file_text(repo_root, commit_rel)
     for token, message in (
         ("process_statevec_update(", "logic COMMIT must use the canonical process.statevec_update path"),
@@ -4519,7 +4519,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    propagate_rel = "game/domains/logic/eval/propagate_engine.py"
+    propagate_rel = "game/domain/logic/eval/propagate_engine.py"
     propagate_text = _file_text(repo_root, propagate_rel)
     for token in ("process_signal_set_fn(", "process_signal_emit_pulse_fn("):
         if token in propagate_text:
@@ -4581,11 +4581,11 @@ def _append_logic_eval_invariant_findings(
         re.compile(r'\["coupling_change_rows"\]\s*='),
     )
     for rel_path in (
-        "game/domains/logic/eval/sense_engine.py",
-        "game/domains/logic/eval/compute_engine.py",
-        "game/domains/logic/eval/commit_engine.py",
-        "game/domains/logic/eval/propagate_engine.py",
-        "game/domains/logic/eval/logic_eval_engine.py",
+        "game/domain/logic/eval/sense_engine.py",
+        "game/domain/logic/eval/compute_engine.py",
+        "game/domain/logic/eval/commit_engine.py",
+        "game/domain/logic/eval/propagate_engine.py",
+        "game/domain/logic/eval/logic_eval_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for pattern in forbidden_signal_patterns:
@@ -4605,9 +4605,9 @@ def _append_logic_eval_invariant_findings(
             break
 
     for rel_path in (
-        "game/domains/logic/eval/sense_engine.py",
-        "game/domains/logic/eval/compute_engine.py",
-        "game/domains/logic/eval/propagate_engine.py",
+        "game/domain/logic/eval/sense_engine.py",
+        "game/domain/logic/eval/compute_engine.py",
+        "game/domain/logic/eval/propagate_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for token in ("serialize_state(", "process_statevec_update("):
@@ -4638,15 +4638,15 @@ def _append_logic_timing_invariant_findings(
 
     required_files = (
         ("docs/logic/TIMING_AND_OSCILLATION_MODEL.md", clock_rule_id),
-        ("contracts/schemas/logic/timing_constraint.schema", delay_rule_id),
-        ("contracts/schemas/logic/oscillation_record.schema", explain_rule_id),
-        ("contracts/schemas/logic/watchdog_definition.schema", explain_rule_id),
-        ("contracts/schemas/logic/timing_violation_event.schema", explain_rule_id),
-        ("contracts/schemas/logic/watchdog_timeout_event.schema", explain_rule_id),
+        ("contracts/schema/logic/timing_constraint.schema", delay_rule_id),
+        ("contracts/schema/logic/oscillation_record.schema", explain_rule_id),
+        ("contracts/schema/logic/watchdog_definition.schema", explain_rule_id),
+        ("contracts/schema/logic/timing_violation_event.schema", explain_rule_id),
+        ("contracts/schema/logic/watchdog_timeout_event.schema", explain_rule_id),
         ("contracts/registry/timing_pattern_registry.json", delay_rule_id),
-        ("game/domains/logic/timing/oscillation_engine.py", explain_rule_id),
-        ("game/domains/logic/timing/pattern_engine.py", explain_rule_id),
-        ("game/domains/logic/timing/constraint_engine.py", delay_rule_id),
+        ("game/domain/logic/timing/oscillation_engine.py", explain_rule_id),
+        ("game/domain/logic/timing/pattern_engine.py", explain_rule_id),
+        ("game/domain/logic/timing/constraint_engine.py", delay_rule_id),
         ("tools/logic/tool_replay_timing_window.py", explain_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -4687,7 +4687,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    propagate_rel = "game/domains/logic/eval/propagate_engine.py"
+    propagate_rel = "game/domain/logic/eval/propagate_engine.py"
     propagate_text = _file_text(repo_root, propagate_rel)
     for token in ("evaluate_time_mappings(", "temporal_domain_registry_payload", "time_mapping_registry_payload"):
         if token in propagate_text:
@@ -4703,7 +4703,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    engine_rel = "game/domains/logic/eval/logic_eval_engine.py"
+    engine_rel = "game/domain/logic/eval/logic_eval_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, message, rule_id in (
         ("detect_network_oscillation(", "logic evaluation must run deterministic oscillation detection", explain_rule_id),
@@ -4767,9 +4767,9 @@ def _append_logic_timing_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if not rel_norm.startswith(("game/domains/logic/", "tools/logic/")):
+        if not rel_norm.startswith(("game/domain/logic/", "tools/logic/")):
             continue
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/")):
             continue
         text = _file_text(repo_root, rel_norm)
         for pattern in forbidden_patterns:
@@ -4802,9 +4802,9 @@ def _append_logic_compile_invariant_findings(
     required_files = (
         ("docs/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
         ("contracts/registry/logic_compile_policy_registry.json", deterministic_rule_id),
-        ("game/domains/logic/compile/logic_compiler.py", deterministic_rule_id),
-        ("game/domains/logic/compile/logic_proof_engine.py", proof_rule_id),
-        ("game/domains/logic/eval/logic_eval_engine.py", fallback_rule_id),
+        ("game/domain/logic/compile/logic_compiler.py", deterministic_rule_id),
+        ("game/domain/logic/compile/logic_proof_engine.py", proof_rule_id),
+        ("game/domain/logic/eval/logic_eval_engine.py", fallback_rule_id),
         ("tools/governance/proof/control_proof_bundle.py", proof_rule_id),
         ("tools/logic/tool_replay_logic_window.py", proof_rule_id),
         ("tools/logic/tool_replay_compiled_logic_window.py", deterministic_rule_id),
@@ -4844,7 +4844,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    compiler_rel = "game/domains/logic/compile/logic_compiler.py"
+    compiler_rel = "game/domain/logic/compile/logic_compiler.py"
     compiler_text = _file_text(repo_root, compiler_rel)
     for token, rule_id, message in (
         ("_build_compile_source(", deterministic_rule_id, "logic compiler must canonicalize compile sources deterministically"),
@@ -4868,7 +4868,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    proof_rel = "game/domains/logic/compile/logic_proof_engine.py"
+    proof_rel = "game/domain/logic/compile/logic_proof_engine.py"
     proof_text = _file_text(repo_root, proof_rel)
     for token in ("build_logic_equivalence_proof_row(", "verify_logic_equivalence_proof(", "logic_equivalence_proof_hash("):
         if token in proof_text:
@@ -4884,7 +4884,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    eval_rel = "game/domains/logic/eval/logic_eval_engine.py"
+    eval_rel = "game/domain/logic/eval/logic_eval_engine.py"
     eval_text = _file_text(repo_root, eval_rel)
     for token, message in (
         ("compiled_fallback_logged", "logic runtime must log explicit compiled-to-L1 fallback"),
@@ -4998,13 +4998,13 @@ def _append_logic_debug_invariant_findings(
 
     required_files = (
         ("docs/logic/DEBUG_AND_INSTRUMENTATION.md", omniscient_rule_id),
-        ("contracts/schemas/logic/debug_probe_request.schema", bounded_rule_id),
-        ("contracts/schemas/logic/debug_trace_request.schema", bounded_rule_id),
-        ("contracts/schemas/logic/debug_trace_artifact.schema", bounded_rule_id),
-        ("contracts/schemas/logic/debug_sampling_policy.schema", bounded_rule_id),
+        ("contracts/schema/logic/debug_probe_request.schema", bounded_rule_id),
+        ("contracts/schema/logic/debug_trace_request.schema", bounded_rule_id),
+        ("contracts/schema/logic/debug_trace_artifact.schema", bounded_rule_id),
+        ("contracts/schema/logic/debug_sampling_policy.schema", bounded_rule_id),
         ("contracts/registry/debug_sampling_policy_registry.json", bounded_rule_id),
-        ("game/domains/logic/debug/debug_engine.py", budget_rule_id),
-        ("game/domains/logic/debug/runtime_state.py", bounded_rule_id),
+        ("game/domain/logic/debug/debug_engine.py", budget_rule_id),
+        ("game/domain/logic/debug/runtime_state.py", bounded_rule_id),
         ("tools/logic/tool_replay_trace_window.py", bounded_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -5114,7 +5114,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    engine_rel = "game/domains/logic/debug/debug_engine.py"
+    engine_rel = "game/domain/logic/debug/debug_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, rule_id, message in (
         ("request_logic_debug_compute(", budget_rule_id, "logic debug operations must meter compute"),
@@ -5184,7 +5184,7 @@ def _append_logic_debug_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if not rel_norm.startswith(("game/domains/logic/debug/", "tools/logic/tool_replay_trace_window.py")):
+        if not rel_norm.startswith(("game/domain/logic/debug/", "tools/logic/tool_replay_trace_window.py")):
             continue
         text = _file_text(repo_root, rel_norm).lower()
         for token in ("truth_model", "render_model", "universe_state"):
@@ -5216,12 +5216,12 @@ def _append_logic_protocol_invariant_findings(
     required_files = (
         ("docs/logic/PROTOCOL_LAYER_MODEL.md", deterministic_rule_id),
         ("docs/logic/PROTOCOL_SHARD_RULES.md", bypass_rule_id),
-        ("contracts/schemas/logic/protocol_frame.schema", deterministic_rule_id),
-        ("contracts/schemas/logic/arbitration_state.schema", deterministic_rule_id),
-        ("contracts/schemas/logic/protocol_event_record.schema", deterministic_rule_id),
+        ("contracts/schema/logic/protocol_frame.schema", deterministic_rule_id),
+        ("contracts/schema/logic/arbitration_state.schema", deterministic_rule_id),
+        ("contracts/schema/logic/protocol_event_record.schema", deterministic_rule_id),
         ("contracts/registry/arbitration_policy_registry.json", deterministic_rule_id),
         ("contracts/registry/error_detection_policy_registry.json", deterministic_rule_id),
-        ("game/domains/logic/protocol/protocol_engine.py", bypass_rule_id),
+        ("game/domain/logic/protocol/protocol_engine.py", bypass_rule_id),
         ("tools/logic/tool_replay_protocol_window.py", deterministic_rule_id),
         ("tools/logic/tool_run_logic_protocol_stress.py", deterministic_rule_id),
     )
@@ -5298,7 +5298,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    engine_rel = "game/domains/logic/protocol/protocol_engine.py"
+    engine_rel = "game/domain/logic/protocol/protocol_engine.py"
     engine_text = _file_text(repo_root, engine_rel)
     for token, rule_id, message in (
         ("build_protocol_frame_from_delivery(", deterministic_rule_id, "protocol engine must build deterministic frames"),
@@ -5322,7 +5322,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    eval_rel = "game/domains/logic/eval/logic_eval_engine.py"
+    eval_rel = "game/domain/logic/eval/logic_eval_engine.py"
     eval_text = _file_text(repo_root, eval_rel)
     for token, rule_id, message in (
         ("transport_logic_sig_receipts(", bypass_rule_id, "logic evaluation must flush SIG-backed protocol receipts through the protocol transport seam"),
@@ -5442,7 +5442,7 @@ def _append_logic_envelope_invariant_findings(
             )
         )
 
-    degrade_rel = "game/domains/logic/eval/degradation_policy.py"
+    degrade_rel = "game/domain/logic/eval/degradation_policy.py"
     degrade_text = _file_text(repo_root, degrade_rel)
     for token, rule_id, message in (
         ("prefer_compiled_execution", budget_rule_id, "logic degradation order must prefer compiled execution first"),
@@ -5641,7 +5641,7 @@ def _append_provenance_compaction_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     registry_rel = "contracts/registry/provenance_classification_registry.json"
-    schema_rel = "contracts/schemas/control_proof_bundle.schema.json"
+    schema_rel = "contracts/schema/control_proof_bundle.schema.json"
     engine_rel = "tools/repo/meta/provenance/compaction_engine.py"
     tool_rel = "tools/meta/tool_verify_replay_from_anchor.py"
 
@@ -5841,14 +5841,14 @@ def _append_auditx_invariant_findings(
                 )
             else:
                 try:
-                    from tools.auditx.model import validate_finding_record
+                    from tools.xstack.auditx.model import validate_finding_record
                 except Exception:
                     validate_finding_record = None
                 if validate_finding_record is None:
                     findings.append(
                         _finding(
                             severity=severity,
-                            file_path="tools/auditx/model/finding.py",
+                            file_path="tools/xstack/auditx/model/finding.py",
                             line_number=1,
                             snippet="",
                             message="unable to import AuditX finding validator",
@@ -5957,7 +5957,7 @@ def _append_auditx_invariant_findings(
     pre_runtime = _runtime_status_paths(repo_root)
     command = [
         sys.executable,
-        "tools/auditx/auditx.py",
+        "tools/xstack/auditx/auditx.py",
         "scan",
         "--repo-root",
         repo_root,
@@ -5980,7 +5980,7 @@ def _append_auditx_invariant_findings(
         findings.append(
             _finding(
                 severity="warn",
-                file_path="tools/auditx/auditx.py",
+                file_path="tools/xstack/auditx/auditx.py",
                 line_number=1,
                 snippet="",
                 message="AuditX probe scan unavailable in current environment",
@@ -5994,7 +5994,7 @@ def _append_auditx_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/auditx/auditx.py",
+                file_path="tools/xstack/auditx/auditx.py",
                 line_number=1,
                 snippet=scan_output.strip()[:140],
                 message="AuditX probe scan failed unexpectedly (exit={})".format(int(proc.returncode)),
@@ -6006,7 +6006,7 @@ def _append_auditx_invariant_findings(
         findings.append(
             _finding(
                 severity="warn",
-                file_path="tools/auditx/auditx.py",
+                file_path="tools/xstack/auditx/auditx.py",
                 line_number=1,
                 snippet="refusal.git_unavailable",
                 message="AuditX changed-only probe reported git unavailable",
@@ -7434,10 +7434,10 @@ def _append_meta_stability_findings(
         (META_STABILITY_REQUIREMENTS_REGISTRY_PATH, "stability requirements registry is required"),
         (META_STABILITY_VALIDATOR_PATH, "stability validator is required"),
         (META_STABILITY_SCOPE_PATH, "stability scope definition is required"),
-        ("tools/auditx/analyzers/e449_missing_stability_marker_smell.py", "MissingStabilityMarkerSmell analyzer is required"),
-        ("tools/auditx/analyzers/e450_stable_changed_without_contract_bump_smell.py", "StableChangedWithoutContractBumpSmell analyzer is required"),
-        ("tools/auditx/analyzers/e451_provisional_without_replacement_smell.py", "ProvisionalWithoutReplacementSmell analyzer is required"),
-        ("tools/auditx/analyzers/e467_stable_without_contract_id_smell.py", "StableWithoutContractIdSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e449_missing_stability_marker_smell.py", "MissingStabilityMarkerSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e450_stable_changed_without_contract_bump_smell.py", "StableChangedWithoutContractBumpSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e451_provisional_without_replacement_smell.py", "ProvisionalWithoutReplacementSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e467_stable_without_contract_id_smell.py", "StableWithoutContractIdSmell analyzer is required"),
         ("tools/xstack/testx/tests/test_all_registries_have_stability.py", "stability marker TestX coverage is required"),
         ("tools/xstack/testx/tests/test_provisional_have_replacement.py", "provisional replacement TestX coverage is required"),
         ("tools/xstack/testx/tests/test_stable_requires_contract_id.py", "stable contract-id TestX coverage is required"),
@@ -7564,7 +7564,7 @@ def _append_scope_freeze_findings(
             "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
         ),
         (
-            "tools/auditx/analyzers/e468_feature_creep_smell.py",
+            "tools/xstack/auditx/analyzers/e468_feature_creep_smell.py",
             "FeatureCreepSmell analyzer is required",
             "INV-NO-NEW-DOMAIN-SERIES-DURING-CONVERGENCE",
         ),
@@ -7691,7 +7691,7 @@ def _append_time_anchor_findings(
         (TIME_ANCHOR_ENGINE_PATH, "epoch anchor engine is required"),
         (TIME_ANCHOR_VERIFY_TOOL_PATH, "long-run tick verification tool is required"),
         (TIME_ANCHOR_COMPACTION_TOOL_PATH, "compaction anchor verification tool is required"),
-        ("tools/auditx/analyzers/e452_mixed_tick_width_smell.py", "MixedTickWidthSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e452_mixed_tick_width_smell.py", "MixedTickWidthSmell analyzer is required"),
         ("tools/xstack/testx/tests/test_epoch_anchor_emitted_on_interval.py", "interval anchor TestX coverage is required"),
         ("tools/xstack/testx/tests/test_anchor_contains_required_hashes.py", "anchor hash TestX coverage is required"),
         ("tools/xstack/testx/tests/test_compaction_respects_anchor_boundaries.py", "compaction anchor TestX coverage is required"),
@@ -7776,11 +7776,11 @@ def _append_arch_audit_findings(
         (ARCH_AUDIT_TOOL_PATH, "ARCH-AUDIT tool is required"),
         (ARCH_AUDIT_REPORT_PATH, "ARCH-AUDIT markdown report is required"),
         (ARCH_AUDIT_REPORT_JSON_PATH, "ARCH-AUDIT JSON report is required"),
-        ("tools/auditx/analyzers/e453_presentation_in_truth_smell.py", "PresentationInTruthSmell analyzer is required"),
-        ("tools/auditx/analyzers/e454_renderer_truth_leak_smell.py", "RendererTruthLeakSmell analyzer is required"),
-        ("tools/auditx/analyzers/e455_duplicate_semantic_engine_smell.py", "DuplicateSemanticEngineSmell analyzer is required"),
-        ("tools/auditx/analyzers/e456_wallclock_in_truth_smell.py", "WallclockInTruthSmell analyzer is required"),
-        ("tools/auditx/analyzers/e457_unnamed_rng_smell.py", "UnnamedRNGSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e453_presentation_in_truth_smell.py", "PresentationInTruthSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e454_renderer_truth_leak_smell.py", "RendererTruthLeakSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e455_duplicate_semantic_engine_smell.py", "DuplicateSemanticEngineSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e456_wallclock_in_truth_smell.py", "WallclockInTruthSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e457_unnamed_rng_smell.py", "UnnamedRNGSmell analyzer is required"),
         ("tools/xstack/testx/tests/test_arch_audit_tool_runs.py", "ARCH-AUDIT tool TestX coverage is required"),
         ("tools/xstack/testx/tests/test_arch_audit_detects_forbidden_patterns.py", "ARCH-AUDIT forbidden-pattern TestX coverage is required"),
         ("tools/xstack/testx/tests/test_arch_audit_reports_deterministically.py", "ARCH-AUDIT determinism TestX coverage is required"),
@@ -7866,10 +7866,10 @@ def _append_arch_audit2_findings(
         (ARCH_AUDIT2_REPORT_PATH, "ARCH-AUDIT-2 markdown report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
         (ARCH_AUDIT2_REPORT_JSON_PATH, "ARCH-AUDIT-2 JSON report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
         (ARCH_AUDIT2_FINAL_PATH, "ARCH-AUDIT-2 final report is required", "INV-DIST-USES-COMPONENT-GRAPH"),
-        ("tools/auditx/analyzers/e517_hardcoded_component_set_smell.py", "HardcodedComponentSetSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
-        ("tools/auditx/analyzers/e518_trust_bypass_smell.py", "TrustBypassSmell analyzer is required", "INV-TRUST-VERIFY-NONBYPASS"),
-        ("tools/auditx/analyzers/e519_tier_policy_violation_smell.py", "TierPolicyViolationSmell analyzer is required", "INV-TIER3-NOT-DOWNLOADABLE"),
-        ("tools/auditx/analyzers/e520_non_deterministic_archive_smell.py", "NonDeterministicArchiveSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/xstack/auditx/analyzers/e517_hardcoded_component_set_smell.py", "HardcodedComponentSetSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
+        ("tools/xstack/auditx/analyzers/e518_trust_bypass_smell.py", "TrustBypassSmell analyzer is required", "INV-TRUST-VERIFY-NONBYPASS"),
+        ("tools/xstack/auditx/analyzers/e519_tier_policy_violation_smell.py", "TierPolicyViolationSmell analyzer is required", "INV-TIER3-NOT-DOWNLOADABLE"),
+        ("tools/xstack/auditx/analyzers/e520_non_deterministic_archive_smell.py", "NonDeterministicArchiveSmell analyzer is required", "INV-DIST-USES-COMPONENT-GRAPH"),
         ("tools/xstack/testx/tests/test_arch_audit2_tool_runs.py", "ARCH-AUDIT-2 tool TestX coverage is required", "INV-DIST-USES-COMPONENT-GRAPH"),
         ("tools/xstack/testx/tests/test_arch_audit2_detects_hardcoded_bundle_list.py", "ARCH-AUDIT-2 hardcoded-bundle TestX coverage is required", "INV-DIST-USES-COMPONENT-GRAPH"),
         ("tools/xstack/testx/tests/test_arch_audit2_detects_trust_bypass.py", "ARCH-AUDIT-2 trust-bypass TestX coverage is required", "INV-TRUST-VERIFY-NONBYPASS"),
@@ -8185,8 +8185,8 @@ def _append_entrypoint_unify_findings(
         (ENTRYPOINT_UNIFY_MAP_PATH, "entrypoint unify map is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
         (FLAG_MIGRATION_DOC_PATH, "flag migration doc is required", "INV-NO-ADHOC-MAIN"),
         (ENTRYPOINT_UNIFY_FINAL_PATH, "entrypoint unify final report is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
-        ("tools/auditx/analyzers/e471_direct_simulation_start_smell.py", "DirectSimulationStartSmell analyzer is required", "INV-NO-DIRECT-UI-INIT-IN-MAIN"),
-        ("tools/auditx/analyzers/e472_direct_pack_load_smell.py", "DirectPackLoadSmell analyzer is required", "INV-NO-ADHOC-MAIN"),
+        ("tools/xstack/auditx/analyzers/e471_direct_simulation_start_smell.py", "DirectSimulationStartSmell analyzer is required", "INV-NO-DIRECT-UI-INIT-IN-MAIN"),
+        ("tools/xstack/auditx/analyzers/e472_direct_pack_load_smell.py", "DirectPackLoadSmell analyzer is required", "INV-NO-ADHOC-MAIN"),
         ("tools/xstack/testx/tests/entrypoint_unify_testlib.py", "ENTRYPOINT-UNIFY TestX helper is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
         ("tools/xstack/testx/tests/test_all_products_call_appshell_main.py", "AppShell entrypoint TestX coverage is required", "INV-ALL-PRODUCTS-USE-APPSHELL"),
         ("tools/xstack/testx/tests/test_mode_selection_deterministic.py", "mode selection determinism TestX coverage is required", "INV-NO-DIRECT-UI-INIT-IN-MAIN"),
@@ -8291,8 +8291,8 @@ def _append_ui_mode_resolution_findings(
         (UI_MODE_POLICY_REGISTRY_PATH, "UI mode policy registry is required", "INV-FALLBACK-DETERMINISTIC"),
         (PLATFORM_PROBE_PATH, "platform capability probe is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         (UI_MODE_SELECTOR_PATH, "AppShell UI mode selector is required", "INV-UI-MODE-SELECTOR-SINGLE"),
-        ("tools/auditx/analyzers/e475_adhoc_mode_selection_smell.py", "AdHocModeSelectionSmell analyzer is required", "INV-UI-MODE-SELECTOR-SINGLE"),
-        ("tools/auditx/analyzers/e476_silent_mode_fallback_smell.py", "SilentModeFallbackSmell analyzer is required", "INV-UI-MODE-LOGGED"),
+        ("tools/xstack/auditx/analyzers/e475_adhoc_mode_selection_smell.py", "AdHocModeSelectionSmell analyzer is required", "INV-UI-MODE-SELECTOR-SINGLE"),
+        ("tools/xstack/auditx/analyzers/e476_silent_mode_fallback_smell.py", "SilentModeFallbackSmell analyzer is required", "INV-UI-MODE-LOGGED"),
         ("tools/xstack/testx/tests/ui_mode_resolution_testlib.py", "UI mode TestX helper is required", "INV-UI-MODE-SELECTOR-SINGLE"),
         ("tools/xstack/testx/tests/test_mode_selection_tty_prefers_tui.py", "TTY mode selection TestX coverage is required", "INV-FALLBACK-DETERMINISTIC"),
         ("tools/xstack/testx/tests/test_mode_selection_gui_prefers_native_when_available.py", "GUI/native mode selection TestX coverage is required", "INV-FALLBACK-DETERMINISTIC"),
@@ -8380,7 +8380,7 @@ def _append_platform_formalize_findings(
         (PLATFORM_RENDERER_MATRIX_PATH, "platform renderer matrix is required", "INV-PLATFORM-CAPS-DECLARED"),
         (PLATFORM_FORMALIZE_FINAL_PATH, "platform formalize final report is required", "INV-PLATFORM-CAPS-DECLARED"),
         (PLATFORM_FORMALIZE_REPORT_PATH, "platform formalize machine-readable report is required", "INV-PLATFORM-CAPS-DECLARED"),
-        ("tools/auditx/analyzers/e479_adhoc_platform_detection_smell.py", "AdHocPlatformDetectionSmell analyzer is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
+        ("tools/xstack/auditx/analyzers/e479_adhoc_platform_detection_smell.py", "AdHocPlatformDetectionSmell analyzer is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
         ("tools/xstack/testx/tests/platform_formalize_testlib.py", "platform formalize TestX helper is required", "INV-PLATFORM-CAPS-DECLARED"),
         ("tools/xstack/testx/tests/test_platform_registry_valid.py", "platform registry TestX coverage is required", "INV-PLATFORM-CAPS-DECLARED"),
         ("tools/xstack/testx/tests/test_platform_probe_outputs_known_platform_id.py", "platform probe TestX coverage is required", "INV-UI-MODE-SELECTION-USES-PROBE"),
@@ -8486,9 +8486,9 @@ def _append_ui_reconcile_findings(
         (UI_RECONCILE_FINAL_PATH, "UI reconcile final report is required", "INV-UI-SHARES-UI_MODEL"),
         (UI_SURFACE_REPORT_JSON_PATH, "UI surface machine-readable report is required", "INV-UI-SHARES-UI_MODEL"),
         ("runtime/ui/ui_model.py", "shared UI model is required", "INV-UI-SHARES-UI_MODEL"),
-        ("apps/client/ui/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
-        ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
-        ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
+        ("runtime/ui/client/main_menu_surface.py", "rendered client menu surface is required", "INV-UI-SHARES-UI_MODEL"),
+        ("tools/xstack/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "BusinessLogicInUIAdapterSmell analyzer is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
+        ("tools/xstack/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "TruthLeakInUISmell analyzer is required", "INV-NO-TRUTH-READ-IN-UI"),
         ("tools/xstack/testx/tests/ui_reconcile_testlib.py", "UI reconcile TestX helper is required", "INV-UI-SHARES-UI_MODEL"),
         ("tools/xstack/testx/tests/test_ui_model_drives_main_menu_flow_via_commands.py", "UI model TestX coverage is required", "INV-UI-SHARES-UI_MODEL"),
         ("tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py", "native adapter TestX coverage is required", "INV-UI-ADAPTERS-COMMAND-ONLY"),
@@ -8593,7 +8593,7 @@ def _append_validation_unify_findings(
         (VALIDATION_SUITE_REGISTRY_PATH, "validation suite registry is required", availability_rule_id),
         (VALIDATION_ENGINE_PATH, "validation engine is required", availability_rule_id),
         (VALIDATION_TOOL_PATH, "validation runner tool is required", availability_rule_id),
-        ("tools/auditx/analyzers/e473_duplicate_validation_surface_smell.py", "DuplicateValidationSurfaceSmell analyzer is required", adhoc_rule_id),
+        ("tools/xstack/auditx/analyzers/e473_duplicate_validation_surface_smell.py", "DuplicateValidationSurfaceSmell analyzer is required", adhoc_rule_id),
         ("tools/xstack/testx/tests/validation_unify_testlib.py", "validation unify TestX helper is required", availability_rule_id),
         ("tools/xstack/testx/tests/test_validate_all_runs_fast.py", "validate all FAST TestX coverage is required", availability_rule_id),
         ("tools/xstack/testx/tests/test_validate_all_runs_strict.py", "validate all STRICT TestX coverage is required", availability_rule_id),
@@ -8647,7 +8647,7 @@ def _append_validation_unify_findings(
         )
 
     try:
-        from tools.validators.validation import validation_surface_findings
+        from tools.validators.suite import validation_surface_findings
     except Exception as exc:
         findings.append(
             _finding(
@@ -8689,14 +8689,14 @@ def _append_tool_surface_findings(
         (TOOL_SURFACE_MAP_PATH, "tool surface map is required", expose_rule_id),
         (TOOL_SURFACE_REFERENCE_PATH, "tool reference doc is required", expose_rule_id),
         (TOOL_SURFACE_FINAL_PATH, "tool surface final report is required", expose_rule_id),
-        ("tools/auditx/analyzers/e474_orphan_tool_smell.py", "OrphanToolSmell analyzer is required", adhoc_rule_id),
+        ("tools/xstack/auditx/analyzers/e474_orphan_tool_smell.py", "OrphanToolSmell analyzer is required", adhoc_rule_id),
         ("tools/xstack/testx/tests/tool_surface_testlib.py", "tool surface TestX helper is required", expose_rule_id),
         ("tools/xstack/testx/tests/test_dom_tool_help_deterministic.py", "dom help TestX coverage is required", expose_rule_id),
         ("tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py", "tool adapter virtual path TestX coverage is required", expose_rule_id),
         ("tools/xstack/testx/tests/test_tool_adapter_offline.py", "tool adapter offline TestX coverage is required", adhoc_rule_id),
         ("tools/xstack/testx/tests/test_cross_platform_tool_surface_hash_match.py", "tool surface hash TestX coverage is required", expose_rule_id),
-        ("dist/bin/dom", "portable dom wrapper is required", expose_rule_id),
-        ("dist/bin/dom.cmd", "portable dom.cmd wrapper is required", expose_rule_id),
+        ("archive/generated/dist/bin/dom", "portable dom wrapper is required", expose_rule_id),
+        ("archive/generated/dist/bin/dom.cmd", "portable dom.cmd wrapper is required", expose_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -8759,8 +8759,8 @@ def _append_virtual_path_findings(
         (VIRTUAL_PATHS_COMMON_PATH, "virtual path helper module is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
         (VIRTUAL_PATHS_BASELINE_PATH, "virtual path baseline report is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
         (VIRTUAL_PATHS_REPORT_PATH, "virtual path machine-readable report is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
-        ("tools/auditx/analyzers/e480_hardcoded_relative_path_smell.py", "HardcodedRelativePathSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
-        ("tools/auditx/analyzers/e481_os_path_separator_smell.py", "OSPathSeparatorSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
+        ("tools/xstack/auditx/analyzers/e480_hardcoded_relative_path_smell.py", "HardcodedRelativePathSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
+        ("tools/xstack/auditx/analyzers/e481_os_path_separator_smell.py", "OSPathSeparatorSmell analyzer is required", "INV-NO-HARDCODED-PATHS"),
         ("tools/xstack/testx/tests/repo_layout0_testlib.py", "virtual path TestX helper is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
         ("tools/xstack/testx/tests/test_portable_root_detected.py", "portable root detection TestX coverage is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
         ("tools/xstack/testx/tests/test_installed_root_detected.py", "installed root detection TestX coverage is required", "INV-VPATH-USED-FOR-STORE_ACCESS"),
@@ -8866,7 +8866,7 @@ def _append_install_discovery_findings(
         (INSTALL_DISCOVERY_COMMON_PATH, "install discovery helper module is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
         (INSTALL_DISCOVERY_BASELINE_PATH, "install discovery baseline report is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
         (INSTALL_DISCOVERY_REPORT_PATH, "install discovery machine-readable report is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
-        ("tools/auditx/analyzers/e482_install_root_hardcoded_smell.py", "InstallRootHardcodedSmell analyzer is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
+        ("tools/xstack/auditx/analyzers/e482_install_root_hardcoded_smell.py", "InstallRootHardcodedSmell analyzer is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
         ("tools/xstack/testx/tests/install_discovery_testlib.py", "install discovery TestX helper is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
         ("tools/xstack/testx/tests/test_explicit_install_root_used.py", "explicit install root TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
         ("tools/xstack/testx/tests/test_portable_manifest_detected.py", "portable manifest discovery TestX coverage is required", "INV-INSTALL-DISCOVERY-REQUIRED"),
@@ -8950,7 +8950,7 @@ def _append_prod_gate0_findings(
         (PRODUCT_BOOT_MATRIX_REPORT_PATH, "product boot matrix report is required", rule_id),
         (PRODUCT_BOOT_MATRIX_JSON_PATH, "product boot matrix machine-readable report is required", rule_id),
         (PROD_GATE_FINAL_PATH, "PROD gate final report is required", rule_id),
-        ("tools/auditx/analyzers/e485_product_standalone_failure_smell.py", "ProductStandaloneFailureSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e485_product_standalone_failure_smell.py", "ProductStandaloneFailureSmell analyzer is required", rule_id),
         ("tools/xstack/testx/tests/prod_gate0_testlib.py", "product boot matrix TestX helper is required", rule_id),
         ("tools/xstack/testx/tests/test_boot_matrix_tool_deterministic.py", "product boot matrix determinism TestX coverage is required", rule_id),
         ("tools/xstack/testx/tests/test_each_product_emits_descriptor.py", "descriptor coverage TestX is required", rule_id),
@@ -9059,8 +9059,8 @@ def _append_repo_layout1_shim_findings(
         (FLAG_SHIMS_PATH, "flag shim module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
         (TOOL_SHIMS_PATH, "tool shim module is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
         (VALIDATION_SHIMS_PATH, "validation shim module is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
-        ("tools/auditx/analyzers/e483_silent_shim_smell.py", "SilentShimSmell analyzer is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
-        ("tools/auditx/analyzers/e484_shim_bypass_smell.py", "ShimBypassSmell analyzer is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
+        ("tools/xstack/auditx/analyzers/e483_silent_shim_smell.py", "SilentShimSmell analyzer is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
+        ("tools/xstack/auditx/analyzers/e484_shim_bypass_smell.py", "ShimBypassSmell analyzer is required", "INV-SHIMS-MUST-NOT-BYPASS-VALIDATION"),
         ("tools/xstack/testx/tests/repo_layout1_testlib.py", "shim TestX helper is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
         ("tools/xstack/testx/tests/test_legacy_path_redirects_vpath.py", "legacy path redirect TestX coverage is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
         ("tools/xstack/testx/tests/test_legacy_flags_map_correctly.py", "legacy flag shim TestX coverage is required", "INV-SHIMS-MUST-LOG-DEPRECATION"),
@@ -9161,12 +9161,12 @@ def _append_release_identity_findings(
         ("docs/audit/RELEASE0_RETRO_AUDIT.md", "RELEASE0 retro audit is required", wallclock_rule_id),
         ("docs/release/RELEASE_IDENTITY_CONSTITUTION.md", "release identity constitution is required", wallclock_rule_id),
         ("docs/release/ARTIFACT_NAMING_RULES.md", "artifact naming rules are required", artifact_rule_id),
-        ("release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("tools/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
         ("contracts/registry/release_channel_registry.json", "release channel registry is required", artifact_rule_id),
         ("tools/release/release_identity_common.py", "release identity audit helper is required", artifact_rule_id),
         ("tools/release/tool_run_release_identity.py", "release identity report tool is required", artifact_rule_id),
-        ("tools/auditx/analyzers/e490_wallclock_build_id_smell.py", "WallclockBuildIdSmell analyzer is required", wallclock_rule_id),
-        ("tools/auditx/analyzers/e491_hostname_in_build_id_smell.py", "HostnameInBuildIdSmell analyzer is required", wallclock_rule_id),
+        ("tools/xstack/auditx/analyzers/e490_wallclock_build_id_smell.py", "WallclockBuildIdSmell analyzer is required", wallclock_rule_id),
+        ("tools/xstack/auditx/analyzers/e491_hostname_in_build_id_smell.py", "HostnameInBuildIdSmell analyzer is required", wallclock_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9230,12 +9230,12 @@ def _append_release_manifest_findings(
     required_files = (
         ("docs/audit/RELEASE1_RETRO_AUDIT.md", "RELEASE1 retro audit is required", deterministic_rule_id),
         ("docs/release/RELEASE_MANIFEST_MODEL.md", "release manifest doctrine is required", deterministic_rule_id),
-        ("release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
+        ("tools/release/release_manifest_engine.py", "release manifest engine is required", deterministic_rule_id),
         ("tools/release/release_manifest_common.py", "release manifest audit helper is required", deterministic_rule_id),
         ("tools/release/tool_generate_release_manifest.py", "release manifest generator is required", deterministic_rule_id),
         ("tools/release/tool_verify_release_manifest.py", "release manifest verifier is required", verify_rule_id),
-        ("tools/auditx/analyzers/e492_nondeterministic_manifest_ordering_smell.py", "NondeterministicManifestOrderingSmell analyzer is required", deterministic_rule_id),
-        ("tools/auditx/analyzers/e493_missing_descriptor_hash_smell.py", "MissingDescriptorHashSmell analyzer is required", verify_rule_id),
+        ("tools/xstack/auditx/analyzers/e492_nondeterministic_manifest_ordering_smell.py", "NondeterministicManifestOrderingSmell analyzer is required", deterministic_rule_id),
+        ("tools/xstack/auditx/analyzers/e493_missing_descriptor_hash_smell.py", "MissingDescriptorHashSmell analyzer is required", verify_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9298,13 +9298,13 @@ def _append_reproducible_build_findings(
         ("docs/audit/RELEASE2_RETRO_AUDIT.md", "RELEASE2 retro audit is required", reproducibility_rule_id),
         ("docs/release/REPRODUCIBLE_BUILD_RULES.md", "reproducible build doctrine is required", wallclock_rule_id),
         ("docs/release/SIGNING_POLICY.md", "signing policy is required", reproducibility_rule_id),
-        ("release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
-        ("release/release_manifest_engine.py", "release manifest engine is required", reproducibility_rule_id),
+        ("tools/release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
+        ("tools/release/release_manifest_engine.py", "release manifest engine is required", reproducibility_rule_id),
         ("tools/release/reproducible_build_common.py", "reproducible build helper is required", reproducibility_rule_id),
         ("tools/release/tool_verify_build_reproducibility.py", "reproducibility verifier is required", reproducibility_rule_id),
         ("tools/release/tool_run_reproducible_build.py", "reproducible build report tool is required", reproducibility_rule_id),
-        ("tools/auditx/analyzers/e494_non_reproducible_build_smell.py", "NonReproducibleBuildSmell analyzer is required", reproducibility_rule_id),
-        ("tools/auditx/analyzers/e495_embedded_timestamp_smell.py", "EmbeddedTimestampSmell analyzer is required", wallclock_rule_id),
+        ("tools/xstack/auditx/analyzers/e494_non_reproducible_build_smell.py", "NonReproducibleBuildSmell analyzer is required", reproducibility_rule_id),
+        ("tools/xstack/auditx/analyzers/e495_embedded_timestamp_smell.py", "EmbeddedTimestampSmell analyzer is required", wallclock_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9369,8 +9369,8 @@ def _append_distribution_model_findings(
         ("docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md", "distribution architecture freeze report is required", manifest_rule_id),
         ("tools/release/distribution_model_common.py", "distribution model helper is required", manifest_rule_id),
         ("tools/release/tool_run_distribution_model.py", "distribution model report tool is required", manifest_rule_id),
-        ("tools/auditx/analyzers/e496_dev_artifact_in_dist_smell.py", "DevArtifactInDistSmell analyzer is required", no_dev_rule_id),
-        ("tools/auditx/analyzers/e497_absolute_path_in_manifest_smell.py", "AbsolutePathInManifestSmell analyzer is required", manifest_rule_id),
+        ("tools/xstack/auditx/analyzers/e496_dev_artifact_in_dist_smell.py", "DevArtifactInDistSmell analyzer is required", no_dev_rule_id),
+        ("tools/xstack/auditx/analyzers/e497_absolute_path_in_manifest_smell.py", "AbsolutePathInManifestSmell analyzer is required", manifest_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9435,10 +9435,10 @@ def _append_dist1_findings(
         ("docs/release/DIST_BUNDLE_ASSEMBLY.md", "distribution bundle assembly doctrine is required", deterministic_rule_id),
         ("docs/audit/DIST_CONTENT_AUDIT.md", "distribution content audit report is required", exclusion_rule_id),
         ("docs/audit/DIST_TREE_ASSEMBLY_FINAL.md", "distribution tree assembly final report is required", deterministic_rule_id),
-        ("tools/dist/dist_tree_common.py", "distribution assembly helper is required", deterministic_rule_id),
-        ("tools/dist/tool_assemble_dist_tree.py", "distribution assembly tool is required", deterministic_rule_id),
-        ("tools/dist/tool_dist_minimize.py", "distribution minimization tool is required", exclusion_rule_id),
-        ("tools/auditx/analyzers/e498_non_deterministic_file_order_smell.py", "NonDeterministicFileOrderSmell analyzer is required", deterministic_rule_id),
+        ("tools/release/dist/dist_tree_common.py", "distribution assembly helper is required", deterministic_rule_id),
+        ("tools/release/dist/tool_assemble_dist_tree.py", "distribution assembly tool is required", deterministic_rule_id),
+        ("tools/release/dist/tool_dist_minimize.py", "distribution minimization tool is required", exclusion_rule_id),
+        ("tools/xstack/auditx/analyzers/e498_non_deterministic_file_order_smell.py", "NonDeterministicFileOrderSmell analyzer is required", deterministic_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9460,7 +9460,7 @@ def _append_dist1_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/dist/dist_tree_common.py",
+                file_path="tools/release/dist/dist_tree_common.py",
                 line_number=1,
                 snippet="dist_tree_violations",
                 message="unable to import DIST-1 tree checks ({})".format(str(exc)),
@@ -9499,11 +9499,11 @@ def _append_dist2_findings(
         ("docs/release/DIST_VERIFICATION_RULES.md", "distribution verification rules are required", verify_rule_id),
         ("docs/audit/DIST_VERIFY_win64.md", "distribution verification report is required", verify_rule_id),
         ("docs/audit/DIST2_FINAL.md", "DIST-2 final report is required", verify_rule_id),
-        ("content/data/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
-        ("tools/dist/dist_verify_common.py", "distribution verification helper is required", verify_rule_id),
-        ("tools/dist/tool_verify_distribution.py", "distribution verification tool is required", verify_rule_id),
-        ("tools/auditx/analyzers/e499_absolute_path_leak_smell.py", "AbsolutePathLeakSmell analyzer is required", absolute_rule_id),
-        ("tools/auditx/analyzers/e500_xstack_in_dist_smell.py", "XStackInDistSmell analyzer is required", xstack_rule_id),
+        ("archive/generated/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
+        ("tools/release/dist/dist_verify_common.py", "distribution verification helper is required", verify_rule_id),
+        ("tools/release/dist/tool_verify_distribution.py", "distribution verification tool is required", verify_rule_id),
+        ("tools/xstack/auditx/analyzers/e499_absolute_path_leak_smell.py", "AbsolutePathLeakSmell analyzer is required", absolute_rule_id),
+        ("tools/xstack/auditx/analyzers/e500_xstack_in_dist_smell.py", "XStackInDistSmell analyzer is required", xstack_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9525,7 +9525,7 @@ def _append_dist2_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/dist/dist_verify_common.py",
+                file_path="tools/release/dist/dist_verify_common.py",
                 line_number=1,
                 snippet="distribution_verify_violations",
                 message="unable to import DIST-2 verification checks ({})".format(str(exc)),
@@ -9560,11 +9560,11 @@ def _append_dist3_findings(
         ("docs/release/CLEAN_ROOM_TEST_MODEL.md", "clean-room doctrine is required", rule_id),
         ("docs/audit/CLEAN_ROOM_win64.md", "clean-room platform report is required", rule_id),
         ("docs/audit/DIST3_FINAL.md", "DIST-3 final report is required", rule_id),
-        ("content/data/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
-        ("tools/dist/clean_room_common.py", "clean-room helper is required", rule_id),
-        ("tools/dist/tool_run_clean_room.py", "clean-room harness tool is required", rule_id),
-        ("tools/auditx/analyzers/e501_portable_root_not_detected_smell.py", "PortableRootNotDetectedSmell analyzer is required", rule_id),
-        ("tools/auditx/analyzers/e502_external_store_access_smell.py", "ExternalStoreAccessSmell analyzer is required", rule_id),
+        ("archive/generated/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
+        ("tools/release/dist/clean_room_common.py", "clean-room helper is required", rule_id),
+        ("tools/release/dist/tool_run_clean_room.py", "clean-room harness tool is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e501_portable_root_not_detected_smell.py", "PortableRootNotDetectedSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e502_external_store_access_smell.py", "ExternalStoreAccessSmell analyzer is required", rule_id),
         ("tools/xstack/testx/tests/dist3_testlib.py", "clean-room TestX helper is required", rule_id),
         ("tools/xstack/testx/tests/test_clean_room_harness_deterministic_script.py", "clean-room deterministic script TestX coverage is required", rule_id),
         ("tools/xstack/testx/tests/test_clean_room_report_generated.py", "clean-room report generation TestX coverage is required", rule_id),
@@ -9590,7 +9590,7 @@ def _append_dist3_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/dist/clean_room_common.py",
+                file_path="tools/release/dist/clean_room_common.py",
                 line_number=1,
                 snippet="clean_room_violations",
                 message="unable to import DIST-3 clean-room checks ({})".format(str(exc)),
@@ -9628,8 +9628,8 @@ def _append_dist4_findings(
         (DIST_PLATFORM_MATRIX_JSON_PATH, "DIST-4 platform matrix machine report is required", rule_id),
         (SUPPORTED_PLATFORMS_V0_PATH, "supported platform matrix doc is required", rule_id),
         (DIST4_FINAL_PATH, "DIST-4 final report is required", rule_id),
-        ("tools/auditx/analyzers/e503_platform_capabilities_mismatch_smell.py", "PlatformCapabilitiesMismatchSmell analyzer is required", rule_id),
-        ("tools/auditx/analyzers/e504_mode_fallback_not_logged_smell.py", "ModeFallbackNotLoggedSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e503_platform_capabilities_mismatch_smell.py", "PlatformCapabilitiesMismatchSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e504_mode_fallback_not_logged_smell.py", "ModeFallbackNotLoggedSmell analyzer is required", rule_id),
     )
     for rel_path, message, current_rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -9723,14 +9723,14 @@ def _append_dist5_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/release/UX_POLISH_CRITERIA.md", "DIST-5 UX polish doctrine is required", help_rule_id),
-        ("docs/appshell/CLI_REFERENCE.md", "generated CLI reference is required", help_rule_id),
+        ("docs/runtime/shell/CLI_REFERENCE.md", "generated CLI reference is required", help_rule_id),
         ("docs/audit/DIST5_UX_SMOKE.md", "DIST-5 UX smoke report is required", help_rule_id),
         ("docs/audit/DIST5_UX_POLISH_FINAL.md", "DIST-5 final report is required", help_rule_id),
-        ("content/data/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
-        ("tools/dist/ux_smoke_common.py", "DIST-5 UX smoke helper is required", help_rule_id),
-        ("tools/dist/tool_run_ux_smoke.py", "DIST-5 UX smoke runner is required", help_rule_id),
-        ("tools/auditx/analyzers/e505_missing_remediation_hint_smell.py", "MissingRemediationHintSmell analyzer is required", remediation_rule_id),
-        ("tools/auditx/analyzers/e506_unstructured_user_facing_error_smell.py", "UnstructuredUserFacingErrorSmell analyzer is required", remediation_rule_id),
+        ("archive/generated/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
+        ("tools/release/dist/ux_smoke_common.py", "DIST-5 UX smoke helper is required", help_rule_id),
+        ("tools/release/dist/tool_run_ux_smoke.py", "DIST-5 UX smoke runner is required", help_rule_id),
+        ("tools/xstack/auditx/analyzers/e505_missing_remediation_hint_smell.py", "MissingRemediationHintSmell analyzer is required", remediation_rule_id),
+        ("tools/xstack/auditx/analyzers/e506_unstructured_user_facing_error_smell.py", "UnstructuredUserFacingErrorSmell analyzer is required", remediation_rule_id),
         ("tools/xstack/testx/tests/dist5_testlib.py", "DIST-5 TestX helper is required", help_rule_id),
         ("tools/xstack/testx/tests/test_refusal_contains_remediation.py", "DIST-5 refusal remediation TestX coverage is required", remediation_rule_id),
         ("tools/xstack/testx/tests/test_help_outputs_deterministic.py", "DIST-5 help determinism TestX coverage is required", help_rule_id),
@@ -9777,7 +9777,7 @@ def _append_dist5_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/dist/ux_smoke_common.py",
+                file_path="tools/release/dist/ux_smoke_common.py",
                 line_number=1,
                 snippet="ux_smoke_violations",
                 message="unable to import DIST-5 UX smoke checks ({})".format(str(exc)),
@@ -9809,11 +9809,11 @@ def _append_dist6_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/release/INTEROP_MATRIX_v0_0_0_mock.md", "DIST-6 interop matrix doctrine is required", rule_id),
-        ("tools/dist/dist6_interop_common.py", "DIST-6 interop helper is required", rule_id),
-        ("tools/dist/tool_run_version_interop.py", "DIST-6 interop runner is required", rule_id),
+        ("tools/release/dist/dist6_interop_common.py", "DIST-6 interop helper is required", rule_id),
+        ("tools/release/dist/tool_run_version_interop.py", "DIST-6 interop runner is required", rule_id),
         ("docs/audit/DIST6_FINAL.md", "DIST-6 final report is required", rule_id),
-        ("tools/auditx/analyzers/e507_silent_degrade_smell.py", "SilentDegradeSmell analyzer is required", rule_id),
-        ("tools/auditx/analyzers/e508_negotiation_record_missing_smell.py", "NegotiationRecordMissingSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e507_silent_degrade_smell.py", "SilentDegradeSmell analyzer is required", rule_id),
+        ("tools/xstack/auditx/analyzers/e508_negotiation_record_missing_smell.py", "NegotiationRecordMissingSmell analyzer is required", rule_id),
         ("tools/xstack/testx/tests/dist6_testlib.py", "DIST-6 TestX helper is required", rule_id),
         ("tools/xstack/testx/tests/test_same_build_negotiates_cleanly.py", "DIST-6 same-build TestX coverage is required", rule_id),
         ("tools/xstack/testx/tests/test_identical_rebuild_negotiation_hash_match.py", "DIST-6 identical rebuild TestX coverage is required", rule_id),
@@ -9881,7 +9881,7 @@ def _append_dist6_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/dist/dist6_interop_common.py",
+                file_path="tools/release/dist/dist6_interop_common.py",
                 line_number=1,
                 snippet="version_interop_violations",
                 message="unable to import DIST-6 interop checks ({})".format(str(exc)),
@@ -9914,11 +9914,11 @@ def _append_ipc_unify_findings(
     required_files = (
         ("docs/audit/IPC_SURFACE_MAP.md", "IPC surface inventory is required", rule_id),
         ("docs/audit/IPC_DUPLICATION_FIXES.md", "IPC duplication fixes report is required", rule_id),
-        ("docs/appshell/IPC_DISCOVERY.md", "IPC discovery doctrine is required", rule_id),
+        ("docs/runtime/shell/IPC_DISCOVERY.md", "IPC discovery doctrine is required", rule_id),
         ("docs/audit/IPC_UNIFY_FINAL.md", "IPC unify final report is required", rule_id),
-        ("content/data/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
-        ("tools/appshell/ipc_unify_common.py", "IPC unify helper module is required", rule_id),
-        ("tools/appshell/tool_run_ipc_unify.py", "IPC unify tool runner is required", rule_id),
+        ("archive/generated/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
+        ("tools/validators/shell/ipc_unify_common.py", "IPC unify helper module is required", rule_id),
+        ("tools/validators/shell/tool_run_ipc_unify.py", "IPC unify tool runner is required", rule_id),
         ("tools/xstack/testx/tests/ipc_unify_testlib.py", "IPC unify TestX helper is required", rule_id),
         ("tools/xstack/testx/tests/test_single_ipc_transport_used.py", "single IPC transport TestX coverage is required", rule_id),
         ("tools/xstack/testx/tests/test_unnegotiated_attach_refused.py", "unnegotiated attach refusal TestX coverage is required", rule_id),
@@ -9940,7 +9940,7 @@ def _append_ipc_unify_findings(
             )
         )
 
-    discovery_text = _file_text(repo_root, "docs/appshell/IPC_DISCOVERY.md").lower()
+    discovery_text = _file_text(repo_root, "docs/runtime/shell/IPC_DISCOVERY.md").lower()
     for token, message in (
         ("# ipc discovery", "IPC discovery doc must declare the canonical title"),
         ("vroot_ipc", "IPC discovery doc must declare VROOT_IPC usage"),
@@ -9953,7 +9953,7 @@ def _append_ipc_unify_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/appshell/IPC_DISCOVERY.md",
+                file_path="docs/runtime/shell/IPC_DISCOVERY.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -9987,7 +9987,7 @@ def _append_ipc_unify_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/appshell/ipc_unify_common.py",
+                file_path="tools/validators/shell/ipc_unify_common.py",
                 line_number=1,
                 snippet="ipc_unify_violations",
                 message="unable to import IPC unify checks ({})".format(str(exc)),
@@ -10021,12 +10021,12 @@ def _append_supervisor_hardening_findings(
             "INV-SUPERVISOR-NO-WALLCLOCK",
             (
                 ("docs/audit/SUPERVISOR_SURFACE_MAP.md", "supervisor surface map is required"),
-                ("docs/appshell/LOG_MERGE_RULES.md", "supervisor log merge rules doc is required"),
+                ("docs/runtime/shell/LOG_MERGE_RULES.md", "supervisor log merge rules doc is required"),
                 ("docs/audit/SUPERVISOR_HARDENING_FINAL.md", "supervisor hardening final report is required"),
-                ("content/data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
-                ("tools/appshell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
-                ("tools/appshell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
-                ("runtime/appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
+                ("archive/generated/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
+                ("tools/validators/shell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
+                ("tools/validators/shell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
+                ("runtime/shell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
                 ("tools/xstack/testx/tests/test_args_canonicalization_stable.py", "supervisor args canonicalization TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_readiness_bounded_no_wallclock.py", "supervisor bounded readiness TestX coverage is required"),
                 ("tools/xstack/testx/tests/test_log_merge_order_stable.py", "supervisor log merge TestX coverage is required"),
@@ -10079,7 +10079,7 @@ def _append_supervisor_hardening_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/appshell/supervisor_hardening_common.py",
+                file_path="tools/validators/shell/supervisor_hardening_common.py",
                 line_number=1,
                 snippet="supervisor_hardening_violations",
                 message="unable to import supervisor hardening checks ({})".format(str(exc)),
@@ -10120,7 +10120,7 @@ def _append_convergence_gate_findings(
         (CONVERGENCE_GATE_TOOL_PATH, "convergence gate tool runner is required"),
         (CONVERGENCE_GATE_FINAL_DOC_PATH, "convergence final markdown report is required"),
         (CONVERGENCE_GATE_FINAL_JSON_PATH, "convergence final machine-readable report is required"),
-        ("tools/auditx/analyzers/e489_convergence_gate_missing_smell.py", "ConvergenceGateMissingSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e489_convergence_gate_missing_smell.py", "ConvergenceGateMissingSmell analyzer is required"),
         ("tools/xstack/testx/tests/convergence_gate_testlib.py", "convergence gate TestX helper is required"),
         ("tools/xstack/testx/tests/test_convergence_gate_order_deterministic.py", "convergence gate order TestX coverage is required"),
         ("tools/xstack/testx/tests/test_convergence_gate_produces_reports.py", "convergence gate report TestX coverage is required"),
@@ -10196,26 +10196,26 @@ def _append_xi4_convergence_warning_findings(
 ) -> None:
     del profile
     severity = "warn"
-    src_report, _ = _load_json_object(repo_root, "content/data/audit/src_directory_report.json")
+    src_report, _ = _load_json_object(repo_root, "archive/generated/audit/src_directory_report.json")
     src_rows = list(src_report.get("directories") or src_report.get("src_directories") or src_report.get("entries") or [])
     if src_rows:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/audit/src_directory_report.json",
+                file_path="archive/generated/audit/src_directory_report.json",
                 line_number=1,
                 snippet=str(len(src_rows)),
                 message="source-like directories remain present and require XI-5 structural cleanup",
                 rule_id="WARN-SRC-DIRECTORY-PRESENT",
             )
         )
-    duplicate_impls, _ = _load_json_object(repo_root, "content/data/audit/duplicate_impls.json")
+    duplicate_impls, _ = _load_json_object(repo_root, "archive/generated/audit/duplicate_impls.json")
     duplicate_groups = list(duplicate_impls.get("groups") or [])
     if duplicate_groups:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/audit/duplicate_impls.json",
+                file_path="archive/generated/audit/duplicate_impls.json",
                 line_number=1,
                 snippet=str(len(duplicate_groups)),
                 message="duplicate implementation groups remain present and require XI convergence follow-up",
@@ -10240,7 +10240,7 @@ def _append_earth10_proxy_findings(
         (EARTH10_PROBE_PATH, "EARTH10 probe tooling is required", stability_rule_id),
         (EARTH10_AUDIT_COMMON_PATH, "EARTH10 audit common tooling is required", chemistry_rule_id),
         (EARTH10_REPLAY_TOOL_PATH, "EARTH10 replay tool is required", stability_rule_id),
-        ("tools/auditx/analyzers/e458_chemistry_leak_smell.py", "ChemistryLeakSmell analyzer is required", chemistry_rule_id),
+        ("tools/xstack/auditx/analyzers/e458_chemistry_leak_smell.py", "ChemistryLeakSmell analyzer is required", chemistry_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -10484,8 +10484,8 @@ def _append_sol1_findings(
         (SOL1_ENGINE_PATH, "illumination geometry engine is required", shortcut_rule_id),
         (SOL1_REPLAY_TOOL_PATH, "illumination replay tool is required", shortcut_rule_id),
         (SOL1_AUDIT_COMMON_PATH, "SOL1 audit common tooling is required", shortcut_rule_id),
-        ("tools/auditx/analyzers/e459_moon_phase_stored_smell.py", "MoonPhaseStoredSmell analyzer is required", stored_rule_id),
-        ("tools/auditx/analyzers/e460_phase_shortcut_smell.py", "PhaseShortcutSmell analyzer is required", shortcut_rule_id),
+        ("tools/xstack/auditx/analyzers/e459_moon_phase_stored_smell.py", "MoonPhaseStoredSmell analyzer is required", stored_rule_id),
+        ("tools/xstack/auditx/analyzers/e460_phase_shortcut_smell.py", "PhaseShortcutSmell analyzer is required", shortcut_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -10602,8 +10602,8 @@ def _append_sol2_findings(
         (SOL2_REPLAY_TOOL_PATH, "orbit replay tool is required", derived_rule_id),
         (SOL2_RUNTIME_COMMON_PATH, "SOL2 runtime common tooling is required", derived_rule_id),
         (SOL2_AUDIT_COMMON_PATH, "SOL2 audit common tooling is required", derived_rule_id),
-        ("tools/auditx/analyzers/e461_orbit_trace_stored_in_truth_smell.py", "OrbitTraceStoredInTruthSmell analyzer is required", derived_rule_id),
-        ("tools/auditx/analyzers/e462_nbody_leak_smell.py", "NBodyLeakSmell analyzer is required", nbody_rule_id),
+        ("tools/xstack/auditx/analyzers/e461_orbit_trace_stored_in_truth_smell.py", "OrbitTraceStoredInTruthSmell analyzer is required", derived_rule_id),
+        ("tools/xstack/auditx/analyzers/e462_nbody_leak_smell.py", "NBodyLeakSmell analyzer is required", nbody_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -10694,8 +10694,8 @@ def _append_gal0_findings(
         (GAL0_PROBE_PATH, "GAL0 probe tooling is required", stability_rule_id),
         (GAL0_AUDIT_COMMON_PATH, "GAL0 audit common tooling is required", catalog_rule_id),
         (GAL0_REPLAY_TOOL_PATH, "GAL0 replay tool is required", stability_rule_id),
-        ("tools/auditx/analyzers/e463_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
-        ("tools/auditx/analyzers/e464_catalog_dependency_smell.py", "CatalogDependencySmell analyzer is required", catalog_rule_id),
+        ("tools/xstack/auditx/analyzers/e463_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
+        ("tools/xstack/auditx/analyzers/e464_catalog_dependency_smell.py", "CatalogDependencySmell analyzer is required", catalog_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -10794,8 +10794,8 @@ def _append_gal1_findings(
         (GAL1_AUDIT_COMMON_PATH, "GAL1 audit common tooling is required", stability_rule_id),
         (GAL1_REPLAY_TOOL_PATH, "GAL1 replay tool is required", bounded_rule_id),
         (GAL1_BASELINE_PATH, "GAL1 baseline report is required", stability_rule_id),
-        ("tools/auditx/analyzers/e465_unbounded_galaxy_object_gen_smell.py", "UnboundedGalaxyObjectGenSmell analyzer is required", bounded_rule_id),
-        ("tools/auditx/analyzers/e466_galaxy_object_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
+        ("tools/xstack/auditx/analyzers/e465_unbounded_galaxy_object_gen_smell.py", "UnboundedGalaxyObjectGenSmell analyzer is required", bounded_rule_id),
+        ("tools/xstack/auditx/analyzers/e466_galaxy_object_untagged_stub_smell.py", "UntaggedStubSmell analyzer is required", stability_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -11062,8 +11062,8 @@ def _append_reserved_misuse_findings(
         return
     rel_norm = _norm(rel_path)
     exempt_roots = (
-        "contracts/schemas/",
-        "contracts/schemas/",
+        "contracts/schema/",
+        "contracts/schema/",
         "docs/",
         "packs/derived/",
     )
@@ -11240,7 +11240,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            has_schema_token = ("contracts/schemas/" in lower) or ("contracts/schemas/" in lower) or (".schema.json" in lower)
+            has_schema_token = ("contracts/schema/" in lower) or ("contracts/schema/" in lower) or (".schema.json" in lower)
             if has_schema_token and any(token in lower for token in io_read_tokens):
                 if not rel_norm.startswith(SCHEMA_READ_ALLOWED_PREFIXES):
                     findings.append(
@@ -11254,7 +11254,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-            if rel_norm.startswith(("apps/client/presentation/", "apps/client/ui/")):
+            if rel_norm.startswith(("apps/client/presentation/", "runtime/ui/client/")):
                 ui_bypass_tokens = (
                     "boot_session_spec(",
                     "create_session_spec(",
@@ -12210,8 +12210,8 @@ def _append_negative_invariant_findings(
         )
         micro_scan_paths = (
             observation_rel,
-            "tools/network/policies/policy_server_authoritative.py",
-            "tools/network/srz/shard_coordinator.py",
+            "tools/validators/network/policies/policy_server_authoritative.py",
+            "tools/validators/network/srz/shard_coordinator.py",
         )
         for rel_path in micro_scan_paths:
             for line_no, line in _iter_lines(repo_root, rel_path):
@@ -12240,7 +12240,7 @@ def _append_negative_invariant_findings(
                     )
                 )
 
-    memory_kernel_rel = "game/domains/epistemics/memory/memory_kernel.py"
+    memory_kernel_rel = "game/domain/epistemics/memory/memory_kernel.py"
     memory_kernel_abs = os.path.join(repo_root, memory_kernel_rel.replace("/", os.sep))
     if not os.path.isfile(memory_kernel_abs):
         findings.append(
@@ -12329,7 +12329,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-    instrument_kernel_rel = "game/domains/diegetics/instrument_kernel.py"
+    instrument_kernel_rel = "game/domain/diegetics/instrument_kernel.py"
     instrument_kernel_abs = os.path.join(repo_root, instrument_kernel_rel.replace("/", os.sep))
     if not os.path.isfile(instrument_kernel_abs):
         findings.append(
@@ -12871,7 +12871,7 @@ def _append_representation_invariant_findings(
 
     for rel_path in _iter_negative_code_files(repo_root):
         rel_norm = _norm(rel_path)
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/", "docs/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/", "docs/")):
             continue
         if "representation" not in rel_norm and "render_model.py" not in rel_norm:
             continue
@@ -13040,7 +13040,7 @@ def _append_representation_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="tools/render/tool_render_capture.py",
+                file_path="tools/validators/render/tool_render_capture.py",
                 line_number=1,
                 snippet="run_meta/render_snapshots",
                 message="render snapshot pipeline must define deterministic derived storage root",
@@ -13130,7 +13130,7 @@ def _append_ranked_governance_invariant_findings(
         rel_norm = _norm(rel_path)
         if rel_norm == "tools/xstack/repox/check.py":
             continue
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_norm):
             lower = str(line).lower()
@@ -13155,7 +13155,7 @@ def _append_hidden_ban_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    anti_engine_rel = "tools/network/anti_cheat/anti_cheat_engine.py"
+    anti_engine_rel = "tools/validators/network/anti_cheat/anti_cheat_engine.py"
     anti_engine_abs = os.path.join(repo_root, anti_engine_rel.replace("/", os.sep))
     if not os.path.isfile(anti_engine_abs):
         findings.append(
@@ -13204,9 +13204,9 @@ def _append_hidden_ban_invariant_findings(
             )
 
     termination_paths = (
-        "tools/network/policies/policy_server_authoritative.py",
-        "tools/network/srz/shard_coordinator.py",
-        "tools/network/policies/policy_lockstep.py",
+        "tools/validators/network/policies/policy_server_authoritative.py",
+        "tools/validators/network/srz/shard_coordinator.py",
+        "tools/validators/network/policies/policy_lockstep.py",
     )
     for rel_path in termination_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13267,7 +13267,7 @@ def _append_reality_profile_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_files = {
-        "contracts/schemas/universe_identity.schema.json": (
+        "contracts/schema/universe_identity.schema.json": (
             "physics_profile_id",
             "immutable_after_create",
             "initial_pack_set_hash_expectation",
@@ -13340,7 +13340,7 @@ def _append_reality_profile_invariant_findings(
     runtime_scan_roots = (
         "tools/xstack/sessionx/",
         "src/",
-        "game/domains/worldgen/",
+        "game/domain/worldgen/",
     )
     for rel_path in _iter_negative_code_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -13372,7 +13372,7 @@ def _append_phys_profile_declared_invariant_findings(
     severity = _strict_only_severity(profile)
     rule_id = "INV-PHYS-PROFILE-DECLARED"
 
-    session_schema_rel = "contracts/schemas/session_spec.schema.json"
+    session_schema_rel = "contracts/schema/session_spec.schema.json"
     payload, payload_error = _load_json_object(repo_root, session_schema_rel)
     if payload_error:
         findings.append(
@@ -13415,10 +13415,10 @@ def _append_phys_profile_declared_invariant_findings(
             )
 
     required_tokens = {
-        "contracts/schemas/session/session_spec.schema": (
+        "contracts/schema/session/session_spec.schema": (
             "physics_profile_id",
         ),
-        "contracts/schemas/examples/session_spec.example.json": (
+        "contracts/schema/examples/session_spec.example.json": (
             "\"physics_profile_id\"",
         ),
         "tools/xstack/testdata/session/session_spec.fixture.json": (
@@ -13494,9 +13494,9 @@ def _append_unregistered_quantity_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     skip_files = {
@@ -13569,7 +13569,7 @@ def _append_conservation_invariant_findings(
             "conservation_contract_set_id",
             "refusal.conservation_contract_set_mismatch",
         ),
-        "game/domains/reality/ledger/ledger_engine.py": (
+        "game/domain/reality/ledger/ledger_engine.py": (
             "finalize_process_accounting(",
             "record_unaccounted_delta(",
         ),
@@ -13712,12 +13712,12 @@ def _append_material_dimension_invariant_findings(
             "\"unit_registry\"",
             "\"base_dimension_registry\"",
         ),
-        "game/domains/reality/ledger/ledger_engine.py": (
+        "game/domain/reality/ledger/ledger_engine.py": (
             "_REFUSAL_DIMENSION_MISMATCH",
             "quantity_dimensions",
             "refusal.dimension.mismatch",
         ),
-        "game/domains/materials/dimension_engine.py": (
+        "game/domain/materials/dimension_engine.py": (
             "dimension_add(",
             "dimension_mul(",
             "dimension_div(",
@@ -13759,8 +13759,8 @@ def _append_material_dimension_invariant_findings(
             )
 
     invariant_math_files = (
-        "game/domains/materials/dimension_engine.py",
-        "game/domains/reality/ledger/ledger_engine.py",
+        "game/domain/materials/dimension_engine.py",
+        "game/domain/reality/ledger/ledger_engine.py",
     )
     for rel_path in invariant_math_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13857,7 +13857,7 @@ def _append_material_taxonomy_invariant_findings(
             )
 
     required_tokens = {
-        "game/domains/materials/composition_engine.py": (
+        "game/domain/materials/composition_engine.py": (
             "validate_compound_composition(",
             "validate_mixture_composition(",
             "validate_material_class(",
@@ -13962,7 +13962,7 @@ def _append_material_structure_invariant_findings(
             )
 
     required_tokens = {
-        "game/domains/materials/blueprint_engine.py": (
+        "game/domain/materials/blueprint_engine.py": (
             "compile_blueprint_artifacts(",
             "blueprint_compile_cache_key(",
             "REFUSAL_BLUEPRINT_MISSING_PART_CLASS",
@@ -14083,7 +14083,7 @@ def _append_material_logistics_invariant_findings(
             )
 
     required_no_silent_transfer_tokens = {
-        "game/domains/logistics/logistics_engine.py": (
+        "game/domain/logistics/logistics_engine.py": (
             "create_manifest_and_commitment(",
             "tick_manifests(",
             "shipment_depart",
@@ -14131,7 +14131,7 @@ def _append_material_logistics_invariant_findings(
             )
 
     required_routing_tokens = {
-        "game/domains/logistics/logistics_engine.py": (
+        "game/domain/logistics/logistics_engine.py": (
             "_best_route(",
             "sorted(",
             "heapq",
@@ -14237,7 +14237,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_commitment_tokens = {
-        "game/domains/materials/construction/construction_engine.py": (
+        "game/domain/materials/construction/construction_engine.py": (
             "_construction_commitment_row(",
             "milestone_commitment_ids",
             "start_commitment_id",
@@ -14282,7 +14282,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_provenance_tokens = {
-        "game/domains/materials/construction/construction_engine.py": (
+        "game/domain/materials/construction/construction_engine.py": (
             "_event_row(",
             "event.construct_project_created",
             "event.construct_step_started",
@@ -14329,7 +14329,7 @@ def _append_material_construction_invariant_findings(
             )
 
     required_ledger_tokens = {
-        "game/domains/materials/construction/construction_engine.py": (
+        "game/domain/materials/construction/construction_engine.py": (
             "ledger_deltas={\"quantity.mass\": -1 * int(total_mass_raw)}",
             "ledger_deltas={\"quantity.mass\": int(total_mass_raw)}",
         ),
@@ -14398,7 +14398,7 @@ def _append_material_maintenance_invariant_findings(
         )
 
     required_registry_tokens = {
-        "game/domains/materials/maintenance/decay_engine.py": (
+        "game/domain/materials/maintenance/decay_engine.py": (
             "failure_mode_rows_by_id(",
             "maintenance_policy_rows_by_id(",
             "backlog_growth_rule_rows_by_id(",
@@ -14476,7 +14476,7 @@ def _append_material_maintenance_invariant_findings(
             )
 
     required_no_silent_failure_tokens = {
-        "game/domains/materials/maintenance/decay_engine.py": (
+        "game/domain/materials/maintenance/decay_engine.py": (
             "_failure_event(",
             "_provenance_event(",
             "failed_mode_ids",
@@ -14521,7 +14521,7 @@ def _append_material_maintenance_invariant_findings(
             )
 
     required_commitment_tokens = {
-        "game/domains/materials/maintenance/decay_engine.py": (
+        "game/domain/materials/maintenance/decay_engine.py": (
             "schedule_maintenance_commitments(",
             "perform_inspection(",
             "perform_maintenance(",
@@ -14574,10 +14574,10 @@ def _append_material_materialization_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_schema_paths = (
-        "contracts/schemas/micro_part_instance.schema.json",
-        "contracts/schemas/materialization_state.schema.json",
-        "contracts/schemas/distribution_aggregate.schema.json",
-        "contracts/schemas/reenactment_descriptor.schema.json",
+        "contracts/schema/micro_part_instance.schema.json",
+        "contracts/schema/materialization_state.schema.json",
+        "contracts/schema/distribution_aggregate.schema.json",
+        "contracts/schema/reenactment_descriptor.schema.json",
     )
     for rel_path in required_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14627,7 +14627,7 @@ def _append_material_materialization_invariant_findings(
             )
 
     no_global_tokens = {
-        "game/domains/materials/materialization/materialization_engine.py": (
+        "game/domain/materials/materialization/materialization_engine.py": (
             "max_micro_parts",
             "REFUSAL_MATERIALIZATION_BUDGET_EXCEEDED",
             "materialize_structure_roi(",
@@ -14676,7 +14676,7 @@ def _append_material_materialization_invariant_findings(
             )
 
     deterministic_tokens = {
-        "game/domains/materials/materialization/materialization_engine.py": (
+        "game/domain/materials/materialization/materialization_engine.py": (
             "canonical_sha256",
             "\"stream\": \"materialization\"",
             "_stable_materialization_seed(",
@@ -14730,10 +14730,10 @@ def _append_material_commitment_reenactment_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_schema_paths = (
-        "contracts/schemas/commitment.schema.json",
-        "contracts/schemas/event_stream_index.schema.json",
-        "contracts/schemas/reenactment_request.schema.json",
-        "contracts/schemas/reenactment_artifact.schema.json",
+        "contracts/schema/commitment.schema.json",
+        "contracts/schema/event_stream_index.schema.json",
+        "contracts/schema/reenactment_request.schema.json",
+        "contracts/schema/reenactment_artifact.schema.json",
     )
     for rel_path in required_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14754,7 +14754,7 @@ def _append_material_commitment_reenactment_invariant_findings(
         "state[\"material_commitments\"]",
         "state[\"event_stream_indices\"]",
         "state[\"reenactment_requests\"]",
-        "state[\"reenactment_artifacts\"]",
+        "state[\"reenactment_archive\generated\archive\generated\archive\generated\artifacts\"]",
     )
     process_only_allowed_prefixes = (
         "tools/xstack/sessionx/process_runtime.py",
@@ -14783,7 +14783,7 @@ def _append_material_commitment_reenactment_invariant_findings(
             )
 
     causality_tokens = {
-        "game/domains/materials/commitments/commitment_engine.py": (
+        "game/domain/materials/commitments/commitment_engine.py": (
             "strictness_requires_commitment(",
             "REFUSAL_COMMITMENT_REQUIRED_MISSING",
             "resolve_causality_strictness_row(",
@@ -14829,7 +14829,7 @@ def _append_material_commitment_reenactment_invariant_findings(
             )
 
     derived_only_tokens = {
-        "game/domains/materials/commitments/commitment_engine.py": (
+        "game/domain/materials/commitments/commitment_engine.py": (
             "\"derived_only\": True",
             "build_reenactment_artifact(",
         ),
@@ -14922,7 +14922,7 @@ def _append_material_scale_invariant_findings(
             )
 
     required_tokens = {
-        "game/domains/materials/performance/mat_scale_engine.py": (
+        "game/domain/materials/performance/mat_scale_engine.py": (
             "DEFAULT_MAT_DEGRADATION_ORDER",
             "compute_mat_cost_usage(",
             "apply_mat_degradation_policy(",
@@ -14978,7 +14978,7 @@ def _append_material_scale_invariant_findings(
         "datetime.now(",
     )
     for rel_path in (
-        "game/domains/materials/performance/mat_scale_engine.py",
+        "game/domain/materials/performance/mat_scale_engine.py",
         "tools/materials/tool_generate_factory_planet_scenario.py",
         "tools/materials/tool_run_stress.py",
     ):
@@ -15106,17 +15106,17 @@ def _append_core_abstraction_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_files = {
-        "tools/core/graph/network_graph_engine.py": (
+        "tools/validators/core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
             ("normalize_network_graph(", "route_query(", "heapq.heappush("),
             "core graph substrate file missing deterministic graph tokens",
         ),
-        "tools/core/graph/routing_engine.py": (
+        "tools/validators/core/graph/routing_engine.py": (
             "INV-NETWORKGRAPH-ONLY",
             ("query_route_result(", "route_query_edges(", "build_route_cache_key("),
             "core routing substrate file missing deterministic NetworkGraph routing tokens",
         ),
-        "tools/core/schedule/schedule_engine.py": (
+        "tools/validators/core/schedule/schedule_engine.py": (
             "INV-NO-DUPLICATE-SCHEDULERS",
             ("normalize_schedule(", "advance_schedule(", "recurrence_rule"),
             "core schedule substrate file missing deterministic schedule tokens",
@@ -15126,17 +15126,17 @@ def _append_core_abstraction_invariant_findings(
             ("normalize_state_machine(", "apply_transition(", "trigger_process_id"),
             "core state-machine substrate file missing deterministic transition tokens",
         ),
-        "tools/core/constraints/constraint_engine.py": (
+        "tools/validators/core/constraints/constraint_engine.py": (
             "INV-CONSTRAINTS-USE-COMPONENT",
             ("normalize_constraint_component(", "tick_constraints(", "build_constraint_enforcement_hooks("),
             "core constraint substrate file missing deterministic constraint component tokens",
         ),
-        "tools/core/hazards/hazard_engine.py": (
+        "tools/validators/core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD-LOOPS",
             ("normalize_hazard_model(", "tick_hazard_models(", "consequence_process_id"),
             "core hazard substrate file missing deterministic hazard component tokens",
         ),
-        "tools/core/flow/flow_engine.py": (
+        "tools/validators/core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW-LOGIC",
             ("normalize_flow_channel(", "tick_flow_channels(", "normalize_flow_transfer_event(", "quantity_id"),
             "core flow substrate file missing deterministic flow tokens",
@@ -15321,7 +15321,7 @@ def _append_core_abstraction_invariant_findings(
             )
 
     flow_required_tokens = {
-        "game/domains/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
+        "game/domain/logistics/logistics_engine.py": ("tick_flow_channels(", "_best_route(", "flow_channel_id"),
         "tools/xstack/sessionx/process_runtime.py": ("_ledger_emit_exception(", "process.manifest_tick", "flow_transfer_events"),
     }
     for rel_path, tokens in flow_required_tokens.items():
@@ -15357,7 +15357,7 @@ def _append_core_abstraction_invariant_findings(
             )
 
     behavior_required_tokens = {
-        "game/domains/materials/maintenance/decay_engine.py": {
+        "game/domain/materials/maintenance/decay_engine.py": {
             "INV-NO-ADHOC-STATE-FLAGS": ("apply_transition(", "state_machine", "_STATE_MACHINE_TYPE_ID"),
             "INV-NO-ADHOC-SCHEDULERS": ("tick_schedules(", "_schedule_id(", "schedule_component"),
             "INV-NO-ADHOC-HAZARD-LOOPS": ("tick_hazard_models(", "_hazard_id(", "hazard_type_id"),
@@ -15410,7 +15410,7 @@ def _append_core_abstraction_invariant_findings(
                 )
 
     interior_required_tokens = {
-        "game/domains/interior/interior_engine.py": {
+        "game/domain/interior/interior_engine.py": {
             "INV-PORTAL-USES-STATE-MACHINE": (
                 "apply_portal_transition(",
                 "normalize_state_machine(",
@@ -15440,7 +15440,7 @@ def _append_core_abstraction_invariant_findings(
                 "interior.portal.",
             ),
         },
-        "game/domains/interior/compartment_flow_builder.py": {
+        "game/domain/interior/compartment_flow_builder.py": {
             "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
                 "normalize_flow_channel(",
                 "build_compartment_flow_channels(",
@@ -15452,7 +15452,7 @@ def _append_core_abstraction_invariant_findings(
                 "conductance_smoke",
             ),
         },
-        "game/domains/interior/compartment_flow_engine.py": {
+        "game/domain/interior/compartment_flow_engine.py": {
             "INV-INTERIOR-FLOWS-USE-FLOWSYSTEM": (
                 "tick_flow_channels(",
                 "build_compartment_flow_channels(",
@@ -15464,7 +15464,7 @@ def _append_core_abstraction_invariant_findings(
                 "_flow_balance_for_medium(",
             ),
         },
-        "game/domains/inspection/inspection_engine.py": {
+        "game/domain/inspection/inspection_engine.py": {
             "INV-INTERIOR-STATE-DIEGETIC-GATED": (
                 "section.interior.connectivity_summary",
                 "section.interior.flow_summary",
@@ -15541,7 +15541,7 @@ def _append_core_abstraction_invariant_findings(
                 "REFUSAL_POSE_NO_ACCESS_PATH",
             ),
         },
-        "game/domains/interaction/pose/pose_engine.py": {
+        "game/domain/interaction/pose/pose_engine.py": {
             "INV-POSE-REQUIRES-PROCESS": (
                 "def enter_pose_slot(",
                 "def exit_pose_slot(",
@@ -15549,7 +15549,7 @@ def _append_core_abstraction_invariant_findings(
                 "REFUSAL_POSE_NOT_OCCUPANT",
             ),
         },
-        "game/domains/interaction/mount/mount_engine.py": {
+        "game/domain/interaction/mount/mount_engine.py": {
             "INV-MOUNT-REQUIRES-PROCESS": (
                 "def attach_mount_points(",
                 "def detach_mount_point(",
@@ -15603,7 +15603,7 @@ def _append_core_abstraction_invariant_findings(
             continue
         if rel_path == "tools/xstack/repox/check.py":
             continue
-        if rel_path.startswith(("tools/xstack/out/", "tools/auditx/cache/")):
+        if rel_path.startswith(("tools/xstack/out/", "tools/xstack/auditx/cache/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_path):
             token = str(line).strip()
@@ -15639,7 +15639,7 @@ def _append_core_abstraction_invariant_findings(
             continue
         if not rel_path.startswith("src/"):
             continue
-        if rel_path.startswith(("game/domains/interior/", "tools/xstack/testx/tests/", "tests/")):
+        if rel_path.startswith(("game/domain/interior/", "tools/xstack/testx/tests/", "tests/")):
             continue
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         try:
@@ -15954,7 +15954,7 @@ def _append_boundary_blocker_invariant_findings(
         "tools/",
         "docs/",
         "build/",
-        "dist/",
+        "archive/generated/dist/",
         "legacy/",
         ".xstack_cache/",
     )
@@ -16030,7 +16030,7 @@ def _append_boundary_blocker_invariant_findings(
     envelope_skip_prefixes = (
         "tools/xstack/testx/tests/",
         "tools/xstack/out/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "tests/",
     )
     required_envelope_markers = (
@@ -16316,7 +16316,7 @@ def _append_deprecation_framework_invariant_findings(
                 if not name.endswith(runtime_file_exts):
                     continue
                 rel_norm = _norm(os.path.relpath(os.path.join(walk_root, name), repo_root))
-                if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/out/", "build/", "dist/")):
+                if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/out/", "build/", "archive/generated/dist/")):
                     continue
                 for line_no, line in _iter_lines(repo_root, rel_norm):
                     token = str(line)
@@ -16340,7 +16340,7 @@ def _append_deprecation_framework_invariant_findings(
     for rel_norm in changed_paths:
         if not rel_norm.startswith(all_code_prefixes):
             continue
-        if rel_norm.startswith(("docs/", "data/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tests/")):
+        if rel_norm.startswith(("docs/", "data/", "contracts/schema/", "contracts/schema/", "tools/xstack/testx/tests/", "tests/")):
             continue
         text = _file_text(repo_root, rel_norm)
         if not text:
@@ -16372,12 +16372,12 @@ def _append_retro_consistency_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     retro_required_files = {
-        "tools/core/graph/network_graph_engine.py": (
+        "tools/validators/core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH",
             ("normalize_network_graph(", "route_query("),
             "retro-consistency requires canonical core graph substrate",
         ),
-        "tools/core/flow/flow_engine.py": (
+        "tools/validators/core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW",
             ("normalize_flow_channel(", "tick_flow_channels("),
             "retro-consistency requires canonical core flow substrate",
@@ -16387,12 +16387,12 @@ def _append_retro_consistency_invariant_findings(
             ("normalize_state_machine(", "apply_transition("),
             "retro-consistency requires canonical state-machine substrate",
         ),
-        "tools/core/schedule/schedule_engine.py": (
+        "tools/validators/core/schedule/schedule_engine.py": (
             "INV-NO-ADHOC-SCHEDULER",
             ("normalize_schedule(", "tick_schedules("),
             "retro-consistency requires canonical schedule substrate",
         ),
-        "tools/core/hazards/hazard_engine.py": (
+        "tools/validators/core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD",
             ("normalize_hazard_model(", "tick_hazard_models("),
             "retro-consistency requires canonical hazard substrate",
@@ -16567,8 +16567,8 @@ def _append_retro_consistency_invariant_findings(
     allowed_intent_dispatch_paths = {
         "tools/governance/control_plane_engine.py",
         "apps/client/interaction/interaction_dispatch.py",
-        "tools/network/srz/shard_coordinator.py",
-        "tools/network/policies/policy_server_authoritative.py",
+        "tools/validators/network/srz/shard_coordinator.py",
+        "tools/validators/network/policies/policy_server_authoritative.py",
     }
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith(".py"):
@@ -16580,7 +16580,7 @@ def _append_retro_consistency_invariant_findings(
                 "tools/xstack/testx/tests/",
                 "tests/",
                 "tools/xstack/out/",
-                "tools/auditx/analyzers/",
+                "tools/xstack/auditx/analyzers/",
             )
         ):
             continue
@@ -16936,7 +16936,7 @@ def _append_time_constitution_invariant_findings(
         "tools/time/tool_time_branch_from_checkpoint.py": (
             "branch_from_checkpoint(",
         ),
-        "contracts/schemas/time/branch.schema": (
+        "contracts/schema/time/branch.schema": (
             "parent_save_id",
             "parent_checkpoint_id",
             "divergence_tick",
@@ -17020,7 +17020,7 @@ def _append_time_constitution_invariant_findings(
 
     strict_severity = _strict_only_severity(profile)
 
-    schedule_schema_rel = "contracts/schemas/schedule.schema.json"
+    schedule_schema_rel = "contracts/schema/schedule.schema.json"
     schedule_schema_payload, schedule_schema_error = _load_json_object(repo_root, schedule_schema_rel)
     if schedule_schema_error:
         findings.append(
@@ -17049,15 +17049,15 @@ def _append_time_constitution_invariant_findings(
             )
 
     schedule_domain_required_tokens = {
-        "contracts/schemas/core/schedule.schema": (
+        "contracts/schema/core/schedule.schema": (
             "temporal_domain_id",
         ),
-        "tools/core/schedule/schedule_engine.py": (
+        "tools/validators/core/schedule/schedule_engine.py": (
             "_normalize_temporal_domain_id(",
             "time.canonical_tick",
             "\"temporal_domain_id\": temporal_domain_id",
         ),
-        "game/domains/signals/aggregation/aggregation_engine.py": (
+        "game/domain/signals/aggregation/aggregation_engine.py": (
             "temporal_domain_id",
             "time.canonical_tick",
         ),
@@ -17221,7 +17221,7 @@ def _append_time_constitution_invariant_findings(
                 )
 
     deterministic_schedule_required_tokens = {
-        "tools/core/schedule/schedule_engine.py": (
+        "tools/validators/core/schedule/schedule_engine.py": (
             "resolve_domain_time_fn",
             "domain_evaluations",
             "due_events_sorted = sorted(",
@@ -17358,7 +17358,7 @@ def _append_time_constitution_invariant_findings(
     )
     canonical_tick_mutation_excluded_prefixes = (
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     )
     canonical_tick_mutation_allowed_paths = {
         "engine/time/time_engine.py",
@@ -17393,14 +17393,14 @@ def _append_time_constitution_invariant_findings(
 
     wallclock_runtime_scan_prefixes = (
         "src/time/",
-        "game/domains/reality/transitions/",
+        "game/domain/reality/transitions/",
         "src/performance/",
-        "game/domains/mobility/",
+        "game/domain/mobility/",
         "tools/xstack/sessionx/",
     )
     wallclock_runtime_excluded = (
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     )
     wallclock_runtime_pattern = re.compile(
         r"\b(?:time\.time|time\.perf_counter|time\.monotonic|datetime\.now|datetime\.utcnow|time\.sleep)\s*\(",
@@ -17452,9 +17452,9 @@ def _append_time_constitution_invariant_findings(
     )
     future_receipt_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     for rel_path in _scan_files(repo_root):
@@ -17568,7 +17568,7 @@ def _append_time_constitution_invariant_findings(
     )
     adaptive_scan_prefixes = (
         "src/time/",
-        "game/domains/interior/",
+        "game/domain/interior/",
         "tools/xstack/sessionx/",
     )
     for rel_path in _scan_files(repo_root):
@@ -17577,7 +17577,7 @@ def _append_time_constitution_invariant_findings(
             continue
         if not rel_norm.startswith(adaptive_scan_prefixes):
             continue
-        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_norm):
             snippet = str(line).strip()
@@ -17605,7 +17605,7 @@ def _append_tier_transition_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    transition_controller_rel = "game/domains/reality/transitions/transition_controller.py"
+    transition_controller_rel = "game/domain/reality/transitions/transition_controller.py"
     transition_controller_abs = os.path.join(repo_root, transition_controller_rel.replace("/", os.sep))
     try:
         transition_controller_text = open(transition_controller_abs, "r", encoding="utf-8").read()
@@ -17709,7 +17709,7 @@ def _append_tier_transition_invariant_findings(
             )
         )
 
-    transition_event_schema_rel = "contracts/schemas/reality/transition_event.schema"
+    transition_event_schema_rel = "contracts/schema/reality/transition_event.schema"
     transition_event_schema_abs = os.path.join(repo_root, transition_event_schema_rel.replace("/", os.sep))
     try:
         transition_event_schema_text = open(transition_event_schema_abs, "r", encoding="utf-8").read()
@@ -17741,7 +17741,7 @@ def _append_tier_transition_invariant_findings(
                 )
             )
 
-    universe_state_schema_rel = "contracts/schemas/universe_state.schema.json"
+    universe_state_schema_rel = "contracts/schema/universe_state.schema.json"
     universe_state_schema_abs = os.path.join(repo_root, universe_state_schema_rel.replace("/", os.sep))
     try:
         universe_state_schema_text = open(universe_state_schema_abs, "r", encoding="utf-8").read()
@@ -17804,7 +17804,7 @@ def _append_performance_constitution_invariant_findings(
     cost_engine_rel = "tools/performance/cost_engine.py"
     inspection_cache_rel = "tools/performance/inspection_cache.py"
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    transition_controller_rel = "game/domains/reality/transitions/transition_controller.py"
+    transition_controller_rel = "game/domain/reality/transitions/transition_controller.py"
 
     for rel_path, required_tokens in (
         (
@@ -17973,7 +17973,7 @@ def _append_performance_constitution_invariant_findings(
                     )
                 )
 
-    inspection_engine_rel = "game/domains/inspection/inspection_engine.py"
+    inspection_engine_rel = "game/domain/inspection/inspection_engine.py"
     inspection_engine_abs = os.path.join(repo_root, inspection_engine_rel.replace("/", os.sep))
     try:
         inspection_engine_text = open(inspection_engine_abs, "r", encoding="utf-8").read()
@@ -18358,7 +18358,7 @@ def _append_interaction_invariant_findings(
                 )
             )
 
-    task_engine_rel = "game/domains/interaction/task/task_engine.py"
+    task_engine_rel = "game/domain/interaction/task/task_engine.py"
     task_engine_abs = os.path.join(repo_root, task_engine_rel.replace("/", os.sep))
     try:
         task_engine_text = open(task_engine_abs, "r", encoding="utf-8").read()
@@ -18685,7 +18685,7 @@ def _append_interaction_invariant_findings(
                 )
 
     machine_data_tokens = {
-        "game/domains/machines/port_engine.py": (
+        "game/domain/machines/port_engine.py": (
             "port_type_rows_by_id(",
             "machine_type_rows_by_id(",
             "machine_operation_rows_by_id(",
@@ -18736,7 +18736,7 @@ def _append_interaction_invariant_findings(
             "event.batch_created",
             "_machine_output_batch_id(",
         ),
-        "game/domains/machines/port_engine.py": (
+        "game/domain/machines/port_engine.py": (
             "extract_from_port(",
         ),
     }
@@ -19347,27 +19347,19 @@ def _append_meta_contract_invariant_findings(
             )
 
         direct_coupling_patterns_by_prefix = {
-            "game/domains/electricity/": (
+            "game/domain/electricity/": (
                 re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
             ),
-            "game/domains/thermal/": (
+            "game/domain/thermal/": (
                 re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
             ),
-            "game/domains/signals/": (
-                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-                re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
-                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
-                re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
-                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
-            ),
-            "game/domains/mobility/": (
+            "game/domain/signals/": (
                 re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
@@ -19375,7 +19367,15 @@ def _append_meta_contract_invariant_findings(
                 re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
                 re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
             ),
-            "game/domains/fluids/": (
+            "game/domain/mobility/": (
+                re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\belec_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']thermal_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']elec_", re.IGNORECASE),
+                re.compile(r"\bstate\s*\[\s*[\"']mech_", re.IGNORECASE),
+            ),
+            "game/domain/fluids/": (
                 re.compile(r"\bthermal_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bint_[a-z0-9_]+\b\s*=", re.IGNORECASE),
                 re.compile(r"\bmech_[a-z0-9_]+\b\s*=", re.IGNORECASE),
@@ -19387,9 +19387,9 @@ def _append_meta_contract_invariant_findings(
         scan_prefixes = tuple(direct_coupling_patterns_by_prefix.keys())
         skip_prefixes = (
             "docs/",
-            "contracts/schemas/",
-            "contracts/schemas/",
-            "tools/auditx/analyzers/",
+            "contracts/schema/",
+            "contracts/schema/",
+            "tools/xstack/auditx/analyzers/",
             "tools/xstack/testx/tests/",
         )
         allowed_files = {
@@ -19837,7 +19837,7 @@ def _append_platform_renderer_invariant_findings(
                 )
             )
 
-    hw_renderer_rel = "apps/client/render/renderers/hw_renderer_gl.py"
+    hw_renderer_rel = "runtime/render/client/renderers/hw_renderer_gl.py"
     hw_renderer_abs = os.path.join(repo_root, hw_renderer_rel.replace("/", os.sep))
     try:
         hw_text = open(hw_renderer_abs, "r", encoding="utf-8").read()
@@ -19930,7 +19930,7 @@ def _append_control_ir_enforcement_invariant_findings(
     scan_roots = (
         "src/control",
         "tools/xstack/sessionx",
-        "game/domains/materials/construction",
+        "game/domain/materials/construction",
     )
     for root in scan_roots:
         abs_root = os.path.join(repo_root, root.replace("/", os.sep))
@@ -20014,7 +20014,7 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
         if rel_path.startswith(
             (
                 "tools/xstack/testx/tests/",
-                "tools/auditx/analyzers/",
+                "tools/xstack/auditx/analyzers/",
                 "tools/xstack/repox/",
                 "docs/",
             )
@@ -20074,15 +20074,15 @@ def _append_fidelity_engine_enforcement_invariant_findings(
         )
 
     domain_required_tokens = {
-        "game/domains/materials/materialization/materialization_engine.py": (
+        "game/domain/materials/materialization/materialization_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
-        "game/domains/inspection/inspection_engine.py": (
+        "game/domain/inspection/inspection_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
-        "game/domains/materials/commitments/commitment_engine.py": (
+        "game/domain/materials/commitments/commitment_engine.py": (
             "build_fidelity_request(",
             "arbitrate_fidelity_requests(",
         ),
@@ -20126,9 +20126,9 @@ def _append_fidelity_engine_enforcement_invariant_findings(
         "if desired_fidelity == \"micro\" and not micro_allowed",
     )
     for rel_path in (
-        "game/domains/materials/commitments/commitment_engine.py",
-        "game/domains/materials/materialization/materialization_engine.py",
-        "game/domains/inspection/inspection_engine.py",
+        "game/domain/materials/commitments/commitment_engine.py",
+        "game/domain/materials/materialization/materialization_engine.py",
+        "game/domain/inspection/inspection_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         if not text:
@@ -20255,7 +20255,7 @@ def _append_capability_enforcement_invariant_findings(
     control_plane_rel = "tools/governance/control_plane_engine.py"
     plan_engine_rel = "tools/governance/planning/plan_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    power_engine_rel = "game/domains/electricity/power_network_engine.py"
+    power_engine_rel = "game/domain/electricity/power_network_engine.py"
 
     capability_registry_text = _file_text(repo_root, capability_registry_rel)
     capability_engine_text = _file_text(repo_root, capability_engine_rel)
@@ -20394,9 +20394,9 @@ def _append_capability_enforcement_invariant_findings(
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith(".py"):
             continue
-        if rel_path.startswith(("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")):
+        if rel_path.startswith(("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/", "docs/")):
             continue
-        if not rel_path.startswith(("src/control/", "game/domains/interaction/", "tools/xstack/sessionx/")):
+        if not rel_path.startswith(("src/control/", "game/domain/interaction/", "tools/xstack/sessionx/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_path):
             snippet = str(line).strip()
@@ -20540,7 +20540,7 @@ def _append_effect_system_invariant_findings(
         if rel_norm.startswith(
             (
                 "tools/xstack/testx/tests/",
-                "tools/auditx/analyzers/",
+                "tools/xstack/auditx/analyzers/",
                 "docs/",
             )
         ):
@@ -20631,7 +20631,7 @@ def _append_specsheet_invariant_findings(
     skip_prefixes = (
         "src/specs/",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "docs/",
     )
     for rel_path in _scan_files(repo_root):
@@ -20670,7 +20670,7 @@ def _append_formalization_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    inference_rel = "game/domains/infrastructure/formalization/inference_engine.py"
+    inference_rel = "game/domain/infrastructure/formalization/inference_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_action_registry_rel = "contracts/registry/control_action_registry.json"
     control_policy_registry_rel = "contracts/registry/control_policy_registry.json"
@@ -20834,7 +20834,7 @@ def _append_formalization_invariant_findings(
         "tools/xstack/sessionx/process_runtime.py",
         "contracts/registry/control_action_registry.json",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "docs/",
     )
     for rel_path in _scan_files(repo_root):
@@ -20845,7 +20845,7 @@ def _append_formalization_invariant_findings(
             continue
         if rel_norm.startswith(allowed_literal_prefixes):
             continue
-        if rel_norm.startswith(("build/", "dist/", ".xstack_cache/")):
+        if rel_norm.startswith(("build/", "archive/generated/dist/", ".xstack_cache/")):
             continue
         for line_no, line in _iter_lines(repo_root, rel_norm):
             snippet = str(line).strip()
@@ -20867,7 +20867,7 @@ def _append_formalization_invariant_findings(
 
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
-        if not rel_norm.startswith(("src/client/", "game/domains/interaction/")):
+        if not rel_norm.startswith(("src/client/", "game/domain/interaction/")):
             continue
         if not rel_norm.endswith(".py"):
             continue
@@ -20899,7 +20899,7 @@ def _append_mechanics_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    mechanics_engine_rel = "game/domains/mechanics/structural_graph_engine.py"
+    mechanics_engine_rel = "game/domain/mechanics/structural_graph_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     engine_text = _file_text(repo_root, mechanics_engine_rel)
     runtime_text = _file_text(repo_root, runtime_rel)
@@ -20961,10 +20961,10 @@ def _append_mechanics_invariant_findings(
     )
     structural_failure_pattern = re.compile(r"failure_state[^\\n=]*=\s*[\"']failed[\"']", re.IGNORECASE)
     skip_prefixes = (
-        "game/domains/mechanics/",
+        "game/domain/mechanics/",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "docs/",
     )
     for rel_path in _scan_files(repo_root):
@@ -21013,7 +21013,7 @@ def _append_field_invariant_findings(
     severity = _invariant_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    field_engine_rel = "game/domains/fields/field_engine.py"
+    field_engine_rel = "game/domain/fields/field_engine.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     field_text = _file_text(repo_root, field_engine_rel)
     if (not runtime_text) or (not field_text):
@@ -21081,15 +21081,15 @@ def _append_field_invariant_findings(
         re.IGNORECASE,
     )
     allowed_prefixes = (
-        "game/domains/fields/",
+        "game/domain/fields/",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "docs/",
         "data/",
-        "contracts/schemas/",
-        "contracts/schemas/",
+        "contracts/schema/",
+        "contracts/schema/",
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21161,7 +21161,7 @@ def _append_field_generalization_invariant_findings(
     else:
         token_pattern = re.compile(r"\bfield\.[A-Za-z0-9_.-]+\b")
         scan_paths = (
-            "game/domains/fields/",
+            "game/domain/fields/",
             "models/model_engine.py",
             "tools/xstack/sessionx/process_runtime.py",
             "contracts/registry/field_type_registry.json",
@@ -21263,14 +21263,14 @@ def _append_field_generalization_invariant_findings(
     )
     mutation_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     mutation_allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "game/domains/fields/field_engine.py",
+        "game/domain/fields/field_engine.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21301,7 +21301,7 @@ def _append_field_generalization_invariant_findings(
             break
 
     sample_api_files = {
-        "game/domains/fields/field_engine.py": (
+        "game/domain/fields/field_engine.py": (
             "def get_field_value(",
             "def build_field_sample(",
             "def normalize_field_sample_rows(",
@@ -21311,7 +21311,7 @@ def _append_field_generalization_invariant_findings(
             "normalize_field_sample_rows(",
             "build_field_sample(",
         ),
-        "game/domains/signals/transport/channel_executor.py": (
+        "game/domain/signals/transport/channel_executor.py": (
             "build_field_sample(",
             "_field_sample_cache_key(",
             "_sample_field_permille(",
@@ -21357,15 +21357,15 @@ def _append_field_generalization_invariant_findings(
     )
     sample_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     sample_allowed_files = {
-        "game/domains/fields/field_engine.py",
+        "game/domain/fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "game/domains/inspection/inspection_engine.py",
+        "game/domain/inspection/inspection_engine.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -21443,10 +21443,10 @@ def _append_geo_portability_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    field_engine_rel = "game/domains/fields/field_engine.py"
-    pollution_rel = "game/domains/pollution/dispersion_engine.py"
-    representation_rel = "apps/client/render/representation_resolver.py"
-    renderer_rel = "apps/client/render/renderers/software_renderer.py"
+    field_engine_rel = "game/domain/fields/field_engine.py"
+    pollution_rel = "game/domain/pollution/dispersion_engine.py"
+    representation_rel = "runtime/render/client/representation_resolver.py"
+    renderer_rel = "runtime/render/client/renderers/software_renderer.py"
 
     field_text = _file_text(repo_root, field_engine_rel)
     if "geo_partition_cell_key(" not in field_text:
@@ -21553,10 +21553,10 @@ def _append_geo_identity_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    index_rel = "game/domains/geology/index/geo_index_engine.py"
-    object_rel = "game/domains/geology/index/object_id_engine.py"
-    geo_init_rel = "game/domains/geology/__init__.py"
-    tool_rel = "tools/geo/tool_verify_id_stability.py"
+    index_rel = "game/domain/geology/index/geo_index_engine.py"
+    object_rel = "game/domain/geology/index/object_id_engine.py"
+    geo_init_rel = "game/domain/geology/__init__.py"
+    tool_rel = "tools/validators/domain/geology/tool_verify_id_stability.py"
     registry_rel = "contracts/registry/object_kind_registry.json"
 
     index_text = _file_text(repo_root, index_rel)
@@ -21674,10 +21674,10 @@ def _append_geo_frame_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    frame_engine_rel = "game/domains/geology/frame/frame_engine.py"
-    adapters_rel = "game/domains/geology/frame/domain_adapters.py"
-    render_rel = "game/domains/geology/render/floating_origin_policy.py"
-    geo_init_rel = "game/domains/geology/__init__.py"
+    frame_engine_rel = "game/domain/geology/frame/frame_engine.py"
+    adapters_rel = "game/domain/geology/frame/domain_adapters.py"
+    render_rel = "game/domain/geology/render/floating_origin_policy.py"
+    geo_init_rel = "game/domain/geology/__init__.py"
 
     frame_engine_text = _file_text(repo_root, frame_engine_rel)
     for required_token in ("frame_get_transform(", "position_to_frame(", "position_distance("):
@@ -21769,14 +21769,14 @@ def _append_geo_metric_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     metric_registry_rel = "contracts/registry/metric_profile_registry.json"
-    metric_engine_rel = "game/domains/geology/metric/metric_engine.py"
-    neighborhood_rel = "game/domains/geology/metric/neighborhood_engine.py"
-    field_rel = "game/domains/fields/field_engine.py"
-    pollution_rel = "game/domains/pollution/dispersion_engine.py"
-    mobility_geometry_rel = "game/domains/mobility/geometry/geometry_engine.py"
-    mobility_micro_rel = "game/domains/mobility/micro/constrained_motion_solver.py"
-    roi_rel = "game/domains/systems/roi/system_roi_scheduler.py"
-    tool_rel = "tools/geo/tool_verify_metric_stability.py"
+    metric_engine_rel = "game/domain/geology/metric/metric_engine.py"
+    neighborhood_rel = "game/domain/geology/metric/neighborhood_engine.py"
+    field_rel = "game/domain/fields/field_engine.py"
+    pollution_rel = "game/domain/pollution/dispersion_engine.py"
+    mobility_geometry_rel = "game/domain/mobility/geometry/geometry_engine.py"
+    mobility_micro_rel = "game/domain/mobility/micro/constrained_motion_solver.py"
+    roi_rel = "game/domain/systems/roi/system_roi_scheduler.py"
+    tool_rel = "tools/validators/domain/geology/tool_verify_metric_stability.py"
 
     metric_registry_text = _file_text(repo_root, metric_registry_rel)
     for required_token in ('"metric_policy_id"', '"geodesic_approx_policy_id"'):
@@ -21936,11 +21936,11 @@ def _append_geo_field_binding_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    field_rel = "game/domains/fields/field_engine.py"
-    field_wrapper_rel = "game/domains/fields/from_root_field/field_engine.py"
-    boundary_rel = "game/domains/fields/from_root_field/field_boundary_exchange.py"
+    field_rel = "game/domain/fields/field_engine.py"
+    field_wrapper_rel = "game/domain/fields/from_root_field/field_engine.py"
+    boundary_rel = "game/domain/fields/from_root_field/field_boundary_exchange.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    proof_tool_rel = "tools/geo/tool_replay_field_geo_window.py"
+    proof_tool_rel = "tools/validators/domain/geology/tool_replay_field_geo_window.py"
 
     field_text = _file_text(repo_root, field_rel)
     for required_token in ("geo_cell_key", "def field_get_value(", "def field_sample_position_ref(", "def field_sample_neighborhood("):
@@ -22022,11 +22022,11 @@ def _append_geo_projection_lens_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    projection_rel = "game/domains/geology/projection/projection_engine.py"
-    adapter_rel = "game/domains/geology/projection/view_adapters.py"
-    lens_rel = "game/domains/geology/lens/lens_engine.py"
-    cctv_rel = "game/domains/geology/lens/cctv_engine.py"
-    proof_tool_rel = "tools/geo/tool_replay_view_window.py"
+    projection_rel = "game/domain/geology/projection/projection_engine.py"
+    adapter_rel = "game/domain/geology/projection/view_adapters.py"
+    lens_rel = "game/domain/geology/lens/lens_engine.py"
+    cctv_rel = "game/domain/geology/lens/cctv_engine.py"
+    proof_tool_rel = "tools/validators/domain/geology/tool_replay_view_window.py"
 
     projection_text = _file_text(repo_root, projection_rel)
     for required_token in ("build_projection_request(", "project_view_cells(", "projection_request_hash("):
@@ -22147,9 +22147,9 @@ def _append_geo_pathing_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    path_rel = "game/domains/geology/path/path_engine.py"
-    shard_rel = "game/domains/geology/path/shard_route_planner.py"
-    proof_tool_rel = "tools/geo/tool_replay_path_request.py"
+    path_rel = "game/domain/geology/path/path_engine.py"
+    shard_rel = "game/domain/geology/path/shard_route_planner.py"
+    proof_tool_rel = "tools/validators/domain/geology/tool_replay_path_request.py"
 
     path_text = _file_text(repo_root, path_rel)
     for required_token, rule_id, message in (
@@ -22238,12 +22238,12 @@ def _append_geo_geometry_edit_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "game/domains/geology/edit/geometry_state_engine.py"
+    engine_rel = "game/domain/geology/edit/geometry_state_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    proof_tool_rel = "tools/geo/tool_replay_geometry_window.py"
+    proof_tool_rel = "tools/validators/domain/geology/tool_replay_geometry_window.py"
     control_proof_rel = "tools/governance/proof/control_proof_bundle.py"
-    server_proof_rel = "tools/network/policies/policy_server_authoritative.py"
-    shard_proof_rel = "tools/network/srz/shard_coordinator.py"
+    server_proof_rel = "tools/validators/network/policies/policy_server_authoritative.py"
+    shard_proof_rel = "tools/validators/network/srz/shard_coordinator.py"
 
     engine_text = _file_text(repo_root, engine_rel)
     for required_token in (
@@ -22383,7 +22383,7 @@ def _append_geo_geometry_edit_invariant_findings(
         re.compile(r"\bstate\s*\[\s*[\"']geometry_chunk_states[\"']\s*\]\s*=", re.IGNORECASE),
     )
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
-    skip_prefixes = ("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")
+    skip_prefixes = ("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/", "docs/")
     allowed_files = {
         runtime_rel,
     }
@@ -22422,17 +22422,17 @@ def _append_geo_worldgen_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "game/domains/geology/worldgen/worldgen_engine.py"
+    engine_rel = "game/domain/geology/worldgen/worldgen_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     creator_rel = "tools/xstack/sessionx/creator.py"
     runner_rel = "tools/xstack/sessionx/runner.py"
     script_runner_rel = "tools/xstack/sessionx/script_runner.py"
-    projection_rel = "game/domains/geology/projection/projection_engine.py"
-    roi_rel = "game/domains/systems/roi/system_roi_scheduler.py"
-    replay_tool_rel = "tools/geo/tool_replay_worldgen_cell.py"
-    geo_init_rel = "game/domains/geology/__init__.py"
-    schema_rel = "contracts/schemas/universe/universe_identity.schema"
-    schema_json_rel = "contracts/schemas/universe_identity.schema.json"
+    projection_rel = "game/domain/geology/projection/projection_engine.py"
+    roi_rel = "game/domain/systems/roi/system_roi_scheduler.py"
+    replay_tool_rel = "tools/validators/domain/geology/tool_replay_worldgen_cell.py"
+    geo_init_rel = "game/domain/geology/__init__.py"
+    schema_rel = "contracts/schema/universe/universe_identity.schema"
+    schema_json_rel = "contracts/schema/universe_identity.schema.json"
     realism_registry_rel = "contracts/registry/realism_profile_registry.json"
     generator_registry_rel = "contracts/registry/generator_version_registry.json"
 
@@ -22621,15 +22621,15 @@ def _append_geo_overlay_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    engine_rel = "game/domains/geology/overlay/overlay_merge_engine.py"
+    engine_rel = "game/domain/geology/overlay/overlay_merge_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     creator_rel = "tools/xstack/sessionx/creator.py"
-    replay_tool_rel = "tools/geo/tool_replay_overlay_merge.py"
-    explain_tool_rel = "tools/geo/tool_explain_property_origin.py"
-    geo_init_rel = "game/domains/geology/__init__.py"
+    replay_tool_rel = "tools/validators/domain/geology/tool_replay_overlay_merge.py"
+    explain_tool_rel = "tools/validators/domain/geology/tool_explain_property_origin.py"
+    geo_init_rel = "game/domain/geology/__init__.py"
     control_proof_rel = "tools/governance/proof/control_proof_bundle.py"
-    server_proof_rel = "tools/network/policies/policy_server_authoritative.py"
-    shard_proof_rel = "tools/network/srz/shard_coordinator.py"
+    server_proof_rel = "tools/validators/network/policies/policy_server_authoritative.py"
+    shard_proof_rel = "tools/validators/network/srz/shard_coordinator.py"
     overlay_policy_registry_rel = "contracts/registry/overlay_policy_registry.json"
 
     engine_text = _file_text(repo_root, engine_rel)
@@ -22852,7 +22852,7 @@ def _append_geo_overlay_invariant_findings(
         ),
     )
     scan_prefixes = ("src/", "tools/")
-    skip_prefixes = ("tools/xstack/testx/tests/", "tools/auditx/analyzers/", "docs/")
+    skip_prefixes = ("tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/", "docs/")
     allowed_files = {
         engine_rel,
         runtime_rel,
@@ -22898,13 +22898,13 @@ def _append_geo_envelope_invariant_findings(
     budget_rule_id = "INV-GEO-BUDGETED"
     identity_rule_id = "INV-GEO-ID-STABLE"
 
-    scenario_tool_rel = "tools/geo/tool_generate_geo_stress.py"
-    scenario_common_rel = "tools/geo/geo10_stress_common.py"
-    runtime_rel = "tools/geo/geo10_stress_runtime.py"
-    stress_tool_rel = "tools/geo/tool_run_geo_stress.py"
-    replay_tool_rel = "tools/geo/tool_replay_geo_window.py"
-    overlay_tool_rel = "tools/geo/tool_verify_overlay_identity.py"
-    degradation_rel = "game/domains/geology/degradation_policy.py"
+    scenario_tool_rel = "tools/validators/domain/geology/tool_generate_geo_stress.py"
+    scenario_common_rel = "tools/validators/domain/geology/geo10_stress_common.py"
+    runtime_rel = "tools/validators/domain/geology/geo10_stress_runtime.py"
+    stress_tool_rel = "tools/validators/domain/geology/tool_run_geo_stress.py"
+    replay_tool_rel = "tools/validators/domain/geology/tool_replay_geo_window.py"
+    overlay_tool_rel = "tools/validators/domain/geology/tool_verify_overlay_identity.py"
+    degradation_rel = "game/domain/geology/degradation_policy.py"
     regression_rel = "tests/fixtures/regression/geo_full_baseline.json"
 
     for rel_path in (
@@ -23158,7 +23158,7 @@ def _append_mobility_invariant_findings(
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     control_plane_rel = "tools/governance/control_plane_engine.py"
     constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
-    travel_engine_rel = "game/domains/mobility/travel/travel_engine.py"
+    travel_engine_rel = "game/domain/mobility/travel/travel_engine.py"
 
     runtime_text = _file_text(repo_root, process_runtime_rel)
     control_text = _file_text(repo_root, control_plane_rel)
@@ -23303,11 +23303,11 @@ def _append_mobility_invariant_findings(
     guide_geometry_tokens = ("guide_geometry", "guide spline", "follow_spline", "constraint.follow_spline")
 
     train_skip_prefixes = (
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
+        "contracts/schema/",
+        "contracts/schema/",
     )
     mobility_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     for rel_path in _scan_files(repo_root):
@@ -23472,7 +23472,7 @@ def _append_mobility_invariant_findings(
     )
     adhoc_stop_allowed = {
         process_runtime_rel,
-        "game/domains/mobility/signals/signal_engine.py",
+        "game/domain/mobility/signals/signal_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23712,7 +23712,7 @@ def _append_mobility_invariant_findings(
     derail_bypass_pattern = re.compile(r"\b(?:incident\.derailment|vehicle_derailed)\b", re.IGNORECASE)
     derail_allowed_files = {
         process_runtime_rel,
-        "game/domains/mobility/micro/constrained_motion_solver.py",
+        "game/domain/mobility/micro/constrained_motion_solver.py",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -23744,7 +23744,7 @@ def _append_mobility_invariant_findings(
 
     wallclock_motion_pattern = re.compile(r"\b(?:time\.time|datetime\.now|perf_counter|monotonic)\s*\(", re.IGNORECASE)
     wallclock_scan_prefixes = (
-        "game/domains/mobility/",
+        "game/domain/mobility/",
         "tools/xstack/sessionx/",
     )
     for rel_path in _scan_files(repo_root):
@@ -23780,8 +23780,8 @@ def _append_mobility_invariant_findings(
     )
     adhoc_friction_wind_allowed = {
         process_runtime_rel,
-        "game/domains/fields/field_engine.py",
-        "game/domains/mobility/micro/free_motion_solver.py",
+        "game/domain/fields/field_engine.py",
+        "game/domain/mobility/micro/free_motion_solver.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23821,7 +23821,7 @@ def _append_mobility_invariant_findings(
     )
     adhoc_wear_allowed = {
         process_runtime_rel,
-        "game/domains/mobility/maintenance/wear_engine.py",
+        "game/domain/mobility/maintenance/wear_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -23906,9 +23906,9 @@ def _append_mobility_invariant_findings(
     )
     adhoc_vehicle_cabin_allowed = {
         process_runtime_rel,
-        "game/domains/interior/compartment_flow_engine.py",
-        "game/domains/interior/compartment_flow_builder.py",
-        "game/domains/inspection/inspection_engine.py",
+        "game/domain/interior/compartment_flow_engine.py",
+        "game/domain/interior/compartment_flow_builder.py",
+        "game/domain/inspection/inspection_engine.py",
         "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
@@ -24010,8 +24010,8 @@ def _append_mobility_invariant_findings(
     )
     adhoc_congestion_allowed = {
         process_runtime_rel,
-        "game/domains/mobility/travel/travel_engine.py",
-        "game/domains/mobility/traffic/traffic_engine.py",
+        "game/domain/mobility/travel/travel_engine.py",
+        "game/domain/mobility/traffic/traffic_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24048,13 +24048,13 @@ def _append_mobility_invariant_findings(
     )
     adhoc_routing_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     adhoc_routing_allow = {
-        "tools/core/graph/routing_engine.py",
+        "tools/validators/core/graph/routing_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -24146,9 +24146,9 @@ def _append_mobility_invariant_findings(
     )
     gauge_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
         "src/specs/",
     )
@@ -24266,15 +24266,15 @@ def _append_safety_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
         runtime_rel,
         safety_engine_rel,
-        "game/domains/mobility/signals/signal_engine.py",
+        "game/domain/mobility/signals/signal_engine.py",
         "tools/xstack/sessionx/observation.py",
         "tools/xstack/repox/check.py",
     }
@@ -24315,7 +24315,7 @@ def _append_electric_invariant_findings(
     severity = "warn"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    power_engine_rel = "game/domains/electricity/power_network_engine.py"
+    power_engine_rel = "game/domain/electricity/power_network_engine.py"
     runtime_text = _file_text(repo_root, runtime_rel)
     power_engine_text = _file_text(repo_root, power_engine_rel)
 
@@ -24410,7 +24410,7 @@ def _append_electric_invariant_findings(
         )
 
     observation_rel = "tools/xstack/sessionx/observation.py"
-    inspection_rel = "game/domains/inspection/inspection_engine.py"
+    inspection_rel = "game/domain/inspection/inspection_engine.py"
     overlay_rel = "apps/client/interaction/inspection_overlays.py"
     control_registry_rel = "contracts/registry/control_action_registry.json"
     action_template_rel = "contracts/registry/action_template_registry.json"
@@ -24533,15 +24533,15 @@ def _append_electric_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_power_loss_files = {
         runtime_rel,
         power_engine_rel,
-        "tools/core/flow/flow_engine.py",
+        "tools/validators/core/flow/flow_engine.py",
         "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
@@ -24552,8 +24552,8 @@ def _append_electric_invariant_findings(
     }
     allowed_fault_trip_files = {
         runtime_rel,
-        "game/domains/electricity/fault/fault_engine.py",
-        "game/domains/electricity/protection/protection_engine.py",
+        "game/domain/electricity/fault/fault_engine.py",
+        "game/domain/electricity/protection/protection_engine.py",
         "tools/validators/safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
@@ -24661,8 +24661,8 @@ def _append_electric_invariant_findings(
             )
         )
     momentum_schema_paths = (
-        "contracts/schemas/physics/momentum_state.schema",
-        "contracts/schemas/momentum_state.schema.json",
+        "contracts/schema/physics/momentum_state.schema",
+        "contracts/schema/momentum_state.schema.json",
     )
     for rel_path in momentum_schema_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -24696,16 +24696,16 @@ def _append_electric_invariant_findings(
     velocity_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     velocity_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     velocity_allowed_files = {
         runtime_rel,
-        "game/domains/mobility/micro/free_motion_solver.py",
-        "game/domains/mobility/micro/constrained_motion_solver.py",
-        "game/domains/physics/momentum_engine.py",
+        "game/domain/mobility/micro/free_motion_solver.py",
+        "game/domain/mobility/micro/constrained_motion_solver.py",
+        "game/domain/physics/momentum_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24756,7 +24756,7 @@ def _append_thermal_invariant_findings(
     severity = "warn"
     strict_severity = _strict_only_severity(profile)
 
-    convention_rel = "docs/thermal/LOSS_TO_HEAT_CONVENTION.md"
+    convention_rel = "docs/domains/thermal/LOSS_TO_HEAT_CONVENTION.md"
     convention_abs = os.path.join(repo_root, convention_rel.replace("/", os.sep))
     if not os.path.isfile(convention_abs):
         findings.append(
@@ -24817,7 +24817,7 @@ def _append_thermal_invariant_findings(
             )
             break
 
-    power_engine_rel = "game/domains/electricity/power_network_engine.py"
+    power_engine_rel = "game/domain/electricity/power_network_engine.py"
     power_engine_text = _file_text(repo_root, power_engine_rel)
     for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
         if token in power_engine_text:
@@ -24833,7 +24833,7 @@ def _append_thermal_invariant_findings(
             )
         )
 
-    thermal_engine_rel = "game/domains/thermal/network/thermal_network_engine.py"
+    thermal_engine_rel = "game/domain/thermal/network/thermal_network_engine.py"
     thermal_engine_text = _file_text(repo_root, thermal_engine_rel)
     for token in ("evaluate_model_bindings(", "solve_thermal_network_t1(", "solve_thermal_network_t0("):
         if token in thermal_engine_text:
@@ -24984,9 +24984,9 @@ def _append_thermal_invariant_findings(
     cooling_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     cooling_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     cooling_allowed_files = {
@@ -25066,16 +25066,16 @@ def _append_thermal_invariant_findings(
     )
     phase_cure_allowed_files = {
         "models/model_engine.py",
-        "game/domains/thermal/network/thermal_network_engine.py",
+        "game/domain/thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
     phase_cure_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     phase_cure_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     for rel_path in _scan_files(repo_root):
@@ -25112,17 +25112,17 @@ def _append_thermal_invariant_findings(
     )
     burn_allowed_files = {
         "models/model_engine.py",
-        "game/domains/thermal/network/thermal_network_engine.py",
+        "game/domain/thermal/network/thermal_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "game/domains/inspection/inspection_engine.py",
+        "game/domain/inspection/inspection_engine.py",
         "tools/xstack/repox/check.py",
     }
     burn_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     burn_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     for rel_path in _scan_files(repo_root):
@@ -25163,14 +25163,14 @@ def _append_thermal_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
         thermal_engine_rel,
-        "game/domains/fields/field_engine.py",
+        "game/domain/fields/field_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25315,17 +25315,17 @@ def _append_fluid_constitution_invariant_findings(
         re.compile(r"\bsolve_pressure\b", re.IGNORECASE),
         re.compile(r"\bvalve_position\b\s*=\s*", re.IGNORECASE),
     )
-    scan_prefixes = ("game/domains/fluids/", "game/domains/interior/")
+    scan_prefixes = ("game/domain/fluids/", "game/domain/interior/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "game/domains/interior/compartment_flow_engine.py",
-        "game/domains/interior/compartment_flow_builder.py",
+        "game/domain/interior/compartment_flow_engine.py",
+        "game/domain/interior/compartment_flow_builder.py",
         "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
@@ -25369,12 +25369,12 @@ def _append_fluid_containment_invariant_findings(
     mass_rule_id = "INV-NO-DIRECT-MASS-MUTATION"
 
     required_paths = (
-        "contracts/schemas/fluid/pressure_vessel_state.schema",
-        "contracts/schemas/fluid/leak_state.schema",
-        "contracts/schemas/fluid/burst_event.schema",
-        "contracts/schemas/pressure_vessel_state.schema.json",
-        "contracts/schemas/leak_state.schema.json",
-        "contracts/schemas/burst_event.schema.json",
+        "contracts/schema/fluid/pressure_vessel_state.schema",
+        "contracts/schema/fluid/leak_state.schema",
+        "contracts/schema/fluid/burst_event.schema",
+        "contracts/schema/pressure_vessel_state.schema.json",
+        "contracts/schema/leak_state.schema.json",
+        "contracts/schema/burst_event.schema.json",
         "contracts/registry/fluid_failure_policy_registry.json",
     )
     for rel_path in required_paths:
@@ -25423,23 +25423,23 @@ def _append_fluid_containment_invariant_findings(
         re.compile(r"\bstored_mass\b\s*=", re.IGNORECASE),
         re.compile(r"\bwater_volume\b\s*=", re.IGNORECASE),
     )
-    scan_prefixes = ("game/domains/fluids/", "game/domains/interior/", "tools/xstack/sessionx/")
+    scan_prefixes = ("game/domain/fluids/", "game/domain/interior/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_failure_files = {
-        "game/domains/fluids/network/fluid_network_engine.py",
+        "game/domain/fluids/network/fluid_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
     allowed_mass_files = {
-        "game/domains/fluids/network/fluid_network_engine.py",
-        "game/domains/interior/compartment_flow_engine.py",
-        "game/domains/interior/compartment_flow_builder.py",
+        "game/domain/fluids/network/fluid_network_engine.py",
+        "game/domain/interior/compartment_flow_engine.py",
+        "game/domain/interior/compartment_flow_builder.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -25499,7 +25499,7 @@ def _append_fluid_envelope_invariant_findings(
     degrade_rule_id = "INV-FLUID-DEGRADE-LOGGED"
     failures_rule_id = "INV-ALL-FAILURES-LOGGED"
 
-    engine_rel = "game/domains/fluids/network/fluid_network_engine.py"
+    engine_rel = "game/domain/fluids/network/fluid_network_engine.py"
     stress_tool_rel = "tools/fluid/tool_run_fluid_stress.py"
     replay_tool_rel = "tools/fluid/tool_replay_fluid_window.py"
     scenario_tool_rel = "tools/fluid/tool_generate_fluid_stress.py"
@@ -25709,18 +25709,18 @@ def _append_pollution_constitution_invariant_findings(
     required_paths = (
         "docs/pollution/POLLUTION_CONSTITUTION.md",
         "docs/pollution/EXPOSURE_AND_COMPLIANCE_MODEL.md",
-        "contracts/schemas/pollution/pollutant_type.schema",
-        "contracts/schemas/pollution/pollution_source_event.schema",
-        "contracts/schemas/pollution/pollution_field_policy.schema",
-        "contracts/schemas/pollution/exposure_state.schema",
-        "contracts/schemas/pollution/exposure_threshold.schema",
-        "contracts/schemas/pollution/health_risk_event.schema",
-        "contracts/schemas/pollution/pollution_measurement.schema",
-        "contracts/schemas/pollution/compliance_report.schema",
-        "game/domains/pollution/pollution_engine.py",
-        "game/domains/pollution/exposure_engine.py",
-        "game/domains/pollution/measurement_engine.py",
-        "game/domains/pollution/compliance_engine.py",
+        "contracts/schema/pollution/pollutant_type.schema",
+        "contracts/schema/pollution/pollution_source_event.schema",
+        "contracts/schema/pollution/pollution_field_policy.schema",
+        "contracts/schema/pollution/exposure_state.schema",
+        "contracts/schema/pollution/exposure_threshold.schema",
+        "contracts/schema/pollution/health_risk_event.schema",
+        "contracts/schema/pollution/pollution_measurement.schema",
+        "contracts/schema/pollution/compliance_report.schema",
+        "game/domain/pollution/pollution_engine.py",
+        "game/domain/pollution/exposure_engine.py",
+        "game/domain/pollution/measurement_engine.py",
+        "game/domain/pollution/compliance_engine.py",
         "tools/pollution/tool_replay_exposure_window.py",
     )
     for rel_path in required_paths:
@@ -25895,14 +25895,14 @@ def _append_pollution_constitution_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_source_write_files = {
         runtime_rel,
-        "game/domains/pollution/pollution_engine.py",
+        "game/domain/pollution/pollution_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -25939,7 +25939,7 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_field_write_files = {
         runtime_rel,
-        "game/domains/pollution/pollution_engine.py",
+        "game/domain/pollution/pollution_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -25980,8 +25980,8 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_exposure_write_files = {
         runtime_rel,
-        "game/domains/pollution/exposure_engine.py",
-        "game/domains/pollution/dispersion_engine.py",
+        "game/domain/pollution/exposure_engine.py",
+        "game/domain/pollution/dispersion_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -26060,7 +26060,7 @@ def _append_pollution_constitution_invariant_findings(
     )
     allowed_compliance_artifact_files = {
         runtime_rel,
-        "game/domains/pollution/compliance_engine.py",
+        "game/domain/pollution/compliance_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -26383,16 +26383,16 @@ def _append_system_composition_invariant_findings(
     boundary_rule_id = "INV-SYSTEM-BOUNDARY-INVARIANTS-DECLARED"
     process_rule_id = "INV-COLLAPSE-ONLY-VIA-PROCESS"
 
-    collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
-    expand_engine_rel = "game/domains/systems/system_expand_engine.py"
+    collapse_engine_rel = "game/domain/systems/system_collapse_engine.py"
+    expand_engine_rel = "game/domain/systems/system_expand_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "contracts/registry/process_registry.json"
     boundary_registry_rel = "contracts/registry/system_boundary_invariant_registry.json"
     required_schema_rels = (
-        "contracts/schemas/system/interface_signature.schema",
-        "contracts/schemas/system/boundary_invariant.schema",
-        "contracts/schemas/system/macro_capsule.schema",
-        "contracts/schemas/system/system_state_vector.schema",
+        "contracts/schema/system/interface_signature.schema",
+        "contracts/schema/system/boundary_invariant.schema",
+        "contracts/schema/system/macro_capsule.schema",
+        "contracts/schema/system/system_state_vector.schema",
     )
     required_registry_rels = (
         "contracts/registry/system_template_registry.json",
@@ -26410,7 +26410,7 @@ def _append_system_composition_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet=rel_path,
-                message="SYS-0 composition baseline requires contracts/schemas/registry/runtime artifact",
+                message="SYS-0 composition baseline requires contracts/schema/registry/runtime artifact",
                 rule_id=boundary_rule_id,
             )
         )
@@ -26567,9 +26567,9 @@ def _append_system_composition_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
@@ -26617,13 +26617,13 @@ def _append_system_validation_invariant_findings(
     invariant_rule_id = "INV-SYSTEM-INVARIANTS-REQUIRED"
     macro_rule_id = "INV-MACRO-MODEL-SET-REQUIRED-FOR-CAPSULE"
 
-    interface_schema_rel = "contracts/schemas/system/interface_signature.schema"
-    invariant_schema_rel = "contracts/schemas/system/boundary_invariant.schema"
-    macro_capsule_schema_rel = "contracts/schemas/system/macro_capsule.schema"
-    macro_model_set_schema_rel = "contracts/schemas/system/macro_model_set.schema"
-    validation_engine_rel = "game/domains/systems/system_validation_engine.py"
-    collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
-    expand_engine_rel = "game/domains/systems/system_expand_engine.py"
+    interface_schema_rel = "contracts/schema/system/interface_signature.schema"
+    invariant_schema_rel = "contracts/schema/system/boundary_invariant.schema"
+    macro_capsule_schema_rel = "contracts/schema/system/macro_capsule.schema"
+    macro_model_set_schema_rel = "contracts/schema/system/macro_model_set.schema"
+    validation_engine_rel = "game/domain/systems/system_validation_engine.py"
+    collapse_engine_rel = "game/domain/systems/system_collapse_engine.py"
+    expand_engine_rel = "game/domain/systems/system_expand_engine.py"
     interface_registry_rel = "contracts/registry/interface_signature_template_registry.json"
     invariant_registry_rel = "contracts/registry/boundary_invariant_template_registry.json"
     macro_registry_rel = "contracts/registry/macro_model_set_registry.json"
@@ -26914,13 +26914,13 @@ def _append_system_macro_invariant_findings(
     output_rule_id = "INV-CAPSULE-OUTPUTS-THROUGH-PROCESSES"
     forced_rule_id = "INV-FORCED-EXPAND-LOGGED"
 
-    macro_engine_rel = "game/domains/systems/macro/macro_capsule_engine.py"
+    macro_engine_rel = "game/domain/systems/macro/macro_capsule_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     process_registry_rel = "contracts/registry/process_registry.json"
     replay_tool_rel = "tools/system/tool_replay_capsule_window.py"
-    runtime_schema_rel = "contracts/schemas/system/macro_runtime_state.schema"
-    forced_schema_rel = "contracts/schemas/system/forced_expand_event.schema"
-    output_schema_rel = "contracts/schemas/system/macro_output_record.schema"
+    runtime_schema_rel = "contracts/schema/system/macro_runtime_state.schema"
+    forced_schema_rel = "contracts/schema/system/forced_expand_event.schema"
+    output_schema_rel = "contracts/schema/system/macro_output_record.schema"
 
     required_paths = (
         macro_engine_rel,
@@ -27054,7 +27054,7 @@ def _append_system_macro_invariant_findings(
     allowed_paths = {
         macro_engine_rel,
         runtime_rel,
-        "game/domains/systems/forensics/system_forensics_engine.py",
+        "game/domain/systems/forensics/system_forensics_engine.py",
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
     }
@@ -27106,9 +27106,9 @@ def _append_system_tier_invariant_findings(
     logged_rule_id = "INV-TIER-TRANSITION-LOGGED"
     silent_rule_id = "INV-NO-SILENT-COLLAPSE"
 
-    scheduler_rel = "game/domains/systems/roi/system_roi_scheduler.py"
+    scheduler_rel = "game/domain/systems/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    schema_rel = "contracts/schemas/system/system_tier_change_event.schema"
+    schema_rel = "contracts/schema/system/system_tier_change_event.schema"
     process_registry_rel = "contracts/registry/process_registry.json"
     tier_registry_rel = "contracts/registry/tier_contract_registry.json"
     replay_tool_rel = "tools/system/tool_replay_tier_transitions.py"
@@ -27320,14 +27320,14 @@ def _append_system_tier_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "game/domains/systems/system_collapse_engine.py",
-        "game/domains/systems/system_expand_engine.py",
+        "game/domain/systems/system_collapse_engine.py",
+        "game/domain/systems/system_expand_engine.py",
         runtime_rel,
         "tools/xstack/repox/check.py",
     }
@@ -27371,9 +27371,9 @@ def _append_system_template_invariant_findings(
 
     required_paths = (
         "docs/system/SYSTEM_TEMPLATES.md",
-        "contracts/schemas/system/system_template.schema",
-        "contracts/schemas/system/template_instance_record.schema",
-        "game/domains/systems/templates/template_compiler.py",
+        "contracts/schema/system/system_template.schema",
+        "contracts/schema/system/template_instance_record.schema",
+        "game/domain/systems/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
         "contracts/registry/system_template_registry.json",
         "content/packs/system_templates/base/data/system_template_registry.json",
@@ -27420,7 +27420,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    schema_text = _file_text(repo_root, "contracts/schemas/system/system_template.schema")
+    schema_text = _file_text(repo_root, "contracts/schema/system/system_template.schema")
     for token in (
         "template_id",
         "interface_signature_template_id",
@@ -27436,7 +27436,7 @@ def _append_system_template_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="contracts/schemas/system/system_template.schema",
+                file_path="contracts/schema/system/system_template.schema",
                 line_number=1,
                 snippet=token,
                 message="system_template schema is missing required SYS-4 declaration field",
@@ -27488,7 +27488,7 @@ def _append_system_template_invariant_findings(
 
     compiler_pattern = re.compile(r"\bcompile_system_template\s*\(", re.IGNORECASE)
     allowed_compiler_paths = {
-        "game/domains/systems/templates/template_compiler.py",
+        "game/domain/systems/templates/template_compiler.py",
         runtime_rel,
         "tools/system/tool_verify_template_reproducible.py",
         "tools/system/tool_template_browser.py",
@@ -27498,7 +27498,7 @@ def _append_system_template_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if rel_norm.startswith(("docs/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("docs/", "contracts/schema/", "contracts/schema/", "tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/")):
             continue
         if rel_norm in allowed_compiler_paths:
             continue
@@ -27533,11 +27533,11 @@ def _append_system_certification_invariant_findings(
 
     required_paths = (
         "docs/system/SYSTEM_CERTIFICATION_MODEL.md",
-        "contracts/schemas/system/certification_profile.schema",
-        "contracts/schemas/system/certification_result.schema",
-        "contracts/schemas/system/certificate_artifact.schema",
+        "contracts/schema/system/certification_profile.schema",
+        "contracts/schema/system/certification_result.schema",
+        "contracts/schema/system/certificate_artifact.schema",
         "contracts/registry/certification_profile_registry.json",
-        "game/domains/systems/certification/system_cert_engine.py",
+        "game/domain/systems/certification/system_cert_engine.py",
         "tools/system/tool_replay_certification_window.py",
         "tools/xstack/sessionx/process_runtime.py",
     )
@@ -27654,10 +27654,10 @@ def _append_system_certification_invariant_findings(
         r"\bsystem_certificate_artifact_rows\b.*=",
         re.IGNORECASE,
     )
-    scan_prefixes = ("game/domains/systems/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    scan_prefixes = ("game/domain/systems/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "contracts/schema/", "contracts/schema/", "tools/xstack/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_spec_paths = {
-        "game/domains/systems/certification/system_cert_engine.py",
+        "game/domain/systems/certification/system_cert_engine.py",
         runtime_rel,
         "tools/xstack/repox/check.py",
     }
@@ -27718,12 +27718,12 @@ def _append_system_reliability_invariant_findings(
     reliability_registry_rel = "contracts/registry/reliability_profile_registry.json"
     required_paths = (
         "docs/system/SYSTEM_RELIABILITY_MODEL.md",
-        "contracts/schemas/system/reliability_profile.schema",
-        "contracts/schemas/system/system_health_state.schema",
-        "contracts/schemas/system/failure_event.schema",
+        "contracts/schema/system/reliability_profile.schema",
+        "contracts/schema/system/system_health_state.schema",
+        "contracts/schema/system/failure_event.schema",
         reliability_registry_rel,
-        "game/domains/systems/reliability/system_health_engine.py",
-        "game/domains/systems/reliability/reliability_engine.py",
+        "game/domain/systems/reliability/system_health_engine.py",
+        "game/domain/systems/reliability/reliability_engine.py",
         "tools/system/tool_replay_system_failure_window.py",
         runtime_rel,
     )
@@ -27857,8 +27857,8 @@ def _append_system_reliability_invariant_findings(
         r"\bsystem_forced_expand_event_rows\b.*=",
         re.IGNORECASE,
     )
-    scan_prefixes = ("game/domains/systems/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    scan_prefixes = ("game/domain/systems/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "contracts/schema/", "contracts/schema/", "tools/xstack/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_failure_mutation_paths = {
         runtime_rel,
         "tools/xstack/repox/check.py",
@@ -27915,16 +27915,16 @@ def _append_system_forensics_invariant_findings(
     derived_rule_id = "INV-FORENSICS-DERIVED-ONLY"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    forensics_engine_rel = "game/domains/systems/forensics/system_forensics_engine.py"
+    forensics_engine_rel = "game/domain/systems/forensics/system_forensics_engine.py"
     process_registry_rel = "contracts/registry/process_registry.json"
     explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
     replay_tool_rel = "tools/system/tool_verify_explain_determinism.py"
     required_paths = (
         "docs/system/SYSTEM_FORENSICS_MODEL.md",
-        "contracts/schemas/system/system_explain_request.schema",
-        "contracts/schemas/system/system_explain_artifact.schema",
-        "contracts/schemas/system/cause_entry.schema",
+        "contracts/schema/system/system_explain_request.schema",
+        "contracts/schema/system/system_explain_artifact.schema",
+        "contracts/schema/system/cause_entry.schema",
         forensics_engine_rel,
         runtime_rel,
         replay_tool_rel,
@@ -28080,8 +28080,8 @@ def _append_system_forensics_invariant_findings(
         r"\b(?:system_explain_artifact_rows|system_explain_cache_rows|system_explain_request_rows)\b.*=",
         re.IGNORECASE,
     )
-    scan_prefixes = ("game/domains/systems/", "tools/xstack/sessionx/")
-    skip_prefixes = ("docs/", "contracts/schemas/", "contracts/schemas/", "tools/auditx/analyzers/", "tools/xstack/testx/tests/")
+    scan_prefixes = ("game/domain/systems/", "tools/xstack/sessionx/")
+    skip_prefixes = ("docs/", "contracts/schema/", "contracts/schema/", "tools/xstack/auditx/analyzers/", "tools/xstack/testx/tests/")
     allowed_write_paths = {
         runtime_rel,
         "tools/xstack/repox/check.py",
@@ -28123,9 +28123,9 @@ def _append_system_envelope_invariant_findings(
     silent_rule_id = "INV-NO-SILENT-TIER-TRANSITION"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    scheduler_rel = "game/domains/systems/roi/system_roi_scheduler.py"
-    collapse_rel = "game/domains/systems/system_collapse_engine.py"
-    expand_rel = "game/domains/systems/system_expand_engine.py"
+    scheduler_rel = "game/domain/systems/roi/system_roi_scheduler.py"
+    collapse_rel = "game/domain/systems/system_collapse_engine.py"
+    expand_rel = "game/domain/systems/system_expand_engine.py"
     scenario_tool_rel = "tools/system/tool_generate_sys_stress.py"
     stress_tool_rel = "tools/system/tool_run_sys_stress.py"
     replay_tool_rel = "tools/system/tool_replay_sys_window.py"
@@ -28334,11 +28334,11 @@ def _append_compiled_model_invariant_findings(
     process_registry_rel = "contracts/registry/process_registry.json"
     verify_tool_rel = "tools/meta/tool_verify_compiled_model.py"
     required_schema_rels = (
-        "contracts/schemas/meta/compiled_model.schema",
-        "contracts/schemas/meta/equivalence_proof.schema",
-        "contracts/schemas/meta/validity_domain.schema",
-        "contracts/schemas/meta/compile_request.schema",
-        "contracts/schemas/meta/compile_result.schema",
+        "contracts/schema/meta/compiled_model.schema",
+        "contracts/schema/meta/equivalence_proof.schema",
+        "contracts/schema/meta/validity_domain.schema",
+        "contracts/schema/meta/compile_request.schema",
+        "contracts/schema/meta/compile_result.schema",
     )
     required_registry_rels = (
         "contracts/registry/compiled_type_registry.json",
@@ -28434,7 +28434,7 @@ def _append_compiled_model_invariant_findings(
     allowed_compile_paths = {
         compile_engine_rel,
         runtime_rel,
-        "game/domains/processes/capsules/capsule_builder.py",
+        "game/domain/processes/capsules/capsule_builder.py",
         verify_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -28442,7 +28442,7 @@ def _append_compiled_model_invariant_findings(
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if rel_norm.startswith(("docs/", "contracts/schemas/", "contracts/schemas/", "tools/xstack/testx/tests/", "tools/auditx/analyzers/")):
+        if rel_norm.startswith(("docs/", "contracts/schema/", "contracts/schema/", "tools/xstack/testx/tests/", "tools/xstack/auditx/analyzers/")):
             continue
         if rel_norm in allowed_compile_paths:
             continue
@@ -28474,17 +28474,17 @@ def _append_state_vector_invariant_findings(
     declared_rule_id = "INV-STATE-VECTOR-DECLARED-FOR-SYSTEM"
     mutation_rule_id = "INV-NO-UNDECLARED-STATE-MUTATION"
 
-    statevec_engine_rel = "game/domains/systems/statevec/statevec_engine.py"
-    collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
-    expand_engine_rel = "game/domains/systems/system_expand_engine.py"
+    statevec_engine_rel = "game/domain/systems/statevec/statevec_engine.py"
+    collapse_engine_rel = "game/domain/systems/system_collapse_engine.py"
+    expand_engine_rel = "game/domain/systems/system_expand_engine.py"
     compile_engine_rel = "tools/repo/meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     statevec_registry_rel = "contracts/registry/state_vector_registry.json"
     verify_tool_rel = "tools/system/tool_verify_statevec_roundtrip.py"
     required_paths = (
         "docs/system/EXPLICIT_STATE_VECTOR_RULE.md",
-        "contracts/schemas/system/state_vector_definition.schema",
-        "contracts/schemas/system/state_vector_snapshot.schema",
+        "contracts/schema/system/state_vector_definition.schema",
+        "contracts/schema/system/state_vector_snapshot.schema",
         statevec_registry_rel,
         statevec_engine_rel,
         collapse_engine_rel,
@@ -28641,9 +28641,9 @@ def _append_state_vector_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_mutation_paths = {
@@ -28686,33 +28686,33 @@ def _append_cross_domain_mutation_invariant_findings(
     severity = _strict_only_severity(profile)
     scan_specs = (
         {
-            "root": "game/domains/electricity/",
+            "root": "game/domain/electricity/",
             "pattern": re.compile(
                 r"\bstate\s*\[\s*[\"'](?:temperature|field\.temperature|thermal_|heat_)[^\"']*[\"']\s*\]\s*=",
                 re.IGNORECASE,
             ),
             "allowed": {
-                "game/domains/electricity/power_network_engine.py",
+                "game/domain/electricity/power_network_engine.py",
                 "models/model_engine.py",
                 "tools/xstack/repox/check.py",
             },
             "message": "ELEC must not directly mutate THERM state; use constitutive model outputs + effect/hazard/process pathways",
         },
         {
-            "root": "game/domains/thermal/",
+            "root": "game/domain/thermal/",
             "pattern": re.compile(
                 r"\bstate\s*\[\s*[\"'](?:stress|strain|joint|fracture|failure|mech\.)[^\"']*[\"']\s*\]\s*=",
                 re.IGNORECASE,
             ),
             "allowed": {
-                "game/domains/thermal/network/thermal_network_engine.py",
+                "game/domain/thermal/network/thermal_network_engine.py",
                 "models/model_engine.py",
                 "tools/xstack/repox/check.py",
             },
             "message": "THERM must not directly mutate MECH state; couple through constitutive model outputs and process/effect/hazard channels",
         },
         {
-            "root": "game/domains/fluids/",
+            "root": "game/domain/fluids/",
             "pattern": re.compile(
                 r"\bstate\s*\[\s*[\"'](?:temperature|thermal_|stress|strain|breaker|fault|signal_)[^\"']*[\"']\s*\]\s*=",
                 re.IGNORECASE,
@@ -28726,9 +28726,9 @@ def _append_cross_domain_mutation_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     for spec in scan_specs:
@@ -28775,7 +28775,7 @@ def _append_loss_target_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    power_engine_rel = "game/domains/electricity/power_network_engine.py"
+    power_engine_rel = "game/domain/electricity/power_network_engine.py"
     power_engine_text = _file_text(repo_root, power_engine_rel)
     for token in ("quantity.thermal.heat_loss_stub", "effect.temperature_increase_local"):
         if token in power_engine_text:
@@ -28795,17 +28795,17 @@ def _append_loss_target_invariant_findings(
         r"\b(?:loss_p|line_loss|heat_loss|dissipated_loss|resistance_proxy|loss_permille)\b\s*=",
         re.IGNORECASE,
     )
-    scan_prefixes = ("game/domains/electricity/", "game/domains/thermal/")
+    scan_prefixes = ("game/domain/electricity/", "game/domain/thermal/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
         power_engine_rel,
-        "game/domains/thermal/network/thermal_network_engine.py",
+        "game/domain/thermal/network/thermal_network_engine.py",
         "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
@@ -28848,7 +28848,7 @@ def _append_energy_ledger_invariant_findings(
     mutation_rule_id = "INV-NO-DIRECT-ENERGY-MUTATION"
     registry_rel = "contracts/registry/energy_transformation_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    engine_rel = "game/domains/physics/energy/energy_ledger_engine.py"
+    engine_rel = "game/domain/physics/energy/energy_ledger_engine.py"
 
     payload, payload_error = _load_json_object(repo_root, registry_rel)
     rows = list(payload.get("energy_transformations") or [])
@@ -28941,9 +28941,9 @@ def _append_energy_ledger_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     for rel_path in _scan_files(repo_root):
@@ -28983,9 +28983,9 @@ def _append_energy_ledger_invariant_findings(
     mutation_scan_prefixes = ("src/", "tools/xstack/sessionx/")
     mutation_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     mutation_allowed_files = {
@@ -29139,14 +29139,14 @@ def _append_chem_combustion_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_fuel_files = {
         runtime_rel,
-        "game/domains/thermal/network/thermal_network_engine.py",
+        "game/domain/thermal/network/thermal_network_engine.py",
         "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
@@ -29191,7 +29191,7 @@ def _append_chem_processing_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     reaction_registry_rel = "contracts/registry/reaction_profile_registry.json"
     yield_registry_rel = "contracts/registry/yield_model_registry.json"
-    quality_schema_rel = "contracts/schemas/materials/batch_quality.schema"
+    quality_schema_rel = "contracts/schema/materials/batch_quality.schema"
     provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
 
     reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
@@ -29404,9 +29404,9 @@ def _append_chem_processing_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_recipe_files = {
@@ -29415,7 +29415,7 @@ def _append_chem_processing_invariant_findings(
     allowed_yield_files = {
         runtime_rel,
         "models/model_engine.py",
-        "game/domains/chemistry/process_run_engine.py",
+        "game/domain/chemistry/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -29425,7 +29425,7 @@ def _append_chem_processing_invariant_findings(
         if not rel_norm.startswith(scan_prefixes):
             continue
         if not (
-            rel_norm.startswith("game/domains/chemistry/")
+            rel_norm.startswith("game/domain/chemistry/")
             or rel_norm == runtime_rel
             or rel_norm.startswith("tools/xstack/sessionx/chem_")
         ):
@@ -29507,19 +29507,19 @@ def _append_process_constitution_invariant_findings(
     test_procedure_registry_rel = "contracts/registry/test_procedure_registry.json"
     yield_registry_rel = "contracts/registry/yield_model_registry.json"
     defect_registry_rel = "contracts/registry/defect_model_registry.json"
-    process_definition_schema_rel = "contracts/schemas/process/process_definition.schema"
-    qc_policy_schema_rel = "contracts/schemas/process/qc_policy.schema"
-    qc_result_schema_rel = "contracts/schemas/process/qc_result_record.schema"
-    test_procedure_schema_rel = "contracts/schemas/process/test_procedure.schema"
-    process_quality_schema_rel = "contracts/schemas/process/process_quality_record.schema"
-    process_capsule_schema_rel = "contracts/schemas/process/process_capsule.schema"
-    capsule_execution_schema_rel = "contracts/schemas/process/capsule_execution_record.schema"
-    process_metrics_schema_rel = "contracts/schemas/process/process_metrics_state.schema"
-    process_maturity_schema_rel = "contracts/schemas/process/process_maturity_record.schema"
-    stabilization_policy_schema_rel = "contracts/schemas/process/stabilization_policy.schema"
-    drift_policy_schema_rel = "contracts/schemas/process/drift_policy.schema"
-    process_drift_state_schema_rel = "contracts/schemas/process/process_drift_state.schema"
-    drift_event_record_schema_rel = "contracts/schemas/process/drift_event_record.schema"
+    process_definition_schema_rel = "contracts/schema/process/process_definition.schema"
+    qc_policy_schema_rel = "contracts/schema/process/qc_policy.schema"
+    qc_result_schema_rel = "contracts/schema/process/qc_result_record.schema"
+    test_procedure_schema_rel = "contracts/schema/process/test_procedure.schema"
+    process_quality_schema_rel = "contracts/schema/process/process_quality_record.schema"
+    process_capsule_schema_rel = "contracts/schema/process/process_capsule.schema"
+    capsule_execution_schema_rel = "contracts/schema/process/capsule_execution_record.schema"
+    process_metrics_schema_rel = "contracts/schema/process/process_metrics_state.schema"
+    process_maturity_schema_rel = "contracts/schema/process/process_maturity_record.schema"
+    stabilization_policy_schema_rel = "contracts/schema/process/stabilization_policy.schema"
+    drift_policy_schema_rel = "contracts/schema/process/drift_policy.schema"
+    process_drift_state_schema_rel = "contracts/schema/process/process_drift_state.schema"
+    drift_event_record_schema_rel = "contracts/schema/process/drift_event_record.schema"
     constitution_rel = "docs/process/PROCESS_CONSTITUTION.md"
     process_capsule_doc_rel = "docs/process/PROCESS_CAPSULE_MODEL.md"
     qc_doc_rel = "docs/process/QC_SAMPLING_MODEL.md"
@@ -29530,28 +29530,28 @@ def _append_process_constitution_invariant_findings(
     inspection_section_rel = "contracts/registry/inspection_section_registry.json"
     stabilization_policy_registry_v2_rel = "contracts/registry/stabilization_policy_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    validator_rel = "game/domains/processes/process_definition_validator.py"
-    run_engine_rel = "game/domains/processes/process_run_engine.py"
-    capsule_builder_rel = "game/domains/processes/capsules/capsule_builder.py"
-    capsule_executor_rel = "game/domains/processes/capsules/capsule_executor.py"
-    qc_engine_rel = "game/domains/processes/qc/qc_engine.py"
-    metrics_engine_rel = "game/domains/processes/maturity/metrics_engine.py"
-    maturity_engine_rel = "game/domains/processes/maturity/maturity_engine.py"
-    experiment_engine_rel = "game/domains/processes/research/experiment_engine.py"
-    inference_engine_rel = "game/domains/processes/research/inference_engine.py"
+    validator_rel = "game/domain/processes/process_definition_validator.py"
+    run_engine_rel = "game/domain/processes/process_run_engine.py"
+    capsule_builder_rel = "game/domain/processes/capsules/capsule_builder.py"
+    capsule_executor_rel = "game/domain/processes/capsules/capsule_executor.py"
+    qc_engine_rel = "game/domain/processes/qc/qc_engine.py"
+    metrics_engine_rel = "game/domain/processes/maturity/metrics_engine.py"
+    maturity_engine_rel = "game/domain/processes/maturity/maturity_engine.py"
+    experiment_engine_rel = "game/domain/processes/research/experiment_engine.py"
+    inference_engine_rel = "game/domain/processes/research/inference_engine.py"
     maturity_replay_tool_rel = "tools/process/tool_replay_maturity_window.py"
     capsule_replay_tool_rel = "tools/process/tool_replay_capsule_window.py"
     drift_replay_tool_rel = "tools/process/tool_replay_drift_window.py"
     experiment_replay_tool_rel = "tools/process/tool_replay_experiment_window.py"
     reverse_replay_tool_rel = "tools/process/tool_replay_reverse_engineering_window.py"
-    experiment_definition_schema_rel = "contracts/schemas/process/experiment_definition.schema"
-    experiment_result_schema_rel = "contracts/schemas/process/experiment_result.schema"
-    candidate_process_schema_rel = "contracts/schemas/process/candidate_process_definition.schema"
-    reverse_engineering_schema_rel = "contracts/schemas/process/reverse_engineering_record.schema"
+    experiment_definition_schema_rel = "contracts/schema/process/experiment_definition.schema"
+    experiment_result_schema_rel = "contracts/schema/process/experiment_result.schema"
+    candidate_process_schema_rel = "contracts/schema/process/candidate_process_definition.schema"
+    reverse_engineering_schema_rel = "contracts/schema/process/reverse_engineering_record.schema"
     research_policy_registry_rel = "contracts/registry/research_policy_registry.json"
-    software_pipeline_profile_schema_rel = "contracts/schemas/process/software_pipeline_profile.schema"
-    software_artifact_schema_rel = "contracts/schemas/process/software_artifact.schema"
-    deployment_record_schema_rel = "contracts/schemas/process/deployment_record.schema"
+    software_pipeline_profile_schema_rel = "contracts/schema/process/software_pipeline_profile.schema"
+    software_artifact_schema_rel = "contracts/schema/process/software_artifact.schema"
+    deployment_record_schema_rel = "contracts/schema/process/deployment_record.schema"
     software_toolchain_registry_rel = "contracts/registry/software_toolchain_registry.json"
     software_pipeline_template_registry_rel = "contracts/registry/software_pipeline_template_registry.json"
     software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
@@ -29561,8 +29561,8 @@ def _append_process_constitution_invariant_findings(
     proc_replay_tool_rel = "tools/process/tool_replay_proc_window.py"
     proc_compaction_tool_rel = "tools/process/tool_verify_proc_compaction.py"
     proc_regression_rel = "tests/fixtures/regression/proc_full_baseline.json"
-    run_schema_rel = "contracts/schemas/process/process_run_record.schema"
-    step_schema_rel = "contracts/schemas/process/process_step_record.schema"
+    run_schema_rel = "contracts/schema/process/process_run_record.schema"
+    step_schema_rel = "contracts/schema/process/process_step_record.schema"
 
     process_payload, process_error = _load_json_object(repo_root, process_registry_rel)
     process_rows = list(process_payload.get("records") or [])
@@ -30078,7 +30078,7 @@ def _append_process_constitution_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet="missing",
-                message="required PROC-4 maturity contracts/schemas/documentation artifact is missing",
+                message="required PROC-4 maturity contracts/schema/documentation artifact is missing",
                 rule_id=maturity_record_rule_id,
             )
         )
@@ -30130,7 +30130,7 @@ def _append_process_constitution_invariant_findings(
                 file_path=rel_path,
                 line_number=1,
                 snippet="missing",
-                message="required PROC-3 QC contracts/schemas/documentation artifact is missing",
+                message="required PROC-3 QC contracts/schema/documentation artifact is missing",
                 rule_id=qc_policy_rule_id,
             )
         )
@@ -31022,14 +31022,14 @@ def _append_process_constitution_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
         runtime_rel,
-        "game/domains/chemistry/process_run_engine.py",
+        "game/domain/chemistry/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -31070,7 +31070,7 @@ def _append_process_constitution_invariant_findings(
         run_engine_rel,
         capsule_executor_rel,
         "models/model_engine.py",
-        "game/domains/chemistry/process_run_engine.py",
+        "game/domain/chemistry/process_run_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -31106,12 +31106,12 @@ def _append_process_constitution_invariant_findings(
         re.compile(r"\bsecrets\.", re.IGNORECASE),
         re.compile(r"\buuid4\s*\(", re.IGNORECASE),
     )
-    rng_scan_prefixes = ("game/domains/processes/", "tools/process/")
+    rng_scan_prefixes = ("game/domain/processes/", "tools/process/")
     rng_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_rng_files = {
@@ -31151,12 +31151,12 @@ def _append_process_constitution_invariant_findings(
         re.compile(r"\buuid4\s*\(", re.IGNORECASE),
         re.compile(r"\btime\.(?:time|time_ns|perf_counter)\s*\(", re.IGNORECASE),
     )
-    qc_sampling_scan_prefixes = ("game/domains/processes/qc/", "tools/process/")
+    qc_sampling_scan_prefixes = ("game/domain/processes/qc/", "tools/process/")
     qc_sampling_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     qc_sampling_allowed_files = {
@@ -31195,12 +31195,12 @@ def _append_process_constitution_invariant_findings(
         re.compile(r"\bevaluate_qc_for_run\s*\(", re.IGNORECASE),
         re.compile(r"\bqc_sampling_decision_rows\b", re.IGNORECASE),
     )
-    qc_logic_scan_prefixes = ("game/domains/processes/", "tools/process/")
+    qc_logic_scan_prefixes = ("game/domain/processes/", "tools/process/")
     qc_logic_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     qc_logic_allowed_files = {
@@ -31208,8 +31208,8 @@ def _append_process_constitution_invariant_findings(
         validator_rel,
         qc_engine_rel,
         capsule_executor_rel,
-        "game/domains/processes/qc/__init__.py",
-        "game/domains/processes/capsules/__init__.py",
+        "game/domain/processes/qc/__init__.py",
+        "game/domain/processes/capsules/__init__.py",
         "tools/process/tool_replay_qc_window.py",
         "tools/xstack/repox/check.py",
     }
@@ -31245,12 +31245,12 @@ def _append_process_constitution_invariant_findings(
         re.compile(r"\bprocess_capsule_eligible\s*=\s*True\b", re.IGNORECASE),
         re.compile(r"\bcurrent_maturity_state\s*=\s*[\"']capsule_eligible[\"']", re.IGNORECASE),
     )
-    maturity_scan_prefixes = ("game/domains/processes/", "tools/process/")
+    maturity_scan_prefixes = ("game/domain/processes/", "tools/process/")
     maturity_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     hidden_unlock_allowed_files = {
@@ -31294,7 +31294,7 @@ def _append_process_constitution_invariant_findings(
     maturity_transition_allowed_files = {
         run_engine_rel,
         maturity_engine_rel,
-        "game/domains/processes/maturity/__init__.py",
+        "game/domain/processes/maturity/__init__.py",
         "tools/process/tool_replay_maturity_window.py",
         "tools/xstack/repox/check.py",
     }
@@ -31326,23 +31326,23 @@ def _append_process_constitution_invariant_findings(
             )
             break
     inference_patterns = (
-        re.compile(r"\binfer_candidate_artifacts\s*\(", re.IGNORECASE),
+        re.compile(r"\binfer_candidate_archive\generated\archive\generated\archive\generated\artifacts\s*\(", re.IGNORECASE),
         re.compile(r"\bcandidate_process_definition_rows\b", re.IGNORECASE),
         re.compile(r"\bcandidate_model_binding_rows\b", re.IGNORECASE),
     )
-    inference_scan_prefixes = ("game/domains/processes/", "tools/xstack/sessionx/")
+    inference_scan_prefixes = ("game/domain/processes/", "tools/xstack/sessionx/")
     inference_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     inference_allowed_files = {
         runtime_rel,
         experiment_engine_rel,
         inference_engine_rel,
-        "game/domains/processes/research/__init__.py",
+        "game/domain/processes/research/__init__.py",
         experiment_replay_tool_rel,
         reverse_replay_tool_rel,
         "tools/xstack/repox/check.py",
@@ -31446,18 +31446,18 @@ def _append_process_constitution_invariant_findings(
         re.compile(r"\bkind\s*=\s*[\"'](?:binary|package)[\"']", re.IGNORECASE),
         re.compile(r"\bsoftware_artifact_rows\b", re.IGNORECASE),
     )
-    software_scan_prefixes = ("game/domains/processes/", "tools/xstack/sessionx/")
+    software_scan_prefixes = ("game/domain/processes/", "tools/xstack/sessionx/")
     software_skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     software_allowed_files = {
         runtime_rel,
-        "game/domains/processes/software/pipeline_engine.py",
-        "game/domains/processes/software/__init__.py",
+        "game/domain/processes/software/pipeline_engine.py",
+        "game/domain/processes/software/__init__.py",
         pipeline_replay_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -31497,8 +31497,8 @@ def _append_process_constitution_invariant_findings(
     )
     signing_allowed_files = {
         runtime_rel,
-        "game/domains/processes/software/pipeline_engine.py",
-        "game/domains/processes/software/__init__.py",
+        "game/domain/processes/software/pipeline_engine.py",
+        "game/domain/processes/software/__init__.py",
         pipeline_replay_tool_rel,
         "tools/xstack/repox/check.py",
     }
@@ -31542,14 +31542,14 @@ def _append_logic_fault_invariant_findings(
 
     required_files = (
         ("docs/logic/FAULT_NOISE_SECURITY_MODEL.md", process_rule_id),
-        ("contracts/schemas/logic/logic_fault_state.schema", process_rule_id),
-        ("contracts/schemas/logic/noise_policy.schema", noise_rule_id),
-        ("contracts/schemas/logic/security_policy.schema", security_rule_id),
+        ("contracts/schema/logic/logic_fault_state.schema", process_rule_id),
+        ("contracts/schema/logic/noise_policy.schema", noise_rule_id),
+        ("contracts/schema/logic/security_policy.schema", security_rule_id),
         ("contracts/registry/logic_fault_kind_registry.json", process_rule_id),
         ("contracts/registry/logic_noise_policy_registry.json", noise_rule_id),
         ("contracts/registry/logic_security_policy_registry.json", security_rule_id),
-        ("game/domains/logic/fault/fault_engine.py", process_rule_id),
-        ("game/domains/logic/noise/noise_engine.py", noise_rule_id),
+        ("game/domain/logic/fault/fault_engine.py", process_rule_id),
+        ("game/domain/logic/noise/noise_engine.py", noise_rule_id),
         ("tools/logic/tool_replay_fault_window.py", security_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -31653,7 +31653,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    fault_rel = "game/domains/logic/fault/fault_engine.py"
+    fault_rel = "game/domain/logic/fault/fault_engine.py"
     fault_text = _file_text(repo_root, fault_rel)
     for token, message in (
         ("PROCESS_LOGIC_FAULT_SET", "fault engine must declare the canonical fault-set process"),
@@ -31676,7 +31676,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    noise_rel = "game/domains/logic/noise/noise_engine.py"
+    noise_rel = "game/domain/logic/noise/noise_engine.py"
     noise_text = _file_text(repo_root, noise_rel)
     for token, message in (
         ("kind == \"quantize\"", "noise engine must implement deterministic quantization"),
@@ -31696,7 +31696,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    sense_rel = "game/domains/logic/eval/sense_engine.py"
+    sense_rel = "game/domain/logic/eval/sense_engine.py"
     sense_text = _file_text(repo_root, sense_rel)
     for token, rule_id, message in (
         ("apply_faults_to_signal_value(", process_rule_id, "LOGIC SENSE must apply fault overlays through the fault engine"),
@@ -31767,9 +31767,9 @@ def _append_logic_fault_invariant_findings(
         re.compile(r"\blogic_fault_state_hash_chain\b\s*=", re.IGNORECASE),
     )
     for rel_path in (
-        "game/domains/logic/fault/fault_engine.py",
-        "game/domains/logic/eval/sense_engine.py",
-        "game/domains/logic/eval/logic_eval_engine.py",
+        "game/domain/logic/fault/fault_engine.py",
+        "game/domain/logic/eval/sense_engine.py",
+        "game/domain/logic/eval/logic_eval_engine.py",
     ):
         text = _file_text(repo_root, rel_path)
         for pattern in forbidden_fault_patterns:
@@ -31801,8 +31801,8 @@ def _append_chem_degradation_invariant_findings(
 
     degradation_profile_registry_rel = "contracts/registry/degradation_profile_registry.json"
     coupling_registry_rel = "contracts/registry/coupling_contract_registry.json"
-    degradation_engine_rel = "game/domains/chemistry/degradation/degradation_engine.py"
-    fluid_engine_rel = "game/domains/fluids/network/fluid_network_engine.py"
+    degradation_engine_rel = "game/domain/chemistry/degradation/degradation_engine.py"
+    fluid_engine_rel = "game/domain/fluids/network/fluid_network_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     profile_payload, profile_error = _load_json_object(repo_root, degradation_profile_registry_rel)
@@ -31926,9 +31926,9 @@ def _append_chem_degradation_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_pipe_files = {
@@ -32209,7 +32209,7 @@ def _append_entropy_policy_invariant_findings(
     update_rule_id = "INV-ENTROPY-UPDATE-THROUGH-ENGINE"
     efficiency_rule_id = "INV-NO-SILENT-EFFICIENCY-DROP"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    engine_rel = "game/domains/physics/entropy/entropy_engine.py"
+    engine_rel = "game/domain/physics/entropy/entropy_engine.py"
     contribution_registry_rel = "contracts/registry/entropy_contribution_registry.json"
     effect_registry_rel = "contracts/registry/entropy_effect_policy_registry.json"
 
@@ -32345,14 +32345,14 @@ def _append_entropy_policy_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
         runtime_rel,
-        "game/domains/physics/entropy/entropy_engine.py",
+        "game/domain/physics/entropy/entropy_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -32563,8 +32563,8 @@ def _append_numeric_tolerance_invariant_findings(
 
     critical_numeric_files = (
         "engine/time/time_mapping_engine.py",
-        "game/domains/physics/momentum_engine.py",
-        "game/domains/mobility/micro/free_motion_solver.py",
+        "game/domain/physics/momentum_engine.py",
+        "game/domain/mobility/micro/free_motion_solver.py",
     )
     arithmetic_division_pattern = re.compile(r"\b[A-Za-z0-9_)\]]+\s+/\s+[A-Za-z0-9_(\[]+")
     for rel_path in critical_numeric_files:
@@ -32591,9 +32591,9 @@ def _append_numeric_tolerance_invariant_findings(
     float_constructor_pattern = re.compile(r"\bfloat\s*\(", re.IGNORECASE)
     for rel_path in (
         "engine/time/time_mapping_engine.py",
-        "game/domains/physics/momentum_engine.py",
-        "game/domains/physics/energy/energy_ledger_engine.py",
-        "game/domains/mobility/micro/free_motion_solver.py",
+        "game/domain/physics/momentum_engine.py",
+        "game/domain/physics/energy/energy_ledger_engine.py",
+        "game/domain/mobility/micro/free_motion_solver.py",
         "tools/repo/meta/numeric.py",
     ):
         for line_no, line in _iter_lines(repo_root, rel_path):
@@ -32727,18 +32727,18 @@ def _append_store_gc_findings(
     required_files = (
         ("docs/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
         ("docs/lib/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
-        ("contracts/schemas/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
-        ("contracts/schemas/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
-        ("contracts/schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
-        ("contracts/schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
+        ("contracts/schema/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
+        ("contracts/schema/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
+        ("contracts/schema/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
+        ("contracts/schema/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
         ("contracts/registry/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
         ("contracts/abi/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
-        ("engine/store/gc_engine.py", "gc engine is required", graph_rule_id),
+        ("runtime/storage/gc_engine.py", "gc engine is required", graph_rule_id),
         ("tools/lib/store_gc_common.py", "STORE-GC helper is required", deterministic_rule_id),
         ("tools/lib/tool_store_verify.py", "store verification tool is required", deterministic_rule_id),
         ("tools/lib/tool_run_store_gc.py", "STORE-GC runner is required", deterministic_rule_id),
         ("docs/audit/STORE_VERIFY_REPORT.md", "store verification report is required", deterministic_rule_id),
-        ("content/data/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
+        ("archive/generated/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
         ("docs/audit/STORE_GC_BASELINE.md", "STORE-GC baseline is required", deterministic_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -32862,16 +32862,16 @@ def _append_constitutive_model_invariant_findings(
         ),
     )
     scan_prefixes = (
-        "game/domains/fields/",
-        "game/domains/mobility/",
-        "game/domains/signals/",
-        "game/domains/mechanics/",
+        "game/domain/fields/",
+        "game/domain/mobility/",
+        "game/domain/signals/",
+        "game/domain/mechanics/",
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
@@ -32947,9 +32947,9 @@ def _append_model_output_process_invariant_findings(
     scan_prefixes = ("src/", "tools/xstack/sessionx/")
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
@@ -32994,7 +32994,7 @@ def _append_signal_transport_invariant_findings(
     del profile
     severity = "warn"
 
-    transport_rel = "game/domains/signals/transport/transport_engine.py"
+    transport_rel = "game/domain/signals/transport/transport_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     transport_text = _file_text(repo_root, transport_rel)
     runtime_text = _file_text(repo_root, runtime_rel)
@@ -33056,7 +33056,7 @@ def _append_signal_transport_invariant_findings(
                 rule_id="INV-LOSS-POLICY-REGISTERED",
             )
         )
-    channel_executor_rel = "game/domains/signals/transport/channel_executor.py"
+    channel_executor_rel = "game/domain/signals/transport/channel_executor.py"
     channel_executor_text = _file_text(repo_root, channel_executor_rel)
     if "loss_rows_by_id.get(loss_policy_id" not in channel_executor_text:
         findings.append(
@@ -33120,9 +33120,9 @@ def _append_signal_transport_invariant_findings(
     )
     skip_prefixes = (
         "docs/",
-        "contracts/schemas/",
-        "contracts/schemas/",
-        "tools/auditx/analyzers/",
+        "contracts/schema/",
+        "contracts/schema/",
+        "tools/xstack/auditx/analyzers/",
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
@@ -33175,17 +33175,17 @@ def _append_signal_transport_invariant_findings(
         re.compile(r"\bpath_edge_ids\b", re.IGNORECASE),
     )
     adhoc_capacity_allow = {
-        "game/domains/signals/transport/transport_engine.py",
-        "game/domains/signals/transport/channel_executor.py",
+        "game/domain/signals/transport/transport_engine.py",
+        "game/domain/signals/transport/channel_executor.py",
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
         if not rel_norm.endswith(".py"):
             continue
-        if not rel_norm.startswith("game/domains/signals/"):
+        if not rel_norm.startswith("game/domain/signals/"):
             continue
         if any(rel_norm == allow or rel_norm.startswith(allow) for allow in adhoc_capacity_allow):
             continue
@@ -33212,7 +33212,7 @@ def _append_signal_transport_invariant_findings(
         runtime_rel,
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     }
     receipt_bypass_patterns = (
         re.compile(r"\bknowledge_receipt_rows\s*=", re.IGNORECASE),
@@ -33255,7 +33255,7 @@ def _append_signal_transport_invariant_findings(
         channel_executor_rel,
         "tools/xstack/repox/check.py",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     }
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -33283,7 +33283,7 @@ def _append_signal_transport_invariant_findings(
             )
             break
 
-    trust_engine_rel = "game/domains/signals/trust/trust_engine.py"
+    trust_engine_rel = "game/domain/signals/trust/trust_engine.py"
     trust_engine_text = _file_text(repo_root, trust_engine_rel)
     if "def process_trust_update(" not in trust_engine_text:
         findings.append(
@@ -33337,13 +33337,13 @@ def _append_signal_transport_invariant_findings(
         re.compile(r"\bbuild_verification_result\s*\(", re.IGNORECASE),
     )
     verification_allow_prefixes = (
-        "game/domains/signals/trust/",
+        "game/domain/signals/trust/",
         "tools/xstack/testx/tests/",
-        "tools/auditx/analyzers/",
+        "tools/xstack/auditx/analyzers/",
     )
     trust_context_allow_prefixes = (
-        "game/domains/signals/trust/",
-        "game/domains/epistemics/",
+        "game/domain/signals/trust/",
+        "game/domain/epistemics/",
     )
     for rel_path in _scan_files(repo_root):
         rel_norm = _norm(rel_path)
@@ -33402,7 +33402,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PACK-LOCK",
                 "pack_lock_hash",
             ),
-            "contracts/schemas/lib/instance_manifest.schema": (
+            "contracts/schema/lib/instance_manifest.schema": (
                 "pack_lock_hash",
                 "profile_bundle_hash",
             ),
@@ -33420,7 +33420,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PROFILE-BUNDLE",
                 "profile_bundle_hash",
             ),
-            "contracts/schemas/lib/instance_manifest.schema": (
+            "contracts/schema/lib/instance_manifest.schema": (
                 "profile_bundle_hash",
                 "instance_kind",
             ),
@@ -33438,7 +33438,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-SAVES-NOT-EMBEDDED-IN-INSTANCE",
                 "save_refs",
             ),
-            "contracts/schemas/lib/instance_manifest.schema": (
+            "contracts/schema/lib/instance_manifest.schema": (
                 "save_refs",
                 "last_opened_save_id",
             ),
@@ -33499,11 +33499,11 @@ def _append_save_manifest_invariant_findings(
                 "INV-SAVE-MANIFEST-REQUIRED",
                 "save.manifest.json",
             ),
-            "contracts/schemas/lib/save_manifest.schema": (
+            "contracts/schema/lib/save_manifest.schema": (
                 "save_format_version",
                 "migration_chain",
             ),
-            "tools/libraries/save/save_validator.py": (
+            "tools/package/libraries/save/save_validator.py": (
                 "REFUSAL_SAVE_MANIFEST_REQUIRED",
                 "validate_save_manifest(",
             ),
@@ -33518,12 +33518,12 @@ def _append_save_manifest_invariant_findings(
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
             ),
-            "contracts/schemas/lib/save_manifest.schema": (
+            "contracts/schema/lib/save_manifest.schema": (
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
                 "allow_read_only_open",
             ),
-            "tools/libraries/save/save_validator.py": (
+            "tools/package/libraries/save/save_validator.py": (
                 "load_save_contract_bundle(",
                 "REFUSAL_SAVE_CONTRACT_MISMATCH",
                 "REFUSAL_SAVE_PACK_LOCK_MISMATCH",
@@ -33539,11 +33539,11 @@ def _append_save_manifest_invariant_findings(
                 "INV-NO-SILENT-MIGRATION",
                 "explicit invoke-only",
             ),
-            "contracts/schemas/lib/migration_event.schema": (
+            "contracts/schema/lib/migration_event.schema": (
                 "migration application remains explicit invoke-only",
                 "tick_applied",
             ),
-            "tools/libraries/save/save_validator.py": (
+            "tools/package/libraries/save/save_validator.py": (
                 "migrate_save_manifest(",
                 "allow_save_migration",
                 "REFUSAL_SAVE_MIGRATION_REQUIRED",
@@ -33602,7 +33602,7 @@ def _append_artifact_manifest_invariant_findings(
                 "artifact_id",
                 "content_hash",
             ),
-            "contracts/schemas/lib/artifact_manifest.schema": (
+            "contracts/schema/lib/artifact_manifest.schema": (
                 "artifact_id",
                 "artifact_kind_id",
                 "content_hash",
@@ -33639,7 +33639,7 @@ def _append_artifact_manifest_invariant_findings(
                 "Artifact load pipeline",
                 "No silent migration is permitted.",
             ),
-            "tools/libraries/artifact/artifact_validator.py": (
+            "tools/package/libraries/artifact/artifact_validator.py": (
                 "validate_artifact_manifest(",
                 "evaluate_artifact_load(",
                 "REFUSAL_ARTIFACT_HASH_MISMATCH",
@@ -33702,11 +33702,11 @@ def _append_forking_provides_invariant_findings(
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "forks must not reuse the origin pack_id",
             ),
-            "contracts/schemas/pack_manifest.schema": (
+            "contracts/schema/pack_manifest.schema": (
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "Legacy reverse-DNS pack ids remain loadable for compatibility.",
             ),
-            "tools/libraries/provides/provider_resolution.py": (
+            "tools/package/libraries/provides/provider_resolution.py": (
                 "classify_pack_namespace(",
                 "REFUSAL_PACK_NAMESPACE_INVALID",
             ),
@@ -33723,12 +33723,12 @@ def _append_forking_provides_invariant_findings(
                 "resolve.deterministic_lowest_pack_id",
                 "All provider selections are logged",
             ),
-            "contracts/schemas/lib/provides_resolution.schema": (
+            "contracts/schema/lib/provides_resolution.schema": (
                 "resolution_policy_id",
                 "chosen_pack_id",
                 "deterministic_fingerprint",
             ),
-            "tools/libraries/provides/provider_resolution.py": (
+            "tools/package/libraries/provides/provider_resolution.py": (
                 "resolve_providers(",
                 "selection_logged",
                 "selection_mode",
@@ -33745,7 +33745,7 @@ def _append_forking_provides_invariant_findings(
                 "resolve.strict_refuse_ambiguous",
                 "Strict servers must refuse ambiguous providers.",
             ),
-            "tools/libraries/provides/provider_resolution.py": (
+            "tools/package/libraries/provides/provider_resolution.py": (
                 "REFUSAL_PROVIDES_AMBIGUOUS",
                 "RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS",
             ),
@@ -33788,24 +33788,24 @@ def _append_component_graph_findings(
         ("docs/audit/COMPONENT_GRAPH0_RETRO_AUDIT.md", "COMPONENT-GRAPH-0 retro audit is required", install_rule_id),
         ("docs/release/COMPONENT_GRAPH_CONSTITUTION.md", "COMPONENT-GRAPH-0 constitution is required", install_rule_id),
         ("docs/release/RELEASE_NOTES_v0_0_0_mock.md", "release notes doc is required for graph-backed docs component coverage", hardcoded_rule_id),
-        ("contracts/schemas/release/component_id.schema", "component_id schema is required", install_rule_id),
-        ("contracts/schemas/release/component_descriptor.schema", "component descriptor schema is required", install_rule_id),
-        ("contracts/schemas/release/component_edge.schema", "component edge schema is required", install_rule_id),
-        ("contracts/schemas/release/component_graph.schema", "component graph schema is required", install_rule_id),
-        ("contracts/schemas/release/install_plan.schema", "install plan schema is required", install_rule_id),
-        ("contracts/schemas/component_id.schema.json", "compiled component_id schema is required", install_rule_id),
-        ("contracts/schemas/component_descriptor.schema.json", "compiled component descriptor schema is required", install_rule_id),
-        ("contracts/schemas/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
-        ("contracts/schemas/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
-        ("contracts/schemas/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
+        ("contracts/schema/release/component_id.schema", "component_id schema is required", install_rule_id),
+        ("contracts/schema/release/component_descriptor.schema", "component descriptor schema is required", install_rule_id),
+        ("contracts/schema/release/component_edge.schema", "component edge schema is required", install_rule_id),
+        ("contracts/schema/release/component_graph.schema", "component graph schema is required", install_rule_id),
+        ("contracts/schema/release/install_plan.schema", "install plan schema is required", install_rule_id),
+        ("contracts/schema/component_id.schema.json", "compiled component_id schema is required", install_rule_id),
+        ("contracts/schema/component_descriptor.schema.json", "compiled component descriptor schema is required", install_rule_id),
+        ("contracts/schema/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
+        ("contracts/schema/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
+        ("contracts/schema/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
         ("contracts/registry/arch_registry.json", "architecture registry is required", install_rule_id),
         ("contracts/registry/os_registry.json", "operating-system registry is required", install_rule_id),
         ("contracts/registry/component_graph_registry.json", "component graph registry is required", install_rule_id),
-        ("release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
+        ("tools/release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
         ("tools/release/component_graph_common.py", "component graph helper is required", install_rule_id),
         ("tools/release/tool_run_component_graph.py", "component graph runner is required", install_rule_id),
         ("docs/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
-        ("content/data/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
+        ("archive/generated/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -33902,13 +33902,13 @@ def _append_install_profile_findings(
     required_files = (
         ("docs/audit/DIST_REFINE1_RETRO_AUDIT.md", "DIST-REFINE-1 retro audit is required", use_rule_id),
         ("docs/release/INSTALL_PROFILES.md", "install profile doctrine is required", use_rule_id),
-        ("contracts/schemas/release/install_profile.schema", "install_profile schema is required", use_rule_id),
-        ("contracts/schemas/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
+        ("contracts/schema/release/install_profile.schema", "install_profile schema is required", use_rule_id),
+        ("contracts/schema/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
         ("contracts/registry/install_profile_registry.json", "install profile registry is required", use_rule_id),
         ("tools/release/install_profile_common.py", "install profile helper is required", use_rule_id),
         ("tools/release/tool_run_install_profiles.py", "install profile runner is required", use_rule_id),
         ("docs/audit/INSTALL_PROFILE_BASELINE.md", "install profile baseline report is required", use_rule_id),
-        ("content/data/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
+        ("archive/generated/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34007,15 +34007,15 @@ def _append_update_model_findings(
         ("docs/audit/UPDATE_MODEL0_RETRO_AUDIT.md", "UPDATE-MODEL-0 retro audit is required", graph_rule_id),
         ("docs/release/RELEASE_INDEX_MODEL.md", "release index doctrine is required", graph_rule_id),
         ("docs/release/SETUP_SELF_UPDATE.md", "setup self-update doctrine is required", graph_rule_id),
-        ("contracts/schemas/release/release_index.schema", "release_index schema is required", graph_rule_id),
-        ("contracts/schemas/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
-        ("contracts/schemas/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
-        ("contracts/schemas/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
-        ("release/update_resolver.py", "update resolver is required", graph_rule_id),
+        ("contracts/schema/release/release_index.schema", "release_index schema is required", graph_rule_id),
+        ("contracts/schema/release/update_plan.schema", "update_plan schema is required", graph_rule_id),
+        ("contracts/schema/release_index.schema.json", "compiled release_index schema is required", graph_rule_id),
+        ("contracts/schema/update_plan.schema.json", "compiled update_plan schema is required", graph_rule_id),
+        ("tools/release/update_resolver.py", "update resolver is required", graph_rule_id),
         ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
         ("docs/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
-        ("content/data/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
+        ("archive/generated/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34150,19 +34150,19 @@ def _append_trust_model_findings(
     required_files = (
         ("docs/audit/TRUST_MODEL0_RETRO_AUDIT.md", "TRUST-MODEL-0 retro audit is required", policy_rule_id),
         ("docs/security/TRUST_AND_SIGNING_MODEL.md", "trust and signing doctrine is required", policy_rule_id),
-        ("contracts/schemas/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
-        ("contracts/schemas/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
-        ("contracts/schemas/security/signature_record.schema", "signature_record schema is required", policy_rule_id),
-        ("contracts/schemas/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
-        ("contracts/schemas/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
-        ("contracts/schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
+        ("contracts/schema/security/trust_root.schema", "trust_root schema is required", policy_rule_id),
+        ("contracts/schema/security/trust_policy.schema", "trust_policy schema is required", policy_rule_id),
+        ("contracts/schema/security/signature_record.schema", "signature_record schema is required", policy_rule_id),
+        ("contracts/schema/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
+        ("contracts/schema/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
+        ("contracts/schema/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
         ("contracts/registry/trust_root_registry.json", "trust root registry is required", policy_rule_id),
         ("contracts/registry/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
         ("tools/validators/security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
         ("tools/security/trust_model_common.py", "trust-model helper is required", policy_rule_id),
         ("tools/security/tool_run_trust_model.py", "trust-model runner is required", policy_rule_id),
         ("docs/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
-        ("content/data/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
+        ("archive/generated/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34261,10 +34261,10 @@ def _append_governance_model_findings(
         ("docs/governance/GOVERNANCE_MODEL.md", "governance doctrine is required", rule_id),
         ("docs/governance/TRUST_ROOT_GOVERNANCE.md", "trust-root governance doctrine is required", rule_id),
         ("docs/governance/LICENSING_STRATEGY.md", "licensing strategy document is required", rule_id),
-        ("contracts/schemas/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
-        ("contracts/schemas/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
+        ("contracts/schema/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
+        ("contracts/schema/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
         ("contracts/registry/governance_mode_registry.json", "governance mode registry is required", rule_id),
-        ("content/data/governance/governance_profile.json", "governance profile is required", rule_id),
+        ("contracts/governance/governance_profile.json", "governance profile is required", rule_id),
         ("tools/governance/governance_model_common.py", "governance-model helper is required", rule_id),
         ("tools/governance/tool_run_governance_model.py", "governance-model runner is required", rule_id),
         ("docs/audit/GOVERNANCE_POLICY_BASELINE.md", "governance baseline is required", rule_id),
@@ -34527,15 +34527,15 @@ def _append_universal_identity_findings(
         ("docs/audit/UNIVERSAL_IDENTITY0_RETRO_AUDIT.md", "UNIVERSAL-ID retro audit is required", warn_rule_id),
         ("docs/meta/UNIVERSAL_IDENTITY_MODEL.md", "universal identity doctrine is required", warn_rule_id),
         ("docs/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
-        ("contracts/schemas/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
-        ("contracts/schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
+        ("contracts/schema/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
+        ("contracts/schema/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
         ("contracts/registry/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
         ("tools/validators/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
         ("tools/meta/identity_common.py", "identity helper is required", canonical_rule_id),
         ("tools/meta/tool_print_identity.py", "identity print tool is required", warn_rule_id),
         ("tools/meta/tool_diff_identity.py", "identity diff tool is required", warn_rule_id),
         ("docs/audit/UNIVERSAL_IDENTITY_BASELINE.md", "universal identity baseline is required", warn_rule_id),
-        ("content/data/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
+        ("archive/generated/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34615,20 +34615,20 @@ def _append_migration_lifecycle_findings(
     severity = _invariant_severity(profile)
     required_files = (
         ("docs/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
-        ("docs/compat/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
-        ("contracts/schemas/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
-        ("contracts/schemas/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
-        ("contracts/schemas/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
-        ("contracts/schemas/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
-        ("contracts/schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
-        ("contracts/schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
+        ("docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
+        ("contracts/schema/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
+        ("contracts/schema/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
+        ("contracts/schema/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
+        ("contracts/schema/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
+        ("contracts/schema/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
+        ("contracts/schema/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
         ("contracts/registry/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
         ("tools/validators/compatibility/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
         ("tools/compat/tool_plan_migration.py", "migration planning tool is required", silent_rule_id),
         ("tools/compat/tool_apply_migration.py", "migration apply tool is required", silent_rule_id),
         ("docs/audit/MIGRATION_LIFECYCLE_BASELINE.md", "migration lifecycle baseline is required", policy_rule_id),
-        ("content/data/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
+        ("archive/generated/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34644,7 +34644,7 @@ def _append_migration_lifecycle_findings(
             )
         )
 
-    doctrine_text = _file_text(repo_root, "docs/compat/MIGRATION_LIFECYCLE_MODEL.md").lower()
+    doctrine_text = _file_text(repo_root, "docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md").lower()
     for token, message, rule_id in (
         ("# migration lifecycle model", "migration lifecycle doctrine must declare the canonical title", policy_rule_id),
         ("## artifact classes", "migration lifecycle doctrine must define artifact classes", policy_rule_id),
@@ -34658,7 +34658,7 @@ def _append_migration_lifecycle_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="docs/compat/MIGRATION_LIFECYCLE_MODEL.md",
+                file_path="docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md",
                 line_number=1,
                 snippet=token,
                 message=message,
@@ -34711,17 +34711,17 @@ def _append_bundle_invariant_findings(
                 "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
                 "filesystem timestamps do not affect `bundle_hash`",
             ),
-            "contracts/schemas/lib/bundle_manifest.schema": (
+            "contracts/schema/lib/bundle_manifest.schema": (
                 "included_artifacts ordering is canonical",
                 "bundle_hash is computed from the canonical ordered item projection",
                 "deterministic_fingerprint",
             ),
-            "tools/libraries/bundle/bundle_manifest.py": (
+            "tools/package/libraries/bundle/bundle_manifest.py": (
                 "compute_bundle_hash(",
                 "stable_bundle_id(",
                 "verify_bundle_directory(",
             ),
-            "engine/export/export_engine.py": (
+            "tools/export/export_engine.py": (
                 "write_bundle_directory(",
                 "\"refusal.bundle.destination_exists\"",
                 "BUNDLE_KIND_INSTANCE_PORTABLE",
@@ -34732,7 +34732,7 @@ def _append_bundle_invariant_findings(
                 "zip` with fixed timestamp `2000-01-01T00:00:00Z`",
                 "No OS-specific metadata is permitted in archive entries.",
             ),
-            "tools/libraries/bundle/bundle_manifest.py": (
+            "tools/package/libraries/bundle/bundle_manifest.py": (
                 "bundle.manifest.json",
                 "hashes/content.sha256.json",
                 "bundle.manifest.json is missing",
@@ -34748,12 +34748,12 @@ def _append_bundle_invariant_findings(
                 "recompute `bundle_hash`",
                 "refuse if any mismatch occurs",
             ),
-            "engine/import/import_engine.py": (
+            "tools/import/import_engine.py": (
                 "verify_bundle_directory(",
                 "_insert_bundle_store_artifacts(",
                 "\"refusal.bundle.artifact_hash_mismatch\"",
             ),
-            "tools/libraries/bundle/bundle_manifest.py": (
+            "tools/package/libraries/bundle/bundle_manifest.py": (
                 "\"bundle_content_hash_mismatch\"",
                 "\"bundle_hash_mismatch\"",
                 "\"bundle_hash_index_mismatch\"",
@@ -35047,7 +35047,7 @@ def _append_dist_final_plan_invariant_findings(
             "final distribution checklist is required for Ω-10 execution tracking",
         ),
         (
-            "content/data/release/dist_final_expected_artifacts.json",
+            "archive/generated/release/dist_final_expected_artifacts.json",
             "expected artifacts registry is required for Ω-10 final distribution planning",
         ),
         (
@@ -35104,9 +35104,9 @@ def _append_arch_graph_v1_present_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     for rel_path in (
-        "content/data/architecture/architecture_graph.v1.json",
+        "archive/generated/architecture/architecture_graph.v1.json",
         "contracts/registry/architecture/module_registry.v1.json",
-        "content/data/architecture/module_boundary_rules.v1.json",
+        "archive/generated/architecture/module_boundary_rules.v1.json",
         "contracts/registry/architecture/single_engine_registry.json",
     ):
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -35136,7 +35136,7 @@ def _append_repository_structure_locked_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/architecture/repository_structure_lock.json",
+                file_path="archive/generated/architecture/repository_structure_lock.json",
                 line_number=1,
                 snippet="build_repository_structure_violations",
                 message="failed to evaluate Xi-8 repository structure lock: {}".format(type(exc).__name__),
@@ -35171,7 +35171,7 @@ def _append_architecture_drift_guard_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/architecture/architecture_graph.v1.json",
+                file_path="archive/generated/architecture/architecture_graph.v1.json",
                 line_number=1,
                 snippet="evaluate_architecture_drift",
                 message="failed to evaluate Xi-6 architecture drift guard: {}".format(type(exc).__name__),
@@ -35192,7 +35192,7 @@ def _append_architecture_drift_guard_findings(
     findings.append(
         _finding(
             severity=severity,
-            file_path="content/data/architecture/architecture_graph.v1.json",
+            file_path="archive/generated/architecture/architecture_graph.v1.json",
             line_number=1,
             snippet=str(report.get("live_content_hash", ""))[:140],
             message=str(report.get("reason", "")).strip() or "live architecture graph drifted from Xi-6 freeze",
@@ -35214,7 +35214,7 @@ def _append_arch_graph_matches_repo_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/architecture/repository_structure_lock.json",
+                file_path="archive/generated/architecture/repository_structure_lock.json",
                 line_number=1,
                 snippet="build_arch_graph_matches_repo_violations",
                 message="failed to evaluate Xi-8 architecture/repository alignment: {}".format(type(exc).__name__),
@@ -35249,7 +35249,7 @@ def _append_module_boundaries_respected_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="content/data/architecture/module_boundary_rules.v1.json",
+                file_path="archive/generated/architecture/module_boundary_rules.v1.json",
                 line_number=1,
                 snippet="build_boundary_findings",
                 message="failed to evaluate Xi-6 module boundaries: {}".format(type(exc).__name__),

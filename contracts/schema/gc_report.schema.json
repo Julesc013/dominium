@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GC Report Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "report_id",
+    "gc_policy_id",
+    "reachable_hashes",
+    "deleted_hashes",
+    "quarantined_hashes",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "gc_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "reachable_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deleted_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "quarantined_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deleted_hashes": [],
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "gc_policy_id": "gc_policy_id.example",
+      "quarantined_hashes": [],
+      "reachable_hashes": [],
+      "report_id": "report_id.example"
+    }
+  ]
+}

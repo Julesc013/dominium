@@ -198,7 +198,7 @@
   "repo_evidence_surfaces": [
     "tools/validators/security/trust/trust_verifier.py",
     "tools/validators/security/trust/license_capability.py",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
     "docs/release/SIGNING_POLICY.md",
     "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",

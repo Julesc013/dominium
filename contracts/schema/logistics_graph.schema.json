@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Logistics Graph Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic logistics graph payload.",
+  "x-doc-ref": [
+    "docs/materials/LOGISTICS_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "graph_id",
+    "nodes",
+    "edges",
+    "deterministic_routing_rule_id",
+    "version_introduced",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "graph_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "logistics_node.schema.json"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "logistics_edge.schema.json"
+      }
+    },
+    "deterministic_routing_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version_introduced": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "graph_id": "graph.example",
+      "nodes": [],
+      "edges": [],
+      "deterministic_routing_rule_id": "route.direct_only",
+      "version_introduced": "1.0.0",
+      "extensions": {}
+    }
+  ]
+}

@@ -16,7 +16,7 @@ def run(repo_root: str):
 
     from tools.dev.impact_graph import build_graph, compute_impacted_sets
 
-    changed_files = ["contracts/schemas/session_spec.schema.json"]
+    changed_files = ["contracts/schema/session_spec.schema.json"]
     graph = build_graph(repo_root=repo_root, changed_files=changed_files)
     impacted = compute_impacted_sets(graph_payload=graph, changed_files=changed_files)
     if impacted.get("result") != "complete":

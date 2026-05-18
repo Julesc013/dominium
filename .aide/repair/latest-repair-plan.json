@@ -4,7 +4,7 @@
       "blocking": true,
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+        "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
       "issue_id": "repair-55d99864bb34",
       "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
@@ -15,7 +15,7 @@
       "blocking": true,
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+        "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
       "issue_id": "repair-7f92516ecaf1",
       "reason": "Install conflict report identified secret_like_path; repair plan remains no-apply.",
@@ -65,7 +65,7 @@
       "diagnosis_id": "diagnosis-55d99864bb34",
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+        "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
       "issue_id": "repair-55d99864bb34",
       "mandatory_migration_candidate": false,
@@ -80,7 +80,7 @@
       "diagnosis_id": "diagnosis-7f92516ecaf1",
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+        "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
       "issue_id": "repair-7f92516ecaf1",
       "mandatory_migration_candidate": false,
@@ -169,7 +169,7 @@
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
-      "target_path": "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+      "target_path": "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py",
       "validation_required": [
         "py -3 .aide/scripts/aide_lite.py doctor",
         "py -3 .aide/scripts/aide_lite.py validate",
@@ -193,7 +193,7 @@
       "repair_class": "secret_like_file",
       "rollback_hint": "Future apply must capture pre-repair target state, ownership ledger entry, validation output, and rollback notes before mutation.",
       "source_reference": "",
-      "target_path": "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+      "target_path": "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py",
       "validation_required": [
         "py -3 .aide/scripts/aide_lite.py doctor",
         "py -3 .aide/scripts/aide_lite.py validate",
@@ -256,8 +256,8 @@
   "plan_id": "q44-repair-plan-current-repo",
   "preserved_paths": [
     ".aide/export/aide-lite-pack-v0/checksums.json",
-    "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py",
-    "tools/auditx/analyzers/e531_secrets_in_log_smell.py",
+    "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py",
+    "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py",
     "tools/xstack/testx/tests/test_no_secrets_in_bundle.py",
     "tools/xstack/testx/tests/test_standards_issues_spec_and_credential.py"
   ],

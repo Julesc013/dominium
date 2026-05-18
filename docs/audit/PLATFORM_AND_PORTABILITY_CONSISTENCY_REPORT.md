@@ -18,16 +18,16 @@ and RepoX/TestX enforcement alignment.
 - Canonical platform IDs defined and documented in
   `docs/distribution/PLATFORM_ID_CANON.md`.
 - Dist doctrine documented in `docs/distribution/DIST_PLATFORM_DOCTRINE.md`.
-- Portable testing contract documented in `docs/dev/PORTABLE_TESTING.md`.
+- Portable testing contract documented in `docs/development/PORTABLE_TESTING.md`.
 - Platform registry expanded to canonical namespace in
   `data/registries/platform_registry.json`.
 - Dist token generation updated to `macosx` and canonical package roots in:
   - `CMakeLists.txt`
   - `cmake/dominium_dist.cmake`
   - `cmake/dominium_dist_meta.cmake`
-- Alias directories removed from `dist/pkg`:
-  - removed `dist/pkg/win`
-  - removed `dist/pkg/mac`
+- Alias directories removed from `archive/generated/dist/pkg`:
+  - removed `archive/generated/dist/pkg/win`
+  - removed `archive/generated/dist/pkg/mac`
 - RepoX enforcement added:
   - `INV-PLATFORM-ID-CANONICAL`
   - `INV-DIST-SYS-DERIVED`
@@ -37,8 +37,8 @@ and RepoX/TestX enforcement alignment.
   - `tests/distribution/platform_portability_consistency_tests.py`
   - registered in `tests/distribution/CMakeLists.txt`
 - Portable smoke scripts now execute from random CWD:
-  - `tools/distribution/setup_install_smoke.py`
-  - `tools/distribution/launcher_run_smoke.py`
+  - `tools/package/distribution/setup_install_smoke.py`
+  - `tools/package/distribution/launcher_run_smoke.py`
 
 ## Directory Structure Findings
 
@@ -58,4 +58,4 @@ Final gate run status:
 - Full TestX: PASS
   - `cmake --build out/build/vs2026/verify --config Debug --target testx_all`
 - UI bind freshness: PASS
-  - `dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`
+  - `archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe --repo-root . --check`

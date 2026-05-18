@@ -1,0 +1,29 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "anchor_records": [
+      {
+        "anchor_tags": [
+          "primary"
+        ],
+        "arm_ref": "orion_arm",
+        "hazard_tags": [],
+        "name": "Sol",
+        "position_tags": [
+          "stub"
+        ],
+        "region_ref": "milky_way_disk",
+        "star_class_tags": [
+          "g2v"
+        ],
+        "system_id": "sol_system",
+        "system_ref": "sol_system"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

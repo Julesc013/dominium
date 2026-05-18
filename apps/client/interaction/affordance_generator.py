@@ -6,7 +6,7 @@ from typing import Dict, List
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
-from game.domains.interaction import resolve_action_surfaces
+from game.domain.interaction import resolve_action_surfaces
 
 
 _KNOWN_TARGET_KINDS = (

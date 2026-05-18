@@ -1,0 +1,24 @@
+SCHEMA: physics/force_application.schema
+schema_id: dominium.schema.physics.force_application
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic force application process payloads for PHYS-1.
+- Ensure force-to-momentum mutation remains process-only and auditable.
+
+NON-SEMANTICS:
+- This schema does not mutate truth directly.
+- Runtime must route through process.apply_force.
+
+REQUIRED SHAPE:
+record force_application
+  required:
+    - application_id: id
+    - target_assembly_id: id
+    - force_vector: vector3_fixed_point
+    - duration_ticks: u32_positive
+    - torque: fixed_point_optional
+    - originating_process_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map

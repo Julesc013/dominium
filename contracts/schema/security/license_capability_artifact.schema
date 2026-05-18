@@ -1,0 +1,33 @@
+SCHEMA: security/license_capability_artifact.schema
+schema_id: dominium.schema.security.license_capability_artifact
+schema_version: 1.0.0
+stability: provisional
+
+PURPOSE:
+- Define a signed, content-addressed capability artifact for offline commercialization hooks.
+- Enable future `cap.premium.*` capability availability without embedding payment or online-auth logic.
+
+NON-SEMANTICS:
+- This artifact does not implement payments, accounts, or network verification.
+- This artifact only affects capability availability surfaces after offline trust verification succeeds.
+
+REQUIRED SHAPE:
+record license_capability_artifact
+  required:
+    - schema_id: tag
+    - schema_version: version
+    - artifact_kind_id: tag
+    - universal_identity_block: universal_identity_block
+    - enabled_capabilities: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - valid_from_release: id
+    - valid_to_release: id
+
+INVARIANTS:
+- `artifact_kind_id` MUST equal `artifact.license_capability`.
+- `universal_identity_block.identity_kind_id` MUST equal `identity.license_capability`.
+- `enabled_capabilities` MUST be deterministically sorted and MAY include `cap.premium.*`.
+- The artifact is content-addressed; trust verification signs the canonical artifact content with fixture signature records removed from the hash seed.
+- Deterministic fingerprint is computed with the fingerprint field blanked.

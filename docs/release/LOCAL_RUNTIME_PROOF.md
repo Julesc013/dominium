@@ -19,12 +19,12 @@ Superseded By: none
 | launcher | cli | `launcher --help` | blocked | CMake target `launcher_cli` outputs `launcher`, but no local binary exists. |
 | launcher | Python AppShell bridge | `python tools/launcher/launch.py --help` | partial | AppShell help emits for `product_id: launcher`; native binary not proven. |
 | client | cli/rendered/tui | `client --help` | blocked | CMake target `dominium_client` outputs `client`, but no local binary exists. |
-| client | tracked wrapper | `python dist/bin/dominium_client --help` | partial | AppShell help emits for `product_id: client`; native binary not proven. |
+| client | tracked wrapper | `python archive/generated/dist/bin/dominium_client --help` | partial | AppShell help emits for `product_id: client`; native binary not proven. |
 | server | headless/cli/tui | `server --help` | blocked | CMake target `dominium_server` outputs `server`, but no local binary exists. |
-| server | tracked wrapper | `python dist/bin/dominium_server --help` | partial | AppShell help emits for `product_id: server`; native binary not proven. |
+| server | tracked wrapper | `python archive/generated/dist/bin/dominium_server --help` | partial | AppShell help emits for `product_id: server`; native binary not proven. |
 | server | Python AppShell preflight | `python apps/server/server_main.py --help` | partial | Exits 0, but enters AppShell TUI because script invocation does not forward CLI args. |
 | tools | cli | `tools --help` | blocked | CMake target `dominium-tools` outputs `tools`, but no local binary exists. |
-| tools | AppShell tool stub | `python tools/appshell/product_stub_cli.py --product-id tool.attach_console_stub --help` | partial | AppShell help emits for the attach-console tool stub; shipped tools host not proven. |
+| tools | AppShell tool stub | `python tools/validators/shell/product_stub_cli.py --product-id tool.attach_console_stub --help` | partial | AppShell help emits for the attach-console tool stub; shipped tools host not proven. |
 
 ## Session / Authority / Save / Resume Proof
 
@@ -59,7 +59,7 @@ POST-CONVERGE-08 was attempted at the user's request and recorded partial script
 
 ## POST-CONVERGE-10L Update
 
-POST-CONVERGE-10L did not run product boot proof. It classified the focused RepoX distribution/product family as missing `dist/bin` wrapper/projection proof, including the absent `dist/bin/tool_attach_console_stub` target used by `dist/bin/dom`. Native product boot proof remains a separate POST-CONVERGE-11 task, and portable projection wrapper proof remains a POST-CONVERGE-12 or targeted dist wrapper task.
+POST-CONVERGE-10L did not run product boot proof. It classified the focused RepoX distribution/product family as missing `archive/generated/dist/bin` wrapper/projection proof, including the absent `archive/generated/dist/bin/tool_attach_console_stub` target used by `archive/generated/dist/bin/dom`. Native product boot proof remains a separate POST-CONVERGE-11 task, and portable projection wrapper proof remains a POST-CONVERGE-12 or targeted dist wrapper task.
 
 ## POST-CONVERGE-10O Update
 

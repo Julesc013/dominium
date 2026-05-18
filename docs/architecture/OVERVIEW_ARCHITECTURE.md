@@ -15,7 +15,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - **Domino engine** (`engine/`): C90 deterministic core with modules under
 
 
-  `engine/modules/` and render backends under `engine/render/`. Public headers
+  `engine/modules/` and render backends under `runtime/render/`. Public headers
 
 
   live under `engine/include/domino/`.

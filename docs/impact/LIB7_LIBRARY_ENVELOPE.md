@@ -15,9 +15,9 @@ Replacement Target: legacy reference surface retained without current binding au
 - `tools/lib/tool_run_lib_stress.py`
 - `tools/lib/tool_replay_save_open.py`
 - `tools/launcher/launcher_cli.py`
-- `engine/import/import_engine.py`
+- `tools/import/import_engine.py`
 - `tools/xstack/repox/check.py`
-- `tools/auditx/analyzers/e444_nondeterministic_bundle_smell.py`
+- `tools/xstack/auditx/analyzers/e444_nondeterministic_bundle_smell.py`
 - `tests/ops/lib_stress_envelope_tests.py`
 - `tests/launcher/launcher_cli_tests.py`
 - `tests/fixtures/regression/lib_full_baseline.json`

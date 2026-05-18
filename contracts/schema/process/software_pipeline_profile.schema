@@ -1,0 +1,25 @@
+SCHEMA: process/software_pipeline_profile.schema
+schema_id: dominium.schema.process.software_pipeline_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic software pipeline profile bindings for toolchain/config identity.
+
+NON-SEMANTICS:
+- Does not execute build steps directly.
+- Does not grant deploy authority.
+
+REQUIRED SHAPE:
+record software_pipeline_profile
+  required:
+    - pipeline_id: id
+    - toolchain_id: id
+    - toolchain_version: text
+    - config_hash: sha256
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Profile identity must be stable for identical pipeline/toolchain/config inputs.
+- Config hash must be immutable for a given deterministic build replay.

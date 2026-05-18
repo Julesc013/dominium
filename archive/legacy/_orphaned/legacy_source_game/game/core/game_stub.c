@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/game_stub.c
+FILE: source/dominium/game/rule/game_stub.c
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/game_stub
+LAYER / SUBSYSTEM: Dominium impl / game/rule/game_stub
 RESPONSIBILITY: Implements `game_stub`; owns translation-unit-local helpers/state; does NOT define the public contract (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

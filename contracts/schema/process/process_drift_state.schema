@@ -1,0 +1,26 @@
+SCHEMA: process/process_drift_state.schema
+schema_id: dominium.schema.process.process_drift_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic per-process drift score/band state for PROC-6.
+
+NON-SEMANTICS:
+- Does not issue certificates directly.
+- Does not execute revalidation runs directly.
+
+REQUIRED SHAPE:
+record process_drift_state
+  required:
+    - process_id: id
+    - version: semver
+    - drift_score: fixed_point_nonnegative
+    - drift_band: enum(drift.normal|drift.warning|drift.critical)
+    - last_update_tick: tick
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Drift state derives from canonical metrics/QC/environment/tool signals.
+- Band transitions must be deterministic and logged.

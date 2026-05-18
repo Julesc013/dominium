@@ -1,4 +1,4 @@
-"""FAST test: structured log serialization uses sorted keys.""" 
+"""FAST test: structured log serialization uses sorted keys."""
 
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests.appshell2_testlib import ensure_repo_on_path
 
     ensure_repo_on_path(repo_root)
-    from runtime.appshell.logging import append_jsonl, build_log_event
+    from runtime.shell.logging import append_jsonl, build_log_event
 
     event = build_log_event(
         product_id="client",

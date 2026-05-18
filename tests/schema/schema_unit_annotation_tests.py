@@ -5,17 +5,17 @@ from typing import Dict, List, Optional, Tuple
 
 
 FAB_SCHEMA_FILES = [
-    "contracts/schemas/material.schema",
-    "contracts/schemas/substance.schema",
-    "contracts/schemas/interface.schema",
-    "contracts/schemas/part.schema",
-    "contracts/schemas/assembly.schema",
-    "contracts/schemas/process_family.schema",
-    "contracts/schemas/instrument.schema",
-    "contracts/schemas/standard.schema",
-    "contracts/schemas/quality.schema",
-    "contracts/schemas/batch_lot.schema",
-    "contracts/schemas/hazard.schema",
+    "contracts/schema/material.schema",
+    "contracts/schema/substance.schema",
+    "contracts/schema/interface.schema",
+    "contracts/schema/part.schema",
+    "contracts/schema/assembly.schema",
+    "contracts/schema/process_family.schema",
+    "contracts/schema/instrument.schema",
+    "contracts/schema/standard.schema",
+    "contracts/schema/quality.schema",
+    "contracts/schema/batch_lot.schema",
+    "contracts/schema/hazard.schema",
 ]
 
 

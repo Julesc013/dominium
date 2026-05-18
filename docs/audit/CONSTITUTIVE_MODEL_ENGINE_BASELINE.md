@@ -106,7 +106,7 @@ Commands executed:
 
 - `python tools/xstack/testx/runner.py --profile FAST --subset test_model_binding_order_deterministic,test_inputs_hash_deterministic,test_cache_reuse_by_inputs_hash,test_rng_usage_only_when_declared,test_output_processes_emitted,test_budget_degrade_stable,test_constitutive_model_docs_present,test_repox_constitutive_model_invariant_registered`
 - `python tools/xstack/repox/check.py --profile FAST`
-- `python tools/auditx/auditx.py scan --repo-root . --format both`
+- `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
 - `python tools/xstack/run.py strict --repo-root . --cache on`
 - `python tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
 

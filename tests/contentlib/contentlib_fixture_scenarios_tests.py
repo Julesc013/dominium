@@ -24,32 +24,32 @@ def main():
     core_all_root = os.path.join(fixtures_root, "core_all")
 
     # No packs installed.
-    discover_empty = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover_empty = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                               ["--repo-root", repo_root, "--root", empty_root, "--format", "json"])
     if discover_empty.get("packs"):
         print("fixture empty: expected no packs")
         return 1
-    compat_empty = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_empty = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                             ["--repo-root", repo_root, "--root", empty_root, "--format", "json"])
     if not compat_empty.get("ok"):
         print("fixture empty: expected ok")
         return 1
 
     # Only core.units.
-    discover_units = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover_units = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                               ["--repo-root", repo_root, "--root", core_units_root, "--format", "json"])
     pack_ids = sorted([p.get("pack_id") for p in discover_units.get("packs", []) if p.get("pack_id")])
     if pack_ids != ["org.dominium.core.units"]:
         print("fixture core_units: unexpected pack list")
         return 1
-    compat_units = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_units = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                             ["--repo-root", repo_root, "--root", core_units_root,
                              "--require-capability", "org.dominium.core.units",
                              "--format", "json"])
     if not compat_units.get("ok"):
         print("fixture core_units: expected ok")
         return 1
-    compat_missing = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_missing = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                               ["--repo-root", repo_root, "--root", core_units_root,
                                "--require-capability", "org.dominium.core.parts",
                                "--format", "json"])
@@ -59,7 +59,7 @@ def main():
         return 1
 
     # All core.* packs.
-    discover_all = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover_all = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                             ["--repo-root", repo_root, "--root", core_all_root, "--format", "json"])
     expected_all = sorted([
         "org.dominium.core.units",
@@ -82,7 +82,7 @@ def main():
         "org.dominium.core.processes",
         "org.dominium.core.standards",
     ]
-    compat_all = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_all = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                           ["--repo-root", repo_root, "--root", core_all_root, "--format", "json"] +
                           sum([["--require-capability", cap] for cap in require_caps], []))
     if not compat_all.get("ok") or compat_all.get("missing_capabilities"):
@@ -90,7 +90,7 @@ def main():
         return 1
 
     # Deterministic discovery output.
-    discover_all_again = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover_all_again = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                                   ["--repo-root", repo_root, "--root", core_all_root, "--format", "json"])
     if discover_all_again != discover_all:
         print("fixture core_all: discovery output not deterministic")

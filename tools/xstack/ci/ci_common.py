@@ -32,8 +32,8 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 PROFILE_DIR_REL = "tools/xstack/ci/profiles"
-GATE_DEFINITIONS_REL = "content/data/xstack/gate_definitions.json"
-CI_REPORT_JSON_REL = "content/data/audit/ci_run_report.json"
+GATE_DEFINITIONS_REL = "archive/generated/xstack/gate_definitions.json"
+CI_REPORT_JSON_REL = "archive/generated/audit/ci_run_report.json"
 CI_REPORT_MD_REL = "docs/audit/CI_RUN_REPORT.md"
 WORKFLOW_REL = ".github/workflows/ci.yml"
 
@@ -218,12 +218,12 @@ def _apply_gate_report_payload(
 def ensure_xi7_inputs(repo_root: str) -> None:
     missing = []
     for rel_path in (
-        "content/data/architecture/architecture_graph.v1.json",
-        "content/data/architecture/module_boundary_rules.v1.json",
+        "archive/generated/architecture/architecture_graph.v1.json",
+        "archive/generated/architecture/module_boundary_rules.v1.json",
         "contracts/registry/architecture/single_engine_registry.json",
         "docs/audit/XI_6_FINAL.md",
         "tools/xstack/repox/check.py",
-        "tools/auditx/auditx.py",
+        "tools/xstack/auditx/auditx.py",
         "tools/xstack/testx/runner.py",
         "docs/canon/constitution_v1.md",
         "docs/canon/glossary_v1.md",
@@ -319,7 +319,7 @@ def build_ci_guard_violations(repo_root: str) -> list[dict[str, object]]:
                 "code": "gate_definitions_invalid",
                 "file_path": GATE_DEFINITIONS_REL,
                 "message": message,
-                "remediation": "repair content/data/xstack/gate_definitions.json so Xi-7 CI metadata matches the committed guard surface",
+                "remediation": "repair archive/generated/xstack/gate_definitions.json so Xi-7 CI metadata matches the committed guard surface",
             }
         )
 
@@ -514,13 +514,13 @@ def _rule_result(rule_id: str, status: str, findings: list[dict[str, object]], *
 def _run_no_src_directory_rule(repo_root: str) -> dict[str, object]:
     findings: list[dict[str, object]] = []
     evidence = []
-    report_path = _repo_abs(repo_root, "content/data/restructure/xi5x2_postmove_residual_src_report.json")
+    report_path = _repo_abs(repo_root, "archive/generated/restructure/xi5x2_postmove_residual_src_report.json")
     if os.path.isfile(report_path):
-        report = _read_json(repo_root, "content/data/restructure/xi5x2_postmove_residual_src_report.json")
+        report = _read_json(repo_root, "archive/generated/restructure/xi5x2_postmove_residual_src_report.json")
         if int(report.get("dangerous_shadow_root_count", 0) or 0) != 0:
             findings.append(
                 {
-                    "file_path": "content/data/restructure/xi5x2_postmove_residual_src_report.json",
+                    "file_path": "archive/generated/restructure/xi5x2_postmove_residual_src_report.json",
                     "message": "dangerous shadow roots remain after Xi-5x2",
                     "remediation": "resolve remaining dangerous shadow roots before continuing the Xi-7 lane",
                 }
@@ -560,9 +560,9 @@ def _run_no_src_directory_rule(repo_root: str) -> dict[str, object]:
 def _run_arch_graph_present_rule(repo_root: str) -> dict[str, object]:
     findings: list[dict[str, object]] = []
     for rel_path in (
-        "content/data/architecture/architecture_graph.v1.json",
+        "archive/generated/architecture/architecture_graph.v1.json",
         "contracts/registry/architecture/module_registry.v1.json",
-        "content/data/architecture/module_boundary_rules.v1.json",
+        "archive/generated/architecture/module_boundary_rules.v1.json",
         "contracts/registry/architecture/single_engine_registry.json",
     ):
         if not os.path.exists(_repo_abs(repo_root, rel_path)):
@@ -577,7 +577,7 @@ def _run_arch_graph_present_rule(repo_root: str) -> dict[str, object]:
     if _token(drift_report.get("status")).lower() != "pass" and (not _is_allowed_architecture_drift(drift_report, _provisional_allowances(repo_root, "architecture_drift"))):
         findings.append(
             {
-                "file_path": "content/data/architecture/architecture_graph.v1.json",
+                "file_path": "archive/generated/architecture/architecture_graph.v1.json",
                 "message": _token(drift_report.get("reason")) or "live architecture graph drifted from Xi-6 freeze",
                 "remediation": "attach ARCH-GRAPH-UPDATE and refresh the Xi-6 freeze intentionally",
             }
@@ -732,7 +732,7 @@ def _run_architecture_drift_detector(repo_root: str) -> tuple[list[dict[str, obj
         findings.append(
             _render_audit_finding(
                 "E560_ARCHITECTURE_DRIFT_SMELL",
-                file_path="content/data/architecture/architecture_graph.v1.json",
+                file_path="archive/generated/architecture/architecture_graph.v1.json",
                 message=_token(report.get("reason")) or "architecture graph drift detected without ARCH-GRAPH-UPDATE",
                 remediation="prepare a ControlX architecture change plan and attach ARCH-GRAPH-UPDATE before changing the frozen graph",
                 evidence=[
@@ -827,9 +827,9 @@ def _run_ui_truth_leak_detector(repo_root: str) -> tuple[list[dict[str, object]]
 
 
 def _run_numeric_discipline_scan(repo_root: str) -> tuple[list[dict[str, object]], dict[str, object]]:
-    report_path = _repo_abs(repo_root, "content/data/audit/numeric_discipline_report.json")
+    report_path = _repo_abs(repo_root, "archive/generated/audit/numeric_discipline_report.json")
     if os.path.isfile(report_path):
-        report = _read_json(repo_root, "content/data/audit/numeric_discipline_report.json")
+        report = _read_json(repo_root, "archive/generated/audit/numeric_discipline_report.json")
         source_mode = "committed_report"
     else:
         report = build_numeric_discipline_report(repo_root)

@@ -1,0 +1,74 @@
+SCHEMA: bundle.container.schema
+schema_id: dominium.schema.bundle_container
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical shareable bundle container for saves, replays, blueprints, and modpacks.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Bundles do not grant authority or bypass capability checks.
+- Bundles do not contain executable code.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- timestamp: ISO-8601 UTC string.
+- path_ref: relative path within the bundle container.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record bundle_container
+  required:
+    - bundle_type: tag
+    - bundle_id: id
+    - created_at: timestamp
+    - created_by: tag
+    - tool_version: tag
+    - contents_index: [content_entry]
+    - lockfile_ref: path_ref
+    - compat_report_ref: path_ref
+    - embedded_packs: [embedded_pack]
+    - extensions: map
+  optional:
+    - bundle_format_version: integer
+    - bundle_tags: [tag]
+    - trust_tier: tag
+    - pack_refs: [pack_ref]
+    - notes: map
+
+TYPE DEFINITIONS:
+record content_entry
+  required:
+    - content_path: path_ref
+    - content_kind: tag
+    - sha256: tag
+    - size_bytes: integer
+  optional:
+    - content_id: id
+    - pack_id: id
+    - pack_version: tag
+    - ref_tags: [tag]
+
+record embedded_pack
+  required:
+    - pack_id: id
+    - pack_version: tag
+    - pack_path: path_ref
+    - pack_hash: tag
+  optional:
+    - pack_size_bytes: integer
+    - pack_tags: [tag]
+
+record pack_ref
+  required:
+    - pack_id: id
+  optional:
+    - version_constraint: tag
+    - ref_tags: [tag]

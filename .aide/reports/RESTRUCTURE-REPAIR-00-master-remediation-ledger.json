@@ -753,7 +753,7 @@
       "class": "untracked_generated_noise",
       "source_evidence": "filesystem scan",
       "affected_paths": [
-        "dist/"
+        "archive/generated/dist/"
       ],
       "severity": "informational",
       "owner_surface": "repo",
@@ -809,7 +809,7 @@
       "class": "CTest_walltime",
       "source_evidence": "ctest --preset verify -R tools_auditx --output-on-failure --timeout 300",
       "affected_paths": [
-        "tools/auditx/**",
+        "tools/xstack/auditx/**",
         "tools/release/archive_policy_common.py"
       ],
       "severity": "blocker",

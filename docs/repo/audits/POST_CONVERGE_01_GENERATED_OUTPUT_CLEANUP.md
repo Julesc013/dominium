@@ -29,7 +29,7 @@ No product roots moved. No runtime roots moved. No domain roots moved. No source
 | Root | Exists? | Tracked? | Ignored? | Classification | Notes |
 | --- | --- | --- | --- | --- | --- |
 | `.xstack_cache` | yes | no | yes | ignored generated/cache safe to remove | 116 files, 133 directories; generated XStack cache/evidence residue. |
-| `artifacts` | yes | yes, 10 files | no | tracked provenance review | Tracked `artifacts/toolchain_runs/...` JSON evidence; not deleted. |
+| `artifacts` | yes | yes, 10 files | no | tracked provenance review | Tracked `archive/generated/artifacts/toolchain_runs/...` JSON evidence; not deleted. |
 | `build` | yes | no | yes | ignored generated build output safe to remove | 4 files, 9 directories under `build/appshell/`. |
 | `dist` | yes | yes, 13 files | no | tracked distribution projection review | Tracked wrappers, pack/profile/lock projection files, and `.gitkeep` files; not deleted. |
 | `out` | yes | no | yes | ignored generated output safe to remove | 6 files, 8 directories under `out/build/`. |
@@ -48,7 +48,7 @@ Root-level and nested Python `__pycache__/` directories were also removed as gen
 
 ## .gitignore Changes
 
-`.gitignore` already ignored `.xstack_cache/`, `build/`, `dist/`, and `out/`. No ignore was added for `artifacts/` because tracked provenance remains there pending review.
+`.gitignore` already ignored `.xstack_cache/`, `build/`, `archive/generated/dist/`, and `out/`. No ignore was added for `archive/generated/artifacts/` because tracked provenance remains there pending review.
 
 The file now re-ignores `**/__pycache__` after the broad `!/engine/**` and `!/game/**` source allow-list negations, so Python bytecode caches do not reappear as untracked source-tree noise.
 
@@ -66,8 +66,8 @@ Active layout exceptions changed from 37 to 34. Unexcepted strict violations rem
 
 ## Remaining Generated/Output Exceptions
 
-- `artifacts_root`: still active because `artifacts/` contains tracked toolchain-run evidence JSON.
-- `dist_root`: still active because `dist/` contains tracked distribution projection wrappers, locks, pack aliases, profile data, and `.gitkeep` files.
+- `artifacts_root`: still active because `archive/generated/artifacts/` contains tracked toolchain-run evidence JSON.
+- `dist_root`: still active because `archive/generated/dist/` contains tracked distribution projection wrappers, locks, pack aliases, profile data, and `.gitkeep` files.
 
 ## Validation
 
@@ -94,8 +94,8 @@ CMake, build, CTest, and FAST were not run in this task. POST-CONVERGE-00 alread
 
 ## Risks
 
-- `artifacts/` may contain provenance needed for release, evidence, or audit policy.
-- `dist/` may contain intentionally tracked distribution projection fixtures or historical release inputs.
+- `archive/generated/artifacts/` may contain provenance needed for release, evidence, or audit policy.
+- `archive/generated/dist/` may contain intentionally tracked distribution projection fixtures or historical release inputs.
 - This task did not prove the build; it only preserved validator and supplemental audit health.
 
 ## Next Recommended Task

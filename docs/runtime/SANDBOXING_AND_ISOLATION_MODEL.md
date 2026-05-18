@@ -45,12 +45,12 @@ This is a post-`Σ-B` / post-`Φ-A2` / post-`Φ-B1` artifact. It carries forward
 
 Repo-grounded extension surfaces already exist and must be treated as evidence rather than as automatic canon:
 
-- `runtime/app/readonly_adapter.c`
-- `runtime/app/readonly_format.c`
+- `runtime/shell/lifecycle/readonly_adapter.c`
+- `runtime/shell/lifecycle/readonly_format.c`
 - `process/capsules/capsule_executor.py`
 - `tools/governance/control_plane_engine.py`
 - `client/local_server/local_server_controller.py`
-- `tools/network/policies/policy_server_authoritative.py`
+- `tools/validators/network/policies/policy_server_authoritative.py`
 - `tools/xstack/testx/tests/test_renderer_truth_isolation.py`
 - `tools/xstack/testx/tests/test_platform_isolation.py`
 - `tools/xstack/testx/tests/test_no_production_import_from_quarantine.py`

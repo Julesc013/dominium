@@ -89,15 +89,15 @@ REQUIRED_MESSAGE_KEYS = {
     ],
 }
 PRINTF_SCAN_FILES = (
-    "runtime/appshell/logging/log_engine.py",
+    "runtime/shell/logging/log_engine.py",
     "runtime/diagnostics/repro_bundle_builder.py",
-    "apps/server/net/loopback_transport.py",
-    "apps/server/runtime/tick_loop.py",
-    "runtime/appshell/diag/diag_snapshot.py",
+    "runtime/network/server/loopback_transport.py",
+    "runtime/shell/server/tick_loop.py",
+    "runtime/shell/diag/diag_snapshot.py",
 )
 INTEGRATION_TOKENS = (
-    ("runtime/appshell/logging/log_engine.py", "validate_observability_event(", "runtime log engine must validate guaranteed-category events", RULE_GUARANTEES),
-    ("runtime/appshell/logging/log_engine.py", "redact_observability_mapping(", "runtime log engine must redact secret-like fields", RULE_SECRETS),
+    ("runtime/shell/logging/log_engine.py", "validate_observability_event(", "runtime log engine must validate guaranteed-category events", RULE_GUARANTEES),
+    ("runtime/shell/logging/log_engine.py", "redact_observability_mapping(", "runtime log engine must redact secret-like fields", RULE_SECRETS),
     ("runtime/diagnostics/repro_bundle_builder.py", "pack_verification_report.json", "repro bundle must include the pack verification report surface", RULE_GUARANTEES),
     ("runtime/diagnostics/repro_bundle_builder.py", "install_plan.json", "repro bundle must include the install-plan surface", RULE_GUARANTEES),
     ("runtime/diagnostics/repro_bundle_builder.py", "update_plan.json", "repro bundle must include the update-plan surface", RULE_GUARANTEES),
@@ -110,9 +110,9 @@ INTEGRATION_TOKENS = (
     ("tools/setup/setup_cli.py", "lib.install.apply", "setup install apply must emit the guaranteed lib category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "lib.save.migrated", "setup save migration must emit the guaranteed lib category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "lib.instance.migrated", "setup instance migration must emit the guaranteed lib category", RULE_GUARANTEES),
-    ("runtime/appshell/supervisor/supervisor_engine.py", "category=\"supervisor\"", "supervisor runtime events must emit under the supervisor category", RULE_GUARANTEES),
-    ("tools/appshell/supervisor_service.py", "category=\"supervisor\"", "supervisor service readiness must emit under the supervisor category", RULE_GUARANTEES),
-    ("tools/appshell/supervised_product_host.py", "category=\"supervisor\"", "supervised child lifecycle events must emit under the supervisor category", RULE_GUARANTEES),
+    ("runtime/shell/supervisor/supervisor_engine.py", "category=\"supervisor\"", "supervisor runtime events must emit under the supervisor category", RULE_GUARANTEES),
+    ("tools/validators/shell/supervisor_service.py", "category=\"supervisor\"", "supervisor service readiness must emit under the supervisor category", RULE_GUARANTEES),
+    ("tools/validators/shell/supervised_product_host.py", "category=\"supervisor\"", "supervised child lifecycle events must emit under the supervisor category", RULE_GUARANTEES),
     ("tools/setup/setup_cli.py", "appshell.refusal", "setup refusal paths must emit the refusal category", RULE_GUARANTEES),
 )
 PRINT_RE = re.compile(r"\bprint\s*\(")

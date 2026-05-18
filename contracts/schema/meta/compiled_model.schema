@@ -1,0 +1,31 @@
+SCHEMA: meta/compiled_model.schema
+schema_id: dominium.schema.meta.compiled_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic compiled model artifacts used as derived execution accelerators.
+- Bind compiled payloads to source hashes, signatures, validity domains, and equivalence proofs.
+
+NON-SEMANTICS:
+- No domain-specific compiler behavior.
+- No authority to mutate canonical truth directly.
+
+REQUIRED SHAPE:
+record compiled_model
+  required:
+    - compiled_model_id: id
+    - source_kind: text
+    - source_hash: sha256
+    - compiled_type_id: id
+    - compiled_payload_ref: map
+    - input_signature_ref: id
+    - output_signature_ref: id
+    - validity_domain_ref: id
+    - equivalence_proof_ref: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- A compiled model must not be used unless equivalence proof verification succeeds.
+- Runtime use must refuse when validity domain assumptions are violated.

@@ -1,0 +1,23 @@
+SCHEMA: control/view_binding.schema
+schema_id: dominium.schema.control.view_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic subject-to-view policy binding state for CTRL-6.
+
+REQUIRED SHAPE:
+record view_binding
+  required:
+    - schema_version: semver
+    - subject_id: id
+    - current_view_policy_id: id
+    - bound_spatial_id: optional_id
+    - bound_pose_slot_id: optional_id
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- View bindings are process-mutated only through control-plane mediated processes.
+- View bindings are deterministic and replay-stable.

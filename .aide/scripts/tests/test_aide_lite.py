@@ -48,7 +48,7 @@ class AideLiteWorkflowTests(unittest.TestCase):
             ".env",
             ".aide.local/state.json",
             "node_modules/pkg/index.js",
-            "dist/app.js",
+            "archive/generated/dist/app.js",
             "build/output.txt",
             "core/harness/__pycache__/module.pyc",
         ]:

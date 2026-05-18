@@ -31,17 +31,17 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/IPC_ATTACH_CONSOLES.md, docs/architecture/REALITY_MODEL.md, docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md, docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md, docs/audit/AUDITX_BASELINE_REPORT.md, docs/audit/CAPABILITY_REGISTRY_BASELINE.md, docs/audit/CAP_NEG1_RETRO_AUDIT.md, docs/audit/CTRL7_RETRO_AUDIT.md`
+- Docs: `docs/runtime/shell/IPC_ATTACH_CONSOLES.md, docs/architecture/REALITY_MODEL.md, docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md, docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md, docs/audit/AUDITX_BASELINE_REPORT.md, docs/audit/CAPABILITY_REGISTRY_BASELINE.md, docs/audit/CAP_NEG1_RETRO_AUDIT.md, docs/audit/CTRL7_RETRO_AUDIT.md`
 
 ## Tests Involved
 
-- `python tools/appshell/tool_run_ipc_unify.py --repo-root .`
+- `python tools/validators/shell/tool_run_ipc_unify.py --repo-root .`
 - `python tools/compat/tool_run_interop_stress.py --repo-root .`
 - `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

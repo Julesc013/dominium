@@ -136,7 +136,7 @@ TestX (SPEC-1):
    - command: `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
    - result: `status=pass` (warn finding retained from pre-existing AuditX threshold)
 2. AuditX run
-   - command: `python tools/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root run_meta/auditx_spec1_final`
+   - command: `python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root run_meta/auditx_spec1_final`
    - result: `result=scan_complete`
 3. TestX PASS (SPEC-1 subset)
    - command: `python tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset testx.specs.registry_valid --subset testx.specs.apply_deterministic --subset testx.specs.compliance_result_deterministic --subset testx.specs.no_spec_packs_null_boot_ok --subset testx.specs.hardcoded_spec_constant_smoke`

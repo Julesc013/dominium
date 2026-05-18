@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.worldgen.refinement.refinement_cache import build_refinement_cache_entry, evict_refinement_cache_entries
+    from game.domain.worldgen.refinement.refinement_cache import build_refinement_cache_entry, evict_refinement_cache_entries
     from tools.xstack.testx.tests.geo8_testlib import worldgen_cell_key
 
     rows = [

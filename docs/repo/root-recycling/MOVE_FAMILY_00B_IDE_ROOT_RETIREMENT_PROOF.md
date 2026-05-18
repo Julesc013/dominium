@@ -27,13 +27,13 @@ This proof verifies the previously applied IDE manifest migration. It does not m
 
 | Replacement Path | Status |
 | --- | --- |
-| `contracts/projections/ide/projection_manifest.schema.json` | tracked, present, JSON parse PASS |
-| `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` | tracked, present, JSON parse PASS |
-| `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | tracked, present, JSON parse PASS |
+| `contracts/projection/ide/projection_manifest.schema.json` | tracked, present, JSON parse PASS |
+| `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` | tracked, present, JSON parse PASS |
+| `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` | tracked, present, JSON parse PASS |
 
 ## New Contract/Projection Home
 
-The tracked schema and examples now live under `contracts/projections/ide/**`. Generated projection manifests may still be emitted under ignored local `ide/manifests/*.projection.json` paths by existing generation tooling; that is generated output, not tracked source authority.
+The tracked schema and examples now live under `contracts/projection/ide/**`. Generated projection manifests may still be emitted under ignored local `ide/manifests/*.projection.json` paths by existing generation tooling; that is generated output, not tracked source authority.
 
 ## Exception Status
 

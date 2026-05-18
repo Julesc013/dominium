@@ -1,0 +1,25 @@
+SCHEMA: meta/observability_guarantee.schema
+schema_id: dominium.schema.meta.observability_guarantee
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare guaranteed observability categories and their minimum required fields.
+- Bind runtime log enforcement to a deterministic registry surface.
+
+REQUIRED SHAPE:
+record observability_guarantee
+  required:
+    - category_id: id
+    - guaranteed: bool
+    - minimum_fields: [text]
+    - redaction_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - stability: stability_marker
+
+INVARIANTS:
+- guaranteed categories MUST remain registry-declared before runtime emission.
+- minimum_fields ordering MUST be deterministic.
+- redaction_policy_id MUST select deterministic redaction behavior.

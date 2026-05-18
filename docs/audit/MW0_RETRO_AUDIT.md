@@ -74,7 +74,7 @@ Reusable implementation surfaces already present:
   - authoritative `process.worldgen_request` mutation boundary
 - `tools/xstack/testx/tests/geo8_testlib.py`
   - deterministic fixtures for worldgen process execution
-- `tools/geo/tool_replay_worldgen_cell.py`
+- `tools/validators/domain/geology/tool_replay_worldgen_cell.py`
   - replay/hash verification path for generated cells
 
 Existing optional real-data content that must remain overlay-only:

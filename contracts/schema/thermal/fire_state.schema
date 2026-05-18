@@ -1,0 +1,22 @@
+SCHEMA: thermal/fire_state.schema
+schema_id: dominium.schema.thermal.fire_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic THERM-4 fire state row for active fire tracking and replay.
+
+REQUIRED SHAPE:
+record fire_state
+  required:
+    - schema_version: semver
+    - target_id: id
+    - active: bool
+    - fuel_remaining: int
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Fire state mutation occurs only through deterministic processes/model outputs.
+- Fuel consumption must be explicit and replayable.

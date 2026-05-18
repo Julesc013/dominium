@@ -1,0 +1,23 @@
+SCHEMA: logistics/logistics_node.schema
+schema_id: dominium.schema.logistics.logistics_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic logistics node declarations.
+
+REQUIRED SHAPE:
+record logistics_node
+  required:
+    - schema_version: semver
+    - node_id: id
+    - node_type: enum(site|depot|factory|port|station|warehouse)
+    - location_ref: string
+    - tags: list<string>
+    - extensions: map
+  optional:
+    - capacity_storage: int
+
+INVARIANTS:
+- node_id must be stable and unique within graph.
+- capacity_storage, when present, must be non-negative fixed-point integer.

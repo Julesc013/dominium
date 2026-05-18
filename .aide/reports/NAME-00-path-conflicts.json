@@ -12,7 +12,7 @@
   "findings": [
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.bat",
+      "path": "archive/legacy/setup_package_scripts/build_legacy_windows.bat",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -21,7 +21,7 @@
     },
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.sh",
+      "path": "archive/legacy/setup_package_scripts/build_legacy_windows.sh",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -30,7 +30,7 @@
     },
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/build_packages.bat",
+      "path": "archive/legacy/setup_package_scripts/build_packages.bat",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -39,7 +39,7 @@
     },
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/build_packages.sh",
+      "path": "archive/legacy/setup_package_scripts/build_packages.sh",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -48,7 +48,7 @@
     },
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/run_setup_tests.bat",
+      "path": "archive/legacy/setup_package_scripts/run_setup_tests.bat",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -57,7 +57,7 @@
     },
     {
       "disposition": "needs_owner_review",
-      "path": "apps/setup/packages/scripts/legacy/run_setup_tests.sh",
+      "path": "archive/legacy/setup_package_scripts/run_setup_tests.sh",
       "reason": "nested generic/status term needs owner review",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1290,7 +1290,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/content/dom_game_content_placeholder.c",
+      "path": "archive/legacy/_orphaned/legacy_source_content/domains/game/domain/game/dom_game_content_placeholder.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1299,7 +1299,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/app_mode/app_mode.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/app_mode/app_mode.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1308,7 +1308,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/CMakeLists.txt",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/CMakeLists.txt",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1317,7 +1317,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/dom_client_main.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/dom_client_main.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1326,7 +1326,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/dom_client_main.h",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/dom_client_main.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1335,7 +1335,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/default_bindings.json",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/input/default_bindings.json",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1344,7 +1344,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_actions.h",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/input/dom_input_actions.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1353,7 +1353,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_mapping.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/input/dom_input_mapping.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1362,7 +1362,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_mapping.h",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/client/input/dom_input_mapping.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1371,7 +1371,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/dominium_game_main.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/dominium_game_main.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1380,7 +1380,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_modes.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/g_modes.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1389,7 +1389,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_modes.h",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/g_modes.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1398,7 +1398,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_runtime.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/g_runtime.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1407,7 +1407,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_runtime.h",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/g_runtime.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1416,7 +1416,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/game_stub.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/game_stub.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -1425,7 +1425,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/product_info.c",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rule/product_info.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4314,7 +4314,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/CMakeLists.txt",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/CMakeLists.txt",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4323,7 +4323,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_camera.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_camera.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4332,7 +4332,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_camera.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_camera.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4341,7 +4341,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_draw_common.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_draw_common.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4350,7 +4350,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_draw_common.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_draw_common.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4359,7 +4359,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_render_debug.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_render_debug.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4368,7 +4368,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_render_debug.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_render_debug.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4377,7 +4377,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_sprite_batch.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_sprite_batch.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4386,7 +4386,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_sprite_batch.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_sprite_batch.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4395,7 +4395,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_target.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_target.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4404,7 +4404,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_target.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_target.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4413,7 +4413,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_text_layout.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4422,7 +4422,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_text_layout.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4431,7 +4431,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_view.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4440,7 +4440,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_view.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4449,7 +4449,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4458,7 +4458,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/dom_render_api.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/dom_render_api.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4467,7 +4467,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/dom_render_api.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/dom_render_api.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4476,7 +4476,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/domino_gfx_core.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/domino_gfx_core.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4485,7 +4485,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/domino_gfx_internal.h",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/domino_gfx_internal.h",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4494,7 +4494,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/gfx_stub.c",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",
@@ -4503,7 +4503,7 @@
     },
     {
       "disposition": "allowed_exception",
-      "path": "archive/legacy/engine_modules_engine/engine/render/api/ui/CMakeLists.txt",
+      "path": "archive/legacy/engine_modules_engine/runtime/render/api/ui/CMakeLists.txt",
       "reason": "historical material under archive",
       "rule": "forbidden_path_terms",
       "segment": "legacy",

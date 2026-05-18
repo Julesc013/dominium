@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Epoch Anchor Record Schema",
+  "version": "1.0.0",
+  "description": "Canonical epoch anchor record for long-run deterministic replay and compaction boundaries.",
+  "x-doc-ref": [
+    "docs/time/TIME_ANCHOR_MODEL.md",
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "anchor_id",
+    "tick",
+    "truth_hash",
+    "contract_bundle_hash",
+    "pack_lock_hash",
+    "overlay_manifest_hash",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "anchor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tick": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 18446744073709551615
+    },
+    "truth_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overlay_manifest_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "anchor_id": "epoch.anchor.tick.10000",
+      "tick": 10000,
+      "truth_hash": "8c79a03102d5ee46114f7c15c5f235f6f4f7d38bf4278857fefcb0c3dba9fb0f",
+      "contract_bundle_hash": "96e8a56dd4ca93554699f4b511ee2f4c4ec4e7a1b37e4f71db9d8766958afca2",
+      "pack_lock_hash": "ab9ddd95747b7fb4574fcbf962b8c5f29fef74d209db47e88639be09e42e8961",
+      "overlay_manifest_hash": "111d664ec9c2c2466afddbe6775ab71647458a99dfad7539d7bca3fd332d0cb6",
+      "deterministic_fingerprint": "3ecb6f8f3d394e3370f917a92b09497a03a18a8c485eb652142cf30314948d0c",
+      "extensions": {
+        "reason": "tick_interval",
+        "control_proof_hash": "099f983703c17697f65a6ef74fa7f6effd83ecc288c6b08c15a2023e17b0ca7d"
+      }
+    }
+  ]
+}

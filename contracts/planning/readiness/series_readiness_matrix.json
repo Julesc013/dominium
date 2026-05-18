@@ -283,7 +283,7 @@
       "not_yet_safe_to_plan_in_detail": true,
       "readiness_summary": "Ζ remains heavily gated. The repo has rollback, yanked-release, replay, checkpoint, proof, and transaction precursors, but most live cutover, hot-reload, non-blocking save, trust-rotation, and distributed-authority capabilities are still blocked or dangerous.",
       "major_prerequisite_surfaces": [
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "release/updates/stable.json",
         "release/updates/changelog.json",
         "server/persistence",

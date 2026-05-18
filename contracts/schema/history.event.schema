@@ -1,0 +1,97 @@
+SCHEMA: history.event.schema
+schema_id: dominium.schema.history.event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define derived historical events and history processes with provenance and bias.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Events are derived summaries, not ground truth.
+- Process entries do NOT alter past physical outcomes.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record history_event_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - events: [history_event]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record history_event
+  required:
+    - event_id: id
+    - event_role: tag
+    - category: tag
+    - start_tick: quantity
+    - end_tick: quantity
+    - source_refs: [id]
+    - perspective_ref: id
+    - confidence: quantity
+    - uncertainty: quantity
+    - bias: quantity
+    - provenance: provenance
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - process_type: tag
+    - target_event_id: id
+    - delta_confidence: quantity
+    - delta_uncertainty: quantity
+    - delta_bias: quantity
+    - myth_weight: quantity
+    - decay_rate: quantity
+    - epoch_ref: id
+    - region_id: id
+    - location_ref: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- start_tick and end_tick use `unit.time.act_tick`.
+- confidence uses `unit.history.confidence`.
+- uncertainty uses `unit.history.uncertainty`.
+- bias uses `unit.history.bias`.
+- delta_confidence uses `unit.history.confidence`.
+- delta_uncertainty uses `unit.history.uncertainty`.
+- delta_bias uses `unit.history.bias`.
+- myth_weight uses `unit.history.myth_weight`.
+- decay_rate uses `unit.history.decay_per_tick`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.

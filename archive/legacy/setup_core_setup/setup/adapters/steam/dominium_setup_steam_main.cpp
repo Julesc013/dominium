@@ -99,7 +99,7 @@ static void dsk_print_json_summary(const char *command,
     std::printf("\"command\":\"%s\",", dsk_json_escape(command ? command : "").c_str());
     std::printf("\"status\":\"%s\",", status);
     std::printf("\"status_code\":%d,", status_code);
-    std::printf("\"artifacts\":{");
+    std::printf("\"archive\generated\archive\generated\archive\generated\artifacts\":{");
     std::printf("\"request\":\"%s\",", dsk_json_escape(request_path).c_str());
     std::printf("\"plan\":\"%s\",", dsk_json_escape(plan_path).c_str());
     std::printf("\"state\":\"%s\",", dsk_json_escape(state_path).c_str());

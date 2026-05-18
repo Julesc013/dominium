@@ -126,7 +126,7 @@ static dom_abi_result provider_content_local_fs_resolve(const provider_content_r
         return (dom_abi_result)-1;
     }
 
-    n = snprintf(artifact_dir, sizeof(artifact_dir), "%s/artifacts/%s/%s", req->state_root, algo, hex);
+    n = snprintf(artifact_dir, sizeof(artifact_dir), "%s/archive/generated/artifacts/%s/%s", req->state_root, algo, hex);
     if (n <= 0 || (size_t)n >= sizeof(artifact_dir)) {
         set_err(out_err,
                 (u16)ERRD_COMMON,

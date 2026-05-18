@@ -58,7 +58,7 @@ DOCS_REQUIRED = {
         "no implicit load-order",
 
 
-        "contracts/schemas/pack_manifest.schema",
+        "contracts/schema/pack_manifest.schema",
 
 
     ],

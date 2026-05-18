@@ -9,9 +9,9 @@
       "classification": "stale_tool_hash_safe_refresh",
       "recommended_action": "refresh_hash",
       "safe_to_fix_now": true,
-      "generator_or_source": "python tools/securex/securex.py integrity-manifest --repo-root . --output docs/audit/security/INTEGRITY_MANIFEST.json",
+      "generator_or_source": "python tools/xstack/securex/securex.py integrity-manifest --repo-root . --output docs/audit/security/INTEGRITY_MANIFEST.json",
       "authority_basis": "RepoX checks record.tool_hashes in the canonical SecureX integrity manifest; SecureX exposes a scoped integrity-manifest generator for this tracked evidence file.",
-      "reason": "The reviewed committed tool files tools/compatx/compatx.py and tools/securex/securex.py had current hashes that no longer matched the tracked integrity manifest."
+      "reason": "The reviewed committed tool files tools/xstack/compatx/compatx.py and tools/xstack/securex/securex.py had current hashes that no longer matched the tracked integrity manifest."
     },
     {
       "path": "docs/audit/identity_fingerprint.json",
@@ -39,7 +39,7 @@
       "classification": "unknown",
       "recommended_action": "defer",
       "safe_to_fix_now": false,
-      "generator_or_source": "tools/auditx/auditx.py",
+      "generator_or_source": "tools/xstack/auditx/auditx.py",
       "authority_basis": "RepoX warns when the tracked AuditX findings artifact is more than 30 commits behind HEAD.",
       "reason": "The generator exists, but refreshing the AuditX findings set would regenerate a broader audit output family and is not a narrow safe 10N refresh."
     },

@@ -37,10 +37,10 @@ Replacement Target: XI-4b manual review resolution
 - `src/tools/governance/planning/plan_engine.py`
 - `src/tools/governance/proof/control_proof_bundle.py`
 - `src/tools/governance/view/view_engine.py`
-- `src/tools/core/constraints/constraint_engine.py`
-- `src/tools/core/flow/flow_engine.py`
-- `src/tools/core/graph/network_graph_engine.py`
-- `src/tools/core/graph/routing_engine.py`
+- `src/tools/validators/core/constraints/constraint_engine.py`
+- `src/tools/validators/core/flow/flow_engine.py`
+- `src/tools/validators/core/graph/network_graph_engine.py`
+- `src/tools/validators/core/graph/routing_engine.py`
 - `src/embodiment/collision/macro_heightfield_provider.py`
 - `src/fields/field_engine.py`
 - `src/geo/edit/geometry_state_engine.py`
@@ -56,9 +56,9 @@ Replacement Target: XI-4b manual review resolution
 - `src/interior/compartment_flow_builder.py`
 - `src/interior/compartment_flow_engine.py`
 - `src/interior/interior_engine.py`
-- `src/tools/libraries/artifact/artifact_validator.py`
-- `src/tools/libraries/instance/instance_validator.py`
-- `src/tools/libraries/provides/provider_resolution.py`
+- `src/tools/package/libraries/artifact/artifact_validator.py`
+- `src/tools/package/libraries/instance/instance_validator.py`
+- `src/tools/package/libraries/provides/provider_resolution.py`
 - `src/logistics/logistics_engine.py`
 - `src/machines/port_engine.py`
 - `src/materials/commitments/commitment_engine.py`
@@ -68,9 +68,9 @@ Replacement Target: XI-4b manual review resolution
 - `src/materials/provenance/event_stream_index.py`
 - `src/mechanics/structural_graph_engine.py`
 - `src/platform/target_matrix.py`
-- `src/release/archive_policy.py`
-- `src/release/component_graph_resolver.py`
-- `src/release/update_resolver.py`
+- `src/tools/release/archive_policy.py`
+- `src/tools/release/component_graph_resolver.py`
+- `src/tools/release/update_resolver.py`
 - `src/specs/spec_engine.py`
 - `src/worldgen/earth/climate_field_engine.py`
 - `src/worldgen/mw/mw_surface_refiner_l3.py`
@@ -85,14 +85,14 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/xstack/registry_compile/compiler.py` disposition=`canonical` rank=`1` total_score=`67.98` risk=`HIGH`
 - `tools/xstack/sessionx/net_handshake.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`
-- `src/tools/core/graph/network_graph_engine.py` disposition=`quarantine` rank=`3` total_score=`64.17` risk=`HIGH`
-- `src/tools/core/graph/routing_engine.py` disposition=`quarantine` rank=`4` total_score=`62.74` risk=`HIGH`
+- `src/tools/validators/core/graph/network_graph_engine.py` disposition=`quarantine` rank=`3` total_score=`64.17` risk=`HIGH`
+- `src/tools/validators/core/graph/routing_engine.py` disposition=`quarantine` rank=`4` total_score=`62.74` risk=`HIGH`
 - `tools/control/tool_run_control_stress.py` disposition=`quarantine` rank=`5` total_score=`62.58` risk=`HIGH`
 - `src/contracts/capability/capability/capability_engine.py` disposition=`quarantine` rank=`6` total_score=`61.96` risk=`HIGH`
 - `tools/meta/observability_common.py` disposition=`quarantine` rank=`7` total_score=`61.83` risk=`HIGH`
 - `src/specs/spec_engine.py` disposition=`quarantine` rank=`8` total_score=`59.58` risk=`HIGH`
 - `src/tools/governance/proof/control_proof_bundle.py` disposition=`quarantine` rank=`9` total_score=`59.34` risk=`HIGH`
-- `src/tools/core/flow/flow_engine.py` disposition=`quarantine` rank=`10` total_score=`59.29` risk=`HIGH`
+- `src/tools/validators/core/flow/flow_engine.py` disposition=`quarantine` rank=`10` total_score=`59.29` risk=`HIGH`
 - `tools/control/tool_global_control_stress.py` disposition=`quarantine` rank=`11` total_score=`59.09` risk=`HIGH`
 - `src/platform/target_matrix.py` disposition=`quarantine` rank=`12` total_score=`58.79` risk=`HIGH`
 - `src/tools/governance/view/view_engine.py` disposition=`quarantine` rank=`13` total_score=`58.63` risk=`HIGH`
@@ -103,13 +103,13 @@ Replacement Target: XI-4b manual review resolution
 - `src/interior/interior_engine.py` disposition=`merge` rank=`18` total_score=`56.59` risk=`HIGH`
 - `src/interaction/pose/pose_engine.py` disposition=`merge` rank=`19` total_score=`56.56` risk=`HIGH`
 - `src/client/interaction/inspection_overlays.py` disposition=`merge` rank=`20` total_score=`56.31` risk=`HIGH`
-- `src/tools/libraries/provides/provider_resolution.py` disposition=`merge` rank=`21` total_score=`56.27` risk=`HIGH`
-- `src/release/component_graph_resolver.py` disposition=`drop` rank=`22` total_score=`55.94` risk=`HIGH`
+- `src/tools/package/libraries/provides/provider_resolution.py` disposition=`merge` rank=`21` total_score=`56.27` risk=`HIGH`
+- `src/tools/release/component_graph_resolver.py` disposition=`drop` rank=`22` total_score=`55.94` risk=`HIGH`
 - `tools/control/tool_determinism_compare.py` disposition=`drop` rank=`23` total_score=`55.83` risk=`HIGH`
 - `src/worldgen/earth/climate_field_engine.py` disposition=`merge` rank=`24` total_score=`55.56` risk=`HIGH`
 - `src/client/interaction/interaction_dispatch.py` disposition=`merge` rank=`25` total_score=`55.48` risk=`HIGH`
-- `src/tools/core/constraints/constraint_engine.py` disposition=`drop` rank=`26` total_score=`55.48` risk=`HIGH`
-- `src/tools/libraries/instance/instance_validator.py` disposition=`merge` rank=`27` total_score=`55.3` risk=`HIGH`
+- `src/tools/validators/core/constraints/constraint_engine.py` disposition=`drop` rank=`26` total_score=`55.48` risk=`HIGH`
+- `src/tools/package/libraries/instance/instance_validator.py` disposition=`merge` rank=`27` total_score=`55.3` risk=`HIGH`
 - `src/logistics/logistics_engine.py` disposition=`merge` rank=`28` total_score=`55.1` risk=`HIGH`
 - `src/materials/provenance/event_stream_index.py` disposition=`drop` rank=`29` total_score=`54.95` risk=`HIGH`
 - `src/interaction/mount/mount_engine.py` disposition=`merge` rank=`30` total_score=`54.63` risk=`HIGH`
@@ -119,14 +119,14 @@ Replacement Target: XI-4b manual review resolution
 - `src/client/interaction/interaction_panel.py` disposition=`merge` rank=`34` total_score=`53.45` risk=`HIGH`
 - `src/geo/worldgen/worldgen_engine.py` disposition=`merge` rank=`35` total_score=`53.43` risk=`HIGH`
 - `src/interior/compartment_flow_builder.py` disposition=`drop` rank=`36` total_score=`53.31` risk=`HIGH`
-- `src/release/archive_policy.py` disposition=`merge` rank=`37` total_score=`53.27` risk=`HIGH`
+- `src/tools/release/archive_policy.py` disposition=`merge` rank=`37` total_score=`53.27` risk=`HIGH`
 - `src/machines/port_engine.py` disposition=`drop` rank=`38` total_score=`53.01` risk=`HIGH`
 - `src/materials/materialization/materialization_engine.py` disposition=`drop` rank=`39` total_score=`52.93` risk=`HIGH`
 - `src/client/render/representation_resolver.py` disposition=`drop` rank=`40` total_score=`52.92` risk=`HIGH`
 - `src/geo/path/path_engine.py` disposition=`merge` rank=`41` total_score=`52.8` risk=`HIGH`
 - `src/materials/construction/construction_engine.py` disposition=`merge` rank=`42` total_score=`52.75` risk=`HIGH`
 - `src/interior/compartment_flow_engine.py` disposition=`drop` rank=`43` total_score=`52.72` risk=`HIGH`
-- `src/tools/libraries/artifact/artifact_validator.py` disposition=`drop` rank=`44` total_score=`52.19` risk=`HIGH`
+- `src/tools/package/libraries/artifact/artifact_validator.py` disposition=`drop` rank=`44` total_score=`52.19` risk=`HIGH`
 - `src/tools/governance/ir/control_ir_programs.py` disposition=`drop` rank=`45` total_score=`51.89` risk=`HIGH`
 - `src/infrastructure/formalization/inference_engine.py` disposition=`drop` rank=`46` total_score=`51.42` risk=`HIGH`
 - `src/tools/governance/ir/control_ir_compiler.py` disposition=`drop` rank=`47` total_score=`51.26` risk=`HIGH`
@@ -138,7 +138,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/client/render/renderers/hw_renderer_gl.py` disposition=`merge` rank=`53` total_score=`48.59` risk=`HIGH`
 - `src/tools/governance/effects/effect_engine.py` disposition=`drop` rank=`54` total_score=`46.67` risk=`HIGH`
 - `src/mechanics/structural_graph_engine.py` disposition=`drop` rank=`55` total_score=`46.4` risk=`HIGH`
-- `src/release/update_resolver.py` disposition=`drop` rank=`56` total_score=`46.12` risk=`HIGH`
+- `src/tools/release/update_resolver.py` disposition=`drop` rank=`56` total_score=`46.12` risk=`HIGH`
 - `src/geo/overlay/overlay_merge_engine.py` disposition=`merge` rank=`57` total_score=`46.04` risk=`HIGH`
 - `src/tools/governance/control_plane_engine.py` disposition=`merge` rank=`58` total_score=`46.01` risk=`HIGH`
 - `src/worldgen/mw/mw_surface_refiner_l3.py` disposition=`drop` rank=`59` total_score=`45.69` risk=`HIGH`
@@ -160,7 +160,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

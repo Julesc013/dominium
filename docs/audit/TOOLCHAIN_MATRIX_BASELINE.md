@@ -26,7 +26,7 @@ Superseded By: none
 
 ## Collection Method
 
-- Run directory: `artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2`
+- Run directory: `archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2`
 - Run id: `run.5ea8970d1739f5c2`
 - Source identity kind: `snapshot`
 - Source snapshot hash: `f9301c8fbec955ed3632b6d6281bbd7349656c0e789aaf2087ead8ff355d47e8`

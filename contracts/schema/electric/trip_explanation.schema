@@ -1,0 +1,26 @@
+SCHEMA: electric/trip_explanation.schema
+schema_id: dominium.schema.electric.trip_explanation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic derived explanation artifact for electrical trip causality inspection.
+
+REQUIRED SHAPE:
+record trip_explanation
+  required:
+    - schema_version: semver
+    - explanation_id: id
+    - device_id: id
+    - fault_ids: list<id>
+    - contributing_edges: list<id>
+    - thresholds_exceeded: list<map>
+    - policy_ids_applied: list<id>
+    - generated_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Derived only from deterministic fault/protection/decision records.
+- No direct Truth mutation side effects.
+- Stable hash under equivalent input records/order.

@@ -10,15 +10,15 @@
       "step": "reverse_moves",
       "actions": [
         {
-          "from": "contracts/projections/ide/projection_manifest.schema.json",
+          "from": "contracts/projection/ide/projection_manifest.schema.json",
           "to": "ide/manifests/projection_manifest.schema.json"
         },
         {
-          "from": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+          "from": "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json",
           "to": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json"
         },
         {
-          "from": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+          "from": "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
           "to": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
         }
       ]
@@ -40,8 +40,8 @@
     {
       "step": "remove_empty_target_dirs",
       "actions": [
-        "remove contracts/projections/ide/examples if empty",
-        "remove contracts/projections/ide if empty",
+        "remove contracts/projection/ide/examples if empty",
+        "remove contracts/projection/ide if empty",
         "remove contracts/projections if it was created only for this apply and is empty"
       ]
     },

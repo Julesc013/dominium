@@ -1,0 +1,29 @@
+SCHEMA: logic/debug_trace_request.schema
+schema_id: dominium.schema.logic.debug_trace_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic bounded LOGIC trace capture requests.
+- Bind requested measurement points, tick window, and sampling policy.
+
+NON-SEMANTICS:
+- This schema does not imply successful trace capture.
+- It does not authorize unbounded observation or omniscient access.
+
+REQUIRED SHAPE:
+record logic_debug_trace_request
+  required:
+    - request_id: id
+    - subject_id: id
+    - measurement_point_ids: list<id>
+    - tick_start: u64
+    - tick_end: u64
+    - sampling_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `measurement_point_ids` must be bounded by the resolved sampling policy.
+- `tick_end` must be greater than or equal to `tick_start`.
+- Trace requests must remain deterministic under throttling or refusal.

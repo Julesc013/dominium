@@ -237,7 +237,7 @@ Render prep respects law by:
 ## Tests
 
 
-`engine/tests/render_prep_work_ir_tests.cpp` validates:
+`tests/engine/render_prep_work_ir_tests.cpp` validates:
 
 
 - deterministic emission

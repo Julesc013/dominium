@@ -1,0 +1,20 @@
+SCHEMA: compat/migration_chain.schema
+schema_id: dominium.schema.compat.migration_chain
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one deterministic migration chain between artifact versions.
+
+REQUIRED SHAPE:
+record migration_chain
+  required:
+    - chain_id: id
+    - artifact_kind_id: id
+    - steps: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- steps are canonically ordered by from_version, to_version, migration_id.
+- each step must advance or preserve semantic version order deterministically.

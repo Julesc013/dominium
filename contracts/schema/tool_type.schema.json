@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Type Schema",
+  "version": "1.0.0",
+  "description": "Tool capability type used for ActionSurface filtering and process capability projection.",
+  "x-doc-ref": [
+    "docs/interaction/TOOLS_AND_EFFECTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "tool_type_id",
+    "description",
+    "default_tool_tags",
+    "allowed_surface_types",
+    "allowed_process_ids",
+    "provides_instrument_channels",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "tool_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "default_tool_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_surface_types": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_process_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provides_instrument_channels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "tool_type_id": "tool.wrench.basic",
+      "description": "Basic wrench tool type for deterministic fastening processes.",
+      "default_tool_tags": [
+        "tool_tag.fastening"
+      ],
+      "allowed_surface_types": [
+        "surface.fastener",
+        "surface.handle"
+      ],
+      "allowed_process_ids": [
+        "process.tool_use_prepare",
+        "process.maintenance_perform"
+      ],
+      "provides_instrument_channels": [
+        "ch.diegetic.tool.torque"
+      ],
+      "extensions": {}
+    }
+  ]
+}

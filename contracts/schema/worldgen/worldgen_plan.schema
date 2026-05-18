@@ -1,0 +1,40 @@
+SCHEMA: worldgen_plan.schema
+schema_id: dominium.schema.worldgen.plan
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define deterministic plan artifacts built from worldgen module registries.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Plans describe ordering and dependencies only.
+- Plans do NOT encode gameplay rules or outcomes.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record worldgen_plan
+  required:
+    - plan_id: id
+    - seed_namespace: tag
+    - ordered_modules: [id]
+    - edge_list: [map]
+    - tie_break_rule: tag
+    - refusal_codes: [tag]
+    - unit_annotations: map
+    - extensions: map
+  optional:
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+

@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Instrument Instance Schema",
+  "version": "1.0.0",
+  "description": "Diegetic instrument assembly instance contract.",
+  "x-doc-ref": [
+    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "instrument_id",
+    "instrument_type_id",
+    "carrier_agent_id",
+    "station_site_id",
+    "quality",
+    "last_update_tick",
+    "state",
+    "outputs",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "instrument_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "instrument_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "carrier_agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "station_site_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "quality": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_update_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "instrument_id": "instrument.compass",
+      "instrument_type_id": "instr.compass",
+      "carrier_agent_id": null,
+      "station_site_id": null,
+      "quality": 1000,
+      "last_update_tick": 0,
+      "state": {},
+      "outputs": {
+        "ch.diegetic.compass": {
+          "heading_mdeg": 0
+        }
+      },
+      "extensions": {}
+    }
+  ]
+}

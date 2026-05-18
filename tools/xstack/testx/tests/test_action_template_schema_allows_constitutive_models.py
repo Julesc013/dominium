@@ -18,13 +18,13 @@ def _read_text(path: str) -> str:
 
 
 def run(repo_root: str):
-    textual_rel = "contracts/schemas/meta/action_template.schema"
+    textual_rel = "contracts/schema/meta/action_template.schema"
     textual_abs = os.path.join(repo_root, textual_rel.replace("/", os.sep))
     textual = _read_text(textual_abs)
     if "uses_constitutive_model_ids" not in textual:
         return {"status": "fail", "message": "text schema missing uses_constitutive_model_ids"}
 
-    json_rel = "contracts/schemas/action_template.schema.json"
+    json_rel = "contracts/schema/action_template.schema.json"
     json_abs = os.path.join(repo_root, json_rel.replace("/", os.sep))
     try:
         payload = json.load(open(json_abs, "r", encoding="utf-8"))

@@ -29,7 +29,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
+- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 
 ## Tests Involved
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

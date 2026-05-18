@@ -65,7 +65,7 @@ _XI-1 does not choose winners; these are evidence-ranked candidates only._
 10. `worldgen_stream_seed` bucket=`core_semantic_engine` score=`903`
    duplicates: `3` definitions across `2` modules
    build_targets/products: `none` / `none`
-   docs_refs: `docs/audit/MW0_RETRO_AUDIT.md, docs/audit/WORLDGEN_LOCK0_RETRO_AUDIT.md, docs/worldgen/WORLDGEN_LOCK_v0_0_0.md`
+   docs_refs: `docs/audit/MW0_RETRO_AUDIT.md, docs/audit/WORLDGEN_LOCK0_RETRO_AUDIT.md, docs/domains/worldgen/WORLDGEN_LOCK_v0_0_0.md`
    architecture_placement_violation: `no`
 11. `process_message_verify_claim` bucket=`core_semantic_engine` score=`899`
    duplicates: `3` definitions across `2` modules
@@ -115,7 +115,7 @@ _XI-1 does not choose winners; these are evidence-ranked candidates only._
 20. `REFUSAL_OVERLAY_CONFLICT` bucket=`core_semantic_engine` score=`879`
    duplicates: `3` definitions across `2` modules
    build_targets/products: `none` / `none`
-   docs_refs: `docs/audit/OVERLAY_CONFLICT_BASELINE.md, docs/geo/OVERLAY_CONFLICT_POLICIES.md, docs/governance/REPOX_RULESETS.md`
+   docs_refs: `docs/audit/OVERLAY_CONFLICT_BASELINE.md, docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md, docs/governance/REPOX_RULESETS.md`
    architecture_placement_violation: `no`
 
 ## Core Semantic Engines

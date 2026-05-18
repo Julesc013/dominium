@@ -27,33 +27,33 @@ next_gate = "MOVE-FAMILY-00B-GATE"
 
 [[moves]]
 source_path = "ide/manifests/projection_manifest.schema.json"
-target_path = "contracts/projections/ide/projection_manifest.schema.json"
+target_path = "contracts/projection/ide/projection_manifest.schema.json"
 action = "move"
 reason = "Move tracked IDE projection manifest schema from transitional ide source root to scoped projection contract ownership."
 risk = "medium"
-ownership_slot = "contracts/projections/ide"
+ownership_slot = "contracts/projection/ide"
 shim_required = false
-rollback = "Move contracts/projections/ide/projection_manifest.schema.json back to ide/manifests/projection_manifest.schema.json and restore references."
+rollback = "Move contracts/projection/ide/projection_manifest.schema.json back to ide/manifests/projection_manifest.schema.json and restore references."
 
 [[moves]]
 source_path = "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json"
-target_path = "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json"
+target_path = "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json"
 action = "move"
 reason = "Move tracked Linux clang IDE projection manifest example from transitional ide source root to scoped projection contract examples."
 risk = "medium"
-ownership_slot = "contracts/projections/ide"
+ownership_slot = "contracts/projection/ide"
 shim_required = false
-rollback = "Move contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json and restore references."
+rollback = "Move contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json and restore references."
 
 [[moves]]
 source_path = "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json"
-target_path = "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json"
+target_path = "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json"
 action = "move"
 reason = "Move tracked Win9x VC6 IDE projection manifest example from transitional ide source root to scoped projection contract examples."
 risk = "medium"
-ownership_slot = "contracts/projections/ide"
+ownership_slot = "contracts/projection/ide"
 shim_required = false
-rollback = "Move contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json and restore references."
+rollback = "Move contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json back to ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json and restore references."
 
 [[deferred]]
 path = "ide/manifests/*.projection.json"

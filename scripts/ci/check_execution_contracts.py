@@ -170,7 +170,7 @@ def check_bypass(repo_root):
     game_root = os.path.join(repo_root, "game")
     for path in iter_source_files(game_root, repo_root):
         rel = repo_rel(repo_root, path)
-        if rel.startswith("game/tests/"):
+        if rel.startswith("tests/game/"):
             continue
         text = read_text(path)
         for idx, include_path in iter_include_lines(text):
@@ -202,7 +202,7 @@ def check_tasknode_completeness(repo_root):
     game_root = os.path.join(repo_root, "game")
     for path in iter_source_files(game_root, repo_root):
         rel = repo_rel(repo_root, path)
-        if rel.startswith("game/tests/") or rel.startswith("game/include/"):
+        if rel.startswith("tests/game/") or rel.startswith("game/include/"):
             continue
         text = read_text(path)
         if not TASK_NODE_TOKEN_RE.search(text):

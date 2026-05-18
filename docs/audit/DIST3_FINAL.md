@@ -15,7 +15,7 @@ Replacement Target: DIST-4 platform matrix and archive verification
 
 ## Per-Platform Results
 
-- `win64` result=`complete` source=`dist/v0.0.0-mock/win64/dominium` fingerprint=`f9715b489dcd45d9e0642b75e85e77c69adc0ae87d7525413e7c63d0cc97dbc6`
+- `win64` result=`complete` source=`archive/generated/dist/v0.0.0-mock/win64/dominium` fingerprint=`f9715b489dcd45d9e0642b75e85e77c69adc0ae87d7525413e7c63d0cc97dbc6`
 
 ## Readiness
 

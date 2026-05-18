@@ -1104,7 +1104,7 @@
       "sensitivity_hints": [
         "manifest_sensitive"
       ],
-      "snippet": "from game.domains.geology import build_overlay_manifest, merge_overlay_view"
+      "snippet": "from game.domain.geology import build_overlay_manifest, merge_overlay_view"
     },
     {
       "file": "packs/compat/pack_verification_pipeline.py",

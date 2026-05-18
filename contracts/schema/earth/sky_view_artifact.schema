@@ -1,0 +1,32 @@
+SCHEMA: earth/sky_view_artifact.schema
+schema_id: dominium.schema.earth.sky_view_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the compactable EARTH-4 derived sky-view artifact.
+- Preserve deterministic cache keys, sun/moon proxy directions, and bounded starfield payloads.
+
+NON-SEMANTICS:
+- This schema does not encode authoritative celestial truth.
+- This schema does not imply texture assets or hardware-only rendering.
+
+REQUIRED SHAPE:
+record sky_view_artifact
+  required:
+    - view_id: id
+    - tick: integer
+    - observer_ref: map
+    - sky_model_id: id
+    - sun_direction: map
+    - moon_direction: map
+    - sky_colors_ref: map
+    - star_points_ref: list
+    - milkyway_band_ref: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- the artifact is derived-only and compactable
+- `star_points_ref` and `milkyway_band_ref` are bounded by declared policy
+- identical cache inputs must reproduce the same fingerprint

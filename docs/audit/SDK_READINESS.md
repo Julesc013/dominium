@@ -32,7 +32,7 @@ Validation of SDK product graph declarations, distribution profiles, and compile
   - `data/profiles/profile.sdk_engine.json`
   - `data/profiles/profile.sdk_game.json`
 - Packaging group support added:
-  - `tools/distribution/pkg_pack_all.py` groups `sdk-engine` and `sdk-game`.
+  - `tools/package/distribution/pkg_pack_all.py` groups `sdk-engine` and `sdk-game`.
 
 ## Test Coverage
 

@@ -1,0 +1,25 @@
+SCHEMA: mobility/motion_state.schema
+schema_id: dominium.schema.mobility.motion_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic tiered motion-state envelope for MOB-3 vehicle execution tiers.
+
+REQUIRED SHAPE:
+record motion_state
+  required:
+    - schema_version: semver
+    - vehicle_id: id
+    - tier: enum(macro|meso|micro)
+    - macro_state: map
+    - meso_state: map
+    - micro_state: map
+    - last_update_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Macro/meso/micro state carriers are explicit and deterministic.
+- MOB-3 does not require micro simulation outputs; micro_state may remain sparse.
+- Motion-state updates are process-mediated only.

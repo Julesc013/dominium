@@ -1,0 +1,27 @@
+SCHEMA: process/process_maturity_record.schema
+schema_id: dominium.schema.process.process_maturity_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD of deterministic process maturity state and stabilization score.
+
+NON-SEMANTICS:
+- Does not directly instantiate process capsules.
+- Does not supersede process/system certification schemas.
+
+REQUIRED SHAPE:
+record process_maturity_record
+  required:
+    - record_id: id
+    - process_id: id
+    - version: semver
+    - maturity_state: enum(exploration|defined|stabilized|certified|capsule_eligible)
+    - stabilization_score: fixed_point_nonnegative
+    - tick: tick
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Every state transition must emit a canonical maturity record.
+- Maturity state progression/refusal must remain deterministic.

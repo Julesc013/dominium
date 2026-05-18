@@ -181,3 +181,13 @@ The active sequence now requires:
 ```text
 MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing
 ```
+
+## CANON-SPINE-NEW Sequence Update
+
+CANON-SPINE-NEW has now replaced the remaining second-level batch cleanup
+sequence. The active sequence is:
+
+```text
+CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof
+POST-RESTRUCTURE-02 - Full Green Proof and Origin Sync
+```

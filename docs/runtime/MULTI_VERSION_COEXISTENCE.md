@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Φ-B4, Φ-B5, selected Υ-B, later checkpoints, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/agents/AGENT_TASKS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/VERSIONING_CONSTITUTION.md`, `docs/release/RELEASE_CONTRACT_PROFILE.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `runtime/process_spawn.py`, `engine/modules/replay/d_replay.c`, `engine/modules/replay/d_replay.h`, `server/app/main_server.c`, `release/update_resolver.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `tools/validators/security/trust/trust_verifier.py`, `contracts/repo/release_policy.toml`, `docs/release/updates/README.md`, `contracts/registry/component_graph_registry.json`, `contracts/registry/release_channel_registry.json`, `contracts/registry/target_matrix_registry.json`, `contracts/registry/trust_root_registry.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/agents/AGENT_TASKS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/VERSIONING_CONSTITUTION.md`, `docs/release/RELEASE_CONTRACT_PROFILE.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `runtime/process_spawn.py`, `engine/replay/d_replay.c`, `engine/replay/d_replay.h`, `apps/server/main_server.c`, `tools/release/update_resolver.py`, `tools/release/component_graph_resolver.py`, `tools/release/release_manifest_engine.py`, `tools/validators/security/trust/trust_verifier.py`, `contracts/repo/release_policy.toml`, `docs/release/updates/README.md`, `contracts/registry/component_graph_registry.json`, `contracts/registry/release_channel_registry.json`, `contracts/registry/target_matrix_registry.json`, `contracts/registry/trust_root_registry.json`
 
 # Dominium Multi-Version Coexistence Doctrine
 
@@ -47,12 +47,12 @@ Checkpoint relation:
 Repo-grounded extension surfaces already exist and must be treated as evidence rather than as automatic canon:
 
 - `runtime/process_spawn.py`
-- `engine/modules/replay/d_replay.c`
-- `engine/modules/replay/d_replay.h`
-- `server/app/main_server.c`
-- `release/update_resolver.py`
-- `release/component_graph_resolver.py`
-- `release/release_manifest_engine.py`
+- `engine/replay/d_replay.c`
+- `engine/replay/d_replay.h`
+- `apps/server/main_server.c`
+- `tools/release/update_resolver.py`
+- `tools/release/component_graph_resolver.py`
+- `tools/release/release_manifest_engine.py`
 - `tools/validators/security/trust/trust_verifier.py`
 - `contracts/repo/release_policy.toml`
 - `docs/release/updates/README.md`
@@ -90,10 +90,10 @@ Coexistence is not:
 
 Coexistence law is necessary because Dominium already has several real signs of version multiplicity:
 
-- `server/app/main_server.c` already exposes compatibility reports and replay-oriented inspection posture
-- `release/update_resolver.py` already resolves among multiple component candidates and yanked states
-- `release/component_graph_resolver.py` already models versioned component descriptors with trust and contract requirements
-- `release/release_manifest_engine.py` already projects versioned artifact identities and manifest state
+- `apps/server/main_server.c` already exposes compatibility reports and replay-oriented inspection posture
+- `tools/release/update_resolver.py` already resolves among multiple component candidates and yanked states
+- `tools/release/component_graph_resolver.py` already models versioned component descriptors with trust and contract requirements
+- `tools/release/release_manifest_engine.py` already projects versioned artifact identities and manifest state
 - `tools/validators/security/trust/trust_verifier.py` already distinguishes trust posture from artifact identity
 - `docs/release/updates/README.md` already treats feeds as generated control-plane projections rather than hand-edited truth
 

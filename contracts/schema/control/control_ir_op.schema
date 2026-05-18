@@ -1,0 +1,37 @@
+SCHEMA: control/control_ir_op.schema
+schema_id: dominium.schema.control.control_ir_op
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic Control IR operation declaration.
+
+REQUIRED SHAPE:
+record control_ir_op
+  required:
+    - schema_version: semver
+    - op_id: id
+    - op_type: enum(
+        op.acquire_pose|
+        op.release_pose|
+        op.bind_tool|
+        op.unbind_tool|
+        op.run_task|
+        op.emit_commitment|
+        op.wait_event|
+        op.check_condition|
+        op.request_view_change|
+        op.request_fidelity|
+        op.noop
+      )
+    - parameters: map
+    - static_requirements: map
+      required:
+        - entitlements: list[id]
+        - capabilities: list[id]
+    - cost_estimate: u32
+    - extensions: map
+
+INVARIANTS:
+- op_type set is restricted and non-Turing-complete.
+- cost_estimate is deterministic and budget-accountable.

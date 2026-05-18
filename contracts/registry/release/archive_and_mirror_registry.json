@@ -189,8 +189,8 @@
     "docs/release/RELEASE_INDEX_MODEL.md",
     "docs/release/RELEASE_MANIFEST_MODEL.md",
     "contracts/repo/release_policy.toml",
-    "release/archive_policy.py",
-    "release/update_resolver.py",
+    "tools/release/archive_policy.py",
+    "tools/release/update_resolver.py",
     "release/updates/stable.json",
     "release/updates/pinned.json",
     "release/updates/nightly.json",
@@ -199,7 +199,7 @@
     "contracts/registry/release_channel_registry.json",
     "contracts/registry/trust_policy_registry.json",
     "contracts/registry/install_profile_registry.json",
-    "content/data/release/dist_final_expected_artifacts.json",
+    "archive/generated/release/dist_final_expected_artifacts.json",
     "contracts/registry/derived_artifacts.json"
   ],
   "ambiguities_eliminated": [

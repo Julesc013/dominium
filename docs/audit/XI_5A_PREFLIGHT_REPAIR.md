@@ -24,7 +24,7 @@ The following blockers are repaired:
 4. `data/audit/offline_archive_verify.json`
 5. `data/regression/archive_baseline.json`
 6. disaster-suite cleanup of reused arch-audit work roots on Windows:
-   `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc`
+   `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/archive/generated/dist/tools/xstack/packagingx/__init__.pyc`
 
 ## Current Aggregate Validation Result
 

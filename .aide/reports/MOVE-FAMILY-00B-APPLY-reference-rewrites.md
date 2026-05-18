@@ -9,10 +9,10 @@ PASS_WITH_WARNINGS.
 | File | Rewrite |
 | --- | --- |
 | `.gitignore` | Removed the `ide/manifests/**` tracked-source unignore rules while preserving `/ide/**` as ignored generated output. |
-| `scripts/verify_docs_sanity.py` | Updated required schema path to `contracts/projections/ide/projection_manifest.schema.json` and allowed `contracts/projections/**` doc targets. |
-| `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md` | Updated authoritative metadata owner from `/ide/manifests/**` to `/contracts/projections/ide/**`. |
-| `docs/architecture/PROJECTION_LIFECYCLE.md` | Updated the schema path to `/contracts/projections/ide/projection_manifest.schema.json`. |
-| `docs/architecture/IDE_PROJECTIONS.md` | Split source schema/examples under `/contracts/projections/ide/**` from generated manifests under `/ide/manifests/`. |
+| `scripts/verify_docs_sanity.py` | Updated required schema path to `contracts/projection/ide/projection_manifest.schema.json` and allowed `contracts/projection/**` doc targets. |
+| `docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md` | Updated authoritative metadata owner from `/ide/manifests/**` to `/contracts/projection/ide/**`. |
+| `docs/architecture/PROJECTION_LIFECYCLE.md` | Updated the schema path to `/contracts/projection/ide/projection_manifest.schema.json`. |
+| `docs/architecture/IDE_PROJECTIONS.md` | Split source schema/examples under `/contracts/projection/ide/**` from generated manifests under `/ide/manifests/`. |
 
 ## Preserved References
 

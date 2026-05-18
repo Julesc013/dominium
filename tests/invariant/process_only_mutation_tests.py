@@ -67,7 +67,7 @@ def main() -> int:
             continue
         for path in iter_files([abs_root], DEFAULT_EXCLUDES, exts):
             rel = repo_rel(repo_root, path)
-            if rel.startswith("engine/tests/") or rel.startswith("game/tests/"):
+            if rel.startswith("tests/engine/") or rel.startswith("tests/game/"):
                 continue
             if is_allowlisted(rel):
                 continue

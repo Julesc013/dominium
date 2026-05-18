@@ -198,7 +198,7 @@
     "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
     "docs/blueprint/MANUAL_REVIEW_GATES.md",
     "tools/validators/security/trust/trust_verifier.py",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "contracts/repo/release_policy.toml",
     "contracts/registry/trust_root_registry.json",
     "contracts/registry/trust_policy_registry.json",

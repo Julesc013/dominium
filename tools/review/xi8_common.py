@@ -35,9 +35,9 @@ XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
 XI_7_FINAL_REL = "docs/audit/XI_7_FINAL.md"
 
 XI5X2_SOURCE_POLICY_REL = "contracts/restructure/xi5x2_source_pocket_policy.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
-SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
-GATE_DEFINITIONS_REL = "content/data/xstack/gate_definitions.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
+SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
+GATE_DEFINITIONS_REL = "archive/generated/xstack/gate_definitions.json"
 
 PROFILE_FAST_REL = "tools/xstack/ci/profiles/FAST.json"
 PROFILE_STRICT_REL = "tools/xstack/ci/profiles/STRICT.json"
@@ -49,24 +49,24 @@ ENTRYPOINT_PS1_REL = "tools/xstack/ci/xstack_ci_entrypoint.ps1"
 CI_GUARDRAILS_DOC_REL = "docs/xstack/CI_GUARDRAILS.md"
 ARCH_DRIFT_POLICY_DOC_REL = "docs/xstack/ARCH_DRIFT_POLICY.md"
 
-REPOSITORY_STRUCTURE_LOCK_REL = "content/data/architecture/repository_structure_lock.json"
+REPOSITORY_STRUCTURE_LOCK_REL = "archive/generated/architecture/repository_structure_lock.json"
 REPOSITORY_STRUCTURE_DOC_REL = "docs/architecture/REPOSITORY_STRUCTURE_v1.md"
 MODULE_INDEX_DOC_REL = "docs/architecture/MODULE_INDEX_v1.md"
 SHIM_SUNSET_PLAN_REL = "docs/architecture/SHIM_SUNSET_PLAN.md"
 REPO_FREEZE_VERIFICATION_REL = "docs/audit/REPO_FREEZE_VERIFICATION.md"
 XI_8_FINAL_REL = "docs/audit/XI_8_FINAL.md"
 
-CI_REPORT_JSON_REL = "content/data/audit/ci_run_report.json"
+CI_REPORT_JSON_REL = "archive/generated/audit/ci_run_report.json"
 CI_REPORT_MD_REL = "docs/audit/CI_RUN_REPORT.md"
 
-DIST_ASSEMBLE_TOOL_REL = "tools/dist/tool_assemble_dist_tree.py"
-DIST_VERIFY_TOOL_REL = "tools/dist/tool_verify_distribution.py"
+DIST_ASSEMBLE_TOOL_REL = "tools/release/dist/tool_assemble_dist_tree.py"
+DIST_VERIFY_TOOL_REL = "tools/release/dist/tool_verify_distribution.py"
 TRUST_STRICT_TOOL_REL = "tools/security/tool_run_trust_strict_suite.py"
 ARCHIVE_RELEASE_TOOL_REL = "tools/release/tool_archive_release.py"
 ARCHIVE_VERIFY_TOOL_REL = "tools/release/tool_verify_archive.py"
-DIST_ROOT_REL = "dist/v0.0.0-mock"
-DIST_BUNDLE_REL = "dist/v0.0.0-mock/win64/dominium"
-DIST_ARCHIVE_RECORD_REL = "dist/v0.0.0-mock/win64/archive/archive_record.json"
+DIST_ROOT_REL = "archive/generated/dist/v0.0.0-mock"
+DIST_BUNDLE_REL = "archive/generated/dist/v0.0.0-mock/win64/dominium"
+DIST_ARCHIVE_RECORD_REL = "archive/generated/dist/v0.0.0-mock/win64/archive/archive_record.json"
 
 PROHIBITED_DIR_NAMES = ("Source", "Sources", "source", "src")
 REPOX_RULE_IDS = (
@@ -539,8 +539,8 @@ def _gate_definitions_payload(lock_payload: Mapping[str, object]) -> dict[str, o
             {"group_id": "full_suite", "profile": "FULL", "selection": "full_profile_runner"},
         ],
         "validation_gates": [
-            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "content/data/audit/validation_report_STRICT.json", "report_doc_rel": "docs/audit/VALIDATION_REPORT_STRICT.md"},
-            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "content/data/audit/arch_audit2_report.json", "report_doc_rel": "docs/audit/ARCH_AUDIT2_REPORT.md"},
+            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/validation_report_STRICT.json", "report_doc_rel": "docs/audit/VALIDATION_REPORT_STRICT.md"},
+            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "archive/generated/audit/arch_audit2_report.json", "report_doc_rel": "docs/audit/ARCH_AUDIT2_REPORT.md"},
             {"gate_id": "omega_1_worldgen_lock", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/worldgen/tool_verify_worldgen_lock.py", "--repo-root", "."]},
             {"gate_id": "omega_2_baseline_universe", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/mvp/tool_verify_baseline_universe.py", "--repo-root", "."]},
             {"gate_id": "omega_3_gameplay_loop", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/mvp/tool_verify_gameplay_loop.py", "--repo-root", "."]},
@@ -567,8 +567,8 @@ def _gate_definitions_payload(lock_payload: Mapping[str, object]) -> dict[str, o
             {"allowance_id": "xi8_docs_xstack_support_surface_boundary", "allowed_module_id": "docs.xstack", "reason": "Xi-7 and Xi-8 operator CI policy docs live under docs/xstack as non-runtime support surfaces.", "replacement_plan": "Classify docs/xstack explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi8_tools_xstack_ci_support_surface_boundary", "allowed_module_id": "tools.xstack.ci", "reason": "Xi-7 and Xi-8 CI entrypoints and helpers live under tools/xstack/ci as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
             {"allowance_id": "xi8_tools_xstack_ci_profiles_support_surface_boundary", "allowed_module_id": "tools.xstack.ci.profiles", "reason": "Xi-7 and Xi-8 CI profile metadata lives under tools/xstack/ci/profiles as non-runtime support surfaces.", "replacement_plan": "Classify tools/xstack/ci/profiles explicitly in the next architecture-update revision instead of relying on a provisional allowance.", "scope": "module_boundary"},
-            {"allowance_id": "xi7_tools_controlx_review_bridge", "allowed_module_id": "tools.controlx", "allowed_dependency_module_id": "tools.review", "reason": "ControlX planning helpers still reuse review-side analysis helpers during the Xi-7/Xi-8 integration phase.", "replacement_plan": "Move the shared logic into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
-            {"allowance_id": "xi8_auditx_ci_bridge", "allowed_module_id": "tools.auditx.analyzers", "allowed_dependency_module_id": "tools.xstack.ci", "reason": "AuditX Xi-7/Xi-8 analyzers reuse CI helper logic to report missing or drifted guard surfaces deterministically.", "replacement_plan": "Move shared CI-drift analysis into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
+            {"allowance_id": "xi7_tools_controlx_review_bridge", "allowed_module_id": "tools.xstack.controlx", "allowed_dependency_module_id": "tools.review", "reason": "ControlX planning helpers still reuse review-side analysis helpers during the Xi-7/Xi-8 integration phase.", "replacement_plan": "Move the shared logic into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
+            {"allowance_id": "xi8_auditx_ci_bridge", "allowed_module_id": "tools.xstack.auditx.analyzers", "allowed_dependency_module_id": "tools.xstack.ci", "reason": "AuditX Xi-7/Xi-8 analyzers reuse CI helper logic to report missing or drifted guard surfaces deterministically.", "replacement_plan": "Move shared CI-drift analysis into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
             {"allowance_id": "xi8_repox_ci_bridge", "allowed_module_id": "tools.xstack.repox", "allowed_dependency_module_id": "tools.xstack.ci", "reason": "RepoX reuses Xi-7/Xi-8 CI helper logic to keep hard-fail rules aligned with CI metadata.", "replacement_plan": "Move shared CI-drift analysis into a neutral support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
             {"allowance_id": "xi8_testx_ci_bridge", "allowed_module_id": "tools.xstack.testx.tests", "allowed_dependency_module_id": "tools.xstack.ci", "reason": "Xi-7/Xi-8 TestX smoke tests inspect the committed CI profile metadata to keep enforcement deterministic.", "replacement_plan": "Move shared CI profile assertions into a neutral test support surface or refresh module boundaries via ARCH-GRAPH-UPDATE before tightening this allowance away.", "scope": "module_boundary"},
         ],
@@ -677,7 +677,7 @@ def build_repository_structure_violations(repo_root: str) -> list[dict[str, obje
                 "code": "missing_repository_structure_lock",
                 "file_path": REPOSITORY_STRUCTURE_LOCK_REL,
                 "message": "Xi-8 repository structure lock is missing",
-                "remediation": "restore content/data/architecture/repository_structure_lock.json before continuing CI",
+                "remediation": "restore archive/generated/architecture/repository_structure_lock.json before continuing CI",
             }
         ]
     snapshot = build_repository_structure_snapshot(root)
@@ -846,7 +846,7 @@ def _render_repository_structure_doc(snapshot: Mapping[str, object], lock_payloa
     for row in list(lock_payload.get("allowed_source_like_root_rows") or []):
         item = dict(row or {})
         lines.append("| `{}` | `{}` | {} |".format(_token(item.get("root_path")), _token(item.get("policy_class")), _token(item.get("reason"))))
-    lines.extend(["", "## Prohibited Patterns", "", "- new unknown top-level directories without registry and lock updates", "- new top-level `src` or `source` directories", "- new nested source-like roots outside the sanctioned Xi-5x2/Xi-8 allowlist", "- generic common dumping grounds introduced without architectural registration", "", "Ignored generated surfaces such as `build/`, `dist/`, `out/`, `tmp/`, `.xstack_cache/`, and projection output trees are not part of this lock."])
+    lines.extend(["", "## Prohibited Patterns", "", "- new unknown top-level directories without registry and lock updates", "- new top-level `src` or `source` directories", "- new nested source-like roots outside the sanctioned Xi-5x2/Xi-8 allowlist", "- generic common dumping grounds introduced without architectural registration", "", "Ignored generated surfaces such as `build/`, `archive/generated/dist/`, `out/`, `tmp/`, `.xstack_cache/`, and projection output trees are not part of this lock."])
     return "\n".join(lines) + "\n"
 
 
@@ -1007,7 +1007,7 @@ def _render_arch_drift_policy_doc(lock_payload: Mapping[str, object]) -> str:
         "",
         "## Architecture Graph Updates",
         "",
-        "1. prepare a ControlX architecture plan with `python -B tools/controlx/tool_plan_arch_change.py --repo-root .`",
+        "1. prepare a ControlX architecture plan with `python -B tools/xstack/controlx/tool_plan_arch_change.py --repo-root .`",
         "2. attach `ARCH-GRAPH-UPDATE`",
         "3. update the Xi-6 frozen architecture artifacts deliberately",
         "4. pass the `FULL` CI profile",
@@ -1015,13 +1015,13 @@ def _render_arch_drift_policy_doc(lock_payload: Mapping[str, object]) -> str:
         "## New Modules",
         "",
         "1. update `contracts/registry/architecture/module_registry.v1.json`",
-        "2. update `content/data/architecture/architecture_graph.v1.json`",
-        "3. update `content/data/architecture/repository_structure_lock.json` if a new top-level root is involved",
+        "2. update `archive/generated/architecture/architecture_graph.v1.json`",
+        "3. update `archive/generated/architecture/repository_structure_lock.json` if a new top-level root is involved",
         "4. pass `STRICT` and `FULL`",
         "",
         "## New Dependencies",
         "",
-        "1. update `content/data/architecture/module_boundary_rules.v1.json`",
+        "1. update `archive/generated/architecture/module_boundary_rules.v1.json`",
         "2. preserve constitutional architecture",
         "3. pass `STRICT` and `FULL`",
         "",
@@ -1105,7 +1105,7 @@ def _render_xi8_final(snapshot: Mapping[str, object], lock_payload: Mapping[str,
         "",
         "Xi-8 outputs:",
         "",
-        "- `content/data/architecture/repository_structure_lock.json`",
+        "- `archive/generated/architecture/repository_structure_lock.json`",
         "- `docs/architecture/REPOSITORY_STRUCTURE_v1.md`",
         "- `docs/architecture/MODULE_INDEX_v1.md`",
         "- `docs/architecture/SHIM_SUNSET_PLAN.md`",

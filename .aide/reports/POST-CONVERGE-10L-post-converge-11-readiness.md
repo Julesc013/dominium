@@ -22,5 +22,5 @@ POST-CONVERGE-11 should not be circularly blocked by product proof failures that
 ## Product/Projection Proof Disposition
 
 - Native product boot proof remains a separate POST-CONVERGE-11 task.
-- Missing `dist/bin/*` projection wrapper surfaces remain a POST-CONVERGE-12 or targeted dist wrapper task.
+- Missing `archive/generated/dist/bin/*` projection wrapper surfaces remain a POST-CONVERGE-12 or targeted dist wrapper task.
 - No product boot proof, portable projection proof, package proof, or release proof was run or claimed by POST-CONVERGE-10L.

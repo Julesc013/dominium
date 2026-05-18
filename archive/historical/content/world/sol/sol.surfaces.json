@@ -1,0 +1,181 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [
+      {
+        "surface_id": "earth_land_surface",
+        "body_ref": "sol_earth",
+        "surface_type": "land",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "heightmap_ref": "earth_heightmap_v1",
+        "climate_map_ref": "earth_climate_v1",
+        "biome_tags": [
+          "temperate",
+          "tropical",
+          "arid",
+          "polar"
+        ],
+        "region_ids": [
+          "earth_polar_north_region",
+          "earth_polar_south_region"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "surface_id": "earth_ocean_surface",
+        "body_ref": "sol_earth",
+        "surface_type": "ocean",
+        "coordinate_frame_ref": "frame.earth.surface",
+        "heightmap_ref": "earth_bathymetry_v1",
+        "climate_map_ref": "earth_ocean_climate_v1",
+        "biome_tags": [
+          "ocean",
+          "polar",
+          "temperate",
+          "tropical"
+        ],
+        "region_ids": [
+          "earth_ocean_global_region"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "surface_id": "mars_surface",
+        "body_ref": "sol_mars",
+        "surface_type": "land",
+        "coordinate_frame_ref": "frame.mars.surface",
+        "heightmap_ref": "mars_heightmap_v1",
+        "climate_map_ref": "mars_climate_v1",
+        "biome_tags": [
+          "arid",
+          "polar"
+        ],
+        "region_ids": [
+          "mars_global_region"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "surface_id": "moon_nearside_surface",
+        "body_ref": "sol_moon",
+        "surface_type": "land",
+        "coordinate_frame_ref": "frame.moon.surface",
+        "heightmap_ref": "moon_nearside_heightmap_v1",
+        "climate_map_ref": "moon_climate_v1",
+        "biome_tags": [
+          "airless",
+          "cratered"
+        ],
+        "region_ids": [
+          "moon_nearside_region"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "surface_id": "moon_farside_surface",
+        "body_ref": "sol_moon",
+        "surface_type": "land",
+        "coordinate_frame_ref": "frame.moon.surface",
+        "heightmap_ref": "moon_farside_heightmap_v1",
+        "climate_map_ref": "moon_climate_v1",
+        "biome_tags": [
+          "airless",
+          "cratered"
+        ],
+        "region_ids": [
+          "moon_farside_region"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      }
+    ],
+    "region_records": [
+      {
+        "region_id": "earth_polar_north_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_polar_north_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "polar",
+          "north"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "region_id": "earth_polar_south_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_polar_south_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "polar",
+          "south"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "region_id": "earth_ocean_global_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_ocean_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "global"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "region_id": "mars_global_region",
+        "surface_ref": "mars_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.mars_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "global"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "region_id": "moon_nearside_region",
+        "surface_ref": "moon_nearside_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.moon_nearside_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "near_side"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      },
+      {
+        "region_id": "moon_farside_region",
+        "surface_ref": "moon_farside_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.moon_farside_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "far_side"
+        ],
+        "provenance_ref": "prov.sol.surfaces.v1"
+      }
+    ]
+  }
+}

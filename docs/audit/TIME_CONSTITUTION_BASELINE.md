@@ -66,7 +66,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - Result: `status=pass`, `findings=0`.
 - AuditX run:
-  - `py -3 tools/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root build/auditx/rs3_final`
+  - `py -3 tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format json --output-root build/auditx/rs3_final`
   - Result: `result=scan_complete`, `findings_count=1590`.
 - TestX PASS (RS-3 required suite):
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset testx.time.variable_dt_determinism,testx.time.pause_resume_determinism,testx.time.checkpoint_interval_deterministic,testx.time.branching_creates_new_lineage,testx.time.ranked_branch_forbidden,testx.time.compaction_preserves_replay`

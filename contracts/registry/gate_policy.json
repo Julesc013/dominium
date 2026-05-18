@@ -141,10 +141,10 @@
             "values": [
               "libs/appcore/command/*",
               "libs/appcore/ui_bind/*",
-              "tools/ui_index/*",
-              "tools/ui_bind/*",
+              "tools/codegen/ui/index/*",
+              "tools/codegen/ui/bind/*",
               "schema/ui/*",
-              "docs/ui/*",
+              "docs/runtime/ui/*",
               "client/ui/*",
               "tests/ui_parity/*"
             ]
@@ -333,7 +333,7 @@
         "gate_class": "EXIT_STRICT",
         "command": [
           "python",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--changed-only",
           "--format",

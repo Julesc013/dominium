@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Eviction Rule Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic eviction rule registry output.",
+  "x-doc-ref": [
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "eviction_rules",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "eviction_rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "eviction_rule_id",
+          "description",
+          "algorithm_id",
+          "priority_by_channel",
+          "priority_by_subject_kind",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "eviction_rule_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "algorithm_id": {
+            "type": "string"
+          },
+          "priority_by_channel": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "priority_by_subject_kind": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [
+        {
+          "pack_id": "law.lab.unrestricted",
+          "version": "1.0.0",
+          "canonical_hash": "placeholder.law.lab.unrestricted.v1",
+          "signature_status": "signed"
+        }
+      ],
+      "eviction_rules": [
+        {
+          "eviction_rule_id": "evict.oldest_first",
+          "description": "Evict oldest records first by source tick and memory item id.",
+          "algorithm_id": "evict.oldest_first",
+          "priority_by_channel": {},
+          "priority_by_subject_kind": {},
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "e20827ce5d0de3c2e4dd5ce61e2f0dff53b2dd5a6713bd88ff2f29d0876ebfd4"
+    }
+  ]
+}

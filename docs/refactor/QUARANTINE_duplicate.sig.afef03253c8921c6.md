@@ -12,37 +12,37 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `merge`
 - Risk Level: `MED`
-- Canonical Candidate: `game/tests/tests/setup/test_adapter_macos_gui.cpp`
+- Canonical Candidate: `tests/tests/game/setup/test_adapter_macos_gui.cpp`
 - Quarantine Reasons: `builtin_or_entrypoint_collision, cross_domain_helper_collision, file_scope_ambiguity, phase_boundary_deferred, requires_medium_risk_batch_gate, requires_single_action_full_gate, test_runtime_split`
 - Planned Action Kinds: `merge, rewire, deprecate`
 
 ## Competing Files
 
-- `engine/modules/system/dsys_dir_sorted.c`
-- `game/tests/tests/setup/conformance/setup_conformance_repeat_tests.cpp`
-- `game/tests/tests/setup/conformance/setup_conformance_runner.cpp`
-- `game/tests/tests/setup/gold_master/setup_gold_master_tests.cpp`
-- `game/tests/tests/setup/parity_lock/setup_parity_lock_tests.cpp`
-- `game/tests/tests/setup/test_adapter_macos_gui.cpp`
-- `game/tests/tests/setup/test_apply.cpp`
-- `game/tests/tests/setup/test_cli_golden.cpp`
+- `runtime/platform/system/dsys_dir_sorted.c`
+- `tests/tests/game/setup/conformance/setup_conformance_repeat_tests.cpp`
+- `tests/tests/game/setup/conformance/setup_conformance_runner.cpp`
+- `tests/tests/game/setup/gold_master/setup_gold_master_tests.cpp`
+- `tests/tests/game/setup/parity_lock/setup_parity_lock_tests.cpp`
+- `tests/tests/game/setup/test_adapter_macos_gui.cpp`
+- `tests/tests/game/setup/test_apply.cpp`
+- `tests/tests/game/setup/test_cli_golden.cpp`
 - `launcher/cli/launcher_ui_shell.c`
-- `tools/ui_preview_host/common/ui_preview_common.cpp`
-- `tools/validation/validator_common.cpp`
+- `apps/workbench/module/ui/preview/support/ui_preview_common.cpp`
+- `tools/validators/suite/validator_common.cpp`
 
 ## Scorecard
 
-- `game/tests/tests/setup/test_adapter_macos_gui.cpp` disposition=`canonical` rank=`1` total_score=`61.43` risk=`MED`
-- `tools/validation/validator_common.cpp` disposition=`drop` rank=`2` total_score=`60.73` risk=`HIGH`
-- `engine/modules/system/dsys_dir_sorted.c` disposition=`merge` rank=`3` total_score=`58.75` risk=`MED`
-- `tools/ui_preview_host/common/ui_preview_common.cpp` disposition=`drop` rank=`4` total_score=`57.51` risk=`LOW`
-- `game/tests/tests/setup/conformance/setup_conformance_repeat_tests.cpp` disposition=`drop` rank=`5` total_score=`57.38` risk=`MED`
-- `game/tests/tests/setup/test_cli_golden.cpp` disposition=`merge` rank=`6` total_score=`57.38` risk=`MED`
+- `tests/tests/game/setup/test_adapter_macos_gui.cpp` disposition=`canonical` rank=`1` total_score=`61.43` risk=`MED`
+- `tools/validators/suite/validator_common.cpp` disposition=`drop` rank=`2` total_score=`60.73` risk=`HIGH`
+- `runtime/platform/system/dsys_dir_sorted.c` disposition=`merge` rank=`3` total_score=`58.75` risk=`MED`
+- `apps/workbench/module/ui/preview/support/ui_preview_common.cpp` disposition=`drop` rank=`4` total_score=`57.51` risk=`LOW`
+- `tests/tests/game/setup/conformance/setup_conformance_repeat_tests.cpp` disposition=`drop` rank=`5` total_score=`57.38` risk=`MED`
+- `tests/tests/game/setup/test_cli_golden.cpp` disposition=`merge` rank=`6` total_score=`57.38` risk=`MED`
 - `launcher/cli/launcher_ui_shell.c` disposition=`merge` rank=`7` total_score=`54.54` risk=`MED`
-- `game/tests/tests/setup/parity_lock/setup_parity_lock_tests.cpp` disposition=`drop` rank=`8` total_score=`54.17` risk=`MED`
-- `game/tests/tests/setup/conformance/setup_conformance_runner.cpp` disposition=`drop` rank=`9` total_score=`53.57` risk=`MED`
-- `game/tests/tests/setup/gold_master/setup_gold_master_tests.cpp` disposition=`drop` rank=`10` total_score=`53.57` risk=`MED`
-- `game/tests/tests/setup/test_apply.cpp` disposition=`merge` rank=`11` total_score=`53.57` risk=`MED`
+- `tests/tests/game/setup/parity_lock/setup_parity_lock_tests.cpp` disposition=`drop` rank=`8` total_score=`54.17` risk=`MED`
+- `tests/tests/game/setup/conformance/setup_conformance_runner.cpp` disposition=`drop` rank=`9` total_score=`53.57` risk=`MED`
+- `tests/tests/game/setup/gold_master/setup_gold_master_tests.cpp` disposition=`drop` rank=`10` total_score=`53.57` risk=`MED`
+- `tests/tests/game/setup/test_apply.cpp` disposition=`merge` rank=`11` total_score=`53.57` risk=`MED`
 
 ## Usage Sites
 
@@ -57,8 +57,8 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

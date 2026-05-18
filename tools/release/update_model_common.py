@@ -15,9 +15,9 @@ from tools.governance import (
     governance_profile_hash,
     load_governance_profile,
 )
-from tools.libraries.install import normalize_install_manifest
-from engine.platform.target_matrix import select_target_matrix_row, target_matrix_registry_hash
-from release import (
+from tools.package.libraries.install import normalize_install_manifest
+from runtime.platform.target_matrix import select_target_matrix_row, target_matrix_registry_hash
+from tools.release import (
     DEFAULT_COMPONENT_GRAPH_ID,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_RELEASE_INDEX_REL,
@@ -30,7 +30,7 @@ from release import (
     resolve_update_plan,
     write_release_index,
 )
-from release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
+from tools.release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
 from tools.validators.security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
 from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
@@ -475,11 +475,11 @@ def update_model_violations(repo_root: str) -> list[dict]:
         (RETRO_AUDIT_DOC_REL, "UPDATE-MODEL-0 retro audit is required", RULE_USE_COMPONENT_GRAPH),
         (DOCTRINE_DOC_REL, "release index doctrine is required", RULE_USE_COMPONENT_GRAPH),
         (SELF_UPDATE_DOC_REL, "setup self-update doctrine is required", RULE_USE_COMPONENT_GRAPH),
-        ("contracts/schemas/release/release_index.schema", "release_index schema is required", RULE_USE_COMPONENT_GRAPH),
-        ("contracts/schemas/release/update_plan.schema", "update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
-        ("contracts/schemas/release_index.schema.json", "compiled release_index schema is required", RULE_USE_COMPONENT_GRAPH),
-        ("contracts/schemas/update_plan.schema.json", "compiled update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
-        ("release/update_resolver.py", "update resolver is required", RULE_USE_COMPONENT_GRAPH),
+        ("contracts/schema/release/release_index.schema", "release_index schema is required", RULE_USE_COMPONENT_GRAPH),
+        ("contracts/schema/release/update_plan.schema", "update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
+        ("contracts/schema/release_index.schema.json", "compiled release_index schema is required", RULE_USE_COMPONENT_GRAPH),
+        ("contracts/schema/update_plan.schema.json", "compiled update_plan schema is required", RULE_USE_COMPONENT_GRAPH),
+        ("tools/release/update_resolver.py", "update resolver is required", RULE_USE_COMPONENT_GRAPH),
         ("tools/release/update_model_common.py", "update-model helper is required", RULE_USE_COMPONENT_GRAPH),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", RULE_USE_COMPONENT_GRAPH),
         (BASELINE_DOC_REL, "update-model baseline is required", RULE_USE_COMPONENT_GRAPH),
@@ -494,7 +494,7 @@ def update_model_violations(repo_root: str) -> list[dict]:
         ("tools/setup/setup_cli.py", "resolve_update_plan", "setup update surfaces must resolve update plans through the release component graph", RULE_USE_COMPONENT_GRAPH),
         ("tools/setup/setup_cli.py", "install_transaction_log", "rollback must use the deterministic transaction log", RULE_ROLLBACK_LOG),
         ("tools/setup/setup_cli.py", "verify_release_manifest", "update apply must verify the target release manifest before changing the install", RULE_USE_COMPONENT_GRAPH),
-        ("tools/dist/dist_tree_common.py", "release_index.json", "dist assembly must emit a release index for offline update resolution", RULE_USE_COMPONENT_GRAPH),
+        ("tools/release/dist/dist_tree_common.py", "release_index.json", "dist assembly must emit a release index for offline update resolution", RULE_USE_COMPONENT_GRAPH),
         ("tools/setup/setup_cli.py", "refusal.update", "setup update flows must emit explicit refusal codes instead of silent upgrade/refusal behavior", RULE_NO_SILENT_UPGRADE),
     ):
         text = ""

@@ -1,0 +1,23 @@
+SCHEMA: system/system_explain_request.schema
+schema_id: dominium.schema.system.system_explain_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic request shape for SYS-7 system-level forensics generation.
+- Bind requester identity and explain level to epistemic redaction policy.
+
+NON-SEMANTICS:
+- No authority mutation.
+- No implicit access escalation.
+
+REQUIRED SHAPE:
+record system_explain_request
+  required:
+    - request_id: id
+    - system_id: id
+    - event_id: id?
+    - explain_level: enum(L1|L2|L3)
+    - requester_subject_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

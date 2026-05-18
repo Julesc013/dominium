@@ -1,7 +1,7 @@
 /*
-FILE: source/dominium/game/core/g_runtime.h
+FILE: source/dominium/game/rule/g_runtime.h
 MODULE: Dominium
-LAYER / SUBSYSTEM: Dominium impl / game/core/g_runtime
+LAYER / SUBSYSTEM: Dominium impl / game/rule/g_runtime
 RESPONSIBILITY: Defines internal contract for `g_runtime`; shared within its subsystem; does NOT define a public API (see `include/**`).
 ALLOWED DEPENDENCIES: `include/dominium/**`, `source/dominium/**`, and C89/C++98 standard headers as needed.
 FORBIDDEN DEPENDENCIES: Dependency inversions that violate `docs/OVERVIEW_ARCHITECTURE.md` layering.

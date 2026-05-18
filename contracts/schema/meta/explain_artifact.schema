@@ -1,0 +1,30 @@
+SCHEMA: meta/explain_artifact.schema
+schema_id: dominium.schema.meta.explain_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic explain artifact used by inspection/proof/reporting surfaces.
+- Encodes bounded cause chain and remediation hints without truth mutation.
+
+NON-SEMANTICS:
+- This schema is informational and derived.
+- It must not be used to apply authoritative state changes.
+
+REQUIRED SHAPE:
+record explain_artifact
+  required:
+    - explain_id: id
+    - cause_chain: list<id_or_key>
+    - referenced_artifacts: list<id>
+    - remediation_hints: list<id_or_key>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  one_of_required:
+    - event_id: id
+    - target_id: id
+
+INVARIANTS:
+- Lists are bounded per contract.
+- Equivalent inputs under same policy produce stable artifact fingerprints.
+

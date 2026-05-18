@@ -1,8 +1,8 @@
 {
   "contents_inline": false,
   "counts": {
-    "repo_files": 19388,
-    "test_mappings": 5275,
+    "repo_files": 37166,
+    "test_mappings": 7162,
     "test_mappings_with_existing_candidate": 1
   },
   "creation_mode": "deterministic-local",
@@ -17,19 +17,18 @@
   "role_counts": {
     "aide_context": 5,
     "aide_contract": 274,
-    "aide_evidence": 18,
-    "aide_policy": 112,
+    "aide_evidence": 490,
+    "aide_policy": 117,
     "aide_prompt": 3,
-    "aide_queue": 21,
-    "config": 4088,
-    "docs": 4786,
+    "aide_queue": 442,
+    "config": 9459,
+    "docs": 6320,
     "generated": 9,
-    "governance": 2,
     "script": 49,
-    "test": 2287,
-    "unknown": 7734
+    "test": 3928,
+    "unknown": 16070
   },
   "schema_version": "aide.context-index.v0",
   "source_snapshot": ".aide/context/repo-snapshot.json",
-  "source_snapshot_hash": "44f9854d54ae59a9c84c8f4bd1d50441835e67e2659134622e9ab2098d94b2e0"
+  "source_snapshot_hash": "29e7515d53d64c3f72512d2d4cf4d3451f1eab4f0b2de6b4f4114a95ead59950"
 }

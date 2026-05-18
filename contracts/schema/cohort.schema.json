@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cohort Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic cohort assembly record for CIV-2.",
+  "x-doc-ref": [
+    "docs/civilisation/COHORT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "size",
+    "faction_id",
+    "territory_id",
+    "location_ref",
+    "demographic_tags",
+    "skill_distribution",
+    "refinement_state",
+    "created_tick",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "cohort_id": {
+      "type": "string"
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "faction_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "territory_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "location_ref": {
+      "type": "string"
+    },
+    "demographic_tags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "integer",
+          "number",
+          "boolean"
+        ]
+      }
+    },
+    "skill_distribution": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "integer",
+          "number"
+        ]
+      }
+    },
+    "refinement_state": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "micro",
+        "mixed"
+      ]
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "cohort_id": "cohort.alpha.001",
+      "size": 1200,
+      "faction_id": "faction.alpha",
+      "territory_id": "territory.alpha.001",
+      "location_ref": "region.earth.surface.001",
+      "demographic_tags": {
+        "age_band_primary": "adult"
+      },
+      "skill_distribution": {
+        "skill.navigation": 0.45,
+        "skill.mining": 0.2
+      },
+      "refinement_state": "macro",
+      "created_tick": 0,
+      "extensions": {}
+    }
+  ]
+}
+

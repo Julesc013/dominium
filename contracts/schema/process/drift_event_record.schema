@@ -1,0 +1,28 @@
+SCHEMA: process/drift_event_record.schema
+schema_id: dominium.schema.process.drift_event_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic drift-band actions and escalation events.
+
+NON-SEMANTICS:
+- Does not mutate capsule/certification state by itself.
+- Does not encode nondeterministic randomness.
+
+REQUIRED SHAPE:
+record drift_event_record
+  required:
+    - event_id: id
+    - process_id: id
+    - version: semver
+    - drift_band: enum(drift.normal|drift.warning|drift.critical)
+    - drift_score: fixed_point_nonnegative
+    - tick: tick
+    - action_taken: enum(qc_escalate|capsule_invalidate|cert_revoke|revalidate_required)
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Drift actions must be explicit, deterministic, and auditable.
+- Critical-band actions must not occur silently.

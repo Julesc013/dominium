@@ -12,15 +12,15 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/securex/core/pack_signature.py`
+- Canonical Candidate: `tools/xstack/securex/core/pack_signature.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
 - `setup/packages/scripts/packaging/dsumanifest.py`
-- `src/tools/libraries/bundle/bundle_manifest.py`
-- `src/tools/libraries/install/install_validator.py`
+- `src/tools/package/libraries/bundle/bundle_manifest.py`
+- `src/tools/package/libraries/install/install_validator.py`
 - `tests/contract/frozen_contracts_guard.py`
 - `tests/determinism/determinism_replay_hash_invariance.py`
 - `tests/integration/exploration_scaling_tests.py`
@@ -28,17 +28,17 @@ Replacement Target: XI-4b manual review resolution
 - `tests/integration/signal_scaling_tests.py`
 - `tests/perf/perf_fixture_contracts.py`
 - `tools/bugreport/bugreport_cli.py`
-- `tools/distribution/dompkg_lib.py`
+- `tools/package/distribution/dompkg_lib.py`
 - `tools/lib/content_store.py`
-- `tools/securex/core/pack_signature.py`
+- `tools/xstack/securex/core/pack_signature.py`
 - `tools/share/share_cli.py`
 
 ## Scorecard
 
-- `tools/securex/core/pack_signature.py` disposition=`canonical` rank=`1` total_score=`88.75` risk=`HIGH`
+- `tools/xstack/securex/core/pack_signature.py` disposition=`canonical` rank=`1` total_score=`88.75` risk=`HIGH`
 - `tools/lib/content_store.py` disposition=`quarantine` rank=`2` total_score=`81.31` risk=`HIGH`
-- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`3` total_score=`74.94` risk=`HIGH`
-- `tools/distribution/dompkg_lib.py` disposition=`drop` rank=`4` total_score=`67.64` risk=`HIGH`
+- `src/tools/package/libraries/bundle/bundle_manifest.py` disposition=`merge` rank=`3` total_score=`74.94` risk=`HIGH`
+- `tools/package/distribution/dompkg_lib.py` disposition=`drop` rank=`4` total_score=`67.64` risk=`HIGH`
 - `setup/packages/scripts/packaging/dsumanifest.py` disposition=`drop` rank=`5` total_score=`59.61` risk=`HIGH`
 - `tests/determinism/determinism_replay_hash_invariance.py` disposition=`drop` rank=`6` total_score=`55.26` risk=`HIGH`
 - `tests/contract/frozen_contracts_guard.py` disposition=`drop` rank=`7` total_score=`54.07` risk=`HIGH`
@@ -47,7 +47,7 @@ Replacement Target: XI-4b manual review resolution
 - `tests/integration/signal_scaling_tests.py` disposition=`drop` rank=`10` total_score=`53.11` risk=`HIGH`
 - `tools/share/share_cli.py` disposition=`drop` rank=`11` total_score=`52.38` risk=`HIGH`
 - `tests/integration/exploration_scaling_tests.py` disposition=`drop` rank=`12` total_score=`52.14` risk=`HIGH`
-- `src/tools/libraries/install/install_validator.py` disposition=`merge` rank=`13` total_score=`51.13` risk=`HIGH`
+- `src/tools/package/libraries/install/install_validator.py` disposition=`merge` rank=`13` total_score=`51.13` risk=`HIGH`
 - `tools/bugreport/bugreport_cli.py` disposition=`drop` rank=`14` total_score=`37.86` risk=`HIGH`
 
 ## Usage Sites
@@ -64,7 +64,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

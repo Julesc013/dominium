@@ -1,0 +1,28 @@
+SCHEMA: logic/logic_throttle_event.schema
+schema_id: dominium.schema.logic.logic_throttle_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical LOGIC-4 throttle/refusal events that affect authoritative behavior.
+- Preserve deterministic provenance for budget- and policy-driven evaluation outcomes.
+
+NON-SEMANTICS:
+- This schema does not describe derived traces.
+- It does not replace compute-budget engine decision logs; it complements them for logic behavior.
+
+REQUIRED SHAPE:
+record logic_throttle_event
+  required:
+    - event_id: id
+    - tick: u64
+    - network_id: id
+    - reason: enum(budget_exceeded|policy|fault)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Throttle events are canonical when evaluation outcome changes because of throttle/refusal.
+- `reason = budget_exceeded` must correspond to META-COMPUTE pressure.
+- `reason = policy` must correspond to validation or loop policy refusal.
+- `reason = fault` is reserved for future logic fault handling and must remain explicit when used.

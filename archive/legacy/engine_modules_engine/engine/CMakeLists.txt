@@ -447,7 +447,7 @@ elseif(_dom_platform_lc STREQUAL "sdl2")
             "${CMAKE_SOURCE_DIR}/external/SDL2*"
             "${CMAKE_SOURCE_DIR}/deps/SDL2*"
             "${CMAKE_SOURCE_DIR}/third_party/SDL2*"
-            "${CMAKE_SOURCE_DIR}/artifacts/SDL2*"
+            "${CMAKE_SOURCE_DIR}/archive/generated/artifacts/SDL2*"
         )
         foreach(_dom_path IN LISTS _dom_sdl2_glob)
             if(EXISTS "${_dom_path}/include/SDL.h" OR EXISTS "${_dom_path}/include/SDL2/SDL.h")

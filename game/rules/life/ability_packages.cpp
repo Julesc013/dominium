@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/ability_packages.cpp
+FILE: game/rule/life/ability_packages.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements ability package registry and inheritance resolution.

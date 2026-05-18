@@ -503,13 +503,13 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 10526,
-      "snippet": "\"game/domains/systems/templates/__init__.py\","
+      "snippet": "\"game/domain/systems/templates/__init__.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 10527,
-      "snippet": "\"game/domains/systems/templates/template_compiler.py\","
+      "snippet": "\"game/domain/systems/templates/template_compiler.py\","
     },
     {
       "classification": "unknown",
@@ -969,13 +969,13 @@
     },
     {
       "classification": "active_source",
-      "file": "apps/client/app/main_client.c",
+      "file": "apps/client/main_client.c",
       "line": 137,
       "snippet": "printf(\"  templates       List available templates\\n\");"
     },
     {
       "classification": "active_source",
-      "file": "apps/client/shell/client_shell.c",
+      "file": "runtime/shell/client/client_shell.c",
       "line": 3047,
       "snippet": "if (!dom_shell_load_template_text(\"data/world/templates/exploration_baseline.worlddef.json\","
     },
@@ -1109,7 +1109,7 @@
       "classification": "unknown",
       "file": "data/audit/virtual_paths_report.json",
       "line": 163,
-      "snippet": "\"line\": \"_runtime_abs(repo_root, os.path.join(\\\"dist\\\", \\\"session_templates\\\")),\","
+      "snippet": "\"line\": \"_runtime_abs(repo_root, os.path.join(\\\"archive\generated\archive\generated\dist\\\", \\\"session_templates\\\")),\","
     },
     {
       "classification": "unknown",
@@ -2307,13 +2307,13 @@
     },
     {
       "classification": "docs",
-      "file": "docs/dev/EXPLORATION_SCALING_TESTS.md",
+      "file": "docs/development/EXPLORATION_SCALING_TESTS.md",
       "line": 25,
       "snippet": "`data/world/templates/exploration_baseline.worlddef.json`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/EXPLORATION_SCALING_TESTS.md",
+      "file": "docs/development/EXPLORATION_SCALING_TESTS.md",
       "line": 52,
       "snippet": "2. Provide a data-only template at `data/world/templates/exploration_baseline.worlddef.json`."
     },
@@ -3791,7 +3791,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 164,
-      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+      "snippet": "`runtime/process_spawn.py`, `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
     },
     {
       "classification": "docs",
@@ -3851,7 +3851,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -3887,7 +3887,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 443,
-      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`"
+      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `archive/generated/dist/`"
     },
     {
       "classification": "docs",
@@ -4023,37 +4023,37 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e267_template_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e267_template_bypass_smell.py",
       "line": 44,
-      "snippet": "compiler_rel = \"game/domains/systems/templates/template_compiler.py\""
+      "snippet": "compiler_rel = \"game/domain/systems/templates/template_compiler.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e268_unversioned_template_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e268_unversioned_template_smell.py",
       "line": 47,
       "snippet": "pack_registry_rel = \"packs/system_templates/base/data/system_template_registry.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e300_orphan_feature_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e300_orphan_feature_smell.py",
       "line": 30,
       "snippet": "\"packs/system_templates/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 11,
       "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 15,
       "snippet": "\"data/session_templates/session.mvp_default.json\": (\"pack_lock_hash\", \"profile.bundle.mvp_default\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_tree_common.py",
+      "file": "tools/release/dist/dist_tree_common.py",
       "line": 342,
       "snippet": "(\"data/session_templates/session.mvp_default.json\", \"data/session_templates/session.mvp_default.json\"),"
     }

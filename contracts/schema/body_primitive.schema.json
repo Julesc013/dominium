@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Body Primitive Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic body primitive contract for embodiment collision substrate.",
+  "x-doc-ref": [
+    "docs/embodiment/BODY_PRIMITIVES_AND_COLLISION.md",
+    "docs/canon/constitution_v1.md §3 A1/A2",
+    "docs/canon/glossary_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "body_id",
+    "owner_assembly_id",
+    "shape_type",
+    "parameters",
+    "collision_layer",
+    "dynamic",
+    "ghost",
+    "version_introduced",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "body_id": {
+      "type": "string"
+    },
+    "owner_assembly_id": {
+      "type": "string"
+    },
+    "shape_type": {
+      "type": "string",
+      "enum": [
+        "capsule",
+        "aabb",
+        "convex_hull"
+      ]
+    },
+    "parameters": {
+      "type": "object",
+      "required": [
+        "radius_mm",
+        "height_mm",
+        "half_extents_mm",
+        "vertex_ref_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "radius_mm": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "height_mm": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "half_extents_mm": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "y": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "z": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "vertex_ref_id": {
+          "type": "string"
+        }
+      }
+    },
+    "collision_layer": {
+      "type": "string"
+    },
+    "dynamic": {
+      "type": "boolean"
+    },
+    "ghost": {
+      "type": "boolean"
+    },
+    "version_introduced": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "body_id": "body.agent.sample",
+      "owner_assembly_id": "agent.sample",
+      "shape_type": "capsule",
+      "parameters": {
+        "radius_mm": 450,
+        "height_mm": 1600,
+        "half_extents_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "vertex_ref_id": ""
+      },
+      "collision_layer": "layer.default",
+      "dynamic": true,
+      "ghost": false,
+      "version_introduced": 1,
+      "extensions": {}
+    }
+  ]
+}

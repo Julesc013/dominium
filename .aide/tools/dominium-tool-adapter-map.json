@@ -59,8 +59,8 @@
       "q51_action": "plan_only",
       "risk_notes": "Audit surfaces may reference protected doctrine and release policy.",
       "source_tool_paths": [
-        "tools/auditx/auditx.py",
-        "tools/auditx/README.md",
+        "tools/xstack/auditx/auditx.py",
+        "tools/xstack/auditx/README.md",
         "tools/xstack/auditx/check.py"
       ],
       "validation_requirement": "Must separate generated evidence from canonical doctrine.",
@@ -188,7 +188,7 @@
       "source_tool_paths": [
         "docs",
         "scripts",
-        "tools/auditx/README.md"
+        "tools/xstack/auditx/README.md"
       ],
       "validation_requirement": "Must respect AGENTS.md and canon authority ordering.",
       "wrapper_id": "dominium.docs.sanity"

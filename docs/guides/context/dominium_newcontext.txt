@@ -145,9 +145,9 @@ Conflicts:
 
 Fix:
 
-• Move /render/* → /engine/render/* and wire them to dom_render_api.[ch].
+• Move /render/* → /runtime/render/* and wire them to dom_render_api.[ch].
 
-• Move /platform/* → /engine/platform/* and align naming with dom_platform_* APIs.
+• Move /platform/* → /runtime/platform/* and align naming with dom_platform_* APIs.
 
 • Add stubs for:
 
@@ -1597,7 +1597,7 @@ o Apply ordering rules when multiple hits are coincident.
 
 
 
-2.6 /engine/render/
+2.6 /runtime/render/
 
 dom_render_api.[ch]
 
@@ -1645,7 +1645,7 @@ Backends sdl_mixer, null:
 
 
 
-2.8 /engine/platform/
+2.8 /runtime/platform/
 
 dom_platform_api.[ch]
 
@@ -8943,7 +8943,7 @@ ChatGPT said:
 
 GPT-5.1 Thinking • build 2025-12-03
 
-This message is the deterministic dev-spec for engine/render/.
+This message is the deterministic dev-spec for runtime/render/.
 
 This directory is the lowest-level, platform-agnostic rendering layer.
 
@@ -9559,7 +9559,7 @@ Renderers cannot ever feed information back into the sim.
 
 7. Summary
 
-engine/render/ defines a stable, deterministic, backend-independent rendering pipeline:
+runtime/render/ defines a stable, deterministic, backend-independent rendering pipeline:
 
 • dom_render_api.h — the only header engine/game code touches.
 
@@ -9573,7 +9573,7 @@ This guarantees cross-platform stability from DOS-class machines up to modern ha
 
 
 
-Next directory will be engine/platform/ unless you specify otherwise.
+Next directory will be runtime/platform/ unless you specify otherwise.
 
 You said:
 
@@ -9583,7 +9583,7 @@ ChatGPT said:
 
 GPT-5.1 Thinking • build 2025-12-03
 
-This message is the deterministic dev-spec for engine/platform/.
+This message is the deterministic dev-spec for runtime/platform/.
 
 This is the only directory allowed to depend on OS APIs (Win32, POSIX, macOS, X11, Cocoa, ALSA, PulseAudio, CoreAudio, etc.).
 
@@ -11593,17 +11593,17 @@ Rules:
 
 • dom_ui_layout_apply(&ui_root, &layout_state);
 
-• 
+•
 
 • dom_ui_cmd_init(&ui_cmd_buffer);
 
 • /* dom_ui_widgets + core push into ui_cmd_buffer during update */
 
-• 
+•
 
 • /* Now game/client reads ui_cmd_buffer and applies actual game actions. */
 
-• 
+•
 
 • /* For rendering: */
 
@@ -13695,7 +13695,7 @@ o macOS → GL2 (or Metal via engine-port)
 
 o Retro ports → custom renderer selection
 
-• Must not include any OS headers directly; leave that to /engine/platform/<os>.
+• Must not include any OS headers directly; leave that to /runtime/platform/<os>.
 
 Prohibitions:
 
@@ -20473,7 +20473,7 @@ DominiumPlatform.cmake
 
 • Selects platform abstraction layer
 
-• Verifies /engine/platform/* bindings exist
+• Verifies /runtime/platform/* bindings exist
 
 • Prevents missing platform API symbols at link-time
 
@@ -22249,7 +22249,7 @@ A port may only interact with:
 
 • /engine/platform interfaces
 
-• /engine/render/* backends
+• /runtime/render/* backends
 
 • /engine/audio/* backends
 
@@ -22677,7 +22677,7 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# DOMINIUM  
+# DOMINIUM
 
 ## A Deterministic, Multi-Scale, Multi-Platform Simulation Engine and Game
 
@@ -22697,9 +22697,9 @@ Dominium is a **fully deterministic**, **integer-math**, **platform-agnostic**, 
 
 
 
-Dominium is not “a game with an engine.”  
+Dominium is not “a game with an engine.”
 
-Dominium *is an engine*, with one official game built on top of it.  
+Dominium *is an engine*, with one official game built on top of it.
 
 Everything is deterministic, from physics to pathfinding to networks, across all supported targets.
 
@@ -22747,25 +22747,25 @@ Dominium aims to:
 
 6. Support **surface and orbital simulation**, including:
 
-   - Orbital ships and stations  
+   - Orbital ships and stations
 
-   - Docking/undocking  
+   - Docking/undocking
 
-   - Re-entry and ascent profiles (rails-based or approximate dynamics)  
+   - Re-entry and ascent profiles (rails-based or approximate dynamics)
 
-   - Cargo tugs, drop pods, and construction of orbital infrastructure  
+   - Cargo tugs, drop pods, and construction of orbital infrastructure
 
 7. Provide a **unified construction system** using:
 
-   - Block-based structural components  
+   - Block-based structural components
 
-   - Edge/face walls, floors, slabs, ramps  
+   - Edge/face walls, floors, slabs, ramps
 
-   - Arbitrary vector splines (tunnels, rails, roads, bridges)  
+   - Arbitrary vector splines (tunnels, rails, roads, bridges)
 
-   - Cut/fill terrain interaction  
+   - Cut/fill terrain interaction
 
-   - Arbitrary grade or cliff formation  
+   - Arbitrary grade or cliff formation
 
 8. Maintain a **clean separation** between:
 
@@ -22797,17 +22797,17 @@ The entire engine is designed around the following non-negotiable principles:
 
 Every simulation result is bit-identical for:
 
-- Same inputs  
+- Same inputs
 
-- Same tick schedule  
+- Same tick schedule
 
-- Same modset  
+- Same modset
 
-- Same engine version  
+- Same engine version
 
 
 
-No floating point appears in simulation code.  
+No floating point appears in simulation code.
 
 All math uses integers or fixed-point formats.
 
@@ -22817,19 +22817,19 @@ All math uses integers or fixed-point formats.
 
 The engine is structured into immutable tick phases:
 
-1. Input  
+1. Input
 
-2. Pre-state  
+2. Pre-state
 
-3. Simulation (multi-lane)  
+3. Simulation (multi-lane)
 
-4. Networks  
+4. Networks
 
-5. Merge  
+5. Merge
 
-6. Post-process  
+6. Post-process
 
-7. Finalize  
+7. Finalize
 
 
 
@@ -22877,13 +22877,13 @@ One surface per planet.
 
 Surfaces are **not continuous arrays**, but **collections of sparse microgrids**, enabling:
 
-- Underground structures  
+- Underground structures
 
-- Cut/fill  
+- Cut/fill
 
-- Multi-level buildings  
+- Multi-level buildings
 
-- Vector networks intersecting grids  
+- Vector networks intersecting grids
 
 
 
@@ -22893,15 +22893,15 @@ Everything is plug-and-play:
 
 - Renderers (OpenGL, DX9, DX11, SDL vector)
 
-- Audio backends  
+- Audio backends
 
-- Platform backends  
+- Platform backends
 
-- Data packs  
+- Data packs
 
-- Mods  
+- Mods
 
-- Tools  
+- Tools
 
 
 
@@ -22913,11 +22913,11 @@ No engine modification required to add new content or systems.
 
 The engine compiles and runs on:
 
-- C89 compilers  
+- C89 compilers
 
-- No libc extensions  
+- No libc extensions
 
-- No platform-specific hacks in sim code  
+- No platform-specific hacks in sim code
 
 
 
@@ -22999,15 +22999,15 @@ Each `/ports/<target>/config/` contains its own build instructions.
 
 Examples:
 
-- DOS: OpenWatcom + wmake  
+- DOS: OpenWatcom + wmake
 
-- Win3.x: MASM + VC++ 1.52  
+- Win3.x: MASM + VC++ 1.52
 
-- Win9x: MSVC6 + DX7 SDK  
+- Win9x: MSVC6 + DX7 SDK
 
-- macOS Classic: CodeWarrior + MPW  
+- macOS Classic: CodeWarrior + MPW
 
-- WASM: Emscripten  
+- WASM: Emscripten
 
 
 
@@ -23055,47 +23055,47 @@ Each mod directory contains:
 
 - `mod.json` (manifest)
 
-- Prefabs  
+- Prefabs
 
-- Data packs  
+- Data packs
 
-- Scripts (optional, deterministic subset of Lua)  
+- Scripts (optional, deterministic subset of Lua)
 
 
 
 Mod loading order:
 
-1. Base  
+1. Base
 
-2. DLC  
+2. DLC
 
-3. Mods sorted by UUID  
+3. Mods sorted by UUID
 
 
 
 Mods may add:
 
-- Entities  
+- Entities
 
-- Blocks  
+- Blocks
 
-- Jobs  
+- Jobs
 
-- Networks  
+- Networks
 
-- Graphical assets  
+- Graphical assets
 
-- UI  
+- UI
 
 
 
 Mods may not:
 
-- Modify engine behaviour  
+- Modify engine behaviour
 
-- Introduce nondeterministic code  
+- Introduce nondeterministic code
 
-- Patch binaries  
+- Patch binaries
 
 
 
@@ -23109,39 +23109,39 @@ Mods may not:
 
 All simulation data uses:
 
-- Integer math  
+- Integer math
 
-- Fixed-size structs  
+- Fixed-size structs
 
-- Little-endian  
+- Little-endian
 
-- No padding  
+- No padding
 
-- No floats  
+- No floats
 
-- No pointers  
+- No pointers
 
 
 
 Save files contain:
 
-- Entities  
+- Entities
 
-- Components  
+- Components
 
-- Networks  
+- Networks
 
-- Jobs  
+- Jobs
 
-- Messages  
+- Messages
 
-- Prefab references  
+- Prefab references
 
-- Chunk microgrids  
+- Chunk microgrids
 
-- World snapshot  
+- World snapshot
 
-- Optional replay log  
+- Optional replay log
 
 
 
@@ -23161,53 +23161,53 @@ Dominium supports **two complementary domains**:
 
 
 
-### 8.1 Physical domains  
+### 8.1 Physical domains
 
-- Planetary surfaces  
+- Planetary surfaces
 
-- Underground layers  
+- Underground layers
 
-- Oceans  
+- Oceans
 
-- Terrain grids  
+- Terrain grids
 
-- Structural microgrids  
+- Structural microgrids
 
-- Buildings  
+- Buildings
 
 - Vector networks (rails, roads, conveyors, pipes, tunnels)
 
 
 
-### 8.2 Logical domains  
+### 8.2 Logical domains
 
-- Orbits  
+- Orbits
 
-- Transfer windows  
+- Transfer windows
 
-- Docking graphs  
+- Docking graphs
 
-- Lagrange points  
+- Lagrange points
 
-- Asteroid belts  
+- Asteroid belts
 
-- Gas clouds  
+- Gas clouds
 
-- Electromagnetic hazard areas  
+- Electromagnetic hazard areas
 
-- Orbital stations and ships  
+- Orbital stations and ships
 
 
 
 Space simulation is **on rails**, deterministic, integer-based:
 
-- Discrete orbital tracks  
+- Discrete orbital tracks
 
-- Deterministic transitions  
+- Deterministic transitions
 
-- Docking ports as graph nodes  
+- Docking ports as graph nodes
 
-- Cargo routing between orbital/logical nodes  
+- Cargo routing between orbital/logical nodes
 
 
 
@@ -23223,29 +23223,29 @@ Contributions must follow:
 
 
 
-- Determinism rules  
+- Determinism rules
 
-- Specification compliance  
+- Specification compliance
 
-- C89/C++98 core style  
+- C89/C++98 core style
 
-- Strict linting (`clang-format`, `cpplint`)  
+- Strict linting (`clang-format`, `cpplint`)
 
-- No floating-point in simulation  
+- No floating-point in simulation
 
-- No platform APIs outside `/engine/platform`  
+- No platform APIs outside `/engine/platform`
 
-- No game logic in `/engine`  
+- No game logic in `/engine`
 
 
 
 All new features require:
 
-- Spec update  
+- Spec update
 
-- Tests (unit + replay)  
+- Tests (unit + replay)
 
-- Documentation  
+- Documentation
 
 
 
@@ -23261,13 +23261,13 @@ The project is released under a tiered licensing system:
 
 
 
-- Engine core: permissive open source licence (to be finalised)  
+- Engine core: permissive open source licence (to be finalised)
 
-- Game assets: proprietary or CC-BY-NC depending on pack  
+- Game assets: proprietary or CC-BY-NC depending on pack
 
-- Tools: open source  
+- Tools: open source
 
-- Mods: copyright remains with authors  
+- Mods: copyright remains with authors
 
 
 
@@ -23291,25 +23291,25 @@ Completed:
 
 
 
-- Deterministic kernel spec  
+- Deterministic kernel spec
 
-- ECS core foundation  
+- ECS core foundation
 
-- Messaging architecture  
+- Messaging architecture
 
-- Job system  
+- Job system
 
-- Serialization v3  
+- Serialization v3
 
-- World chunk/subchunk format  
+- World chunk/subchunk format
 
-- Prefab system  
+- Prefab system
 
-- Mod loader  
+- Mod loader
 
-- Platform abstraction design  
+- Platform abstraction design
 
-- Rendering abstraction design  
+- Rendering abstraction design
 
 
 
@@ -23317,17 +23317,17 @@ In development:
 
 
 
-- 2D/3D renderer integration  
+- 2D/3D renderer integration
 
-- Full cut/fill terrain system  
+- Full cut/fill terrain system
 
-- Orbital logistics  
+- Orbital logistics
 
-- Worker/robot AI  
+- Worker/robot AI
 
-- Multiplayer server clusters  
+- Multiplayer server clusters
 
-- Editor suite  
+- Editor suite
 
 
 
@@ -23339,15 +23339,15 @@ In development:
 
 
 
-- Discord: *TBD*  
+- Discord: *TBD*
 
-- Developer Blog: *TBD*  
+- Developer Blog: *TBD*
 
-- Documentation Portal: `/docs/design/`  
+- Documentation Portal: `/docs/design/`
 
-- Issue Tracker: GitHub Issues  
+- Issue Tracker: GitHub Issues
 
-- Roadmap: `/docs/spec/MILESTONES.md`  
+- Roadmap: `/docs/spec/MILESTONES.md`
 
 
 
@@ -23377,25 +23377,25 @@ Dominium stands on:
 
 
 
-Dominium is not a toy project.  
+Dominium is not a toy project.
 
 It is an attempt at a **universal simulation engine** that:
 
 
 
-- Spans eras of hardware  
+- Spans eras of hardware
 
-- Maintains perfect determinism  
+- Maintains perfect determinism
 
-- Supports planetary and orbital scales  
+- Supports planetary and orbital scales
 
-- Is fully extensible and moddable  
+- Is fully extensible and moddable
 
-- Can run archived forever  
+- Can run archived forever
 
 
 
-This README is a living document.  
+This README is a living document.
 
 All architectural detail lives in `/docs/spec`.
 
@@ -23411,15 +23411,15 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# LICENSE.md  
+# LICENSE.md
 
-## DOMINIUM ENGINE AND GAME — RESTRICTED SOURCE VIEWING LICENSE  
+## DOMINIUM ENGINE AND GAME — RESTRICTED SOURCE VIEWING LICENSE
 
 ### Version 1.0 (Draft)
 
 
 
-This license governs all source code, data, assets, documentation, tools, and binaries contained within the Dominium repository (“the Software”).  
+This license governs all source code, data, assets, documentation, tools, and binaries contained within the Dominium repository (“the Software”).
 
 By obtaining, viewing, or using any portion of the Software, you agree to be bound by the terms of this License.
 
@@ -23437,31 +23437,31 @@ If you do not agree, you must immediately cease all use of the Software.
 
 
 
-**“Software”**  
+**“Software”**
 
 All files, source code, binaries, assets, documentation, specifications, and tools contained in this repository, including derived or generated artifacts.
 
 
 
-**“Author”**  
+**“Author”**
 
 The copyright holder(s) of the Software.
 
 
 
-**“You” / “User”**  
+**“You” / “User”**
 
 Any person who accesses, views, downloads, or executes the Software.
 
 
 
-**“Personal Use”**  
+**“Personal Use”**
 
 Use exclusively by a single individual for private, non-commercial purposes on hardware owned or directly controlled by that individual.
 
 
 
-**“Derivative Work”**  
+**“Derivative Work”**
 
 Any modification, translation, transformation, or adaptation of the Software, including any work that uses or incorporates any part of the Software.
 
@@ -23475,19 +23475,19 @@ Any modification, translation, transformation, or adaptation of the Software, in
 
 
 
-## 2.1 Viewing Rights  
+## 2.1 Viewing Rights
 
 You are granted permission to **view** the source code for the sole purposes of:
 
 
 
-- education  
+- education
 
-- personal study  
+- personal study
 
-- security review  
+- security review
 
-- compatibility evaluation  
+- compatibility evaluation
 
 
 
@@ -23495,19 +23495,19 @@ This permission **does not** include the right to modify, compile, distribute, o
 
 
 
-## 2.2 Personal Execution Rights  
+## 2.2 Personal Execution Rights
 
 You may compile and run the Software **only for Personal Use**, provided that:
 
 
 
-1. The resulting binaries are used solely by you.  
+1. The resulting binaries are used solely by you.
 
-2. They remain private and unshared.  
+2. They remain private and unshared.
 
-3. They are not distributed, transmitted, or made available to any other person.  
+3. They are not distributed, transmitted, or made available to any other person.
 
-4. They are not used in any commercial, professional, or institutional context.  
+4. They are not used in any commercial, professional, or institutional context.
 
 
 
@@ -23519,23 +23519,23 @@ You may compile and run the Software **only for Personal Use**, provided that:
 
 
 
-## 3.1 No Redistribution  
+## 3.1 No Redistribution
 
 You may **not** distribute, transmit, publish, or otherwise make available:
 
 
 
-- any source code  
+- any source code
 
-- any binaries  
+- any binaries
 
-- any modified or unmodified copies  
+- any modified or unmodified copies
 
-- any assets  
+- any assets
 
-- any documentation  
+- any documentation
 
-- any derived materials  
+- any derived materials
 
 
 
@@ -23543,43 +23543,43 @@ This prohibition applies to all forms of distribution: public, private, commerci
 
 
 
-## 3.2 No Modification  
+## 3.2 No Modification
 
 You may not modify, translate, patch, fork, or create derivative works based on the Software, except for temporary private modifications used exclusively for Personal Use and never shared or published.
 
 
 
-## 3.3 No Incorporation  
+## 3.3 No Incorporation
 
 You may not incorporate, embed, or link the Software or any portion of it into any other project, product, or codebase, regardless of purpose or scope.
 
 
 
-## 3.4 No Commercial Use  
+## 3.4 No Commercial Use
 
 The Software may not be used:
 
 
 
-- to generate revenue  
+- to generate revenue
 
-- in a business or institutional setting  
+- in a business or institutional setting
 
-- as part of a commercial service  
+- as part of a commercial service
 
-- in research funded commercially or institutionally  
+- in research funded commercially or institutionally
 
-- for professional development or production workflows  
+- for professional development or production workflows
 
 
 
-## 3.5 No Public Services  
+## 3.5 No Public Services
 
 You may not host any public or semi-public service (including game servers) built using the Software.
 
 
 
-## 3.6 No Automated Extraction  
+## 3.6 No Automated Extraction
 
 You may not use automated tools to extract data, assets, or structures from the Software for redistribution or reuse.
 
@@ -23609,41 +23609,41 @@ You gain **no** ownership rights, license rights, or transfer rights by viewing 
 
 
 
-## 5.1 No Warranty  
+## 5.1 No Warranty
 
 The Software is provided **“AS IS”** without warranty of any kind—express, implied, or statutory—including but not limited to:
 
 
 
-- merchantability  
+- merchantability
 
-- fitness for a particular purpose  
+- fitness for a particular purpose
 
-- non-infringement  
+- non-infringement
 
-- data accuracy  
+- data accuracy
 
-- uptime or availability  
+- uptime or availability
 
 
 
-## 5.2 Limitation of Liability  
+## 5.2 Limitation of Liability
 
 In no event shall the Author be liable for:
 
 
 
-- direct, indirect, incidental, consequential, exemplary, or punitive damages  
+- direct, indirect, incidental, consequential, exemplary, or punitive damages
 
-- loss of data  
+- loss of data
 
-- loss of profit  
+- loss of profit
 
-- business interruption  
+- business interruption
 
-- security breaches  
+- security breaches
 
-- legal claims arising from Your use of the Software  
+- legal claims arising from Your use of the Software
 
 
 
@@ -23663,13 +23663,13 @@ This license terminates automatically and immediately if:
 
 
 
-- You violate any term herein;  
+- You violate any term herein;
 
-- You distribute or publish any portion of the Software;  
+- You distribute or publish any portion of the Software;
 
-- You create or distribute derivative works;  
+- You create or distribute derivative works;
 
-- You use the Software for any non-personal purpose; or  
+- You use the Software for any non-personal purpose; or
 
 - The Author issues a written revocation.
 
@@ -23679,11 +23679,11 @@ Upon termination:
 
 
 
-1. All permissions granted to You cease.  
+1. All permissions granted to You cease.
 
-2. You must delete all copies of the Software in your possession.  
+2. You must delete all copies of the Software in your possession.
 
-3. You must destroy all derivative materials created from it.  
+3. You must destroy all derivative materials created from it.
 
 
 
@@ -23695,7 +23695,7 @@ Upon termination:
 
 
 
-The Author may release future versions of the Software under different terms, including more permissive or more restrictive licenses.  
+The Author may release future versions of the Software under different terms, including more permissive or more restrictive licenses.
 
 No rights to future licenses are guaranteed.
 
@@ -23709,7 +23709,7 @@ No rights to future licenses are guaranteed.
 
 
 
-This License is governed by the laws of the Author’s jurisdiction.  
+This License is governed by the laws of the Author’s jurisdiction.
 
 Any disputes must be resolved exclusively in courts chosen by the Author.
 
@@ -23723,7 +23723,7 @@ Any disputes must be resolved exclusively in courts chosen by the Author.
 
 
 
-This License constitutes the entire agreement between You and the Author.  
+This License constitutes the entire agreement between You and the Author.
 
 No oral or written communication modifies its terms unless published by the Author.
 
@@ -23797,9 +23797,9 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# CONTRIBUTING.md  
+# CONTRIBUTING.md
 
-## Dominium — Contribution Requirements and Developer Contract  
+## Dominium — Contribution Requirements and Developer Contract
 
 ### Version 1.0
 
@@ -23809,7 +23809,7 @@ This document defines the rules, constraints, and expectations for anyone wishin
 
 
 
-Dominium is a **deterministic, integer-math, multi-platform simulation engine**.  
+Dominium is a **deterministic, integer-math, multi-platform simulation engine**.
 
 Contributions must preserve determinism, architecture, modularity, and long-term maintainability.
 
@@ -23831,23 +23831,23 @@ Dominium consists of:
 
 
 
-- `/engine` — deterministic core engine  
+- `/engine` — deterministic core engine
 
-- `/game` — Dominium gameplay layer  
+- `/game` — Dominium gameplay layer
 
-- `/data` — first-party assets  
+- `/data` — first-party assets
 
-- `/mods` — third-party mod ecosystem  
+- `/mods` — third-party mod ecosystem
 
-- `/ports` — retro/alternative platform adapters  
+- `/ports` — retro/alternative platform adapters
 
-- `/tools` — editors and pipelines  
+- `/tools` — editors and pipelines
 
-- `/docs` — specifications and design rules  
+- `/docs` — specifications and design rules
 
 
 
-This structure is governed by the **Directory Contract** in `/docs/spec/DIRECTORY_CONTRACT.md`.  
+This structure is governed by the **Directory Contract** in `/docs/spec/DIRECTORY_CONTRACT.md`.
 
 Contributions must comply with it exactly.
 
@@ -23865,21 +23865,21 @@ Accepted contribution categories:
 
 
 
-1. **Bug fixes**  
+1. **Bug fixes**
 
-2. **Deterministic correctness improvements**  
+2. **Deterministic correctness improvements**
 
-3. **Documentation improvements**  
+3. **Documentation improvements**
 
-4. **Specification updates**  
+4. **Specification updates**
 
-5. **Additions to tools/editor suites**  
+5. **Additions to tools/editor suites**
 
-6. **Rendering backend improvements**  
+6. **Rendering backend improvements**
 
-7. **Platform backend implementations**  
+7. **Platform backend implementations**
 
-8. **Testing (unit, integration, replay)**  
+8. **Testing (unit, integration, replay)**
 
 
 
@@ -23887,11 +23887,11 @@ The following categories are restricted or disallowed:
 
 
 
-- **New gameplay features** — must be preceded by a spec update.  
+- **New gameplay features** — must be preceded by a spec update.
 
-- **Modding API changes** — must not break determinism or backwards compatibility.  
+- **Modding API changes** — must not break determinism or backwards compatibility.
 
-- **Simulation changes** — require design review and deterministic test coverage.  
+- **Simulation changes** — require design review and deterministic test coverage.
 
 - **Asset additions** — require compliance with licensing and file format rules.
 
@@ -23909,61 +23909,61 @@ Every contribution follows this sequence:
 
 
 
-1. **Issue or Proposal Opened**  
+1. **Issue or Proposal Opened**
 
-   - Describe the problem, not the solution.  
+   - Describe the problem, not the solution.
 
    - Reference relevant sections of the spec.
 
 
 
-2. **Specification Review (if needed)**  
+2. **Specification Review (if needed)**
 
-   - Simulation-affecting changes must update `/docs/spec/SPEC-core.md` first.  
+   - Simulation-affecting changes must update `/docs/spec/SPEC-core.md` first.
 
    - Rendering/platform-only changes may skip this.
 
 
 
-3. **Pull Request**  
+3. **Pull Request**
 
    Must include:
 
-   - Exact files changed  
+   - Exact files changed
 
-   - Rationale  
+   - Rationale
 
-   - Determinism impact analysis  
+   - Determinism impact analysis
 
-   - Test coverage  
+   - Test coverage
 
-   - Code style compliance  
-
-
-
-4. **CI Determinism Validation**  
-
-   - Replay tests  
-
-   - Hash-based world state comparisons  
-
-   - Cross-platform determinism checks  
+   - Code style compliance
 
 
 
-5. **Human Review**  
+4. **CI Determinism Validation**
+
+   - Replay tests
+
+   - Hash-based world state comparisons
+
+   - Cross-platform determinism checks
+
+
+
+5. **Human Review**
 
    Reviews focus on:
 
-   - Architectural compliance  
+   - Architectural compliance
 
-   - Determinism  
+   - Determinism
 
-   - Abstraction boundaries  
+   - Abstraction boundaries
 
-   - Maintainability  
+   - Maintainability
 
-   - Simplicity  
+   - Simplicity
 
 
 
@@ -23979,23 +23979,23 @@ Every contribution follows this sequence:
 
 
 
-### 4.1 Language Restrictions  
+### 4.1 Language Restrictions
 
-- `/engine/core` and `/engine/sim` must use **strict C89**.  
+- `/engine/core` and `/engine/sim` must use **strict C89**.
 
-- High-level game code may use **C++98** but not beyond.  
+- High-level game code may use **C++98** but not beyond.
 
-- No exceptions, RTTI, templates, or STL.  
+- No exceptions, RTTI, templates, or STL.
 
-- No C99/C11 features.  
+- No C99/C11 features.
 
-- No floating-point in simulation.  
+- No floating-point in simulation.
 
 - No platform headers in engine code.
 
 
 
-### 4.2 Naming Conventions  
+### 4.2 Naming Conventions
 
 Everything in the engine follows:
 
@@ -24019,7 +24019,7 @@ dg<component>_t
 
 
 
-### 4.3 File Structure  
+### 4.3 File Structure
 
 Each module pair must be:
 
@@ -24031,31 +24031,31 @@ something.c
 
 
 
-No header-only simulation code.  
+No header-only simulation code.
 
 All private helper functions must be `static` in `.c` files.
 
 
 
-### 4.4 Include Rules  
+### 4.4 Include Rules
 
-- Headers include only forward declarations or minimal engine headers.  
+- Headers include only forward declarations or minimal engine headers.
 
-- No circular includes.  
+- No circular includes.
 
-- No platform or OS headers in the engine.  
+- No platform or OS headers in the engine.
 
 - No third-party headers outside `/third_party`.
 
 
 
-### 4.5 Memory Rules  
+### 4.5 Memory Rules
 
-- No malloc inside tight loops.  
+- No malloc inside tight loops.
 
-- No unbounded allocations.  
+- No unbounded allocations.
 
-- All simulation memory must be owned by a stable allocator.  
+- All simulation memory must be owned by a stable allocator.
 
 - Pointers must never be persisted across simulation frames unless explicitly guaranteed stable.
 
@@ -24073,33 +24073,33 @@ Every contribution must maintain determinism across:
 
 
 
-- CPU architectures  
+- CPU architectures
 
-- Endianness  
+- Endianness
 
-- Compilers  
+- Compilers
 
-- Operating systems  
+- Operating systems
 
-- Rendering backends  
+- Rendering backends
 
-- Platform backends  
+- Platform backends
 
 
 
-### Determinism Prohibitions  
+### Determinism Prohibitions
 
-- No random numbers without using `dom_core_rng`.  
+- No random numbers without using `dom_core_rng`.
 
-- No floating-point arithmetic in simulation.  
+- No floating-point arithmetic in simulation.
 
-- No time-based behaviour.  
+- No time-based behaviour.
 
-- No OS-dependent scheduling or file operations.  
+- No OS-dependent scheduling or file operations.
 
-- No thread-based race conditions.  
+- No thread-based race conditions.
 
-- No reliance on undefined or implementation-defined C behaviour.  
+- No reliance on undefined or implementation-defined C behaviour.
 
 
 
@@ -24115,19 +24115,19 @@ All contributions must include:
 
 
 
-### 6.1 Unit Tests  
+### 6.1 Unit Tests
 
 Under `/tests/unit`.
 
 
 
-### 6.2 Integration Tests  
+### 6.2 Integration Tests
 
 Under `/tests/integration`.
 
 
 
-### 6.3 Replay Determinism Tests  
+### 6.3 Replay Determinism Tests
 
 Under `/tests/replay`.
 
@@ -24145,69 +24145,69 @@ Simulation bugs are not accepted without a replay test demonstrating reproducibi
 
 
 
-### 7.1 `/engine`  
+### 7.1 `/engine`
 
-Contains deterministic engine logic only.  
+Contains deterministic engine logic only.
 
-No game rules.  
+No game rules.
 
-No assets.  
+No assets.
 
-No platform-specific code.  
+No platform-specific code.
 
 No OS calls.
 
 
 
-### 7.2 `/engine/platform`  
+### 7.2 `/engine/platform`
 
-Contains OS-specific wrappers only.  
+Contains OS-specific wrappers only.
 
-No simulation code.  
+No simulation code.
 
 No rendering or audio code.
 
 
 
-### 7.3 `/engine/render`  
+### 7.3 `/engine/render`
 
-Rendering backends only.  
+Rendering backends only.
 
-No simulation logic.  
+No simulation logic.
 
 No gameplay rules.
 
 
 
-### 7.4 `/game`  
+### 7.4 `/game`
 
-Contains gameplay layer.  
+Contains gameplay layer.
 
 Must not depend on platform code directly.
 
 
 
-### 7.5 `/data`  
+### 7.5 `/data`
 
-Contains assets.  
+Contains assets.
 
 No executable code.
 
 
 
-### 7.6 `/mods`  
+### 7.6 `/mods`
 
-User mods.  
+User mods.
 
-Must not modify engine source.  
+Must not modify engine source.
 
 Must not introduce nondeterministic behaviour.
 
 
 
-### 7.7 `/ports`  
+### 7.7 `/ports`
 
-Experimental or legacy platform adapters.  
+Experimental or legacy platform adapters.
 
 Must not alter core engine architecture.
 
@@ -24229,15 +24229,15 @@ Every contribution must:
 
 
 
-- Document all new functions in headers.  
+- Document all new functions in headers.
 
-- Update relevant sections of `/docs/spec`.  
+- Update relevant sections of `/docs/spec`.
 
-- Provide comments explaining invariants, constraints, and determinism concerns.  
+- Provide comments explaining invariants, constraints, and determinism concerns.
 
-- Include diagrams or flow descriptions for complex systems.  
+- Include diagrams or flow descriptions for complex systems.
 
-- Provide rationale for architectural decisions.  
+- Provide rationale for architectural decisions.
 
 
 
@@ -24257,19 +24257,19 @@ Contributions must not introduce:
 
 
 
-- Unsafe memory behaviour  
+- Unsafe memory behaviour
 
-- Buffer overflows  
+- Buffer overflows
 
-- Undefined behaviour  
+- Undefined behaviour
 
-- Race conditions  
+- Race conditions
 
-- Input handling vulnerabilities  
+- Input handling vulnerabilities
 
-- Unbounded loops  
+- Unbounded loops
 
-- Crash-on-invalid-input scenarios  
+- Crash-on-invalid-input scenarios
 
 
 
@@ -24289,21 +24289,21 @@ If a contribution touches any of the following, it requires **architectural appr
 
 
 
-- Simulation tick pipeline  
+- Simulation tick pipeline
 
-- Determinism kernel  
+- Determinism kernel
 
-- ECS model  
+- ECS model
 
-- Serialization  
+- Serialization
 
-- Networking  
+- Networking
 
-- Rendering abstraction  
+- Rendering abstraction
 
-- Platform abstraction  
+- Platform abstraction
 
-- Modding API  
+- Modding API
 
 
 
@@ -24323,25 +24323,25 @@ The following contributions are automatically rejected:
 
 
 
-- Floating-point simulation logic  
+- Floating-point simulation logic
 
-- Non-deterministic features  
+- Non-deterministic features
 
-- Platform-dependent behaviour in engine code  
+- Platform-dependent behaviour in engine code
 
-- Refactors that degrade clarity  
+- Refactors that degrade clarity
 
-- Memory-increasing changes without justification  
+- Memory-increasing changes without justification
 
-- C99/C11/C++11 syntax  
+- C99/C11/C++11 syntax
 
-- Gameplay changes without corresponding spec updates  
+- Gameplay changes without corresponding spec updates
 
-- Engine redesign proposals outside spec boundaries  
+- Engine redesign proposals outside spec boundaries
 
-- Attempts to bypass the Directory Contract  
+- Attempts to bypass the Directory Contract
 
-- New dependencies not approved by maintainers  
+- New dependencies not approved by maintainers
 
 
 
@@ -24353,17 +24353,17 @@ The following contributions are automatically rejected:
 
 
 
-1. Read `/docs/spec/SPEC-core.md`  
+1. Read `/docs/spec/SPEC-core.md`
 
-2. Read `/docs/spec/DIRECTORY_CONTRACT.md`  
+2. Read `/docs/spec/DIRECTORY_CONTRACT.md`
 
-3. Build the engine following `/docs/spec/BUILDING.md`  
+3. Build the engine following `/docs/spec/BUILDING.md`
 
-4. Run deterministic replay tests  
+4. Run deterministic replay tests
 
-5. Open an issue describing the intended contribution  
+5. Open an issue describing the intended contribution
 
-6. Await architectural approval before writing major code  
+6. Await architectural approval before writing major code
 
 
 
@@ -24375,7 +24375,7 @@ The following contributions are automatically rejected:
 
 
 
-Development discussion channels will be posted after public release.  
+Development discussion channels will be posted after public release.
 
 Until then, use GitHub Issues for all proposals and discussions.
 
@@ -24405,9 +24405,9 @@ No contributor gains copyright ownership of the project.
 
 
 
-Dominium is built for longevity, determinism, and correctness.  
+Dominium is built for longevity, determinism, and correctness.
 
-Code must be simple, predictable, and maintainable for decades.  
+Code must be simple, predictable, and maintainable for decades.
 
 Contributors are expected to uphold these principles.
 
@@ -24425,9 +24425,9 @@ GPT-5.1 • 2025-12-03
 
 Below is SECURITY.md, fully specified for a deterministic, multi-platform simulation engine with restrictive licensing and strict architectural boundaries.
 
-# SECURITY.md  
+# SECURITY.md
 
-## Dominium Security, Vulnerability, and Integrity Policy  
+## Dominium Security, Vulnerability, and Integrity Policy
 
 ### Version 1.0
 
@@ -24437,7 +24437,7 @@ This document defines the security expectations, threat model, vulnerability rep
 
 
 
-Dominium is a deterministic, offline-first, multi-platform engine.  
+Dominium is a deterministic, offline-first, multi-platform engine.
 
 Security focuses on **code integrity**, **input validation**, **determinism preservation**, **memory safety**, and **mod sandboxing**, rather than internet threat surfaces.
 
@@ -24455,17 +24455,17 @@ This policy applies to:
 
 
 
-- All source code under this repository  
+- All source code under this repository
 
-- All binaries built from this repository  
+- All binaries built from this repository
 
-- All asset pipelines and tools  
+- All asset pipelines and tools
 
-- All modding APIs and script runtimes  
+- All modding APIs and script runtimes
 
-- All network protocols used by multiplayer modes  
+- All network protocols used by multiplayer modes
 
-- All build and packaging systems  
+- All build and packaging systems
 
 
 
@@ -24473,11 +24473,11 @@ It does **not** apply to:
 
 
 
-- Third-party mods outside `/mods`  
+- Third-party mods outside `/mods`
 
-- Unofficial forks  
+- Unofficial forks
 
-- Server infrastructures not controlled by the Author  
+- Server infrastructures not controlled by the Author
 
 
 
@@ -24493,35 +24493,35 @@ Dominium’s security is built on three pillars:
 
 
 
-### 2.1 Determinism Integrity  
+### 2.1 Determinism Integrity
 
-Simulation determinism must be preserved.  
+Simulation determinism must be preserved.
 
 Any deviation is categorised as a **high-severity security violation**.
 
 
 
-### 2.2 Memory and Execution Safety  
+### 2.2 Memory and Execution Safety
 
-The engine targets systems ranging from DOS to modern OSes, all in C89/C++98.  
+The engine targets systems ranging from DOS to modern OSes, all in C89/C++98.
 
 Memory safety, overflow protection, and strict bounds checking are mandatory.
 
 
 
-### 2.3 Mod and Input Containment  
+### 2.3 Mod and Input Containment
 
 Mods and save files must not be able to:
 
 
 
-- Break determinism  
+- Break determinism
 
-- Execute arbitrary system-level code  
+- Execute arbitrary system-level code
 
-- Modify engine binaries  
+- Modify engine binaries
 
-- Access system files outside allowed sandbox areas  
+- Access system files outside allowed sandbox areas
 
 
 
@@ -24541,7 +24541,7 @@ Dominium defines the following classes of threats:
 
 
 
-## 3.1 Determinism Breaks  
+## 3.1 Determinism Breaks
 
 **Severity: Critical**
 
@@ -24551,17 +24551,17 @@ Examples:
 
 
 
-- Floating-point operations in simulation  
+- Floating-point operations in simulation
 
-- Use of system time  
+- Use of system time
 
-- Non-deterministic ordering (hash tables with unstable iteration)  
+- Non-deterministic ordering (hash tables with unstable iteration)
 
-- Thread races  
+- Thread races
 
-- Platform-dependent branch behaviour  
+- Platform-dependent branch behaviour
 
-- Unspecified or undefined C behaviour  
+- Unspecified or undefined C behaviour
 
 
 
@@ -24569,13 +24569,13 @@ Any determinism break is treated as a security vulnerability because it compromi
 
 
 
-- Replays  
+- Replays
 
-- Multiplayer integrity  
+- Multiplayer integrity
 
-- Save compatibility  
+- Save compatibility
 
-- Simulation correctness  
+- Simulation correctness
 
 
 
@@ -24583,7 +24583,7 @@ Any determinism break is treated as a security vulnerability because it compromi
 
 
 
-## 3.2 Memory Corruption  
+## 3.2 Memory Corruption
 
 **Severity: Critical**
 
@@ -24593,17 +24593,17 @@ Examples:
 
 
 
-- Buffer overflows  
+- Buffer overflows
 
-- Out-of-bounds array access  
+- Out-of-bounds array access
 
-- Use-after-free  
+- Use-after-free
 
-- Double frees  
+- Double frees
 
-- Stack corruption  
+- Stack corruption
 
-- Integer overflow or wraparound if unchecked  
+- Integer overflow or wraparound if unchecked
 
 
 
@@ -24615,7 +24615,7 @@ Memory corruption is unacceptable on all targets, but especially critical on ret
 
 
 
-## 3.3 Sandbox Violations  
+## 3.3 Sandbox Violations
 
 **Severity: High**
 
@@ -24625,17 +24625,17 @@ Mods or user content must never:
 
 
 
-- Access system files  
+- Access system files
 
-- Spawn processes  
+- Spawn processes
 
-- Allocate arbitrary memory  
+- Allocate arbitrary memory
 
-- Escape their data sandbox  
+- Escape their data sandbox
 
-- Modify engine binaries or platforms  
+- Modify engine binaries or platforms
 
-- Inject code  
+- Inject code
 
 
 
@@ -24647,7 +24647,7 @@ Dominium modding runs inside an explicit sandbox with restricted access.
 
 
 
-## 3.4 Malicious Saves, Mods, or Packs  
+## 3.4 Malicious Saves, Mods, or Packs
 
 **Severity: High to Critical**
 
@@ -24657,15 +24657,15 @@ The engine must defend against malformed or intentionally crafted:
 
 
 
-- Save games  
+- Save games
 
-- Map files  
+- Map files
 
-- Prefab files  
+- Prefab files
 
-- Script bundles  
+- Script bundles
 
-- Asset packs (textures, animations)  
+- Asset packs (textures, animations)
 
 
 
@@ -24673,15 +24673,15 @@ Every loader must:
 
 
 
-- Validate type ranges  
+- Validate type ranges
 
-- Validate lengths  
+- Validate lengths
 
-- Validate magic numbers  
+- Validate magic numbers
 
-- Validate version fields  
+- Validate version fields
 
-- Validate CRCs  
+- Validate CRCs
 
 
 
@@ -24693,7 +24693,7 @@ No untrusted binary or textual data should ever be treated as trusted input.
 
 
 
-## 3.5 Network Abuse (Multiplayer)  
+## 3.5 Network Abuse (Multiplayer)
 
 **Severity: Medium to Critical**
 
@@ -24703,15 +24703,15 @@ Lockstep multiplayer requires:
 
 
 
-- Strict packet validation  
+- Strict packet validation
 
-- Version matching  
+- Version matching
 
-- CRC checks  
+- CRC checks
 
-- Tick-range verification  
+- Tick-range verification
 
-- Rejection of malformed or unexpected packets  
+- Rejection of malformed or unexpected packets
 
 
 
@@ -24719,11 +24719,11 @@ Clients must not be able to:
 
 
 
-- Inject state  
+- Inject state
 
-- Override authoritative simulation  
+- Override authoritative simulation
 
-- Desync others intentionally  
+- Desync others intentionally
 
 
 
@@ -24735,7 +24735,7 @@ Any packet that cannot be validated deterministically must be dropped.
 
 
 
-## 3.6 Build Integrity Problems  
+## 3.6 Build Integrity Problems
 
 **Severity: High**
 
@@ -24745,15 +24745,15 @@ Issues include:
 
 
 
-- Unverified third-party dependencies  
+- Unverified third-party dependencies
 
-- Modification of vendored libraries without documentation  
+- Modification of vendored libraries without documentation
 
-- Compiler optimisations that break determinism  
+- Compiler optimisations that break determinism
 
-- Toolchain inconsistencies  
+- Toolchain inconsistencies
 
-- Incorrect include directories resolving differently on contributors' systems  
+- Incorrect include directories resolving differently on contributors' systems
 
 
 
@@ -24761,13 +24761,13 @@ All builds must be reproducible using:
 
 
 
-- Documented compilers  
+- Documented compilers
 
-- Fixed toolchain versions  
+- Fixed toolchain versions
 
-- Stable CMake rules  
+- Stable CMake rules
 
-- Checked-in configuration files  
+- Checked-in configuration files
 
 
 
@@ -24783,21 +24783,21 @@ Every contribution must:
 
 
 
-- Avoid undefined behaviour  
+- Avoid undefined behaviour
 
-- Respect memory bounds  
+- Respect memory bounds
 
-- Maintain determinism across all platforms  
+- Maintain determinism across all platforms
 
-- Use only integer or fixed-point math in simulation  
+- Use only integer or fixed-point math in simulation
 
-- Validate all external inputs  
+- Validate all external inputs
 
-- Follow platform boundaries (`/engine/platform` only for OS calls)  
+- Follow platform boundaries (`/engine/platform` only for OS calls)
 
-- Use stable file formats with versioned schemas  
+- Use stable file formats with versioned schemas
 
-- Not introduce new dependencies without review  
+- Not introduce new dependencies without review
 
 
 
@@ -24817,19 +24817,19 @@ Simulation and engine core must NEVER:
 
 
 
-- Use malloc/free unpredictably  
+- Use malloc/free unpredictably
 
-- Use floating-point  
+- Use floating-point
 
-- Use system time  
+- Use system time
 
-- Use randomness outside `dom_core_rng`  
+- Use randomness outside `dom_core_rng`
 
-- Load or execute external code  
+- Load or execute external code
 
-- Read arbitrary paths  
+- Read arbitrary paths
 
-- Depend on OS-specific behaviour  
+- Depend on OS-specific behaviour
 
 
 
@@ -24849,15 +24849,15 @@ Mods must:
 
 
 
-- Not include binary code  
+- Not include binary code
 
-- Not invoke system functions  
+- Not invoke system functions
 
-- Not alter engine memory  
+- Not alter engine memory
 
-- Not modify or replace engine binaries  
+- Not modify or replace engine binaries
 
-- Not exceed deterministic, sandboxed scripting API  
+- Not exceed deterministic, sandboxed scripting API
 
 
 
@@ -24877,11 +24877,11 @@ Security issues can be reported:
 
 
 
-- Via private email (provided upon public release)  
+- Via private email (provided upon public release)
 
-- Via GitHub private security reports  
+- Via GitHub private security reports
 
-- Via encrypted message (PGP key will be published)  
+- Via encrypted message (PGP key will be published)
 
 
 
@@ -24889,17 +24889,17 @@ When reporting:
 
 
 
-1. Describe the issue clearly  
+1. Describe the issue clearly
 
-2. Provide reproduction steps  
+2. Provide reproduction steps
 
-3. Include environment (platform, compiler, config)  
+3. Include environment (platform, compiler, config)
 
-4. Provide minimal test cases  
+4. Provide minimal test cases
 
 
 
-Proof-of-concept code is acceptable.  
+Proof-of-concept code is acceptable.
 
 Malicious mods or save files must be transmitted privately.
 
@@ -24917,15 +24917,15 @@ We follow **coordinated disclosure**:
 
 
 
-- A fix is prepared internally  
+- A fix is prepared internally
 
-- Regression tests are added  
+- Regression tests are added
 
-- Maintainers coordinate with reporters  
+- Maintainers coordinate with reporters
 
-- Patch is released with changelog notes  
+- Patch is released with changelog notes
 
-- Reporter is credited unless anonymity is requested  
+- Reporter is credited unless anonymity is requested
 
 
 
@@ -24945,43 +24945,43 @@ Before every release, the following must be executed:
 
 
 
-### 9.1 Determinism Replays  
+### 9.1 Determinism Replays
 
-- Long-run deterministic tests  
+- Long-run deterministic tests
 
-- Multiple architectures  
+- Multiple architectures
 
-- Cross-platform consistency checks  
+- Cross-platform consistency checks
 
 
 
-### 9.2 Fuzzing  
+### 9.2 Fuzzing
 
 All loaders (saves, maps, prefab files, data packs) must be fuzz-tested offline.
 
 
 
-### 9.3 Static Analysis  
+### 9.3 Static Analysis
 
 Mandatory runs of:
 
 
 
-- clang-tidy  
+- clang-tidy
 
-- cppcheck  
+- cppcheck
 
-- gcc/clang sanitizers (where determinism is not affected)  
+- gcc/clang sanitizers (where determinism is not affected)
 
 
 
-### 9.4 Memory Profiling  
+### 9.4 Memory Profiling
 
-- Leak detection  
+- Leak detection
 
-- Bounds checking  
+- Bounds checking
 
-- Valgrind (on supported systems)  
+- Valgrind (on supported systems)
 
 
 
@@ -24993,17 +24993,17 @@ Mandatory runs of:
 
 
 
-Retro systems (DOS, Win3.x, Win9x, macOS Classic) lack modern memory protection.  
+Retro systems (DOS, Win3.x, Win9x, macOS Classic) lack modern memory protection.
 
 Thus, they must be treated as:
 
 
 
-- Hostile to themselves  
+- Hostile to themselves
 
-- Fully sandboxed by design  
+- Fully sandboxed by design
 
-- Never allowed to interpret unvalidated data  
+- Never allowed to interpret unvalidated data
 
 
 
@@ -25011,13 +25011,13 @@ Retro ports must degrade gracefully by:
 
 
 
-- Disabling modding  
+- Disabling modding
 
-- Restricting asset loading  
+- Restricting asset loading
 
-- Using smaller maps  
+- Using smaller maps
 
-- Enforcing stronger input checks  
+- Enforcing stronger input checks
 
 
 
@@ -25029,19 +25029,19 @@ Retro ports must degrade gracefully by:
 
 
 
-Dominium is designed to be playable decades from now.  
+Dominium is designed to be playable decades from now.
 
 Security must therefore prioritise:
 
 
 
-- Deterministic reproducibility  
+- Deterministic reproducibility
 
-- Integrity of archived binaries  
+- Integrity of archived binaries
 
-- Portability across compilers  
+- Portability across compilers
 
-- No reliance on transient third-party ecosystems  
+- No reliance on transient third-party ecosystems
 
 
 
@@ -25073,25 +25073,25 @@ At present, security issues should be raised privately via the internal develope
 
 
 
-Security is not separate from determinism.  
+Security is not separate from determinism.
 
 A deterministic engine is inherently more secure because:
 
 
 
-- State cannot be manipulated unpredictably  
+- State cannot be manipulated unpredictably
 
-- Bugs appear reproducibly  
+- Bugs appear reproducibly
 
-- Exploits cannot rely on timing variance  
+- Exploits cannot rely on timing variance
 
-- Replay tests expose corruption rapidly  
+- Replay tests expose corruption rapidly
 
 
 
-Preserve determinism.  
+Preserve determinism.
 
-Preserve safety.  
+Preserve safety.
 
 Preserve correctness.
 
@@ -25107,9 +25107,9 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# CODE_OF_CONDUCT.md  
+# CODE_OF_CONDUCT.md
 
-## Dominium Community and Contributor Conduct Policy  
+## Dominium Community and Contributor Conduct Policy
 
 ### Version 1.0
 
@@ -25119,7 +25119,7 @@ This document defines the behavioural expectations for all contributors, partici
 
 
 
-Dominium is a technical project with strict determinism, architectural discipline, and long-term maintainability requirements.  
+Dominium is a technical project with strict determinism, architectural discipline, and long-term maintainability requirements.
 
 A clear conduct policy ensures that engineering work remains focused, respectful, and productive.
 
@@ -25129,17 +25129,17 @@ This Code of Conduct applies to all project spaces, including (but not limited t
 
 
 
-- GitHub Issues and Pull Requests  
+- GitHub Issues and Pull Requests
 
-- Code reviews  
+- Code reviews
 
-- Documentation discussions  
+- Documentation discussions
 
-- Design debates  
+- Design debates
 
-- Official forums, chats, or Discord (when available)  
+- Official forums, chats, or Discord (when available)
 
-- Mailing lists or private coordination channels  
+- Mailing lists or private coordination channels
 
 
 
@@ -25151,39 +25151,39 @@ This Code of Conduct applies to all project spaces, including (but not limited t
 
 
 
-### 1.1 Respect  
+### 1.1 Respect
 
 Treat all contributors with respect regardless of background, experience, or level of technical knowledge.
 
 
 
-### 1.2 Technical Rigor  
+### 1.2 Technical Rigor
 
 Disagreements should be handled through evidence-based, technical reasoning, not personal critique.
 
 
 
-### 1.3 Professionalism  
+### 1.3 Professionalism
 
-Maintain a professional tone.  
+Maintain a professional tone.
 
 Hostility, sarcasm used as attack, or personal insults are not permitted.
 
 
 
-### 1.4 Focus  
+### 1.4 Focus
 
 All discussion must remain productive and relevant to the goals of Dominium.
 
 
 
-### 1.5 Inclusivity  
+### 1.5 Inclusivity
 
 Anyone may participate if they follow this Code of Conduct, regardless of skill level or expertise.
 
 
 
-### 1.6 No Gatekeeping  
+### 1.6 No Gatekeeping
 
 Correct behaviour is enforced by adherence to standards, not personal power dynamics.
 
@@ -25201,21 +25201,21 @@ Contributors are expected to:
 
 
 
-- Write clear, concise, technically grounded comments  
+- Write clear, concise, technically grounded comments
 
-- Provide rationales in discussions and code reviews  
+- Provide rationales in discussions and code reviews
 
-- Accept constructive criticism  
+- Accept constructive criticism
 
-- Help new contributors understand architectural rules  
+- Help new contributors understand architectural rules
 
-- Ask for clarification when specifications are unclear  
+- Ask for clarification when specifications are unclear
 
-- Keep discussions factual and objective  
+- Keep discussions factual and objective
 
-- Prioritise correctness over ego  
+- Prioritise correctness over ego
 
-- Follow repository structures and deterministic guidelines  
+- Follow repository structures and deterministic guidelines
 
 
 
@@ -25231,45 +25231,45 @@ Any of the following constitutes a violation:
 
 
 
-## 3.1 Harassment or Abuse  
+## 3.1 Harassment or Abuse
 
-- Insults, threats, or demeaning language  
+- Insults, threats, or demeaning language
 
-- Targeting individuals or groups  
+- Targeting individuals or groups
 
-- Racist, sexist, or otherwise discriminatory behaviour  
-
-
-
-## 3.2 Disruption  
-
-- Persistently derailing discussions  
-
-- Flooding issues or PRs with off-topic content  
-
-- Repeatedly ignoring architectural or determinism rules  
+- Racist, sexist, or otherwise discriminatory behaviour
 
 
 
-## 3.3 Aggressive Language  
+## 3.2 Disruption
 
-- Hostility in code reviews  
+- Persistently derailing discussions
 
-- Mocking contributors  
+- Flooding issues or PRs with off-topic content
 
-- Dismissing others without explanation  
-
-
-
-## 3.4 Demands or Entitlement  
-
-- Forcing maintainers to accept contributions  
-
-- Pressuring others for immediate responses  
+- Repeatedly ignoring architectural or determinism rules
 
 
 
-## 3.5 Retaliation  
+## 3.3 Aggressive Language
+
+- Hostility in code reviews
+
+- Mocking contributors
+
+- Dismissing others without explanation
+
+
+
+## 3.4 Demands or Entitlement
+
+- Forcing maintainers to accept contributions
+
+- Pressuring others for immediate responses
+
+
+
+## 3.5 Retaliation
 
 Retaliation against individuals who raise concerns or enforce the Code is strictly prohibited.
 
@@ -25283,37 +25283,37 @@ Retaliation against individuals who raise concerns or enforce the Code is strict
 
 
 
-### 4.1 Assume Good Faith  
+### 4.1 Assume Good Faith
 
 Unless proven otherwise, assume contributors are trying to help.
 
 
 
-### 4.2 Separate People from Problems  
+### 4.2 Separate People from Problems
 
 Critique the code, not the developer.
 
 
 
-### 4.3 Evidence-Backed Arguments  
+### 4.3 Evidence-Backed Arguments
 
 Claims must be supported by:
 
 
 
-- Specification references  
+- Specification references
 
-- Determinism constraints  
+- Determinism constraints
 
-- Architectural diagrams  
+- Architectural diagrams
 
-- Benchmarks or test results  
+- Benchmarks or test results
 
 
 
-### 4.4 Technical Objectivity  
+### 4.4 Technical Objectivity
 
-Avoid emotional or ideological reasoning.  
+Avoid emotional or ideological reasoning.
 
 Decisions must follow engine philosophy and spec requirements.
 
@@ -25331,15 +25331,15 @@ Maintainers must:
 
 
 
-- Enforce this Code consistently  
+- Enforce this Code consistently
 
-- Review contributions fairly and impartially  
+- Review contributions fairly and impartially
 
-- Explain rejections clearly and with rationale  
+- Explain rejections clearly and with rationale
 
-- Escalate serious violations promptly  
+- Escalate serious violations promptly
 
-- Protect the integrity of the engine architecture  
+- Protect the integrity of the engine architecture
 
 
 
@@ -25359,11 +25359,11 @@ Violations may be reported through:
 
 
 
-- GitHub private reports  
+- GitHub private reports
 
-- Direct email to maintainers (will be published on official release)  
+- Direct email to maintainers (will be published on official release)
 
-- Private messages in approved channels (Discord, etc.)  
+- Private messages in approved channels (Discord, etc.)
 
 
 
@@ -25371,11 +25371,11 @@ Reports must include:
 
 
 
-- Description of behaviour  
+- Description of behaviour
 
-- Links or screenshots  
+- Links or screenshots
 
-- Optional suggestions for resolution  
+- Optional suggestions for resolution
 
 
 
@@ -25391,41 +25391,41 @@ Reporters may remain anonymous.
 
 
 
-### 7.1 Minor First-Time Violations  
+### 7.1 Minor First-Time Violations
 
 Handled with a private or public reminder of expected behaviour.
 
 
 
-### 7.2 Repeated Violations  
+### 7.2 Repeated Violations
 
 May result in:
 
 
 
-- Temporary muting  
+- Temporary muting
 
-- Temporary exclusion from discussions  
+- Temporary exclusion from discussions
 
-- Rejection of contributions until behaviour improves  
+- Rejection of contributions until behaviour improves
 
 
 
-### 7.3 Severe Violations  
+### 7.3 Severe Violations
 
 May result in:
 
 
 
-- Permanent ban from project participation  
+- Permanent ban from project participation
 
-- Removal of collaborator or maintainer privileges  
+- Removal of collaborator or maintainer privileges
 
 - Escalation to platform administrators (GitHub, Discord, etc.)
 
 
 
-### 7.4 No Public Shaming  
+### 7.4 No Public Shaming
 
 Enforcement actions are private unless the violator chooses to publicise them.
 
@@ -25439,17 +25439,17 @@ Enforcement actions are private unless the violator chooses to publicise them.
 
 
 
-Anyone subject to an enforcement action may file an appeal to the maintainers.  
+Anyone subject to an enforcement action may file an appeal to the maintainers.
 
 Appeals must:
 
 
 
-- Clearly explain why the decision was incorrect  
+- Clearly explain why the decision was incorrect
 
-- Provide context or evidence not previously considered  
+- Provide context or evidence not previously considered
 
-- Demonstrate commitment to future compliance  
+- Demonstrate commitment to future compliance
 
 
 
@@ -25465,7 +25465,7 @@ The maintainers’ decision on appeals is final.
 
 
 
-This Code of Conduct applies only to official Dominium spaces.  
+This Code of Conduct applies only to official Dominium spaces.
 
 Unofficial or third-party communities are outside its jurisdiction.
 
@@ -25483,17 +25483,17 @@ Maintainers cannot enforce rules outside the project environment.
 
 
 
-The maintainers may update this Code of Conduct as the community grows.  
+The maintainers may update this Code of Conduct as the community grows.
 
 Any change must:
 
 
 
-- Be documented in `CHANGELOG.md`  
+- Be documented in `CHANGELOG.md`
 
-- Be consistent with the project’s philosophy  
+- Be consistent with the project’s philosophy
 
-- Improve clarity and accountability  
+- Improve clarity and accountability
 
 
 
@@ -25509,13 +25509,13 @@ This Code of Conduct incorporates principles from:
 
 
 
-- Contributor Covenant  
+- Contributor Covenant
 
-- Rust Code of Conduct  
+- Rust Code of Conduct
 
-- LLVM Conduct Guidelines  
+- LLVM Conduct Guidelines
 
-- Internal engineering culture guidelines  
+- Internal engineering culture guidelines
 
 
 
@@ -25531,19 +25531,19 @@ Adapted to Dominium’s architectural and determinism-driven environment.
 
 
 
-Dominium aims to be a technically rigorous, respectful, and future-proof project.  
+Dominium aims to be a technically rigorous, respectful, and future-proof project.
 
 We maintain high expectations for behaviour because:
 
 
 
-- The engine is complex  
+- The engine is complex
 
-- Collaboration requires clarity  
+- Collaboration requires clarity
 
-- Determinism requires discipline  
+- Determinism requires discipline
 
-- The project must remain maintainable for decades  
+- The project must remain maintainable for decades
 
 
 
@@ -25613,7 +25613,7 @@ It rejects everything that should never be committed while allowing all platform
 
 /build/output/
 
-/dist/
+/archive/generated/dist/
 
 /bin/
 
@@ -26783,7 +26783,7 @@ Thought for 25s
 
 GPT-5.1 • 2025-12-03
 
-# CHANGELOG.md  
+# CHANGELOG.md
 
 ## Dominium — Change History and Compatibility Contract
 
@@ -26797,9 +26797,9 @@ It serves three purposes:
 
 
 
-1. Track **features, fixes, and refactors** per version  
+1. Track **features, fixes, and refactors** per version
 
-2. Document **determinism and save-compatibility guarantees**  
+2. Document **determinism and save-compatibility guarantees**
 
 3. Provide a stable reference for **mod authors** and **port maintainers**
 
@@ -26825,15 +26825,15 @@ Dominium uses **semantic versioning with determinism qualifiers**:
 
 
 
-- `MAJOR.MINOR.PATCH`  
+- `MAJOR.MINOR.PATCH`
 
 - Optional suffixes:
 
-  - `-dev`   — development / unstable  
+  - `-dev`   — development / unstable
 
-  - `-exp`   — experimental branches  
+  - `-exp`   — experimental branches
 
-  - `-rcN`   — release candidate  
+  - `-rcN`   — release candidate
 
 
 
@@ -26857,11 +26857,11 @@ Increment when:
 
 
 
-- Determinism guarantees change fundamentally  
+- Determinism guarantees change fundamentally
 
-- Savefile format changes in a **non-migratable** way  
+- Savefile format changes in a **non-migratable** way
 
-- Network protocol becomes incompatible with prior versions  
+- Network protocol becomes incompatible with prior versions
 
 
 
@@ -26873,13 +26873,13 @@ Increment when:
 
 
 
-- Features are added  
+- Features are added
 
-- Savefiles remain **loadable** (with possible migration)  
+- Savefiles remain **loadable** (with possible migration)
 
-- Determinism is preserved for matching version pairs  
+- Determinism is preserved for matching version pairs
 
-- Network protocol remains compatible inside same MAJOR  
+- Network protocol remains compatible inside same MAJOR
 
 
 
@@ -26891,9 +26891,9 @@ Increment when:
 
 
 
-- Only bug fixes, internal refactors, and minor changes  
+- Only bug fixes, internal refactors, and minor changes
 
-- No change in data formats that break saves or replays  
+- No change in data formats that break saves or replays
 
 
 
@@ -27265,9 +27265,9 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# BUILDING.md  
+# BUILDING.md
 
-## Dominium — Deterministic, Multi-Platform Build Instructions  
+## Dominium — Deterministic, Multi-Platform Build Instructions
 
 ### Version 1.0
 
@@ -27309,7 +27309,7 @@ Dominium requires **strict C89/C++98** compilers and **stable toolchains** to pr
 
 ## 1.1 Mandatory
 
-- CMake ≥ 3.16  
+- CMake ≥ 3.16
 
 - A C89/C++98 compiler:
 
@@ -27343,11 +27343,11 @@ Dominium requires **strict C89/C++98** compilers and **stable toolchains** to pr
 
 - CPU with at least SSE2 (PC)
 
-- 1 GB RAM minimum  
+- 1 GB RAM minimum
 
-- No GPU required for software/vector renderer  
+- No GPU required for software/vector renderer
 
-- GPUs recommended for GL/DX backends  
+- GPUs recommended for GL/DX backends
 
 
 
@@ -27765,35 +27765,35 @@ ChatGPT said:
 
 GPT-5.1 • 2025-12-03
 
-# VERSION  
+# VERSION
 
-## Dominium Engine & Game — Version Manifest  
+## Dominium Engine & Game — Version Manifest
 
 ### Canonical Versioning Contract (Authoritative Source)
 
 
 
-This file defines the **official version schema** for all Dominium engine, game, data-pack, DLC, and mod releases.  
+This file defines the **official version schema** for all Dominium engine, game, data-pack, DLC, and mod releases.
 
 It is the single source of truth for:
 
 
 
-- Engine Version  
+- Engine Version
 
-- Game Version  
+- Game Version
 
-- Data Pack Versions  
+- Data Pack Versions
 
-- API/ABI Versions  
+- API/ABI Versions
 
-- Determinism Compatibility Windows  
+- Determinism Compatibility Windows
 
-- Savefile Compatibility  
+- Savefile Compatibility
 
-- Network Protocol Versions  
+- Network Protocol Versions
 
-- Mod API Versions  
+- Mod API Versions
 
 
 
@@ -27831,15 +27831,15 @@ Where:
 
 
 
-- `E/G/D/S/P/A` — major domain identifier  
+- `E/G/D/S/P/A` — major domain identifier
 
-- `M` — major version (breaking changes allowed)  
+- `M` — major version (breaking changes allowed)
 
-- `m` — minor version (non-breaking features added)  
+- `m` — minor version (non-breaking features added)
 
-- `r` — revision (non-breaking fixes)  
+- `r` — revision (non-breaking fixes)
 
-- `p` — patch (hotfixes, security)  
+- `p` — patch (hotfixes, security)
 
 
 
@@ -27861,11 +27861,11 @@ MOD_API_VERSION = 3.0
 
 
 
-All versions must be integers.  
+All versions must be integers.
 
-No strings.  
+No strings.
 
-No dates.  
+No dates.
 
 No git hashes inside canonical version identifiers.
 
@@ -27887,17 +27887,17 @@ The **Engine Version** reflects backwards-compatible determinism boundaries.
 
 Advances only when determinism-breaking changes occur:
 
-- Memory model changes  
+- Memory model changes
 
-- Tick order changes  
+- Tick order changes
 
-- Merge-phase rules changed  
+- Merge-phase rules changed
 
-- Component layouts changed  
+- Component layouts changed
 
-- Serialization layout changed  
+- Serialization layout changed
 
-- ECS ordering changes  
+- ECS ordering changes
 
 
 
@@ -27921,11 +27921,11 @@ Advances when:
 
 Advances on additive nonbreaking changes:
 
-- New ECS components  
+- New ECS components
 
-- Additional APIs  
+- Additional APIs
 
-- Scheduler optimisations  
+- Scheduler optimisations
 
 
 
@@ -27951,13 +27951,13 @@ Advances for:
 
 
 
-- New gameplay features  
+- New gameplay features
 
-- Balance changes  
+- Balance changes
 
-- UI changes  
+- UI changes
 
-- Content reworks  
+- Content reworks
 
 
 
@@ -27987,9 +27987,9 @@ Where:
 
 - D = Epoch of data (rare, only if format rewritten)
 
-- M = Major content revision  
+- M = Major content revision
 
-- m = Minor content addition or balance passes  
+- m = Minor content addition or balance passes
 
 
 
@@ -28023,15 +28023,15 @@ Each savefile embeds:
 
 
 
-- ENGINE_VERSION  
+- ENGINE_VERSION
 
-- GAME_VERSION  
+- GAME_VERSION
 
-- DATA_VERSION  
+- DATA_VERSION
 
-- SAVE_VERSION  
+- SAVE_VERSION
 
-- MOD LIST (with versions)  
+- MOD LIST (with versions)
 
 
 
@@ -28039,9 +28039,9 @@ Loading a mismatched SAVE_VERSION triggers:
 
 
 
-- migration path (if supported),  
+- migration path (if supported),
 
-or  
+or
 
 - hard failure.
 
@@ -28063,15 +28063,15 @@ Lockstep network requires:
 
 
 
-- identical ENGINE_VERSION  
+- identical ENGINE_VERSION
 
-- identical PROTOCOL_VERSION  
+- identical PROTOCOL_VERSION
 
-- identical DATA_VERSION  
+- identical DATA_VERSION
 
-- identical MOD_API_VERSION  
+- identical MOD_API_VERSION
 
-- identical mod list  
+- identical mod list
 
 
 
@@ -28103,9 +28103,9 @@ Rules:
 
 
 
-- A changes only when engine scripting/binding APIs break  
+- A changes only when engine scripting/binding APIs break
 
-- M increments when API expands safely  
+- M increments when API expands safely
 
 
 
@@ -28125,13 +28125,13 @@ To support long-term backward compatibility:
 
 
 
-### MIN_SUPPORTED_VERSION  
+### MIN_SUPPORTED_VERSION
 
 Lowest version this build can load or migrate from.
 
 
 
-### MAX_COMPATIBLE_VERSION  
+### MAX_COMPATIBLE_VERSION
 
 Highest version this build can connect/network with.
 
@@ -28175,15 +28175,15 @@ Containing:
 
 
 
-- Canonical version manifest  
+- Canonical version manifest
 
-- Build stamp  
+- Build stamp
 
-- Platform hash  
+- Platform hash
 
-- Determinism hash of the engine  
+- Determinism hash of the engine
 
-- Compatibility ranges  
+- Compatibility ranges
 
 
 
@@ -28257,15 +28257,15 @@ DetHash: <first 12 chars>
 
 Required when:
 
-- Tick ordering rules change  
+- Tick ordering rules change
 
-- Component binary layout changes  
+- Component binary layout changes
 
-- Add/remove fixed-point constants  
+- Add/remove fixed-point constants
 
-- Execution sequencing changes  
+- Execution sequencing changes
 
-- ECS memory layout changes  
+- ECS memory layout changes
 
 
 
@@ -28273,11 +28273,11 @@ Required when:
 
 Required when:
 
-- New features added  
+- New features added
 
-- UI rewrites  
+- UI rewrites
 
-- New recipes, tech, or machines  
+- New recipes, tech, or machines
 
 - Balance changes
 
@@ -28287,11 +28287,11 @@ Required when:
 
 Required when:
 
-- Prefab format changes  
+- Prefab format changes
 
-- Construction system changes  
+- Construction system changes
 
-- Tile/material definitions change  
+- Tile/material definitions change
 
 
 
@@ -28299,9 +28299,9 @@ Required when:
 
 Required when:
 
-- Serialization schema updates  
+- Serialization schema updates
 
-- Binary layout modified  
+- Binary layout modified
 
 
 
@@ -28309,9 +28309,9 @@ Required when:
 
 Required when:
 
-- Network packet structures altered  
+- Network packet structures altered
 
-- Protocol logic changed  
+- Protocol logic changed
 
 
 
@@ -28319,11 +28319,11 @@ Required when:
 
 Required when:
 
-- Lua interface changes  
+- Lua interface changes
 
-- Component scripting API changes  
+- Component scripting API changes
 
-- Editor API changes  
+- Editor API changes
 
 
 
@@ -28353,7 +28353,7 @@ The following files **must reference this version manifest**:
 
 - All mod manifests
 
-- All retro-port build systems  
+- All retro-port build systems
 
 - All dedicated server builds
 
@@ -28367,19 +28367,19 @@ The following files **must reference this version manifest**:
 
 
 
-1. No hidden/undocumented version bumps.  
+1. No hidden/undocumented version bumps.
 
-2. No reuse of prior version numbers.  
+2. No reuse of prior version numbers.
 
-3. No version rollback.  
+3. No version rollback.
 
-4. No per-platform version divergence.  
+4. No per-platform version divergence.
 
-5. No version changes without changelog entry.  
+5. No version changes without changelog entry.
 
-6. No unofficial forks may use the same version numbers.  
+6. No unofficial forks may use the same version numbers.
 
-7. Every released binary must embed full version metadata.  
+7. Every released binary must embed full version metadata.
 
 8. Versioning is authoritative; everything must match.
 
@@ -28397,13 +28397,13 @@ No dev, branch, or mod may override:
 
 
 
-- ENGINE_VERSION  
+- ENGINE_VERSION
 
-- SAVE_VERSION  
+- SAVE_VERSION
 
-- PROTOCOL_VERSION  
+- PROTOCOL_VERSION
 
-- MOD_API_VERSION  
+- MOD_API_VERSION
 
 
 
@@ -28419,7 +28419,7 @@ Only official maintainers may change these values.
 
 
 
-The next file in the chain is: **CHANGELOG.md**.  
+The next file in the chain is: **CHANGELOG.md**.
 
 Say **Next** to continue.
 
@@ -28671,7 +28671,7 @@ o SDL2: window + input + audio
 
 o DX9: rendering via SDL_SysWMinfo HWND
 
-Write this down in /engine/platform/win32/README.md or similar so Codex doesn’t mix approaches.
+Write this down in /runtime/platform/win32/README.md or similar so Codex doesn’t mix approaches.
 
 5. Input and camera MVP spec
 
@@ -28903,13 +28903,13 @@ o Implement a single dom_sim_world with one surface and tiles.
 
 o Implement minimal power network, job system skeleton.
 
-3. engine/render/vector2d + engine/render/dx9
+3. runtime/render/vector2d + runtime/render/dx9
 
 o Implement backend-agnostic API.
 
 o Implement DX9 “vector only” backend.
 
-4. engine/platform/win32
+4. runtime/platform/win32
 
 o Win32 window + message loop.
 
@@ -29027,7 +29027,7 @@ You need two small but rigid interfaces.
 
 2.1 Platform interface
 
-Header: /engine/platform/dom_platform.h
+Header: /runtime/platform/dom_platform.h
 
 Core types:
 
@@ -29117,7 +29117,7 @@ This API never changes per OS; only implementations change.
 
 2.2 Renderer interface
 
-Header: /engine/render/dom_render_api.h
+Header: /runtime/render/dom_render_api.h
 
 Backend IDs:
 
@@ -29271,7 +29271,7 @@ void dom_render_frame(DomRenderContext      *ctx,
 
 Then you have:
 
-• /engine/render/dx9/dom_render_dx9.c implementing these against Direct3D9.
+• /runtime/render/dx9/dom_render_dx9.c implementing these against Direct3D9.
 
 • Later: dom_render_dx11.c, dom_render_gl1.c, etc.
 
@@ -29395,7 +29395,7 @@ Phase 1.5 — Add SDL2 on Windows
 
 Phase 2 — Add DX11, GL1, GL2, VK1, DX12 on Windows
 
-• Add extra renderer backends under /engine/render/:
+• Add extra renderer backends under /runtime/render/:
 
 o dx11, gl1, gl2, vk1, dx12.
 
@@ -29407,7 +29407,7 @@ o Build configuration for Win2000 disables DX11/DX12/Vulkan at compile time.
 
 Phase 3 — Windows 98 SE
 
-• New platform target: dom_platform_win9x (probably under /ports/win9x or /engine/platform/win9x depending how you separate).
+• New platform target: dom_platform_win9x (probably under /ports/win9x or /runtime/platform/win9x depending how you separate).
 
 • Renderer:
 
@@ -29457,13 +29457,13 @@ That’s the only way all these renderer/platform combos don’t poison determin
 
 You’re almost there, but you need a couple of explicit spec files:
 
-1. engine/platform/PLATFORM_API.md
+1. runtime/platform/PLATFORM_API.md
 
 o Exact function set for dom_platform_*.
 
 o Meaning of each field, lifetime rules (window handle, timing).
 
-2. engine/render/RENDER_API.md
+2. runtime/render/RENDER_API.md
 
 o Exact DomDrawCmd struct and allowed types.
 
@@ -29531,7 +29531,7 @@ This is written as if addressed to Codex / future codegen: what changed, what ov
 
 
 
-This addendum **modifies and extends** previous V3 specs and directory contracts.  
+This addendum **modifies and extends** previous V3 specs and directory contracts.
 
 Any contradictions: this file WINS.
 
@@ -29583,7 +29583,7 @@ It exists to stop code generators from baking in wrong assumptions about renderi
 
 
 
-Previous specs sometimes blurred platform vs renderer responsibilities.  
+Previous specs sometimes blurred platform vs renderer responsibilities.
 
 From now on, the following rules are hard:
 
@@ -29603,7 +29603,7 @@ From now on, the following rules are hard:
 
 
 
-2. **Platform backends (`/engine/platform/...`)**
+2. **Platform backends (`/runtime/platform/...`)**
 
    - Responsible for:
 
@@ -29625,7 +29625,7 @@ From now on, the following rules are hard:
 
 
 
-3. **Renderer backends (`/engine/render/...`)**
+3. **Renderer backends (`/runtime/render/...`)**
 
    - Responsible for:
 
@@ -29645,7 +29645,7 @@ From now on, the following rules are hard:
 
 
 
-4. No other layer may call any graphics or OS APIs directly.  
+4. No other layer may call any graphics or OS APIs directly.
 
    - No DirectX in `/engine/sim`.
 
@@ -29663,7 +29663,7 @@ From now on, the following rules are hard:
 
 
 
-New canonical header: `engine/platform/dom_platform.h`
+New canonical header: `runtime/platform/dom_platform.h`
 
 
 
@@ -29771,7 +29771,7 @@ void dom_platform_fatal(const char *msg);
 
 For MVP, only one platform backend must exist:
 
-• engine/platform/win32/dom_platform_win32.c
+• runtime/platform/win32/dom_platform_win32.c
 
 o Uses native Win32 API (no SDL) for:
 
@@ -29779,13 +29779,13 @@ o Uses native Win32 API (no SDL) for:
 
 Future backends:
 
-• engine/platform/win32_sdl2 (Win + SDL2)
+• runtime/platform/win32_sdl2 (Win + SDL2)
 
-• engine/platform/win9x (Win98 SE)
+• runtime/platform/win9x (Win98 SE)
 
-• engine/platform/posix_sdl2 (Linux)
+• runtime/platform/posix_sdl2 (Linux)
 
-• engine/platform/macos_cocoa or _sdl2 (macOS X)
+• runtime/platform/macos_cocoa or _sdl2 (macOS X)
 
 • etc.
 
@@ -29795,7 +29795,7 @@ All must obey the same header and never change its signature.
 
 4. Renderer API Contract
 
-New canonical header: engine/render/dom_render_api.h
+New canonical header: runtime/render/dom_render_api.h
 
 This is the only interface the engine/game uses to draw.
 
@@ -29965,9 +29965,9 @@ void dom_render_frame(DomRenderContext      *ctx,
 
 Backends must be implemented as standalone modules:
 
-• engine/render/dx9/dom_render_dx9.c
+• runtime/render/dx9/dom_render_dx9.c
 
-• Later: engine/render/dx11/dom_render_dx11.c, engine/render/gl1/dom_render_gl1.c, etc.
+• Later: runtime/render/dx11/dom_render_dx11.c, runtime/render/gl1/dom_render_gl1.c, etc.
 
 No backend may change the API or add engine-visible entry points.
 
@@ -29977,7 +29977,7 @@ No backend may change the API or add engine-visible entry points.
 
 To support mix-and-match platform/renderer combos cleanly, there will be a backend registry.
 
-New internal header: engine/render/dom_render_registry.h
+New internal header: runtime/render/dom_render_registry.h
 
 typedef struct DomRenderBackendVTable {
 
@@ -30121,13 +30121,13 @@ Add to the existing directory contract:
 
 1. All platform implementations must live under:
 
-o /engine/platform/<backend_name>/*.c
+o /runtime/platform/<backend_name>/*.c
 
 o Do not put Win32 code under /game or /engine/sim.
 
 2. All renderer implementations must live under:
 
-o /engine/render/<backend_name>/*.c
+o /runtime/render/<backend_name>/*.c
 
 o Do not put DirectX/OpenGL/Vulkan calls under /engine/sim or /game.
 

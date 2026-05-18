@@ -12,10 +12,10 @@ Baseline updates are explicit and never automatic.
 
 ## Update Contract
 
-1. Run `python tools/performx/performx.py run --repo-root .`.
+1. Run `python tools/xstack/performx/performx.py run --repo-root .`.
 2. Ensure RepoX is green.
 3. Update baseline with:
-   - `python tools/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`
+   - `python tools/xstack/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`
 4. Commit baseline delta and justification together.
 
 ## Guardrails

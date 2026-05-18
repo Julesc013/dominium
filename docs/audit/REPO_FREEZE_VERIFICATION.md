@@ -19,10 +19,10 @@ Replacement Target: superseded by a later explicit repository-freeze verificatio
 
 - `python -B tools/xstack/ci/xstack_ci_entrypoint.py --repo-root . --profile STRICT --testx-subset test_ci_entrypoint_deterministic_order,test_ci_profiles_exist,test_gate_definitions_valid,test_ci_report_failures_propagate,test_repository_structure_lock_valid,test_no_prohibited_dirs_present`
 - `python -B tools/security/tool_run_trust_strict_suite.py --repo-root .`
-- `python -B tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --output-root dist`
-- `python -B tools/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root dist`
-- `python -B tools/release/tool_archive_release.py --repo-root . --dist-root dist/v0.0.0-mock/win64/dominium --platform-tag win64 --write-offline-bundle`
-- `python -B tools/release/tool_verify_archive.py --repo-root . --dist-root dist/v0.0.0-mock/win64/dominium --platform-tag win64 --archive-record-path dist/v0.0.0-mock/win64/archive/archive_record.json`
+- `python -B tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag win64 --channel mock --output-root dist`
+- `python -B tools/release/dist/tool_verify_distribution.py --repo-root . --platform-tag win64 --dist-root dist`
+- `python -B tools/release/tool_archive_release.py --repo-root . --dist-root archive/generated/dist/v0.0.0-mock/win64/dominium --platform-tag win64 --write-offline-bundle`
+- `python -B tools/release/tool_verify_archive.py --repo-root . --dist-root archive/generated/dist/v0.0.0-mock/win64/dominium --platform-tag win64 --archive-record-path archive/generated/dist/v0.0.0-mock/win64/archive/archive_record.json`
 - `python -B tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_repository_structure_lock_valid,test_no_prohibited_dirs_present,test_xstack_ci_strict_passes`
 
 ## Fingerprints

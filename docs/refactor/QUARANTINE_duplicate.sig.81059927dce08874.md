@@ -29,7 +29,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/CLI_REFERENCE.md, docs/appshell/TOOL_REFERENCE.md, docs/appshell/VIRTUAL_PATHS.md, docs/architecture/INSTALL_MODEL.md, docs/audit/APPSHELL0_RETRO_AUDIT.md, docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md, docs/audit/BINARY_BUILD_MATRIX.md, docs/audit/CAP_NEG1_RETRO_AUDIT.md`
+- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/runtime/shell/TOOL_REFERENCE.md, docs/runtime/shell/VIRTUAL_PATHS.md, docs/architecture/INSTALL_MODEL.md, docs/audit/APPSHELL0_RETRO_AUDIT.md, docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md, docs/audit/BINARY_BUILD_MATRIX.md, docs/audit/CAP_NEG1_RETRO_AUDIT.md`
 
 ## Tests Involved
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

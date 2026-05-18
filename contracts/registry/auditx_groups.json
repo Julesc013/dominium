@@ -22,7 +22,7 @@
         "runner_id": "auditx.group.core.policy",
         "runner_command": [
           "python",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--changed-only",
           "--format",
@@ -65,7 +65,7 @@
         "runner_id": "auditx.group.full.semantic",
         "runner_command": [
           "python",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--format",
           "json"

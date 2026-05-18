@@ -1,0 +1,31 @@
+{
+  "schema_id": "world.galaxy",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "galaxy_id": "milky_way",
+    "universe_ref": "universe_local",
+    "name": "Milky Way",
+    "coordinate_frame_ref": "frame.milky_way.galactic",
+    "scale_domain_ref": "domain.galactic",
+    "system_ids": [],
+    "morphology_tags": [
+      "barred_spiral",
+      "real_world"
+    ],
+    "canonical_radius_class": "radius_large",
+    "thickness_class": "disk_thin",
+    "procedural_fill_ref": "milky_way_proc_rules_v1",
+    "anchor_set_ref": "milky_way_anchor_set_v1",
+    "bounds_ref": "bounds.milky_way_v1",
+    "provenance_ref": "prov.milky_way.galaxy.v1",
+    "data_source_refs": [
+      "esa_gaia_2024",
+      "nasa_ads_2024"
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Electrical Protection Settings Schema",
+  "version": "1.0.0",
+  "description": "Deterministic ELEC-2 trip threshold and coordination settings.",
+  "x-doc-ref": [
+    "docs/electric/PROTECTION_AND_FAULT_MODEL.md",
+    "docs/audit/ELECTRICAL_PROTECTION_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "settings_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "settings_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trip_threshold_P": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "trip_threshold_S": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "trip_delay_ticks": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "gfci_threshold": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "coordination_group_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "settings_id": "settings.elec.breaker.main",
+      "trip_threshold_P": 160,
+      "trip_threshold_S": 200,
+      "trip_delay_ticks": 1,
+      "gfci_threshold": 30,
+      "coordination_group_id": "coord.group.main_feeder",
+      "deterministic_fingerprint": "0a18d9d7ab5f5b4559f56f5f96816f0831b6d379d5f6d6a9f1087c43e5f6ab7c",
+      "extensions": {}
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Experience Profile Schema",
+  "version": "1.0.0",
+  "description": "Canonical ExperienceProfile contract binding presentation, law preferences, and transitions.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A4/A7",
+    "docs/canon/glossary_v1.md ExperienceProfile",
+    "docs/contracts/experience_profile.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "experience_id",
+    "presentation_defaults",
+    "allowed_lenses",
+    "suggested_parameter_bundles",
+    "allowed_transitions",
+    "default_law_profile_id"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "experience_id": {
+      "type": "string"
+    },
+    "presentation_defaults": {
+      "type": "object",
+      "required": [
+        "default_lens_id",
+        "hud_layout_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "default_lens_id": {
+          "type": "string"
+        },
+        "hud_layout_id": {
+          "type": "string"
+        }
+      }
+    },
+    "allowed_lenses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "suggested_parameter_bundles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "allowed_transitions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "default_law_profile_id": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "experience_id": "profile.lab.developer",
+      "presentation_defaults": {
+        "default_lens_id": "lens.diegetic.sensor",
+        "hud_layout_id": "hud.lab.navigation"
+      },
+      "allowed_lenses": [
+        "lens.diegetic.sensor",
+        "lens.nondiegetic.debug"
+      ],
+      "suggested_parameter_bundles": [
+        "params.lab.placeholder",
+        "params.lab.precision_nav"
+      ],
+      "allowed_transitions": [
+        "experience.lab.galaxy",
+        "experience.lab.analysis"
+      ],
+      "default_law_profile_id": "law.lab.unrestricted"
+    }
+  ]
+}

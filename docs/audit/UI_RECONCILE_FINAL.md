@@ -25,18 +25,18 @@ Replacement Target: release-pinned UI architecture inventory for platform formal
 
 ## Deferred
 
-- `tools/editor_gui/CMakeLists.txt` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/editor_gui/editor_gui.c` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/native/CMakeLists.txt` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/native/editor_gui.c` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
 - `tools/gui/tools_app_win32.cpp` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/doc/tool_editor_ui_doc.json` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/doc/ui_doc_template_basic.json` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/doc/ui_doc_template_basic.tlv` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp.bak1` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp.bak2` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
-- `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h.bak1` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/doc/tool_editor_ui_doc.json` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/doc/ui_doc_template_basic.json` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/doc/ui_doc_template_basic.tlv` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp.bak1` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp.bak2` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
+- `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h.bak1` `deferred_native_or_preview`: Editor or tooling UI scaffold kept outside the governed MVP runtime surface.
 
 ## Enforcement
 

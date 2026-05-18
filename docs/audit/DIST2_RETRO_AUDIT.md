@@ -16,7 +16,7 @@ Replacement Target: DIST-2 finalized distribution verification baseline and DIST
 - `tools/setup/setup_cli.py packs verify`
   - already performs offline pack verification against bundled store content
   - expected to work in portable mode through AppShell, install discovery, and virtual paths
-- `tools/dist/tool_assemble_dist_tree.py`
+- `tools/release/dist/tool_assemble_dist_tree.py`
   - already assembles the canonical DIST-1 portable tree
   - already runs a narrow standalone smoke set during assembly
 
@@ -33,7 +33,7 @@ Replacement Target: DIST-2 finalized distribution verification baseline and DIST
 
 ## Current Distribution Reality
 
-- The assembled bundle at `dist/v0.0.0-mock/win64/dominium` is the current canonical DIST-1 surface for verification.
+- The assembled bundle at `archive/generated/dist/v0.0.0-mock/win64/dominium` is the current canonical DIST-1 surface for verification.
 - Offline release-manifest verification is already available and should be reused, not replaced.
 - Portable products currently require a runtime subset of `tools/xstack/*` compiled into the bundle:
   - `tools/xstack/cache_store`
@@ -48,7 +48,7 @@ Replacement Target: DIST-2 finalized distribution verification baseline and DIST
 
 ## Safest DIST-2 Insertion Points
 
-- Add a dedicated verifier under `tools/dist/` that:
+- Add a dedicated verifier under `tools/release/dist/` that:
   - reuses RELEASE-1 manifest verification
   - reuses bundled `setup packs verify`
   - scans bundle files deterministically for forbidden/dev payload and absolute path leaks

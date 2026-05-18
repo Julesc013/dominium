@@ -40,7 +40,7 @@
         "docs/architecture/PROJECTION_LIFECYCLE.md"
       ],
       "status": "warning_only",
-      "reason": "Current architecture docs intentionally distinguish contracts/projections/ide schema/examples from generated ide/manifests output paths."
+      "reason": "Current architecture docs intentionally distinguish contracts/projection/ide schema/examples from generated ide/manifests output paths."
     },
     {
       "category": "root_recycling_history",

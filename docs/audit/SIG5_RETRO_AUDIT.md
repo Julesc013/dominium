@@ -58,7 +58,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
    - verification result rows
 3. Integrate trust lookup into receipt weighting at delivery time.
 4. Add deterministic acceptance policy evaluation at receipt creation.
-5. Add explicit verification process helper that consumes evidence artifacts/certificates and emits verification results.
+5. Add explicit verification process helper that consumes evidence archive/generated/artifacts/certificates and emits verification results.
 6. Add trust and inbox-acceptance inspection sections.
 7. Add RepoX/AuditX checks for omniscient trust updates and unlogged trust changes.
 8. Add TestX coverage for deterministic trust updates, acceptance, and verification coupling.

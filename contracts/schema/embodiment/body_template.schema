@@ -1,0 +1,27 @@
+SCHEMA: embodiment/body_template.schema
+schema_id: dominium.schema.embodiment.body_template
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic embodiment body template rows for EMB-0.
+- Keep body collider, mass, and movement parameter references data-declared.
+
+NON-SEMANTICS:
+- This schema does not encode skeletal rigs or meshes.
+- This schema does not encode inventory or crafting capability.
+
+REQUIRED SHAPE:
+record body_template
+  required:
+    - template_id: id
+    - collider_kind: string
+    - mass_value: integer
+    - movement_params_ref: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- body templates remain asset-free and primitive-based
+- body motion parameters remain explicit data, never hidden mode flags
+- template identity remains stable for replay and pack layering

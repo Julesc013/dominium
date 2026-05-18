@@ -224,9 +224,9 @@ Updated proof level:
 
 Remediations:
 
-- `tools/distribution/distribution_lib.py` now makes the repo root importable for direct tool subprocesses before importing `compat.shims`.
-- `tools/dist/dist_tree_common.py` now sources generated `schema/` and `schemas/` bundle projections from canonical `contracts/schemas/`.
-- `tools/dist/dist_tree_common.py` includes current converged `apps/` and `game/` runtime roots in generated portable wrapper runtime content.
+- `tools/package/distribution/distribution_lib.py` now makes the repo root importable for direct tool subprocesses before importing `compat.shims`.
+- `tools/release/dist/dist_tree_common.py` now sources generated `schema/` and `schemas/` bundle projections from canonical `contracts/schema/`.
+- `tools/release/dist/dist_tree_common.py` includes current converged `apps/` and `game/` runtime roots in generated portable wrapper runtime content.
 - `tools/setup/setup_cli.py` defers annotation evaluation so generated wrapper smoke runs under Python 3.9.
 - `tools/mvp/ecosystem_verify_common.py` converts missing release manifest verification into a deterministic refused result instead of an uncaught exception.
 
@@ -238,5 +238,5 @@ Native binary status:
 
 Current blockers:
 
-- `invariant_units_present` fails because the canonical unit table does not declare `unit.mass_energy.stub` and the validator treats `contracts/schemas/materials/unit.schema` as a `unit.schema` token.
+- `invariant_units_present` fails because the canonical unit table does not declare `unit.mass_energy.stub` and the validator treats `contracts/schema/materials/unit.schema` as a `unit.schema` token.
 - `inv_repox_rules` fails on broad RepoX drift that remains outside safe POST-CONVERGE-10E remediation scope.

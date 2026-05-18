@@ -11,7 +11,7 @@ Replacement Target: release-index governed suite evolution with explicit yanking
 ## Current Release Index Surface
 
 - `schema/release/release_index.schema` defines a single channel-scoped offline-first release index.
-- `src/release/update_resolver.py` currently treats `release_index.components` as a single exact target set keyed by `component_id`.
+- `src/tools/release/update_resolver.py` currently treats `release_index.components` as a single exact target set keyed by `component_id`.
 - `tools/release/update_model_common.py` emits one release-index snapshot per distribution bundle with an embedded component graph.
 - `release_index.json` already carries semantic-contract, governance, platform-matrix, and component-graph hashes.
 

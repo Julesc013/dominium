@@ -1,0 +1,25 @@
+SCHEMA: pollution/pollution_measurement.schema
+schema_id: dominium.schema.pollution.pollution_measurement
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic pollution measurement observations produced by diegetic sensors.
+- Support epistemic gating and measurement proof chains.
+
+NON-SEMANTICS:
+- No omniscient map revelation.
+- No direct truth mutation of concentration fields.
+
+REQUIRED SHAPE:
+record pollution_measurement
+  required:
+    - measurement_id: id
+    - pollutant_id: id
+    - spatial_scope_id: id
+    - measured_concentration: int
+    - instrument_id: optional(id)
+    - calibration_cert_id: optional(id)
+    - tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

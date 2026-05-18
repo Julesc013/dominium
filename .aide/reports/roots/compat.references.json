@@ -95,7 +95,7 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
       "line": 22,
-      "snippet": "- migration: `tools/compat/**`, `tools/compatx/**`, `contracts/install/**`, `contracts/release/**`."
+      "snippet": "- migration: `tools/compat/**`, `tools/xstack/compatx/**`, `contracts/install/**`, `contracts/release/**`."
     },
     {
       "classification": "unknown",
@@ -203,79 +203,79 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2791,
-      "snippet": "\"contracts/schemas/compat/capability_id.schema\","
+      "snippet": "\"contracts/schema/compat/capability_id.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2792,
-      "snippet": "\"contracts/schemas/compat/compat_refusal.schema\","
+      "snippet": "\"contracts/schema/compat/compat_refusal.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2793,
-      "snippet": "\"contracts/schemas/compat/contract_range.schema\","
+      "snippet": "\"contracts/schema/compat/contract_range.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2794,
-      "snippet": "\"contracts/schemas/compat/degrade_ladder.schema\","
+      "snippet": "\"contracts/schema/compat/degrade_ladder.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2795,
-      "snippet": "\"contracts/schemas/compat/degrade_rule.schema\","
+      "snippet": "\"contracts/schema/compat/degrade_rule.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2796,
-      "snippet": "\"contracts/schemas/compat/endpoint_descriptor.schema\","
+      "snippet": "\"contracts/schema/compat/endpoint_descriptor.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2797,
-      "snippet": "\"contracts/schemas/compat/fallback_map.schema\","
+      "snippet": "\"contracts/schema/compat/fallback_map.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2798,
-      "snippet": "\"contracts/schemas/compat/handshake_message.schema\","
+      "snippet": "\"contracts/schema/compat/handshake_message.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2799,
-      "snippet": "\"contracts/schemas/compat/migration_chain.schema\","
+      "snippet": "\"contracts/schema/compat/migration_chain.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2800,
-      "snippet": "\"contracts/schemas/compat/migration_decision_record.schema\","
+      "snippet": "\"contracts/schema/compat/migration_decision_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2801,
-      "snippet": "\"contracts/schemas/compat/migration_policy.schema\","
+      "snippet": "\"contracts/schema/compat/migration_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2802,
-      "snippet": "\"contracts/schemas/compat/negotiation_record.schema\","
+      "snippet": "\"contracts/schema/compat/negotiation_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2803,
-      "snippet": "\"contracts/schemas/compat/protocol_range.schema\","
+      "snippet": "\"contracts/schema/compat/protocol_range.schema\","
     },
     {
       "classification": "unknown",
@@ -299,61 +299,61 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 6953,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\","
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 6954,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\","
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 6955,
-      "snippet": "\"docs/compat/ENDPOINT_DESCRIPTORS.md\","
+      "snippet": "\"docs/compatibility/ENDPOINT_DESCRIPTORS.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 6956,
-      "snippet": "\"docs/compat/MIGRATION_LIFECYCLE_MODEL.md\","
+      "snippet": "\"docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 6957,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\","
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9762,
-      "snippet": "\"engine/modules/compat/CMakeLists.txt\","
+      "snippet": "\"runtime/capability/compatibility/CMakeLists.txt\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9763,
-      "snippet": "\"engine/modules/compat/capability_set.c\","
+      "snippet": "\"runtime/capability/compatibility/capability_set.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9764,
-      "snippet": "\"engine/modules/compat/compat_core.c\","
+      "snippet": "\"runtime/capability/compatibility/compat_core.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9765,
-      "snippet": "\"engine/modules/compat/compat_modes.c\","
+      "snippet": "\"runtime/capability/compatibility/compat_modes.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9766,
-      "snippet": "\"engine/modules/compat/fixed_debug.c\","
+      "snippet": "\"runtime/capability/compatibility/fixed_debug.c\","
     },
     {
       "classification": "unknown",
@@ -515,13 +515,13 @@
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 7085,
-      "snippet": "\"source_tool\": \"docs/compat/DATA_FORMAT_VERSIONING.md\","
+      "snippet": "\"source_tool\": \"docs/compatibility/DATA_FORMAT_VERSIONING.md\","
     },
     {
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 8390,
-      "snippet": "\"source_tool\": \"engine/modules/compat/CMakeLists.txt\","
+      "snippet": "\"source_tool\": \"runtime/capability/compatibility/CMakeLists.txt\","
     },
     {
       "classification": "tools",
@@ -653,13 +653,13 @@
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 817,
-      "snippet": "- `docs/compat/DATA_FORMAT_VERSIONING.md`: risk=low fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, docs_hint:docs, format_hint:format"
+      "snippet": "- `docs/compatibility/DATA_FORMAT_VERSIONING.md`: risk=low fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, docs_hint:docs, format_hint:format"
     },
     {
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 963,
-      "snippet": "- `engine/modules/compat/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
+      "snippet": "- `runtime/capability/compatibility/CMakeLists.txt`: risk=medium fate=wrap reasons=build_hint:build,cmake,make, candidate_capability_can_be_future_wrapped, candidate_tool_filename, medium_risk_hint:build"
     },
     {
       "classification": "tools",
@@ -867,13 +867,13 @@
     },
     {
       "classification": "active_source",
-      "file": "apps/server/app/main_server.c",
+      "file": "apps/server/main_server.c",
       "line": 656,
       "snippet": "fprintf(f, \"\\\"app_compat\\\":{\");"
     },
     {
       "classification": "unknown",
-      "file": "apps/setup/packages/scripts/commit_template.md",
+      "file": "release/packaging/setup/scripts/commit_template.md",
       "line": 10,
       "snippet": "- <compat/ABI/determinism/tooling/docs impact>"
     },
@@ -915,79 +915,79 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/capability_id.schema",
+      "file": "contracts/schema/compat/capability_id.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/capability_id.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/compat_refusal.schema",
+      "file": "contracts/schema/compat/compat_refusal.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/compat_refusal.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/contract_range.schema",
+      "file": "contracts/schema/compat/contract_range.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/contract_range.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/degrade_ladder.schema",
+      "file": "contracts/schema/compat/degrade_ladder.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/degrade_ladder.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/degrade_rule.schema",
+      "file": "contracts/schema/compat/degrade_rule.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/degrade_rule.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/endpoint_descriptor.schema",
+      "file": "contracts/schema/compat/endpoint_descriptor.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/endpoint_descriptor.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/fallback_map.schema",
+      "file": "contracts/schema/compat/fallback_map.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/fallback_map.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/handshake_message.schema",
+      "file": "contracts/schema/compat/handshake_message.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/handshake_message.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/migration_chain.schema",
+      "file": "contracts/schema/compat/migration_chain.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/migration_chain.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/migration_decision_record.schema",
+      "file": "contracts/schema/compat/migration_decision_record.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/migration_decision_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/migration_policy.schema",
+      "file": "contracts/schema/compat/migration_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/migration_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/negotiation_record.schema",
+      "file": "contracts/schema/compat/negotiation_record.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/negotiation_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/compat/protocol_range.schema",
+      "file": "contracts/schema/compat/protocol_range.schema",
       "line": 1,
       "snippet": "SCHEMA: compat/protocol_range.schema"
     },
@@ -1725,31 +1725,31 @@
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/IPC_ATTACH_CONSOLES.md",
+      "file": "docs/runtime/shell/IPC_ATTACH_CONSOLES.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/appshell/COMMANDS_AND_REFUSALS.md`, `docs/appshell/LOGGING_AND_TRACING.md`, `docs/appshell/TUI_FRAMEWORK.m"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/runtime/shell/COMMANDS_AND_REFUSALS.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, `docs/runtime/shell/TUI_FRAMEWORK.m"
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/IPC_DISCOVERY.md",
+      "file": "docs/runtime/shell/IPC_DISCOVERY.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/IPC_ATTACH_CONSOLES.md`, `docs/compat/NEGOTIATION_HANDSHAKES.md`, and `docs/release/FROZEN_INVARIANTS_v0_0_0.md`."
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/IPC_ATTACH_CONSOLES.md`, `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, and `docs/release/FROZEN_INVARIANTS_v0_0_0.md`."
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/IPC_DISCOVERY.md",
+      "file": "docs/runtime/shell/IPC_DISCOVERY.md",
       "line": 34,
       "snippet": "4. Run CAP-NEG handshake via `compat/handshake/handshake_engine.py` before opening channels."
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/SUPERVISOR_MODEL.md",
+      "file": "docs/runtime/shell/SUPERVISOR_MODEL.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/APPSHELL_CONSTITUTION.md`, `docs/appshell/IPC_ATTACH_CONSOLES.md`, `docs/appshell/LOGGING_AND_TRACING.md`, `docs/packs/PACK_VERIFICATION_PI"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/APPSHELL_CONSTITUTION.md`, `docs/runtime/shell/IPC_ATTACH_CONSOLES.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, `docs/packs/PACK_VERIFICATION_PI"
     },
     {
       "classification": "docs",
-      "file": "docs/appshell/TUI_FRAMEWORK.md",
+      "file": "docs/runtime/shell/TUI_FRAMEWORK.md",
       "line": 116,
       "snippet": "- shows pack/compat/session summary only from derived shell/runtime metadata"
     },
@@ -1757,25 +1757,25 @@
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 280,
-      "snippet": "- `docs/compat/DATA_FORMAT_VERSIONING.md`"
+      "snippet": "- `docs/compatibility/DATA_FORMAT_VERSIONING.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 281,
-      "snippet": "- `docs/compat/DEGRADE_LADDERS.md`"
+      "snippet": "- `docs/compatibility/DEGRADE_LADDERS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 282,
-      "snippet": "- `docs/compat/ENDPOINT_DESCRIPTORS.md`"
+      "snippet": "- `docs/compatibility/ENDPOINT_DESCRIPTORS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 283,
-      "snippet": "- `docs/compat/NEGOTIATION_HANDSHAKES.md`"
+      "snippet": "- `docs/compatibility/NEGOTIATION_HANDSHAKES.md`"
     },
     {
       "classification": "docs",
@@ -1793,31 +1793,31 @@
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1266,
-      "snippet": "- `docs/compat/MIGRATION_LIFECYCLE_MODEL.md`"
+      "snippet": "- `docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CONTRACTS_INDEX.md",
       "line": 181,
-      "snippet": "| `docs/compat/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |"
+      "snippet": "| `docs/compatibility/ENDPOINT_DESCRIPTORS.md` | EVOLVING | Deterministic per-product endpoint descriptor emission and offline manifest surfaces |"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CONTRACTS_INDEX.md",
       "line": 182,
-      "snippet": "| `docs/compat/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |"
+      "snippet": "| `docs/compatibility/NEGOTIATION_HANDSHAKES.md` | EVOLVING | Deterministic client/server and IPC attach negotiation handshake flow |"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CONTRACTS_INDEX.md",
       "line": 183,
-      "snippet": "| `docs/compat/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |"
+      "snippet": "| `docs/compatibility/DEGRADE_LADDERS.md` | EVOLVING | Deterministic per-product degrade ladders and explicit fallback mapping |"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CONTRACTS_INDEX.md",
       "line": 184,
-      "snippet": "| `docs/compat/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |"
+      "snippet": "| `docs/compatibility/DATA_FORMAT_VERSIONING.md` | EVOLVING | Deterministic persistent artifact format versioning, migration hooks, and read-only fallback rules |"
     },
     {
       "classification": "docs",
@@ -1835,25 +1835,25 @@
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 27,
-      "snippet": "- `apps.client.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 28,
-      "snippet": "- `apps.client.ui` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.ui.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 30,
-      "snippet": "- `apps.server.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 31,
-      "snippet": "- `apps.server.runtime` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.shell.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -2063,37 +2063,37 @@
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1127,
-      "snippet": "| `docs/compat/DATA_FORMAT_VERSIONING.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verificatio"
+      "snippet": "| `docs/compatibility/DATA_FORMAT_VERSIONING.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verificatio"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1128,
-      "snippet": "| `docs/compat/DEGRADE_LADDERS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `GEO: topology/metric/projection/overlays`, `LOGIC: s"
+      "snippet": "| `docs/compatibility/DEGRADE_LADDERS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `GEO: topology/metric/projection/overlays`, `LOGIC: s"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1129,
-      "snippet": "| `docs/compat/ENDPOINT_DESCRIPTORS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `GEO"
+      "snippet": "| `docs/compatibility/ENDPOINT_DESCRIPTORS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `GEO"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1130,
-      "snippet": "| `docs/compat/MIGRATION_LIFECYCLE_MODEL.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG: negotiation + degrade ladders`, `PACK-"
+      "snippet": "| `docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG: negotiation + degrade ladders`, `PACK-"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1131,
-      "snippet": "| `docs/compat/NEGOTIATION_HANDSHAKES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `LOGIC: signals/state machines/compile`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPAT"
+      "snippet": "| `docs/compatibility/NEGOTIATION_HANDSHAKES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `LOGIC: signals/state machines/compile`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPAT"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 2142,
-      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/compat/MIGRATION_LIFECYCLE_MODEL.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG"
+      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG"
     },
     {
       "classification": "docs",
@@ -2105,7 +2105,7 @@
       "classification": "docs",
       "file": "docs/audit/CAP_NEG2_RETRO_AUDIT.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`."
+      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`."
     },
     {
       "classification": "docs",
@@ -2117,7 +2117,7 @@
       "classification": "docs",
       "file": "docs/audit/CAP_NEG3_RETRO_AUDIT.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `src/compat/capability_negotiation.py`, `src/client/local_server/local_server_controller.py`, `src/server/server_con"
+      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `src/compat/capability_negotiation.py`, `src/client/local_server/local_server_controller.py`, `src/server/server_con"
     },
     {
       "classification": "docs",
@@ -2153,13 +2153,13 @@
       "classification": "docs",
       "file": "docs/audit/CAP_NEG_FINAL_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `docs/compat/NEGOTIATION_HANDSHAKES.md`, `docs/compat/DEGRADE_LADDERS.md`, `tools/compat/cap_neg4_common.py`, and `d"
+      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `docs/compatibility/DEGRADE_LADDERS.md`, `tools/compat/cap_neg4_common.py`, and `d"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DEGRADE_LADDER_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/compat/DEGRADE_LADDERS.md`, `data/registries/degrade_ladder_registry.json`, `data/registries/capability_fallback_registry.json`, `src/compat/capability_negotiation.py`, and `src/compat/negotiation/degrade_e"
+      "snippet": "Compatibility: Derived from `docs/compatibility/DEGRADE_LADDERS.md`, `data/registries/degrade_ladder_registry.json`, `data/registries/capability_fallback_registry.json`, `src/compat/capability_negotiation.py`, and `src/compat/negotiation/degrade_e"
     },
     {
       "classification": "docs",
@@ -2195,7 +2195,7 @@
       "classification": "docs",
       "file": "docs/audit/DISASTER_TEST0_RETRO_AUDIT.md",
       "line": 67,
-      "snippet": "- `src/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists"
+      "snippet": "- `src/tools/release/release_manifest_engine.py` and `src/packs/compat/pack_verification_pipeline.py` carry deterministic error rows keyed by refusal code and ordered error lists"
     },
     {
       "classification": "docs",
@@ -2225,37 +2225,37 @@
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1127,
-      "snippet": "| `docs/compat/DATA_FORMAT_VERSIONING.md` | Data Format Versioning | `canon`, `compat`, `determinism`, `distribution`, `meta`, `pack`, `release`, `server`, `sol`, `validation` | `2026-03-11` |"
+      "snippet": "| `docs/compatibility/DATA_FORMAT_VERSIONING.md` | Data Format Versioning | `canon`, `compat`, `determinism`, `distribution`, `meta`, `pack`, `release`, `server`, `sol`, `validation` | `2026-03-11` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1128,
-      "snippet": "| `docs/compat/DEGRADE_LADDERS.md` | Degrade Ladders | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `logic`, `meta`, `pack`, `platform`, `release`, `server`, `time` | `2026-03-10` |"
+      "snippet": "| `docs/compatibility/DEGRADE_LADDERS.md` | Degrade Ladders | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `logic`, `meta`, `pack`, `platform`, `release`, `server`, `time` | `2026-03-10` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1129,
-      "snippet": "| `docs/compat/ENDPOINT_DESCRIPTORS.md` | Endpoint Descriptors | `appshell`, `build`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `logic`, `meta`, `pack`, `release`, `server`, `sol`, `time`, `validation`, `worldge"
+      "snippet": "| `docs/compatibility/ENDPOINT_DESCRIPTORS.md` | Endpoint Descriptors | `appshell`, `build`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `logic`, `meta`, `pack`, `release`, `server`, `sol`, `time`, `validation`, `worldge"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1130,
-      "snippet": "| `docs/compat/MIGRATION_LIFECYCLE_MODEL.md` | Migration Lifecycle Model | `build`, `canon`, `compat`, `determinism`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-14` |"
+      "snippet": "| `docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md` | Migration Lifecycle Model | `build`, `canon`, `compat`, `determinism`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-14` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1131,
-      "snippet": "| `docs/compat/NEGOTIATION_HANDSHAKES.md` | Negotiation Handshakes | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-10` |"
+      "snippet": "| `docs/compatibility/NEGOTIATION_HANDSHAKES.md` | Negotiation Handshakes | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-10` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 2142,
-      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/compat/MIGRATION_LIFECYCLE_MODEL.md` | Migration Lifecycle Model | `build`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-14` "
+      "snippet": "| `tmp/chat_prompt_audit_20260314/evidence/docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md` | Migration Lifecycle Model | `build`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-03-14` "
     },
     {
       "classification": "docs",
@@ -2267,7 +2267,7 @@
       "classification": "docs",
       "file": "docs/audit/ENDPOINT_DESCRIPTOR_BASELINE.md",
       "line": 52,
-      "snippet": "- `tools/compat/tool_generate_descriptor_manifest.py` produces `dist/manifests/endpoint_descriptors.json`."
+      "snippet": "- `tools/compat/tool_generate_descriptor_manifest.py` produces `archive/generated/dist/manifests/endpoint_descriptors.json`."
     },
     {
       "classification": "docs",
@@ -2519,7 +2519,7 @@
       "classification": "docs",
       "file": "docs/audit/NEGOTIATION_HANDSHAKE_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/compat/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`."
+      "snippet": "Compatibility: Derived from `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`."
     },
     {
       "classification": "docs",
@@ -2549,7 +2549,7 @@
       "classification": "docs",
       "file": "docs/audit/PROMPT_G_REPORT.md",
       "line": 282,
-      "snippet": "(`engine/modules/compat/compat_modes.c` has no callers)."
+      "snippet": "(`runtime/capability/compatibility/compat_modes.c` has no callers)."
     },
     {
       "classification": "docs",
@@ -2573,7 +2573,7 @@
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 16,
-      "snippet": "- Existing build identity and descriptor emission under `src/release/build_id_engine.py` and `src/compat/descriptor/descriptor_engine.py`"
+      "snippet": "- Existing build identity and descriptor emission under `src/tools/release/build_id_engine.py` and `src/compat/descriptor/descriptor_engine.py`"
     },
     {
       "classification": "docs",
@@ -2843,13 +2843,13 @@
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 32,
-      "snippet": "- `apps.client.net` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.client` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 33,
-      "snippet": "- `apps.client.ui` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.ui.client` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -2861,13 +2861,13 @@
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 36,
-      "snippet": "- `apps.server.net` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.server` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 37,
-      "snippet": "- `apps.server.runtime` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.shell.server` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -2973,21 +2973,21 @@
     },
     {
       "classification": "docs",
-      "file": "docs/compat/DEGRADE_LADDERS.md",
+      "file": "docs/compatibility/DEGRADE_LADDERS.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/NEGOTIATION_HANDSHAKES.md`, `schema/compat/degrade_ladder.schema`, and `schema/compa"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `schema/compat/degrade_ladder.schema`, and `schema/compa"
     },
     {
       "classification": "docs",
-      "file": "docs/compat/ENDPOINT_DESCRIPTORS.md",
+      "file": "docs/compatibility/ENDPOINT_DESCRIPTORS.md",
       "line": 119,
-      "snippet": "`tools/compat/tool_generate_descriptor_manifest.py` scans `dist/bin`, runs each shipped product surface with `--descriptor`, and writes:"
+      "snippet": "`tools/compat/tool_generate_descriptor_manifest.py` scans `archive/generated/dist/bin`, runs each shipped product surface with `--descriptor`, and writes:"
     },
     {
       "classification": "docs",
-      "file": "docs/compat/NEGOTIATION_HANDSHAKES.md",
+      "file": "docs/compatibility/NEGOTIATION_HANDSHAKES.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `schema/compat/negotiation_record.schema`, `schema/compat/"
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `schema/compat/negotiation_record.schema`, `schema/compat/"
     },
     {
       "classification": "docs",
@@ -3929,7 +3929,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.780d94fedce7b7ce.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/VALIDATION_STACK_MAP.md, docs/compat/NEGOTIATION_HANDSHAKES.md`"
+      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/VALIDATION_STACK_MAP.md, docs/compatibility/NEGOTIATION_HANDSHAKES.md`"
     },
     {
       "classification": "docs",
@@ -4949,7 +4949,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.00cf6390ae492905.md",
       "line": 31,
-      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/VALIDATION_STACK_MAP.md, docs/compat/NEGOTIATION_HANDSHAKES.md`"
+      "snippet": "- Docs: `docs/audit/REPO_TREE_INDEX.md, docs/audit/VALIDATION_STACK_MAP.md, docs/compatibility/NEGOTIATION_HANDSHAKES.md`"
     },
     {
       "classification": "docs",
@@ -7685,7 +7685,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.7f4ea47732fce833.md",
       "line": 29,
-      "snippet": "- Docs: `docs/architecture/ARTIFACT_MODEL.md, docs/audit/ARTIFACT_MANIFEST_BASELINE.md, docs/audit/INSTANCE_MANIFEST_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/compat/MIGRATION_LIFECYCLE_MODEL."
+      "snippet": "- Docs: `docs/architecture/ARTIFACT_MODEL.md, docs/audit/ARTIFACT_MANIFEST_BASELINE.md, docs/audit/INSTANCE_MANIFEST_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/compatibility/MIGRATION_LIFECYCLE_MODEL."
     },
     {
       "classification": "docs",
@@ -10391,7 +10391,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 895,
-      "snippet": "`appshell/`, `release/`, `compat/`, `lib/install/`, `data/registries/virtual_root_registry.json`, `dist/`, repo-local `saves/`"
+      "snippet": "`appshell/`, `release/`, `compat/`, `lib/install/`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, repo-local `saves/`"
     },
     {
       "classification": "docs",
@@ -10421,7 +10421,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -10439,7 +10439,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
       "line": 429,
-      "snippet": "CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schemas/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirm"
+      "snippet": "CONVERGE-06 completed contract-adjacent convergence for root-level `schema/` and `schemas/`, merging retained schema material under `contracts/schema/`. `compat/` and `locks/` remain review roots, `registry/` and `registries/` were confirm"
     },
     {
       "classification": "docs",
@@ -10451,7 +10451,7 @@
       "classification": "docs",
       "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
       "line": 152,
-      "snippet": "| `tools/compatx/*`, `tools/pack/*`, `tools/validation/*`, `tools/validate/*` | `/tools/compat/*` and `/tools/release/*` | validation and compatibility adapters | `provisional` | compat, lib, schema data | `medium` |"
+      "snippet": "| `tools/xstack/compatx/*`, `tools/pack/*`, `tools/validators/suite/*`, `tools/validators/*` | `/tools/compat/*` and `/tools/release/*` | validation and compatibility adapters | `provisional` | compat, lib, schema data | `medium` |"
     },
     {
       "classification": "docs",
@@ -10571,7 +10571,7 @@
       "classification": "docs",
       "file": "docs/restructure/XI_4Z_TARGET_NORMALIZATION_REPORT.md",
       "line": 55,
-      "snippet": "| `src/compat/capability_negotiation.py` | `compat` | `compat.compat` | `tools` | `tools.compatx.core` | `compat/capability_negotiation.py` |"
+      "snippet": "| `src/compat/capability_negotiation.py` | `compat` | `compat.compat` | `tools` | `tools.xstack.compatx.core` | `compat/capability_negotiation.py` |"
     },
     {
       "classification": "docs",
@@ -10761,49 +10761,49 @@
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/capability_set.c",
+      "file": "runtime/capability/compatibility/capability_set.c",
       "line": 2,
       "snippet": "FILE: source/domino/compat/capability_set.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/capability_set.c",
+      "file": "runtime/capability/compatibility/capability_set.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / compat/capability_set"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/compat_core.c",
+      "file": "runtime/capability/compatibility/compat_core.c",
       "line": 2,
       "snippet": "FILE: source/domino/compat/compat_core.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/compat_core.c",
+      "file": "runtime/capability/compatibility/compat_core.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / compat/compat_core"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/compat_modes.c",
+      "file": "runtime/capability/compatibility/compat_modes.c",
       "line": 2,
       "snippet": "FILE: source/domino/compat/compat_modes.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/compat_modes.c",
+      "file": "runtime/capability/compatibility/compat_modes.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / compat/compat_modes"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/fixed_debug.c",
+      "file": "runtime/capability/compatibility/fixed_debug.c",
       "line": 2,
       "snippet": "FILE: source/domino/compat/fixed_debug.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/compat/fixed_debug.c",
+      "file": "runtime/capability/compatibility/fixed_debug.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / compat/fixed_debug"
     },
@@ -10817,7 +10817,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 342,
-      "snippet": "\"docs/compat/ENDPOINT_DESCRIPTORS.md\","
+      "snippet": "\"docs/compatibility/ENDPOINT_DESCRIPTORS.md\","
     },
     {
       "classification": "unknown",
@@ -10841,7 +10841,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 356,
-      "snippet": "\"docs/compat/ENDPOINT_DESCRIPTORS.md\","
+      "snippet": "\"docs/compatibility/ENDPOINT_DESCRIPTORS.md\","
     },
     {
       "classification": "unknown",
@@ -10883,13 +10883,13 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 644,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\","
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\","
     },
     {
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 655,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\","
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\","
     },
     {
       "classification": "unknown",
@@ -10901,7 +10901,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 667,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\","
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\","
     },
     {
       "classification": "unknown",
@@ -10913,13 +10913,13 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 682,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\""
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\""
     },
     {
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 691,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\","
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\","
     },
     {
       "classification": "unknown",
@@ -10943,7 +10943,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 705,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\","
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\","
     },
     {
       "classification": "unknown",
@@ -10967,7 +10967,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 720,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\","
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\","
     },
     {
       "classification": "unknown",
@@ -10997,7 +10997,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 742,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\","
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\","
     },
     {
       "classification": "unknown",
@@ -11015,7 +11015,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 764,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\","
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\","
     },
     {
       "classification": "unknown",
@@ -11027,7 +11027,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 779,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\","
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\","
     },
     {
       "classification": "unknown",
@@ -11057,7 +11057,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 793,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\""
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\""
     },
     {
       "classification": "unknown",
@@ -11099,7 +11099,7 @@
       "classification": "tools",
       "file": "scripts/ci/check_repox_rules.py",
       "line": 6609,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\": ("
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\": ("
     },
     {
       "classification": "tools",
@@ -11111,7 +11111,7 @@
       "classification": "tools",
       "file": "scripts/ci/check_repox_rules.py",
       "line": 6667,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\": ("
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\": ("
     },
     {
       "classification": "tools",
@@ -11151,211 +11151,211 @@
     },
     {
       "classification": "tools",
-      "file": "tools/appshell/ipc_unify_common.py",
+      "file": "tools/validators/shell/ipc_unify_common.py",
       "line": 54,
       "snippet": "\"path\": \"compat/handshake/handshake_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/appshell/ipc_unify_common.py",
+      "file": "tools/validators/shell/ipc_unify_common.py",
       "line": 265,
-      "snippet": "\"Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/IPC_ATTACH_CONSOLES.md`, `docs/compat/NEGOTIATION_HANDSHAKES.md`, and `docs/release/FROZEN_INVARIANTS_v0_0_0.md`.\","
+      "snippet": "\"Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/IPC_ATTACH_CONSOLES.md`, `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, and `docs/release/FROZEN_INVARIANTS_v0_0_0.md`.\","
     },
     {
       "classification": "tools",
-      "file": "tools/appshell/ipc_unify_common.py",
+      "file": "tools/validators/shell/ipc_unify_common.py",
       "line": 792,
       "snippet": "\"4. Run CAP-NEG handshake via `compat/handshake/handshake_engine.py` before opening channels.\","
     },
     {
       "classification": "tools",
-      "file": "tools/appshell/ipc_unify_common.py",
+      "file": "tools/validators/shell/ipc_unify_common.py",
       "line": 831,
       "snippet": "\"- Handshake: `compat/handshake/handshake_engine.py`\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
       "line": 12,
-      "snippet": "\"docs/compat/ENDPOINT_DESCRIPTORS.md\": ("
+      "snippet": "\"docs/compatibility/ENDPOINT_DESCRIPTORS.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
       "line": 34,
       "snippet": "\"compat/descriptor/descriptor_engine.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
       "line": 39,
       "snippet": "\"tools/compat/tool_emit_descriptor.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e406_missing_endpoint_descriptor_smell.py",
       "line": 43,
       "snippet": "\"tools/compat/tool_generate_descriptor_manifest.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e408_silent_degrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e408_silent_degrade_smell.py",
       "line": 12,
       "snippet": "\"compat/capability_negotiation.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
       "line": 13,
       "snippet": "\"compat/descriptor/descriptor_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
       "line": 14,
       "snippet": "\"tools/compat/tool_emit_descriptor.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e409_nondeterministic_descriptor_smell.py",
       "line": 15,
       "snippet": "\"tools/compat/tool_generate_descriptor_manifest.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e410_connection_without_negotiation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e410_connection_without_negotiation_smell.py",
       "line": 12,
-      "snippet": "\"docs/compat/NEGOTIATION_HANDSHAKES.md\": ("
+      "snippet": "\"docs/compatibility/NEGOTIATION_HANDSHAKES.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e410_connection_without_negotiation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e410_connection_without_negotiation_smell.py",
       "line": 28,
       "snippet": "\"tools/compat/tool_replay_negotiation.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e411_silent_feature_disable_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e411_silent_feature_disable_smell.py",
       "line": 12,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\": ("
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e411_silent_feature_disable_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e411_silent_feature_disable_smell.py",
       "line": 17,
       "snippet": "\"compat/negotiation/degrade_enforcer.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e412_missing_degrade_rule_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e412_missing_degrade_rule_smell.py",
       "line": 27,
-      "snippet": "\"docs/compat/DEGRADE_LADDERS.md\": ("
+      "snippet": "\"docs/compatibility/DEGRADE_LADDERS.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e413_missing_interop_test_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e413_missing_interop_test_smell.py",
       "line": 18,
       "snippet": "\"tools/compat/cap_neg4_common.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e413_missing_interop_test_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e413_missing_interop_test_smell.py",
       "line": 25,
       "snippet": "\"tools/compat/tool_run_interop_stress.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e414_missing_pack_compat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e414_missing_pack_compat_smell.py",
       "line": 27,
       "snippet": "\"packs/compat/pack_compat_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e415_pack_loaded_without_compat_validation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e415_pack_loaded_without_compat_validation_smell.py",
       "line": 12,
       "snippet": "\"packs/compat/pack_compat_validator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e416_pack_loaded_without_verification_smell.py",
       "line": 16,
       "snippet": "\"packs/compat/pack_verification_pipeline.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e417_nondeterministic_pack_order_smell.py",
       "line": 16,
       "snippet": "\"packs/compat/pack_verification_pipeline.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e418_missing_format_version_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e418_missing_format_version_smell.py",
       "line": 12,
-      "snippet": "\"docs/compat/DATA_FORMAT_VERSIONING.md\": ("
+      "snippet": "\"docs/compatibility/DATA_FORMAT_VERSIONING.md\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e418_missing_format_version_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e418_missing_format_version_smell.py",
       "line": 17,
       "snippet": "\"compat/data_format_loader.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e419_silent_migration_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e419_silent_migration_smell.py",
       "line": 12,
       "snippet": "\"compat/data_format_loader.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e419_silent_migration_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e419_silent_migration_smell.py",
       "line": 18,
       "snippet": "\"tools/compat/tool_replay_migration.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e429_unnegotiated_attach_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e429_unnegotiated_attach_smell.py",
       "line": 45,
       "snippet": "\"compat/handshake/handshake_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e483_silent_shim_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e483_silent_shim_smell.py",
       "line": 44,
       "snippet": "related_paths=[rel_path, \"compat/shims/common.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"compat/migration_lifecycle.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
       "line": 44,
       "snippet": "rel_path or \"compat/migration_lifecycle.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e523_artifact_loaded_without_policy_smell.py",
       "line": 45,
       "snippet": "\"tools/compat/migration_lifecycle_common.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e524_silent_migration_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e524_silent_migration_smell.py",
       "line": 37,
       "snippet": "file_path=rel_path or \"compat/migration_lifecycle.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e524_silent_migration_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e524_silent_migration_smell.py",
       "line": 46,
       "snippet": "rel_path or \"compat/migration_lifecycle.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e524_silent_migration_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e524_silent_migration_smell.py",
       "line": 47,
       "snippet": "\"tools/compat/migration_lifecycle_common.py\","
     },
@@ -11399,19 +11399,19 @@
       "classification": "tools",
       "file": "tools/compat/migration_lifecycle_common.py",
       "line": 441,
-      "snippet": "(\"contracts/schemas/compat/migration_policy.schema\", \"migration policy schema is required\", RULE_POLICY),"
+      "snippet": "(\"contracts/schema/compat/migration_policy.schema\", \"migration policy schema is required\", RULE_POLICY),"
     },
     {
       "classification": "tools",
       "file": "tools/compat/migration_lifecycle_common.py",
       "line": 442,
-      "snippet": "(\"contracts/schemas/compat/migration_chain.schema\", \"migration chain schema is required\", RULE_POLICY),"
+      "snippet": "(\"contracts/schema/compat/migration_chain.schema\", \"migration chain schema is required\", RULE_POLICY),"
     },
     {
       "classification": "tools",
       "file": "tools/compat/migration_lifecycle_common.py",
       "line": 443,
-      "snippet": "(\"contracts/schemas/compat/migration_decision_record.schema\", \"migration decision record schema is required\", RULE_POLICY),"
+      "snippet": "(\"contracts/schema/compat/migration_decision_record.schema\", \"migration decision record schema is required\", RULE_POLICY),"
     },
     {
       "classification": "tools",
@@ -11439,13 +11439,13 @@
     },
     {
       "classification": "tools",
-      "file": "tools/compatx/README.md",
+      "file": "tools/xstack/compatx/README.md",
       "line": 20,
       "snippet": "- Canonical baseline: `docs/audit/compat/COMPAT_BASELINE.json`"
     },
     {
       "classification": "tools",
-      "file": "tools/compatx/README.md",
+      "file": "tools/xstack/compatx/README.md",
       "line": 21,
       "snippet": "- Derived summary: `docs/audit/compat/COMPAT_BASELINE.md`"
     },
@@ -11531,7 +11531,7 @@
       "classification": "tools",
       "file": "tools/review/doc_inventory_common.py",
       "line": 320,
-      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/worldgen/\", \"docs/geo/\", \"docs/logic/\", \"docs/appshell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compat/\", \"docs/net/\", \"d"
+      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/domains/worldgen/\", \"docs/domains/geology/\", \"docs/logic/\", \"docs/runtime/shell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compatibility/\", \"docs/runtime/network/\", \"d"
     },
     {
       "classification": "tools",

@@ -46,7 +46,7 @@ Common ABI and host wiring for Dominium command-line tools. Each tool shares the
 ## Adding a new tool
 
 1. Implement a `dom_tool_<id>_main(dom_tool_ctx *ctx, int argc, char **argv)` entry point. Populate `ctx->env` fields as needed and return an exit code.
-2. Add a `dom_tool_reg_entry` entry in `g_tools` inside `source/dominium/tools/core/tool_core.c` with struct size/version set and `entry` pointing at the function from step 1.
+2. Add a `dom_tool_reg_entry` entry in `g_tools` inside `source/dominium/tools/validators/core/tool_core.c` with struct size/version set and `entry` pointing at the function from step 1.
 3. Link the tool’s target against `dominium_tools_core` so the registry and ABI types are available.
 
 ## Running tools

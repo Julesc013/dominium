@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/continuation_policy.cpp
+FILE: game/rule/life/continuation_policy.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements continuation policy evaluation and selection.

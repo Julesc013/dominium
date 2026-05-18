@@ -29,7 +29,7 @@ Selected planning/reality JSON files parsed successfully with `ConvertFrom-Json`
 - Reality doctrine roots: `specs/reality/**`, `data/reality/**`.
 - Contract/schema roots: `contracts/**`, `schema/**`, `schemas/**`.
 - Release/control/security roots: `docs/release/**`, `repo/release_policy.toml`, `release/**`, `updates/**`, `security/**`.
-- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/auditx/**`.
+- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/xstack/auditx/**`.
 
 ## AGENTS.md Status
 

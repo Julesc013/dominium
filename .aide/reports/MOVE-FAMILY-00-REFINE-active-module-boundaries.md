@@ -25,9 +25,9 @@ The target Python roots contain active importable packages/modules, not passive 
 
 Decision-bearing examples:
 
-- `release/update_resolver.py` imports `governance` and `meta.identity`.
-- `runtime/appshell/commands/command_engine.py` imports `validation`.
-- `runtime/appshell/logging/log_engine.py` imports `meta.observability`.
+- `tools/release/update_resolver.py` imports `governance` and `meta.identity`.
+- `runtime/shell/commands/command_engine.py` imports `validation`.
+- `runtime/shell/logging/log_engine.py` imports `meta.observability`.
 - `apps/client/interaction/preview_generator.py` imports `performance.cost_engine` and `performance.inspection_cache`.
 - `engine/time/time_mapping_engine.py` and game physics modules import `meta.numeric`.
 - RepoX/AuditX/TestX surfaces import `validation`, `meta.stability`, `meta.identity`, and many semantic `meta` subpackages.
@@ -36,7 +36,7 @@ Decision-bearing examples:
 
 | Group | Migration Mode | Why |
 | --- | --- | --- |
-| `governance/**` | move_with_temporary_shim | Release/setup/dist/tools import the root package directly. |
+| `governance/**` | move_with_temporary_shim | Release/setup/archive/generated/dist/tools import the root package directly. |
 | `meta/identity/**` | move_with_temporary_shim | Identity helpers are used by release, security, tools, and validation. |
 | `meta/stability/**` | move_with_temporary_shim | Registry validators are used by validation, AuditX, RepoX, TestX, and repo tooling. |
 | `validation/**` | move_with_temporary_shim | Runtime AppShell and many tools import `validation` directly. |

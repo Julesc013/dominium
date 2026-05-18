@@ -44,17 +44,17 @@ Portable projection generation is therefore not build-proven. This task records 
 
 | Command/Tool | Purpose | Safe To Run? | Result | Notes |
 | --- | --- | --- | --- | --- |
-| `python apps/setup/packages/scripts/packaging/pipeline.py --help` | packaging pipeline root help | yes | pass | exposes `assemble`, `portable`, `windows`, `steam`, `macos`, and `linux` |
-| `python apps/setup/packages/scripts/packaging/pipeline.py assemble --help` | assemble artifact root from build output | yes, help only | pass | real run requires build dir |
-| `python apps/setup/packages/scripts/packaging/pipeline.py portable --help` | create portable archive from artifact root | yes, help only | pass | real run requires artifact root |
-| `python tools/distribution/tool_pkg_pack.py --help` | pack deterministic `.dompkg` artifacts | yes | pass | also used for temp docs package smoke |
-| `python tools/distribution/tool_pkg_verify.py --help` | verify `.dompkg` artifacts | yes | pass | also used for temp docs package smoke |
-| `python tools/distribution/tool_pkg_index.py --help` | create package index | yes, help only | pass | real run requires package directory |
-| `python tools/distribution/pkg_pack_all.py --help` | pack build outputs into package groups | yes, help only | pass | real run requires build output |
-| `python tools/distribution/pkg_verify_all.py --help` | verify package output tree | yes, help only | pass | real run requires package directory |
-| `python tools/distribution/build_manifest.py --help` | generate dist build manifest | yes, help only | pass | real run requires package index |
-| `python tools/distribution/setup_install_smoke.py --help` | setup smoke runner | yes, help only | pass | real run currently inherits setup Python bridge blocker |
-| `python tools/distribution/launcher_run_smoke.py --help` | launcher smoke runner | yes, help only | pass | real run creates temp manifests and requires launcher CLI behavior |
+| `python release/packaging/setup/scripts/packaging/pipeline.py --help` | packaging pipeline root help | yes | pass | exposes `assemble`, `portable`, `windows`, `steam`, `macos`, and `linux` |
+| `python release/packaging/setup/scripts/packaging/pipeline.py assemble --help` | assemble artifact root from build output | yes, help only | pass | real run requires build dir |
+| `python release/packaging/setup/scripts/packaging/pipeline.py portable --help` | create portable archive from artifact root | yes, help only | pass | real run requires artifact root |
+| `python tools/package/distribution/tool_pkg_pack.py --help` | pack deterministic `.dompkg` artifacts | yes | pass | also used for temp docs package smoke |
+| `python tools/package/distribution/tool_pkg_verify.py --help` | verify `.dompkg` artifacts | yes | pass | also used for temp docs package smoke |
+| `python tools/package/distribution/tool_pkg_index.py --help` | create package index | yes, help only | pass | real run requires package directory |
+| `python tools/package/distribution/pkg_pack_all.py --help` | pack build outputs into package groups | yes, help only | pass | real run requires build output |
+| `python tools/package/distribution/pkg_verify_all.py --help` | verify package output tree | yes, help only | pass | real run requires package directory |
+| `python tools/package/distribution/build_manifest.py --help` | generate dist build manifest | yes, help only | pass | real run requires package index |
+| `python tools/package/distribution/setup_install_smoke.py --help` | setup smoke runner | yes, help only | pass | real run currently inherits setup Python bridge blocker |
+| `python tools/package/distribution/launcher_run_smoke.py --help` | launcher smoke runner | yes, help only | pass | real run creates temp manifests and requires launcher CLI behavior |
 
 ## Portable Projection Sequence Tested
 
@@ -63,8 +63,8 @@ Portable projection generation is therefore not build-proven. This task records 
 | contract audit | `python tools/validators/check_portable_projection.py --repo-root .` | pass, partial proof | `proof_status: partial` | contract/docs/tools coherent; binaries and projection root missing |
 | dry-run layout | `python tools/validators/check_portable_projection.py --repo-root . --dry-run` | pass, partial proof | dry-run printed blocked sequence | no output creation |
 | strict projection proof | `python tools/validators/check_portable_projection.py --repo-root . --strict` | expected fail | strict exits non-zero because `proof_status` is not `proven` | no projection root or built binaries exist |
-| `.dompkg` pack smoke | `python tools/distribution/tool_pkg_pack.py --input-file docs/distribution/PORTABLE_INSTALL_LAYOUT.md --out %TEMP%/.../smoke_docs.dompkg ...` | pass | `result: ok`, `file_count: 1` | temp output removed |
-| `.dompkg` verify smoke | `python tools/distribution/tool_pkg_verify.py --pkg %TEMP%/.../smoke_docs.dompkg` | pass | `result: ok`, matching content hash | temp output removed |
+| `.dompkg` pack smoke | `python tools/package/distribution/tool_pkg_pack.py --input-file docs/distribution/PORTABLE_INSTALL_LAYOUT.md --out %TEMP%/.../smoke_docs.dompkg ...` | pass | `result: ok`, `file_count: 1` | temp output removed |
+| `.dompkg` verify smoke | `python tools/package/distribution/tool_pkg_verify.py --pkg %TEMP%/.../smoke_docs.dompkg` | pass | `result: ok`, matching content hash | temp output removed |
 
 ## Projection Layout Result
 
@@ -108,7 +108,7 @@ Portable projection generation is therefore not build-proven. This task records 
 - Packaging pipeline `assemble` requires a build directory containing built outputs.
 - No real portable projection root was generated.
 - Required portable manifests were not generated into a projection root.
-- Setup Python bridge and `dist/bin/dom` blockers remain from POST-CONVERGE-08.
+- Setup Python bridge and `archive/generated/dist/bin/dom` blockers remain from POST-CONVERGE-08.
 
 ## Files Added/Changed
 
@@ -123,8 +123,8 @@ Portable projection generation is therefore not build-proven. This task records 
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `python tools/distribution/tool_pkg_pack.py ...` | pass | temporary docs `.dompkg` generated under `%TEMP%` |
-| `python tools/distribution/tool_pkg_verify.py --pkg <temp>/smoke_docs.dompkg` | pass | temporary package verified and then removed |
+| `python tools/package/distribution/tool_pkg_pack.py ...` | pass | temporary docs `.dompkg` generated under `%TEMP%` |
+| `python tools/package/distribution/tool_pkg_verify.py --pkg <temp>/smoke_docs.dompkg` | pass | temporary package verified and then removed |
 | `python -m py_compile tools/validators/check_portable_projection.py` | pass | validator parses successfully |
 | `python tools/validators/check_portable_projection.py --repo-root .` | pass, partial proof | blockers: missing built product binaries and no projection root |
 | `python tools/validators/check_portable_projection.py --repo-root . --json` | pass, partial proof | JSON report emitted; contract/docs/tools present |
@@ -149,6 +149,6 @@ Targeted package/projection/setup remediation before CONTRACT-00:
 
 - provide the Visual Studio 17 2022 verify lane or accepted CI build proof
 - run configure/build/CTest and rerun product boot proof
-- fix or classify setup Python bridge compatibility and the missing `dist/bin/dom` target
+- fix or classify setup Python bridge compatibility and the missing `archive/generated/dist/bin/dom` target
 - add or prove a real portable projection assembly path that emits required manifests and roots
 - rerun POST-CONVERGE-09 after a real projection root can be generated or explicitly accepted as partial

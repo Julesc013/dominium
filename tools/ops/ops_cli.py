@@ -29,8 +29,8 @@ from tools.lib.content_store import (
     store_add_tree_artifact,
     store_artifact_root,
 )
-from tools.libraries.install import normalize_contract_range
-from tools.libraries.instance import (
+from tools.package.libraries.install import normalize_contract_range
+from tools.package.libraries.instance import (
     INSTANCE_KIND_CLIENT,
     clone_instance_local,
     deterministic_fingerprint as instance_deterministic_fingerprint,
@@ -45,7 +45,7 @@ from tools.libraries.instance import (
     stable_instance_id,
     validate_instance_manifest,
 )
-from tools.libraries.provides import infer_resolution_policy_id, normalize_provides_resolutions
+from tools.package.libraries.provides import infer_resolution_policy_id, normalize_provides_resolutions
 
 
 DEFAULT_INSTALL_MANIFEST = "install.manifest.json"

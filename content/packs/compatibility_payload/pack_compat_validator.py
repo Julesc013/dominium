@@ -6,13 +6,13 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from tools.libraries.provides import (
+from tools.package.libraries.provides import (
     normalize_provides_declarations,
     validate_provides_declaration,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
-from tools.compatx.core.semantic_contract_validator import load_semantic_contract_registry, semantic_contract_ids
+from tools.xstack.compatx.core.semantic_contract_validator import load_semantic_contract_registry, semantic_contract_ids
 from meta_extensions_engine import normalize_extensions_tree
 
 

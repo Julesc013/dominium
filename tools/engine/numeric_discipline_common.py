@@ -25,28 +25,28 @@ LAST_REVIEWED = "2026-03-14"
 TRUTH_PATH_NUMERIC = (
     "tools/repo/meta/numeric.py",
     "engine/time/time_mapping_engine.py",
-    "game/domains/physics/momentum_engine.py",
-    "game/domains/physics/energy/energy_ledger_engine.py",
-    "game/domains/mobility/micro/free_motion_solver.py",
-    "game/domains/astronomy/illumination/illumination_geometry_engine.py",
-    "game/domains/astronomy/ephemeris/kepler_proxy_engine.py",
+    "game/domain/physics/momentum_engine.py",
+    "game/domain/physics/energy/energy_ledger_engine.py",
+    "game/domain/mobility/micro/free_motion_solver.py",
+    "game/domain/astronomy/illumination/illumination_geometry_engine.py",
+    "game/domain/astronomy/ephemeris/kepler_proxy_engine.py",
 )
 REVIEWED_NUMERIC_BRIDGES = {
-    "game/domains/geology/kernel/geo_kernel.py": "projection/query bridge with deterministic quantization",
-    "game/domains/geology/metric/metric_engine.py": "bounded geodesic approximation bridge",
-    "game/domains/processes/qc/qc_engine.py": "qc/reporting quantization bridge",
-    "game/domains/mobility/micro/constrained_motion_solver.py": "heading derivation bridge with integer output",
-    "game/domains/mobility/geometry/geometry_engine.py": "grid snap bridge with integer output",
+    "game/domain/geology/kernel/geo_kernel.py": "projection/query bridge with deterministic quantization",
+    "game/domain/geology/metric/metric_engine.py": "bounded geodesic approximation bridge",
+    "game/domain/processes/qc/qc_engine.py": "qc/reporting quantization bridge",
+    "game/domain/mobility/micro/constrained_motion_solver.py": "heading derivation bridge with integer output",
+    "game/domain/mobility/geometry/geometry_engine.py": "grid snap bridge with integer output",
     "tools/repo/meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
 }
 RENDER_ONLY_NUMERIC = (
-    "apps/client/render/renderers/software_renderer.py",
-    "engine/platform/platform_input_routing.py",
-    "engine/platform/platform_window.py",
+    "runtime/render/client/renderers/software_renderer.py",
+    "runtime/platform/platform_input_routing.py",
+    "runtime/platform/platform_window.py",
 )
 TOOLING_ONLY_NUMERIC = (
     "tools/audit/",
-    "tools/dist/",
+    "tools/release/dist/",
     "tools/release/",
 )
 

@@ -18,15 +18,15 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SERIES_DEP_GRAPH_REL = "content/data/blueprint/series_dependency_graph.json"
+SERIES_DEP_GRAPH_REL = "archive/generated/blueprint/series_dependency_graph.json"
 CAPABILITY_DEP_GRAPH_REL = "contracts/blueprint/capability_dependency_graph.json"
 READINESS_MATRIX_REL = "contracts/blueprint/readiness_matrix.json"
 PIPE_DREAMS_MATRIX_REL = "contracts/blueprint/pipe_dreams_matrix.json"
 
-SERIES_EXECUTION_STRATEGY_REL = "content/data/blueprint/series_execution_strategy.json"
-FOUNDATION_PHASES_REL = "content/data/blueprint/foundation_phases.json"
-STOP_CONDITIONS_REL = "content/data/blueprint/stop_conditions.json"
-MANUAL_REVIEW_GATES_REL = "content/data/blueprint/manual_review_gates.json"
+SERIES_EXECUTION_STRATEGY_REL = "archive/generated/blueprint/series_execution_strategy.json"
+FOUNDATION_PHASES_REL = "archive/generated/blueprint/foundation_phases.json"
+STOP_CONDITIONS_REL = "archive/generated/blueprint/stop_conditions.json"
+MANUAL_REVIEW_GATES_REL = "archive/generated/blueprint/manual_review_gates.json"
 
 SERIES_EXECUTION_STRATEGY_DOC_REL = "docs/blueprint/SERIES_EXECUTION_STRATEGY.md"
 FOUNDATION_PHASES_DOC_REL = "docs/blueprint/FOUNDATION_PHASES.md"

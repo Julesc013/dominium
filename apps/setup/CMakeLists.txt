@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_library(setup_core STATIC
-    core/dsk_setup_core.c
+    lifecycle/dsk_setup_core.c
 )
 target_include_directories(setup_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -36,7 +36,7 @@ set_target_properties(setup_cli PROPERTIES
     C_EXTENSIONS OFF
 )
 add_executable(setup_gui
-    gui/dsu_gui_stub.c
+    ${CMAKE_SOURCE_DIR}/runtime/platform/win32/setup/dsu_gui_stub.c
 )
 target_link_libraries(setup_gui PRIVATE setup::setup)
 set_target_properties(setup_gui PROPERTIES
@@ -47,7 +47,7 @@ set_target_properties(setup_gui PROPERTIES
 )
 if(WIN32)
     add_executable(setup_app_win32 WIN32
-        gui/setup_app_win32.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/platform/win32/setup/setup_app_win32.cpp
     )
     target_link_libraries(setup_app_win32 PRIVATE
         libs::appcore

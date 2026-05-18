@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Derived from `docs/compat/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`.
+Compatibility: Derived from `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

@@ -18,9 +18,9 @@ def run(repo_root: str):
         "REVIEW_FIRST.md",
         "docs/restructure/XI_4B_REVIEW_GUIDE.md",
         "docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
-        "content/data/restructure/src_domain_mapping_lock_proposal.json",
-        "content/data/architecture/architecture_graph.json",
-        "content/data/refactor/convergence_execution_log.json",
+        "archive/generated/restructure/src_domain_mapping_lock_proposal.json",
+        "archive/generated/architecture/architecture_graph.json",
+        "archive/generated/refactor/convergence_execution_log.json",
     )
     for marker in required_entries:
         if marker not in manifest_text:

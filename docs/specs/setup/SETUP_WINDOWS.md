@@ -20,7 +20,7 @@ GUI/TUI/CLI frontends are first-class and must follow the same UX contract.
 
 ## Prerequisites
 - Windows with the WiX Toolset (v3+): `candle.exe`, `light.exe` on `PATH`.
-- Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/dist/`),
+- Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/archive/generated/dist/`),
   containing at minimum:
   - `dominium-setup.exe`
   - `dominium_setup_win32_gui.exe` (optional GUI frontend)
@@ -49,7 +49,7 @@ Key variables (all cached):
 - `DOMINIUM_GAME_VERSION` — installer version string (defaults to `0.1.0`).
 - `DOMINIUM_DIST_DIR` — staging root with binaries/data (defaults to
   `<build>/dist`).
-- `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/dist/installers/windows`
+- `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/archive/generated/dist/installers/windows`
   by default.
 - `DOMINIUM_LICENSE_FILE` — RTF shown by MSI/Burn UI.
 - `DOMINIUM_BUNDLE_ICON` — optional .ico embedded into the Burn EXE.
@@ -65,7 +65,7 @@ cmake --build build/debug --target dominium_msi
 cmake --build build/debug --target dominium_bundle  # if enabled
 ```
 
-Outputs land under `dist/installers/windows/`:
+Outputs land under `archive/generated/dist/installers/windows/`:
 - `Dominium-<version>.msi`
 - `Dominium-<version>-Setup.exe` (bootstrapper)
 

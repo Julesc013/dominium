@@ -21,7 +21,7 @@ OS_TOKEN_PATTERNS = (
     re.compile(r"\bimport\s+win32api\b", re.IGNORECASE),
 )
 
-RUNTIME_ROOTS = ("src", "engine", "game", "apps/client", "apps/server")
+RUNTIME_ROOTS = ("engine", "game", "runtime", "apps/client", "apps/server")
 RUNTIME_EXTS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp")
 SKIP_PREFIXES = ("build/", "dist/", "docs/", "archive/", "legacy/", "tools/xstack/out/")
 QUARANTINE_SKIP_PREFIXES = ("build/", "dist/", "docs/", "tools/xstack/out/")
@@ -83,19 +83,19 @@ def _check_runtime_no_tool_imports(repo_root: str, failures: List[str]) -> None:
 
 
 def _check_platform_isolation(repo_root: str, failures: List[str]) -> None:
-    for rel_path in _iter_files(repo_root, "src", RUNTIME_EXTS):
-        if rel_path.startswith("src/platform/"):
+    for rel_path in _iter_files(repo_root, "runtime", RUNTIME_EXTS):
+        if rel_path.startswith("runtime/platform/"):
             continue
         for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
             if not any(pattern.search(line) for pattern in OS_TOKEN_PATTERNS):
                 continue
             failures.append(
-                "BOUNDARY-PLATFORM-001 {}:{} platform/OS token outside src/platform".format(rel_path, line_no)
+                "BOUNDARY-PLATFORM-001 {}:{} platform/OS token outside runtime/platform".format(rel_path, line_no)
             )
 
 
 def _check_render_truth_isolation(repo_root: str, failures: List[str]) -> None:
-    for rel_path in _iter_files(repo_root, "apps/client/render", (".py",)):
+    for rel_path in _iter_files(repo_root, "runtime/render", (".py",)):
         for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
             if not RENDER_TRUTH_PATTERN.search(line):
                 continue
@@ -105,7 +105,7 @@ def _check_render_truth_isolation(repo_root: str, failures: List[str]) -> None:
 
 
 def _check_core_dependency_direction(repo_root: str, failures: List[str]) -> None:
-    for rel_path in _iter_files(repo_root, "src/core", (".py",)):
+    for rel_path in _iter_files(repo_root, "engine", (".py",)):
         for line_no, line in enumerate(_read_lines(repo_root, rel_path), start=1):
             if not any(pattern.search(line) for pattern in CORE_REVERSE_IMPORT_PATTERNS):
                 continue

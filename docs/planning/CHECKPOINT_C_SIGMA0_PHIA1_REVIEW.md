@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Φ-A1, Σ-1, Σ-2, C-ΣA1ΦA2
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `content/data/agents/agent_context.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `archive/generated/agents/agent_context.json`
 
 # Checkpoint C-Σ0ΦA1 Review
 
@@ -227,7 +227,7 @@ They are not themselves runtime architecture.
 | Disposition | Surface Families | Φ-A1 Consequence |
 | --- | --- | --- |
 | `preserve` | `client`, `server`, `launcher`, `setup` | keep product anchors stable; do not relocate runtime ownership into a new root by convenience |
-| `preserve` | `engine`, `game`, `game/content/core` | use these as the strongest runtime and product spine for kernel and component extraction |
+| `preserve` | `engine`, `game`, `content/domains/game/core` | use these as the strongest runtime and product spine for kernel and component extraction |
 | `extend` | `app`, `compat`, `control`, `core`, `net`, `process`, `server/runtime`, `server/persistence` | extract runtime kernel, component, and service boundaries from the distributed substrate instead of inventing a blank-slate service layer |
 | `extend` | semantic roots such as `worldgen`, `geo`, `reality`, `materials`, `logic`, `signals`, `system`, `universe`, `epistemics`, `diegetics`, `infrastructure`, `machines` | consume these as upstream semantic inputs; do not rebuild their meanings in runtime terms |
 | `consolidate` | generated operational evidence under `build`, `artifacts`, `.xstack_cache`, `run_meta` | use only with provenance; never treat them as policy or semantic owners |
@@ -276,7 +276,7 @@ Early `Φ` must carry forward all of the following ownership rules.
 
 ### F6. Generated And Cached Surfaces
 
-- `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain non-canonical evidence only
+- `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain non-canonical evidence only
 - early `Φ` must not treat them as authoritative model truth, service truth, or ownership proof unless a stronger source explicitly promotes that role
 
 ## G. Runtime-Surface Readiness Judgment

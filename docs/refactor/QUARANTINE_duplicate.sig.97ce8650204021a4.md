@@ -18,13 +18,13 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `tools/geo/tool_replay_frame_window.py`
-- `tools/geo/tool_replay_geometry_window.py`
-- `tools/geo/tool_replay_overlay_merge.py`
-- `tools/geo/tool_replay_path_request.py`
-- `tools/geo/tool_replay_view_window.py`
-- `tools/geo/tool_replay_worldgen_cell.py`
-- `tools/geo/tool_verify_metric_stability.py`
+- `tools/validators/domain/geology/tool_replay_frame_window.py`
+- `tools/validators/domain/geology/tool_replay_geometry_window.py`
+- `tools/validators/domain/geology/tool_replay_overlay_merge.py`
+- `tools/validators/domain/geology/tool_replay_path_request.py`
+- `tools/validators/domain/geology/tool_replay_view_window.py`
+- `tools/validators/domain/geology/tool_replay_worldgen_cell.py`
+- `tools/validators/domain/geology/tool_verify_metric_stability.py`
 - `tools/worldgen/tool_replay_system_instantiation.py`
 - `tools/worldgen/tool_replay_system_l2.py`
 - `tools/xstack/testx/tests/test_address_resolution_deterministic.py`
@@ -121,7 +121,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/xstack/testx/tests/test_embodied_move_determinism.py` disposition=`quarantine` rank=`5` total_score=`72.97` risk=`HIGH`
 - `tools/xstack/testx/tests/test_itinerary_deterministic.py` disposition=`quarantine` rank=`6` total_score=`71.91` risk=`HIGH`
 - `tools/xstack/testx/tests/test_faction_create_deterministic.py` disposition=`quarantine` rank=`7` total_score=`71.79` risk=`HIGH`
-- `tools/geo/tool_replay_view_window.py` disposition=`quarantine` rank=`8` total_score=`69.88` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_view_window.py` disposition=`quarantine` rank=`8` total_score=`69.88` risk=`HIGH`
 - `tools/xstack/testx/tests/test_capsule_capsule_collision_deterministic.py` disposition=`quarantine` rank=`9` total_score=`68.35` risk=`HIGH`
 - `tools/xstack/testx/tests/test_cohort_expand_deterministic_ids.py` disposition=`quarantine` rank=`10` total_score=`68.33` risk=`HIGH`
 - `tools/xstack/testx/tests/test_decay_deterministic.py` disposition=`quarantine` rank=`11` total_score=`68.33` risk=`HIGH`
@@ -133,13 +133,13 @@ Replacement Target: XI-4b manual review resolution
 - `tools/xstack/testx/tests/test_occupancy_deterministic.py` disposition=`quarantine` rank=`17` total_score=`65.95` risk=`HIGH`
 - `tools/xstack/testx/tests/test_project_create_deterministic.py` disposition=`quarantine` rank=`18` total_score=`65.95` risk=`HIGH`
 - `tools/xstack/testx/tests/test_provenance_events_deterministic.py` disposition=`quarantine` rank=`19` total_score=`65.95` risk=`HIGH`
-- `tools/geo/tool_replay_path_request.py` disposition=`quarantine` rank=`20` total_score=`65.6` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_path_request.py` disposition=`quarantine` rank=`20` total_score=`65.6` risk=`HIGH`
 - `tools/xstack/testx/tests/test_camera_bind_requires_entitlement.py` disposition=`quarantine` rank=`21` total_score=`64.64` risk=`HIGH`
 - `tools/xstack/testx/tests/test_loss_fraction_deterministic.py` disposition=`drop` rank=`22` total_score=`63.57` risk=`HIGH`
 - `tools/xstack/testx/tests/test_budget_degrade_reports.py` disposition=`merge` rank=`23` total_score=`63.23` risk=`HIGH`
 - `tools/xstack/testx/tests/test_trust_update_deterministic.py` disposition=`merge` rank=`24` total_score=`63.23` risk=`HIGH`
-- `tools/geo/tool_replay_frame_window.py` disposition=`merge` rank=`25` total_score=`62.7` risk=`HIGH`
-- `tools/geo/tool_verify_metric_stability.py` disposition=`merge` rank=`26` total_score=`62.7` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_frame_window.py` disposition=`merge` rank=`25` total_score=`62.7` risk=`HIGH`
+- `tools/validators/domain/geology/tool_verify_metric_stability.py` disposition=`merge` rank=`26` total_score=`62.7` risk=`HIGH`
 - `tools/xstack/testx/tests/test_reenactment_deterministic_hash.py` disposition=`merge` rank=`27` total_score=`62.5` risk=`HIGH`
 - `tools/xstack/testx/tests/test_materialize_deterministic_ids.py` disposition=`drop` rank=`28` total_score=`62.38` risk=`HIGH`
 - `tools/xstack/testx/tests/test_aggregation_deterministic.py` disposition=`drop` rank=`29` total_score=`62.26` risk=`HIGH`
@@ -191,7 +191,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/xstack/testx/tests/test_travel_tick_progress_deterministic.py` disposition=`drop` rank=`75` total_score=`58.81` risk=`HIGH`
 - `tools/xstack/testx/tests/test_wear_accumulation_deterministic.py` disposition=`drop` rank=`76` total_score=`58.81` risk=`HIGH`
 - `tools/worldgen/tool_replay_system_l2.py` disposition=`merge` rank=`77` total_score=`58.62` risk=`HIGH`
-- `tools/geo/tool_replay_overlay_merge.py` disposition=`merge` rank=`78` total_score=`57.82` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_overlay_merge.py` disposition=`merge` rank=`78` total_score=`57.82` risk=`HIGH`
 - `tools/xstack/testx/tests/test_budget_parallelism_reduction_deterministic.py` disposition=`drop` rank=`79` total_score=`57.62` risk=`HIGH`
 - `tools/xstack/testx/tests/test_coupling_consist_order_deterministic.py` disposition=`drop` rank=`80` total_score=`57.62` risk=`HIGH`
 - `tools/xstack/testx/tests/test_deterministic_ordering_of_instances.py` disposition=`drop` rank=`81` total_score=`57.62` risk=`HIGH`
@@ -201,9 +201,9 @@ Replacement Target: XI-4b manual review resolution
 - `tools/xstack/testx/tests/test_roi_triggers_deterministic_refinement.py` disposition=`drop` rank=`85` total_score=`57.62` risk=`HIGH`
 - `tools/xstack/testx/tests/test_schedule_departures_deterministic.py` disposition=`drop` rank=`86` total_score=`57.62` risk=`HIGH`
 - `tools/xstack/testx/tests/test_truncation_deterministic.py` disposition=`drop` rank=`87` total_score=`57.62` risk=`HIGH`
-- `tools/geo/tool_replay_worldgen_cell.py` disposition=`merge` rank=`88` total_score=`57.23` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_worldgen_cell.py` disposition=`merge` rank=`88` total_score=`57.23` risk=`HIGH`
 - `tools/xstack/testx/tests/test_inspection_snapshot_stable.py` disposition=`merge` rank=`89` total_score=`56.79` risk=`HIGH`
-- `tools/geo/tool_replay_geometry_window.py` disposition=`merge` rank=`90` total_score=`56.04` risk=`HIGH`
+- `tools/validators/domain/geology/tool_replay_geometry_window.py` disposition=`merge` rank=`90` total_score=`56.04` risk=`HIGH`
 - `tools/worldgen/tool_replay_system_instantiation.py` disposition=`merge` rank=`91` total_score=`55.73` risk=`HIGH`
 - `tools/xstack/testx/tests/test_epistemic_no_info_gain_from_expand.py` disposition=`merge` rank=`92` total_score=`55.6` risk=`HIGH`
 - `tools/xstack/testx/tests/test_route_reservation_conflict_deterministic.py` disposition=`drop` rank=`93` total_score=`55.36` risk=`HIGH`
@@ -224,7 +224,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

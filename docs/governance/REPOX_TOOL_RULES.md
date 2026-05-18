@@ -28,12 +28,12 @@ This document defines RepoX invariants for canonical tool discoverability and in
 
 - Intent: RepoX must canonicalize tool discovery in-process.
 - Fails when canonical tool root is not active in RepoX process `PATH` after canonicalization.
-- Canonical root prefers `dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/` and falls back to `dist/sys/<platform>/<arch>/bin/tools/`.
+- Canonical root prefers `archive/generated/dist/ws/<workspace_id>/sys/<platform>/<arch>/bin/tools/` and falls back to `archive/generated/dist/sys/<platform>/<arch>/bin/tools/`.
 
 ## INV-TOOLS-DIR-MISSING
 
 - Intent: fail explicitly when canonical tools output does not exist yet.
-- Fails when `dist/sys/<platform>/<arch>/bin/tools/` is missing.
+- Fails when `archive/generated/dist/sys/<platform>/<arch>/bin/tools/` is missing.
 - Remediation hint is mandatory: build tools via `ui_bind_phase` or canonical tools target.
 
 ## INV-TOOL-UNRESOLVABLE

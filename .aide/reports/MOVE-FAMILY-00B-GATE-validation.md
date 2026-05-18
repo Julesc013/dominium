@@ -21,7 +21,7 @@ PASS_WITH_WARNINGS.
 | Plan artifact JSON/TOML parsing and invariant inspection | PASS | Eight plan JSON files and plan TOML parsed; exact three moves; apply disabled. |
 | `git ls-files ide` | PASS | Exactly three tracked IDE manifest files. |
 | `git ls-files ide/manifests` | PASS | Matches the expected three tracked source files. |
-| `git ls-files contracts/projections/ide` | PASS | No tracked target collision. |
+| `git ls-files contracts/projection/ide` | PASS | No tracked target collision. |
 | `git status --short ide contracts/projections` | PASS | No dirty source or target paths. |
 | Target file existence checks | PASS | Planned target files absent; apply plan creates target path. |
 | `py -3 .aide/scripts/aide_lite.py doctor` | PASS | AIDE doctor passed. |
@@ -53,7 +53,7 @@ PASS_WITH_WARNINGS.
 
 ## Known Warnings
 
-- `contracts/projections/ide/**` does not exist yet; apply is expected to create it.
+- `contracts/projection/ide/**` does not exist yet; apply is expected to create it.
 - Historical and generated references to `ide/manifests/**` remain warning-only when classified as historical evidence or generated-output paths.
 - Strict validators emitted known TOML fallback-parser warnings while passing.
 

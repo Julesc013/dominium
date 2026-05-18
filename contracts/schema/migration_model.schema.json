@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Migration Model Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic CIV-4 migration model record.",
+  "x-doc-ref": [
+    "docs/civilisation/MIGRATION_AND_ASSIMILATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "migration_model_id",
+    "description",
+    "travel_time_policy_id",
+    "capacity_limits",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "migration_model_id": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "travel_time_policy_id": {
+      "type": "string"
+    },
+    "capacity_limits": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "number",
+          "integer",
+          "string",
+          "boolean"
+        ]
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "migration_model_id": "demo.migration.instant",
+      "description": "Instant deterministic migration.",
+      "travel_time_policy_id": "travel.instant",
+      "capacity_limits": {},
+      "extensions": {
+        "instant": true
+      }
+    }
+  ]
+}
+

@@ -1,0 +1,21 @@
+SCHEMA: materials/causality_strictness.schema
+schema_id: dominium.schema.materials.causality_strictness
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define causality strictness policy entry for nothing-just-happens enforcement.
+
+REQUIRED SHAPE:
+record causality_strictness
+  required:
+    - schema_version: semver
+    - causality_strictness_id: id
+    - level: enum(C0|C1|C2)
+    - description: string
+    - major_change_requires_commitment: bool
+    - event_required_for_macro_change: bool
+    - extensions: map
+
+INVARIANTS:
+- C0/C1/C2 policy semantics must be deterministic and monotonic in strictness.

@@ -53,7 +53,7 @@ Public headers live in `game/include/dominium/rules/war/`.
 - No omniscient outcome disclosure to UI.
 
 ## Tests (WAR2)
-Implemented in `game/tests/civ5_war2_engagement_tests.cpp`:
+Implemented in `tests/game/civ5_war2_engagement_tests.cpp`:
 - Deterministic resolution.
 - Batch vs step equivalence.
 - Casualty conservation.

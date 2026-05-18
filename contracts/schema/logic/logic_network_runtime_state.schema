@@ -1,0 +1,28 @@
+SCHEMA: logic/logic_network_runtime_state.schema
+schema_id: dominium.schema.logic.logic_network_runtime_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical per-network LOGIC-4 runtime state rows.
+- Track evaluation recency and throttle state without embedding hidden execution caches.
+
+NON-SEMANTICS:
+- This schema does not encode full signal traces.
+- It does not permit mutation outside deterministic Processes.
+- It does not authorize wall-clock timing.
+
+REQUIRED SHAPE:
+record logic_network_runtime_state
+  required:
+    - network_id: id
+    - last_evaluated_tick: u64
+    - throttled: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `network_id` must resolve to a declared logic network binding.
+- `last_evaluated_tick` is monotonic for a given `network_id`.
+- `throttled` reflects the last authoritative evaluation outcome for that network.
+- Any additional execution metadata must remain explicit in `extensions`.

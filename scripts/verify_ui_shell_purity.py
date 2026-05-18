@@ -11,9 +11,8 @@ FORBIDDEN_PREFIXES = [
     "game/",
     "apps/server/",
     "apps/client/presentation/",
-    "apps/client/net/",
-    "apps/client/input/",
-    "engine/modules/",
+    "runtime/network/client/",
+    "runtime/input/client/",
     "game/source/",
 ]
 
@@ -42,15 +41,15 @@ def main():
 
     repo_root = os.path.abspath(args.repo_root)
     default_roots = [
-        "apps/client/ui",
-        "apps/launcher/gui",
+        "runtime/ui",
+        "runtime/platform/win32/client",
+        "runtime/platform/win32/launcher",
         "apps/launcher/tui",
-        "apps/setup/gui",
+        "runtime/platform/win32/setup",
         "apps/setup/tui",
         "tools/editor_gui",
         "tools/launcher/ui",
         "tools/setup/ui",
-        "tools/ui_shared",
     ]
     roots = args.roots or default_roots
     roots = [os.path.join(repo_root, r) for r in roots if os.path.isdir(os.path.join(repo_root, r))]

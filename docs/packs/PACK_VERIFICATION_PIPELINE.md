@@ -14,7 +14,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 Define the deterministic offline verification pipeline used by Setup and Launcher before install, upgrade, enable/disable, or session start.
 
 ## Verification Steps
-1. Enumerate packs in `dist/packs`, sorted by `(pack_id, pack_version)`.
+1. Enumerate packs in `archive/generated/dist/packs`, sorted by `(pack_id, pack_version)`.
 2. Parse adjacent `pack.json` and `pack.compat.json`.
 3. Validate:
    - schema correctness
@@ -50,7 +50,7 @@ Define the deterministic offline verification pipeline used by Setup and Launche
   - still records all disabled or refused surfaces explicitly
 
 ## Portable Dist Requirement
-Portable `dist/` output must include the schema and registry assets required by offline validation:
+Portable `archive/generated/dist/` output must include the schema and registry assets required by offline validation:
 - `schemas/`
 - `tools/xstack/compatx/version_registry.json`
 - `data/registries/`

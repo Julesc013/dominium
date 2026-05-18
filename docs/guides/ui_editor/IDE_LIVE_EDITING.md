@@ -21,7 +21,7 @@ without replacing the canonical DUI pipeline.
 
 ## Preview Host Overview
 
-Preview hosts live under `tools/ui_preview_host/`:
+Preview hosts live under `apps/workbench/module/ui/preview/`:
 
 - Windows: `dominium-ui-preview-host-win32`
 - macOS: `dominium-ui-preview-host-macos`
@@ -46,7 +46,7 @@ they fall back to the DUI null backend (validation + event logging only).
 2. Open the solution generated in `build/windows-msvc-vs2026`.
 3. Set `dominium-ui-preview-host-win32` as the startup project.
 4. Debug arguments and working directory are preconfigured by CMake:
-   `--ui tools/launcher/ui/doc/launcher_ui_doc.tlv --watch`
+   `--ui tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv --watch`
 5. For a full regen + preview loop, build the custom target:
    `ui_preview_launcher_win32` (or `ui_preview_setup_win32`).
 
@@ -67,7 +67,7 @@ Optional: Visual Studio External Tools
 2. Open `build/macos-xcode/DominiumDomino.xcodeproj`.
 3. Select `dominium-ui-preview-host-macos` and run.
    CMake provides default scheme args:
-   `--ui tools/launcher/ui/doc/launcher_ui_doc.tlv --watch`
+   `--ui tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv --watch`
 4. To enforce regen before running, build the custom target:
    `ui_preview_launcher_macos` (or `ui_preview_setup_macos`).
 
@@ -79,7 +79,7 @@ The macOS preview host uses `kqueue` to watch file changes and hot reload.
 
 - Configure: `cmake --preset linux-dev`
 - Build preview host: `cmake --build --preset linux-dev --target dominium-ui-preview-host-linux`
-- Run: `build/linux-dev/dominium-ui-preview-host-linux --ui tools/launcher/ui/doc/launcher_ui_doc.tlv --watch`
+- Run: `build/linux-dev/dominium-ui-preview-host-linux --ui tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv --watch`
 
 The repo includes example VS Code tasks and a launch config under:
 - `docs/ui_editor/ide/vscode/tasks.json`

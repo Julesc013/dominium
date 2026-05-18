@@ -26,12 +26,12 @@ AppShell owns mode resolution, negotiation preflight, legacy flag migration, log
 
 - `7` governed product surfaces are compliant.
 - `client` via `tools/mvp/runtime_entry.py`
-- `engine` via `tools/appshell/product_stub_cli.py`
-- `game` via `tools/appshell/product_stub_cli.py`
+- `engine` via `tools/validators/shell/product_stub_cli.py`
+- `game` via `tools/validators/shell/product_stub_cli.py`
 - `launcher` via `tools/launcher/launch.py`
 - `server` via `src/server/server_main.py`
 - `setup` via `tools/setup/setup_cli.py`
-- `tool.attach_console_stub` via `tools/appshell/product_stub_cli.py`
+- `tool.attach_console_stub` via `tools/validators/shell/product_stub_cli.py`
 
 ## Deprecated Flags
 

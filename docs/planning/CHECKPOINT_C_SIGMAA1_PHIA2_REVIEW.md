@@ -258,7 +258,7 @@ The key boundary rule is simple:
 | Disposition | Surface Families | Φ-A2 Consequence |
 | --- | --- | --- |
 | `preserve` | `client`, `server`, `launcher`, `setup`, `appshell` | keep product anchors stable; do not relocate runtime ownership into a convenience root |
-| `preserve` | `engine`, `game`, `game/content/core` | keep the live runtime and product spine intact while extracting deeper doctrine |
+| `preserve` | `engine`, `game`, `content/domains/game/core` | keep the live runtime and product spine intact while extracting deeper doctrine |
 | `extend` | `app`, `compat`, `control`, `core`, `net`, `process`, `server/runtime`, `server/persistence` | extract domain-binding, state, and lifecycle law from the distributed runtime substrate rather than inventing a single new orchestrator home |
 | `extend` | semantic roots such as `reality`, `worldgen`, `geo`, `materials`, `logic`, `signals`, `system`, `universe`, `epistemics`, `diegetics`, `infrastructure`, `machines` | consume these as upstream semantic inputs; do not reframe them as runtime-owned truth |
 | `consolidate` | generated operational evidence under `build`, `artifacts`, `.xstack_cache`, `run_meta` | use for evidence and verification only; never treat as semantic, governance, or runtime owners |
@@ -297,7 +297,7 @@ The practical rule remains:
 
 - `specs/reality/**` outranks `data/reality/**` for semantic meaning
 - `docs/planning/**` outranks planning JSON for checkpoint and execution interpretation
-- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless explicitly promoted by stronger doctrine
+- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless explicitly promoted by stronger doctrine
 
 ### F5. Bridges and domain ownership boundaries
 

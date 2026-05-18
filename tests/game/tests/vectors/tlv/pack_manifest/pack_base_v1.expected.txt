@@ -1,0 +1,9 @@
+schema_version=1
+pack_id=pack.base
+pack_type=1
+version=1.0.0
+required_deps=0
+conflicts=0
+declared_caps=1
+sim_flags=1
+unknown_root_tags=1

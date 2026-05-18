@@ -203,13 +203,13 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
       "line": 32,
-      "snippet": "- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/auditx/**`."
+      "snippet": "- XStack/governance roots: `docs/XSTACK.md`, `docs/governance/**`, `docs/audit/**`, `data/registries/**`, `repo/repox/**`, `tools/xstack/**`, `tools/xstack/auditx/**`."
     },
     {
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
       "line": 10,
-      "snippet": "- Compat/Control/Governance families: `tools/compatx/**`, `tools/controlx/**`, `tools/governance/**`, `validation/validation_engine.py`, `control/**`, `governance/**`."
+      "snippet": "- Compat/Control/Governance families: `tools/xstack/compatx/**`, `tools/xstack/controlx/**`, `tools/governance/**`, `validation/validation_engine.py`, `control/**`, `governance/**`."
     },
     {
       "classification": "unknown",
@@ -257,181 +257,181 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3161,
-      "snippet": "\"contracts/schemas/governance/SPEC_ENFORCEMENT.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_ENFORCEMENT.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3162,
-      "snippet": "\"contracts/schemas/governance/SPEC_JURISDICTIONS.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_JURISDICTIONS.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3163,
-      "snippet": "\"contracts/schemas/governance/SPEC_LEGITIMACY.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_LEGITIMACY.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3164,
-      "snippet": "\"contracts/schemas/governance/SPEC_POLICY_SYSTEM.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_POLICY_SYSTEM.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3165,
-      "snippet": "\"contracts/schemas/governance/SPEC_STANDARD_RESOLUTION_GOV.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_STANDARD_RESOLUTION_GOV.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3166,
-      "snippet": "\"contracts/schemas/governance/compat_matrix.schema\","
+      "snippet": "\"contracts/schema/governance/compat_matrix.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3167,
-      "snippet": "\"contracts/schemas/governance/controlx_queue.schema\","
+      "snippet": "\"contracts/schema/governance/controlx_queue.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3168,
-      "snippet": "\"contracts/schemas/governance/controlx_runlog.schema\","
+      "snippet": "\"contracts/schema/governance/controlx_runlog.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3169,
-      "snippet": "\"contracts/schemas/governance/deprecation_entry.schema\","
+      "snippet": "\"contracts/schema/governance/deprecation_entry.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3170,
-      "snippet": "\"contracts/schemas/governance/deprecation_registry.schema\","
+      "snippet": "\"contracts/schema/governance/deprecation_registry.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3171,
-      "snippet": "\"contracts/schemas/governance/derived_artifact_contract.schema\","
+      "snippet": "\"contracts/schema/governance/derived_artifact_contract.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3172,
-      "snippet": "\"contracts/schemas/governance/failure_classes.schema\","
+      "snippet": "\"contracts/schema/governance/failure_classes.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3173,
-      "snippet": "\"contracts/schemas/governance/gate_policy.schema\","
+      "snippet": "\"contracts/schema/governance/gate_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3174,
-      "snippet": "\"contracts/schemas/governance/glossary.schema\","
+      "snippet": "\"contracts/schema/governance/glossary.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3175,
-      "snippet": "\"contracts/schemas/governance/governance_profile.schema\","
+      "snippet": "\"contracts/schema/governance/governance_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3176,
-      "snippet": "\"contracts/schemas/governance/integrity_manifest.schema\","
+      "snippet": "\"contracts/schema/governance/integrity_manifest.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3177,
-      "snippet": "\"contracts/schemas/governance/migration_spec.schema\","
+      "snippet": "\"contracts/schema/governance/migration_spec.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3178,
-      "snippet": "\"contracts/schemas/governance/pack_signature.schema\","
+      "snippet": "\"contracts/schema/governance/pack_signature.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3179,
-      "snippet": "\"contracts/schemas/governance/performance_envelope.schema\","
+      "snippet": "\"contracts/schema/governance/performance_envelope.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3180,
-      "snippet": "\"contracts/schemas/governance/performance_profile.schema\","
+      "snippet": "\"contracts/schema/governance/performance_profile.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3181,
-      "snippet": "\"contracts/schemas/governance/performance_result.schema\","
+      "snippet": "\"contracts/schema/governance/performance_result.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3182,
-      "snippet": "\"contracts/schemas/governance/presentation_matrix.schema\","
+      "snippet": "\"contracts/schema/governance/presentation_matrix.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3183,
-      "snippet": "\"contracts/schemas/governance/privilege_model.schema\","
+      "snippet": "\"contracts/schema/governance/privilege_model.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3184,
-      "snippet": "\"contracts/schemas/governance/remediation_playbook.schema\","
+      "snippet": "\"contracts/schema/governance/remediation_playbook.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3185,
-      "snippet": "\"contracts/schemas/governance/schema_version_policy.schema\","
+      "snippet": "\"contracts/schema/governance/schema_version_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3186,
-      "snippet": "\"contracts/schemas/governance/testx_suites.schema\","
+      "snippet": "\"contracts/schema/governance/testx_suites.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3187,
-      "snippet": "\"contracts/schemas/governance/topology_edge.schema\","
+      "snippet": "\"contracts/schema/governance/topology_edge.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3188,
-      "snippet": "\"contracts/schemas/governance/topology_map.schema\","
+      "snippet": "\"contracts/schema/governance/topology_map.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3189,
-      "snippet": "\"contracts/schemas/governance/topology_node.schema\","
+      "snippet": "\"contracts/schema/governance/topology_node.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3190,
-      "snippet": "\"contracts/schemas/governance/trust_policy.schema\","
+      "snippet": "\"contracts/schema/governance/trust_policy.schema\","
     },
     {
       "classification": "unknown",
@@ -947,7 +947,7 @@
       "classification": "tools",
       "file": ".aide/tools/latest-tool-adapter-map.json",
       "line": 3485,
-      "snippet": "\"source_tool\": \"contracts/schemas/governance/testx_suites.schema\","
+      "snippet": "\"source_tool\": \"contracts/schema/governance/testx_suites.schema\","
     },
     {
       "classification": "tools",
@@ -1061,7 +1061,7 @@
       "classification": "tools",
       "file": ".aide/tools/tool-risk-summary.md",
       "line": 411,
-      "snippet": "- `contracts/schemas/governance/testx_suites.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test, repo_policy_hint:governance"
+      "snippet": "- `contracts/schema/governance/testx_suites.schema`: risk=medium fate=wrap reasons=candidate_capability_can_be_future_wrapped, candidate_tool_name_hint, medium_risk_hint:test, repo_policy_hint:governance"
     },
     {
       "classification": "tools",
@@ -1199,7 +1199,7 @@
       "classification": "tools",
       "file": ".aide/tools/xstack-wrapper-registry.json",
       "line": 308,
-      "snippet": "\"contracts/schemas/governance/testx_suites.schema\","
+      "snippet": "\"contracts/schema/governance/testx_suites.schema\","
     },
     {
       "classification": "tools",
@@ -1217,7 +1217,7 @@
       "classification": "tools",
       "file": ".aide/tools/xstack-wrapper-registry.json",
       "line": 534,
-      "snippet": "\"contracts/schemas/governance/gate_policy.schema\","
+      "snippet": "\"contracts/schema/governance/gate_policy.schema\","
     },
     {
       "classification": "tools",
@@ -1247,7 +1247,7 @@
       "classification": "tools",
       "file": ".aide/tools/xstack-wrapper-registry.json",
       "line": 739,
-      "snippet": "\"contracts/schemas/governance/testx_suites.schema\","
+      "snippet": "\"contracts/schema/governance/testx_suites.schema\","
     },
     {
       "classification": "tools",
@@ -1425,319 +1425,319 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/deprecation_entry.schema.json",
+      "file": "contracts/schema/deprecation_entry.schema.json",
       "line": 93,
       "snippet": "\"replacement_id\": \"data/governance/deprecations.json\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/deprecation_entry.schema.json",
+      "file": "contracts/schema/deprecation_entry.schema.json",
       "line": 99,
       "snippet": "\"adapter_path\": \"tools/governance/adapters/deprecation_registry_adapter.py\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/topology_edge.schema.json",
+      "file": "contracts/schema/topology_edge.schema.json",
       "line": 56,
       "snippet": "\"from_node_id\": \"schema:schema/governance/topology_map.schema\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/topology_node.schema.json",
+      "file": "contracts/schema/topology_node.schema.json",
       "line": 74,
       "snippet": "\"node_id\": \"schema:schema/governance/topology_map.schema\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/topology_node.schema.json",
+      "file": "contracts/schema/topology_node.schema.json",
       "line": 76,
       "snippet": "\"path\": \"schema/governance/topology_map.schema\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/agents/SPEC_AGENT_CONTEXT.md",
+      "file": "contracts/schema/agents/SPEC_AGENT_CONTEXT.md",
       "line": 93,
       "snippet": "- Governance: `schema/governance/SPEC_JURISDICTIONS.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/compat_matrix.schema",
+      "file": "contracts/schema/governance/compat_matrix.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/compat_matrix.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/controlx_queue.schema",
+      "file": "contracts/schema/governance/controlx_queue.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/controlx_queue.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/controlx_runlog.schema",
+      "file": "contracts/schema/governance/controlx_runlog.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/controlx_runlog.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/deprecation_entry.schema",
+      "file": "contracts/schema/governance/deprecation_entry.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/deprecation_entry.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/deprecation_registry.schema",
+      "file": "contracts/schema/governance/deprecation_registry.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/deprecation_registry.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/derived_artifact_contract.schema",
+      "file": "contracts/schema/governance/derived_artifact_contract.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/derived_artifact_contract.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/failure_classes.schema",
+      "file": "contracts/schema/governance/failure_classes.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/failure_classes.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/failure_classes.schema",
+      "file": "contracts/schema/governance/failure_classes.schema",
       "line": 15,
       "snippet": "- Failure classes describe governance/tooling mechanics only."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/gate_policy.schema",
+      "file": "contracts/schema/governance/gate_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/gate_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/glossary.schema",
+      "file": "contracts/schema/governance/glossary.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/glossary.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/governance_profile.schema",
+      "file": "contracts/schema/governance/governance_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/governance_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/integrity_manifest.schema",
+      "file": "contracts/schema/governance/integrity_manifest.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/integrity_manifest.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/migration_spec.schema",
+      "file": "contracts/schema/governance/migration_spec.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/migration_spec.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/pack_signature.schema",
+      "file": "contracts/schema/governance/pack_signature.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/pack_signature.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/performance_envelope.schema",
+      "file": "contracts/schema/governance/performance_envelope.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/performance_envelope.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/performance_profile.schema",
+      "file": "contracts/schema/governance/performance_profile.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/performance_profile.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/performance_result.schema",
+      "file": "contracts/schema/governance/performance_result.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/performance_result.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/presentation_matrix.schema",
+      "file": "contracts/schema/governance/presentation_matrix.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/presentation_matrix.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/privilege_model.schema",
+      "file": "contracts/schema/governance/privilege_model.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/privilege_model.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/remediation_playbook.schema",
+      "file": "contracts/schema/governance/remediation_playbook.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/remediation_playbook.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/schema_version_policy.schema",
+      "file": "contracts/schema/governance/schema_version_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/schema_version_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_ENFORCEMENT.md",
+      "file": "contracts/schema/governance/SPEC_ENFORCEMENT.md",
       "line": 47,
       "snippet": "- Policies: `schema/governance/SPEC_POLICY_SYSTEM.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_ENFORCEMENT.md",
+      "file": "contracts/schema/governance/SPEC_ENFORCEMENT.md",
       "line": 48,
       "snippet": "- Jurisdictions: `schema/governance/SPEC_JURISDICTIONS.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_JURISDICTIONS.md",
+      "file": "contracts/schema/governance/SPEC_JURISDICTIONS.md",
       "line": 49,
       "snippet": "- Legitimacy: `schema/governance/SPEC_LEGITIMACY.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_JURISDICTIONS.md",
+      "file": "contracts/schema/governance/SPEC_JURISDICTIONS.md",
       "line": 50,
       "snippet": "- Policy system: `schema/governance/SPEC_POLICY_SYSTEM.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_JURISDICTIONS.md",
+      "file": "contracts/schema/governance/SPEC_JURISDICTIONS.md",
       "line": 51,
       "snippet": "- Enforcement: `schema/governance/SPEC_ENFORCEMENT.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_JURISDICTIONS.md",
+      "file": "contracts/schema/governance/SPEC_JURISDICTIONS.md",
       "line": 52,
       "snippet": "- Standard resolution: `schema/governance/SPEC_STANDARD_RESOLUTION_GOV.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_LEGITIMACY.md",
+      "file": "contracts/schema/governance/SPEC_LEGITIMACY.md",
       "line": 53,
       "snippet": "- Policy prerequisites: `schema/governance/SPEC_POLICY_SYSTEM.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_POLICY_SYSTEM.md",
+      "file": "contracts/schema/governance/SPEC_POLICY_SYSTEM.md",
       "line": 49,
       "snippet": "- Jurisdictions: `schema/governance/SPEC_JURISDICTIONS.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_POLICY_SYSTEM.md",
+      "file": "contracts/schema/governance/SPEC_POLICY_SYSTEM.md",
       "line": 50,
       "snippet": "- Legitimacy: `schema/governance/SPEC_LEGITIMACY.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_POLICY_SYSTEM.md",
+      "file": "contracts/schema/governance/SPEC_POLICY_SYSTEM.md",
       "line": 51,
       "snippet": "- Enforcement: `schema/governance/SPEC_ENFORCEMENT.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/SPEC_POLICY_SYSTEM.md",
+      "file": "contracts/schema/governance/SPEC_POLICY_SYSTEM.md",
       "line": 52,
       "snippet": "- Standards: `schema/governance/SPEC_STANDARD_RESOLUTION_GOV.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/testx_suites.schema",
+      "file": "contracts/schema/governance/testx_suites.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/testx_suites.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/topology_edge.schema",
+      "file": "contracts/schema/governance/topology_edge.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/topology_edge.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/topology_map.schema",
+      "file": "contracts/schema/governance/topology_map.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/topology_map.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/topology_node.schema",
+      "file": "contracts/schema/governance/topology_node.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/topology_node.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/governance/trust_policy.schema",
+      "file": "contracts/schema/governance/trust_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: governance/trust_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/physics/physics_profile.schema",
+      "file": "contracts/schema/physics/physics_profile.schema",
       "line": 12,
       "snippet": "- It declares policy anchors consumed by governance/runtime selection layers."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/technology/SPEC_TECH_EFFECTS.md",
+      "file": "contracts/schema/technology/SPEC_TECH_EFFECTS.md",
       "line": 47,
       "snippet": "- Policy system: `schema/governance/SPEC_POLICY_SYSTEM.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_CONFLICT_CANON.md",
+      "file": "contracts/schema/war/SPEC_CONFLICT_CANON.md",
       "line": 184,
       "snippet": "- CIV2 legitimacy/enforcement: `schema/governance/SPEC_LEGITIMACY.md`,"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_CONFLICT_CANON.md",
+      "file": "contracts/schema/war/SPEC_CONFLICT_CANON.md",
       "line": 185,
       "snippet": "`schema/governance/SPEC_ENFORCEMENT.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_ENGAGEMENTS.md",
+      "file": "contracts/schema/war/SPEC_ENGAGEMENTS.md",
       "line": 80,
       "snippet": "- CIV2 legitimacy: `schema/governance/SPEC_LEGITIMACY.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_OCCUPATION_AND_RESISTANCE.md",
+      "file": "contracts/schema/war/SPEC_OCCUPATION_AND_RESISTANCE.md",
       "line": 75,
       "snippet": "- Governance: `schema/governance/SPEC_LEGITIMACY.md`,"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_OCCUPATION_AND_RESISTANCE.md",
+      "file": "contracts/schema/war/SPEC_OCCUPATION_AND_RESISTANCE.md",
       "line": 76,
       "snippet": "`schema/governance/SPEC_ENFORCEMENT.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_SECURITY_FORCES.md",
+      "file": "contracts/schema/war/SPEC_SECURITY_FORCES.md",
       "line": 64,
       "snippet": "- CIV2 enforcement/legitimacy: `schema/governance/SPEC_ENFORCEMENT.md`,"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/war/SPEC_SECURITY_FORCES.md",
+      "file": "contracts/schema/war/SPEC_SECURITY_FORCES.md",
       "line": 65,
       "snippet": "`schema/governance/SPEC_LEGITIMACY.md`"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/world/SPEC_SURFACE_AND_REGIONS.md",
+      "file": "contracts/schema/world/SPEC_SURFACE_AND_REGIONS.md",
       "line": 98,
       "snippet": "- Governance: `schema/governance/SPEC_JURISDICTIONS.md`"
     },
@@ -2981,7 +2981,7 @@
       "classification": "docs",
       "file": "docs/audit/DUPLICATE_IMPLEMENTATIONS_REPORT.md",
       "line": 118,
-      "snippet": "docs_refs: `docs/audit/OVERLAY_CONFLICT_BASELINE.md, docs/geo/OVERLAY_CONFLICT_POLICIES.md, docs/governance/REPOX_RULESETS.md`"
+      "snippet": "docs_refs: `docs/audit/OVERLAY_CONFLICT_BASELINE.md, docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md, docs/governance/REPOX_RULESETS.md`"
     },
     {
       "classification": "docs",
@@ -4331,7 +4331,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.3e44530d76eb7d92.md",
       "line": 35,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/GEO_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/specs/SPEC_ACTIONS.md, docs/system/SYSTEM_FOREN"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/GEO_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/specs/SPEC_ACTIONS.md, docs/system/SYSTEM_FOREN"
     },
     {
       "classification": "docs",
@@ -4469,7 +4469,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.727c6ea3561960e1.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/geo/WORLDGE"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/domains/geology/WORLDGE"
     },
     {
       "classification": "docs",
@@ -4487,7 +4487,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.7ac63b155f5d78ac.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
     },
     {
       "classification": "docs",
@@ -4499,7 +4499,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.82f0b2cfd71edf1f.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/GEOMETRY_EDIT_CONTRACT.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+      "snippet": "- Docs: `docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/GEOMETRY_EDIT_CONTRACT.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
     },
     {
       "classification": "docs",
@@ -4571,7 +4571,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.a3ff1b55d25b3a33.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, d"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, d"
     },
     {
       "classification": "docs",
@@ -4727,7 +4727,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.dacae9a559fa7c8a.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
     },
     {
       "classification": "docs",
@@ -4931,7 +4931,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.192003d599fc6c50.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW_SYSTEM_L2_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/geo/SPATIAL_INDEX_AND_IDENTITY.md, docs/"
+      "snippet": "- Docs: `docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW_SYSTEM_L2_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md, docs/"
     },
     {
       "classification": "docs",
@@ -4979,13 +4979,13 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.224a6c43b2b7d54c.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.237055e3070b387e.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/architecture/ARCH0_CONSTITUTION.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/SYSTEM_TIER_ROI_BASELINE.m"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/architecture/ARCH0_CONSTITUTION.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/SYSTEM_TIER_ROI_BASELINE.m"
     },
     {
       "classification": "docs",
@@ -4997,7 +4997,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.24556b10b75a2fbe.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/COMPILED_MODEL_BASELINE.md, docs/audit/LOGIC_ELEMENTS_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROCESS_CAPSULE_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audi"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/COMPILED_MODEL_BASELINE.md, docs/audit/LOGIC_ELEMENTS_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROCESS_CAPSULE_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audi"
     },
     {
       "classification": "docs",
@@ -5147,7 +5147,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.4079172c525abd20.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIO"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/refusal_contract.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIO"
     },
     {
       "classification": "docs",
@@ -5165,13 +5165,13 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.413a3b65c953f813.md",
       "line": 31,
-      "snippet": "- Docs: `docs/audit/COMPAT_SEM2_RETRO_AUDIT.md, docs/audit/EARTH10_RETRO_AUDIT.md, docs/audit/EARTH6_RETRO_AUDIT.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/governance/REPOX_RULESETS.md, docs/worldgen/WO"
+      "snippet": "- Docs: `docs/audit/COMPAT_SEM2_RETRO_AUDIT.md, docs/audit/EARTH10_RETRO_AUDIT.md, docs/audit/EARTH6_RETRO_AUDIT.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/governance/REPOX_RULESETS.md, docs/domains/worldgen/WO"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.41b5b9fd41d3fc9b.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs"
     },
     {
       "classification": "docs",
@@ -5183,7 +5183,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.4490f04a98307ace.md",
       "line": 31,
-      "snippet": "- Docs: `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md, docs/governance/REPOX_RULESETS.md`"
+      "snippet": "- Docs: `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md, docs/governance/REPOX_RULESETS.md`"
     },
     {
       "classification": "docs",
@@ -5255,7 +5255,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5456539f32c8d7ae.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, d"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, d"
     },
     {
       "classification": "docs",
@@ -5279,7 +5279,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5a1a5c39cade65ab.md",
       "line": 31,
-      "snippet": "- Docs: `docs/app/RUNTIME_LOOP.md, docs/governance/REPOX_RULESETS.md`"
+      "snippet": "- Docs: `docs/apps/RUNTIME_LOOP.md, docs/governance/REPOX_RULESETS.md`"
     },
     {
       "classification": "docs",
@@ -5315,7 +5315,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5bef3ece50ebc102.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, "
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, "
     },
     {
       "classification": "docs",
@@ -5477,7 +5477,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.87f587c12546418d.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, "
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PACK_VERIFICATION_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/contracts/refusal_contract.md, "
     },
     {
       "classification": "docs",
@@ -5519,19 +5519,19 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.99e17793c4c88850.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROC9_RETRO_AUDIT.md, docs/audit/PROC_FINAL_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/SOFTWARE_PIPELINE_BASELINE.md, docs/audit/STABIL"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROC9_RETRO_AUDIT.md, docs/audit/PROC_FINAL_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/SOFTWARE_PIPELINE_BASELINE.md, docs/audit/STABIL"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.9a54b66ebadb4b8c.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/governance/REPOX_RULESETS.md`"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/governance/REPOX_RULESETS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.9c65e8ceef2b4028.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/geo/WORLDGE"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STAR_SYSTEM_SEED_BASELINE.md, docs/audit/SYS4_RETRO_AUDIT.md, docs/audit/VALIDATION_STACK_MAP.md, docs/ci/CI_ENFORCEMENT_MATRIX.md, docs/domains/geology/WORLDGE"
     },
     {
       "classification": "docs",
@@ -5567,19 +5567,19 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.a143c90fb3dd7560.md",
       "line": 31,
-      "snippet": "- Docs: `docs/audit/GEO8_RETRO_AUDIT.md, docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW4_RETRO_AUDIT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/WORLDGEN_CONSTITUTION_BASELINE.md, docs/geo/"
+      "snippet": "- Docs: `docs/audit/GEO8_RETRO_AUDIT.md, docs/audit/GEO_CONSTITUTION_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/MW4_RETRO_AUDIT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/WORLDGEN_CONSTITUTION_BASELINE.md, docs/domains/geology/"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.a59883c63b865773.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/TUI_FRAMEWORK.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/CAPABILITY_NEGOTIATION_CONST"
+      "snippet": "- Docs: `docs/runtime/shell/TUI_FRAMEWORK.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/contracts/CAPABILITY_NEGOTIATION_CONST"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.a66e5a42cecb4baa.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
     },
     {
       "classification": "docs",
@@ -5639,7 +5639,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.b791cb30ed3a4e4b.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELIN"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELIN"
     },
     {
       "classification": "docs",
@@ -5705,7 +5705,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.bda63a4b0159beff.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROCESS_CAPSULE_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/STATEVEC0_RETRO_AUDIT.md, d"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/PROCESS_CAPSULE_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/STATEVEC0_RETRO_AUDIT.md, d"
     },
     {
       "classification": "docs",
@@ -5765,7 +5765,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.cf3f8ea1f8b9cc98.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELIN"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELIN"
     },
     {
       "classification": "docs",
@@ -5807,7 +5807,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d976bae2509fcaaf.md",
       "line": 39,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/GEO_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/specs/SPEC_ACTIONS.md, docs/system/SYSTEM_FOREN"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/GEO_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md, docs/specs/SPEC_ACTIONS.md, docs/system/SYSTEM_FOREN"
     },
     {
       "classification": "docs",
@@ -5891,7 +5891,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.eae737b84bb84661.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/pac"
     },
     {
       "classification": "docs",
@@ -5909,7 +5909,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.f55bee270ee61b03.md",
       "line": 31,
-      "snippet": "- Docs: `docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/GEOMETRY_EDIT_CONTRACT.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+      "snippet": "- Docs: `docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/GEOMETRY_EDIT_CONTRACT.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
     },
     {
       "classification": "docs",
@@ -5921,7 +5921,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.f9267032a670ae2b.md",
       "line": 31,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/release/PROVISIONAL_FEATURE_LIST.md`"
     },
     {
       "classification": "docs",
@@ -5939,7 +5939,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.fd61a13acf79760f.md",
       "line": 29,
-      "snippet": "- Docs: `docs/appshell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/geo/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/meta/PROFILE_OVERRIDE_ARCHITECTURE.md, docs/release/"
+      "snippet": "- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md, docs/governance/REPOX_RULESETS.md, docs/meta/PROFILE_OVERRIDE_ARCHITECTURE.md, docs/release/"
     },
     {
       "classification": "docs",
@@ -5987,7 +5987,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -6477,79 +6477,79 @@
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ5_war1_security_force_tests.cpp",
+      "file": "tests/game/civ5_war1_security_force_tests.cpp",
       "line": 5,
       "snippet": "#include \"dominium/rules/governance/enforcement_capacity.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ5_war1_security_force_tests.cpp",
+      "file": "tests/game/civ5_war1_security_force_tests.cpp",
       "line": 6,
       "snippet": "#include \"dominium/rules/governance/legitimacy_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ5_war3_occupation_tests.cpp",
+      "file": "tests/game/civ5_war3_occupation_tests.cpp",
       "line": 4,
       "snippet": "#include \"dominium/rules/governance/enforcement_capacity.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ5_war3_occupation_tests.cpp",
+      "file": "tests/game/civ5_war3_occupation_tests.cpp",
       "line": 5,
       "snippet": "#include \"dominium/rules/governance/legitimacy_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ5_war4_scale_tests.cpp",
+      "file": "tests/game/civ5_war4_scale_tests.cpp",
       "line": 4,
       "snippet": "#include \"dominium/rules/governance/legitimacy_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/governance_work_ir_tests.cpp",
+      "file": "tests/game/governance_work_ir_tests.cpp",
       "line": 4,
       "snippet": "#include \"dominium/rules/governance/governance_system.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/governance_work_ir_tests.cpp",
+      "file": "tests/game/governance_work_ir_tests.cpp",
       "line": 5,
       "snippet": "#include \"dominium/rules/governance/legitimacy_tasks.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 4,
       "snippet": "#include \"dominium/rules/governance/enforcement_capacity.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 5,
       "snippet": "#include \"dominium/rules/governance/jurisdiction_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 6,
       "snippet": "#include \"dominium/rules/governance/legitimacy_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 7,
       "snippet": "#include \"dominium/rules/governance/org_governance_binding.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 8,
       "snippet": "#include \"dominium/rules/governance/policy_model.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/civ2/civ2_governance_tests.cpp",
+      "file": "tests/game/civ2/civ2_governance_tests.cpp",
       "line": 9,
       "snippet": "#include \"dominium/rules/governance/policy_scheduler.h\""
     },
@@ -7895,7 +7895,7 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/derived_artifacts.json",
       "line": 3,
-      "snippet": "\"documentation\": \"docs/governance/REPOX_RULESETS.md#repoxderived_artifacts\","
+      "snippet": "\"documentation\": \"docs/governance/REPOX_RULESETS.md#repoxderived_archive\generated\archive\generated\archive\generated\artifacts\","
     },
     {
       "classification": "unknown",
@@ -8205,67 +8205,67 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/a3_canon_drift.py",
+      "file": "tools/xstack/auditx/analyzers/a3_canon_drift.py",
       "line": 13,
       "snippet": "GOVERNANCE_ROOTS = (\"docs/governance/\",)"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b6_prompt_drift.py",
+      "file": "tools/xstack/auditx/analyzers/b6_prompt_drift.py",
       "line": 9,
       "snippet": "WATCH_PREFIXES = (\"docs/governance/\", \"docs/archive/prompts/\", \"scripts/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/c4_terminology_misuse.py",
+      "file": "tools/xstack/auditx/analyzers/c4_terminology_misuse.py",
       "line": 65,
       "snippet": "is_canonical_scope = rel.startswith(\"docs/architecture/\") or rel.startswith(\"docs/governance/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e109_boundary_violation_analyzer.py",
+      "file": "tools/xstack/auditx/analyzers/e109_boundary_violation_analyzer.py",
       "line": 23,
       "snippet": "\"data/governance/deprecations.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e110_tools_contamination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e110_tools_contamination_smell.py",
       "line": 19,
       "snippet": "re.compile(r\"^\\s*from\\s+tools\\.governance\\b\", re.IGNORECASE),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e110_tools_contamination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e110_tools_contamination_smell.py",
       "line": 20,
       "snippet": "re.compile(r\"^\\s*import\\s+tools\\.governance\\b\", re.IGNORECASE),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e113_deprecated_usage_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e113_deprecated_usage_smell.py",
       "line": 12,
       "snippet": "DEPRECATIONS_REL = \"data/governance/deprecations.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e114_adapter_missing_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e114_adapter_missing_smell.py",
       "line": 12,
       "snippet": "DEPRECATIONS_REL = \"data/governance/deprecations.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e115_removed_still_referenced_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e115_removed_still_referenced_smell.py",
       "line": 12,
       "snippet": "DEPRECATIONS_REL = \"data/governance/deprecations.json\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e534_missing_governance_profile_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e534_missing_governance_profile_smell.py",
       "line": 35,
       "snippet": "file_path=rel_path or \"data/governance/governance_profile.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e534_missing_governance_profile_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e534_missing_governance_profile_smell.py",
       "line": 44,
       "snippet": "rel_path or \"data/governance/governance_profile.json\","
     },
@@ -8273,35 +8273,35 @@
       "classification": "tools",
       "file": "tools/ci/phase6_audit_checks.py",
       "line": 24,
-      "snippet": "\"contracts/schemas/governance/SPEC_JURISDICTIONS.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_JURISDICTIONS.md\","
     },
     {
       "classification": "tools",
       "file": "tools/ci/phase6_audit_checks.py",
       "line": 25,
-      "snippet": "\"contracts/schemas/governance/SPEC_LEGITIMACY.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_LEGITIMACY.md\","
     },
     {
       "classification": "tools",
       "file": "tools/ci/phase6_audit_checks.py",
       "line": 26,
-      "snippet": "\"contracts/schemas/governance/SPEC_POLICY_SYSTEM.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_POLICY_SYSTEM.md\","
     },
     {
       "classification": "tools",
       "file": "tools/ci/phase6_audit_checks.py",
       "line": 27,
-      "snippet": "\"contracts/schemas/governance/SPEC_ENFORCEMENT.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_ENFORCEMENT.md\","
     },
     {
       "classification": "tools",
       "file": "tools/ci/phase6_audit_checks.py",
       "line": 28,
-      "snippet": "\"contracts/schemas/governance/SPEC_STANDARD_RESOLUTION_GOV.md\","
+      "snippet": "\"contracts/schema/governance/SPEC_STANDARD_RESOLUTION_GOV.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_tree_common.py",
+      "file": "tools/release/dist/dist_tree_common.py",
       "line": 341,
       "snippet": "(\"data/governance/governance_profile.json\", \"data/governance/governance_profile.json\"),"
     },
@@ -8381,7 +8381,7 @@
       "classification": "tests",
       "file": "tools/xstack/testx/tests/test_semantic_impact_outputs_stable.py",
       "line": 22,
-      "snippet": "\"contracts/schemas/governance/topology_map.schema\","
+      "snippet": "\"contracts/schema/governance/topology_map.schema\","
     },
     {
       "classification": "tests",

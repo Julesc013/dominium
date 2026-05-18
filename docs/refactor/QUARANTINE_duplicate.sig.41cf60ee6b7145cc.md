@@ -12,24 +12,24 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `engine/modules/struct/d_struct.h`
+- Canonical Candidate: `game/domain/structure/d_struct.h`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `engine/modules/struct/d_struct.c`
-- `engine/modules/struct/d_struct.h`
+- `game/domain/structure/d_struct.c`
+- `game/domain/structure/d_struct.h`
 
 ## Scorecard
 
-- `engine/modules/struct/d_struct.h` disposition=`canonical` rank=`1` total_score=`84.64` risk=`HIGH`
-- `engine/modules/struct/d_struct.c` disposition=`quarantine` rank=`2` total_score=`81.43` risk=`HIGH`
+- `game/domain/structure/d_struct.h` disposition=`canonical` rank=`1` total_score=`84.64` risk=`HIGH`
+- `game/domain/structure/d_struct.c` disposition=`quarantine` rank=`2` total_score=`81.43` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/app/COMPATIBILITY_ENFORCEMENT.md, docs/app/READONLY_ADAPTER.md, docs/architecture/APPLICATION_CONTRACTS.md, docs/architecture/CANON_INDEX.md, docs/architecture/DIRECTORY_CONTEXT.md, docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md, docs/archive/ci/DOCS_VALIDATION_REPORT.md, docs/archive/platform/APR2_EXTENSION_AUDIT.md`
+- Docs: `docs/apps/COMPATIBILITY_ENFORCEMENT.md, docs/apps/READONLY_ADAPTER.md, docs/architecture/APPLICATION_CONTRACTS.md, docs/architecture/CANON_INDEX.md, docs/architecture/DIRECTORY_CONTEXT.md, docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md, docs/archive/ci/DOCS_VALIDATION_REPORT.md, docs/archive/platform/APR2_EXTENSION_AUDIT.md`
 
 ## Tests Involved
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

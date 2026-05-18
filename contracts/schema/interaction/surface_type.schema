@@ -1,0 +1,20 @@
+SCHEMA: interaction/surface_type.schema
+schema_id: dominium.schema.interaction.surface_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define semantic ActionSurface type metadata.
+
+REQUIRED SHAPE:
+record surface_type
+  required:
+    - schema_version: semver
+    - surface_type_id: id
+    - description: string
+    - default_icon_tag: optional_string
+    - extensions: map
+
+INVARIANTS:
+- Surface types are data-defined and registry-driven.
+- Runtime logic must not branch on hardcoded surface type literals.

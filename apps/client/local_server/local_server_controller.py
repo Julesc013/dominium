@@ -1,4 +1,4 @@
-﻿"""SERVER-MVP-1 local singleplayer orchestration controller."""
+"""SERVER-MVP-1 local singleplayer orchestration controller."""
 
 from __future__ import annotations
 
@@ -7,17 +7,17 @@ import subprocess
 from typing import Mapping
 
 from tools.validators.compatibility import build_compat_status_payload, build_degrade_runtime_state
-from apps.client.net import read_loopback_handshake_response, send_loopback_client_ack
+from runtime.network.client import read_loopback_handshake_response, send_loopback_client_ack
 from runtime.process_spawn import build_server_process_spec, collect_process_output, poll_process, spawn_process
 from apps.server import boot_server_runtime, load_server_config, materialize_server_session
-from apps.server.net.loopback_transport import (
+from runtime.network.server.loopback_transport import (
     accept_loopback_connection,
     create_loopback_listener,
     send_client_control_request,
     send_client_hello,
     service_loopback_control_channel,
 )
-from apps.server.runtime.tick_loop import advance_server_tick
+from runtime.shell.server.tick_loop import advance_server_tick
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.common import norm, read_json_object, refusal, write_canonical_json
 from tools.xstack.sessionx.net_protocol import decode_proto_message

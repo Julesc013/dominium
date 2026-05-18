@@ -1,0 +1,25 @@
+SCHEMA: electric/protection_device.schema
+schema_id: dominium.schema.electric.protection_device
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic electrical protection device contract for breaker/fuse/relay/GFCI/isolator behavior.
+
+REQUIRED SHAPE:
+record protection_device
+  required:
+    - schema_version: semver
+    - device_id: id
+    - device_kind_id: enum(breaker|fuse|relay|gfci|isolator)
+    - attached_to: object(node_id|edge_id)
+    - state_machine_id: id
+    - settings_ref: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Device trip/open/close behavior flows through state-machine transitions and SAFETY patterns.
+- Device configuration is policy/spec-driven and deterministic.

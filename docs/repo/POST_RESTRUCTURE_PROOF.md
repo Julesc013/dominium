@@ -150,3 +150,20 @@ layer after MOVE-ROUTER-01 while preserving the routed root cleanup.
 
 This is not final proof. Remaining blockers are assigned to
 `MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.
+
+## CANON-SPINE-NEW Proof Note
+
+CANON-SPINE-NEW completed the structural second-level source-spine cleanup after
+MOVE-ROUTER-02.
+
+- Former bad roots remain empty: 0 tracked files.
+- Root-level generated/local roots remain untracked.
+- AIDE doctor/validate/test/selftest/tools/roots/repo: PASS.
+- Strict repo/root/distribution/component validators: PASS.
+- Smoke CTest: PASS.
+- CMake configure: PASS.
+- Boundary validation: not green; remaining warnings are documented in
+  `.aide/reports/CANON-SPINE-NEW-blockers.md`.
+
+This is not final green proof. Feature work and DOE-00 remain blocked until the
+boundary repair and full proof pass.

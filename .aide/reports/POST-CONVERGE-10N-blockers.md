@@ -8,7 +8,7 @@ Last Reviewed: 2026-05-17
 | Family | Count | Disposition |
 | --- | ---: | --- |
 | Distribution/product proof blockers | 12 | Requires product/projection proof or descriptor task; not a 10N fix. |
-| MW-4 fixture import through stale `game.domains.embodiment` lazy map | 2 | Product/runtime source behavior change required; not a 10N fix. |
+| MW-4 fixture import through stale `game.domain.embodiment` lazy map | 2 | Product/runtime source behavior change required; not a 10N fix. |
 | Ruleset mapping gaps | 2 | Needs focused ruleset mapping remediation. |
 | Canon superseded doc | 1 | Needs canon/supersession review. |
 | Extension registry gap | 1 | Needs registry/policy remediation. |

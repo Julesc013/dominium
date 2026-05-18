@@ -143,3 +143,18 @@ Remaining blocker classes:
 
 Next task:
 `MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`
+
+## CANON-SPINE-NEW Update
+
+CANON-SPINE-NEW is PASS_WITH_WARNINGS.
+
+- Former bad roots remain empty in tracked source.
+- Runtime shell, workbench, engine/runtime split, game/domain, contracts,
+  content, docs, and tools were routed toward the canonical source spine.
+- Strict layout/root/distribution/component validators pass.
+- AIDE doctor/validate/test/selftest/tools/roots/repo pass.
+- Smoke CTest and focused spine CTest pass.
+- Remaining blockers are boundary validation and broad full CTest.
+
+Next task:
+`CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`

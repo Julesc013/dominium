@@ -134,4 +134,4 @@ Top-level files kept in the lock:
 - new nested source-like roots outside the sanctioned Xi-5x2/Xi-8 allowlist
 - generic common dumping grounds introduced without architectural registration
 
-Ignored generated surfaces such as `build/`, `dist/`, `out/`, `tmp/`, `.xstack_cache/`, and projection output trees are not part of this lock.
+Ignored generated surfaces such as `build/`, `archive/generated/dist/`, `out/`, `tmp/`, `.xstack_cache/`, and projection output trees are not part of this lock.

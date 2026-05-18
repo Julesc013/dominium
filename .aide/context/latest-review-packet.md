@@ -2,7 +2,8 @@
 
 ## Review Objective
 
-Review MOVE-ROUTER-01: physical `git mv` application of the deterministic bad-root route table, quarantine handling, exception retirement, stale-reference evidence, rollback evidence, and no-semantic-mutation compliance.
+Review CANON-SPINE-NEW: broad structural cleanup of second-level source-spine
+duplication after bad-root routing.
 
 ## Decision Requested
 
@@ -22,49 +23,44 @@ Review MOVE-ROUTER-01: physical `git mv` application of the deterministic bad-ro
 
 ## Evidence Packet References
 
-- `contracts/repo/naming.contract.toml`
-- `contracts/repo/bad_root_routing.contract.toml`
-- `contracts/repo/layout_exceptions.toml`
-- `docs/repo/bad_root_routing.md`
+- `.aide/reports/CANON-SPINE-NEW-status.md`
+- `.aide/reports/CANON-SPINE-NEW-validation.md`
+- `.aide/reports/CANON-SPINE-NEW-blockers.md`
+- `.aide/reports/CANON-SPINE-NEW-summary.json`
+- `docs/repo/audits/CANON_SPINE_NEW_SOURCE_SPINE_CLEANUP.md`
+- `docs/repo/root-recycling/CANON_SPINE_NEW_RESULT.md`
 - `docs/repo/final_repository_structure.md`
-- `.aide/reports/MOVE-ROUTER-01-moved-items.json`
-- `.aide/reports/MOVE-ROUTER-01-root-matrix.json`
-- `.aide/reports/MOVE-ROUTER-01-exception-actions.json`
-- `.aide/reports/MOVE-ROUTER-01-stale-reference-scan.json`
-- `.aide/reports/MOVE-ROUTER-01-rollback.json`
-- `.aide/reports/MOVE-ROUTER-01-validation.md`
-- `.aide/reports/MOVE-ROUTER-01-status.md`
-- `.aide/reports/MOVE-ROUTER-01-blockers.md`
 - `.aide/reports/latest-dominium-status.md`
 - `.aide/reports/latest-warning-disposition.md`
 
 ## Changed Files Summary
 
-The task moves tracked files out of former bad roots into canonical owners or quarantine, retires only empty-root exceptions, and writes apply evidence. It does not delete files, edit moved file contents, perform semantic rewrites, repair broad references/imports, or run feature work.
+The task moves and repairs active source-spine paths across apps, runtime,
+engine, game, contracts, content, docs, tests, tools, release, and archive
+surfaces. It also updates AIDE generated-root policy so root generated outputs
+do not pollute context while source-owned `tools/build/` remains visible.
 
 ## Validation Summary
 
-Expected validation: preapply router refresh, bad-root absence checks, AIDE doctor/validate/test/selftest/tools/roots/repo, strict repo/root/distribution/component validators, new validators, docs/build/UI/ABI checks, JSON parse checks, git diff checks, and commit check.
+AIDE and strict layout validators pass. Smoke CTest and focused spine CTest
+pass. Build boundary validation and broad full CTest remain follow-up blockers.
 
 ## Risk Summary
 
-Reference/import/build breakage is expected until MOVE-ROUTER-02 repairs stale paths. Quarantined files are intentionally inactive. Feature work remains blocked.
+Remaining risks are stale boundary imports, broader test/proof path drift, and
+generated projection/distribution proof refresh. No feature work is authorized.
 
 ## Token Summary
 
-The task and review packets stay compact and reference evidence by path instead of embedding full validator output.
+The review packet stays compact and references evidence by path.
 
 ## Non-Goals / Scope Guard
 
-No file deletion, moved-file content edit, broad reference rewrite, import repair, shim creation, feature work, generated local output commit, package/release generation, tag, or GitHub release.
+No feature implementation, public release, tag, upload, semantic ID mutation,
+or false full-proof claim.
 
 ## Reviewer Instructions
 
-Confirm that every tracked bad-root file moved, remaining bad-root tracked count is zero, quarantine routes are recorded, exception retirement is limited to empty roots, and stale-reference repair is assigned to MOVE-ROUTER-02.
-
-## MOVE-ROUTER-02 Review Note
-
-MOVE-ROUTER-02 closes as PARTIAL. Review should verify that the routed structure
-was preserved, no former bad-root ownership was restored, no generated/local
-outputs were staged, and the remaining TestX/RepoX/import blockers are assigned
-to MOVE-ROUTER-02R.
+Confirm that former bad roots remain empty, generated/local roots are untracked,
+the source spine is materially cleaner, and remaining blockers are assigned to
+the next boundary/full-proof task.

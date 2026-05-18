@@ -10,6 +10,6 @@ endlocal & exit /b %rc%
 
 :usage
 echo Usage: tools\xstack\schema_validate ^<schema_name^> ^<file_path^>
-echo Example: tools\xstack\schema_validate session_spec contracts\schemas\examples\session_spec.example.json
+echo Example: tools\xstack\schema_validate session_spec contracts\schema\examples\session_spec.example.json
 endlocal & exit /b 2
 

@@ -40,19 +40,19 @@ Fingerprint: `23c806eb2270a3538317815717afe3a1c45a405b95ccd058a91869452dfe8f73`
 
 ### Release Index Rows
 
-- `dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/archive_policy_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/governance_model_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/governance_model_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/performance_envelope_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/performance_envelope_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/performance_envelope_server_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/performance_envelope_server_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/update_model_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/update_model_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
-- `build/tmp/update_model_test_dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
+- `build/tmp/update_model_test_archive/generated/dist/v0.0.0-mock/win64/dominium/manifests/release_index.json`
   - `os.winnt` / `arch.x86_64` / `abi.msvc` -> `target.os_winnt.abi_msvc.arch_x86_64` (`tier 1`)
 
 ## Readiness

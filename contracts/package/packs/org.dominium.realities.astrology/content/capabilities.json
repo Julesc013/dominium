@@ -1,0 +1,52 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "reality.astrology",
+      "capability_tags": [
+        "reality.domain"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      }
+    },
+    {
+      "capability_id": "field.astrology_signal",
+      "capability_tags": [
+        "field.astrology"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      }
+    },
+    {
+      "capability_id": "process.astrology.interpret",
+      "capability_tags": [
+        "process.astrology",
+        "process.epistemic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      }
+    },
+    {
+      "capability_id": "institution.astrology.council",
+      "capability_tags": [
+        "institution.astrology"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      }
+    },
+    {
+      "capability_id": "worldgen.model.astrology",
+      "capability_tags": [
+        "worldgen.model"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.realities.astrology.v1"
+      }
+    }
+  ]
+}

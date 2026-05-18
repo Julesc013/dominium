@@ -14,7 +14,7 @@ Audit of existing client, renderer, inspection, and projection/runtime surfaces 
 
 ## Existing Client UI Scaffolding
 
-- Legacy/native shell paths already exist under `client/shell/`, `client/core/`, `client/presentation/`, and `client/ui/workspaces/`.
+- Legacy/native shell paths already exist under `client/shell/`, `apps/client/session/`, `client/presentation/`, and `client/ui/workspaces/`.
 - The current deterministic Python-side headless UI surface is `tools/xstack/sessionx/ui_host.py`.
 - `tools/xstack/sessionx/ui_host.py` already provides:
   - deterministic window gating by lens and entitlements
@@ -30,7 +30,7 @@ Audit of existing client, renderer, inspection, and projection/runtime surfaces 
   - `src/client/render/renderers/software_renderer.py`
   - `src/client/render/renderers/hw_renderer_gl.py`
 - Existing documentation already treats null/software/hardware as presentation-only backends:
-  - `docs/app/CLIENT_RENDERER_UI.md`
+  - `docs/apps/CLIENT_RENDERER_UI.md`
   - `docs/build/CI_MATRIX.md`
 - Render surfaces already consume RenderModel only and do not require textures/models for baseline output.
 
@@ -38,7 +38,7 @@ Audit of existing client, renderer, inspection, and projection/runtime surfaces 
 
 - Authoritative inspection snapshot generation already exists through `process.inspect_generate_snapshot` in `tools/xstack/sessionx/process_runtime.py`.
 - Derived inspection overlay generation already exists in `src/client/interaction/inspection_overlays.py`.
-- GEO-9 overlay provenance is already exposed through `tools/geo/tool_explain_property_origin.py`.
+- GEO-9 overlay provenance is already exposed through `tools/validators/domain/geology/tool_explain_property_origin.py`.
 - Existing redaction and inspection determinism coverage already exists in TestX:
   - `test_lens_redaction_policy_applied`
   - `test_property_origin_tool_correct`
@@ -91,7 +91,7 @@ Audit of existing client, renderer, inspection, and projection/runtime surfaces 
 - Reuse `src/embodiment/lens/lens_engine.py` for profile-gated lens resolution and camera-state derivation.
 - Reuse `src/worldgen/mw/system_query_engine.py` and Sol anchor helpers for teleport/query planning.
 - Reuse `src/geo/projection/projection_engine.py` and `src/geo/lens/lens_engine.py` for map/minimap generation.
-- Reuse `src/client/interaction/inspection_overlays.py` and `tools/geo/tool_explain_property_origin.py` for inspect/provenance surfaces.
+- Reuse `src/client/interaction/inspection_overlays.py` and `tools/validators/domain/geology/tool_explain_property_origin.py` for inspect/provenance surfaces.
 
 ## UX-0 Implementation Constraint
 

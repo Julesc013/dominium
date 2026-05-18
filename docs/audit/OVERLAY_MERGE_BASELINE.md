@@ -50,7 +50,7 @@ Deterministic resolution rules:
 
 Explainability surfaces:
 
-- `tools/geo/tool_explain_property_origin.py`
+- `tools/validators/domain/geology/tool_explain_property_origin.py`
 - `explain.property_origin`
 - `explain.overlay_conflict`
 
@@ -63,7 +63,7 @@ Authoritative and derived surfaces added in GEO-9:
 - overlay merge runtime: `src/geo/overlay/overlay_merge_engine.py`
 - save patch process: `process.overlay_save_patch` in `tools/xstack/sessionx/process_runtime.py`
 - default overlay manifest seeding: `tools/xstack/sessionx/creator.py`
-- replay verification: `tools/geo/tool_replay_overlay_merge.py`
+- replay verification: `tools/validators/domain/geology/tool_replay_overlay_merge.py`
 - proof bundle propagation: control/server/shard proof surfaces now carry `overlay_manifest_hash`, `property_patch_hash_chain`, and `overlay_merge_result_hash_chain`
 
 Proof lineage carried for replay and audit:

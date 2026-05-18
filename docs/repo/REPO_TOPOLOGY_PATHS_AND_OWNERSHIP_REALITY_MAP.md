@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative topology, path-contract, and ownership reality map for later repo-structure discovery, design, migration-planning, and decision prompts; downstream of stronger canon, the Omega0 constraint packet, audit evidence, and live implementation evidence
 Replacement Target: later explicit repo-structure follow-up after approved topology design or new playable-baseline evidence
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `content/data/repo/repo_non_negotiables_and_current_reality.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `content/data/audit/ultra_repo_audit_system_inventory.json`, `content/data/audit/ultra_repo_audit_entrypoints.json`, `content/data/audit/ultra_repo_audit_product_assembly_plan.json`, `content/data/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `content/data/audit/ultra_repo_audit_wiring_map.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `CMakePresets.json`, `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `contracts/registry/virtual_root_registry.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/validation/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/mvp/runtime_entry.py`, `tools/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/network/policies/policy_server_authoritative.py`, `release/release_manifest_engine.py`, `release/component_graph_resolver.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/data/session_templates/session.mvp_default.json`, `contracts/registry/bundle_profiles.json`, `contracts/registry/session_defaults.json`, `schema/README.md`, `schemas/README.md`, `content/packs/README.md`, `contracts/repo/release_policy.toml`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `archive/generated/audit/ultra_repo_audit_system_inventory.json`, `archive/generated/audit/ultra_repo_audit_entrypoints.json`, `archive/generated/audit/ultra_repo_audit_product_assembly_plan.json`, `archive/generated/audit/ultra_repo_audit_gap_ledger.json`, `contracts/audit/ultra_repo_audit_build_run_test_matrix.json`, `archive/generated/audit/ultra_repo_audit_wiring_map.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `CMakePresets.json`, `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `contracts/registry/virtual_root_registry.json`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/mvp/runtime_entry.py`, `tools/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/validators/network/policies/policy_server_authoritative.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`, `contracts/registry/bundle_profiles.json`, `contracts/registry/session_defaults.json`, `schema/README.md`, `schemas/README.md`, `content/packs/README.md`, `contracts/repo/release_policy.toml`
 
 # Repo Topology, Paths, And Ownership Reality Map
 
@@ -66,13 +66,13 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Large authored code clusters outside the immediate launcher/playtest path:
   `engine/`, `game/`, and many domain roots such as `astro/`, `control/`, `logic/`, `mobility/`, `worldgen/`, and related module trees
 - Derived or generated output roots:
-  `build/`, `dist/`, `out/`, `.xstack_cache/`, `artifacts/`, `run_meta/`, `tmp/`, `saves/`
+  `build/`, `archive/generated/dist/`, `out/`, `.xstack_cache/`, `archive/generated/artifacts/`, `run_meta/`, `tmp/`, `saves/`
 
 ### Major Second-Level Clusters That Matter To Topology Decisions
 
 - `client/local_server/` is the current repo-local singleplayer orchestration cluster.
 - `server/net/`, `server/runtime/`, and `server/persistence/` are the current authoritative runtime cluster behind the local baseline.
-- `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/` are the tool subroots that materially affect build, session, validation, and operator flows.
+- `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/` are the tool subroots that materially affect build, session, validation, and operator flows.
 - `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are the authored and machine-readable data roots that current flows consume directly.
 - `docs/planning/`, `docs/audit/`, `docs/repo/`, `docs/xstack/`, `specs/reality/`, `data/planning/`, `data/audit/`, and `data/xstack/` are the doctrine and evidence cluster that later design prompts must consume instead of rediscovering.
 
@@ -84,7 +84,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - `tools/launcher/`
 - `tools/setup/`
 - `tools/xstack/`
-- `tools/validation/`
+- `tools/validators/suite/`
 - `validation/`
 - `profiles/`
 - `locks/`
@@ -94,7 +94,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - `runtime/`
 - `release/`
 - `security/trust/`
-- `dist/`
+- `archive/generated/dist/`
 - `saves/`
 
 ### Support-Only Or Derived Roots
@@ -102,9 +102,9 @@ The repo has many top-level roots, but later topology work should distinguish be
 - `build/`
 - `out/`
 - `.xstack_cache/`
-- `artifacts/`
+- `archive/generated/artifacts/`
 - `run_meta/`
-- large parts of `dist/` once assembled
+- large parts of `archive/generated/dist/` once assembled
 - `data/audit/`
 - many generated report leaves under `docs/audit/`
 
@@ -164,7 +164,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for current repo-local shell/bootstrap behavior
 - Major dependencies or path couplings:
-  `contracts/registry/command_registry.json`, `contracts/registry/tui_panel_registry.json`, `contracts/registry/virtual_root_registry.json`, `dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`
+  `contracts/registry/command_registry.json`, `contracts/registry/tui_panel_registry.json`, `contracts/registry/virtual_root_registry.json`, `archive/generated/dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`
 - Evidence notes:
   `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `contracts/registry/virtual_root_registry.json`
 
@@ -302,9 +302,9 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for release and install logic
 - Major dependencies or path couplings:
-  `manifests/release_manifest.json`, `manifests/release_index.json`, `contracts/registry/component_graph_registry.json`, `contracts/registry/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `dist/`
+  `manifests/release_manifest.json`, `manifests/release_index.json`, `contracts/registry/component_graph_registry.json`, `contracts/registry/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `archive/generated/dist/`
 - Evidence notes:
-  `release/release_manifest_engine.py`, `release/component_graph_resolver.py`, `release/update_resolver.py`
+  `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`
 
 ### `TOP-009 - security_trust_root`
 
@@ -373,7 +373,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   entangled with `server/net/`, consumed by authority policy code and runtime wiring
 - Evidence notes:
-  `tools/network/policies/policy_server_authoritative.py`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
+  `tools/validators/network/policies/policy_server_authoritative.py`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`
 
 ### `TOP-012 - validation_root`
 
@@ -386,7 +386,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - What it appears to own:
   validation inventory, report generation, and legacy validation surface reconciliation
 - What it appears not to own:
-  the CLI wrapper, which lives in `tools/validation/`, or repo doctrine
+  the CLI wrapper, which lives in `tools/validators/suite/`, or repo doctrine
 - Product-critical now:
   yes
 - Baseline-critical now:
@@ -396,7 +396,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   `contracts/registry/validation_suite_registry.json`, `docs/audit/VALIDATION_INVENTORY.md`, `docs/audit/VALIDATION_REPORT_<PROFILE>.md`, `data/audit/validation_report_<PROFILE>.json`, `docs/audit/VALIDATION_UNIFY_FINAL.md`
 - Evidence notes:
-  `tools/validators/validation/validation_engine.py`, `tools/validation/tool_run_validation.py`
+  `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`
 
 ### `TOP-013 - tools_root`
 
@@ -417,14 +417,14 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   no at the top-level umbrella
 - Major dependencies or path couplings:
-  `tools/launcher/`, `tools/setup/`, `tools/xstack/`, `tools/validation/`, `tools/mvp/`, `tools/dist/`, many repo-root hints and relative-path contracts
+  `tools/launcher/`, `tools/setup/`, `tools/xstack/`, `tools/validators/suite/`, `tools/mvp/`, `tools/release/dist/`, many repo-root hints and relative-path contracts
 - Evidence notes:
   `tools/CMakeLists.txt`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`
 
 ### `TOP-014 - tools_baseline_shell_cluster`
 
 - Root/path:
-  `tools/launcher/`, `tools/setup/`, `tools/xstack/`, `tools/validation/`, `tools/mvp/`
+  `tools/launcher/`, `tools/setup/`, `tools/xstack/`, `tools/validators/suite/`, `tools/mvp/`
 - Actual purpose:
   hosts the tool entrypoints that currently define the live build, validation, session, and transitional runtime shell flows
 - Ownership class:
@@ -440,7 +440,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for the specific entrypoints it actually hosts, no as a claim that `tools/` itself is a clean top-level owner
 - Major dependencies or path couplings:
-  repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`
+  repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `archive/generated/dist/`
 - Evidence notes:
   `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/testx_all.py`, `tools/mvp/runtime_entry.py`
 
@@ -463,7 +463,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes with the AGENTS caveat that `data/packs/` remains authoritative within authored pack-content and declaration scope
 - Major dependencies or path couplings:
-  virtual-root pack discovery, pack compatibility validation, session materialization inputs, dist/store pack resolution
+  virtual-root pack discovery, pack compatibility validation, session materialization inputs, archive/generated/dist/store pack resolution
 - Evidence notes:
   `content/packs/README.md`, `appshell/paths/virtual_paths.py`, `AGENTS.md`
 
@@ -534,7 +534,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   `contracts/package/locks/pack_lock.mvp_default.json`, AppShell virtual roots, release/install store projections, SessionX create and boot flows
 - Evidence notes:
-  `contracts/package/locks/pack_lock.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `release/update_resolver.py`
+  `contracts/package/locks/pack_lock.mvp_default.json`, `tools/mvp/runtime_bundle.py`, `tools/release/update_resolver.py`
 
 ### `TOP-019 - data_session_templates_root`
 
@@ -555,9 +555,9 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for authored session-template data
 - Major dependencies or path couplings:
-  `content/data/session_templates/session.mvp_default.json`, session materialization flows, SessionX tooling, baseline recipe docs
+  `content/templates/session/session.mvp_default.json`, session materialization flows, SessionX tooling, baseline recipe docs
 - Evidence notes:
-  `content/data/session_templates/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`
+  `content/templates/session/session.mvp_default.json`, `tools/mvp/runtime_bundle.py`
 
 ### `TOP-020 - data_registries_root`
 
@@ -578,7 +578,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   yes for registry data families that live there
 - Major dependencies or path couplings:
-  `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `release/component_graph_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/validation/validation_engine.py`
+  `appshell/command_registry.py`, `appshell/paths/virtual_paths.py`, `tools/release/component_graph_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/suite/validation_engine.py`
 - Evidence notes:
   `contracts/registry/virtual_root_registry.json`, `contracts/registry/bundle_profiles.json`, `contracts/registry/session_defaults.json`
 
@@ -626,7 +626,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Major dependencies or path couplings:
   validation scans, compat tooling, schema-facing consumers
 - Evidence notes:
-  `schemas/README.md`, `AGENTS.md`, `tools/validators/validation/validation_engine.py`
+  `schemas/README.md`, `AGENTS.md`, `tools/validators/suite/validation_engine.py`
 
 ### `TOP-023 - docs_specs_cluster`
 
@@ -700,7 +700,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 ### `TOP-026 - dist_root`
 
 - Root/path:
-  `dist/`
+  `archive/generated/dist/`
 - Actual purpose:
   assembled distribution tree and install-style payload staging root
 - Ownership class:
@@ -716,9 +716,9 @@ The repo has many top-level roots, but later topology work should distinguish be
 - Safe to treat as canonical:
   no
 - Major dependencies or path couplings:
-  `dist/manifests/release_manifest.json`, `dist/packs/`, `dist/profiles/`, `dist/locks/`, AppShell install/store search roots
+  `archive/generated/dist/manifests/release_manifest.json`, `archive/generated/dist/packs/`, `archive/generated/dist/profiles/`, `archive/generated/dist/locks/`, AppShell install/store search roots
 - Evidence notes:
-  `appshell/paths/virtual_paths.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `release/release_manifest_engine.py`
+  `appshell/paths/virtual_paths.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/release/release_manifest_engine.py`
 
 ### `TOP-027 - saves_root`
 
@@ -746,7 +746,7 @@ The repo has many top-level roots, but later topology work should distinguish be
 ### `TOP-028 - generated_output_cluster`
 
 - Root/path:
-  `build/`, `out/`, `.xstack_cache/`, `artifacts/`, `run_meta/`, `tmp/`
+  `build/`, `out/`, `.xstack_cache/`, `archive/generated/artifacts/`, `run_meta/`, `tmp/`
 - Actual purpose:
   generated work roots, build outputs, caches, reports, and transient artifact materialization
 - Ownership class:
@@ -773,7 +773,7 @@ The following path contracts exist now and matter to later relayout work.
 ### Repo-Root Assumptions
 
 - `PATH-001 - repo_root_tools_shell_hint`
-  Most Python tool entrypoints under `tools/` compute repo root with `../..` from the script directory. This is live in `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, and `tools/validation/tool_run_validation.py`.
+  Most Python tool entrypoints under `tools/` compute repo root with `../..` from the script directory. This is live in `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, and `tools/validators/suite/tool_run_validation.py`.
   Baseline-critical: yes.
 
 - `PATH-002 - repo_root_nested_xstack_hints`
@@ -811,7 +811,7 @@ The following path contracts exist now and matter to later relayout work.
 ### Profile, Bundle, Lock, Template, And Registry Location Assumptions
 
 - `PATH-009 - authored_mvp_asset_locations`
-  The authored baseline asset trio is physically located at `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/data/session_templates/session.mvp_default.json`.
+  The authored baseline asset trio is physically located at `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, and `content/templates/session/session.mvp_default.json`.
   Baseline-critical: yes.
 
 - `PATH-010 - registry_vs_authored_bundle_seam`
@@ -829,7 +829,7 @@ The following path contracts exist now and matter to later relayout work.
 ### Manifest, Store, And Dist Assumptions
 
 - `PATH-013 - dist_release_manifest_contract`
-  The repo-local launcher/setup shells and release logic expect release manifests at `manifests/release_manifest.json`, with the repo-local install/discovery path commonly resolving via `dist/manifests/release_manifest.json`.
+  The repo-local launcher/setup shells and release logic expect release manifests at `manifests/release_manifest.json`, with the repo-local install/discovery path commonly resolving via `archive/generated/dist/manifests/release_manifest.json`.
   Baseline-critical: yes.
 
 - `PATH-014 - store_projection_contract`
@@ -864,15 +864,15 @@ The following path contracts exist now and matter to later relayout work.
 ### `ENTRY-002 - validation_fast`
 
 - Entrypoint:
-  `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
+  `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
 - Depends on:
-  `tools/validation/`, `validation/`, `contracts/registry/validation_suite_registry.json`, `docs/audit/`, `data/audit/`
+  `tools/validators/suite/`, `validation/`, `contracts/registry/validation_suite_registry.json`, `docs/audit/`, `data/audit/`
 - Critical path contracts:
   `PATH-001`, `PATH-012`
 - Baseline-critical now:
   yes
 - Evidence notes:
-  `tools/validation/tool_run_validation.py`, `tools/validators/validation/validation_engine.py`
+  `tools/validators/suite/tool_run_validation.py`, `tools/validators/suite/validation_engine.py`
 
 ### `ENTRY-003 - testx_all`
 
@@ -892,7 +892,7 @@ The following path contracts exist now and matter to later relayout work.
 - Entrypoint:
   `python tools/launcher/launch.py`
 - Depends on:
-  `appshell/`, `release/`, `compat/`, `lib/install/`, `contracts/registry/virtual_root_registry.json`, `dist/`, repo-local `saves/`
+  `appshell/`, `release/`, `compat/`, `lib/install/`, `contracts/registry/virtual_root_registry.json`, `archive/generated/dist/`, repo-local `saves/`
 - Critical path contracts:
   `PATH-001`, `PATH-012`, `PATH-013`
 - Baseline-critical now:
@@ -911,7 +911,7 @@ The following path contracts exist now and matter to later relayout work.
 - Baseline-critical now:
   yes
 - Evidence notes:
-  `tools/setup/setup_cli.py`, `tools/validators/security/trust/trust_verifier.py`, `release/update_resolver.py`
+  `tools/setup/setup_cli.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/release/update_resolver.py`
 
 ### `ENTRY-006 - session_create`
 
@@ -985,7 +985,7 @@ The following path contracts exist now and matter to later relayout work.
 | `data/audit/` | machine-readable audit evidence | derived report-only root | mirrors reports and evidence payloads |
 | `docs/xstack/` | xstack closure and retained/deferred contracts | canonical bounded-domain packet for this series | XStack/AIDE closure is frozen and constraining |
 | `data/xstack/` | xstack mirrors | derived mirror with intact provenance | machine-readable consumption only |
-| `dist/` | assembled distribution tree | generated but operationally important | launcher/setup/appshell discover it, but it is not authored canon |
+| `archive/generated/dist/` | assembled distribution tree | generated but operationally important | launcher/setup/appshell discover it, but it is not authored canon |
 | `saves/` | runtime materialized saves | mixed and operationally canonical for now | not authored truth, but current baseline path assumes it |
 
 ## H. Overlap, Duplication, And Ambiguity Findings
@@ -997,7 +997,7 @@ The following path contracts exist now and matter to later relayout work.
 - `schema/` and `schemas/` remain an active canonical-versus-projection split. Later prompts must not flatten them into one ownership story.
 - `packs/` and `data/packs/` remain an active runtime-packaging-versus-authored-pack-content split. Later prompts must consume that split before proposing consolidation.
 - `profiles/bundles/`, `locks/`, `data/session_templates/`, and `data/registries/` are all real live inputs, but the current default-bundle story is split between authored MVP assets and registry-compiled `bundle.base.lab`.
-- `dist/` is generated, but it is still on the operational path for launcher/setup discovery. Later prompts must not treat generated roots as irrelevant just because they are non-canonical.
+- `archive/generated/dist/` is generated, but it is still on the operational path for launcher/setup discovery. Later prompts must not treat generated roots as irrelevant just because they are non-canonical.
 - `saves/` is not authored canon, but it is a baseline-critical operational contract today. Moving or abstracting it prematurely would break the current boot path.
 
 ## I. Boundaries On Redesign Freedom
@@ -1019,7 +1019,7 @@ The following path contracts exist now and matter to later relayout work.
 - SessionX runner still hardcodes repo-local `saves/<save_id>`
 - authored MVP assets and generated registry/lockfile intermediates currently coexist
 - `schema/` versus `schemas/` and `packs/` versus `data/packs/` are still active ownership splits
-- `dist/` is derived but operationally consumed
+- `archive/generated/dist/` is derived but operationally consumed
 
 ### Later Prompts Must Not Ignore Even If They Plan To Move Things Later
 
@@ -1039,7 +1039,7 @@ The following path contracts exist now and matter to later relayout work.
 - treating `launcher/` or `setup/` native wrappers as canonical just because they look cleaner than the Python shells
 - collapsing `schema/` and `schemas/` into one class before the ownership split is designed explicitly
 - collapsing `packs/` and `data/packs/` into one class before the authored-versus-runtime split is designed explicitly
-- ignoring generated intermediates like `build/registries/`, `build/lockfile.json`, or `dist/` because they are non-canonical, even though live flows still depend on them
+- ignoring generated intermediates like `build/registries/`, `build/lockfile.json`, or `archive/generated/dist/` because they are non-canonical, even though live flows still depend on them
 - moving `saves/` assumptions too early while the baseline path still hardcodes them
 - using stale docs or root names as topology truth when live implementation evidence shows otherwise
 - presenting the current tree as already normalized when the bundle-default seam, wrapper-vs-shell seam, and save-root coupling remain unresolved

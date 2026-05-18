@@ -16,9 +16,9 @@ REQUIRED_PATHS = (
     "docs/architecture/FUTURE_COMPATIBILITY_AND_ARCH.md",
     "docs/policies/IDE_CONTRIBUTION_RULES.md",
     "docs/architecture/IDE_PROJECTIONS.md",
-    "contracts/projections/ide/projection_manifest.schema.json",
+    "contracts/projection/ide/projection_manifest.schema.json",
 )
-PATH_PREFIXES = ("docs/", "contracts/schemas/", "contracts/projections/", "ide/", "scripts/")
+PATH_PREFIXES = ("docs/", "contracts/schema/", "contracts/projection/", "ide/", "scripts/")
 PLACEHOLDER_TOKENS = ("*", "<", ">", "{", "}", "...", "::", "|")
 
 

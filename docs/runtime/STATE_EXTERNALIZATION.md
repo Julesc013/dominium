@@ -365,7 +365,7 @@ All checkpoint, ownership, and anti-reinvention cautions remain in force for sta
 ### 15.4 Canonical versus projected or generated artifacts
 
 - canonical semantic and planning artifacts outrank projections, mirrors, and generated evidence
-- generated outputs under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain evidence only unless stronger doctrine promotes them
+- generated outputs under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remain evidence only unless stronger doctrine promotes them
 - projected or generated state must not be treated as canonical merely because it is already materialized
 
 ### 15.5 Thin `runtime/` root caution

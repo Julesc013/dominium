@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `engine/modules/core/d_container_state.c`
+- Canonical Candidate: `engine/kernel/d_container_state.c`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `engine/modules/core/d_container_state.c`
-- `engine/modules/core/d_container_state.h`
+- `engine/kernel/d_container_state.c`
+- `engine/kernel/d_container_state.h`
 
 ## Scorecard
 
-- `engine/modules/core/d_container_state.c` disposition=`canonical` rank=`1` total_score=`83.93` risk=`HIGH`
-- `engine/modules/core/d_container_state.h` disposition=`quarantine` rank=`2` total_score=`80.06` risk=`HIGH`
+- `engine/kernel/d_container_state.c` disposition=`canonical` rank=`1` total_score=`83.93` risk=`HIGH`
+- `engine/kernel/d_container_state.h` disposition=`quarantine` rank=`2` total_score=`80.06` risk=`HIGH`
 
 ## Usage Sites
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

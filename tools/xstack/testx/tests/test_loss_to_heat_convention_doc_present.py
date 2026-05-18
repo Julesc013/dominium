@@ -17,7 +17,7 @@ _REQUIRED_TOKENS = (
 
 
 def run(repo_root: str):
-    rel_path = "docs/thermal/LOSS_TO_HEAT_CONVENTION.md"
+    rel_path = "docs/domains/thermal/LOSS_TO_HEAT_CONVENTION.md"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         return {"status": "fail", "message": "{} missing".format(rel_path)}

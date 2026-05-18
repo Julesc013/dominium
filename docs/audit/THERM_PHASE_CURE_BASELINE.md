@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # THERM_PHASE_CURE_BASELINE
 
-Date: 2026-03-03  
+Date: 2026-03-03
 Series: THERM-2
 
 ## Implemented Scope
@@ -55,7 +55,7 @@ Series: THERM-2
 - Result: `pass` (18 warn findings; no refusal findings after topology regeneration).
 
 2. AuditX
-- Command: `python tools/auditx/auditx.py scan --repo-root . --format both`
+- Command: `python tools/xstack/auditx/auditx.py scan --repo-root . --format both`
 - Result: `scan_complete` (global findings present in repo baseline; run succeeded).
 
 3. TestX (THERM-2 required cases)

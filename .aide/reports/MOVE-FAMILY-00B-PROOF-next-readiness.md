@@ -16,7 +16,7 @@ PASS_WITH_WARNINGS.
 - `git ls-files ide`: empty.
 - filesystem `ide/`: absent.
 - `ide_root` layout exception: retired.
-- tracked projection manifest schema/examples: now under `contracts/projections/ide/**`.
+- tracked projection manifest schema/examples: now under `contracts/projection/ide/**`.
 
 ## Remaining Family-00 Work
 

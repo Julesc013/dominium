@@ -9,7 +9,7 @@ from pathlib import Path
 
 KNOWN_TOOLING_PATHS = [
     "tools/xstack",
-    "tools/auditx",
+    "tools/xstack/auditx",
     "tools/repox",
     "tools/testx",
     "tools/build",

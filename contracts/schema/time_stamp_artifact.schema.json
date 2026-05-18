@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Stamp Artifact Schema",
+  "version": "1.0.0",
+  "description": "Deterministic TEMP-0 temporal stamp artifact row (INFO family RECORD).",
+  "x-doc-ref": [
+    "docs/time/TEMPORAL_SEMANTICS_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "stamp_id",
+    "temporal_domain_id",
+    "canonical_tick",
+    "domain_time_value",
+    "issuer_subject_id",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "stamp_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "temporal_domain_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "canonical_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "domain_time_value": {
+      "type": [
+        "integer",
+        "string",
+        "object"
+      ]
+    },
+    "issuer_subject_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "stamp_id": "stamp.time.sync.0001",
+      "temporal_domain_id": "time.civil",
+      "canonical_tick": 1024,
+      "domain_time_value": "1970-01-01T00:17:04Z",
+      "issuer_subject_id": "institution.clock.default",
+      "deterministic_fingerprint": "",
+      "extensions": {}
+    }
+  ]
+}

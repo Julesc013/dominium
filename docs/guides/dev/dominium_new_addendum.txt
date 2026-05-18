@@ -5,7 +5,7 @@ Superseded By: none
 
 # Dominium V3 — Codegen Addendum (Renderer/Platform/Engine Split)
 
-This addendum **modifies and extends** previous V3 specs and directory contracts.  
+This addendum **modifies and extends** previous V3 specs and directory contracts.
 Any contradictions: this file WINS.
 
 It exists to stop code generators from baking in wrong assumptions about rendering, platforms, or OS APIs.
@@ -31,7 +31,7 @@ It exists to stop code generators from baking in wrong assumptions about renderi
 
 ## 2. Hard Layering Rules (Overrides Earlier Implicit Assumptions)
 
-Previous specs sometimes blurred platform vs renderer responsibilities.  
+Previous specs sometimes blurred platform vs renderer responsibilities.
 From now on, the following rules are hard:
 
 1. **Engine/Sim layer (deterministic core)**
@@ -41,7 +41,7 @@ From now on, the following rules are hard:
    - No DirectX/OpenGL/Vulkan/SDL/Win32/etc.
    - Only knows about **abstract draw commands**, **input state**, and **time** through engine-level APIs.
 
-2. **Platform backends (`/engine/platform/...`)**
+2. **Platform backends (`/runtime/platform/...`)**
    - Responsible for:
      - Window/surface creation.
      - Input collection.
@@ -52,7 +52,7 @@ From now on, the following rules are hard:
      - SDL headers (if that variant uses SDL).
    - Must expose a **stable C API** (`dom_platform_*`).
 
-3. **Renderer backends (`/engine/render/...`)**
+3. **Renderer backends (`/runtime/render/...`)**
    - Responsible for:
      - Creating and managing GPU (or software) render contexts.
      - Drawing the frame from **draw commands** produced by the engine.
@@ -62,7 +62,7 @@ From now on, the following rules are hard:
    - Must expose a **stable C API** (`dom_render_*`).
    - Renderer is **purely observational**: it cannot modify simulation state, call randomness, or influence determinism.
 
-4. No other layer may call any graphics or OS APIs directly.  
+4. No other layer may call any graphics or OS APIs directly.
    - No DirectX in `/engine/sim`.
    - No Win32 includes in `/engine/core` or `/game`.
    - No SDL in `/engine/sim`.
@@ -71,7 +71,7 @@ From now on, the following rules are hard:
 
 ## 3. Platform API Contract
 
-New canonical header: `engine/platform/dom_platform.h`
+New canonical header: `runtime/platform/dom_platform.h`
 
 This MUST be implemented by each platform backend and is the only interface the engine/game relies on.
 
@@ -125,19 +125,19 @@ void dom_platform_log(const char *msg);
 void dom_platform_fatal(const char *msg);
 3.3 Implementation Targets (MVP First)
 For MVP, only one platform backend must exist:
-• engine/platform/win32/dom_platform_win32.c
+• runtime/platform/win32/dom_platform_win32.c
 o Uses native Win32 API (no SDL) for:
 • Window, message loop, input, timing.
 Future backends:
-• engine/platform/win32_sdl2 (Win + SDL2)
-• engine/platform/win9x (Win98 SE)
-• engine/platform/posix_sdl2 (Linux)
-• engine/platform/macos_cocoa or _sdl2 (macOS X)
+• runtime/platform/win32_sdl2 (Win + SDL2)
+• runtime/platform/win9x (Win98 SE)
+• runtime/platform/posix_sdl2 (Linux)
+• runtime/platform/macos_cocoa or _sdl2 (macOS X)
 • etc.
 All must obey the same header and never change its signature.
 
 4. Renderer API Contract
-New canonical header: engine/render/dom_render_api.h
+New canonical header: runtime/render/dom_render_api.h
 This is the only interface the engine/game uses to draw.
 4.1 Backend IDs and Caps
 typedef enum DomRenderBackendId {
@@ -222,13 +222,13 @@ void dom_render_frame(DomRenderContext      *ctx,
                       const DomDrawCmd      *cmds,
                       unsigned                cmd_count);
 Backends must be implemented as standalone modules:
-• engine/render/dx9/dom_render_dx9.c
-• Later: engine/render/dx11/dom_render_dx11.c, engine/render/gl1/dom_render_gl1.c, etc.
+• runtime/render/dx9/dom_render_dx9.c
+• Later: runtime/render/dx11/dom_render_dx11.c, runtime/render/gl1/dom_render_gl1.c, etc.
 No backend may change the API or add engine-visible entry points.
 
 5. Backend Registry and Selection
 To support mix-and-match platform/renderer combos cleanly, there will be a backend registry.
-New internal header: engine/render/dom_render_registry.h
+New internal header: runtime/render/dom_render_registry.h
 typedef struct DomRenderBackendVTable {
     DomRenderBackendId id;
     const char        *name;
@@ -300,10 +300,10 @@ void dom_view_set_camera_3d(const DomVec3f *pos,
 9. Directory and File Placement Constraints (Renderer/Platform)
 Add to the existing directory contract:
 1. All platform implementations must live under:
-o /engine/platform/<backend_name>/*.c
+o /runtime/platform/<backend_name>/*.c
 o Do not put Win32 code under /game or /engine/sim.
 2. All renderer implementations must live under:
-o /engine/render/<backend_name>/*.c
+o /runtime/render/<backend_name>/*.c
 o Do not put DirectX/OpenGL/Vulkan calls under /engine/sim or /game.
 3. The only headers allowed to be included from renderer code are:
 o Engine public render headers (dom_render_api.h and internal registry headers).

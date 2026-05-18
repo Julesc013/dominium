@@ -1,0 +1,15 @@
+SCHEMA: universe/boundary_model.schema
+schema_id: dominium.schema.universe.boundary_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define universe boundary topology and flux allowance contracts.
+
+REQUIRED SHAPE:
+record boundary_model
+  required:
+    - boundary_model_id: id
+    - universe_type: enum(closed|open|procedural_infinite)
+    - allow_boundary_flux: bool
+    - extensions: map

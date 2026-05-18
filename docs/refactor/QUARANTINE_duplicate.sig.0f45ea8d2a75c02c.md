@@ -19,17 +19,17 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `engine/include/domino/core/rng_streams.h`
-- `engine/modules/core/rng_streams.c`
+- `engine/kernel/rng_streams.c`
 
 ## Scorecard
 
 - `engine/include/domino/core/rng_streams.h` disposition=`canonical` rank=`1` total_score=`77.67` risk=`HIGH`
-- `engine/modules/core/rng_streams.c` disposition=`quarantine` rank=`2` total_score=`75.7` risk=`HIGH`
+- `engine/kernel/rng_streams.c` disposition=`quarantine` rank=`2` total_score=`75.7` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/CODE_CHANGE_JUSTIFICATION.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/RNG_MODEL.md, docs/audit/MW0_RETRO_AUDIT.md, docs/audit/WORLDGEN_CONSTITUTION_BASELINE.md, docs/audit/WORLDGEN_LOCK0_RETRO_AUDIT.md, docs/audit/WORLDGEN_LOCK_BASELINE.md, docs/geo/WORLDGEN_CONSTITUTION.md`
+- Docs: `docs/CODE_CHANGE_JUSTIFICATION.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/RNG_MODEL.md, docs/audit/MW0_RETRO_AUDIT.md, docs/audit/WORLDGEN_CONSTITUTION_BASELINE.md, docs/audit/WORLDGEN_LOCK0_RETRO_AUDIT.md, docs/audit/WORLDGEN_LOCK_BASELINE.md, docs/domains/geology/WORLDGEN_CONSTITUTION.md`
 
 ## Tests Involved
 
@@ -37,7 +37,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

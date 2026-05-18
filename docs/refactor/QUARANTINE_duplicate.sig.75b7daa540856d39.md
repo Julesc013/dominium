@@ -31,7 +31,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/app/PRODUCT_BOUNDARIES.md, docs/architecture/CANON_INDEX.md, docs/audit/APPSHELL0_RETRO_AUDIT.md, docs/audit/APPSHELL1_RETRO_AUDIT.md, docs/audit/APPSHELL2_RETRO_AUDIT.md, docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md`
+- Docs: `docs/apps/PRODUCT_BOUNDARIES.md, docs/architecture/CANON_INDEX.md, docs/audit/APPSHELL0_RETRO_AUDIT.md, docs/audit/APPSHELL1_RETRO_AUDIT.md, docs/audit/APPSHELL2_RETRO_AUDIT.md, docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md`
 
 ## Tests Involved
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

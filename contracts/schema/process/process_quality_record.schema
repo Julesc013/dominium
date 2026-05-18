@@ -1,0 +1,21 @@
+SCHEMA: process/process_quality_record.schema
+schema_id: dominium.schema.process.process_quality_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic process quality outcomes (yield/defect/grade).
+
+NON-SEMANTICS:
+- Does not replace batch quality rows.
+- Does not include QC sampling decisions (PROC-3).
+
+REQUIRED SHAPE:
+record process_quality_record
+  required:
+    - run_id: id
+    - yield_factor: fixed_point_nonnegative
+    - defect_flags: list[id]
+    - quality_grade: text
+    - deterministic_fingerprint: text
+    - extensions: map

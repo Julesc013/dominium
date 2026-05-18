@@ -77,8 +77,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - Cross-shard direct writes remain explicitly unsupported in v1 baseline.
 
 ## Cross-References
-- `docs/net/SRZ_HYBRID_POLICY.md`
-- `docs/net/REPLICATION_POLICIES.md`
-- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
+- `docs/runtime/network/SRZ_HYBRID_POLICY.md`
+- `docs/runtime/network/REPLICATION_POLICIES.md`
+- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/contracts/refusal_contract.md`
 - `schemas/shard_map.schema.json`

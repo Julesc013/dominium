@@ -27,7 +27,7 @@ PROC-2 defines deterministic quality outcomes for ProcessRun outputs and formali
 - Optional stochastic behavior is policy-gated:
   - enabled only when `yield_model.stochastic_allowed=true`
   - named RNG stream only (`rng_stream_name`)
-  - RNG usage must be logged in run artifacts/proof payloads
+  - RNG usage must be logged in run archive/generated/artifacts/proof payloads
 
 ## B) Defects
 

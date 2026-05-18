@@ -12,7 +12,7 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/geo/tool_run_geo_stress.py`
+- Canonical Candidate: `tools/validators/domain/geology/tool_run_geo_stress.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
@@ -20,11 +20,11 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/earth/tool_generate_earth_mvp_stress.py`
 - `tools/earth/tool_replay_earth_physics_window.py`
-- `tools/geo/tool_run_geo_stress.py`
+- `tools/validators/domain/geology/tool_run_geo_stress.py`
 
 ## Scorecard
 
-- `tools/geo/tool_run_geo_stress.py` disposition=`canonical` rank=`1` total_score=`67.55` risk=`HIGH`
+- `tools/validators/domain/geology/tool_run_geo_stress.py` disposition=`canonical` rank=`1` total_score=`67.55` risk=`HIGH`
 - `tools/earth/tool_generate_earth_mvp_stress.py` disposition=`quarantine` rank=`2` total_score=`64.65` risk=`HIGH`
 - `tools/earth/tool_replay_earth_physics_window.py` disposition=`quarantine` rank=`3` total_score=`64.65` risk=`HIGH`
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

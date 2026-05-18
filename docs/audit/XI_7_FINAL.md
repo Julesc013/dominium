@@ -92,7 +92,7 @@ Task-level invariants upheld:
 
 Intentional architecture change requires:
 
-1. prepare a ControlX plan with `python -B tools/controlx/tool_plan_arch_change.py --repo-root .`
+1. prepare a ControlX plan with `python -B tools/xstack/controlx/tool_plan_arch_change.py --repo-root .`
 2. attach `ARCH-GRAPH-UPDATE`
 3. update the Xi-6 frozen architecture artifacts deliberately
 4. pass the Xi-7 `FULL` profile

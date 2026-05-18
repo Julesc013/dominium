@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Υ, later Φ-B gating review, later Ζ checkpoints
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md`, `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`, `docs/release/RELEASE_INDEX_MODEL.md`, `docs/release/ARTIFACT_NAMING_RULES.md`, `contracts/repo/release_policy.toml`, `content/data/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json`, `content/data/planning/next_two_series_plan_phib_upsilon.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md`, `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`, `docs/release/RELEASE_INDEX_MODEL.md`, `docs/release/ARTIFACT_NAMING_RULES.md`, `contracts/repo/release_policy.toml`, `contracts/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json`, `contracts/planning/next_two_series_plan_phib_upsilon.json`
 
 # Checkpoint C-ΦB1Υ0
 
@@ -86,12 +86,12 @@ The project is now better served by beginning `Υ-A`.
 | Build graph consolidation | `Υ-0 — BUILD_GRAPH_LOCK-0` | `mostly_consolidation` | `CMakePresets.json`, CI entrypoints, and release policy surfaces already exist. The task is to freeze them constitutionally rather than invent a new build universe. |
 | Preset and toolchain consolidation | `Υ-1 — PRESET_CONSOLIDATION-0` | `mostly_consolidation` | Current preset and toolchain substrate exists and should be converged under explicit authority rules. |
 | Versioning constitution | `Υ-2 — VERSIONING_CONSTITUTION-0` | `mostly_consolidation` | `docs/release/RELEASE_IDENTITY_CONSTITUTION.md` and `contracts/repo/release_policy.toml` already provide live version and identity evidence. The remaining work is doctrinal consolidation. |
-| Release identity and release-index alignment | `Υ-2`, `Υ-3 — RELEASE_INDEX_AND_RESOLUTION_POLICY-0` | `mostly_consolidation` | `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`, `docs/release/RELEASE_INDEX_MODEL.md`, `release/update_resolver.py`, and `release/component_graph_resolver.py` already define real substrate that should be aligned rather than replaced. |
+| Release identity and release-index alignment | `Υ-2`, `Υ-3 — RELEASE_INDEX_AND_RESOLUTION_POLICY-0` | `mostly_consolidation` | `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`, `docs/release/RELEASE_INDEX_MODEL.md`, `tools/release/update_resolver.py`, and `tools/release/component_graph_resolver.py` already define real substrate that should be aligned rather than replaced. |
 | Release contract profile | `Υ-4 — RELEASE_CONTRACT_PROFILE-0` | `ready` | Release identity, update policy, and artifact metadata are already explicit enough to support a canonical release contract profile. |
 | Artifact naming rules | `Υ-5 — ARTIFACT_AND_TARGET_NAMING_POLICY-0` | `mostly_consolidation` | The repo already contains `docs/release/ARTIFACT_NAMING_RULES.md`. The active plan now combines artifact naming and target naming under one prompt instead of splitting them artificially. |
 | Target naming policy | `Υ-5 — ARTIFACT_AND_TARGET_NAMING_POLICY-0` | `mostly_consolidation` | The current active plan treats target naming as part of the same naming-law refinement band as artifact naming. Older split references are numbering drift, not separate next prompts. |
 | Changelog policy | `Υ-6 — CHANGELOG_POLICY-0` | `mostly_consolidation` | `release/updates/changelog.json` already exists. The remaining work is to define governed change-record meaning rather than create a new change surface. |
-| Pipeline and archive continuity | `Υ-7 — RELEASE_PIPELINE_AND_ARCHIVE_MODEL-0` | `mostly_consolidation` | `release/archive_policy.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, and `tools/xstack/ci/xstack_ci_entrypoint.py` already provide the substrate that risky `Φ-B` later depends on. |
+| Pipeline and archive continuity | `Υ-7 — RELEASE_PIPELINE_AND_ARCHIVE_MODEL-0` | `mostly_consolidation` | `tools/release/archive_policy.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, and `tools/xstack/ci/xstack_ci_entrypoint.py` already provide the substrate that risky `Φ-B` later depends on. |
 
 Two additional `Υ` prompts sit just past the narrow `Υ-A` list but are still required before risky `Φ-B` reconsideration:
 
@@ -138,10 +138,10 @@ It must not invent a new runtime-continuity canon detached from the explicit rep
 - `docs/release/RELEASE_IDENTITY_CONSTITUTION.md`
 - `docs/release/RELEASE_INDEX_MODEL.md`
 - `docs/release/ARTIFACT_NAMING_RULES.md`
-- `release/update_resolver.py`
-- `release/archive_policy.py`
-- `release/release_manifest_engine.py`
-- `release/component_graph_resolver.py`
+- `tools/release/update_resolver.py`
+- `tools/release/archive_policy.py`
+- `tools/release/release_manifest_engine.py`
+- `tools/release/component_graph_resolver.py`
 - `release/updates/changelog.json`
 
 `Υ` must not replace those surfaces with a greenfield release or control-plane theory detached from repo reality.
@@ -160,8 +160,8 @@ The following cautions remain fully active:
 
 Current drift note:
 
-- `content/data/planning/final_prompt_inventory.json` still contains stale `Υ` numbering for part of the release band
-- `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md` and `content/data/planning/next_two_series_plan_phib_upsilon.json` are the active post-`Σ-B` prompt-order authorities for `Υ-0` through `Υ-10`
+- `contracts/planning/final_prompt_inventory.json` still contains stale `Υ` numbering for part of the release band
+- `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md` and `contracts/planning/next_two_series_plan_phib_upsilon.json` are the active post-`Σ-B` prompt-order authorities for `Υ-0` through `Υ-10`
 
 ## I. Final Verdict
 

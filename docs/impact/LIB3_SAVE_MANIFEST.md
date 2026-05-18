@@ -13,8 +13,8 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/lib/save_manifest.schema`
 - `schema/lib/migration_event.schema`
 - `schema/save.manifest.schema`
-- `tools/libraries/save/__init__.py`
-- `tools/libraries/save/save_validator.py`
+- `tools/package/libraries/save/__init__.py`
+- `tools/package/libraries/save/save_validator.py`
 - `tools/launcher/launcher_cli.py`
 
 ## Demand IDs

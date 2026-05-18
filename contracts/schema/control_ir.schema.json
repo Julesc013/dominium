@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Control IR Schema",
+  "version": "1.0.0",
+  "description": "Deterministic restricted Control IR program.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "control_ir_id",
+    "root_block",
+    "blocks",
+    "metadata",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "control_ir_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "root_block": {
+      "type": "string",
+      "minLength": 1
+    },
+    "blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "block_id",
+          "op_sequence",
+          "next_block_on_success",
+          "next_block_on_failure",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "block_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "op_sequence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "next_block_on_success": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "next_block_on_failure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "creator",
+        "tick"
+      ],
+      "additionalProperties": true,
+      "properties": {
+        "creator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "control_ir_id": "control.ir.autopilot.stub",
+      "root_block": "block.main",
+      "blocks": [
+        {
+          "block_id": "block.main",
+          "op_sequence": [
+            "op.0001",
+            "op.0002"
+          ],
+          "next_block_on_success": null,
+          "next_block_on_failure": null,
+          "extensions": {}
+        }
+      ],
+      "metadata": {
+        "creator": "controller.autopilot.stub",
+        "tick": 0
+      },
+      "deterministic_fingerprint": "1111111111111111111111111111111111111111111111111111111111111111",
+      "extensions": {
+        "op_rows": [
+          {
+            "schema_version": "1.0.0",
+            "op_id": "op.0001",
+            "op_type": "op.acquire_pose",
+            "parameters": {
+              "pose_slot_id": "pose.driver"
+            },
+            "static_requirements": {
+              "entitlements": [
+                "entitlement.tool.operating"
+              ],
+              "capabilities": []
+            },
+            "cost_estimate": 1,
+            "extensions": {}
+          },
+          {
+            "schema_version": "1.0.0",
+            "op_id": "op.0002",
+            "op_type": "op.release_pose",
+            "parameters": {
+              "pose_slot_id": "pose.driver"
+            },
+            "static_requirements": {
+              "entitlements": [
+                "entitlement.tool.operating"
+              ],
+              "capabilities": []
+            },
+            "cost_estimate": 1,
+            "extensions": {}
+          }
+        ]
+      }
+    }
+  ]
+}

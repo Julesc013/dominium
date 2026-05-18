@@ -14,7 +14,7 @@ Focused tuple `inv_repox_rules` still fails after safe remediation. The count wa
 
 - `invariant_units_present` remains fixed from POST-CONVERGE-10F.
 - RepoX no longer reports the stale top-level root structure family fixed in 10G.
-- RepoX no longer reports stale root-level `appshell/` expectations; AppShell checks now use `runtime/appshell/`.
+- RepoX no longer reports stale root-level `appshell/` expectations; AppShell checks now use `runtime/shell/`.
 - RepoX group cache now depends on the rule implementation, preventing stale cached rule results after rule changes.
 
 ## Remaining Gate

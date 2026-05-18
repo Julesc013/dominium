@@ -43,7 +43,7 @@ Source repository layout and distribution/install/runtime/media layout are separ
 - distribution projection authority: `contracts/distribution/layout.contract.toml`
 - human distribution explanation: `docs/repo/DISTRIBUTION_LAYOUT_CANON.md`
 
-`dist/` is generated release/build output. It is not a canonical source root and must not be used to decide source ownership, runtime storage ownership, or package export targets.
+`archive/generated/dist/` is generated release/build output. It is not a canonical source root and must not be used to decide source ownership, runtime storage ownership, or package export targets.
 
 ## CONVERGE-05 Archive Convergence Note
 
@@ -59,8 +59,8 @@ CONVERGE-05 completed the first physical root convergence pass for archive-famil
 
 CONVERGE-06 completed the second physical root convergence pass for safe contract-adjacent material:
 
-- `schema/` moved to `contracts/schemas/`
-- `schemas/` merged into `contracts/schemas/`
+- `schema/` moved to `contracts/schema/`
+- `schemas/` merged into `contracts/schema/`
 - root-level `schema/` and `schemas/` are retired aliases
 
 `contracts/` is canonical for schemas, registries, protocols, capabilities, compatibility contracts, stability contracts, replay/proof contracts, ABI contracts, repository layout contracts, and distribution projection contracts. Mixed contract-adjacent roots such as `compat/` and `locks/` remain under review because they contain implementation or concrete lock artifacts, not only contract definitions.
@@ -69,8 +69,8 @@ CONVERGE-06 completed the second physical root convergence pass for safe contrac
 
 CONVERGE-07 completed the third physical root convergence pass for safe runtime-facing material:
 
-- `appshell/` moved to `runtime/appshell/`
-- `app/` moved to `runtime/app/`
+- `appshell/` moved to `runtime/shell/`
+- `app/` moved to `runtime/shell/lifecycle/`
 - `ui/` moved to `runtime/ui/`
 - `diag/` moved to `runtime/diagnostics/`
 
@@ -91,13 +91,13 @@ CONVERGE-08 completed the fourth physical root convergence pass for product entr
 
 ## CONVERGE-09 Domain Split Note
 
-CONVERGE-09 completed the safe portion of the domain-root split. Root-level Python implementation packages for domain surfaces moved under `game/domains/` using normalized domain names such as `astronomy`, `chemistry`, `electricity`, `fluids`, `geology`, `processes`, and `systems`.
+CONVERGE-09 completed the safe portion of the domain-root split. Root-level Python implementation packages for domain surfaces moved under `game/domain/` using normalized domain names such as `astronomy`, `chemistry`, `electricity`, `fluids`, `geology`, `processes`, and `systems`.
 
 Domain ownership is now split across:
 
 - `contracts/` for schemas, registries, capabilities, and protocols.
-- `game/domains/` for deterministic Dominium domain implementation.
-- `content/domain-data/` and `content/packs/` for authored data and pack content.
+- `game/domain/` for deterministic Dominium domain implementation.
+- `content/domains/` and `content/packs/` for authored data and pack content.
 - `docs/domains/` for human-readable domain docs.
 - `tests/` for fixtures, determinism, regression, and golden cases.
 
@@ -131,7 +131,7 @@ Optional future roots are:
 
 Source repository layout is not the portable install layout, runtime store layout, media layout, or distribution output layout. Those layouts are projections governed by AppShell, install, content-storage, bundle, save, instance, and future distribution contracts.
 
-Do not infer `dist/`, `store/`, `instances/`, `saves/`, media, package, or install paths from source repo top-level roots.
+Do not infer `archive/generated/dist/`, `store/`, `instances/`, `saves/`, media, package, or install paths from source repo top-level roots.
 
 ## Later Phases
 

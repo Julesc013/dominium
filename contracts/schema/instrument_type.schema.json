@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Instrument Type Schema",
+  "version": "1.0.0",
+  "description": "Diegetic instrument type contract defining perceived inputs and diegetic output channels.",
+  "x-doc-ref": [
+    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md",
+    "docs/diegetics/MAP_AND_NOTEBOOK_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "instrument_type_id",
+    "description",
+    "required_channels_in",
+    "produced_channels_out",
+    "update_process_id",
+    "calibration_model_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "instrument_type_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "required_channels_in": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "produced_channels_out": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "update_process_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calibration_model_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "instrument_type_id": "instr.compass",
+      "description": "Compass heading from lawful camera orientation channel.",
+      "required_channels_in": [
+        "ch.camera.state"
+      ],
+      "produced_channels_out": [
+        "ch.diegetic.compass"
+      ],
+      "update_process_id": "process.instrument_update.compass",
+      "calibration_model_id": "calib.none",
+      "extensions": {}
+    }
+  ]
+}

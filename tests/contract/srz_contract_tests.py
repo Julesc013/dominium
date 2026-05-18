@@ -29,12 +29,12 @@ def main() -> int:
         "docs/ops/MMO_SCALING_PLAYBOOK.md",
     ]
     required_schemas = [
-        "contracts/schemas/srz.zone.schema",
-        "contracts/schemas/srz.assignment.schema",
-        "contracts/schemas/srz.policy.schema",
-        "contracts/schemas/process.log.schema",
-        "contracts/schemas/process.hashchain.schema",
-        "contracts/schemas/state.delta.schema",
+        "contracts/schema/srz.zone.schema",
+        "contracts/schema/srz.assignment.schema",
+        "contracts/schema/srz.policy.schema",
+        "contracts/schema/process.log.schema",
+        "contracts/schema/process.hashchain.schema",
+        "contracts/schema/state.delta.schema",
     ]
 
     ok = True

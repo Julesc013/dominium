@@ -19,7 +19,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.worldgen.core.constraint_solver import solve_constraints
+    from game.domain.worldgen.core.constraint_solver import solve_constraints
 
     module_registry = _load_json(os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json"))
     payload = {

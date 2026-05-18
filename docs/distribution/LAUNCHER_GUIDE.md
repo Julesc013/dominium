@@ -119,4 +119,4 @@ produce explicit messages and compat_report modes.
 ## See also
 - `docs/distribution/LAUNCHER_SCOPE.md`
 - `docs/distribution/LAUNCHER_SETUP_CONTRACT.md`
-- `docs/ui/LAUNCHER_WALKTHROUGH.md`
+- `docs/runtime/ui/LAUNCHER_WALKTHROUGH.md`

@@ -95,7 +95,7 @@ These define reusable CMake logic.
 Modules include:
 DominiumPlatform.cmake
 • Selects platform abstraction layer
-• Verifies /engine/platform/* bindings exist
+• Verifies /runtime/platform/* bindings exist
 • Prevents missing platform API symbols at link-time
 DominiumDeterminism.cmake
 • Enforces:

@@ -35,4 +35,4 @@ Replacement Target: regenerated convergence step summary for supervisor_hardenin
 
 ## Remediation
 
-- module=`tools/appshell/tool_run_supervisor_hardening.py` rule=`INV-SUPERVISOR-NO-WALLCLOCK` refusal=`none` command=`python tools/appshell/tool_run_supervisor_hardening.py --repo-root .`
+- module=`tools/validators/shell/tool_run_supervisor_hardening.py` rule=`INV-SUPERVISOR-NO-WALLCLOCK` refusal=`none` command=`python tools/validators/shell/tool_run_supervisor_hardening.py --repo-root .`

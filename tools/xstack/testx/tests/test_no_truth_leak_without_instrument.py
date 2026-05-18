@@ -15,7 +15,7 @@ def _load(repo_root: str, rel_path: str) -> dict:
 
 
 def run(repo_root: str):
-    from game.domains.logic.signal import observe_signal_row
+    from game.domain.logic.signal import observe_signal_row
 
     signal_row = {
         "signal_id": "signal.logic.observe",

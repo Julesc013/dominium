@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization Target Schema",
+  "version": "1.0.0",
+  "description": "Registry entry for FORM-1 formalization target kinds.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "target_id",
+    "description",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "target_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "target_id": "target.track",
+      "description": "Linear guide-like infrastructure target.",
+      "extensions": {}
+    }
+  ]
+}

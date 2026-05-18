@@ -41,7 +41,7 @@ guidance, reference, or historical context.
 - `docs/architecture/` binding contracts and laws
 - `docs/roadmap/` goals and coverage tests only
 - `docs/content/` data and pack explanation only
-- `docs/dev/` developer how-to only
+- `docs/development/` developer how-to only
 - `docs/modding/` modding how-to only
 - `docs/archive/` historical and superseded docs only
 

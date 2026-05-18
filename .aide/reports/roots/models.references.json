@@ -473,43 +473,43 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3575,
-      "snippet": "\"contracts/schemas/models/cache_policy.schema\","
+      "snippet": "\"contracts/schema/models/cache_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3576,
-      "snippet": "\"contracts/schemas/models/constitutive_model.schema\","
+      "snippet": "\"contracts/schema/models/constitutive_model.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3577,
-      "snippet": "\"contracts/schemas/models/input_ref.schema\","
+      "snippet": "\"contracts/schema/models/input_ref.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3578,
-      "snippet": "\"contracts/schemas/models/model_binding.schema\","
+      "snippet": "\"contracts/schema/models/model_binding.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3579,
-      "snippet": "\"contracts/schemas/models/model_evaluation_result.schema\","
+      "snippet": "\"contracts/schema/models/model_evaluation_result.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3580,
-      "snippet": "\"contracts/schemas/models/model_type.schema\","
+      "snippet": "\"contracts/schema/models/model_type.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3581,
-      "snippet": "\"contracts/schemas/models/output_ref.schema\","
+      "snippet": "\"contracts/schema/models/output_ref.schema\","
     },
     {
       "classification": "unknown",
@@ -927,43 +927,43 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/cache_policy.schema",
+      "file": "contracts/schema/models/cache_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: models/cache_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/constitutive_model.schema",
+      "file": "contracts/schema/models/constitutive_model.schema",
       "line": 1,
       "snippet": "SCHEMA: models/constitutive_model.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/input_ref.schema",
+      "file": "contracts/schema/models/input_ref.schema",
       "line": 1,
       "snippet": "SCHEMA: models/input_ref.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/model_binding.schema",
+      "file": "contracts/schema/models/model_binding.schema",
       "line": 1,
       "snippet": "SCHEMA: models/model_binding.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/model_evaluation_result.schema",
+      "file": "contracts/schema/models/model_evaluation_result.schema",
       "line": 1,
       "snippet": "SCHEMA: models/model_evaluation_result.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/model_type.schema",
+      "file": "contracts/schema/models/model_type.schema",
       "line": 1,
       "snippet": "SCHEMA: models/model_type.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/models/output_ref.schema",
+      "file": "contracts/schema/models/output_ref.schema",
       "line": 1,
       "snippet": "SCHEMA: models/output_ref.schema"
     },
@@ -1605,187 +1605,187 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e179_inline_response_curve_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e179_inline_response_curve_smell.py",
       "line": 60,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e180_model_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e180_model_bypass_smell.py",
       "line": 58,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e180_model_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e180_model_bypass_smell.py",
       "line": 97,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e182_bundle_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e182_bundle_bypass_smell.py",
       "line": 48,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e183_electric_special_case_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e183_electric_special_case_smell.py",
       "line": 54,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e185_inline_power_loss_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e185_inline_power_loss_smell.py",
       "line": 57,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e195_heat_loss_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e195_heat_loss_bypass_smell.py",
       "line": 61,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e196_thermal_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e196_thermal_bypass_smell.py",
       "line": 55,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e197_inline_phase_change_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e197_inline_phase_change_smell.py",
       "line": 59,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e197_inline_phase_change_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e197_inline_phase_change_smell.py",
       "line": 103,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e198_inline_cure_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e198_inline_cure_smell.py",
       "line": 58,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e198_inline_cure_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e198_inline_cure_smell.py",
       "line": 103,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e199_inline_cooling_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e199_inline_cooling_smell.py",
       "line": 60,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e199_inline_cooling_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e199_inline_cooling_smell.py",
       "line": 105,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e201_inline_fire_logic_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e201_inline_fire_logic_smell.py",
       "line": 62,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e201_inline_fire_logic_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e201_inline_fire_logic_smell.py",
       "line": 109,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e205_energy_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e205_energy_bypass_smell.py",
       "line": 64,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e206_momentum_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e206_momentum_bypass_smell.py",
       "line": 54,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e211_unregistered_field_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e211_unregistered_field_smell.py",
       "line": 123,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e217_undeclared_coupling_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e217_undeclared_coupling_smell.py",
       "line": 64,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e219_inline_pressure_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e219_inline_pressure_smell.py",
       "line": 57,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e219_inline_pressure_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e219_inline_pressure_smell.py",
       "line": 99,
       "snippet": "related_paths=[rel_path, \"models/model_engine.py\", \"tools/xstack/sessionx/process_runtime.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e220_adhoc_valve_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e220_adhoc_valve_smell.py",
       "line": 55,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e233_implicit_civil_time_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e233_implicit_civil_time_smell.py",
       "line": 53,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e242_inline_fuel_burn_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e242_inline_fuel_burn_smell.py",
       "line": 58,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e243_unregistered_combustion_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e243_unregistered_combustion_smell.py",
       "line": 131,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e244_inline_yield_logic_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e244_inline_yield_logic_smell.py",
       "line": 54,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e246_inline_corrosion_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e246_inline_corrosion_smell.py",
       "line": 43,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e247_cross_domain_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e247_cross_domain_bypass_smell.py",
       "line": 52,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e283_inline_yield_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e283_inline_yield_smell.py",
       "line": 56,
       "snippet": "\"models/model_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e284_defect_flag_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e284_defect_flag_bypass_smell.py",
       "line": 57,
       "snippet": "\"models/model_engine.py\","
     }

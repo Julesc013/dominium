@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/tools/libraries/bundle/bundle_manifest.py`
+- `src/tools/package/libraries/bundle/bundle_manifest.py`
 - `tools/bugreport/bugreport_cli.py`
 - `tools/lib/content_store.py`
 - `tools/share/share_cli.py`
@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 ## Scorecard
 
 - `tools/lib/content_store.py` disposition=`canonical` rank=`1` total_score=`81.31` risk=`HIGH`
-- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`quarantine` rank=`2` total_score=`74.94` risk=`HIGH`
+- `src/tools/package/libraries/bundle/bundle_manifest.py` disposition=`quarantine` rank=`2` total_score=`74.94` risk=`HIGH`
 - `tools/share/share_cli.py` disposition=`merge` rank=`3` total_score=`52.38` risk=`HIGH`
 - `tools/bugreport/bugreport_cli.py` disposition=`merge` rank=`4` total_score=`37.86` risk=`HIGH`
 
@@ -43,7 +43,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

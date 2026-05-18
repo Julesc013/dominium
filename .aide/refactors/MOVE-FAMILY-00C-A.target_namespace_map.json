@@ -20,7 +20,7 @@
       "old_package": "validation",
       "current_path": "validation/",
       "target_package": "tools.validators.validation",
-      "target_path": "tools/validators/validation/",
+      "target_path": "tools/validators/suite/",
       "target_owner": "tools/validators",
       "rationale": "The current validation package is an active unified validator implementation and belongs in the validator ownership slot rather than a top-level transitional root.",
       "files_included": [

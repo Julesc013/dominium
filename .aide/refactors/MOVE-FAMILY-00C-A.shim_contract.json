@@ -31,7 +31,7 @@
       ],
       "allowed_callers": [
         "compat/shims/validation_shims.py",
-        "runtime/appshell/commands/command_engine.py"
+        "runtime/shell/commands/command_engine.py"
       ],
       "forbidden_new_references": [
         "import validation",
@@ -60,8 +60,8 @@
         "lib/install/install_validator.py",
         "lib/instance/instance_validator.py",
         "lib/save/save_validator.py",
-        "release/release_manifest_engine.py",
-        "release/update_resolver.py",
+        "tools/release/release_manifest_engine.py",
+        "tools/release/update_resolver.py",
         "security/trust/license_capability.py"
       ],
       "forbidden_new_references": [

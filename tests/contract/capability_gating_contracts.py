@@ -177,7 +177,7 @@ def main():
             if command["scope"] == "DOM_EPISTEMIC_SCOPE_FULL" and command["app"] != "tools":
                 violations.append("full epistemic scope must be tools-only: {}".format(command["name"]))
 
-        ui_bind_path = os.path.join(repo_root, "libs", "appcore", "ui_bind", "ui_command_binding_table.c")
+        ui_bind_path = os.path.join(repo_root, "tools", "codegen", "ui", "bind", "ui_command_binding_table.c")
         for action in parse_ui_bind_actions(ui_bind_path):
             if action not in command_names:
                 violations.append("ui binding action not in canonical command graph: {}".format(action))

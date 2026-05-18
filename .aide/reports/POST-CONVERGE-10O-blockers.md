@@ -9,7 +9,7 @@ Last Reviewed: 2026-05-17
 | --- | ---: | --- | --- |
 | `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | 7 | product/projection proof blocker | Deferred until product/projection wrapper proof after non-proof blockers are handled. |
 | `INV-NO-ADHOC-MAIN` | 5 | product/projection proof blocker | Deferred until product/projection wrapper proof after non-proof blockers are handled. |
-| MW-4 fixture import failures through `game.domains.embodiment` | 2 | real governance/source-policy blocker | Needs residual RepoX remediation. |
+| MW-4 fixture import failures through `game.domain.embodiment` | 2 | real governance/source-policy blocker | Needs residual RepoX remediation. |
 | `INV-REPOX-RULESET-MISSING` | 2 | real governance/ruleset blocker | Needs mapping or explicit classification. |
 | `INV-CANON-NO-SUPERSEDED` | 1 | real governance/canon blocker | Needs canon/supersession review. |
 | `INV-NO-EXTENSION-INTERPRETATION-WITHOUT-REGISTRY` | 1 | real governance/registry blocker | Needs registry entry or explicit classification. |

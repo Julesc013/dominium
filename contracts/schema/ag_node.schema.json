@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AG Node Schema",
+  "version": "1.0.0",
+  "description": "Assembly graph node declaration.",
+  "x-doc-ref": [
+    "docs/materials/BOM_AND_ASSEMBLY_GRAPH.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "node_id",
+    "node_kind",
+    "children",
+    "local_transform",
+    "tags",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "node_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "node_kind": {
+      "type": "string",
+      "enum": [
+        "part",
+        "subassembly",
+        "connector",
+        "site_anchor"
+      ]
+    },
+    "part_class_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "material_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "children": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "local_transform": {
+      "$ref": "#/$defs/deterministic_transform"
+    },
+    "planned_commitment_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "deterministic_transform": {
+      "type": "object",
+      "required": [
+        "position_mm",
+        "orientation_mdeg",
+        "scale_permille"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "position_mm": {
+          "$ref": "#/$defs/vec3_int"
+        },
+        "orientation_mdeg": {
+          "type": "object",
+          "required": [
+            "yaw",
+            "pitch",
+            "roll"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "yaw": {
+              "type": "integer"
+            },
+            "pitch": {
+              "type": "integer"
+            },
+            "roll": {
+              "type": "integer"
+            }
+          }
+        },
+        "scale_permille": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "vec3_int": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "x": {
+          "type": "integer"
+        },
+        "y": {
+          "type": "integer"
+        },
+        "z": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "node_id": "node.example",
+      "node_kind": "part",
+      "part_class_id": "partclass.beam.generic",
+      "material_requirements": [],
+      "children": [],
+      "local_transform": {
+        "position_mm": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "orientation_mdeg": {
+          "yaw": 0,
+          "pitch": 0,
+          "roll": 0
+        },
+        "scale_permille": 1000
+      },
+      "planned_commitment_ids": [],
+      "tags": [
+        "example"
+      ],
+      "extensions": {}
+    }
+  ]
+}

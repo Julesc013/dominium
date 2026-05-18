@@ -152,7 +152,7 @@ Domain-support components host or support runtime execution over specific semant
 Representative evidence roots include:
 
 - `engine/modules/world`
-- `game/core/execution`
+- `game/rule/execution`
 - `core/spatial`
 - `core/hazards`
 - `process/research`

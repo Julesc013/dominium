@@ -54,7 +54,7 @@ Public headers live in `game/include/dominium/agents/`.
 - Refinement restores individual agents deterministically.
 
 ## Tests (AGENT2)
-Implemented in `game/tests/agent2_doctrine_tests.cpp`:
+Implemented in `tests/game/agent2_doctrine_tests.cpp`:
 - Doctrine filtering determinism.
 - Priority modification determinism.
 - Conflicting doctrine resolution.

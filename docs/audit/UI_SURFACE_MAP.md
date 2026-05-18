@@ -30,36 +30,36 @@ Replacement Target: release-pinned UI architecture inventory for convergence and
 
 | Path | Status | Purpose | Platform | AppShell Commands | Truth Direct | Internal Logic |
 | --- | --- | --- | --- | --- | --- | --- |
-| `tools/editor_gui/CMakeLists.txt` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/editor_gui/editor_gui.c` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/native/CMakeLists.txt` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/native/editor_gui.c` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
 | `tools/gui/tools_app_win32.cpp` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `windows` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/doc/tool_editor_ui_doc.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/doc/ui_doc_template_basic.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/doc/ui_doc_template_basic.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp.bak2` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h.bak2` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/registry/ui_actions_registry.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/ui_actions_registry.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/ui_doc.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/user/ui_tool_editor_actions_user.cpp` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/user/ui_tool_editor_actions_user.cpp.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/user/ui_tool_editor_actions_user.h` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/tool_editor/ui/user/ui_tool_editor_actions_user.h.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_preview_host/CMakeLists.txt` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_preview_host/common/ui_preview_common.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_preview_host/common/ui_preview_common.h` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_preview_host/linux/ui_preview_host_linux.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `linux` | `no` | `no` | `no` |
-| `tools/ui_preview_host/macos/ui_preview_host_macos.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `macos` | `no` | `no` | `no` |
-| `tools/ui_preview_host/win32/ui_preview_host_win32.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `windows` | `no` | `no` | `no` |
-| `tools/ui_shared/include/dui/domui_event.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_shared/include/dui/dui_api_v1.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_shared/include/dui/dui_schema_tlv.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
-| `tools/ui_shared/include/dui/dui_win32.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `windows` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/doc/tool_editor_ui_doc.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/doc/ui_doc_template_basic.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/doc/ui_doc_template_basic.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp.bak2` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h.bak2` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/registry/ui_actions_registry.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/ui_actions_registry.json` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/ui_doc.tlv` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.cpp` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.cpp.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.h` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.h.bak1` | `deferred_native_or_preview` | Editor or tooling UI scaffold kept outside the governed MVP runtime surface. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/CMakeLists.txt` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/support/ui_preview_common.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/support/ui_preview_common.h` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `cross_platform` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/linux/ui_preview_host_linux.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `linux` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/macos/ui_preview_host_macos.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `macos` | `no` | `no` | `no` |
+| `apps/workbench/module/ui/preview/win32/ui_preview_host_win32.cpp` | `legacy_reference_only` | Preview host scaffolding for platform UI experiments. | `windows` | `no` | `no` | `no` |
+| `runtime/ui/include/dui/domui_event.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
+| `runtime/ui/include/dui/dui_api_v1.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
+| `runtime/ui/include/dui/dui_schema_tlv.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
+| `runtime/ui/include/dui/dui_win32.h` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `windows` | `no` | `no` | `no` |
 | `tools/ui_shared/src/dui/dui_caps.c` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
 | `tools/ui_shared/src/dui/dui_dgfx.c` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |
 | `tools/ui_shared/src/dui/dui_event_queue.c` | `legacy_reference_only` | Legacy cross-platform UI support library and adapter scaffolding. | `cross_platform` | `no` | `no` | `no` |

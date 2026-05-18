@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Model Schema",
+  "version": "1.0.0",
+  "description": "Deterministic universe time model contract.",
+  "x-doc-ref": [
+    "docs/reality/UNIVERSE_PHYSICS_PROFILE.md",
+    "docs/canon/constitution_v1.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "time_model_id",
+    "single_tick_axis",
+    "allow_variable_dt",
+    "allow_branching",
+    "allow_retroactive_mutation",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "time_model_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "single_tick_axis": {
+      "type": "boolean",
+      "default": true
+    },
+    "allow_variable_dt": {
+      "type": "boolean"
+    },
+    "allow_branching": {
+      "type": "boolean"
+    },
+    "allow_retroactive_mutation": {
+      "type": "boolean",
+      "default": false
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "time_model_id": "default_single_tick",
+      "single_tick_axis": true,
+      "allow_variable_dt": false,
+      "allow_branching": false,
+      "allow_retroactive_mutation": false,
+      "extensions": {}
+    }
+  ]
+}

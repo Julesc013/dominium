@@ -1248,7 +1248,7 @@
     },
     {
       "extension": ".json",
-      "first_line": "{\"archive_record_hash\":\"08f644416efc6a56fbf31757ac089b57974747ebfd17182388868d87fd4395e9\",\"archive_record_rel\":\"build/tmp/archive_policy_dist/v0.0.0-mock/win64/archive/archive_record.json\",\"archive_root\":\"build/tmp/archive_policy_dist/v0.0.",
+      "first_line": "{\"archive_record_hash\":\"08f644416efc6a56fbf31757ac089b57974747ebfd17182388868d87fd4395e9\",\"archive_record_rel\":\"build/tmp/archive_policy_archive/generated/dist/v0.0.0-mock/win64/archive/archive_record.json\",\"archive_root\":\"build/tmp/archive_policy_archive/generated/dist/v0.0.",
       "kind": "file",
       "likely_kind": "machine_readable",
       "path": "data/audit/archive_policy_report.json",
@@ -1626,7 +1626,7 @@
     },
     {
       "extension": ".json",
-      "first_line": "{\"bundle_governance_profile_hash\":\"09273dc808ff2cf8edab36eb30ce4139212bcce8903a3ab5a3043a9fcfd08187\",\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"deterministic_fingerprint\":\"cbe31ced73781807e738b16978b6618ea188b05029d3fca1ecb957823cf08f",
+      "first_line": "{\"bundle_governance_profile_hash\":\"09273dc808ff2cf8edab36eb30ce4139212bcce8903a3ab5a3043a9fcfd08187\",\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"deterministic_fingerprint\":\"cbe31ced73781807e738b16978b6618ea188b05029d3fca1ecb957823cf08f",
       "kind": "file",
       "likely_kind": "machine_readable",
       "path": "data/audit/governance_policy_report.json",
@@ -1794,7 +1794,7 @@
     },
     {
       "extension": ".json",
-      "first_line": "{\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"changelog_files\":[\"CHANGELOG.md\",\"docs/architecture/CHANGELOG_ARCH.md\",\"docs/engine/CODE_1_CHANGELOG.md\"],\"default_resolution_policy_id\":\"policy.exact_suite\",\"determinism_replay_match\":true,",
+      "first_line": "{\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"changelog_files\":[\"CHANGELOG.md\",\"docs/architecture/CHANGELOG_ARCH.md\",\"docs/engine/CODE_1_CHANGELOG.md\"],\"default_resolution_policy_id\":\"policy.exact_suite\",\"determinism_replay_match\":true,",
       "kind": "file",
       "likely_kind": "machine_readable",
       "path": "data/audit/release_index_policy_report.json",
@@ -2075,7 +2075,7 @@
     },
     {
       "extension": ".json",
-      "first_line": "{\"add_count\":0,\"component_count\":18,\"component_graph_hash\":\"29b3125dd93a37e1cf071797a0fb6cb45cca49d23985a6d5f40123db6bff3fab\",\"deterministic_fingerprint\":\"024060e8eae7bf67c0d33729efa60c3e2a9e0ddc30d67187dc8371021e649fd7\",\"dist_root\":\"dist/v",
+      "first_line": "{\"add_count\":0,\"component_count\":18,\"component_graph_hash\":\"29b3125dd93a37e1cf071797a0fb6cb45cca49d23985a6d5f40123db6bff3fab\",\"deterministic_fingerprint\":\"024060e8eae7bf67c0d33729efa60c3e2a9e0ddc30d67187dc8371021e649fd7\",\"dist_root\":\"archive/generated/dist/v",
       "kind": "file",
       "likely_kind": "machine_readable",
       "path": "data/audit/update_model_report.json",
@@ -2775,7 +2775,7 @@
     },
     {
       "extension": ".json",
-      "first_line": "{\"deterministic_fingerprint\":\"0b1bc9ed2c34cfda76b6e79f7985b95c654b2feff250ce34237a3a3efe231f61\",\"gates\":[{\"area\":\"Licensing and commercialization policy changes\",\"gate_id\":\"licensing_commercialization_policy\",\"required_artifacts\":[\"policy p",
+      "first_line": "{\"deterministic_fingerprint\":\"0b1bc9ed2c34cfda76b6e79f7985b95c654b2feff250ce34237a3a3efe231f61\",\"gates\":[{\"area\":\"Licensing and commercialization policy changes\",\"gate_id\":\"licensing_commercialization_policy\",\"required_archive\generated\archive\generated\archive\generated\artifacts\":[\"policy p",
       "kind": "file",
       "likely_kind": "machine_readable",
       "path": "data/blueprint/manual_review_gates.json",

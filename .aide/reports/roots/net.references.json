@@ -41,283 +41,283 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1051,
-      "snippet": "\"apps/client/net/__init__.py\","
+      "snippet": "\"runtime/network/client/__init__.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1052,
-      "snippet": "\"apps/client/net/loopback_client.py\","
+      "snippet": "\"runtime/network/client/loopback_client.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1132,
-      "snippet": "\"apps/server/net/__init__.py\","
+      "snippet": "\"runtime/network/server/__init__.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1133,
-      "snippet": "\"apps/server/net/dom_server_protocol.cpp\","
+      "snippet": "\"runtime/network/server/dom_server_protocol.cpp\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1134,
-      "snippet": "\"apps/server/net/dom_server_protocol.h\","
+      "snippet": "\"runtime/network/server/dom_server_protocol.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1135,
-      "snippet": "\"apps/server/net/dom_server_runtime.cpp\","
+      "snippet": "\"runtime/network/server/dom_server_runtime.cpp\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1136,
-      "snippet": "\"apps/server/net/dom_server_runtime.h\","
+      "snippet": "\"runtime/network/server/dom_server_runtime.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1137,
-      "snippet": "\"apps/server/net/dom_server_types.h\","
+      "snippet": "\"runtime/network/server/dom_server_types.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 1138,
-      "snippet": "\"apps/server/net/loopback_transport.py\","
+      "snippet": "\"runtime/network/server/loopback_transport.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3593,
-      "snippet": "\"contracts/schemas/net/anti_cheat_event.schema\","
+      "snippet": "\"contracts/schema/net/anti_cheat_event.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3594,
-      "snippet": "\"contracts/schemas/net/delta.schema\","
+      "snippet": "\"contracts/schema/net/delta.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3595,
-      "snippet": "\"contracts/schemas/net/handshake.schema\","
+      "snippet": "\"contracts/schema/net/handshake.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3596,
-      "snippet": "\"contracts/schemas/net/hash_anchor_frame.schema\","
+      "snippet": "\"contracts/schema/net/hash_anchor_frame.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3597,
-      "snippet": "\"contracts/schemas/net/intent_envelope.schema\","
+      "snippet": "\"contracts/schema/net/intent_envelope.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3598,
-      "snippet": "\"contracts/schemas/net/perceived_delta.schema\","
+      "snippet": "\"contracts/schema/net/perceived_delta.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3599,
-      "snippet": "\"contracts/schemas/net/proto_message.schema\","
+      "snippet": "\"contracts/schema/net/proto_message.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3600,
-      "snippet": "\"contracts/schemas/net/server_policy_registry.schema\","
+      "snippet": "\"contracts/schema/net/server_policy_registry.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3601,
-      "snippet": "\"contracts/schemas/net/snapshot.schema\","
+      "snippet": "\"contracts/schema/net/snapshot.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3602,
-      "snippet": "\"contracts/schemas/net/tick_intent_list.schema\","
+      "snippet": "\"contracts/schema/net/tick_intent_list.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7369,
-      "snippet": "\"docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7370,
-      "snippet": "\"docs/net/ANTI_CHEAT_MODULES.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_MODULES.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7371,
-      "snippet": "\"docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7372,
-      "snippet": "\"docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md\","
+      "snippet": "\"docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7373,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7374,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7375,
-      "snippet": "\"docs/net/ESPORTS_PROOF_ARTIFACTS.md\","
+      "snippet": "\"docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7376,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\","
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7377,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\","
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7378,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\","
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7379,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\","
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7380,
-      "snippet": "\"docs/net/SERVER_AUTHORITATIVE_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7381,
-      "snippet": "\"docs/net/SRZ_HYBRID_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SRZ_HYBRID_POLICY.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 7382,
-      "snippet": "\"docs/net/TRANSPORT_ABSTRACTION.md\","
+      "snippet": "\"docs/runtime/network/TRANSPORT_ABSTRACTION.md\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9947,
-      "snippet": "\"engine/modules/net/d_net.c\","
+      "snippet": "\"runtime/network/d_net.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9948,
-      "snippet": "\"engine/modules/net/d_net.h\","
+      "snippet": "\"runtime/network/d_net.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9949,
-      "snippet": "\"engine/modules/net/d_net_apply.c\","
+      "snippet": "\"runtime/network/d_net_apply.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9950,
-      "snippet": "\"engine/modules/net/d_net_apply.h\","
+      "snippet": "\"runtime/network/d_net_apply.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9951,
-      "snippet": "\"engine/modules/net/d_net_cmd.c\","
+      "snippet": "\"runtime/network/d_net_cmd.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9952,
-      "snippet": "\"engine/modules/net/d_net_cmd.h\","
+      "snippet": "\"runtime/network/d_net_cmd.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9953,
-      "snippet": "\"engine/modules/net/d_net_proto.c\","
+      "snippet": "\"runtime/network/d_net_proto.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9954,
-      "snippet": "\"engine/modules/net/d_net_proto.h\","
+      "snippet": "\"runtime/network/d_net_proto.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9955,
-      "snippet": "\"engine/modules/net/d_net_schema.c\","
+      "snippet": "\"runtime/network/d_net_schema.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9956,
-      "snippet": "\"engine/modules/net/d_net_schema.h\","
+      "snippet": "\"runtime/network/d_net_schema.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9957,
-      "snippet": "\"engine/modules/net/d_net_session.c\","
+      "snippet": "\"runtime/network/d_net_session.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9958,
-      "snippet": "\"engine/modules/net/d_net_session.h\","
+      "snippet": "\"runtime/network/d_net_session.h\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9959,
-      "snippet": "\"engine/modules/net/d_net_transport.c\","
+      "snippet": "\"runtime/network/d_net_transport.c\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 9960,
-      "snippet": "\"engine/modules/net/d_net_transport.h\","
+      "snippet": "\"runtime/network/d_net_transport.h\","
     },
     {
       "classification": "unknown",
@@ -669,45 +669,45 @@
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_protocol.cpp",
+      "file": "runtime/network/server/dom_server_protocol.cpp",
       "line": 2,
-      "snippet": "FILE: apps/server/net/dom_server_protocol.cpp"
+      "snippet": "FILE: runtime/network/server/dom_server_protocol.cpp"
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_protocol.h",
+      "file": "runtime/network/server/dom_server_protocol.h",
       "line": 2,
-      "snippet": "FILE: apps/server/net/dom_server_protocol.h"
+      "snippet": "FILE: runtime/network/server/dom_server_protocol.h"
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_runtime.cpp",
+      "file": "runtime/network/server/dom_server_runtime.cpp",
       "line": 2,
-      "snippet": "FILE: apps/server/net/dom_server_runtime.cpp"
+      "snippet": "FILE: runtime/network/server/dom_server_runtime.cpp"
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_runtime.h",
+      "file": "runtime/network/server/dom_server_runtime.h",
       "line": 2,
-      "snippet": "FILE: apps/server/net/dom_server_runtime.h"
+      "snippet": "FILE: runtime/network/server/dom_server_runtime.h"
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_runtime.h",
+      "file": "runtime/network/server/dom_server_runtime.h",
       "line": 17,
       "snippet": "#include \"net/dom_server_types.h\""
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_runtime.h",
+      "file": "runtime/network/server/dom_server_runtime.h",
       "line": 18,
       "snippet": "#include \"net/dom_server_protocol.h\""
     },
     {
       "classification": "active_source",
-      "file": "apps/server/net/dom_server_types.h",
+      "file": "runtime/network/server/dom_server_types.h",
       "line": 2,
-      "snippet": "FILE: apps/server/net/dom_server_types.h"
+      "snippet": "FILE: runtime/network/server/dom_server_types.h"
     },
     {
       "classification": "active_source",
@@ -729,7 +729,7 @@
     },
     {
       "classification": "active_source",
-      "file": "apps/setup/packages/scripts/check_layers.py",
+      "file": "release/packaging/setup/scripts/check_layers.py",
       "line": 44,
       "snippet": "\"netinet/in.h\","
     },
@@ -987,367 +987,367 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/anti_cheat_module_registry.schema.json",
+      "file": "contracts/schema/anti_cheat_module_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/anti_cheat_policy_registry.schema.json",
+      "file": "contracts/schema/anti_cheat_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/cosmetic_assignment.schema.json",
+      "file": "contracts/schema/cosmetic_assignment.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/cosmetic_pack.schema.json",
+      "file": "contracts/schema/cosmetic_pack.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/cosmetic_policy_registry.schema.json",
+      "file": "contracts/schema/cosmetic_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/cosmetic_registry.schema.json",
+      "file": "contracts/schema/cosmetic_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/decay_model.schema.json",
+      "file": "contracts/schema/decay_model.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/epistemic_policy.schema.json",
+      "file": "contracts/schema/epistemic_policy.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/epistemic_policy.schema.json",
+      "file": "contracts/schema/epistemic_policy.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/epistemic_policy_registry.schema.json",
+      "file": "contracts/schema/epistemic_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/epistemic_policy_registry.schema.json",
+      "file": "contracts/schema/epistemic_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/memory_item.schema.json",
+      "file": "contracts/schema/memory_item.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/memory_store.schema.json",
+      "file": "contracts/schema/memory_store.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_anti_cheat_event.schema.json",
+      "file": "contracts/schema/net_anti_cheat_event.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
+      "snippet": "\"docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_delta.schema.json",
+      "file": "contracts/schema/net_delta.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\","
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_delta.schema.json",
+      "file": "contracts/schema/net_delta.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_handshake.schema.json",
+      "file": "contracts/schema/net_handshake.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\","
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_hash_anchor_frame.schema.json",
+      "file": "contracts/schema/net_hash_anchor_frame.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\""
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_intent_envelope.schema.json",
+      "file": "contracts/schema/net_intent_envelope.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\","
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_intent_envelope.schema.json",
+      "file": "contracts/schema/net_intent_envelope.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\","
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_intent_envelope.schema.json",
+      "file": "contracts/schema/net_intent_envelope.schema.json",
       "line": 9,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\""
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_perceived_delta.schema.json",
+      "file": "contracts/schema/net_perceived_delta.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_perceived_delta.schema.json",
+      "file": "contracts/schema/net_perceived_delta.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_proto_message.schema.json",
+      "file": "contracts/schema/net_proto_message.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/TRANSPORT_ABSTRACTION.md\","
+      "snippet": "\"docs/runtime/network/TRANSPORT_ABSTRACTION.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_proto_message.schema.json",
+      "file": "contracts/schema/net_proto_message.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\""
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_replication_policy_registry.schema.json",
+      "file": "contracts/schema/net_replication_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\","
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_resync_strategy_registry.schema.json",
+      "file": "contracts/schema/net_resync_strategy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\","
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_server_policy_registry.schema.json",
+      "file": "contracts/schema/net_server_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\","
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_server_policy_registry.schema.json",
+      "file": "contracts/schema/net_server_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/TRANSPORT_ABSTRACTION.md\""
+      "snippet": "\"docs/runtime/network/TRANSPORT_ABSTRACTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_snapshot.schema.json",
+      "file": "contracts/schema/net_snapshot.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\","
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_snapshot.schema.json",
+      "file": "contracts/schema/net_snapshot.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_tick_intent_list.schema.json",
+      "file": "contracts/schema/net_tick_intent_list.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/MULTIPLAYER_MODEL_OVERVIEW.md\","
+      "snippet": "\"docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net_tick_intent_list.schema.json",
+      "file": "contracts/schema/net_tick_intent_list.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/perception_interest_policy_registry.schema.json",
+      "file": "contracts/schema/perception_interest_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/SRZ_HYBRID_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SRZ_HYBRID_POLICY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/perception_interest_policy_registry.schema.json",
+      "file": "contracts/schema/perception_interest_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/retention_policy.schema.json",
+      "file": "contracts/schema/retention_policy.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/retention_policy.schema.json",
+      "file": "contracts/schema/retention_policy.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/retention_policy_registry.schema.json",
+      "file": "contracts/schema/retention_policy_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
+      "snippet": "\"docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/retention_policy_registry.schema.json",
+      "file": "contracts/schema/retention_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/EPISTEMICS_OVER_NETWORK.md\""
+      "snippet": "\"docs/runtime/network/EPISTEMICS_OVER_NETWORK.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/SCHEMA_GOVERNANCE.md",
+      "file": "contracts/schema/SCHEMA_GOVERNANCE.md",
       "line": 44,
       "snippet": "- `schema/net/**` for network payloads."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/securex_policy.schema.json",
+      "file": "contracts/schema/securex_policy.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/securex_policy_registry.schema.json",
+      "file": "contracts/schema/securex_policy_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\""
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/server_profile.schema.json",
+      "file": "contracts/schema/server_profile.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\","
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/server_profile.schema.json",
+      "file": "contracts/schema/server_profile.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\""
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/server_profile_registry.schema.json",
+      "file": "contracts/schema/server_profile_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\","
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/server_profile_registry.schema.json",
+      "file": "contracts/schema/server_profile_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/HANDSHAKE_AND_COMPATIBILITY.md\""
+      "snippet": "\"docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/shard_map.schema.json",
+      "file": "contracts/schema/shard_map.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/SRZ_HYBRID_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SRZ_HYBRID_POLICY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/shard_map.schema.json",
+      "file": "contracts/schema/shard_map.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/shard_map_registry.schema.json",
+      "file": "contracts/schema/shard_map_registry.schema.json",
       "line": 7,
-      "snippet": "\"docs/net/SRZ_HYBRID_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SRZ_HYBRID_POLICY.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/shard_map_registry.schema.json",
+      "file": "contracts/schema/shard_map_registry.schema.json",
       "line": 8,
-      "snippet": "\"docs/net/REPLICATION_POLICIES.md\""
+      "snippet": "\"docs/runtime/network/REPLICATION_POLICIES.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/anti_cheat_event.schema",
+      "file": "contracts/schema/net/anti_cheat_event.schema",
       "line": 1,
       "snippet": "SCHEMA: net/anti_cheat_event.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/delta.schema",
+      "file": "contracts/schema/net/delta.schema",
       "line": 1,
       "snippet": "SCHEMA: net/delta.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/handshake.schema",
+      "file": "contracts/schema/net/handshake.schema",
       "line": 1,
       "snippet": "SCHEMA: net/handshake.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/hash_anchor_frame.schema",
+      "file": "contracts/schema/net/hash_anchor_frame.schema",
       "line": 1,
       "snippet": "SCHEMA: net/hash_anchor_frame.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/intent_envelope.schema",
+      "file": "contracts/schema/net/intent_envelope.schema",
       "line": 1,
       "snippet": "SCHEMA: net/intent_envelope.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/perceived_delta.schema",
+      "file": "contracts/schema/net/perceived_delta.schema",
       "line": 1,
       "snippet": "SCHEMA: net/perceived_delta.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/proto_message.schema",
+      "file": "contracts/schema/net/proto_message.schema",
       "line": 1,
       "snippet": "SCHEMA: net/proto_message.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/snapshot.schema",
+      "file": "contracts/schema/net/snapshot.schema",
       "line": 1,
       "snippet": "SCHEMA: net/snapshot.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/net/tick_intent_list.schema",
+      "file": "contracts/schema/net/tick_intent_list.schema",
       "line": 1,
       "snippet": "SCHEMA: net/tick_intent_list.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/world/SPEC_CELESTIAL_BODY.md",
+      "file": "contracts/schema/world/SPEC_CELESTIAL_BODY.md",
       "line": 36,
       "snippet": "- body_type (star/planet/moon/dwarf/asteroid/belt/station/comet)"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/worldgen/surface_generator_routing.schema",
+      "file": "contracts/schema/worldgen/surface_generator_routing.schema",
       "line": 7,
       "snippet": "- Define deterministic MW-3 routing from a planet/tile context to a declared surface generator."
     },
@@ -2435,7 +2435,7 @@
       "classification": "unknown",
       "file": "data/runtime/snapshot_service_registry.json",
       "line": 79,
-      "snippet": "\"engine/modules/net/d_net_proto.h\","
+      "snippet": "\"runtime/network/d_net_proto.h\","
     },
     {
       "classification": "unknown",
@@ -2513,85 +2513,85 @@
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1604,
-      "snippet": "- `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1605,
-      "snippet": "- `docs/net/ANTI_CHEAT_MODULES.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_MODULES.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1606,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1607,
-      "snippet": "- `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1608,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1609,
-      "snippet": "- `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1610,
-      "snippet": "- `docs/net/ESPORTS_PROOF_ARTIFACTS.md`"
+      "snippet": "- `docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1611,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1612,
-      "snippet": "- `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`"
+      "snippet": "- `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1613,
-      "snippet": "- `docs/net/RANKED_SERVER_GOVERNANCE.md`"
+      "snippet": "- `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1614,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1615,
-      "snippet": "- `docs/net/SERVER_AUTHORITATIVE_POLICY.md`"
+      "snippet": "- `docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1616,
-      "snippet": "- `docs/net/SRZ_HYBRID_POLICY.md`"
+      "snippet": "- `docs/runtime/network/SRZ_HYBRID_POLICY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/architecture/CANON_INDEX.md",
       "line": 1617,
-      "snippet": "- `docs/net/TRANSPORT_ABSTRACTION.md`"
+      "snippet": "- `docs/runtime/network/TRANSPORT_ABSTRACTION.md`"
     },
     {
       "classification": "docs",
@@ -2669,91 +2669,91 @@
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1484,
-      "snippet": "| `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verifi"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verifi"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1485,
-      "snippet": "| `docs/net/ANTI_CHEAT_MODULES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `SYS/PROC: c"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_MODULES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `SYS/PROC: c"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1486,
-      "snippet": "| `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verificat"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `PACK-COMPAT: compat manifests, offline verificat"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1487,
-      "snippet": "| `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc."
+      "snippet": "| `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc."
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1488,
-      "snippet": "| `docs/net/EPISTEMICS_OVER_NETWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `GEO"
+      "snippet": "| `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `GEO"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1489,
-      "snippet": "| `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc."
+      "snippet": "| `docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc."
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1490,
-      "snippet": "| `docs/net/ESPORTS_PROOF_ARTIFACTS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPA"
+      "snippet": "| `docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Profiles: LawProfile/PhysicsProfile/etc.`, `CAP-NEG: negotiation + degrade ladders`, `PACK-COMPA"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1491,
-      "snippet": "| `docs/net/HANDSHAKE_AND_COMPATIBILITY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, "
+      "snippet": "| `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, "
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1492,
-      "snippet": "| `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `CAP"
+      "snippet": "| `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `CAP"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1493,
-      "snippet": "| `docs/net/RANKED_SERVER_GOVERNANCE.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `LO"
+      "snippet": "| `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `LO"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1494,
-      "snippet": "| `docs/net/REPLICATION_POLICIES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, `CAP-NE"
+      "snippet": "| `docs/runtime/network/REPLICATION_POLICIES.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, `CAP-NE"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1495,
-      "snippet": "| `docs/net/SERVER_AUTHORITATIVE_POLICY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, "
+      "snippet": "| `docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `SYS/PROC: capsules, stabilization, drift`, "
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1496,
-      "snippet": "| `docs/net/SRZ_HYBRID_POLICY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `SYS/PROC:"
+      "snippet": "| `docs/runtime/network/SRZ_HYBRID_POLICY.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `Profiles: LawProfile/PhysicsProfile/etc.`, `SYS/PROC:"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CANON_MAP.md",
       "line": 1497,
-      "snippet": "| `docs/net/TRANSPORT_ABSTRACTION.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `SYS/PROC"
+      "snippet": "| `docs/runtime/network/TRANSPORT_ABSTRACTION.md` | `Ontology: Assemblies/Fields/Processes/Agents/Law`, `Determinism: fixed-point, RNG streams, replay`, `Epistemics: Truth/Perceived/Render separation`, `LOGIC: signals/state machines/compile`, `SYS/PROC"
     },
     {
       "classification": "docs",
       "file": "docs/audit/CAP_NEG2_RETRO_AUDIT.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`."
+      "snippet": "Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`."
     },
     {
       "classification": "docs",
@@ -2795,85 +2795,85 @@
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1484,
-      "snippet": "| `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md` | Anti-Cheat Enforcement Actions | `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md` | Anti-Cheat Enforcement Actions | `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1485,
-      "snippet": "| `docs/net/ANTI_CHEAT_MODULES.md` | Anti-Cheat Modules | `appshell`, `canon`, `compat`, `determinism`, `epistemics`, `logic`, `meta`, `pack`, `platform`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_MODULES.md` | Anti-Cheat Modules | `appshell`, `canon`, `compat`, `determinism`, `epistemics`, `logic`, `meta`, `pack`, `platform`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1486,
-      "snippet": "| `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md` | Anti-Cheat Policy Framework | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md` | Anti-Cheat Policy Framework | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `sol` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1487,
-      "snippet": "| `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md` | Diegetic Channels Over Network | `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md` | Diegetic Channels Over Network | `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1488,
-      "snippet": "| `docs/net/EPISTEMICS_OVER_NETWORK.md` | Epistemics Over Network | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md` | Epistemics Over Network | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `geo`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1489,
-      "snippet": "| `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md` | Epistemic Scope and Fog of War | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md` | Epistemic Scope and Fog of War | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1490,
-      "snippet": "| `docs/net/ESPORTS_PROOF_ARTIFACTS.md` | Esports Proof Artifacts | `build`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md` | Esports Proof Artifacts | `build`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1491,
-      "snippet": "| `docs/net/HANDSHAKE_AND_COMPATIBILITY.md` | Handshake and Compatibility | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time`, `validation`, `xstack` | `2026-02-16` |"
+      "snippet": "| `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md` | Handshake and Compatibility | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time`, `validation`, `xstack` | `2026-02-16` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1492,
-      "snippet": "| `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md` | Multiplayer Model Overview | `appshell`, `canon`, `compat`, `determinism`, `diag`, `epistemics`, `logic`, `meta`, `pack`, `server`, `time`, `validation` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md` | Multiplayer Model Overview | `appshell`, `canon`, `compat`, `determinism`, `diag`, `epistemics`, `logic`, `meta`, `pack`, `server`, `time`, `validation` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1493,
-      "snippet": "| `docs/net/RANKED_SERVER_GOVERNANCE.md` | Ranked Server Governance | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `logic`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md` | Ranked Server Governance | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `logic`, `meta`, `pack`, `release`, `server`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1494,
-      "snippet": "| `docs/net/REPLICATION_POLICIES.md` | Replication Policies | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time`, `validation` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/REPLICATION_POLICIES.md` | Replication Policies | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `time`, `validation` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1495,
-      "snippet": "| `docs/net/SERVER_AUTHORITATIVE_POLICY.md` | Server Authoritative Policy | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `sol`, `time` | `2026-02-16` |"
+      "snippet": "| `docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md` | Server Authoritative Policy | `appshell`, `canon`, `compat`, `determinism`, `diag`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `sol`, `time` | `2026-02-16` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1496,
-      "snippet": "| `docs/net/SRZ_HYBRID_POLICY.md` | SRZ Hybrid Policy | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `sol`, `time` | `2026-02-15` |"
+      "snippet": "| `docs/runtime/network/SRZ_HYBRID_POLICY.md` | SRZ Hybrid Policy | `appshell`, `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `meta`, `pack`, `release`, `server`, `sol`, `time` | `2026-02-15` |"
     },
     {
       "classification": "docs",
       "file": "docs/audit/DOC_INDEX.md",
       "line": 1497,
-      "snippet": "| `docs/net/TRANSPORT_ABSTRACTION.md` | Transport Abstraction | `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `logic`, `meta`, `pack`, `release`, `server`, `sol`, `time`, `validation`, `xstack` | `2026-02-16` |"
+      "snippet": "| `docs/runtime/network/TRANSPORT_ABSTRACTION.md` | Transport Abstraction | `canon`, `compat`, `determinism`, `distribution`, `epistemics`, `logic`, `meta`, `pack`, `release`, `server`, `sol`, `time`, `validation`, `xstack` | `2026-02-16` |"
     },
     {
       "classification": "docs",
@@ -3089,31 +3089,31 @@
       "classification": "docs",
       "file": "docs/audit/MULTIPLAYER_CONTRACT_FOUNDATION_REPORT.md",
       "line": 178,
-      "snippet": "- `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`"
+      "snippet": "- `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MULTIPLAYER_CONTRACT_FOUNDATION_REPORT.md",
       "line": 179,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MULTIPLAYER_CONTRACT_FOUNDATION_REPORT.md",
       "line": 180,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MULTIPLAYER_CONTRACT_FOUNDATION_REPORT.md",
       "line": 181,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/MULTIPLAYER_CONTRACT_FOUNDATION_REPORT.md",
       "line": 182,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
@@ -3125,7 +3125,7 @@
       "classification": "docs",
       "file": "docs/audit/NEGOTIATION_HANDSHAKE_BASELINE.md",
       "line": 6,
-      "snippet": "Compatibility: Derived from `docs/compat/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`."
+      "snippet": "Compatibility: Derived from `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `src/compat/handshake/handshake_engine.py`, `src/server/net/loopback_transport.py`, and `src/client/net/loopback_client.py`."
     },
     {
       "classification": "docs",
@@ -3143,13 +3143,13 @@
       "classification": "docs",
       "file": "docs/audit/NET_HANDSHAKE_COMPATIBILITY_REPORT.md",
       "line": 65,
-      "snippet": "- `docs/net/TRANSPORT_ABSTRACTION.md`"
+      "snippet": "- `docs/runtime/network/TRANSPORT_ABSTRACTION.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/NET_HANDSHAKE_COMPATIBILITY_REPORT.md",
       "line": 66,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
@@ -3215,7 +3215,7 @@
       "classification": "docs",
       "file": "docs/audit/SERVER_AUTHORITATIVE_BASELINE_REPORT.md",
       "line": 18,
-      "snippet": "- Net contracts: `docs/net/SERVER_AUTHORITATIVE_POLICY.md`, `docs/net/REPLICATION_POLICIES.md`, `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`."
+      "snippet": "- Net contracts: `docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md`, `docs/runtime/network/REPLICATION_POLICIES.md`, `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`."
     },
     {
       "classification": "docs",
@@ -3305,19 +3305,19 @@
       "classification": "docs",
       "file": "docs/audit/SRZ_HYBRID_BASELINE_REPORT.md",
       "line": 80,
-      "snippet": "- `docs/net/SRZ_HYBRID_POLICY.md`"
+      "snippet": "- `docs/runtime/network/SRZ_HYBRID_POLICY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/SRZ_HYBRID_BASELINE_REPORT.md",
       "line": 81,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/SRZ_HYBRID_BASELINE_REPORT.md",
       "line": 82,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
@@ -3575,85 +3575,85 @@
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 90,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 91,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/ANTI_CHEAT_MODULES.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/ANTI_CHEAT_MODULES.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 92,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 93,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 94,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/EPISTEMICS_OVER_NETWORK.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/EPISTEMICS_OVER_NETWORK.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 95,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 96,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/ESPORTS_PROOF_ARTIFACTS.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 97,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/HANDSHAKE_AND_COMPATIBILITY.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 98,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/MULTIPLAYER_MODEL_OVERVIEW.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 99,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/RANKED_SERVER_GOVERNANCE.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/RANKED_SERVER_GOVERNANCE.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 100,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/REPLICATION_POLICIES.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/REPLICATION_POLICIES.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 101,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/SERVER_AUTHORITATIVE_POLICY.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 102,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/SRZ_HYBRID_POLICY.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/SRZ_HYBRID_POLICY.md"
     },
     {
       "classification": "docs",
       "file": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE/failure.md",
       "line": 103,
-      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/net/TRANSPORT_ABSTRACTION.md"
+      "snippet": "INV-DOC-STATUS-HEADER: missing status header: docs/runtime/network/TRANSPORT_ABSTRACTION.md"
     },
     {
       "classification": "docs",
@@ -3677,11 +3677,11 @@
       "classification": "docs",
       "file": "docs/embodiment/MOVEMENT_PROCESSES.md",
       "line": 77,
-      "snippet": "- `docs/net/ANTI_CHEAT_MODULES.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_MODULES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/geo/WORLDGEN_CONSTITUTION.md",
+      "file": "docs/domains/geology/WORLDGEN_CONSTITUTION.md",
       "line": 162,
       "snippet": "- `2`: planet/body anchors"
     },
@@ -3801,273 +3801,273 @@
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
       "line": 55,
-      "snippet": "- `docs/net/ANTI_CHEAT_MODULES.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_MODULES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
       "line": 56,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md",
       "line": 58,
       "snippet": "- `net/anti_cheat/anti_cheat_engine.py`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_MODULES.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_MODULES.md",
       "line": 6,
       "snippet": "Compatibility: Bound to `schemas/net_anti_cheat_event.schema.json`, anti-cheat policy registries, and `net/anti_cheat/anti_cheat_engine.py`."
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_MODULES.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_MODULES.md",
       "line": 75,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_MODULES.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_MODULES.md",
       "line": 76,
-      "snippet": "- `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_MODULES.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_MODULES.md",
       "line": 80,
       "snippet": "- `net/anti_cheat/anti_cheat_engine.py`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md",
       "line": 13,
       "snippet": "Implementation Status: Implemented in `net/anti_cheat/anti_cheat_engine.py` and integrated with authoritative + SRZ hybrid policy paths."
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md",
       "line": 79,
-      "snippet": "- `docs/net/ANTI_CHEAT_MODULES.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_MODULES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md",
+      "file": "docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md",
       "line": 80,
-      "snippet": "- `docs/net/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_ENFORCEMENT_ACTIONS.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md",
       "line": 57,
-      "snippet": "- `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md",
       "line": 58,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMICS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/EPISTEMICS_OVER_NETWORK.md",
       "line": 70,
-      "snippet": "- `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`"
+      "snippet": "- `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMICS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/EPISTEMICS_OVER_NETWORK.md",
       "line": 71,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMICS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/EPISTEMICS_OVER_NETWORK.md",
       "line": 72,
-      "snippet": "- `docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMICS_OVER_NETWORK.md",
+      "file": "docs/runtime/network/EPISTEMICS_OVER_NETWORK.md",
       "line": 73,
-      "snippet": "- `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
+      "file": "docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
       "line": 65,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
+      "file": "docs/runtime/network/EPISTEMIC_SCOPE_AND_FOG_OF_WAR.md",
       "line": 66,
-      "snippet": "- `docs/net/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/DIEGETIC_CHANNELS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ESPORTS_PROOF_ARTIFACTS.md",
+      "file": "docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md",
       "line": 62,
       "snippet": "`tools/net/tool_export_ranked_proof_bundle` must emit:"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ESPORTS_PROOF_ARTIFACTS.md",
+      "file": "docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md",
       "line": 71,
       "snippet": "python tools/net/tool_export_ranked_proof_bundle.py --run-meta saves/<save_id>/run_meta/<run_id>.json --out-dir build/net/proofs --out-prefix ranked_proof_bundle"
     },
     {
       "classification": "docs",
-      "file": "docs/net/ESPORTS_PROOF_ARTIFACTS.md",
+      "file": "docs/runtime/network/ESPORTS_PROOF_ARTIFACTS.md",
       "line": 76,
-      "snippet": "- `docs/net/RANKED_SERVER_GOVERNANCE.md`"
+      "snippet": "- `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 88,
       "snippet": "1. `tools/net/net_cli.py --session-spec <path> net.connect --endpoint <endpoint>`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 89,
       "snippet": "2. `tools/net/net_cli.py --session-spec <path> net.handshake --policy <policy_id> --anti-cheat <policy_id>`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 90,
       "snippet": "3. `tools/net/net_cli.py --session-spec <path> net.status`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 91,
       "snippet": "4. `tools/net/net_cli.py --session-spec <path> net.disconnect`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 92,
       "snippet": "5. `tools/net/tool_net_loopback_sim.py --session-spec <path> --clients <N>`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/HANDSHAKE_AND_COMPATIBILITY.md",
+      "file": "docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md",
       "line": 165,
-      "snippet": "- `docs/net/TRANSPORT_ABSTRACTION.md`"
+      "snippet": "- `docs/runtime/network/TRANSPORT_ABSTRACTION.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+      "file": "docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md",
       "line": 71,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+      "file": "docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md",
       "line": 72,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/MULTIPLAYER_MODEL_OVERVIEW.md",
+      "file": "docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md",
       "line": 73,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/RANKED_SERVER_GOVERNANCE.md",
+      "file": "docs/runtime/network/RANKED_SERVER_GOVERNANCE.md",
       "line": 93,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/RANKED_SERVER_GOVERNANCE.md",
+      "file": "docs/runtime/network/RANKED_SERVER_GOVERNANCE.md",
       "line": 94,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/REPLICATION_POLICIES.md",
+      "file": "docs/runtime/network/REPLICATION_POLICIES.md",
       "line": 90,
-      "snippet": "- `docs/net/SRZ_HYBRID_POLICY.md`"
+      "snippet": "- `docs/runtime/network/SRZ_HYBRID_POLICY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/REPLICATION_POLICIES.md",
+      "file": "docs/runtime/network/REPLICATION_POLICIES.md",
       "line": 91,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/SERVER_AUTHORITATIVE_POLICY.md",
+      "file": "docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md",
       "line": 108,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/SERVER_AUTHORITATIVE_POLICY.md",
+      "file": "docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md",
       "line": 109,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/SERVER_AUTHORITATIVE_POLICY.md",
+      "file": "docs/runtime/network/SERVER_AUTHORITATIVE_POLICY.md",
       "line": 110,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/SRZ_HYBRID_POLICY.md",
+      "file": "docs/runtime/network/SRZ_HYBRID_POLICY.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/net/REPLICATION_POLICIES.md`, and deterministic SRZ/hash contracts."
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/network/REPLICATION_POLICIES.md`, and deterministic SRZ/hash contracts."
     },
     {
       "classification": "docs",
-      "file": "docs/net/SRZ_HYBRID_POLICY.md",
+      "file": "docs/runtime/network/SRZ_HYBRID_POLICY.md",
       "line": 93,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 6,
-      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, and `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`."
+      "snippet": "Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, and `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`."
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 68,
-      "snippet": "- `docs/net/MULTIPLAYER_MODEL_OVERVIEW.md`"
+      "snippet": "- `docs/runtime/network/MULTIPLAYER_MODEL_OVERVIEW.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 69,
-      "snippet": "- `docs/net/REPLICATION_POLICIES.md`"
+      "snippet": "- `docs/runtime/network/REPLICATION_POLICIES.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 70,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 71,
-      "snippet": "- `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
+      "snippet": "- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`"
     },
     {
       "classification": "docs",
-      "file": "docs/net/TRANSPORT_ABSTRACTION.md",
+      "file": "docs/runtime/network/TRANSPORT_ABSTRACTION.md",
       "line": 72,
-      "snippet": "- `docs/net/EPISTEMICS_OVER_NETWORK.md`"
+      "snippet": "- `docs/runtime/network/EPISTEMICS_OVER_NETWORK.md`"
     },
     {
       "classification": "docs",
@@ -4523,7 +4523,7 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.cluster.b7148364365a814b.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/CTRL0_RETRO_AUDIT.md, docs/audit/FORCE_MOMENTUM_BASELINE.md, docs/net/SRZ_HYBRID_POLICY.md, docs/specs/DATA_FORMATS.md`"
+      "snippet": "- Docs: `docs/audit/CTRL0_RETRO_AUDIT.md, docs/audit/FORCE_MOMENTUM_BASELINE.md, docs/runtime/network/SRZ_HYBRID_POLICY.md, docs/specs/DATA_FORMATS.md`"
     },
     {
       "classification": "docs",
@@ -4553,145 +4553,145 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1ccb1c0a6371d772.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_proto.c`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1ccb1c0a6371d772.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_proto.c`"
+      "snippet": "- `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1ccb1c0a6371d772.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_proto.h`"
+      "snippet": "- `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1ccb1c0a6371d772.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_proto.c` disposition=`canonical` rank=`1` total_score=`56.93` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.c` disposition=`canonical` rank=`1` total_score=`56.93` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1ccb1c0a6371d772.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_proto.h` disposition=`quarantine` rank=`2` total_score=`56.4` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.h` disposition=`quarantine` rank=`2` total_score=`56.4` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1d2127d44907d1bf.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_proto.h`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1d2127d44907d1bf.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_proto.c`"
+      "snippet": "- `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1d2127d44907d1bf.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_proto.h`"
+      "snippet": "- `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1d2127d44907d1bf.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_proto.h` disposition=`canonical` rank=`1` total_score=`69.33` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.h` disposition=`canonical` rank=`1` total_score=`69.33` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.1d2127d44907d1bf.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_proto.c` disposition=`quarantine` rank=`2` total_score=`68.89` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.c` disposition=`quarantine` rank=`2` total_score=`68.89` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.224a6c43b2b7d54c.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- Docs: `docs/audit/CAP_NEG4_RETRO_AUDIT.md, docs/governance/REPOX_RULESETS.md, docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_transport.c`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_transport.c`"
+      "snippet": "- `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_transport.h`"
+      "snippet": "- `runtime/network/d_net_transport.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`88.1` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`88.1` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.26bb4fc79f943fa6.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`86.07` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`86.07` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.39e97f0f9e652f57.md",
       "line": 22,
-      "snippet": "- `engine/modules/net/d_net_schema.c`"
+      "snippet": "- `runtime/network/d_net_schema.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.39e97f0f9e652f57.md",
       "line": 34,
-      "snippet": "- `engine/modules/net/d_net_schema.c` disposition=`merge` rank=`7` total_score=`64.12` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_schema.c` disposition=`merge` rank=`7` total_score=`64.12` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_proto.c`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_proto.c`"
+      "snippet": "- `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_proto.h`"
+      "snippet": "- `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_proto.c` disposition=`canonical` rank=`1` total_score=`66.96` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.c` disposition=`canonical` rank=`1` total_score=`66.96` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_proto.h` disposition=`quarantine` rank=`2` total_score=`66.44` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.h` disposition=`quarantine` rank=`2` total_score=`66.44` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.3b046a19f854a3bf.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/auditx/FINDINGS.md, docs/net/TRANSPORT_ABSTRACTION.md`"
+      "snippet": "- Docs: `docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/auditx/FINDINGS.md, docs/runtime/network/TRANSPORT_ABSTRACTION.md`"
     },
     {
       "classification": "docs",
@@ -4709,31 +4709,31 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.46a068c34a303fbd.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_schema.h`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_schema.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.46a068c34a303fbd.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_schema.c`"
+      "snippet": "- `runtime/network/d_net_schema.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.46a068c34a303fbd.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_schema.h`"
+      "snippet": "- `runtime/network/d_net_schema.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.46a068c34a303fbd.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_schema.h` disposition=`canonical` rank=`1` total_score=`69.23` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_schema.h` disposition=`canonical` rank=`1` total_score=`69.23` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.46a068c34a303fbd.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_schema.c` disposition=`quarantine` rank=`2` total_score=`63.61` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_schema.c` disposition=`quarantine` rank=`2` total_score=`63.61` risk=`HIGH`"
     },
     {
       "classification": "docs",
@@ -4823,37 +4823,37 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_session.h`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_session.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_session.c`"
+      "snippet": "- `runtime/network/d_net_session.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_session.h`"
+      "snippet": "- `runtime/network/d_net_session.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_session.h` disposition=`canonical` rank=`1` total_score=`72.26` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_session.h` disposition=`canonical` rank=`1` total_score=`72.26` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_session.c` disposition=`quarantine` rank=`2` total_score=`70.69` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_session.c` disposition=`quarantine` rank=`2` total_score=`70.69` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.5e7c08fa33e9f55a.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/ANTI_CHEAT_FRAMEWORK_BASELINE.md, docs/contracts/refusal_contract.md, docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- Docs: `docs/audit/ANTI_CHEAT_FRAMEWORK_BASELINE.md, docs/contracts/refusal_contract.md, docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
@@ -4889,55 +4889,55 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.648a9b0075264615.md",
       "line": 29,
-      "snippet": "- Docs: `docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/net/HANDSHAKE_AND_COMPATIBILITY.md, docs/specs/SPEC_DETERMINISM.md, docs/specs/SPEC_GRAPH_TOOLKIT.md, docs/specs/SPEC_SIM_SCHEDULER.md, docs/s"
+      "snippet": "- Docs: `docs/architecture/CANON_INDEX.md, docs/audit/CANON_MAP.md, docs/audit/DOC_INDEX.md, docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md, docs/specs/SPEC_DETERMINISM.md, docs/specs/SPEC_GRAPH_TOOLKIT.md, docs/specs/SPEC_SIM_SCHEDULER.md, docs/s"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.6954590dd2dacbfc.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_apply.h`"
+      "snippet": "- `runtime/network/d_net_apply.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.6954590dd2dacbfc.md",
       "line": 37,
-      "snippet": "- `engine/modules/net/d_net_apply.h` disposition=`quarantine` rank=`5` total_score=`86.67` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_apply.h` disposition=`quarantine` rank=`5` total_score=`86.67` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.763115b6219911d0.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_transport.c`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.763115b6219911d0.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_transport.c`"
+      "snippet": "- `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.763115b6219911d0.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_transport.h`"
+      "snippet": "- `runtime/network/d_net_transport.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.763115b6219911d0.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`59.18` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`59.18` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.763115b6219911d0.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`58.12` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`58.12` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.764854ea1f96e934.md",
       "line": 29,
-      "snippet": "- Docs: `docs/SURVIVAL_SLICE.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/srz_contract.md, docs/archive/ci/DOCS_VALIDATION_REPORT.md, docs/audit/DOC_INDEX.md, docs/audit/auditx/FINDINGS.md, docs/net/MULTIPLAYER_MOD"
+      "snippet": "- Docs: `docs/SURVIVAL_SLICE.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/srz_contract.md, docs/archive/ci/DOCS_VALIDATION_REPORT.md, docs/audit/DOC_INDEX.md, docs/audit/auditx/FINDINGS.md, docs/runtime/network/MULTIPLAYER_MOD"
     },
     {
       "classification": "docs",
@@ -4955,37 +4955,37 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c3bfe14fbd57352a.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/CTRL0_RETRO_AUDIT.md, docs/audit/FORCE_MOMENTUM_BASELINE.md, docs/net/SRZ_HYBRID_POLICY.md, docs/specs/DATA_FORMATS.md`"
+      "snippet": "- Docs: `docs/audit/CTRL0_RETRO_AUDIT.md, docs/audit/FORCE_MOMENTUM_BASELINE.md, docs/runtime/network/SRZ_HYBRID_POLICY.md, docs/specs/DATA_FORMATS.md`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c74c92445054a470.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_proto.h`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c74c92445054a470.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_proto.c`"
+      "snippet": "- `runtime/network/d_net_proto.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c74c92445054a470.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_proto.h`"
+      "snippet": "- `runtime/network/d_net_proto.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c74c92445054a470.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_proto.h` disposition=`canonical` rank=`1` total_score=`56.4` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.h` disposition=`canonical` rank=`1` total_score=`56.4` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.c74c92445054a470.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_proto.c` disposition=`quarantine` rank=`2` total_score=`55.96` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_proto.c` disposition=`quarantine` rank=`2` total_score=`55.96` risk=`HIGH`"
     },
     {
       "classification": "docs",
@@ -5021,67 +5021,67 @@
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_transport.c`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_transport.c`"
+      "snippet": "- `runtime/network/d_net_transport.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_transport.h`"
+      "snippet": "- `runtime/network/d_net_transport.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`67.35` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.c` disposition=`canonical` rank=`1` total_score=`67.35` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`66.29` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_transport.h` disposition=`quarantine` rank=`2` total_score=`66.29` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.d7852a14cc00c1a3.md",
       "line": 29,
-      "snippet": "- Docs: `docs/audit/auditx/FINDINGS.md, docs/net/TRANSPORT_ABSTRACTION.md, docs/specs/SPEC_NETCODE.md`"
+      "snippet": "- Docs: `docs/audit/auditx/FINDINGS.md, docs/runtime/network/TRANSPORT_ABSTRACTION.md, docs/specs/SPEC_NETCODE.md`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
       "line": 12,
-      "snippet": "- Canonical Candidate: `engine/modules/net/d_net_apply.h`"
+      "snippet": "- Canonical Candidate: `runtime/network/d_net_apply.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
       "line": 18,
-      "snippet": "- `engine/modules/net/d_net_apply.c`"
+      "snippet": "- `runtime/network/d_net_apply.c`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
       "line": 19,
-      "snippet": "- `engine/modules/net/d_net_apply.h`"
+      "snippet": "- `runtime/network/d_net_apply.h`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
       "line": 23,
-      "snippet": "- `engine/modules/net/d_net_apply.h` disposition=`canonical` rank=`1` total_score=`86.67` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_apply.h` disposition=`canonical` rank=`1` total_score=`86.67` risk=`HIGH`"
     },
     {
       "classification": "docs",
       "file": "docs/refactor/QUARANTINE_duplicate.sig.e06e9a2aac843707.md",
       "line": 24,
-      "snippet": "- `engine/modules/net/d_net_apply.c` disposition=`quarantine` rank=`2` total_score=`81.43` risk=`HIGH`"
+      "snippet": "- `runtime/network/d_net_apply.c` disposition=`quarantine` rank=`2` total_score=`81.43` risk=`HIGH`"
     },
     {
       "classification": "docs",
@@ -5381,7 +5381,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_FILE_POLICY.md",
       "line": 155,
-      "snippet": "After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domains/` when domain-specific; new control"
+      "snippet": "After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domain/` when domain-specific; new control"
     },
     {
       "classification": "docs",
@@ -5393,7 +5393,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -5423,7 +5423,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
       "line": 433,
-      "snippet": "CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/appshell/`, `app/` moved to `runtime/app/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`"
+      "snippet": "CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/shell/`, `app/` moved to `runtime/shell/lifecycle/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`"
     },
     {
       "classification": "docs",
@@ -5561,13 +5561,13 @@
       "classification": "docs",
       "file": "docs/security/SECUREX_TRUST_MODEL.md",
       "line": 85,
-      "snippet": "- `docs/net/RANKED_SERVER_GOVERNANCE.md`"
+      "snippet": "- `docs/runtime/network/RANKED_SERVER_GOVERNANCE.md`"
     },
     {
       "classification": "docs",
       "file": "docs/security/SECUREX_TRUST_MODEL.md",
       "line": 86,
-      "snippet": "- `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`"
+      "snippet": "- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`"
     },
     {
       "classification": "docs",
@@ -5661,19 +5661,19 @@
     },
     {
       "classification": "docs",
-      "file": "docs/worldgen/GEOLOGY_AND_RESOURCES_BASELINE.md",
+      "file": "docs/domains/worldgen/GEOLOGY_AND_RESOURCES_BASELINE.md",
       "line": 33,
       "snippet": "- No planet/station special casing."
     },
     {
       "classification": "docs",
-      "file": "docs/worldgen/STAR_SYSTEM_SEED_MODEL.md",
+      "file": "docs/domains/worldgen/STAR_SYSTEM_SEED_MODEL.md",
       "line": 90,
       "snippet": "- planet/body lists"
     },
     {
       "classification": "docs",
-      "file": "docs/worldgen/TERRAIN_GEOMETRY_BASELINE.md",
+      "file": "docs/domains/worldgen/TERRAIN_GEOMETRY_BASELINE.md",
       "line": 31,
       "snippet": "- No planet/station special casing or hard-coded body types."
     },
@@ -5793,241 +5793,241 @@
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/core/d_subsystems_init.c",
+      "file": "engine/kernel/d_subsystems_init.c",
       "line": 28,
       "snippet": "#include \"net/d_net.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net.c",
+      "file": "runtime/network/d_net.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net.c",
+      "file": "runtime/network/d_net.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net.h",
+      "file": "runtime/network/d_net.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net.h",
+      "file": "runtime/network/d_net.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_apply.c",
+      "file": "runtime/network/d_net_apply.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_apply.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_apply.c",
+      "file": "runtime/network/d_net_apply.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_apply"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_apply.h",
+      "file": "runtime/network/d_net_apply.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_apply.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_apply.h",
+      "file": "runtime/network/d_net_apply.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_apply"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_apply.h",
+      "file": "runtime/network/d_net_apply.h",
       "line": 19,
       "snippet": "#include \"net/d_net_cmd.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_cmd.c",
+      "file": "runtime/network/d_net_cmd.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_cmd.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_cmd.c",
+      "file": "runtime/network/d_net_cmd.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_cmd"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_cmd.h",
+      "file": "runtime/network/d_net_cmd.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_cmd.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_cmd.h",
+      "file": "runtime/network/d_net_cmd.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_cmd"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_cmd.h",
+      "file": "runtime/network/d_net_cmd.h",
       "line": 20,
       "snippet": "#include \"net/d_net_session.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.c",
+      "file": "runtime/network/d_net_proto.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_proto.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.c",
+      "file": "runtime/network/d_net_proto.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_proto"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.h",
+      "file": "runtime/network/d_net_proto.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_proto.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.h",
+      "file": "runtime/network/d_net_proto.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_proto"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.h",
+      "file": "runtime/network/d_net_proto.h",
       "line": 20,
       "snippet": "#include \"net/d_net_cmd.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_proto.h",
+      "file": "runtime/network/d_net_proto.h",
       "line": 21,
       "snippet": "#include \"net/d_net_session.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_schema.c",
+      "file": "runtime/network/d_net_schema.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_schema.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_schema.c",
+      "file": "runtime/network/d_net_schema.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_schema"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_schema.h",
+      "file": "runtime/network/d_net_schema.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_schema.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_schema.h",
+      "file": "runtime/network/d_net_schema.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_schema"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_session.c",
+      "file": "runtime/network/d_net_session.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_session.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_session.c",
+      "file": "runtime/network/d_net_session.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_session"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_session.h",
+      "file": "runtime/network/d_net_session.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_session.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_session.h",
+      "file": "runtime/network/d_net_session.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_session"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.c",
+      "file": "runtime/network/d_net_transport.c",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_transport.c"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.c",
+      "file": "runtime/network/d_net_transport.c",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_transport"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.c",
+      "file": "runtime/network/d_net_transport.c",
       "line": 18,
       "snippet": "#include \"net/d_net_cmd.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.h",
+      "file": "runtime/network/d_net_transport.h",
       "line": 2,
       "snippet": "FILE: source/domino/net/d_net_transport.h"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.h",
+      "file": "runtime/network/d_net_transport.h",
       "line": 4,
       "snippet": "LAYER / SUBSYSTEM: Domino impl / net/d_net_transport"
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.h",
+      "file": "runtime/network/d_net_transport.h",
       "line": 19,
       "snippet": "#include \"net/d_net_session.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/net/d_net_transport.h",
+      "file": "runtime/network/d_net_transport.h",
       "line": 20,
       "snippet": "#include \"net/d_net_proto.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/replay/d_replay.h",
+      "file": "engine/replay/d_replay.h",
       "line": 20,
       "snippet": "#include \"net/d_net.h\""
     },
     {
       "classification": "active_source",
-      "file": "engine/modules/sim/d_sim.c",
+      "file": "game/domain/simulation/d_sim.c",
       "line": 18,
       "snippet": "#include \"net/d_net_apply.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/tests/contract/dominium_session_tests.cpp",
+      "file": "tests/tests/game/contract/dominium_session_tests.cpp",
       "line": 35,
       "snippet": "#include \"net/d_net_proto.h\""
     },
     {
       "classification": "tests",
-      "file": "game/tests/tests/contract/dominium_session_tests.cpp",
+      "file": "tests/tests/game/contract/dominium_session_tests.cpp",
       "line": 36,
       "snippet": "#include \"net/d_net_transport.h\""
     },
@@ -6095,7 +6095,7 @@
       "classification": "tools",
       "file": "scripts/verify_ui_shell_purity.py",
       "line": 14,
-      "snippet": "\"apps/client/net/\","
+      "snippet": "\"runtime/network/client/\","
     },
     {
       "classification": "tests",
@@ -6107,299 +6107,299 @@
       "classification": "tools",
       "file": "tools/CMakeLists.txt",
       "line": 24,
-      "snippet": "../apps/server/net/dom_server_protocol.cpp"
+      "snippet": "../runtime/network/server/dom_server_protocol.cpp"
     },
     {
       "classification": "tools",
       "file": "tools/CMakeLists.txt",
       "line": 25,
-      "snippet": "../apps/server/net/dom_server_runtime.cpp"
+      "snippet": "../runtime/network/server/dom_server_runtime.cpp"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e104_direct_intent_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e104_direct_intent_bypass_smell.py",
       "line": 15,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e104_direct_intent_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e104_direct_intent_bypass_smell.py",
       "line": 16,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 13,
       "snippet": "\"src/net/anti_cheat/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 14,
       "snippet": "\"src/net/policies/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 15,
       "snippet": "\"src/net/srz/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 19,
       "snippet": "\"src/net/anti_cheat\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 20,
       "snippet": "\"src/net/policies\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 21,
       "snippet": "\"src/net/srz\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e10_nondeterministic_anti_cheat_smell.py",
       "line": 60,
       "snippet": "anti_engine_rel = \"net/anti_cheat/anti_cheat_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e111_intent_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e111_intent_bypass_smell.py",
       "line": 21,
       "snippet": "\"src/net/**\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e11_ranked_policy_drift.py",
+      "file": "tools/xstack/auditx/analyzers/e11_ranked_policy_drift.py",
       "line": 17,
-      "snippet": "\"docs/net/RANKED_SERVER_GOVERNANCE.md\","
+      "snippet": "\"docs/runtime/network/RANKED_SERVER_GOVERNANCE.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e129_control_plane_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e129_control_plane_bypass_smell.py",
       "line": 33,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e129_control_plane_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e129_control_plane_bypass_smell.py",
       "line": 34,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e18_view_mode_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e18_view_mode_bypass_smell.py",
       "line": 13,
       "snippet": "HYBRID_COORDINATOR_PATH = \"net/srz/shard_coordinator.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e1_net_policy_drift.py",
+      "file": "tools/xstack/auditx/analyzers/e1_net_policy_drift.py",
       "line": 22,
-      "snippet": "\"docs/net/\","
+      "snippet": "\"docs/runtime/network/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e29_hidden_state_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e29_hidden_state_leak_smell.py",
       "line": 14,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e29_hidden_state_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e29_hidden_state_leak_smell.py",
       "line": 15,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e2_truth_over_net_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e2_truth_over_net_smell.py",
       "line": 18,
-      "snippet": "\"docs/net/\","
+      "snippet": "\"docs/runtime/network/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e334_adhoc_spatial_key_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e334_adhoc_spatial_key_smell.py",
       "line": 12,
-      "snippet": "WATCH_PREFIXES = (\"src/net/srz/\", \"game/domains/systems/roi/\", \"game/domains/worldgen/\", \"tools/geo/\")"
+      "snippet": "WATCH_PREFIXES = (\"src/net/srz/\", \"game/domain/systems/roi/\", \"game/domain/worldgen/\", \"tools/validators/domain/geology/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
       "line": 35,
       "snippet": "\"net/policies/policy_server_authoritative.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
       "line": 40,
       "snippet": "\"net/srz/shard_coordinator.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e360_unbounded_generation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e360_unbounded_generation_smell.py",
       "line": 21,
       "snippet": "\"\\\"max_moons_per_planet\\\"\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
       "line": 14,
       "snippet": "\"tools/net/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
       "line": 20,
       "snippet": "_POLICY_LITERAL_RE = re.compile(r\"(policy\\.net\\.[a-z0-9_.-]+|policy\\.ac\\.[a-z0-9_.-]+)\", re.IGNORECASE)"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
       "line": 22,
       "snippet": "r\"\\bif\\b[^\\n]*(policy\\.net\\.[a-z0-9_.-]+|policy\\.ac\\.[a-z0-9_.-]+)\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e3_handshake_policy_bypass_smell.py",
       "line": 117,
-      "snippet": "if \"data/registries/\" in lower or \"docs/net/\" in lower:"
+      "snippet": "if \"data/registries/\" in lower or \"docs/runtime/network/\" in lower:"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e403_intent_without_authority_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e403_intent_without_authority_smell.py",
       "line": 20,
-      "snippet": "\"apps/server/net/loopback_transport.py\": ("
+      "snippet": "\"runtime/network/server/loopback_transport.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e407_ad_hoc_handshake_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e407_ad_hoc_handshake_smell.py",
       "line": 18,
-      "snippet": "\"apps/server/net/loopback_transport.py\": ("
+      "snippet": "\"runtime/network/server/loopback_transport.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e410_connection_without_negotiation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e410_connection_without_negotiation_smell.py",
       "line": 17,
-      "snippet": "\"apps/server/net/loopback_transport.py\": ("
+      "snippet": "\"runtime/network/server/loopback_transport.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e424_printf_log_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e424_printf_log_smell.py",
       "line": 13,
-      "snippet": "\"apps/server/net/loopback_transport.py\","
+      "snippet": "\"runtime/network/server/loopback_transport.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e425_wallclock_in_sim_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e425_wallclock_in_sim_smell.py",
       "line": 12,
-      "snippet": "\"apps/server/net/loopback_transport.py\","
+      "snippet": "\"runtime/network/server/loopback_transport.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e4_authoritative_truth_leak.py",
+      "file": "tools/xstack/auditx/analyzers/e4_authoritative_truth_leak.py",
       "line": 13,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e4_authoritative_truth_leak.py",
+      "file": "tools/xstack/auditx/analyzers/e4_authoritative_truth_leak.py",
       "line": 26,
       "snippet": "rel_path = \"net/policies/policy_server_authoritative.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e5_cross_shard_write_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e5_cross_shard_write_smell.py",
       "line": 13,
       "snippet": "\"src/net/srz/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e5_cross_shard_write_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e5_cross_shard_write_smell.py",
       "line": 14,
-      "snippet": "\"docs/net/SRZ_HYBRID_POLICY.md\","
+      "snippet": "\"docs/runtime/network/SRZ_HYBRID_POLICY.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e5_cross_shard_write_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e5_cross_shard_write_smell.py",
       "line": 27,
       "snippet": "rel_path = \"net/srz/shard_coordinator.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e6_shard_map_drift.py",
+      "file": "tools/xstack/auditx/analyzers/e6_shard_map_drift.py",
       "line": 17,
       "snippet": "\"src/net/srz/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e7_epistemic_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e7_epistemic_leak_smell.py",
       "line": 13,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e7_epistemic_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e7_epistemic_leak_smell.py",
       "line": 14,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e8_precision_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e8_precision_leak_smell.py",
       "line": 15,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e8_precision_leak_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e8_precision_leak_smell.py",
       "line": 16,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 13,
       "snippet": "\"src/net/anti_cheat/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 14,
       "snippet": "\"src/net/policies/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 15,
       "snippet": "\"src/net/srz/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 19,
       "snippet": "ANTI_CHEAT_ENGINE_PATH = \"net/anti_cheat/anti_cheat_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 21,
       "snippet": "\"net/policies/policy_server_authoritative.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 22,
       "snippet": "\"net/srz/shard_coordinator.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e9_hidden_termination_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e9_hidden_termination_smell.py",
       "line": 23,
       "snippet": "\"net/policies/policy_lockstep.py\","
     },
@@ -6413,13 +6413,13 @@
       "classification": "tools",
       "file": "tools/governance/tool_semantic_impact.py",
       "line": 288,
-      "snippet": "out.add(\"docs/net/MP_VALIDATION_BASELINE.md\")"
+      "snippet": "out.add(\"docs/runtime/network/MP_VALIDATION_BASELINE.md\")"
     },
     {
       "classification": "tools",
       "file": "tools/meta/observability_common.py",
       "line": 94,
-      "snippet": "\"apps/server/net/loopback_transport.py\","
+      "snippet": "\"runtime/network/server/loopback_transport.py\","
     },
     {
       "classification": "tools",
@@ -6461,13 +6461,13 @@
       "classification": "tools",
       "file": "tools/release/entrypoint_unify_common.py",
       "line": 82,
-      "snippet": "\"ipc_start_location\": \"runtime/appshell/bootstrap.py::AppShellIPCEndpointServer; apps/server/net/loopback_transport.py\","
+      "snippet": "\"ipc_start_location\": \"runtime/shell/bootstrap.py::AppShellIPCEndpointServer; runtime/network/server/loopback_transport.py\","
     },
     {
       "classification": "tools",
       "file": "tools/review/doc_inventory_common.py",
       "line": 320,
-      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/worldgen/\", \"docs/geo/\", \"docs/logic/\", \"docs/appshell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compat/\", \"docs/net/\", \"d"
+      "snippet": "if rel_norm.startswith((\"docs/release/\", \"docs/mvp/\", \"docs/meta/\", \"docs/time/\", \"docs/sol/\", \"docs/domains/worldgen/\", \"docs/domains/geology/\", \"docs/logic/\", \"docs/runtime/shell/\", \"docs/packs/\", \"docs/server/\", \"docs/contracts/\", \"docs/compatibility/\", \"docs/runtime/network/\", \"d"
     },
     {
       "classification": "tools",

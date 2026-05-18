@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Universe Identity Schema",
+  "version": "1.0.0",
+  "description": "Canonical immutable universe identity contract for Dominium session bootstrap.",
+  "x-doc-ref": [
+    "docs/canon/constitution_v1.md §3 A1/A6",
+    "docs/canon/glossary_v1.md UniverseIdentity",
+    "docs/roadmap/milestone_lab_galaxy.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "universe_id",
+    "global_seed",
+    "domain_binding_ids",
+    "physics_profile_id",
+    "base_scenario_id",
+    "initial_pack_set_hash_expectation",
+    "compatibility_schema_refs",
+    "immutable_after_create",
+    "extensions",
+    "identity_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0",
+      "description": "Payload schema version for CompatX routing."
+    },
+    "universe_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "global_seed": {
+      "type": [
+        "string",
+        "integer"
+      ],
+      "description": "Deterministic seed root; explicit string or integer only."
+    },
+    "domain_binding_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "physics_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "topology_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "metric_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "partition_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "projection_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "generator_version_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "realism_profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "universe_contract_bundle_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Relative sidecar reference for the immutable universe contract bundle."
+    },
+    "universe_contract_bundle_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$",
+      "description": "Deterministic fingerprint of the pinned universe contract bundle."
+    },
+    "base_scenario_id": {
+      "type": "string"
+    },
+    "initial_pack_set_hash_expectation": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "compatibility_schema_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "immutable_after_create": {
+      "type": "boolean",
+      "const": true
+    },
+    "extensions": {
+      "type": "object"
+    },
+    "identity_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "universe_id": "universe.8de7ca4fb8e4eb67",
+      "global_seed": "dominium.lab.galaxy.seed.0001",
+      "domain_binding_ids": [
+        "domain.navigation",
+        "domain.astronomy"
+      ],
+      "physics_profile_id": "physics.null",
+      "topology_profile_id": "geo.topology.r3_infinite",
+      "metric_profile_id": "geo.metric.euclidean",
+      "partition_profile_id": "geo.partition.grid_zd",
+      "projection_profile_id": "geo.projection.perspective_3d",
+      "generator_version_id": "gen.v0_stub",
+      "realism_profile_id": "realism.realistic_default_milkyway_stub",
+      "universe_contract_bundle_ref": "universe_contract_bundle.json",
+      "universe_contract_bundle_hash": "95313b59cd3663a63c46d7ced657b12a0fa1eec1c730d334fef8b198ff89e279",
+      "base_scenario_id": "scenario.lab.galaxy_nav",
+      "initial_pack_set_hash_expectation": "d9eb253e069b2ce7fbbdb5f95f98cc28fbf3622f29227cececad2e89d13718a5",
+      "compatibility_schema_refs": [
+        "bundle_lockfile@1.0.0",
+        "generator_version@1.0.0",
+        "metric_profile@1.0.0",
+        "partition_profile@1.0.0",
+        "projection_profile@1.0.0",
+        "realism_profile@1.0.0",
+        "session_spec@1.0.0",
+        "space_topology_profile@1.0.0",
+        "universe_identity@1.0.0"
+      ],
+      "immutable_after_create": true,
+      "extensions": {},
+      "identity_hash": "864f1b17ae07540760057de4cbaec28ea2f3db9271af1ce5cc3560aafce84d0a"
+    }
+  ]
+}
+

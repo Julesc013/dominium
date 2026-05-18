@@ -1,0 +1,27 @@
+SCHEMA: logic/carrier_type.schema
+schema_id: dominium.schema.logic.carrier_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare carrier families that transport LOGIC signals through domain-specific systems.
+- Make carrier constraints and costs explicit without redefining logic meaning.
+
+NON-SEMANTICS:
+- This schema does not define signal values or controller behavior.
+- It does not authorize direct mutation of authoritative truth.
+
+REQUIRED SHAPE:
+record logic_carrier_type
+  required:
+    - carrier_type_id: id
+    - description: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - constraints_ref: id
+
+INVARIANTS:
+- Carrier entries define costs, limits, and transport constraints only.
+- Carrier entries must not embed logic semantics or controller state rules.
+- Missing `constraints_ref` is allowed only when the carrier remains purely classificatory at LOGIC-0.

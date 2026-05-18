@@ -1,0 +1,20 @@
+SCHEMA: civilisation/order_assimilate.schema
+schema_id: dominium.schema.civilisation.order_assimilate
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic payload for assimilation/recruitment order stubs.
+
+REQUIRED SHAPE:
+record order_assimilate
+  required:
+    - schema_version: semver
+    - target_faction_id: nullable_id
+    - target_cohort_id: nullable_id
+    - method: enum(invite|force|trade)
+    - extensions: map
+
+INVARIANTS:
+- At least one target field must be present (faction or cohort).
+- method is declarative and policy-gated; no implicit fallback behavior.

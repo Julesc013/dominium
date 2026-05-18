@@ -69,7 +69,7 @@ Scope: regression tests for determinism, budgets, and degradation.
 
 
 
-Both tests are headless and use fixtures under `game/tests/fixtures/`.
+Both tests are headless and use fixtures under `tests/game/fixtures/`.
 
 
 

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interaction Affordance Schema",
+  "version": "1.0.0",
+  "description": "Deterministic interaction affordance row derived from perceived targets and lawful authority context.",
+  "x-doc-ref": [
+    "docs/interaction/INTERACTION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "affordance_id",
+    "target_semantic_id",
+    "process_id",
+    "display_name",
+    "required_entitlements",
+    "required_lens_channels",
+    "parameter_schema_id",
+    "preview_capability",
+    "cost_units_estimate",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "affordance_id": {
+      "type": "string"
+    },
+    "target_semantic_id": {
+      "type": "string"
+    },
+    "process_id": {
+      "type": "string"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_lens_channels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "parameter_schema_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "preview_capability": {
+      "type": "string",
+      "enum": [
+        "none",
+        "cheap",
+        "expensive"
+      ]
+    },
+    "cost_units_estimate": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "affordance_id": "affordance.2c616708accf67cb",
+      "target_semantic_id": "agent.alpha",
+      "process_id": "process.inspect_generate_snapshot",
+      "display_name": "Inspect",
+      "required_entitlements": [
+        "entitlement.inspect"
+      ],
+      "required_lens_channels": [
+        "ch.core.entities"
+      ],
+      "parameter_schema_id": "dominium.schema.interaction.inspect_params",
+      "preview_capability": "expensive",
+      "cost_units_estimate": 8,
+      "deterministic_fingerprint": "ef8bd9f6148f60ad27853ed72f7f391f5b9a64a63686cce59a3d7936e806e5cf",
+      "extensions": {}
+    }
+  ]
+}

@@ -20,6 +20,6 @@ Authority: canonical. All false-science content MUST follow this.
 
 ## References
 - `docs/knowledge/MISINFORMATION.md`
-- `docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
+- `docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
 - `schema/knowledge.schema`
 - `schema/worldgen_model.schema`

@@ -1,0 +1,28 @@
+SCHEMA: interaction/action_surface.schema
+schema_id: dominium.schema.interaction.action_surface
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic ActionSurface rows attached to perceived semantic parents.
+
+REQUIRED SHAPE:
+record action_surface
+  required:
+    - schema_version: semver
+    - surface_id: id
+    - parent_semantic_id: id
+    - surface_type_id: id
+    - local_transform: map
+    - compatible_tool_tags: list[id]
+    - allowed_process_ids: list[id]
+    - parameter_schema_id: optional_id
+    - constraints: optional_map
+    - visibility_policy_id: optional_id
+    - deterministic_fingerprint: hash_hex
+    - extensions: map
+
+INVARIANTS:
+- `surface_id` is deterministic from `(parent_semantic_id, local_surface_index)`.
+- Surface metadata is derived-only and does not mutate authoritative state.
+- `allowed_process_ids` must be law-filtered before affordance execution.

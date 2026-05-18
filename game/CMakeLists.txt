@@ -2,21 +2,21 @@ cmake_minimum_required(VERSION 3.16)
 
 add_library(dominium_game STATIC
     dominium_game_stub.c
-    core/dom_interest_set.c
-    core/dom_interest_sources.c
-    core/dom_interest_macro.c
-    core/dom_fidelity.c
-    core/dom_data_validate.c
-    core/dom_epistemic.c
-    core/ups_runtime.cpp
-    core/execution/access_ir.cpp
-    core/execution/work_ir_emit.cpp
-    core/execution/policy_bridge.cpp
-    core/execution/system_registry.cpp
-    core/execution/work_graph_builder.cpp
-    core/law/law_kernel.cpp
-    core/law/jurisdiction_resolver.cpp
-    core/law/law_context_builder.cpp
+    rule/dom_interest_set.c
+    rule/dom_interest_sources.c
+    rule/dom_interest_macro.c
+    rule/dom_fidelity.c
+    rule/dom_data_validate.c
+    rule/dom_epistemic.c
+    rule/ups_runtime.cpp
+    rule/execution/access_ir.cpp
+    rule/execution/work_ir_emit.cpp
+    rule/execution/policy_bridge.cpp
+    rule/execution/system_registry.cpp
+    rule/execution/work_graph_builder.cpp
+    law/law_kernel.cpp
+    law/jurisdiction_resolver.cpp
+    law/law_context_builder.cpp
     rules/life/ability_packages.cpp
     rules/life/control_authority.cpp
     rules/life/continuation_policy.cpp
@@ -39,8 +39,8 @@ add_library(dominium_game STATIC
     rules/life/lineage.cpp
     rules/life/cohort_update_hooks.cpp
     rules/life/birth_pipeline.cpp
-    core/orchestration/macro_due_scheduler_hooks.cpp
-    core/session/mp0_session.cpp
+    rule/orchestration/macro_due_scheduler_hooks.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/shell/session/mp0_session.cpp
     rules/agents/agent_goal.cpp
     rules/agents/agent_evaluator.cpp
     rules/agents/agent_planner.cpp
@@ -77,11 +77,11 @@ add_library(dominium_game STATIC
     rules/physical/infrastructure_effects.cpp
     rules/fab/fab_interpreters.cpp
     rules/player/player_intent.cpp
-    mods/runtime/mod_manifest.cpp
-    mods/runtime/mod_graph_resolver.cpp
-    mods/runtime/mod_compat.cpp
-    mods/runtime/mod_safe_mode.cpp
-    mods/runtime/mod_loader.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/package/mod/mod_manifest.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/package/mod/mod_graph_resolver.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/package/mod/mod_compat.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/package/mod/mod_safe_mode.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/package/mod/mod_loader.cpp
     rules/governance/jurisdiction_model.cpp
     rules/governance/legitimacy_model.cpp
     rules/governance/enforcement_capacity.cpp

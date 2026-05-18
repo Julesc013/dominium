@@ -23,7 +23,7 @@ automation and integration metadata tests.
 - Product registration via CMake (`dom_register_product`).
 - Renderer backend registration via CMake (`dom_register_renderer_backend`).
 - Platform backend registration via CMake (`dom_register_platform_backend`).
-- CLI contracts documented in `docs/app/CLI_CONTRACTS.md`.
+- CLI contracts documented in `docs/apps/CLI_CONTRACTS.md`.
 
 ## Notes
 

@@ -1,0 +1,22 @@
+SCHEMA: signals/address.schema
+schema_id: dominium.schema.signals.address
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic message addressing descriptor for unicast, multicast, and broadcast scopes.
+
+REQUIRED SHAPE:
+record address
+  required:
+    - schema_version: semver
+    - address_id: id
+    - address_type: enum(subject|group|broadcast)
+    - target_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Address resolution order is deterministic.
+- Address objects do not mutate transport state directly.
+- Broadcast scope is explicit and never global by default.

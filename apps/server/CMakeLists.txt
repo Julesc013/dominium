@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
 add_executable(dominium_server
-    app/main_server.c
+    main_server.c
     authority/dom_server_authority.cpp
-    net/dom_server_protocol.cpp
-    net/dom_server_runtime.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/dom_server_protocol.cpp
+    ${CMAKE_SOURCE_DIR}/runtime/network/server/dom_server_runtime.cpp
     shard/shard_api.cpp
     shard/shard_router.cpp
     shard/shard_domain_index.cpp
@@ -28,6 +28,7 @@ target_link_libraries(dominium_server PRIVATE
 )
 target_include_directories(dominium_server PRIVATE
     ${DOMINIUM_GENERATED_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/runtime/network/server
 )
 set_target_properties(dominium_server PROPERTIES
     OUTPUT_NAME "server"
@@ -47,7 +48,7 @@ dom_register_product(server dominium_server)
 
 if(WIN32)
     add_executable(server_app_win32 WIN32
-        gui/server_app_win32.cpp
+        ${CMAKE_SOURCE_DIR}/runtime/platform/win32/server/server_app_win32.cpp
     )
     target_link_libraries(server_app_win32 PRIVATE
         libs::appcore
@@ -69,7 +70,7 @@ endif()
 
 if(DOM_BUILD_TESTS)
     add_executable(dominium_server_shard_tests
-        tests/shard_api_tests.cpp
+        ${CMAKE_SOURCE_DIR}/tests/server/shard_api_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
         shard/shard_domain_index.cpp
@@ -96,7 +97,7 @@ if(DOM_BUILD_TESTS)
     add_test(NAME dominium_server_shard_api COMMAND dominium_server_shard_tests)
 
     add_executable(dominium_server_shard_routing_tests
-        tests/shard_routing_tests.cpp
+        ${CMAKE_SOURCE_DIR}/tests/server/shard_routing_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
         shard/shard_domain_index.cpp
@@ -123,7 +124,7 @@ if(DOM_BUILD_TESTS)
     add_test(NAME dominium_server_shard_routing COMMAND dominium_server_shard_routing_tests)
 
     add_executable(dominium_server_integrity_tests
-        tests/integrity_checkpoint_tests.cpp
+        ${CMAKE_SOURCE_DIR}/tests/server/integrity_checkpoint_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
         shard/shard_domain_index.cpp
@@ -150,7 +151,7 @@ if(DOM_BUILD_TESTS)
     add_test(NAME dominium_server_integrity COMMAND dominium_server_integrity_tests)
 
     add_executable(dominium_server_shard_regression_tests
-        tests/shard_regression_tests.cpp
+        ${CMAKE_SOURCE_DIR}/tests/server/shard_regression_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
         shard/shard_domain_index.cpp
@@ -164,10 +165,10 @@ if(DOM_BUILD_TESTS)
     )
     target_include_directories(dominium_server_shard_regression_tests PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
-        ${CMAKE_SOURCE_DIR}/engine/modules
+        ${CMAKE_SOURCE_DIR}/engine/kernel
     )
     target_compile_definitions(dominium_server_shard_regression_tests PRIVATE
-        DOMINIUM_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/game/tests/fixtures"
+        DOMINIUM_FIXTURES_DIR="${CMAKE_SOURCE_DIR}/tests/game/fixtures"
     )
     target_link_libraries(dominium_server_shard_regression_tests PRIVATE
         domino_engine
@@ -181,7 +182,7 @@ if(DOM_BUILD_TESTS)
     add_test(NAME dominium_server_shard_regression COMMAND dominium_server_shard_regression_tests)
 
     add_executable(dominium_server_domain_shard_partition_tests
-        tests/domain_shard_partition_tests.cpp
+        ${CMAKE_SOURCE_DIR}/tests/server/domain_shard_partition_tests.cpp
         shard/shard_api.cpp
         shard/shard_router.cpp
         shard/shard_domain_index.cpp

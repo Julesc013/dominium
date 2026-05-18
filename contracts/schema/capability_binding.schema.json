@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Capability Binding Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-7 capability binding contract.",
+  "x-doc-ref": [
+    "docs/audit/CAPABILITY_REGISTRY_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "binding_id",
+    "entity_id",
+    "capability_id",
+    "created_tick",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entity_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "parameters": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "binding_id": "cap.bind.0acde5574648f381",
+      "entity_id": "assembly.vehicle.alpha",
+      "capability_id": "capability.has_pose_slots",
+      "parameters": {
+        "slot_count": 2
+      },
+      "created_tick": 42,
+      "deterministic_fingerprint": "f9b278f76136f2eb46a1f73466a3cde5ea2e4e6e0f8f75e7c34ba04c5c58cbe1",
+      "extensions": {}
+    }
+  ]
+}

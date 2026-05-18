@@ -20,14 +20,14 @@ def main():
 
     empty_root = os.path.join("tests", "distribution", "fixtures", "empty_root")
 
-    discover = run_tool(repo_root, "tools/distribution/pack_discover.py",
+    discover = run_tool(repo_root, "tools/package/distribution/pack_discover.py",
                         ["--repo-root", repo_root, "--root", empty_root, "--format", "json"])
     packs = discover.get("packs", [])
     if packs:
         print("zero-pack: expected no packs")
         return 1
 
-    compat = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                       ["--repo-root", repo_root, "--root", empty_root, "--format", "json"])
     if not compat.get("ok"):
         print("zero-pack: expected ok")

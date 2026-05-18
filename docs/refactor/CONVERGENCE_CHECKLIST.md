@@ -12,13 +12,13 @@ Superseded By: none
 - Execute merge actions for LOW-risk clusters and validate with FAST gates.
 - Planned action count: 7
 - Gate: `python tools/xstack/testx/runner.py --repo-root . --profile FAST`
-- Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
+- Gate: `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
 
 ## Phase 2 - Medium risk merges
 
 - Execute MED-risk merges, then run STRICT validation plus the four Ω regression verifies.
 - Planned action count: 2009
-- Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- Gate: `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - Gate: `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - Gate: `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - Gate: `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
@@ -36,7 +36,7 @@ Superseded By: none
 - Planned action count: 6977
 - Gate: `python tools/review/tool_run_duplicate_impl_scan.py --repo-root .`
 - Gate: `python tools/review/tool_run_implementation_scoring.py --repo-root .`
-- Gate: `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- Gate: `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 
 ## Phase 5 - Deprecation and quarantine decisions
 

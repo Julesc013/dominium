@@ -28,7 +28,7 @@ Current product startup is split across:
 - `src/server/server_main.py`
 - `tools/setup/setup_cli.py`
 - `tools/launcher/launch.py`
-- `dist/bin/*` wrapper scripts
+- `archive/generated/dist/bin/*` wrapper scripts
 
 This creates duplicated handling for:
 
@@ -39,7 +39,7 @@ This creates duplicated handling for:
 
 ### 2. Product wrappers already define the stable executable surface
 
-`dist/bin/` already provides the portable product names:
+`archive/generated/dist/bin/` already provides the portable product names:
 
 - `engine`
 - `game`

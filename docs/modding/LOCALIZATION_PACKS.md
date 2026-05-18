@@ -37,5 +37,5 @@ ui.client.menu.new_world=New World
 - Localization packs must not include gameplay data or scripts.
 
 ## References
-- docs/ui/LOCALIZATION_MODEL.md
+- docs/runtime/ui/LOCALIZATION_MODEL.md
 - docs/distribution/PACK_TAXONOMY.md

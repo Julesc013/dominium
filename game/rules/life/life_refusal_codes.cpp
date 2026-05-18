@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/life_refusal_codes.cpp
+FILE: game/rule/life/life_refusal_codes.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Provides string names for death/estate refusal codes.

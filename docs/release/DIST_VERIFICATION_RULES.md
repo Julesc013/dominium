@@ -31,7 +31,7 @@ The verifier stops only after collecting the full deterministic report for the r
 
 - `refusal.dist.missing_artifact`
   - required layout path or manifest-declared artifact is missing
-  - remediation: rerun `python tools/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag <platform> --channel mock`
+  - remediation: rerun `python tools/release/dist/tool_assemble_dist_tree.py --repo-root . --platform-tag <platform> --channel mock`
 - `refusal.dist.hash_mismatch`
   - release-manifest content hash, descriptor hash, or filelist-derived content hash does not match the bundle
   - remediation: regenerate the bundle and rerun `python tools/release/tool_generate_release_manifest.py ...`

@@ -10,7 +10,7 @@ TEST_TAGS = ["strict", "reality", "determinism", "ledger"]
 
 
 def _run_chain() -> dict:
-    from game.domains.reality.ledger import (
+    from game.domain.reality.ledger import (
         begin_process_accounting,
         emit_exception,
         finalize_noop_tick,

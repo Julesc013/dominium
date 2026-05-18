@@ -65,7 +65,7 @@ Null boot writes deterministic lockfile + registries via `write_null_boot_artifa
 - RepoX: PASS
   - `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
 - AuditX: run complete
-  - `py -3 tools/auditx/auditx.py verify --repo-root . --format both`
+  - `py -3 tools/xstack/auditx/auditx.py verify --repo-root . --format both`
 - TestX: RS-1 coverage PASS
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset testx.reality.null_boot_deterministic,testx.reality.default_profile_optional,testx.reality.physics_profile_immutable,testx.reality.save_contains_physics_profile_id`
   - Additional impacted compile/import tests PASS:

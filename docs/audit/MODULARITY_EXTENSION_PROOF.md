@@ -37,13 +37,13 @@ Observed command graph authority:
   - `libs/appcore/command/command_registry.h`
   - `libs/appcore/command/command_registry.c`
 - UI bind generator consumes this registry:
-  - `tools/ui_bind/ui_bind_main.cpp`
+  - `tools/codegen/ui/bind/ui_bind_main.cpp`
 
 Observed runtime wiring:
 - Shared dispatch surface remains stub:
   - `libs/appcore/command/command_dispatch.c`
 - Runtime app CLIs keep local command surfaces (example):
-  - `client/app/main_client.c`
+  - `apps/client/main_client.c`
 
 Observed generated UI bindings:
 - Derived from canonical UI docs and command ids:

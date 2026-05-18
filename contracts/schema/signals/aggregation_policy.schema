@@ -1,0 +1,24 @@
+SCHEMA: signals/aggregation_policy.schema
+schema_id: dominium.schema.signals.aggregation_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy contract for report artifact aggregation over INFO families.
+
+REQUIRED SHAPE:
+record aggregation_policy
+  required:
+    - schema_version: semver
+    - aggregation_policy_id: id
+    - input_family_ids: list[id]
+    - output_family_id: id
+    - schedule_id: id
+    - summarization_rules: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Aggregation input selection and summary generation are deterministic.
+- Aggregation does not bypass signal transport queueing.
+- Output artifacts must be replay-stable for equivalent inputs.

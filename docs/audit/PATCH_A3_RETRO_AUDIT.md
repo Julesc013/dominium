@@ -8,15 +8,15 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PATCH-A3 Retro Audit
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: Field discipline and mutation purity sweep (`PATCH-A3`)
 
 ## Invariants / Contracts Audited
 - `INV-FIELD-MUTATION-PROCESS-ONLY`
 - `INV-FIELD-SAMPLE-API-ONLY`
 - `INV-NO-CROSS-SHARD-FIELD-DIRECT`
-- `docs/physics/FIELD_GENERALIZATION.md`
-- `docs/physics/FIELD_SHARD_RULES.md`
+- `docs/domains/physics/FIELD_GENERALIZATION.md`
+- `docs/domains/physics/FIELD_SHARD_RULES.md`
 
 ## Scan Summary
 1. Direct field-state writes (`field_layers`, `field_cells`, `field_sample_rows`)

@@ -1,0 +1,38 @@
+SCHEMA: knowledge.schema
+schema_id: dominium.schema.knowledge
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define knowledge artifacts, uncertainty descriptors, and diffusion metadata.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Confidence and uncertainty descriptors do NOT encode behavior.
+- Knowledge domains are descriptive tags only.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record knowledge_artifact
+  required:
+    - knowledge_artifact_id: id
+    - knowledge_domain_tag: tag
+  optional:
+    - confidence_desc: map
+    - uncertainty_desc: map
+    - diffusion_metadata: map
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

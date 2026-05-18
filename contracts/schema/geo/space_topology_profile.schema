@@ -1,0 +1,31 @@
+SCHEMA: geo/space_topology_profile.schema
+schema_id: dominium.schema.geo.space_topology_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic universe topology, chart atlas, boundary semantics, and neighborhood policy.
+- Provide the authoritative topology contract consumed by GEO query APIs.
+
+NON-SEMANTICS:
+- This schema does not execute world generation or pathfinding.
+- This schema does not mutate truth.
+
+REQUIRED SHAPE:
+record space_topology_profile
+  required:
+    - topology_profile_id: id
+    - dimension_D: u32
+    - chart_definitions: [map]
+    - boundary_rule_id: id
+    - neighbor_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+OPTIONAL:
+  - portal_identifications_ref: id
+
+INVARIANTS:
+- chart transforms must be deterministic and profile-declared
+- boundary semantics must be explicit
+- neighborhood enumeration order must be deterministic

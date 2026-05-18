@@ -13,8 +13,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    import game.domains.pollution.dispersion_engine as dispersion_engine
-    from game.domains.fields import build_field_cell
+    import game.domain.pollution.dispersion_engine as dispersion_engine
+    from game.domain.fields import build_field_cell
 
     calls = []
     original = dispersion_engine.geo_neighbors

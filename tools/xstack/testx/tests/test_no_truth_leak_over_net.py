@@ -65,16 +65,16 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     static_targets = (
-        "tools/network/policies/policy_server_authoritative.py",
-        "tools/network/srz/shard_coordinator.py",
+        "tools/validators/network/policies/policy_server_authoritative.py",
+        "tools/validators/network/srz/shard_coordinator.py",
     )
     for rel_path in static_targets:
         error = _check_static_surface(repo_root, rel_path)
         if error:
             return {"status": "fail", "message": error}
 
-    from tools.network.policies.policy_server_authoritative import advance_authoritative_tick
-    from tools.network.policies.policy_srz_hybrid import advance_hybrid_tick
+    from tools.validators.network.policies.policy_server_authoritative import advance_authoritative_tick
+    from tools.validators.network.policies.policy_srz_hybrid import advance_hybrid_tick
     from tools.xstack.testx.tests.net_authoritative_testlib import clone_runtime as clone_authoritative_runtime
     from tools.xstack.testx.tests.net_authoritative_testlib import prepare_authoritative_runtime_fixture
     from tools.xstack.testx.tests.net_hybrid_testlib import clone_runtime as clone_hybrid_runtime

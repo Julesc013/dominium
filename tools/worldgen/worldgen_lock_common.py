@@ -6,9 +6,9 @@ import json
 import os
 from typing import Iterable, List, Mapping, Sequence
 
-from game.domains.geology import build_worldgen_request, generate_worldgen_result, worldgen_cache_clear
-from game.domains.worldgen.galaxy import galaxy_object_stub_hash_chain
-from game.domains.worldgen.mw import (
+from game.domain.geology import build_worldgen_request, generate_worldgen_result, worldgen_cache_clear
+from game.domain.worldgen.galaxy import galaxy_object_stub_hash_chain
+from game.domain.worldgen.mw import (
     SOL_ANCHOR_CELL_INDEX_TUPLE,
     build_planet_surface_cell_key,
     normalize_star_system_seed_rows,

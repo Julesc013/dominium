@@ -27,7 +27,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `tools/xstack/compatx/canonical_json.py`
   - `tools/xstack/compatx/schema_registry.py`
   - `tools/xstack/sessionx/common.py`
-  - `tools/distribution/distribution_lib.py`
+  - `tools/package/distribution/distribution_lib.py`
   - `tools/xstack/pack_loader/loader.py`
   - `src/geo/overlay/overlay_merge_engine.py`
   - `src/geo/worldgen/worldgen_engine.py`

@@ -136,7 +136,7 @@ dominium/
 ├── build/                    – out-of-source build directory (ephemeral)
 
 
-├── dist/                     – build outputs (ephemeral)
+├── archive/generated/dist/                     – build outputs (ephemeral)
 
 
 └── .github/                  – workflow/CI configuration
@@ -181,7 +181,7 @@ runtime/front-end subsystems:
   inputs to deterministic simulation decisions.
 
 
-- Rendering: `engine/render/` and render-facing headers – derived outputs only.
+- Rendering: `runtime/render/` and render-facing headers – derived outputs only.
 
 
 - UI/view: `ui/` and `view/` – derived presentation and event routing; never

@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/birth_pipeline.cpp
+FILE: game/rule/life/birth_pipeline.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements deterministic birth pipeline and scheduling.

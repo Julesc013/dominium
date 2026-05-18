@@ -22,7 +22,7 @@ An “instance” is an isolated, auditable launcher-managed environment contain
 The launcher operates under a single “state root” (often derived from `--home` and platform defaults). Under this root:
 
 - `instances/<instance_id>/` contains per-instance state.
-- `artifacts/` contains the shared content-addressed artifact store (see `docs/launcher/ARTIFACT_STORE.md`).
+- `archive/generated/artifacts/` contains the shared content-addressed artifact store (see `docs/launcher/ARTIFACT_STORE.md`).
 - `audit/` (or equivalent) contains per-run audit logs.
 
 Within `instances/<instance_id>/` (conceptual view):

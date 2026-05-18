@@ -15,7 +15,7 @@ Do not delete, rename, move, or retire XStack/AuditX/RepoX/TestX until useful ch
 
 ### AuditX
 
-- `tools/auditx/**`
+- `tools/xstack/auditx/**`
 - `tools/xstack/auditx/**`
 - `docs/audit/auditx/**`
 - `data/registries/auditx_groups.json`

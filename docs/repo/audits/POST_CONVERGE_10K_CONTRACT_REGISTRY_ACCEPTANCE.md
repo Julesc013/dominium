@@ -104,4 +104,4 @@ See `.aide/reports/POST-CONVERGE-10K-validation.md` for the full command table. 
 
 ## POST-CONVERGE-10L Follow-Up
 
-POST-CONVERGE-10L added this report's missing DERIVED status header after focused RepoX identified it as a transient `INV-DOC-STATUS-HEADER` failure. The 10L task did not change the 10K contract registry findings. It classified the remaining distribution/product proof family as missing `dist/bin` wrapper/projection proof and preserved those failures as blockers.
+POST-CONVERGE-10L added this report's missing DERIVED status header after focused RepoX identified it as a transient `INV-DOC-STATUS-HEADER` failure. The 10L task did not change the 10K contract registry findings. It classified the remaining distribution/product proof family as missing `archive/generated/dist/bin` wrapper/projection proof and preserved those failures as blockers.

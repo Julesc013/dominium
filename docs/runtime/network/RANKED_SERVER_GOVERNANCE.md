@@ -1,0 +1,97 @@
+Status: DERIVED
+Last Reviewed: 2026-02-15
+Supersedes: none
+Superseded By: none
+Version: 1.0.0
+Compatibility: Bound to LawProfile, AuthorityContext, SecureX policy registry, anti-cheat policy registry, and refusal contract.
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
+# Ranked Server Governance
+
+## Purpose
+Define ranked/esports governance as policy composition, not runtime mode flags.
+
+## Ranked Definition
+Ranked is declared by data:
+
+1. `server_profile_id`
+2. `securex_policy_id`
+3. `anti_cheat_policy_id`
+4. `law_profile_id`
+5. lockfile + registry hash compatibility
+
+No `ranked_mode` or similar mode flags are allowed.
+
+## Governance Composition
+
+1. Server boot selects `server_profile_id` from compiled server profile registry.
+2. Server governance definitions are pack-contributed data (`pack.server.governance`) and compiled into canonical registries.
+3. Server profile declares:
+   - allowed replication policies
+   - required anti-cheat policy
+   - required SecureX policy
+   - default epistemic policy
+   - allowed/required law profiles
+   - entitlement allow/deny lists
+4. Handshake validates client request against the selected server profile.
+5. Refusal is deterministic on the first failing gate.
+
+## Deterministic Acceptance Order
+
+1. `pack_lock_hash`
+2. registry hashes
+3. schema version compatibility
+4. replication policy allowability
+5. anti-cheat policy requirement
+6. SecureX policy + signature posture
+7. law profile negotiation under server profile constraints
+
+## Policy Matrix
+
+1. `server.profile.rank_strict`
+   - Requires strict anti-cheat policy.
+   - Requires strict SecureX policy.
+   - Forbids observer-truth law profiles.
+   - Requires strict cosmetic policy (signed + allow-listed cosmetic packs only).
+2. `server.profile.casual_public`
+   - Uses casual anti-cheat/SecureX policy.
+   - Allows broader replication options.
+   - Uses default cosmetic policy with deterministic fallback to pill proxy for missing/denied cosmetics.
+3. `server.profile.private_relaxed`
+   - Allows relaxed SecureX and anti-cheat posture by explicit policy.
+   - May allow observer tooling when law profile permits.
+   - May allow unsigned cosmetic packs based on explicit cosmetic policy.
+
+## Cosmetic Governance
+
+1. Cosmetic acceptance is policy-driven (`cosmetic_policy_id`) and linked from server profile data.
+2. Cosmetic requests are treated as intents and must pass:
+   - entitlement checks
+   - server profile policy checks
+   - SecureX signature policy checks (for strict profiles)
+3. Cosmetic refusals are deterministic and auditable:
+   - `refusal.cosmetic.forbidden`
+   - `refusal.cosmetic.unsigned_not_allowed`
+   - `refusal.cosmetic.not_in_whitelist`
+4. Cosmetic policy never grants simulation advantage. Collision and movement remain authoritative from Truth body primitives.
+
+## Refusal Behavior
+Server must emit explicit deterministic refusals for governance failures:
+
+1. `refusal.net.handshake_policy_not_allowed`
+2. `refusal.net.handshake_securex_denied`
+3. `refusal.ac.rank_policy_required`
+4. `refusal.net.handshake_pack_lock_mismatch`
+5. `refusal.net.handshake_registry_hash_mismatch`
+6. `refusal.net.handshake_schema_version_mismatch`
+
+## Cross-References
+
+- `docs/security/SECUREX_TRUST_MODEL.md`
+- `docs/runtime/network/HANDSHAKE_AND_COMPATIBILITY.md`
+- `docs/runtime/network/ANTI_CHEAT_POLICY_FRAMEWORK.md`
+- `docs/contracts/refusal_contract.md`
+- `contracts/registry/server_profile_registry.json`
+- `contracts/registry/securex_policy_registry.json`

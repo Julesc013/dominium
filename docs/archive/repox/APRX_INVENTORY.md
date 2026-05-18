@@ -169,10 +169,10 @@ Scope: RepoX/TestX enforcement surfaces and integration points for APR* work.
 ## TestX canon surfaces (documents)
 
 
-- docs/app/TESTX_INVENTORY.md and docs/app/TESTX_COMPLIANCE.md (app CLI contract + smoke checks).
+- docs/apps/TESTX_INVENTORY.md and docs/apps/TESTX_COMPLIANCE.md (app CLI contract + smoke checks).
 
 
-- docs/app/CLI_CONTRACTS.md (required CLI flags, build-info keys, explicit renderer failure).
+- docs/apps/CLI_CONTRACTS.md (required CLI flags, build-info keys, explicit renderer failure).
 
 
 - docs/ci/DETERMINISM_TEST_MATRIX.md and docs/ci/REGRESSION_SUITES.md (determinism/perf suites).

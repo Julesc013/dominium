@@ -15,16 +15,16 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from tools.libraries.install import discover_install, load_runtime_install_registry  # noqa: E402
+from tools.package.libraries.install import discover_install, load_runtime_install_registry  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-INSTALL_DISCOVERY_ENGINE_PATH = "engine/install/install_discovery_engine.py"
-INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
+INSTALL_DISCOVERY_ENGINE_PATH = "runtime/package/install_discovery_engine.py"
+INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
-INSTALL_DISCOVERY_REPORT_PATH = "content/data/audit/install_discovery_report.json"
+INSTALL_DISCOVERY_REPORT_PATH = "archive/generated/audit/install_discovery_report.json"
 
 DISCOVERY_ORDER = (
     "1. explicit CLI: --install-root or --install-id",
@@ -36,22 +36,22 @@ DISCOVERY_ORDER = (
 
 INTEGRATION_TARGETS = (
     {
-        "file_path": "engine/install/install_discovery_engine.py",
+        "file_path": "runtime/package/install_discovery_engine.py",
         "surface": "install_discovery_engine",
         "markers": ("discover_install(", "REFUSAL_INSTALL_NOT_FOUND", "portable_manifest"),
     },
     {
-        "file_path": "runtime/appshell/paths/virtual_paths.py",
+        "file_path": "runtime/shell/paths/virtual_paths.py",
         "surface": "virtual_paths",
         "markers": ("discover_install(", "\"install_discovery\": {", "REFUSAL_INSTALL_NOT_FOUND"),
     },
     {
-        "file_path": "runtime/appshell/bootstrap.py",
+        "file_path": "runtime/shell/bootstrap.py",
         "surface": "appshell_bootstrap",
         "markers": ("compat.install_selected", "refusal.install.not_found", "_allow_install_refusal_cli"),
     },
     {
-        "file_path": "runtime/appshell/commands/command_engine.py",
+        "file_path": "runtime/shell/commands/command_engine.py",
         "surface": "compat_status",
         "markers": ("status_payload[\"install_discovery\"]",),
     },
@@ -69,7 +69,7 @@ INTEGRATION_TARGETS = (
 
 MANIFEST_SCAN_EXCLUDED_PREFIXES = (
     "build/",
-    "dist/",
+    "archive/generated/dist/",
     ".git/",
 )
 

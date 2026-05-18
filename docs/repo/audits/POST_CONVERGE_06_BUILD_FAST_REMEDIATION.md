@@ -83,7 +83,7 @@ Initial result:
 
 Remediation taken:
 
-- updated CompatX schema discovery to prefer `contracts/schemas/`
+- updated CompatX schema discovery to prefer `contracts/schema/`
 - fixed worldgen source path references used by RepoX and the dynamic Earth surface generator import
 
 Post-remediation result:
@@ -114,13 +114,13 @@ Remediation:
 - AIDE scripts changed: `.aide/scripts/aide_lite.py`
 - gate config changed: no
 - CompatX helper changed: `tools/xstack/compatx/schema_registry.py`
-- worldgen path reference changed: `game/domains/worldgen/mw/mw_surface_refiner_l3.py`
+- worldgen path reference changed: `game/domain/worldgen/mw/mw_surface_refiner_l3.py`
 
 ## Validation
 
 | Command | Result | Notes |
 | --- | --- | --- |
-| `python -m py_compile .aide/scripts/aide_lite.py tools/xstack/compatx/schema_registry.py scripts/ci/check_repox_rules.py game/domains/worldgen/mw/mw_surface_refiner_l3.py` | pass | touched Python files parse |
+| `python -m py_compile .aide/scripts/aide_lite.py tools/xstack/compatx/schema_registry.py scripts/ci/check_repox_rules.py game/domain/worldgen/mw/mw_surface_refiner_l3.py` | pass | touched Python files parse |
 | `python tools/validators/check_repo_layout.py --repo-root .` | pass | active exceptions: 32; unexcepted violations: 0 |
 | `python tools/validators/check_repo_layout.py --repo-root . --strict` | pass | generated local byproducts were removed before final strict run |
 | `python tools/validators/check_root_allowlist.py --repo-root .` | pass | unexcepted violations: 0 |

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic UI registry output.",
+  "x-doc-ref": [
+    "docs/architecture/registry_compile.md",
+    "docs/canon/glossary_v1.md UI"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "windows",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "windows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "window_id",
+          "title",
+          "pack_id",
+          "path",
+          "required_entitlements",
+          "required_lenses",
+          "widgets"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "window_id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "required_entitlements": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "required_lenses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "widgets": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "windows": [],
+      "registry_hash": "3d4bdcb1f7f0fc2cc3278f99e7ce48166fdfc4e1e4900dbf57f773cd850c8924"
+    }
+  ]
+}

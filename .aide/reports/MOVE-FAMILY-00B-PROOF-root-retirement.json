@@ -9,14 +9,14 @@
   "dirty_status_under_root": false,
   "exception_retired": true,
   "tracked_replacement_paths": [
-    "contracts/projections/ide/projection_manifest.schema.json",
-    "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
-    "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json"
+    "contracts/projection/ide/projection_manifest.schema.json",
+    "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+    "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json"
   ],
   "replacement_json_parse": {
-    "contracts/projections/ide/projection_manifest.schema.json": "PASS",
-    "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json": "PASS",
-    "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json": "PASS"
+    "contracts/projection/ide/projection_manifest.schema.json": "PASS",
+    "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json": "PASS",
+    "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json": "PASS"
   },
   "schema_required_fields_present_in_examples": true,
   "validation_status": "PASS_WITH_WARNINGS",

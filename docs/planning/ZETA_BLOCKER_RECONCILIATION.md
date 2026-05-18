@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: `Ζ-P1`, `Ζ-P2`, later post-`Ζ-P` checkpoint, bounded later `Ζ-A`
 Replacement Target: later post-`Ζ-P` checkpoint may refine blocker status and downstream sequencing without replacing the blocker-baseline law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `contracts/registry/runtime/distributed_authority_foundations_registry.json`, `contracts/registry/planning/readiness/prompt_status_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `contracts/registry/runtime/distributed_authority_foundations_registry.json`, `contracts/registry/planning/readiness/prompt_status_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
 
 # Zeta Blocker Reconciliation
 
@@ -94,7 +94,7 @@ The authoritative inputs for this reconciliation are:
   - `server/shard/dom_cross_shard_log.h`
   - `server/net/dom_server_protocol.h`
   - `server/net/dom_server_runtime.h`
-  - `release/update_resolver.py`
+  - `tools/release/update_resolver.py`
   - `tools/validators/security/trust/trust_verifier.py`
 
 Authority ordering remains strict:
@@ -248,7 +248,7 @@ The canonical status vocabulary is:
 - Status: `doctrinally_established_but_not_operationalized`
 - Why it remains: the prerequisite, continuity, and operationalization doctrine exists, but live trust execution, revocation propagation, and publication execution systems remain unrealized.
 - Doctrine currently covering it: `TRUST_EXECUTION_AND_REVOCATION_CONTINUITY`, `LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES`, `PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES`
-- Evidence surfaces: `contracts/registry/trust_root_registry.json` is empty, `contracts/registry/trust_policy_registry.json` remains provisional, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
+- Evidence surfaces: `contracts/registry/trust_root_registry.json` is empty, `contracts/registry/trust_policy_registry.json` remains provisional, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
 - What is still missing: live trust-root rotation realization, live revocation propagation realization, publication execution realization, and later execution-gate posture.
 - Future prompt family: `Ζ-P1`, `Ζ-P2`, later bounded `Ζ-A` trust/publication execution work
 
@@ -260,7 +260,7 @@ The canonical status vocabulary is:
 - Status: `doctrinally_established_but_not_operationalized`
 - Why it remains: the generalized evidence model now exists, but no canonical live-boundary receipt pipeline has been realized.
 - Doctrine currently covering it: `OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY`, `LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION`
-- Evidence surfaces: `contracts/registry/provenance_classification_registry.json`, `release/update_resolver.py`
+- Evidence surfaces: `contracts/registry/provenance_classification_registry.json`, `tools/release/update_resolver.py`
 - What is still missing: canonical boundary-sensitive receipt emission, stronger proof anchors in live pathways, and later execution-gate posture.
 - Future prompt family: `Ζ-P1`, `Ζ-P2`, later bounded `Ζ-A` receipt-pipeline realization work
 

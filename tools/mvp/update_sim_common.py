@@ -19,7 +19,7 @@ from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.identity import UNIVERSAL_IDENTITY_FIELD  # noqa: E402
-from release import (  # noqa: E402
+from tools.release import (  # noqa: E402
     DEFAULT_INSTALL_PROFILE_ID,
     RESOLUTION_POLICY_EXACT_SUITE,
     RESOLUTION_POLICY_LATEST_COMPATIBLE,

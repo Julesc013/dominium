@@ -18,15 +18,15 @@ from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.compatibility.migration_lifecycle import ARTIFACT_KIND_IDS, DECISION_READ_ONLY  # noqa: E402
-from tools.libraries.save import deterministic_fingerprint as save_manifest_fingerprint  # noqa: E402
-from tools.libraries.save import normalize_save_manifest, write_json as write_save_json  # noqa: E402
+from tools.package.libraries.save import deterministic_fingerprint as save_manifest_fingerprint  # noqa: E402
+from tools.package.libraries.save import normalize_save_manifest, write_json as write_save_json  # noqa: E402
 from tools.validators.identity import (  # noqa: E402
     IDENTITY_KIND_SAVE,
     attach_universal_identity_block,
     identity_content_hash_for_payload,
     validate_identity_path,
 )
-from release import build_default_component_install_plan, platform_targets_for_tag, verify_release_manifest  # noqa: E402
+from tools.release import build_default_component_install_plan, platform_targets_for_tag, verify_release_manifest  # noqa: E402
 from tools.compat.migration_lifecycle_common import build_migration_lifecycle_report  # noqa: E402
 from tools.meta.identity_common import build_identity_report  # noqa: E402
 from tools.mvp.baseline_universe_common import load_baseline_universe_snapshot  # noqa: E402
@@ -881,7 +881,7 @@ def render_ecosystem_verify_baseline(baseline: Mapping[str, object]) -> str:
             "",
             "## Readiness",
             "",
-            "- Ready for Ω-6 update channel simulation once this baseline stays green under RepoX, AuditX, TestX, and strict build gates.",
+            "- Ready for Î©-6 update channel simulation once this baseline stays green under RepoX, AuditX, TestX, and strict build gates.",
             "",
         ]
     )

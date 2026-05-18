@@ -1,0 +1,28 @@
+SCHEMA: geo/frame_transform.schema
+schema_id: dominium.schema.geo.frame_transform
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical deterministic GEO-2 transform edge between two frames.
+- Freeze the transform contract used for cacheable frame composition and replay.
+
+NON-SEMANTICS:
+- This schema does not imply continuous dynamics.
+- This schema does not permit wall-clock or platform-dependent transform evaluation.
+
+REQUIRED SHAPE:
+record frame_transform
+  required:
+    - from_frame_id: id
+    - to_frame_id: id
+    - transform_kind: enum(translate|rotate|scale|chart_map_stub)
+    - parameters: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- transform parameters must be fixed-point and deterministic
+- identical frame graph inputs must produce identical transform outputs
+- chart transitions must remain explicit when chart_id changes
+- any bounded approximation must declare deterministic algorithm and error metadata in parameters or extensions

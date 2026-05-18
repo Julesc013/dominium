@@ -65,7 +65,7 @@ def _fast_checks(repo_root: str) -> Dict[str, Any]:
     schema_files = discover_schema_files(repo_root)
     schema_names = sorted(schema_files.keys())
     if not schema_names:
-        errors.append(_error("missing_schemas", "no schemas discovered under contracts/schemas/*.schema.json"))
+        errors.append(_error("missing_schemas", "no schemas discovered under contracts/schema/*.schema.json"))
         return {"checks": checks, "errors": errors}
 
     for schema_name in schema_names:

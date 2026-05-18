@@ -1,0 +1,24 @@
+SCHEMA: mobility/reservation.schema
+schema_id: dominium.schema.mobility.reservation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic edge-capacity reservation claim for meso traffic.
+
+REQUIRED SHAPE:
+record reservation
+  required:
+    - schema_version: semver
+    - reservation_id: id
+    - vehicle_id: id
+    - edge_id: id
+    - start_tick: int
+    - end_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Reservations are process-created and process-resolved only.
+- `end_tick >= start_tick`.
+- Conflict handling is deterministic and inspectable.

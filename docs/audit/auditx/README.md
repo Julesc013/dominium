@@ -9,13 +9,13 @@ Compatibility: AuditX semantic outputs for Prompt 16 baseline.
 
 ## Run Commands
 - Full scan:
-  - `python tools/auditx/auditx.py scan --repo-root .`
+  - `python tools/xstack/auditx/auditx.py scan --repo-root .`
 - Changed-only scan:
-  - `python tools/auditx/auditx.py scan --repo-root . --changed-only`
+  - `python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only`
 - Verify mode (non-gating):
-  - `python tools/auditx/auditx.py verify --repo-root .`
+  - `python tools/xstack/auditx/auditx.py verify --repo-root .`
 - Enforcement stub:
-  - `python tools/auditx/auditx.py enforce --repo-root .`
+  - `python tools/xstack/auditx/auditx.py enforce --repo-root .`
 
 ## Output Files
 AuditX writes deterministic artifacts under `docs/audit/auditx/`:

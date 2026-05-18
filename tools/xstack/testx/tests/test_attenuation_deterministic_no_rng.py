@@ -77,7 +77,7 @@ def _attenuation_registry() -> dict:
 
 
 def _run_once() -> str:
-    from game.domains.signals import build_signal_channel, process_signal_send, tick_signal_transport
+    from game.domain.signals import build_signal_channel, process_signal_send, tick_signal_transport
 
     channel_rows = [
         build_signal_channel(

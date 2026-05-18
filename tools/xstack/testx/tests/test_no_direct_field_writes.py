@@ -22,15 +22,15 @@ _SCAN_ROOTS = (
 
 _SKIP_PREFIXES = (
     "docs/",
-    "contracts/schemas/",
-    "contracts/schemas/",
-    "tools/auditx/analyzers/",
+    "contracts/schema/",
+    "contracts/schema/",
+    "tools/xstack/auditx/analyzers/",
     "tools/xstack/testx/tests/",
 )
 
 _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
-    "game/domains/fields/field_engine.py",
+    "game/domain/fields/field_engine.py",
 }
 
 

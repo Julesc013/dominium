@@ -1,0 +1,30 @@
+SCHEMA: release/component_descriptor.schema
+schema_id: dominium.schema.release.component_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one component descriptor in the release component graph.
+
+REQUIRED SHAPE:
+record component_descriptor
+  required:
+    - component_id: id
+    - component_kind: tag
+    - content_hash: sha256
+    - version: tag
+    - platform_filters: map
+    - capability_filters: map
+    - contract_requirements: map
+    - trust_requirements: map
+    - provides_ids: [id]
+    - yanked: bool
+    - yank_policy: enum(warn|refuse)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - yank_reason: string
+
+INVARIANTS:
+- component descriptors are deterministic and platform/capability filters are data-declared only.
+- yanked descriptors remain addressable for exact-suite selection but are excluded from latest-compatible selection unless the applied resolution policy explicitly allows yanked candidates.

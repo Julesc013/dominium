@@ -33,9 +33,9 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.worldgen.core.constraint_commands import worldgen_constraints_clear
-    from game.domains.worldgen.core.constraint_commands import worldgen_constraints_set
-    from game.domains.worldgen.core.constraint_commands import worldgen_search_preview
+    from game.domain.worldgen.core.constraint_commands import worldgen_constraints_clear
+    from game.domain.worldgen.core.constraint_commands import worldgen_constraints_set
+    from game.domain.worldgen.core.constraint_commands import worldgen_search_preview
 
     context = _authority_context()
     constraints_file = _constraints_path(repo_root)

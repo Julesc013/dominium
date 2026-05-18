@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Instrument Type Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic diegetic instrument type registry output.",
+  "x-doc-ref": [
+    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "instrument_types",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "instrument_types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "instrument_type_id",
+          "description",
+          "required_channels_in",
+          "produced_channels_out",
+          "update_process_id",
+          "calibration_model_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "instrument_type_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "required_channels_in": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "produced_channels_out": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "update_process_id": {
+            "type": "string"
+          },
+          "calibration_model_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "instrument_types": [],
+      "registry_hash": "90a0f3d307e94a17a665f8f8ead7db7f7931d61069b4b0c71f1014ec3e0f7187"
+    }
+  ]
+}

@@ -91,7 +91,7 @@ Ports must:
 2.3 Layering rules
 A port may only interact with:
 • /engine/platform interfaces
-• /engine/render/* backends
+• /runtime/render/* backends
 • /engine/audio/* backends
 • /external (as allowed)
 Ports must not:

@@ -84,7 +84,7 @@ Systems must **emit tasks**; they must never execute work directly.
 ## Start Here
 
 
-- Implement `ISimSystem` in `game/core/execution/system_iface.h`.
+- Implement `ISimSystem` in `game/rule/execution/system_iface.h`.
 
 
 - Register systems with `dom_system_registry`.

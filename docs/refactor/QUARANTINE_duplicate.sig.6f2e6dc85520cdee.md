@@ -18,15 +18,15 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/tools/libraries/store/__init__.py`
-- `src/engine/store/gc_engine.py`
+- `src/tools/package/libraries/store/__init__.py`
+- `src/runtime/storage/gc_engine.py`
 - `tools/xstack/testx/tests/store_gc_testlib.py`
 
 ## Scorecard
 
 - `tools/xstack/testx/tests/store_gc_testlib.py` disposition=`canonical` rank=`1` total_score=`67.51` risk=`HIGH`
-- `src/tools/libraries/store/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.79` risk=`HIGH`
-- `src/engine/store/gc_engine.py` disposition=`merge` rank=`3` total_score=`56.96` risk=`HIGH`
+- `src/tools/package/libraries/store/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.79` risk=`HIGH`
+- `src/runtime/storage/gc_engine.py` disposition=`merge` rank=`3` total_score=`56.96` risk=`HIGH`
 
 ## Usage Sites
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

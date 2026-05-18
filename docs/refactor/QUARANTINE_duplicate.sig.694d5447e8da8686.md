@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `client/app/main_client.c`
+- `apps/client/main_client.c`
 - `client/shell/client_shell.c`
 - `launcher/cli/launcher_cli_main.c`
 - `tools/tools_host_main.c`
@@ -27,7 +27,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `launcher/cli/launcher_cli_main.c` disposition=`canonical` rank=`1` total_score=`74.15` risk=`MED`
 - `tools/tools_host_main.c` disposition=`merge` rank=`2` total_score=`69.52` risk=`LOW`
-- `client/app/main_client.c` disposition=`merge` rank=`3` total_score=`65.0` risk=`MED`
+- `apps/client/main_client.c` disposition=`merge` rank=`3` total_score=`65.0` risk=`MED`
 - `client/shell/client_shell.c` disposition=`drop` rank=`4` total_score=`57.65` risk=`MED`
 
 ## Usage Sites
@@ -40,8 +40,8 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

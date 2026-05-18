@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pose Control Binding Schema",
+  "version": "1.0.0",
+  "description": "POSE-1 deterministic control grants exposed by occupied pose slots.",
+  "x-doc-ref": [
+    "docs/interaction/POSE_AND_MOUNT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "control_binding_id",
+    "grants_process_ids",
+    "grants_surface_ids",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "control_binding_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "grants_process_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "grants_surface_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "control_binding_id": "binding.driver_basic",
+      "grants_process_ids": [
+        "process.machine_operate"
+      ],
+      "grants_surface_ids": [
+        "surface.driver.console"
+      ],
+      "extensions": {}
+    }
+  ]
+}

@@ -29,9 +29,9 @@ from tools.validators.compatibility.migration_lifecycle import (
     load_migration_rows,
     plan_migration_path,
 )
-from tools.libraries.install import validate_install_manifest, write_json as write_install_json
-from tools.libraries.instance import validate_instance_manifest, write_json as write_instance_json
-from tools.libraries.save import migrate_save_manifest, validate_save_manifest, write_json as write_save_json
+from tools.package.libraries.install import validate_install_manifest, write_json as write_install_json
+from tools.package.libraries.instance import validate_instance_manifest, write_json as write_instance_json
+from tools.package.libraries.save import migrate_save_manifest, validate_save_manifest, write_json as write_save_json
 from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
@@ -306,9 +306,9 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
         )
     for rel_path, token, rule_id, code, message in (
         ("tools/validators/compatibility/data_format_loader.py", "migration_decision_record", RULE_POLICY, "loader_policy_missing", "PACK-COMPAT loader must emit migration_decision_record"),
-        ("tools/libraries/save/save_validator.py", "migration_decision_record", RULE_POLICY, "save_policy_missing", "save loader/validator must emit migration_decision_record"),
-        ("tools/libraries/install/install_validator.py", "migration_decision_record", RULE_POLICY, "install_policy_missing", "install loader/validator must emit migration_decision_record"),
-        ("tools/libraries/instance/instance_validator.py", "migration_decision_record", RULE_POLICY, "instance_policy_missing", "instance loader/validator must emit migration_decision_record"),
+        ("tools/package/libraries/save/save_validator.py", "migration_decision_record", RULE_POLICY, "save_policy_missing", "save loader/validator must emit migration_decision_record"),
+        ("tools/package/libraries/install/install_validator.py", "migration_decision_record", RULE_POLICY, "install_policy_missing", "install loader/validator must emit migration_decision_record"),
+        ("tools/package/libraries/instance/instance_validator.py", "migration_decision_record", RULE_POLICY, "instance_policy_missing", "instance loader/validator must emit migration_decision_record"),
         ("tools/compat/tool_plan_migration.py", "plan_artifact_migration(", RULE_SILENT, "plan_tool_missing_hook", "migration planning tool must route through canonical planning helper"),
         ("tools/compat/tool_apply_migration.py", "apply_artifact_migration(", RULE_SILENT, "apply_tool_missing_hook", "migration apply tool must route through canonical apply helper"),
         ("tools/setup/setup_cli.py", "migrate-save", RULE_SILENT, "setup_migrate_save_missing", "setup CLI must expose migrate-save"),
@@ -346,7 +346,7 @@ def build_migration_lifecycle_report(repo_root: str) -> dict:
                 "rule_id": RULE_READ_ONLY,
                 "code": "future_save_read_only_expected",
                 "message": "future save manifests must resolve to explicit read-only mode when policy allows it",
-                "file_path": "tools/libraries/save/save_validator.py",
+                "file_path": "tools/package/libraries/save/save_validator.py",
             }
         )
     if _token(sample_no_policy.get("refusal_code")) != REFUSAL_MIGRATION_NO_PATH:
@@ -438,12 +438,12 @@ def migration_lifecycle_violations(repo_root: str) -> list[dict]:
     required_paths = (
         (RETRO_AUDIT_DOC_REL, "migration lifecycle retro audit is required", RULE_POLICY),
         (DOCTRINE_DOC_REL, "migration lifecycle doctrine is required", RULE_POLICY),
-        ("contracts/schemas/compat/migration_policy.schema", "migration policy schema is required", RULE_POLICY),
-        ("contracts/schemas/compat/migration_chain.schema", "migration chain schema is required", RULE_POLICY),
-        ("contracts/schemas/compat/migration_decision_record.schema", "migration decision record schema is required", RULE_POLICY),
-        ("contracts/schemas/migration_policy.schema.json", "compiled migration policy schema is required", RULE_POLICY),
-        ("contracts/schemas/migration_chain.schema.json", "compiled migration chain schema is required", RULE_POLICY),
-        ("contracts/schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", RULE_POLICY),
+        ("contracts/schema/compat/migration_policy.schema", "migration policy schema is required", RULE_POLICY),
+        ("contracts/schema/compat/migration_chain.schema", "migration chain schema is required", RULE_POLICY),
+        ("contracts/schema/compat/migration_decision_record.schema", "migration decision record schema is required", RULE_POLICY),
+        ("contracts/schema/migration_policy.schema.json", "compiled migration policy schema is required", RULE_POLICY),
+        ("contracts/schema/migration_chain.schema.json", "compiled migration chain schema is required", RULE_POLICY),
+        ("contracts/schema/migration_decision_record.schema.json", "compiled migration decision record schema is required", RULE_POLICY),
         ("contracts/registry/migration_policy_registry.json", "migration policy registry is required", RULE_POLICY),
         ("tools/validators/compatibility/migration_lifecycle.py", "migration lifecycle helper is required", RULE_POLICY),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle common helper is required", RULE_POLICY),

@@ -1,0 +1,21 @@
+SCHEMA: time/temporal_domain.schema
+schema_id: dominium.schema.time.temporal_domain
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic temporal domains used to interpret canonical ticks.
+
+REQUIRED SHAPE:
+record temporal_domain
+  required:
+    - schema_version: semver
+    - temporal_domain_id: id
+    - description: text
+    - scope_kind: enum(global|per_spatial|per_assembly|per_session)
+    - deterministic_fingerprint: hash
+    - extensions: map
+
+INVARIANTS:
+- Temporal domain declarations are data contracts only.
+- Domain declarations do not alter canonical tick ordering.

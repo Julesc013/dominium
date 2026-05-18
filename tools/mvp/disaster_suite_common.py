@@ -22,17 +22,17 @@ from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.compatibility.data_format_loader import load_versioned_artifact  # noqa: E402
-from game.domains.geology import build_overlay_layer, build_property_patch  # noqa: E402
-from tools.libraries.install.install_validator import validate_install_manifest  # noqa: E402
-from tools.libraries.provides.provider_resolution import (  # noqa: E402
+from game.domain.geology import build_overlay_layer, build_property_patch  # noqa: E402
+from tools.package.libraries.install.install_validator import validate_install_manifest  # noqa: E402
+from tools.package.libraries.provides.provider_resolution import (  # noqa: E402
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
     resolve_providers,
 )
 from tools.validators.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
 from content.packs.compatibility_payload.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
 from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
-from release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
-from release.update_resolver import (  # noqa: E402
+from tools.release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
+from tools.release.update_resolver import (  # noqa: E402
     RESOLUTION_POLICY_LATEST_COMPATIBLE,
     append_install_transaction,
     resolve_update_plan,
@@ -43,7 +43,7 @@ from tools.validators.security.trust.trust_verifier import (  # noqa: E402
     TRUST_POLICY_STRICT,
     verify_artifact_trust,
 )
-from game.domains.universe import (  # noqa: E402
+from game.domain.universe import (  # noqa: E402
     build_universe_contract_bundle_payload,
     enforce_session_contract_bundle,
     pin_contract_bundle_metadata,
@@ -830,7 +830,7 @@ def _disaster_case_specs() -> list[dict]:
             "logs_category": "artifact.integrity",
             "remediation_key": "regenerate_release_manifest",
             "fallback_remediation_hint": "Rebuild and re-sign the release manifest from the deterministic dist tree before retrying release verification.",
-            "preconditions": [{"action_id": "corrupt_release_manifest_hash", "operation": "replace_field", "target_rel": "dist/manifests/release_manifest.json"}],
+            "preconditions": [{"action_id": "corrupt_release_manifest_hash", "operation": "replace_field", "target_rel": "archive/generated/dist/manifests/release_manifest.json"}],
             "executor": "_case_corrupted_release_manifest",
         },
         {
@@ -866,7 +866,7 @@ def _disaster_case_specs() -> list[dict]:
             "logs_category": "component.presence",
             "remediation_key": "restore_binary_from_release",
             "fallback_remediation_hint": "Restore the missing product binary from the baseline dist tree or rebuild the install bundle.",
-            "preconditions": [{"action_id": "remove_product_binary", "operation": "delete_file", "target_rel": "dist/<product_binary>"}],
+            "preconditions": [{"action_id": "remove_product_binary", "operation": "delete_file", "target_rel": "archive/generated/dist/<product_binary>"}],
             "executor": "_case_missing_binary_referenced_by_install",
         },
         {
@@ -902,7 +902,7 @@ def _disaster_case_specs() -> list[dict]:
             "logs_category": "compatibility.protocol",
             "remediation_key": "select_compatible_release",
             "fallback_remediation_hint": "Select a release index whose supported protocol ranges overlap the current install manifest.",
-            "preconditions": [{"action_id": "replace_protocol_range", "operation": "replace_field", "target_rel": "dist/manifests/release_index.json"}],
+            "preconditions": [{"action_id": "replace_protocol_range", "operation": "replace_field", "target_rel": "archive/generated/dist/manifests/release_index.json"}],
             "executor": "_case_protocol_mismatch",
         },
         {
@@ -962,7 +962,7 @@ def _disaster_case_specs() -> list[dict]:
             "logs_category": "update.policy",
             "remediation_key": "pin_non_yanked_release",
             "fallback_remediation_hint": "Pin a non-yanked component descriptor or publish a replacement release before updating.",
-            "preconditions": [{"action_id": "mark_target_component_yanked", "operation": "replace_field", "target_rel": "dist/manifests/release_index.json"}],
+            "preconditions": [{"action_id": "mark_target_component_yanked", "operation": "replace_field", "target_rel": "archive/generated/dist/manifests/release_index.json"}],
             "executor": "_case_yanked_latest_compatible",
         },
         {
@@ -1604,7 +1604,7 @@ def render_disaster_baseline_doc(baseline: Mapping[str, object]) -> str:
                 _token(case.get("remediation_key")) or "none",
             )
         )
-    lines.extend(["", "## Readiness", "", "- Ω-5 ecosystem verify: `ready`", "- Ω-6 update simulation: `ready`"])
+    lines.extend(["", "## Readiness", "", "- Î©-5 ecosystem verify: `ready`", "- Î©-6 update simulation: `ready`"])
     return "\n".join(lines).rstrip() + "\n"
 
 

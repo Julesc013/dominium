@@ -47,10 +47,10 @@ Repo-grounded extension surfaces already exist and must be treated as evidence r
 - `server/shard/dom_cross_shard_log.cpp`
 - `server/persistence/dom_checkpointing.h`
 - `engine/include/domino/snapshot.h`
-- `runtime/app/ui_event_log.c`
-- `runtime/app/include/dominium/app/ui_event_log.h`
+- `runtime/shell/lifecycle/ui_event_log.c`
+- `runtime/shell/lifecycle/include/dominium/app/ui_event_log.h`
 - `tools/governance/control_plane_engine.py`
-- `tools/network/anti_cheat/anti_cheat_engine.py`
+- `tools/validators/network/anti_cheat/anti_cheat_engine.py`
 
 ## 2. Core Definition
 
@@ -85,7 +85,7 @@ Event logs and replay are not:
 
 The distinction is already visible in repo reality:
 
-- `runtime/app/ui_event_log.*` is an optional UI event helper and is not sufficient as authoritative replay
+- `runtime/shell/lifecycle/ui_event_log.*` is an optional UI event helper and is not sufficient as authoritative replay
 - `engine/modules/replay` is a deterministic replay subsystem surface and points toward authoritative replay concerns
 - `server/persistence/dom_checkpointing.h` and `engine/include/domino/snapshot.h` show checkpoints and snapshots as distinct continuity artifacts
 - `tools/governance/control_plane_engine.py` explicitly restricts replay-only mode to read-only reenactment and view behavior
@@ -364,8 +364,8 @@ The governing operator rules are:
 This distinction is already visible in repo surfaces:
 
 - `tools/governance/control_plane_engine.py` restricts replay mode to read-only reenactment controls
-- `tools/network/anti_cheat/anti_cheat_engine.py` treats replay detection as an enforcement and audit concern
-- `runtime/app/ui_event_log.*` remains a UI-facing event helper and not authoritative replay by default
+- `tools/validators/network/anti_cheat/anti_cheat_engine.py` treats replay detection as an enforcement and audit concern
+- `runtime/shell/lifecycle/ui_event_log.*` remains a UI-facing event helper and not authoritative replay by default
 
 ## 13. Event and Log Invalidity and Failure
 
@@ -452,7 +452,7 @@ Extension-over-replacement therefore means:
 - treat `engine/modules/replay` as evidence of deterministic replay substrate, not as the whole doctrine
 - treat `server/shard/dom_cross_shard_log.*` as evidence of causal and idempotent bridge-sensitive history, not as universal replay law
 - treat `server/persistence/dom_checkpointing.h` and `engine/include/domino/snapshot.h` as distinct continuity anchors, not as substitutes for replay doctrine
-- treat `runtime/app/ui_event_log.*` as evidence of presentation-local history, not as authoritative replay source
+- treat `runtime/shell/lifecycle/ui_event_log.*` as evidence of presentation-local history, not as authoritative replay source
 - treat control, anti-cheat, and server console surfaces as evidence of replay-sensitive legality, not as a hidden super-log design
 
 ## 16. Anti-Patterns and Forbidden Shapes

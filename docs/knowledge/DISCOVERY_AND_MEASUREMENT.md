@@ -38,4 +38,4 @@ Authority: canonical. All discovery workflows MUST follow this.
 - `schema/process.schema`
 - `schema/knowledge.schema`
 - `schema/measurement_artifact.schema`
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`

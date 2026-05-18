@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/cohort_update_hooks.cpp
+FILE: game/rule/life/cohort_update_hooks.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements cohort aggregation hooks for macro fidelity.

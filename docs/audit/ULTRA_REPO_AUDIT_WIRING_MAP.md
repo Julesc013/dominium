@@ -23,12 +23,12 @@ Superseded By: none
 | local_singleplayer | runtime_api | partial | client/local_server/local_server_controller.py |
 | process_spawn | runtime_support | implemented_and_used | runtime/process_spawn.py |
 | loopback_transport | runtime_support | implemented_and_used | server/net/loopback_transport.py |
-| release_manifest | release_data | implemented_and_used | dist/manifests/release_manifest.json |
-| release_engine | release_logic | implemented_and_used | release/release_manifest_engine.py |
+| release_manifest | release_data | implemented_and_used | archive/generated/dist/manifests/release_manifest.json |
+| release_engine | release_logic | implemented_and_used | tools/release/release_manifest_engine.py |
 | trust_verifier | security_logic | implemented_and_used | security/trust/trust_verifier.py |
 | packs_profiles_locks | content_config | implemented_and_used | packs/, profiles/, locks/ |
 | ctest | validation | verified | ctest --test-dir out/build/vs2026/verify |
-| validation | validation | partial | tools/validation/tool_run_validation.py |
+| validation | validation | partial | tools/validators/suite/tool_run_validation.py |
 | semantic_python_domains | runtime_domain | implemented_but_isolated | geo/, logic/, materials/, process/, control/, worldgen/ |
 
 ## Dependency Edges
@@ -65,7 +65,7 @@ Superseded By: none
 - setup_shell_flow: python tools/setup/setup_cli.py -> appshell bootstrap -> trust/release/install/pack/profile commands [verified]
 - session_pipeline_flow: python tools/xstack/session_create.py -> session_spec + universe artifacts -> python tools/xstack/session_boot.py -> sessionx runner [partial]
 - local_singleplayer_flow: client.local_server.local_server_controller.start_local_singleplayer -> runtime.process_spawn or in-proc stub -> server.net.loopback_transport -> compat handshake + control channel [partially_verified]
-- validation_flow: python tools/validation/tool_run_validation.py -> python tools/xstack/testx_all.py -> ctest --test-dir out/build/vs2026/verify [verified_by_enumeration_not_full_execution]
+- validation_flow: python tools/validators/suite/tool_run_validation.py -> python tools/xstack/testx_all.py -> ctest --test-dir out/build/vs2026/verify [verified_by_enumeration_not_full_execution]
 
 ## Disconnected Or Weakly Connected Clusters
 

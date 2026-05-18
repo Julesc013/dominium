@@ -1,0 +1,97 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: patched document aligned to current canon ownership and release scope
+
+# Zero-Asset GUI
+
+## Patch Notes
+
+- Current status: partially aligned to the Constitutional Architecture and release-freeze documentation set.
+- Required updates: documentation surface exists, but current canon ownership is not explicit
+- Cross-check with: `docs/audit/CANON_MAP.md` and `docs/audit/DOC_DRIFT_MATRIX.md`.
+
+
+
+
+
+
+The zero-asset GUI is the PRIMARY GUI mode. It must function fully with:
+
+
+- Zero packs installed.
+
+
+- Zero textures or images.
+
+
+- Zero external fonts.
+
+
+- Zero themes or UI content packs.
+
+
+
+
+
+The baseline GUI may use ONLY:
+
+
+- Vector primitives (rectangles, lines, circles).
+
+
+- Solid colors (hardcoded constants).
+
+
+- Text rendered via built-in vector font or system default font.
+
+
+- Layout rules.
+
+
+
+
+
+## Non-negotiable requirements
+
+
+- Must not load assets to render baseline UI.
+
+
+- Must not block on missing packs.
+
+
+- Must be deterministic and headless-capable.
+
+
+- Must be parity-locked with CLI and TUI.
+
+
+
+
+
+## Renderer expectations
+
+
+- Null renderer and Software renderer MUST be supported.
+
+
+- GPU renderers are optional and must not change behavior.
+
+
+
+
+
+## References
+
+
+- docs/architecture/GUI_BASELINE.md
+
+
+- docs/runtime/ui/UI_PHILOSOPHY.md
+
+
+- docs/runtime/ui/CLI_TUI_GUI_PARITY.md

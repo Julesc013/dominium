@@ -19,16 +19,16 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
-DUPLICATE_CLUSTERS_REL = "content/data/audit/duplicate_clusters.json"
-SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
-INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
-BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
-ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+DUPLICATE_IMPLS_REL = "archive/generated/audit/duplicate_impls.json"
+DUPLICATE_CLUSTERS_REL = "archive/generated/audit/duplicate_clusters.json"
+SYMBOL_INDEX_REL = "archive/generated/audit/symbol_index.json"
+INCLUDE_GRAPH_REL = "archive/generated/audit/include_graph.json"
+BUILD_GRAPH_REL = "archive/generated/audit/build_graph.json"
+ARCHITECTURE_GRAPH_REL = "archive/generated/architecture/architecture_graph.json"
 MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
 
-IMPLEMENTATION_SCORES_REL = "content/data/analysis/implementation_scores.json"
-DUPLICATE_CLUSTER_RANKINGS_REL = "content/data/analysis/duplicate_cluster_rankings.json"
+IMPLEMENTATION_SCORES_REL = "archive/generated/analysis/implementation_scores.json"
+DUPLICATE_CLUSTER_RANKINGS_REL = "archive/generated/analysis/duplicate_cluster_rankings.json"
 IMPLEMENTATION_SCORECARD_REL = "docs/audit/IMPLEMENTATION_SCORECARD.md"
 XI_2_FINAL_REL = "docs/audit/XI_2_FINAL.md"
 
@@ -51,10 +51,10 @@ REQUIRED_INPUTS = {
 
 DOC_REPORT_DATE = "2026-03-26"
 ENTRYPOINT_PRODUCTS = {"app", "client", "launcher", "server", "setup"}
-TEST_PATH_PREFIXES = ("tests/", "game/tests/", "tools/xstack/testx/tests/", "Testing/")
+TEST_PATH_PREFIXES = ("tests/", "tests/game/", "tools/xstack/testx/tests/", "Testing/")
 SOURCE_LIKE_DIRS = {"src", "source", "Sources", "Source"}
-RUNTIME_PATH_PREFIXES = ("apps/client/", "engine/", "game/", "apps/launcher/", "apps/server/", "apps/setup/", "src/", "game/domains/worldgen/")
-NON_RUNTIME_TOOL_PATH_PREFIXES = ("tools/auditx/", "tools/review/", "tools/xstack/testx/tests/")
+RUNTIME_PATH_PREFIXES = ("apps/client/", "engine/", "game/", "apps/launcher/", "apps/server/", "apps/setup/", "src/", "game/domain/worldgen/")
+NON_RUNTIME_TOOL_PATH_PREFIXES = ("tools/xstack/auditx/", "tools/review/", "tools/xstack/testx/tests/")
 HIGH_CONFIDENCE_SCORE = 78.0
 MEDIUM_CONFIDENCE_SCORE = 62.0
 HIGH_CONFIDENCE_GAP = 8.0
@@ -311,13 +311,13 @@ TRUTH_PATH_HINTS = (
     "game/",
     "src/control/",
     "src/core/",
-    "game/domains/geology/",
-    "game/domains/logic/",
-    "game/domains/processes/",
-    "game/domains/signals/",
-    "game/domains/systems/",
+    "game/domain/geology/",
+    "game/domain/logic/",
+    "game/domain/processes/",
+    "game/domain/signals/",
+    "game/domain/systems/",
     "src/time/",
-    "game/domains/worldgen/",
+    "game/domain/worldgen/",
 )
 
 CAMEL_RE_1 = re.compile(r"([a-z0-9])([A-Z])")
@@ -588,11 +588,11 @@ def _build_indexes(
             rel_path
             for row in module_rows
             for rel_path in list(row.get("owned_files") or [])
-            if _norm_rel(rel_path).startswith(("contracts/schemas/", "contracts/schemas/"))
+            if _norm_rel(rel_path).startswith(("contracts/schema/", "contracts/schema/"))
             or "registry" in os.path.basename(_norm_rel(rel_path)).lower()
             or (
                 _norm_rel(rel_path).endswith((".json", ".toml", ".yaml", ".yml"))
-                and _norm_rel(rel_path).startswith(("contracts/schemas/", "contracts/schemas/", "data/", "packs/", "src/"))
+                and _norm_rel(rel_path).startswith(("contracts/schema/", "contracts/schema/", "data/", "packs/", "src/"))
             )
         }
     )
@@ -1071,9 +1071,9 @@ def _module_relevance_rank(module_id: object) -> int:
         return 4
     if token.startswith(("engine.", "game.", "client.", "server.", "apps.", "launcher.", "setup.")):
         return 3
-    if token.startswith("tools.") and not token.startswith(("tools.auditx.", "tools.review", "tools.xstack.testx.tests")):
+    if token.startswith("tools.") and not token.startswith(("tools.xstack.auditx.", "tools.review", "tools.xstack.testx.tests")):
         return 2
-    if token.startswith(("tests.", "game.tests.", "docs.", "tools.auditx.", "tools.review", "tools.xstack.testx.tests")):
+    if token.startswith(("tests.", "game.tests.", "docs.", "tools.xstack.auditx.", "tools.review", "tools.xstack.testx.tests")):
         return 0
     return 1
 

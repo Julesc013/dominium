@@ -18,7 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DOC_INVENTORY_JSON_REL = "content/data/audit/doc_inventory.json"
+DOC_INVENTORY_JSON_REL = "archive/generated/audit/doc_inventory.json"
 DOC_INDEX_MD_REL = "docs/audit/DOC_INDEX.md"
 CANON_MAP_MD_REL = "docs/audit/CANON_MAP.md"
 DOC_DRIFT_MATRIX_MD_REL = "docs/audit/DOC_DRIFT_MATRIX.md"
@@ -176,26 +176,26 @@ SUPERSESSION_OVERRIDES = {
     "docs/GLOSSARY.md": {"alignment_status": "superseded", "replacement_doc": "docs/canon/glossary_v1.md", "reason": "duplicate glossary surface is no longer binding; canon glossary v1 wins"},
     "docs/CAPABILITY_STAGES.md": {"alignment_status": "superseded", "replacement_doc": "docs/architecture/CAPABILITY_ONLY_CANON.md", "reason": "legacy capability staging summary already points to the current canonical document"},
     "docs/TESTX_STAGE_MATRIX.md": {"alignment_status": "superseded", "replacement_doc": "tests/testx/CAPABILITY_MATRIX.yaml", "reason": "matrix ownership moved into the generated TestX capability matrix artifact"},
-    "docs/app/UI_MODES.md": {"alignment_status": "contradictory", "replacement_doc": "docs/appshell/APPSHELL_CONSTITUTION.md", "reason": "mode-selection order conflicts with the frozen v0.0.0 AppShell contract"},
+    "docs/apps/UI_MODES.md": {"alignment_status": "contradictory", "replacement_doc": "docs/runtime/shell/APPSHELL_CONSTITUTION.md", "reason": "mode-selection order conflicts with the frozen v0.0.0 AppShell contract"},
     "docs/architecture/DIRECTORY_STRUCTURE.md": {"alignment_status": "contradictory", "replacement_doc": "docs/audit/REPO_TREE_INDEX.md", "reason": "top-level layout no longer matches the real repository inventory"},
 }
 PARTIAL_OVERRIDES = {
     "docs/ARCHITECTURE.md": "root architecture summary still describes boundaries, but does not reflect the current `src/` + `tools/` repository organization or current canon precedence",
     "docs/STATUS_NOW.md": "snapshot sections predate the final MVP scope freeze and need release-era updates",
     "docs/XSTACK.md": "governance overview is useful, but its implementation pointers and ownership language need reconciliation with the current tool layout",
-    "docs/app/PRODUCT_BOUNDARIES.md": "product responsibilities remain mostly correct, but capability negotiation, AppShell, and standalone guarantees need alignment with current release docs",
+    "docs/apps/PRODUCT_BOUNDARIES.md": "product responsibilities remain mostly correct, but capability negotiation, AppShell, and standalone guarantees need alignment with current release docs",
     "docs/architecture/ARCH_REPO_LAYOUT.md": "ownership intent remains useful, but the concrete top-level layout is stale relative to the real repository tree",
 }
 GAP_ROWS = (
     {"priority": "high", "topic": "virtual paths", "suggested_doc": "docs/lib/VIRTUAL_PATH_LAYER.md", "reason": "REPO-REVIEW-2 found wide direct-path usage and there is no single current doctrine for the virtual path layer."},
     {"priority": "high", "topic": "standalone product guarantees", "suggested_doc": "docs/release/STANDALONE_PRODUCT_GUARANTEES.md", "reason": "setup guarantees exist, but there is no single current release doc for client/server/launcher/setup standalone guarantees."},
     {"priority": "medium", "topic": "platform matrix", "suggested_doc": "docs/release/PLATFORM_MATRIX.md", "reason": "cross-platform gate outputs exist, but there is no stable release-facing platform support matrix."},
-    {"priority": "medium", "topic": "validation unification", "suggested_doc": "docs/validation/VALIDATION_UNIFICATION.md", "reason": "RepoX, AuditX, TestX, CompatX, and ARCH-AUDIT surfaces are documented in fragments rather than one convergence doc."},
-    {"priority": "medium", "topic": "user-facing UI mode selection", "suggested_doc": "docs/app/UI_MODE_SELECTION.md", "reason": "the old UI mode summary is contradictory and the current mode order only appears indirectly in AppShell and release-freeze docs."},
+    {"priority": "medium", "topic": "validation unification", "suggested_doc": "docs/testing/validation/VALIDATION_UNIFICATION.md", "reason": "RepoX, AuditX, TestX, CompatX, and ARCH-AUDIT surfaces are documented in fragments rather than one convergence doc."},
+    {"priority": "medium", "topic": "user-facing UI mode selection", "suggested_doc": "docs/apps/UI_MODE_SELECTION.md", "reason": "the old UI mode summary is contradictory and the current mode order only appears indirectly in AppShell and release-freeze docs."},
 )
 DRIFT_RULES = (
     {"kind": "duplicate_spec", "severity": "high", "paths": ("docs/GLOSSARY.md", "docs/canon/glossary_v1.md"), "message": "duplicate glossary surfaces exist; only the canon glossary v1 is binding."},
-    {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/app/UI_MODES.md", "docs/appshell/APPSHELL_CONSTITUTION.md", "docs/release/FROZEN_INVARIANTS_v0_0_0.md"), "message": "UI mode selection rules diverge between the older app doc and the frozen AppShell order."},
+    {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/apps/UI_MODES.md", "docs/runtime/shell/APPSHELL_CONSTITUTION.md", "docs/release/FROZEN_INVARIANTS_v0_0_0.md"), "message": "UI mode selection rules diverge between the older app doc and the frozen AppShell order."},
     {"kind": "conflicting_definition", "severity": "high", "paths": ("docs/architecture/DIRECTORY_STRUCTURE.md", "docs/architecture/ARCH_REPO_LAYOUT.md", "docs/audit/REPO_TREE_INDEX.md"), "message": "layout docs still describe top-level product directories that no longer match the actual repository tree."},
     {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/ARCHITECTURE.md", "docs/architecture/ARCH0_CONSTITUTION.md", "docs/canon/constitution_v1.md"), "message": "root architecture summary overlaps with binding constitutional docs and can drift if treated as equivalent authority."},
     {"kind": "duplicate_spec", "severity": "medium", "paths": ("docs/XSTACK.md", "docs/audit/VALIDATION_STACK_MAP.md"), "message": "XStack governance is documented both as a narrative overview and as a generated current-state validation surface map."},
@@ -317,11 +317,11 @@ def _classify_alignment(rel_path: str, title: str, text: str, header: Mapping[st
         return "legacy_reference_only", "", "document describes excluded or future domain scope for v0.0.0"
     if rel_norm.startswith("docs/canon/"):
         return "aligned", "", "binding canon surface"
-    if rel_norm.startswith(("docs/release/", "docs/mvp/", "docs/meta/", "docs/time/", "docs/sol/", "docs/worldgen/", "docs/geo/", "docs/logic/", "docs/appshell/", "docs/packs/", "docs/server/", "docs/contracts/", "docs/compat/", "docs/net/", "docs/client/", "docs/universe/")):
+    if rel_norm.startswith(("docs/release/", "docs/mvp/", "docs/meta/", "docs/time/", "docs/sol/", "docs/domains/worldgen/", "docs/domains/geology/", "docs/logic/", "docs/runtime/shell/", "docs/packs/", "docs/server/", "docs/contracts/", "docs/compatibility/", "docs/runtime/network/", "docs/client/", "docs/universe/")):
         return "aligned", "", "document aligns to implemented constitutional pillars or release gates"
     if rel_norm.startswith("docs/audit/"):
         return "aligned", "", "derived audit artifact aligned to current implemented state"
-    if rel_norm.startswith(("docs/app/", "docs/build/", "docs/distribution/", "docs/reality/")):
+    if rel_norm.startswith(("docs/apps/", "docs/build/", "docs/distribution/", "docs/reality/")):
         return "aligned", "", "document covers active app, build, distribution, or runtime surfaces"
     if rel_norm.startswith("docs/architecture/"):
         if any(token in lowered for token in CURRENT_SCOPE_KEYWORDS):

@@ -1,0 +1,24 @@
+SCHEMA: signals/bulletin_policy.schema
+schema_id: dominium.schema.signals.bulletin_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy contract for institution bulletin generation and delivery.
+
+REQUIRED SHAPE:
+record bulletin_policy
+  required:
+    - schema_version: semver
+    - bulletin_policy_id: id
+    - schedule_id: id
+    - aggregation_policy_id: id
+    - audience_address: map
+    - severity_rules: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Bulletin generation is schedule-driven and deterministic.
+- Bulletin payloads are REPORT artifacts transported through SIG channels.
+- Audience scope resolution must be explicit and replay-stable.

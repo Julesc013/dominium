@@ -26,16 +26,16 @@ GEO-10 freezes the full GEO envelope after GEO-0 through GEO-9:
 
 The authoritative contracts are:
 
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
-- `docs/geo/METRIC_QUERY_ENGINE.md`
-- `docs/geo/FIELD_BINDING_TO_GEO.md`
-- `docs/geo/PROJECTION_AND_LENS_MODEL.md`
-- `docs/geo/PATHING_AND_TRAVERSAL_MODEL.md`
-- `docs/geo/GEOMETRY_EDIT_CONTRACT.md`
-- `docs/geo/WORLDGEN_CONSTITUTION.md`
-- `docs/geo/OVERLAY_MERGE_CONSTITUTION.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/METRIC_QUERY_ENGINE.md`
+- `docs/domains/geology/FIELD_BINDING_TO_GEO.md`
+- `docs/domains/geology/PROJECTION_AND_LENS_MODEL.md`
+- `docs/domains/geology/PATHING_AND_TRAVERSAL_MODEL.md`
+- `docs/domains/geology/GEOMETRY_EDIT_CONTRACT.md`
+- `docs/domains/geology/WORLDGEN_CONSTITUTION.md`
+- `docs/domains/geology/OVERLAY_MERGE_CONSTITUTION.md`
 
 Relevant invariants upheld:
 

@@ -1,0 +1,30 @@
+SCHEMA: process/process_requirement.schema
+schema_id: dominium.schema.process_requirement
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Declare process requirement contracts for materials/tools in deterministic scaffolding.
+
+NON-SEMANTICS:
+- Requirement declarations are structural eligibility constraints.
+- They do not define process execution internals.
+
+REQUIRED SHAPE:
+record process_requirement_registry
+  required:
+    - registry_id: id
+    - registry_version: semver
+    - schema_version_ref: tag
+    - process_requirements: [process_requirement_entry]
+    - extensions: map
+
+record process_requirement_entry
+  required:
+    - process_id: id
+    - requires_material_affordance: [id]
+    - requires_tool_capability: [id]
+    - requires_heat: bool
+    - requires_binding: bool
+    - description: text
+    - extensions: map

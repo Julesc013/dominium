@@ -17,9 +17,9 @@ Preferred owner: `contracts/projections`.
 
 Proposed future paths:
 
-- `contracts/projections/ide/projection_manifest.schema.json`
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+- `contracts/projection/ide/projection_manifest.schema.json`
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 ## Why Not Other Owners
 

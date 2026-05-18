@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DEM Source Schema",
+  "version": "1.0.0",
+  "description": "Authoritative source contract for deterministic SRTM DEM ingestion.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "source_id",
+    "tile_resolution",
+    "projection",
+    "vertical_datum",
+    "license",
+    "checksum"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "source_id": {
+      "type": "string"
+    },
+    "tile_resolution": {
+      "type": "string"
+    },
+    "projection": {
+      "type": "string"
+    },
+    "vertical_datum": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    },
+    "checksum": {
+      "type": "string"
+    },
+    "tiles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}
+

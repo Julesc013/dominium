@@ -11,7 +11,7 @@ Replacement Target: Frozen offline update simulation baseline for v0.0.0-mock di
 
 ## Update Resolver And Transaction Logs
 
-- Authoritative update resolution is implemented in `src/release/update_resolver.py`.
+- Authoritative update resolution is implemented in `src/tools/release/update_resolver.py`.
 - `resolve_update_plan(...)` already computes deterministic plans for `policy.exact_suite`, `policy.latest_compatible`, and `policy.lab`.
 - Release-index trust checks are already integrated through `verify_artifact_trust(...)` before plan acceptance.
 - Update plans already record:

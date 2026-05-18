@@ -15,12 +15,12 @@ Violations are merge-blocking.
 ## Scope
 
 Applies to authoritative directories:
-- `engine/modules/core/**`
-- `engine/modules/sim/**`
-- `engine/modules/world/**`
+- `engine/kernel/**`
+- `game/domain/simulation/**`
+- `game/world/**`
 - `game/rules/**`
 - `game/economy/**`
-- authoritative parts of `game/core/**`
+- authoritative parts of `game/rule/**`
 
 ## Ordering contracts (mandatory)
 

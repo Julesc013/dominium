@@ -1,0 +1,16 @@
+{
+  "schema_id": "dominium.schema.capability",
+  "schema_version": "1.0.0",
+  "records": [
+    {
+      "capability_id": "example.realistic_earth",
+      "capability_tags": [
+        "example.world",
+        "example.realistic"
+      ],
+      "provenance_ref": {
+        "provenance_id": "prov.org.dominium.examples.realistic_earth.v1"
+      }
+    }
+  ]
+}

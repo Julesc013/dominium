@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: `Φ-B4`, `Φ-B5`, further `Υ` operational bands, later `Ζ` checkpoints
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/FOUNDATION_PHASES.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `release/update_resolver.py`, `contracts/repo/release_policy.toml`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/blueprint/readiness_matrix.json`, `content/data/blueprint/foundation_phases.json`, `content/data/planning/final_prompt_inventory.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/FOUNDATION_PHASES.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `tools/release/update_resolver.py`, `contracts/repo/release_policy.toml`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/blueprint/readiness_matrix.json`, `archive/generated/blueprint/foundation_phases.json`, `contracts/planning/final_prompt_inventory.json`
 
 # Checkpoint C-ΦB3ΥB_SAFE_REVIEW
 
@@ -81,7 +81,7 @@ This checkpoint explicitly eliminates three ambiguities:
 | Prompt | Judgment | Rationale |
 | --- | --- | --- |
 | `Φ-B4 — HOTSWAP_BOUNDARIES-0` | `dangerous` | `Φ-B3` now provides lawful coexistence boundaries and the `Υ-B` band now provides parity, receipt, and execution-envelope law. Even with that improvement, the blueprint readiness matrix still marks hot-swappable renderers, live protocol upgrades, and partial live module reload as `requires_new_foundation`. `docs/blueprint/MANUAL_REVIEW_GATES.md` also keeps lifecycle-manager semantics and restartless replacement under `FULL` review. |
-| `Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS-0` | `premature` | `contracts/blueprint/readiness_matrix.json` still classifies distributed shard relocation as `unrealistic_currently`, while `content/data/blueprint/foundation_phases.json` keeps distributed authority behind later proof, quorum, and authority-handoff criteria. Trust policies remain provisional and `contracts/registry/trust_root_registry.json` is still empty, so the control-plane side is not mature enough either. |
+| `Φ-B5 — DISTRIBUTED_AUTHORITY_FOUNDATIONS-0` | `premature` | `contracts/blueprint/readiness_matrix.json` still classifies distributed shard relocation as `unrealistic_currently`, while `archive/generated/blueprint/foundation_phases.json` keeps distributed authority behind later proof, quorum, and authority-handoff criteria. Trust policies remain provisional and `contracts/registry/trust_root_registry.json` is still empty, so the control-plane side is not mature enough either. |
 
 Additional runtime-readiness note:
 
@@ -172,11 +172,11 @@ It must not:
 
 Further `Υ` work must extend, not replace:
 
-- `release/update_resolver.py`
-- `release/release_manifest_engine.py`
-- `release/archive_policy.py`
-- `tools/controlx/README.md`
-- `tools/controlx/controlx.py`
+- `tools/release/update_resolver.py`
+- `tools/release/release_manifest_engine.py`
+- `tools/release/archive_policy.py`
+- `tools/xstack/controlx/README.md`
+- `tools/xstack/controlx/controlx.py`
 - `tools/xstack/run.py`
 - `docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md`
 - `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`

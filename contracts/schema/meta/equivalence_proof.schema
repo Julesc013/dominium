@@ -1,0 +1,27 @@
+SCHEMA: meta/equivalence_proof.schema
+schema_id: dominium.schema.meta.equivalence_proof
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare reproducible equivalence proofs for compiled models.
+- Bind proof kind, verification procedure, and optional error-bound policy.
+
+NON-SEMANTICS:
+- No runtime execution semantics.
+- No implicit acceptance of bounded error without policy.
+
+REQUIRED SHAPE:
+record equivalence_proof
+  required:
+    - proof_id: id
+    - proof_kind: text
+    - verification_procedure_id: id
+    - error_bound_policy_id: id|null
+    - proof_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `proof_kind=exact` requires a verification procedure that proves exact equivalence.
+- `proof_kind=bounded_error` requires an explicit error bound policy reference.

@@ -198,10 +198,10 @@
     "release-control convenience silently bypassing runtime, provenance, or review doctrine"
   ],
   "repo_evidence_surfaces": [
-    "tools/controlx/core/execution_router.py",
-    "tools/controlx/README.md",
+    "tools/xstack/controlx/core/execution_router.py",
+    "tools/xstack/controlx/README.md",
     "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
-    "release/update_resolver.py",
+    "tools/release/update_resolver.py",
     "docs/release/updates/README.md",
     "release/updates/stable.json",
     "contracts/registry/refusal_code_registry.json",

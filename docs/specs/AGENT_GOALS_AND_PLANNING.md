@@ -55,7 +55,7 @@ Public headers live in `game/include/dominium/agents/`.
 - Only due agents are processed by the scheduler.
 
 ## Tests (AGENT1)
-Implemented in `game/tests/agent1_goal_planning_tests.cpp`:
+Implemented in `tests/game/agent1_goal_planning_tests.cpp`:
 - Deterministic goal selection.
 - Bounded planning limits.
 - Epistemic failure and belief update.

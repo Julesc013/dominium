@@ -1,0 +1,24 @@
+SCHEMA: meta/coupling_budget.schema
+schema_id: dominium.schema.meta.coupling_budget
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic coupling budget ownership per domain/system.
+- Bound coupling evaluation compute per canonical tick.
+
+NON-SEMANTICS:
+- This schema does not execute scheduling.
+- It does not change coupling model semantics.
+
+REQUIRED SHAPE:
+record coupling_budget
+  required:
+    - owner_id: id
+    - budget_units_per_tick: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Coupling scheduler must enforce declared budget deterministically.
+- Budget exhaustion must degrade via logged skip decisions.

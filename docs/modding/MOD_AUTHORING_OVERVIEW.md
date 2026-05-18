@@ -88,4 +88,4 @@ Mods add layers. Mods do not rewrite truth.
 - `docs/architectureitecture/COMPATIBILITY_PHILOSOPHY.md`
 
 
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`

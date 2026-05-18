@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -128,7 +128,7 @@ Execution date: 2026-03-03
     - `ch.diegetic.elec.test_lamp`
     - `ch.diegetic.elec.breaker_panel`
     - `ch.diegetic.elec.ground_fault`
-- AuditX: `python tools/auditx/auditx.py scan --repo-root . --changed-only --format both`
+- AuditX: `python tools/xstack/auditx/auditx.py scan --repo-root . --changed-only --format both`
   - `result=scan_complete`
   - new analyzers present in run: `E187`, `E188`, `E189`
 - TestX: `python tools/xstack/testx/runner.py --profile FAST --cache off --subset ...`

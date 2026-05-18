@@ -1,0 +1,43 @@
+SCHEMA: macro_event_queue.schema
+schema_id: dominium.schema.macro_event_queue
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro event queue payloads for SCALE-2.
+
+STABILITY GUARANTEES:
+- Event ordering keys are explicit and stable.
+- Records are open maps; unknown fields MUST be preserved.
+
+NON-SEMANTICS:
+- Macro events do not define world mechanics.
+- Events are scheduling artifacts, not authority overrides.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record macro_event_queue
+  required:
+    - events: [macro_event]
+
+record macro_event
+  required:
+    - event_id: id
+    - domain_id: id
+    - capsule_id: id
+    - event_time: integer
+    - order_key: integer
+  optional:
+    - event_kind: tag
+    - flags: integer
+    - payload: map
+    - extensions: map
+
+ORDERING CONTRACT:
+- Events are ordered deterministically by:
+  (event_time, order_key, domain_id, event_id, sequence).

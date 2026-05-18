@@ -12,7 +12,7 @@ PROMPT SLICE-4 - LIVE EVOLUTION, PLAYTESTING, AND SYSTEM CONVERGENCE
 TARGET: GPT-5.2 CODEX
 
 
-SCOPE: engine/ + game/ + data/ + client/ + tools/ + docs/architecture/ + docs/dev/ + tests/
+SCOPE: engine/ + game/ + data/ + client/ + tools/ + docs/architecture/ + docs/development/ + tests/
 
 
 INTENT: ENABLE CONTINUOUS PLAYTESTING, RAPID OR SLOW ITERATION, AND SAFE OVERHAUL OF SYSTEMS UNTIL THE GAME CONVERGES
@@ -927,7 +927,7 @@ docs/architecture/
 
 
 
-docs/dev/
+docs/development/
 
 
 - PLAYTESTING_GUIDE.md

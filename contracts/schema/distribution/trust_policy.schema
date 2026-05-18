@@ -1,0 +1,45 @@
+SCHEMA: trust_policy.schema
+schema_id: dominium.schema.distribution.trust_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define signature verification policy used by package verification and install.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record trust_policy
+  required:
+    - policy_id: id
+    - policy_version: tag
+    - signature_required: bool
+    - trusted_signers: [signer_ref]
+    - accepted_signature_formats: [tag]
+    - extensions: map
+  optional:
+    - release_channel_requirements: [channel_requirement]
+
+TYPE DEFINITIONS:
+record signer_ref
+  required:
+    - signer_id: id
+  optional:
+    - signer_tags: [tag]
+
+record channel_requirement
+  required:
+    - channel_id: tag
+    - signature_required: bool
+  optional:
+    - required_signer_ids: [id]

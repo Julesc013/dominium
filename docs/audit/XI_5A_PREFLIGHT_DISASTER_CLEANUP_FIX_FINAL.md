@@ -18,13 +18,13 @@ Replacement Target: XI-5 bounded src-removal execution against approved mapping 
 ## Repaired Blocker
 
 - `PermissionError [WinError 5]` while cleaning:
-  `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/dist/tools/xstack/packagingx/__init__.pyc`
+  `build/tmp/omega4_disaster_arch_audit/cases/missing_components_missing_binary_referenced_by_install/fixture/archive/generated/dist/tools/xstack/packagingx/__init__.pyc`
 
 ## Validation Run
 
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_disaster_harness_reuses_output_root,test_disaster_cleanup_removes_readonly_bytecode`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 
 ## Xi-5a Preflight State
 

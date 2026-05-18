@@ -23,7 +23,7 @@
       "diagnosis_id": "diagnosis-55d99864bb34",
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e433_secrets_in_bundle_smell.py"
+        "tools/xstack/auditx/analyzers/e433_secrets_in_bundle_smell.py"
       ],
       "issue_id": "repair-55d99864bb34",
       "mandatory_migration_candidate": false,
@@ -38,7 +38,7 @@
       "diagnosis_id": "diagnosis-7f92516ecaf1",
       "evidence_refs": [
         ".aide/install/latest-conflict-report.json",
-        "tools/auditx/analyzers/e531_secrets_in_log_smell.py"
+        "tools/xstack/auditx/analyzers/e531_secrets_in_log_smell.py"
       ],
       "issue_id": "repair-7f92516ecaf1",
       "mandatory_migration_candidate": false,

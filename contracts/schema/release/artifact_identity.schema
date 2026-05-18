@@ -1,0 +1,40 @@
+SCHEMA: release/artifact_identity.schema
+schema_id: dominium.schema.release.artifact_identity
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic release artifact identity metadata for content-addressed binaries, packs, locks, bundles, manifests, and profiles.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: stable string token.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record artifact_identity
+  required:
+    - schema_version: tag
+    - artifact_id: id
+    - artifact_kind: tag
+    - content_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - build_id: tag
+    - contract_bundle_hash: sha256
+    - platform_tag: tag
+    - notes: map
+
+INVARIANTS:
+- artifact identity is content-addressed; content_hash is authoritative.
+- artifact_id must remain stable for equivalent canonical identity content.
+- build_id is optional and only present for build-produced artifacts where applicable.
+- platform_tag is descriptive only and must not replace content_hash as identity.
+- deterministic_fingerprint is computed from canonical serialized content.

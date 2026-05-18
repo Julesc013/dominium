@@ -66,7 +66,7 @@ Executed commands:
 - `python tools/xstack/testx/runner.py --profile FAST --cache off --subset test_interlock_prevents_conflict,test_fail_safe_defaults,test_breaker_trip_disconnects_flow,test_deadman_timeout,test_safety_event_logged,test_deterministic_ordering_of_instances`
 - `python tools/governance/tool_topology_generate.py --repo-root .`
 - `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
-- `python tools/auditx/auditx.py verify --repo-root .`
+- `python tools/xstack/auditx/auditx.py verify --repo-root .`
 - `python tools/xstack/run.py strict`
 
 Observed results:

@@ -267,7 +267,7 @@
         "commit": "752918d4f281",
         "commit_sha": "752918d4f281aad12cdb6e892d39460172155e34",
         "entry": "refreshed final Q33 generated validation artifacts.",
-        "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
+        "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation archive\generated\archive\generated\archive\generated\artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
         "risks": "- This commit intentionally records generated AIDE reports; it does not mutate branches, install hooks, or change product/doctrine roots.",
         "scope": "dominium",
         "source_sections_present": [
@@ -531,7 +531,7 @@
       "commit": "752918d4f281",
       "commit_sha": "752918d4f281aad12cdb6e892d39460172155e34",
       "entry": "refreshed final Q33 generated validation artifacts.",
-      "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
+      "follow_up": "- Run final read-only Git and commit checks before reporting Q33 for review.\n\nAIDE-Task: DOMINIUM-AIDE-SYNC-01\nAIDE-Phase: Q33\nAIDE-Result: PASS\nAIDE-Scope: .aide generated validation archive\generated\archive\generated\archive\generated\artifacts\nAIDE-Token-Impact: final-review-packet-1123-approx-tokens\nAIDE-Quality-Gate: final-validation-pass-with-warnings",
       "risks": "- This commit intentionally records generated AIDE reports; it does not mutate branches, install hooks, or change product/doctrine roots.",
       "scope": "dominium",
       "source_sections_present": [

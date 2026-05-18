@@ -1,0 +1,22 @@
+SCHEMA: meta/model_residual_policy.schema
+schema_id: dominium.schema.meta.model_residual_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic residual bounds and actions for constitutive model evaluations.
+- Ensure residual behavior is explicit, auditable, and profile-safe.
+
+REQUIRED SHAPE:
+record model_residual_policy
+  required:
+    - schema_version: semver
+    - model_id: id
+    - max_expected_residual: int (>=0)
+    - residual_action: enum(log_only|strict_fail|clamp)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- model_id must resolve in constitutive_model_registry.
+- residual_action must be deterministic and must not hide violations.

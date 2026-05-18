@@ -106,10 +106,10 @@
   ],
   "repo_evidence_roots": [
     "runtime/process_spawn.py",
-    "server/app/main_server.c",
-    "release/update_resolver.py",
+    "apps/server/main_server.c",
+    "tools/release/update_resolver.py",
     "tools/validators/security/trust/trust_verifier.py",
-    "tools/controlx/core/execution_router.py",
+    "tools/xstack/controlx/core/execution_router.py",
     "tools/review/series_execution_strategy_common.py",
     "contracts/repo/release_policy.toml",
     "contracts/registry/release_channel_registry.json",

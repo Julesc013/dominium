@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Flow Solver Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic FlowSystem solver policy declaration.",
+  "x-doc-ref": [
+    "docs/architecture/FLOWSYSTEM_STANDARD.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "solver_policy_id",
+    "mode",
+    "allow_partial_transfer",
+    "overflow_policy",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "solver_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "bulk",
+        "segmented"
+      ]
+    },
+    "allow_partial_transfer": {
+      "type": "boolean"
+    },
+    "overflow_policy": {
+      "type": "string",
+      "enum": [
+        "refuse",
+        "queue",
+        "spill"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "solver_policy_id": "flow.coarse_default",
+      "mode": "bulk",
+      "allow_partial_transfer": true,
+      "overflow_policy": "queue",
+      "extensions": {}
+    }
+  ]
+}

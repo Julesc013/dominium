@@ -1,4 +1,4 @@
-﻿"""Shared deterministic EARTH-9 stress scenario helpers."""
+"""Shared deterministic EARTH-9 stress scenario helpers."""
 
 from __future__ import annotations
 
@@ -10,12 +10,12 @@ from typing import Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from apps.client.ui.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
-from game.domains.geology import build_position_ref
-from game.domains.worldgen.earth.water import build_water_layer_source_payloads
-from game.domains.worldgen.earth import DEFAULT_EARTH_CLIMATE_PARAMS_ID, DEFAULT_TIDE_PARAMS_ID, earth_climate_params_rows, tide_params_rows
-from game.domains.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key
-from game.domains.worldgen.mw.system_query_engine import list_systems_in_cell
+from runtime.ui.client.map_views import build_map_view_surface, debug_view_limit_for_compute_profile
+from game.domain.geology import build_position_ref
+from game.domain.worldgen.earth.water import build_water_layer_source_payloads
+from game.domain.worldgen.earth import DEFAULT_EARTH_CLIMATE_PARAMS_ID, DEFAULT_TIDE_PARAMS_ID, earth_climate_params_rows, tide_params_rows
+from game.domain.worldgen.mw.sol_anchor import resolve_sol_anchor_cell_key
+from game.domain.worldgen.mw.system_query_engine import list_systems_in_cell
 from tools.embodiment.earth6_probe import (
     collision_hash,
     direct_surface_query_report,
@@ -85,7 +85,7 @@ from tools.worldgen.earth8_probe import (
     verify_water_view_replay,
     water_hash,
 )
-from apps.client.ui.teleport_controller import build_teleport_plan
+from runtime.ui.client.teleport_controller import build_teleport_plan
 
 
 DEFAULT_EARTH9_SEED = 91029

@@ -29,6 +29,6 @@ Replacement Target: install-profile refinement and release-index availability go
 
 ## Safe Insertion Points
 
-- Add a dedicated `install_profile_registry.json` and route selection through `src/release/component_graph_resolver.py`.
+- Add a dedicated `install_profile_registry.json` and route selection through `src/tools/release/component_graph_resolver.py`.
 - Thread `install_profile_id` through setup planning/apply, launcher status, and dist assembly without changing graph semantics.
 - Keep default behavior aligned with the previous full-bundle composition so existing default-instance flows remain unchanged.

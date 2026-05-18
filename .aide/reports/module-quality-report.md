@@ -13,10 +13,10 @@
 - .aide/tools/latest-tool-adapter-map.json: 849878 bytes (AIDE tool absorption framework)
 - tools/xstack/registry_compile/compiler.py: 628932 bytes (unknown)
 - scripts/ci/check_repox_rules.py: 601089 bytes (unknown)
-- apps/client/shell/client_shell.c: 503238 bytes (unknown)
-- game/domains/inspection/inspection_engine.py: 262860 bytes (unknown)
-- apps/client/app/main_client.c: 249301 bytes (unknown)
-- tools/ui_editor/ui_editor_main_win32.cpp: 206863 bytes (unknown)
+- runtime/shell/client/client_shell.c: 503238 bytes (unknown)
+- game/domain/inspection/inspection_engine.py: 262860 bytes (unknown)
+- apps/client/main_client.c: 249301 bytes (unknown)
+- apps/workbench/module/ui/editor/ui_editor_main_win32.cpp: 206863 bytes (unknown)
 - game/rules/scale/scale_collapse_expand.cpp: 195951 bytes (unknown)
 - apps/client/interaction/inspection_overlays.py: 191921 bytes (unknown)
 - tools/audit/arch_audit_common.py: 184504 bytes (unknown)
@@ -47,13 +47,13 @@
 - .aide/tools/latest-tool-classification.json: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - .aide/tools/latest-tool-inventory.json: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - .aide/tools/latest-tool-wrap-plan.json: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- apps/client/app/main_client.c: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- apps/client/main_client.c: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - apps/client/interaction/inspection_overlays.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- apps/client/shell/client_shell.c: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- game/domains/fluids/network/fluid_network_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- game/domains/inspection/inspection_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- game/domains/processes/process_run_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- game/domains/thermal/network/thermal_network_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- runtime/shell/client/client_shell.c: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- game/domain/fluids/network/fluid_network_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- game/domain/inspection/inspection_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- game/domain/processes/process_run_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- game/domain/thermal/network/thermal_network_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - game/rules/scale/scale_collapse_expand.cpp: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - models/model_engine.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - net/policies/policy_server_authoritative.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
@@ -68,7 +68,7 @@
 - tools/review/xi5x2_common.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - tools/setup/setup_cli.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - tools/tools_host_main.c: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
-- tools/ui_editor/ui_editor_main_win32.cpp: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
+- apps/workbench/module/ui/editor/ui_editor_main_win32.cpp: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - tools/xstack/compatx/version_registry.json: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - tools/xstack/registry_compile/compiler.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.
 - tools/xstack/repox/check.py: Inspect references and owner before any future refactor; do not delete from Q38 evidence.

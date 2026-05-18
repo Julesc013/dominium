@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/salvage.cpp
+FILE: game/rule/life/salvage.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements salvage claim resolution and ledger transfers.

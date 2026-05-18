@@ -7,7 +7,7 @@ import json
 import os
 from typing import Mapping
 
-from release.component_graph_resolver import (
+from tools.release.component_graph_resolver import (
     COMPONENT_KIND_BINARY,
     COMPONENT_KIND_DOCS,
     COMPONENT_KIND_LOCK,
@@ -31,8 +31,8 @@ from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
-ARCH_REGISTRY_REL = os.path.join("data", "registries", "arch_registry.json")
-OS_REGISTRY_REL = os.path.join("data", "registries", "os_registry.json")
+ARCH_REGISTRY_REL = os.path.join("contracts", "registry", "arch_registry.json")
+OS_REGISTRY_REL = os.path.join("contracts", "registry", "os_registry.json")
 GRAPH_REGISTRY_REL = DEFAULT_COMPONENT_GRAPH_REGISTRY_REL
 RETRO_AUDIT_DOC_REL = os.path.join("docs", "audit", "COMPONENT_GRAPH0_RETRO_AUDIT.md")
 CONSTITUTION_DOC_REL = os.path.join("docs", "release", "COMPONENT_GRAPH_CONSTITUTION.md")
@@ -415,10 +415,10 @@ def component_graph_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("tools/dist/dist_tree_common.py", "build_default_component_install_plan", "dist assembly must resolve bundle composition through the component graph", RULE_HARDCODED),
+        ("tools/release/dist/dist_tree_common.py", "build_default_component_install_plan", "dist assembly must resolve bundle composition through the component graph", RULE_HARDCODED),
         ("tools/setup/setup_cli.py", "build_default_component_install_plan", "setup must emit an install plan derived from the component graph", RULE_INSTALL),
         ("tools/launcher/launch.py", "validate_instance_against_install_plan", "launcher must validate instances against the component graph install plan", RULE_INSTALL),
-        ("release/release_manifest_engine.py", "component_graph_hash", "release manifest generation must include the component graph hash", RULE_INSTALL),
+        ("tools/release/release_manifest_engine.py", "component_graph_hash", "release manifest generation must include the component graph hash", RULE_INSTALL),
     ):
         text = ""
         try:

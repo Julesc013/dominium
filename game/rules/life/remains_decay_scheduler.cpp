@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/remains_decay_scheduler.cpp
+FILE: game/rule/life/remains_decay_scheduler.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements event-driven remains decay scheduling.

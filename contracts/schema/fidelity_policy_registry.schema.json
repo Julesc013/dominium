@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Fidelity Policy Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic fidelity policy registry output.",
+  "x-doc-ref": [
+    "docs/architecture/fidelity_policy.md",
+    "docs/architecture/registry_compile.md",
+    "schemas/fidelity_policy.schema.json"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "fidelity_policies",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "fidelity_policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "policy_id",
+          "pack_id",
+          "path",
+          "tiers",
+          "switching_rules",
+          "minimum_tier_by_kind"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "policy_id": {
+            "type": "string"
+          },
+          "pack_id": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "tiers": {
+            "type": "array"
+          },
+          "switching_rules": {
+            "type": "object"
+          },
+          "minimum_tier_by_kind": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "fidelity_policies": [],
+      "registry_hash": "f7f4b4cfaaf5e7c6ad2e46bc04f04f0b8f4db22844fcd8ac7ddc44506e8c9a0f"
+    }
+  ]
+}

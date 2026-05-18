@@ -23,7 +23,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - Yes at build/link boundaries:
   - `domino_engine`, `dominium_game`, `dominium_app_runtime`, `appcore`, tools are separated targets.
 - Partial at runtime command wiring:
-  - canonical command registry exists, but runtime CLI surfaces are still partly local (`client/app/main_client.c` etc.), so full command-surface unification is not complete.
+  - canonical command registry exists, but runtime CLI surfaces are still partly local (`apps/client/main_client.c` etc.), so full command-surface unification is not complete.
 
 ### Is it extensible?
 

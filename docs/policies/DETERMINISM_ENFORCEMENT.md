@@ -20,12 +20,12 @@ No temporary or conditional exception is allowed.
 
 The following directories are authoritative and MUST be deterministic:
 
-- `engine/modules/core/**`
-- `engine/modules/sim/**`
-- `engine/modules/world/**`
+- `engine/kernel/**`
+- `game/domain/simulation/**`
+- `game/world/**`
 - `game/rules/**`
 - `game/economy/**`
-- `game/core/**` (simulation paths only)
+- `game/rule/**` (simulation paths only)
 
 **Rationale**
 Authoritative zones produce canonical state; nondeterminism here corrupts replayability,

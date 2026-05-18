@@ -1,0 +1,46 @@
+{
+  "schema_id": "world.celestial_body",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "body_id": "sol_earth",
+    "system_ref": "sol_system",
+    "parent_body_ref": "sol_sun",
+    "body_type": "planet",
+    "name": "Earth",
+    "radius_m": 6371000,
+    "mass_class": "terrestrial",
+    "surface_refs": [
+      "earth_land_surface",
+      "earth_ocean_surface"
+    ],
+    "volume_refs": [
+      "earth_atmosphere_volume",
+      "earth_subsurface_volume"
+    ],
+    "orbital_rail_ref": "sol_orbit_earth",
+    "scale_domain_ref": "domain.planetary",
+    "supported_scale_domains": [
+      "domain.local",
+      "domain.planetary"
+    ],
+    "gravity_class": "gravity_medium",
+    "atmosphere_class": "atm_breathable",
+    "hydrosphere_class": "hydrosphere_oceanic",
+    "provenance_ref": "prov.earth.body.v1",
+    "data_source_refs": [
+      "iau_2024",
+      "nasa_naif_2024"
+    ],
+    "body_tags": [
+      "rocky",
+      "atm_breathable",
+      "hydrosphere_oceanic",
+      "gravity_medium"
+    ]
+  }
+}

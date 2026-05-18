@@ -1,0 +1,420 @@
+{
+  "collisions": [],
+  "mode": "dry_run",
+  "move_result": {
+    "applied": [],
+    "failed": []
+  },
+  "post_segment_findings": {
+    "appcore": 2,
+    "appshell": 14,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "pre_segment_findings": {
+    "appcore": 2,
+    "appshell": 14,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "reason_counts": {
+    "RepoX shell tooling": 2,
+    "shell schema ownership": 14,
+    "singular XStack test registry data": 2,
+    "singular capability schema ownership": 3,
+    "singular registry schema ownership": 1,
+    "tracked generated distribution evidence": 20,
+    "validation docs under testing": 1,
+    "validator schema ownership": 1,
+    "validator suite tooling": 17
+  },
+  "rewrite_result": {
+    "files": [],
+    "files_changed": 0,
+    "replacement_count": 0
+  },
+  "routes": [
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/app_mode.schema",
+      "target": "contracts/schema/shell/app_mode.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/command_descriptor.schema",
+      "target": "contracts/schema/shell/command_descriptor.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/exit_code_registry.schema",
+      "target": "contracts/schema/shell/exit_code_registry.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/log_category_registry.schema",
+      "target": "contracts/schema/shell/log_category_registry.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/log_event.schema",
+      "target": "contracts/schema/shell/log_event.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/log_sink_config.schema",
+      "target": "contracts/schema/shell/log_sink_config.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/message_key_registry.schema",
+      "target": "contracts/schema/shell/message_key_registry.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/refusal_code_registry.schema",
+      "target": "contracts/schema/shell/refusal_code_registry.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/run_manifest.schema",
+      "target": "contracts/schema/shell/run_manifest.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/supervisor_policy.schema",
+      "target": "contracts/schema/shell/supervisor_policy.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/tool_adapter_output.schema",
+      "target": "contracts/schema/shell/tool_adapter_output.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/tui_layout.schema",
+      "target": "contracts/schema/shell/tui_layout.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/tui_panel.schema",
+      "target": "contracts/schema/shell/tui_panel.schema"
+    },
+    {
+      "action": "move",
+      "reason": "shell schema ownership",
+      "source": "contracts/schema/appshell/tui_panel_descriptor.schema",
+      "target": "contracts/schema/shell/tui_panel_descriptor.schema"
+    },
+    {
+      "action": "move",
+      "reason": "singular capability schema ownership",
+      "source": "contracts/schema/capabilities/README.md",
+      "target": "contracts/schema/capability/README.md"
+    },
+    {
+      "action": "move",
+      "reason": "singular capability schema ownership",
+      "source": "contracts/schema/capabilities/SPEC_CAPABILITY_TAXONOMY.md",
+      "target": "contracts/schema/capability/SPEC_CAPABILITY_TAXONOMY.md"
+    },
+    {
+      "action": "move",
+      "reason": "singular capability schema ownership",
+      "source": "contracts/schema/capabilities/SPEC_NEGATIVE_CAPABILITIES.md",
+      "target": "contracts/schema/capability/SPEC_NEGATIVE_CAPABILITIES.md"
+    },
+    {
+      "action": "move",
+      "reason": "singular registry schema ownership",
+      "source": "contracts/schema/registries/schema_version_policy.json",
+      "target": "contracts/schema/registry/schema_version_policy.json"
+    },
+    {
+      "action": "move",
+      "reason": "validator schema ownership",
+      "source": "contracts/schema/validation/validation_result.schema",
+      "target": "contracts/schema/validator/validation_result.schema"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/client",
+      "target": "archive/generated/dist/bin/client"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dom",
+      "target": "archive/generated/dist/bin/dom"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dom.cmd",
+      "target": "archive/generated/dist/bin/dom.cmd"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dominium_client",
+      "target": "archive/generated/dist/bin/dominium_client"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dominium_client.cmd",
+      "target": "archive/generated/dist/bin/dominium_client.cmd"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dominium_server",
+      "target": "archive/generated/dist/bin/dominium_server"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/dominium_server.cmd",
+      "target": "archive/generated/dist/bin/dominium_server.cmd"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/engine",
+      "target": "archive/generated/dist/bin/engine"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/game",
+      "target": "archive/generated/dist/bin/game"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/launcher",
+      "target": "archive/generated/dist/bin/launcher"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/server",
+      "target": "archive/generated/dist/bin/server"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/setup",
+      "target": "archive/generated/dist/bin/setup"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/bin/tool_attach_console_stub",
+      "target": "archive/generated/dist/bin/tool_attach_console_stub"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/locks/pack_lock.mvp_default.json",
+      "target": "archive/generated/dist/locks/pack_lock.mvp_default.json"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/logs/.gitkeep",
+      "target": "archive/generated/dist/logs/.gitkeep"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/packs/base/pack.base.procedural/pack.alias.json",
+      "target": "archive/generated/dist/packs/base/pack.base.procedural/pack.alias.json"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/packs/official/pack.earth.procedural/pack.alias.json",
+      "target": "archive/generated/dist/packs/official/pack.earth.procedural/pack.alias.json"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/packs/official/pack.sol.pin_minimal/pack.alias.json",
+      "target": "archive/generated/dist/packs/official/pack.sol.pin_minimal/pack.alias.json"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/profiles/bundle.mvp_default.json",
+      "target": "archive/generated/dist/profiles/bundle.mvp_default.json"
+    },
+    {
+      "action": "move",
+      "reason": "tracked generated distribution evidence",
+      "source": "dist/saves/.gitkeep",
+      "target": "archive/generated/dist/saves/.gitkeep"
+    },
+    {
+      "action": "move",
+      "reason": "validation docs under testing",
+      "source": "docs/validation/VALIDATION_PIPELINE.md",
+      "target": "docs/testing/validation/VALIDATION_PIPELINE.md"
+    },
+    {
+      "action": "move",
+      "reason": "RepoX shell tooling",
+      "source": "tools/repo/repox/appcore/appcore_repox.c",
+      "target": "tools/repo/repox/shell/appcore_repox.c"
+    },
+    {
+      "action": "move",
+      "reason": "RepoX shell tooling",
+      "source": "tools/repo/repox/appcore/appcore_repox.h",
+      "target": "tools/repo/repox/shell/appcore_repox.h"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/__init__.py",
+      "target": "tools/validators/suite/__init__.py"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_fabrication/schema/life/spec_fabrication.md",
+      "target": "tools/validators/suite/fixtures/bad_fabrication/schema/life/spec_fabrication.md"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_fallback/engine/render/features/feature_a.txt",
+      "target": "tools/validators/suite/fixtures/bad_fallback/engine/render/features/feature_a.txt"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_float/schema/demo/schema_defs.c",
+      "target": "tools/validators/suite/fixtures/bad_float/schema/demo/schema_defs.c"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_renderer/engine/render/backends/implicit/placeholder.txt",
+      "target": "tools/validators/suite/fixtures/bad_renderer/engine/render/backends/implicit/placeholder.txt"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_renderer/vulkan/placeholder.txt",
+      "target": "tools/validators/suite/fixtures/bad_renderer/vulkan/placeholder.txt"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_ui/game/ui/bad_ui.cpp",
+      "target": "tools/validators/suite/fixtures/bad_ui/game/ui/bad_ui.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/fixtures/bad_unbounded/schema/demo/spec.md",
+      "target": "tools/validators/suite/fixtures/bad_unbounded/schema/demo/spec.md"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/tool_run_validation.py",
+      "target": "tools/validators/suite/tool_run_validation.py"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validate_all_main.cpp",
+      "target": "tools/validators/suite/validate_all_main.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validation_engine.py",
+      "target": "tools/validators/suite/validation_engine.py"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validator_common.cpp",
+      "target": "tools/validators/suite/validator_common.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validator_common.h",
+      "target": "tools/validators/suite/validator_common.h"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validator_reports.cpp",
+      "target": "tools/validators/suite/validator_reports.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validator_reports.h",
+      "target": "tools/validators/suite/validator_reports.h"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validators_registry.cpp",
+      "target": "tools/validators/suite/validators_registry.cpp"
+    },
+    {
+      "action": "move",
+      "reason": "validator suite tooling",
+      "source": "tools/validators/validation/validators_registry.h",
+      "target": "tools/validators/suite/validators_registry.h"
+    },
+    {
+      "action": "move",
+      "reason": "singular XStack test registry data",
+      "source": "tools/xstack/testdata/registries/net_server_policy_registry.json",
+      "target": "tools/xstack/testdata/registry/net_server_policy_registry.json"
+    },
+    {
+      "action": "move",
+      "reason": "singular XStack test registry data",
+      "source": "tools/xstack/testdata/registries/server_profile_registry.json",
+      "target": "tools/xstack/testdata/registry/server_profile_registry.json"
+    }
+  ],
+  "schema_version": "dominium.canon_spine_new.v1",
+  "status": "PASS",
+  "summary": {
+    "applied_moves": 0,
+    "candidate_routes": 61,
+    "collision_reroutes": 0,
+    "failed_moves": 0,
+    "text_files_changed": 0,
+    "text_replacements": 0
+  }
+}

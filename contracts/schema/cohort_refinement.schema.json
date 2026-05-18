@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cohort Refinement Schema",
+  "version": "1.0.0",
+  "description": "Deterministic cohort macro<->micro refinement record.",
+  "x-doc-ref": [
+    "docs/civilisation/COHORT_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "refinement_id",
+    "cohort_id",
+    "target_state",
+    "interest_region_id",
+    "created_tick",
+    "deterministic_seed",
+    "mapping_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "refinement_id": {
+      "type": "string"
+    },
+    "cohort_id": {
+      "type": "string"
+    },
+    "target_state": {
+      "type": "string",
+      "enum": [
+        "macro",
+        "micro"
+      ]
+    },
+    "interest_region_id": {
+      "type": "string"
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "deterministic_seed": {
+      "type": "string"
+    },
+    "mapping_policy_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "refinement_id": "refine.cohort.alpha.001",
+      "cohort_id": "cohort.alpha.001",
+      "target_state": "micro",
+      "interest_region_id": "region.earth.surface.001",
+      "created_tick": 42,
+      "deterministic_seed": "seed.cohort.alpha.001.42",
+      "mapping_policy_id": "cohort.map.default",
+      "extensions": {}
+    }
+  ]
+}
+

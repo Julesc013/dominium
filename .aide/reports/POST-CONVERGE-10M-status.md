@@ -11,7 +11,7 @@ PARTIAL
 
 POST-CONVERGE-10M reproduced focused `inv_repox_rules`, isolated retired-domain path policy failures, and fixed the safe stale RepoX rule path assumptions. Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings.
 
-The remaining retired-domain failures are two MW-4 fixture failures caused by `game/domains/embodiment/__init__.py` lazily importing retired `embodiment.*` modules. They are preserved as blockers because fixing them would change product/runtime source behavior.
+The remaining retired-domain failures are two MW-4 fixture failures caused by `game/domain/embodiment/__init__.py` lazily importing retired `embodiment.*` modules. They are preserved as blockers because fixing them would change product/runtime source behavior.
 
 ## Counts
 

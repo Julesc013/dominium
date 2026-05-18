@@ -1,0 +1,34 @@
+SCHEMA: logic/logic_element_definition.schema
+schema_id: dominium.schema.logic.logic_element_definition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare pack-defined logic elements as deterministic logic assemblies.
+- Bind element identity to interface, state vector, behavior model, compute cost, and timing policy declarations.
+
+NON-SEMANTICS:
+- No network evaluation semantics.
+- No propagation scheduling.
+- No carrier physics.
+- No mutation authority.
+
+REQUIRED SHAPE:
+record logic_element_definition
+  required:
+    - element_id: id
+    - description: text
+    - interface_signature_id: id
+    - state_vector_definition_id: id
+    - behavior_model_id: id
+    - compute_cost_units: int
+    - timing_policy_id: id
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- `element_id` must resolve to an Assembly declaration of the same canonical owner id.
+- `interface_signature_id` must resolve to signal-only ports.
+- `state_vector_definition_id` must resolve, including for empty-memory combinational elements.
+- `compute_cost_units` must be greater than zero.
+- `timing_policy_id` must resolve to a deterministic timing or delay policy.

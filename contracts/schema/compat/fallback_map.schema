@@ -1,0 +1,25 @@
+SCHEMA: compat/fallback_map.schema
+schema_id: dominium.schema.compat.fallback_map
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic fallback behavior for a capability when the primary feature is unavailable.
+
+NON-SEMANTICS:
+- FallbackMap does not mutate truth.
+- FallbackMap does not override semantic-contract requirements.
+
+REQUIRED SHAPE:
+record fallback_map
+  required:
+    - schema_version: tag
+    - capability_id: id
+    - fallback_action: enum(disable_feature|substitute_stub|downgrade_mode|switch_to_read_only|refuse_connection)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- fallback chains must be evaluated in deterministic listed order
+- substitute targets must be declared in extensions
+- read-only fallback must bind to explicit law override metadata

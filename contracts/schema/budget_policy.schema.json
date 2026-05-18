@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Budget Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic compute budget contract for interest-region micro activation.",
+  "x-doc-ref": [
+    "docs/architecture/budget_policy.md",
+    "docs/canon/constitution_v1.md §3 A1/A10"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "activation_policy_id",
+    "max_compute_units_per_tick",
+    "max_entities_micro",
+    "max_regions_micro",
+    "fallback_behavior",
+    "logging_level",
+    "tier_compute_weights",
+    "entity_compute_weight"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "activation_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "max_compute_units_per_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_entities_micro": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "max_regions_micro": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fallback_behavior": {
+      "type": "string",
+      "enum": [
+        "degrade_fidelity",
+        "refuse"
+      ]
+    },
+    "logging_level": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "tier_compute_weights": {
+      "type": "object",
+      "required": [
+        "coarse",
+        "medium",
+        "fine"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "coarse": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "medium": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fine": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "entity_compute_weight": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "policy.budget.default_lab",
+      "activation_policy_id": "policy.activation.default_lab",
+      "max_compute_units_per_tick": 240,
+      "max_entities_micro": 180,
+      "max_regions_micro": 24,
+      "fallback_behavior": "degrade_fidelity",
+      "logging_level": 2,
+      "tier_compute_weights": {
+        "coarse": 2,
+        "medium": 5,
+        "fine": 9
+      },
+      "entity_compute_weight": 1
+    }
+  ]
+}

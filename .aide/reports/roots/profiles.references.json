@@ -167,7 +167,7 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 5519,
-      "snippet": "\"dist/profiles/bundle.mvp_default.json\","
+      "snippet": "\"archive/generated/dist/profiles/bundle.mvp_default.json\","
     },
     {
       "classification": "unknown",
@@ -443,7 +443,7 @@
       "classification": "unknown",
       "file": "data/audit/dist_verify_win64.json",
       "line": 1,
-      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
+      "snippet": "{\"absolute_path_scan\":{\"result\":\"complete\",\"rows\":[]},\"bundle_root\":\"archive/generated/dist/v0.0.0-mock/win64/dominium\",\"descriptor_checks\":{\"result\":\"complete\",\"rows\":[{\"actual_descriptor_hash\":\"9790432e5c8a3bc4f628ad62cd5c0be2ef985f94555c7b942066aee4965aa3"
     },
     {
       "classification": "unknown",
@@ -533,7 +533,7 @@
       "classification": "unknown",
       "file": "data/audit/virtual_paths_report.json",
       "line": 73,
-      "snippet": "\"line\": \"os.path.join(repo_root, \\\"dist\\\", \\\"profiles\\\"),\","
+      "snippet": "\"line\": \"os.path.join(repo_root, \\\"archive\generated\archive\generated\dist\\\", \\\"profiles\\\"),\","
     },
     {
       "classification": "unknown",
@@ -545,7 +545,7 @@
       "classification": "unknown",
       "file": "data/audit/virtual_paths_report.json",
       "line": 85,
-      "snippet": "\"line\": \"os.path.join(repo_root, \\\"dist\\\", \\\"profiles\\\"),\","
+      "snippet": "\"line\": \"os.path.join(repo_root, \\\"archive\generated\archive\generated\dist\\\", \\\"profiles\\\"),\","
     },
     {
       "classification": "unknown",
@@ -803,7 +803,7 @@
       "classification": "unknown",
       "file": "data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "line": 931,
-      "snippet": "\"dist/profiles/\","
+      "snippet": "\"archive/generated/dist/profiles/\","
     },
     {
       "classification": "unknown",
@@ -891,7 +891,7 @@
     },
     {
       "classification": "unknown",
-      "file": "dist/profiles/bundle.mvp_default.json",
+      "file": "archive/generated/dist/profiles/bundle.mvp_default.json",
       "line": 1,
       "snippet": "{\"deterministic_fingerprint\":\"f94ca4c75cc5ccb7a27a6fcab2a086be85d95dd8804fc180418200e8612a3239\",\"engine_version_created\":\"0.0.0+build.8d69b3279e81d777\",\"format_version\":\"2.0.0\",\"generator_version_lock\":\"gen.v0_stub\",\"profile_bundle_hash\":\"f"
     },
@@ -983,7 +983,7 @@
       "classification": "docs",
       "file": "docs/audit/MVP1_RETRO_AUDIT.md",
       "line": 23,
-      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `dist/`."
+      "snippet": "- Current dist tooling manages `bin/`, `packs/`, `bundles/`, and `registries/` plus root `manifest.json` and `lockfile.json`; it does not create `profiles/`, `locks/`, `saves/`, or `logs/` under `archive/generated/dist/`."
     },
     {
       "classification": "docs",
@@ -995,7 +995,7 @@
       "classification": "docs",
       "file": "docs/audit/MVP_RUNTIME_BASELINE.md",
       "line": 63,
-      "snippet": "- `dist/profiles/bundle.mvp_default.json`"
+      "snippet": "- `archive/generated/dist/profiles/bundle.mvp_default.json`"
     },
     {
       "classification": "docs",
@@ -1025,7 +1025,7 @@
       "classification": "docs",
       "file": "docs/audit/RELEASE1_RETRO_AUDIT.md",
       "line": 33,
-      "snippet": "- profile bundle file `dist/profiles/bundle.mvp_default.json`"
+      "snippet": "- profile bundle file `archive/generated/dist/profiles/bundle.mvp_default.json`"
     },
     {
       "classification": "docs",
@@ -1151,7 +1151,7 @@
       "classification": "docs",
       "file": "docs/governance/REPOX_RULESETS.md",
       "line": 879,
-      "snippet": "- Fails when shipped dist artifacts omit `dist/profiles/bundle.mvp_default.json`."
+      "snippet": "- Fails when shipped dist artifacts omit `archive/generated/dist/profiles/bundle.mvp_default.json`."
     },
     {
       "classification": "docs",
@@ -1235,13 +1235,13 @@
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 141,
-      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
+      "snippet": "`tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
       "line": 164,
-      "snippet": "`runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
+      "snippet": "`runtime/process_spawn.py`, `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py`, `VROOT_IPC`, `profiles/bundles/bundle.mvp_default.json`, `locks/pack_lock.mvp_default.json`, `data/session_templates/session.mv"
     },
     {
       "classification": "docs",
@@ -1301,7 +1301,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
       "line": 131,
-      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validation/`; `rele"
+      "snippet": "`appshell/`, `client/`, and `server/` stay the main product-shell and authority roots; `tools/` stays a tool umbrella but with sharper internal ownership for `tools/launcher/`, `tools/setup/`, `tools/xstack/`, and `tools/validators/suite/`; `rele"
     },
     {
       "classification": "docs",
@@ -1343,19 +1343,19 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 167,
-      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
+      "snippet": "`data/registries/command_registry.json`, `data/registries/tui_panel_registry.json`, `data/registries/virtual_root_registry.json`, `archive/generated/dist/`, `packs/`, `profiles/`, `locks/`, `saves/`, `runtime/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 305,
-      "snippet": "`manifests/release_manifest.json`, `manifests/release_index.json`, `data/registries/component_graph_registry.json`, `data/registries/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `dist/`"
+      "snippet": "`manifests/release_manifest.json`, `manifests/release_index.json`, `data/registries/component_graph_registry.json`, `data/registries/install_profile_registry.json`, `store/profiles/`, `store/locks/`, `archive/generated/dist/`"
     },
     {
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 443,
-      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `dist/`"
+      "snippet": "repo-root hints, `appshell/`, `validation/`, `build/registries/`, `build/lockfile.json`, `profiles/`, `locks/`, `data/session_templates/`, `saves/`, `archive/generated/dist/`"
     },
     {
       "classification": "docs",
@@ -1385,7 +1385,7 @@
       "classification": "docs",
       "file": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
       "line": 719,
-      "snippet": "`dist/manifests/release_manifest.json`, `dist/packs/`, `dist/profiles/`, `dist/locks/`, AppShell install/store search roots"
+      "snippet": "`archive/generated/dist/manifests/release_manifest.json`, `archive/generated/dist/packs/`, `archive/generated/dist/profiles/`, `archive/generated/dist/locks/`, AppShell install/store search roots"
     },
     {
       "classification": "docs",
@@ -1463,7 +1463,7 @@
       "classification": "docs",
       "file": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
       "line": 156,
-      "snippet": "| `dist/profiles/*`, `dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |"
+      "snippet": "| `archive/generated/dist/profiles/*`, `archive/generated/dist/locks/*` | `/data/profiles/*`, `/data/locks/*` with dist mirrors retained via vpath | portable install runtime data | `provisional` | appshell paths, install discovery | `medium` |"
     },
     {
       "classification": "docs",
@@ -1515,7 +1515,7 @@
     },
     {
       "classification": "tests",
-      "file": "game/tests/policy_bridge_tests.cpp",
+      "file": "tests/game/policy_bridge_tests.cpp",
       "line": 24,
       "snippet": "path += \"/defaults/profiles/\";"
     },
@@ -1533,7 +1533,7 @@
     },
     {
       "classification": "active_source",
-      "file": "release/update_resolver.py",
+      "file": "tools/release/update_resolver.py",
       "line": 490,
       "snippet": "return [\"store/profiles/bundles/bundle.mvp_default.json\"]"
     },
@@ -1547,47 +1547,47 @@
       "classification": "unknown",
       "file": "repo/repox/rulesets/core.json",
       "line": 1250,
-      "snippet": "\"dist/profiles/bundle.mvp_default.json\","
+      "snippet": "\"archive/generated/dist/profiles/bundle.mvp_default.json\","
     },
     {
       "classification": "tests",
       "file": "tests/launcher/launcher_cli_tests.py",
       "line": 396,
-      "snippet": "\"artifact_path\": \"embedded_artifacts/profiles/%s\" % profile_bundle_hash,"
+      "snippet": "\"artifact_path\": \"embedded_archive/generated/artifacts/profiles/%s\" % profile_bundle_hash,"
     },
     {
       "classification": "tests",
       "file": "tests/ops/export_import_bundle_tests.py",
       "line": 166,
-      "snippet": "\"artifact_path\": slash(\"embedded_artifacts/profiles/{}\".format(profile_bundle_hash)),"
+      "snippet": "\"artifact_path\": slash(\"embedded_archive/generated/artifacts/profiles/{}\".format(profile_bundle_hash)),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 11,
       "snippet": "WATCH_PREFIXES = (\"tools/mvp/\", \"data/session_templates/\", \"profiles/bundles/\", \"locks/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 16,
       "snippet": "\"profiles/bundles/bundle.mvp_default.json\": (\"pack_lock.mvp_default\", \"profile.bundle.mvp_default\"),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e354_missing_pack_lock_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e354_missing_pack_lock_smell.py",
       "line": 89,
       "snippet": "related_paths=[rel_path, \"locks/pack_lock.mvp_default.json\", \"profiles/bundles/bundle.mvp_default.json\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_tree_common.py",
+      "file": "tools/release/dist/dist_tree_common.py",
       "line": 1229,
       "snippet": "rel_path for rel_path in _iter_bundle_files(root) if rel_path.startswith(\"store/profiles/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/dist/dist_verify_common.py",
+      "file": "tools/release/dist/dist_verify_common.py",
       "line": 46,
       "snippet": "\"store/profiles/bundles/bundle.mvp_default.json\","
     },
@@ -1595,7 +1595,7 @@
       "classification": "tools",
       "file": "tools/lib/lib_stress_common.py",
       "line": 1071,
-      "snippet": "\"artifact_path\": _slash(\"embedded_artifacts/profiles/{}\".format(portable_profile_hash), slash_mode),"
+      "snippet": "\"artifact_path\": _slash(\"embedded_archive/generated/artifacts/profiles/{}\".format(portable_profile_hash), slash_mode),"
     },
     {
       "classification": "tools",

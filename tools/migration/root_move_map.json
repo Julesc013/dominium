@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-18T14:09:45Z",
+  "generated_at_utc": "2026-05-18T17:54:18Z",
   "repo_root": ".",
-  "head_sha": "2f722d626a316e3e1f827fd06a131b2a74e5f3d7",
+  "head_sha": "ce504d4e1a0a5397123f014036cca78e49355658",
   "source_branch": "main",
   "layout_exceptions_contract_id": "dominium.repo.layout_exceptions.v1",
   "active_exception_count": 8,
@@ -191,11 +191,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-07; root-level app/ moved under runtime/app/.",
+      "notes": "Completed in CONVERGE-07; root-level app/ moved under runtime/shell/lifecycle/.",
       "status": "completed",
       "completed_phase": "CONVERGE-07",
       "completed_target": "runtime/app",
-      "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/app/."
+      "completed_notes": "Root-level app/ is retired; retained app runtime substrate lives under runtime/shell/lifecycle/."
     },
     {
       "name": "apps",
@@ -233,11 +233,11 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-07; root-level appshell/ moved under runtime/appshell/.",
+      "notes": "Completed in CONVERGE-07; root-level appshell/ moved under runtime/shell/.",
       "status": "completed",
       "completed_phase": "CONVERGE-07",
       "completed_target": "runtime/appshell",
-      "completed_notes": "Root-level appshell/ is retired; AppShell source lives under runtime/appshell/."
+      "completed_notes": "Root-level appshell/ is retired; AppShell source lives under runtime/shell/."
     },
     {
       "name": "archive",
@@ -261,35 +261,9 @@
       "completed_notes": ""
     },
     {
-      "name": "artifacts",
-      "current_path": "artifacts",
-      "proposed_target": "generated evidence or release artifact review",
-      "action": "ignore_generated",
-      "classification": "generated_or_ephemeral",
-      "ownership_surface": "generated",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires generated-output provenance review"
-      ],
-      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "Review before using as authority.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "artifacts_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "provenance/evidence policy review; possible release or archive evidence relocation"
-    },
-    {
       "name": "astro",
       "current_path": "astro",
-      "proposed_target": "game/domains/astronomy",
+      "proposed_target": "game/domain/astronomy",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -297,18 +271,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/astronomy/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/astronomy/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level astro/ implementation moved under game/domains/astronomy/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level astro/ implementation moved under game/domain/astronomy/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/astronomy",
+      "completed_target": "game/domain/astronomy",
       "completed_targets": [
-        "game/domains/astronomy"
+        "game/domain/astronomy"
       ],
-      "completed_notes": "Root-level astro/ is retired; domain implementation source lives under game/domains/astronomy/.",
+      "completed_notes": "Root-level astro/ is retired; domain implementation source lives under game/domain/astronomy/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -378,7 +352,7 @@
     {
       "name": "chem",
       "current_path": "chem",
-      "proposed_target": "game/domains/chemistry",
+      "proposed_target": "game/domain/chemistry",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -386,18 +360,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/chemistry/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/chemistry/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level chem/ implementation moved under game/domains/chemistry/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level chem/ implementation moved under game/domain/chemistry/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/chemistry",
+      "completed_target": "game/domain/chemistry",
       "completed_targets": [
-        "game/domains/chemistry"
+        "game/domain/chemistry"
       ],
-      "completed_notes": "Root-level chem/ is retired; domain implementation source lives under game/domains/chemistry/.",
+      "completed_notes": "Root-level chem/ is retired; domain implementation source lives under game/domain/chemistry/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -635,7 +609,7 @@
     {
       "name": "diegetics",
       "current_path": "diegetics",
-      "proposed_target": "game/domains/diegetics",
+      "proposed_target": "game/domain/diegetics",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -643,46 +617,20 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/diegetics/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/diegetics/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level diegetics/ implementation moved under game/domains/diegetics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level diegetics/ implementation moved under game/domain/diegetics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/diegetics",
+      "completed_target": "game/domain/diegetics",
       "completed_targets": [
-        "game/domains/diegetics"
+        "game/domain/diegetics"
       ],
-      "completed_notes": "Root-level diegetics/ is retired; domain implementation source lives under game/domains/diegetics/.",
+      "completed_notes": "Root-level diegetics/ is retired; domain implementation source lives under game/domain/diegetics/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
-    },
-    {
-      "name": "dist",
-      "current_path": "dist",
-      "proposed_target": "generated distribution output; future distribution contract review",
-      "action": "ignore_generated",
-      "classification": "generated_or_ephemeral",
-      "ownership_surface": "generated",
-      "split_required": false,
-      "risk_level": "review",
-      "phase_hint": "review",
-      "dependencies": [
-        "requires generated-output provenance review"
-      ],
-      "preserve_paths": "Do not preserve generated path as source authority; preserve only if external workflows require it.",
-      "shim_required": false,
-      "semantic_change_allowed": false,
-      "build_change_allowed": false,
-      "notes": "Distribution output is governed by distribution contracts, not source repo layout.",
-      "status": "exception",
-      "completed_phase": "",
-      "completed_target": "",
-      "completed_notes": "",
-      "exception_id": "dist_root",
-      "exception_retirement_phase": "POST-CONVERGE",
-      "exception_target": "distribution projection policy review; release/source authority split"
     },
     {
       "name": "docs",
@@ -729,7 +677,7 @@
     {
       "name": "electric",
       "current_path": "electric",
-      "proposed_target": "game/domains/electricity",
+      "proposed_target": "game/domain/electricity",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -737,25 +685,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/electricity/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/electricity/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level electric/ implementation moved under game/domains/electricity/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level electric/ implementation moved under game/domain/electricity/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/electricity",
+      "completed_target": "game/domain/electricity",
       "completed_targets": [
-        "game/domains/electricity"
+        "game/domain/electricity"
       ],
-      "completed_notes": "Root-level electric/ is retired; domain implementation source lives under game/domains/electricity/.",
+      "completed_notes": "Root-level electric/ is retired; domain implementation source lives under game/domain/electricity/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "embodiment",
       "current_path": "embodiment",
-      "proposed_target": "game/domains/embodiment",
+      "proposed_target": "game/domain/embodiment",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -763,18 +711,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/embodiment/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/embodiment/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level embodiment/ implementation moved under game/domains/embodiment/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level embodiment/ implementation moved under game/domain/embodiment/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/embodiment",
+      "completed_target": "game/domain/embodiment",
       "completed_targets": [
-        "game/domains/embodiment"
+        "game/domain/embodiment"
       ],
-      "completed_notes": "Root-level embodiment/ is retired; domain implementation source lives under game/domains/embodiment/.",
+      "completed_notes": "Root-level embodiment/ is retired; domain implementation source lives under game/domain/embodiment/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -802,7 +750,7 @@
     {
       "name": "epistemics",
       "current_path": "epistemics",
-      "proposed_target": "game/domains/epistemics",
+      "proposed_target": "game/domain/epistemics",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -810,25 +758,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/epistemics/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/epistemics/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level epistemics/ implementation moved under game/domains/epistemics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level epistemics/ implementation moved under game/domain/epistemics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/epistemics",
+      "completed_target": "game/domain/epistemics",
       "completed_targets": [
-        "game/domains/epistemics"
+        "game/domain/epistemics"
       ],
-      "completed_notes": "Root-level epistemics/ is retired; domain implementation source lives under game/domains/epistemics/.",
+      "completed_notes": "Root-level epistemics/ is retired; domain implementation source lives under game/domain/epistemics/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "field",
       "current_path": "field",
-      "proposed_target": "game/domains/fields/from_root_field",
+      "proposed_target": "game/domain/fields/from_root_field",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -836,25 +784,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/fields/from_root_field/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/fields/from_root_field/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level field/ implementation moved under game/domains/fields/from_root_field/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level field/ implementation moved under game/domain/fields/from_root_field/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/fields/from_root_field",
+      "completed_target": "game/domain/fields/from_root_field",
       "completed_targets": [
-        "game/domains/fields/from_root_field"
+        "game/domain/fields/from_root_field"
       ],
-      "completed_notes": "Root-level field/ is retired; domain implementation source lives under game/domains/fields/from_root_field/.",
+      "completed_notes": "Root-level field/ is retired; domain implementation source lives under game/domain/fields/from_root_field/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "fields",
       "current_path": "fields",
-      "proposed_target": "game/domains/fields",
+      "proposed_target": "game/domain/fields",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -862,25 +810,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/fields/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/fields/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level fields/ implementation moved under game/domains/fields/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level fields/ implementation moved under game/domain/fields/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/fields",
+      "completed_target": "game/domain/fields",
       "completed_targets": [
-        "game/domains/fields"
+        "game/domain/fields"
       ],
-      "completed_notes": "Root-level fields/ is retired; domain implementation source lives under game/domains/fields/.",
+      "completed_notes": "Root-level fields/ is retired; domain implementation source lives under game/domain/fields/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "fluid",
       "current_path": "fluid",
-      "proposed_target": "game/domains/fluids",
+      "proposed_target": "game/domain/fluids",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -888,18 +836,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/fluids/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/fluids/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level fluid/ implementation moved under game/domains/fluids/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level fluid/ implementation moved under game/domain/fluids/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/fluids",
+      "completed_target": "game/domain/fluids",
       "completed_targets": [
-        "game/domains/fluids"
+        "game/domain/fluids"
       ],
-      "completed_notes": "Root-level fluid/ is retired; domain implementation source lives under game/domains/fluids/.",
+      "completed_notes": "Root-level fluid/ is retired; domain implementation source lives under game/domain/fluids/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -927,7 +875,7 @@
     {
       "name": "geo",
       "current_path": "geo",
-      "proposed_target": "game/domains/geology",
+      "proposed_target": "game/domain/geology",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -935,18 +883,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/geology/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/geology/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level geo/ implementation moved under game/domains/geology/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level geo/ implementation moved under game/domain/geology/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/geology",
+      "completed_target": "game/domain/geology",
       "completed_targets": [
-        "game/domains/geology"
+        "game/domain/geology"
       ],
-      "completed_notes": "Root-level geo/ is retired; domain implementation source lives under game/domains/geology/.",
+      "completed_notes": "Root-level geo/ is retired; domain implementation source lives under game/domain/geology/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -974,7 +922,7 @@
     {
       "name": "infrastructure",
       "current_path": "infrastructure",
-      "proposed_target": "game/domains/infrastructure",
+      "proposed_target": "game/domain/infrastructure",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -982,18 +930,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/infrastructure/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/infrastructure/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level infrastructure/ implementation moved under game/domains/infrastructure/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level infrastructure/ implementation moved under game/domain/infrastructure/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/infrastructure",
+      "completed_target": "game/domain/infrastructure",
       "completed_targets": [
-        "game/domains/infrastructure"
+        "game/domain/infrastructure"
       ],
-      "completed_notes": "Root-level infrastructure/ is retired; domain implementation source lives under game/domains/infrastructure/.",
+      "completed_notes": "Root-level infrastructure/ is retired; domain implementation source lives under game/domain/infrastructure/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1021,7 +969,7 @@
     {
       "name": "inspection",
       "current_path": "inspection",
-      "proposed_target": "game/domains/inspection",
+      "proposed_target": "game/domain/inspection",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1029,25 +977,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/inspection/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/inspection/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level inspection/ implementation moved under game/domains/inspection/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level inspection/ implementation moved under game/domain/inspection/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/inspection",
+      "completed_target": "game/domain/inspection",
       "completed_targets": [
-        "game/domains/inspection"
+        "game/domain/inspection"
       ],
-      "completed_notes": "Root-level inspection/ is retired; domain implementation source lives under game/domains/inspection/.",
+      "completed_notes": "Root-level inspection/ is retired; domain implementation source lives under game/domain/inspection/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "interaction",
       "current_path": "interaction",
-      "proposed_target": "game/domains/interaction",
+      "proposed_target": "game/domain/interaction",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1055,25 +1003,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/interaction/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/interaction/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level interaction/ implementation moved under game/domains/interaction/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level interaction/ implementation moved under game/domain/interaction/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/interaction",
+      "completed_target": "game/domain/interaction",
       "completed_targets": [
-        "game/domains/interaction"
+        "game/domain/interaction"
       ],
-      "completed_notes": "Root-level interaction/ is retired; domain implementation source lives under game/domains/interaction/.",
+      "completed_notes": "Root-level interaction/ is retired; domain implementation source lives under game/domain/interaction/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "interior",
       "current_path": "interior",
-      "proposed_target": "game/domains/interior",
+      "proposed_target": "game/domain/interior",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1081,18 +1029,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/interior/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/interior/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level interior/ implementation moved under game/domains/interior/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level interior/ implementation moved under game/domain/interior/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/interior",
+      "completed_target": "game/domain/interior",
       "completed_targets": [
-        "game/domains/interior"
+        "game/domain/interior"
       ],
-      "completed_notes": "Root-level interior/ is retired; domain implementation source lives under game/domains/interior/.",
+      "completed_notes": "Root-level interior/ is retired; domain implementation source lives under game/domain/interior/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1162,7 +1110,7 @@
     {
       "name": "logic",
       "current_path": "logic",
-      "proposed_target": "game/domains/logic",
+      "proposed_target": "game/domain/logic",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1170,25 +1118,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/logic/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/logic/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level logic/ implementation moved under game/domains/logic/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level logic/ implementation moved under game/domain/logic/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/logic",
+      "completed_target": "game/domain/logic",
       "completed_targets": [
-        "game/domains/logic"
+        "game/domain/logic"
       ],
-      "completed_notes": "Root-level logic/ is retired; domain implementation source lives under game/domains/logic/.",
+      "completed_notes": "Root-level logic/ is retired; domain implementation source lives under game/domain/logic/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "logistics",
       "current_path": "logistics",
-      "proposed_target": "game/domains/logistics",
+      "proposed_target": "game/domain/logistics",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1196,25 +1144,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/logistics/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/logistics/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level logistics/ implementation moved under game/domains/logistics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level logistics/ implementation moved under game/domain/logistics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/logistics",
+      "completed_target": "game/domain/logistics",
       "completed_targets": [
-        "game/domains/logistics"
+        "game/domain/logistics"
       ],
-      "completed_notes": "Root-level logistics/ is retired; domain implementation source lives under game/domains/logistics/.",
+      "completed_notes": "Root-level logistics/ is retired; domain implementation source lives under game/domain/logistics/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "machines",
       "current_path": "machines",
-      "proposed_target": "game/domains/machines",
+      "proposed_target": "game/domain/machines",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1222,25 +1170,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/machines/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/machines/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level machines/ implementation moved under game/domains/machines/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level machines/ implementation moved under game/domain/machines/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/machines",
+      "completed_target": "game/domain/machines",
       "completed_targets": [
-        "game/domains/machines"
+        "game/domain/machines"
       ],
-      "completed_notes": "Root-level machines/ is retired; domain implementation source lives under game/domains/machines/.",
+      "completed_notes": "Root-level machines/ is retired; domain implementation source lives under game/domain/machines/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "materials",
       "current_path": "materials",
-      "proposed_target": "game/domains/materials",
+      "proposed_target": "game/domain/materials",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1248,25 +1196,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/materials/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/materials/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level materials/ implementation moved under game/domains/materials/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level materials/ implementation moved under game/domain/materials/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/materials",
+      "completed_target": "game/domain/materials",
       "completed_targets": [
-        "game/domains/materials"
+        "game/domain/materials"
       ],
-      "completed_notes": "Root-level materials/ is retired; domain implementation source lives under game/domains/materials/.",
+      "completed_notes": "Root-level materials/ is retired; domain implementation source lives under game/domain/materials/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "mechanics",
       "current_path": "mechanics",
-      "proposed_target": "game/domains/mechanics",
+      "proposed_target": "game/domain/mechanics",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1274,18 +1222,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/mechanics/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/mechanics/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level mechanics/ implementation moved under game/domains/mechanics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level mechanics/ implementation moved under game/domain/mechanics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/mechanics",
+      "completed_target": "game/domain/mechanics",
       "completed_targets": [
-        "game/domains/mechanics"
+        "game/domain/mechanics"
       ],
-      "completed_notes": "Root-level mechanics/ is retired; domain implementation source lives under game/domains/mechanics/.",
+      "completed_notes": "Root-level mechanics/ is retired; domain implementation source lives under game/domain/mechanics/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1318,7 +1266,7 @@
     {
       "name": "mobility",
       "current_path": "mobility",
-      "proposed_target": "game/domains/mobility",
+      "proposed_target": "game/domain/mobility",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1326,18 +1274,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/mobility/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/mobility/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level mobility/ implementation moved under game/domains/mobility/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level mobility/ implementation moved under game/domain/mobility/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/mobility",
+      "completed_target": "game/domain/mobility",
       "completed_targets": [
-        "game/domains/mobility"
+        "game/domain/mobility"
       ],
-      "completed_notes": "Root-level mobility/ is retired; domain implementation source lives under game/domains/mobility/.",
+      "completed_notes": "Root-level mobility/ is retired; domain implementation source lives under game/domain/mobility/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1412,7 +1360,7 @@
     {
       "name": "physics",
       "current_path": "physics",
-      "proposed_target": "game/domains/physics",
+      "proposed_target": "game/domain/physics",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1420,18 +1368,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/physics/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/physics/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level physics/ implementation moved under game/domains/physics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level physics/ implementation moved under game/domain/physics/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/physics",
+      "completed_target": "game/domain/physics",
       "completed_targets": [
-        "game/domains/physics"
+        "game/domain/physics"
       ],
-      "completed_notes": "Root-level physics/ is retired; domain implementation source lives under game/domains/physics/.",
+      "completed_notes": "Root-level physics/ is retired; domain implementation source lives under game/domain/physics/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1459,7 +1407,7 @@
     {
       "name": "pollution",
       "current_path": "pollution",
-      "proposed_target": "game/domains/pollution",
+      "proposed_target": "game/domain/pollution",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1467,25 +1415,25 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/pollution/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/pollution/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level pollution/ implementation moved under game/domains/pollution/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level pollution/ implementation moved under game/domain/pollution/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/pollution",
+      "completed_target": "game/domain/pollution",
       "completed_targets": [
-        "game/domains/pollution"
+        "game/domain/pollution"
       ],
-      "completed_notes": "Root-level pollution/ is retired; domain implementation source lives under game/domains/pollution/.",
+      "completed_notes": "Root-level pollution/ is retired; domain implementation source lives under game/domain/pollution/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
     {
       "name": "process",
       "current_path": "process",
-      "proposed_target": "game/domains/processes",
+      "proposed_target": "game/domain/processes",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1493,18 +1441,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/processes/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/processes/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level process/ implementation moved under game/domains/processes/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level process/ implementation moved under game/domain/processes/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/processes",
+      "completed_target": "game/domain/processes",
       "completed_targets": [
-        "game/domains/processes"
+        "game/domain/processes"
       ],
-      "completed_notes": "Root-level process/ is retired; domain implementation source lives under game/domains/processes/.",
+      "completed_notes": "Root-level process/ is retired; domain implementation source lives under game/domain/processes/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1553,7 +1501,7 @@
     {
       "name": "reality",
       "current_path": "reality",
-      "proposed_target": "game/domains/reality",
+      "proposed_target": "game/domain/reality",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1561,18 +1509,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/reality/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/reality/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level reality/ implementation moved under game/domains/reality/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level reality/ implementation moved under game/domain/reality/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/reality",
+      "completed_target": "game/domain/reality",
       "completed_targets": [
-        "game/domains/reality"
+        "game/domain/reality"
       ],
-      "completed_notes": "Root-level reality/ is retired; domain implementation source lives under game/domains/reality/.",
+      "completed_notes": "Root-level reality/ is retired; domain implementation source lives under game/domain/reality/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1591,7 +1539,7 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registry/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
       "completed_target": "contracts/registries",
@@ -1612,7 +1560,7 @@
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registries/.",
+      "notes": "Confirmed absent in CONVERGE-06; future registry contracts belong under contracts/registry/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
       "completed_target": "contracts/registries",
@@ -1692,15 +1640,15 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-06",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schema/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schemas/.",
+      "notes": "Completed in CONVERGE-06; root-level schema/ moved under contracts/schema/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
       "completed_target": "contracts/schemas",
-      "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schemas/."
+      "completed_notes": "Root-level schema/ is retired; retained schema law lives under contracts/schema/."
     },
     {
       "name": "schemas",
@@ -1713,15 +1661,15 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-06",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schemas/.",
+      "preserve_paths": "Root path retired in CONVERGE-06; active references should use contracts/schema/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schemas/.",
+      "notes": "Completed in CONVERGE-06; root-level schemas/ merged under contracts/schema/.",
       "status": "completed",
       "completed_phase": "CONVERGE-06",
       "completed_target": "contracts/schemas",
-      "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schemas/."
+      "completed_notes": "Root-level schemas/ is retired; retained validator-facing schema projections live under contracts/schema/."
     },
     {
       "name": "scripts",
@@ -1810,7 +1758,7 @@
     {
       "name": "signals",
       "current_path": "signals",
-      "proposed_target": "game/domains/signals",
+      "proposed_target": "game/domain/signals",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1818,18 +1766,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/signals/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/signals/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level signals/ implementation moved under game/domains/signals/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level signals/ implementation moved under game/domain/signals/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/signals",
+      "completed_target": "game/domain/signals",
       "completed_targets": [
-        "game/domains/signals"
+        "game/domain/signals"
       ],
-      "completed_notes": "Root-level signals/ is retired; domain implementation source lives under game/domains/signals/.",
+      "completed_notes": "Root-level signals/ is retired; domain implementation source lives under game/domain/signals/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1878,7 +1826,7 @@
     {
       "name": "system",
       "current_path": "system",
-      "proposed_target": "game/domains/systems",
+      "proposed_target": "game/domain/systems",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1886,18 +1834,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/systems/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/systems/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level system/ implementation moved under game/domains/systems/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level system/ implementation moved under game/domain/systems/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/systems",
+      "completed_target": "game/domain/systems",
       "completed_targets": [
-        "game/domains/systems"
+        "game/domain/systems"
       ],
-      "completed_notes": "Root-level system/ is retired; domain implementation source lives under game/domains/systems/.",
+      "completed_notes": "Root-level system/ is retired; domain implementation source lives under game/domain/systems/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -1925,7 +1873,7 @@
     {
       "name": "thermal",
       "current_path": "thermal",
-      "proposed_target": "game/domains/thermal",
+      "proposed_target": "game/domain/thermal",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -1933,18 +1881,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/thermal/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/thermal/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level thermal/ implementation moved under game/domains/thermal/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level thermal/ implementation moved under game/domain/thermal/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/thermal",
+      "completed_target": "game/domain/thermal",
       "completed_targets": [
-        "game/domains/thermal"
+        "game/domain/thermal"
       ],
-      "completed_notes": "Root-level thermal/ is retired; domain implementation source lives under game/domains/thermal/.",
+      "completed_notes": "Root-level thermal/ is retired; domain implementation source lives under game/domain/thermal/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -2071,7 +2019,7 @@
     {
       "name": "universe",
       "current_path": "universe",
-      "proposed_target": "game/domains/universe",
+      "proposed_target": "game/domain/universe",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -2079,18 +2027,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/universe/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/universe/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level universe/ implementation moved under game/domains/universe/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level universe/ implementation moved under game/domain/universe/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/universe",
+      "completed_target": "game/domain/universe",
       "completed_targets": [
-        "game/domains/universe"
+        "game/domain/universe"
       ],
-      "completed_notes": "Root-level universe/ is retired; domain implementation source lives under game/domains/universe/.",
+      "completed_notes": "Root-level universe/ is retired; domain implementation source lives under game/domain/universe/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     },
@@ -2265,7 +2213,7 @@
     {
       "name": "worldgen",
       "current_path": "worldgen",
-      "proposed_target": "game/domains/worldgen",
+      "proposed_target": "game/domain/worldgen",
       "action": "split",
       "classification": "split_required_domain_root",
       "ownership_surface": "game",
@@ -2273,18 +2221,18 @@
       "risk_level": "medium",
       "phase_hint": "CONVERGE-09",
       "dependencies": [],
-      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domains/worldgen/.",
+      "preserve_paths": "Root path retired in CONVERGE-09; active implementation references should use game/domain/worldgen/.",
       "shim_required": false,
       "semantic_change_allowed": false,
       "build_change_allowed": false,
-      "notes": "Completed in CONVERGE-09; root-level worldgen/ implementation moved under game/domains/worldgen/. No schemas, registries, content data, or docs were found in that root during the safe split.",
+      "notes": "Completed in CONVERGE-09; root-level worldgen/ implementation moved under game/domain/worldgen/. No schemas, registries, content data, or docs were found in that root during the safe split.",
       "status": "completed",
       "completed_phase": "CONVERGE-09",
-      "completed_target": "game/domains/worldgen",
+      "completed_target": "game/domain/worldgen",
       "completed_targets": [
-        "game/domains/worldgen"
+        "game/domain/worldgen"
       ],
-      "completed_notes": "Root-level worldgen/ is retired; domain implementation source lives under game/domains/worldgen/.",
+      "completed_notes": "Root-level worldgen/ is retired; domain implementation source lives under game/domain/worldgen/.",
       "split_summary": "Python implementation package moved to game/domains; no contract/content/docs/tests subsets were identified in the root during CONVERGE-09.",
       "remaining_blockers": []
     }

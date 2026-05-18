@@ -28,7 +28,7 @@ Current repository state:
   - status: integrated for new generators; optional in validators
   - kind: `identity.install`
 - `instance.manifest.json`
-  - status: integrated for dist/default instance generation; optional in validators
+  - status: integrated for archive/generated/dist/default instance generation; optional in validators
   - kind: `identity.instance`
 - `save.manifest.json`
   - status: validator-ready; optional for legacy payloads

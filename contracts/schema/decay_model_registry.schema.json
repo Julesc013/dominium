@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Decay Model Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic decay model registry output.",
+  "x-doc-ref": [
+    "docs/epistemics/MEMORY_AND_FOG_OF_WAR.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "decay_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "decay_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "decay_model_id",
+          "description",
+          "ttl_rules",
+          "refresh_rules",
+          "eviction_rule_id",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "decay_model_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "ttl_rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "rule_id",
+                "channel_id",
+                "subject_kind",
+                "ttl_ticks"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "rule_id": {
+                  "type": "string"
+                },
+                "channel_id": {
+                  "type": "string"
+                },
+                "subject_kind": {
+                  "type": "string"
+                },
+                "ttl_ticks": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ],
+                  "minimum": 0
+                }
+              }
+            }
+          },
+          "refresh_rules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "rule_id",
+                "channel_id",
+                "subject_kind",
+                "refresh_on_observed"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "rule_id": {
+                  "type": "string"
+                },
+                "channel_id": {
+                  "type": "string"
+                },
+                "subject_kind": {
+                  "type": "string"
+                },
+                "refresh_on_observed": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "eviction_rule_id": {
+            "type": "string"
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [
+        {
+          "pack_id": "law.lab.unrestricted",
+          "version": "1.0.0",
+          "canonical_hash": "placeholder.law.lab.unrestricted.v1",
+          "signature_status": "signed"
+        }
+      ],
+      "decay_models": [
+        {
+          "decay_model_id": "ep.decay.none",
+          "description": "No decay model for memory-disabled policies.",
+          "ttl_rules": [
+            {
+              "rule_id": "ttl.none",
+              "channel_id": "*",
+              "subject_kind": "*",
+              "ttl_ticks": null
+            }
+          ],
+          "refresh_rules": [
+            {
+              "rule_id": "refresh.none",
+              "channel_id": "*",
+              "subject_kind": "*",
+              "refresh_on_observed": false
+            }
+          ],
+          "eviction_rule_id": "evict.none",
+          "extensions": {}
+        }
+      ],
+      "registry_hash": "959de32f2e8f3d2a5e0b6d08e7a9e9d5f65e8a103e335677ea62d2f15cbf6fa8"
+    }
+  ]
+}

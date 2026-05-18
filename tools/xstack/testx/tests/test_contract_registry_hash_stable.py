@@ -13,7 +13,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from tools.release.scope_freeze_common import FROZEN_SEMANTIC_CONTRACT_REGISTRY_HASH
-    from tools.compatx.core.semantic_contract_validator import (
+    from tools.xstack.compatx.core.semantic_contract_validator import (
         load_semantic_contract_registry,
         registry_hash,
         validate_semantic_contract_registry,

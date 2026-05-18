@@ -74,31 +74,31 @@ Skipped items are deferred, not failed moves. MOVE-SCRIPT-00 is dry-run only.
 | `core/spatial/spatial_engine.py` | `engine/math/spatial/spatial_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
 | `core/state/__init__.py` | `engine/state/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
 | `core/state/state_machine_engine.py` | `engine/state/state_machine_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `data/architecture/repository_structure_lock.json` | `content/data/architecture/repository_structure_lock.json` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/defaults/profiles/modern_2020.tlv` | `content/data/defaults/profiles/modern_2020.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/defaults/profiles/retro_1990s.tlv` | `content/data/defaults/profiles/retro_1990s.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/defaults/profiles/server_mmo.tlv` | `content/data/defaults/profiles/server_mmo.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/governance/governance_profile.json` | `content/data/governance/governance_profile.json` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/repo/repo_phased_migration_shims_validation_and_rollback.json` | `content/data/repo/repo_phased_migration_shims_validation_and_rollback.json` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/xstack/checkpoint_c_xstack_aide_closure.json` | `content/data/xstack/checkpoint_c_xstack_aide_closure.json` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/xstack/next_execution_order_post_xstack_aide.json` | `content/data/xstack/next_execution_order_post_xstack_aide.json` | `identity_sensitive_without_clear_identity_safe_route` |
-| `data/xstack/xstack_to_aide_extraction_map.json` | `content/data/xstack/xstack_to_aide_extraction_map.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/architecture/repository_structure_lock.json` | `archive/generated/architecture/repository_structure_lock.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/defaults/profiles/modern_2020.tlv` | `content/defaults/profiles/modern_2020.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/defaults/profiles/retro_1990s.tlv` | `content/defaults/profiles/retro_1990s.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/defaults/profiles/server_mmo.tlv` | `content/defaults/profiles/server_mmo.tlv` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/governance/governance_profile.json` | `contracts/governance/governance_profile.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/repo/repo_phased_migration_shims_validation_and_rollback.json` | `archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/xstack/checkpoint_c_xstack_aide_closure.json` | `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/xstack/next_execution_order_post_xstack_aide.json` | `archive/generated/xstack/next_execution_order_post_xstack_aide.json` | `identity_sensitive_without_clear_identity_safe_route` |
+| `data/xstack/xstack_to_aide_extraction_map.json` | `archive/generated/xstack/xstack_to_aide_extraction_map.json` | `identity_sensitive_without_clear_identity_safe_route` |
 | `governance/__init__.py` | `tools/governance/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
 | `governance/governance_profile.py` | `tools/governance/governance_profile.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
-| `lib/__init__.py` | `tools/libraries/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/artifact/__init__.py` | `tools/libraries/artifact/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/artifact/artifact_validator.py` | `tools/libraries/artifact/artifact_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
-| `lib/bundle/__init__.py` | `tools/libraries/bundle/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
-| `lib/bundle/bundle_manifest.py` | `tools/libraries/bundle/bundle_manifest.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
-| `lib/export/__init__.py` | `tools/libraries/export/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/export/export_engine.py` | `tools/libraries/export/export_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/import/__init__.py` | `tools/libraries/import/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/import/import_engine.py` | `tools/libraries/import/import_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/install/__init__.py` | `tools/libraries/install/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/install/install_discovery_engine.py` | `tools/libraries/install/install_discovery_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/install/install_validator.py` | `tools/libraries/install/install_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
-| `lib/instance/__init__.py` | `tools/libraries/instance/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/instance/instance_clone.py` | `tools/libraries/instance/instance_clone.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
-| `lib/instance/instance_validator.py` | `tools/libraries/instance/instance_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
+| `lib/__init__.py` | `tools/package/libraries/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/artifact/__init__.py` | `tools/package/libraries/artifact/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/artifact/artifact_validator.py` | `tools/package/libraries/artifact/artifact_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
+| `lib/bundle/__init__.py` | `tools/package/libraries/bundle/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
+| `lib/bundle/bundle_manifest.py` | `tools/package/libraries/bundle/bundle_manifest.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
+| `lib/export/__init__.py` | `tools/package/libraries/export/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/export/export_engine.py` | `tools/package/libraries/export/export_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/import/__init__.py` | `tools/package/libraries/import/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/import/import_engine.py` | `tools/package/libraries/import/import_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/install/__init__.py` | `tools/package/libraries/install/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/install/install_discovery_engine.py` | `tools/package/libraries/install/install_discovery_engine.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/install/install_validator.py` | `tools/package/libraries/install/install_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
+| `lib/instance/__init__.py` | `tools/package/libraries/instance/__init__.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/instance/instance_clone.py` | `tools/package/libraries/instance/instance_clone.py` | `active_python_package_requires_import_rewrite_or_shim_plan` |
+| `lib/instance/instance_validator.py` | `tools/package/libraries/instance/instance_validator.py` | `active_python_package_requires_import_rewrite_or_shim_plan, identity_sensitive_without_clear_identity_safe_route` |
 
 Additional skipped items are recorded in the JSON report.

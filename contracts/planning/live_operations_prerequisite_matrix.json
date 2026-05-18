@@ -14,9 +14,9 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
-      "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "contracts/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
-      "content/data/planning/next_execution_order_post_phib5.json",
+      "contracts/planning/next_execution_order_post_phib5.json",
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
       "contracts/registry/planning/zeta_blocker_reconciliation_registry.json"
     ],
@@ -48,7 +48,7 @@
       "contracts/registry/trust_policy_registry.json",
       "contracts/registry/trust_root_registry.json",
       "contracts/registry/provenance_classification_registry.json",
-      "release/update_resolver.py",
+      "tools/release/update_resolver.py",
       "tools/validators/security/trust/trust_verifier.py",
       "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
       "docs/blueprint/CAPABILITY_LADDER.md",
@@ -222,7 +222,7 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "contracts/registry/provenance_classification_registry.json"
       ],
       "bounded_entry_suitability": "first_wave_candidate",
@@ -262,7 +262,7 @@
       "evidence_refs": [
         "server/net/dom_server_runtime.h",
         "server/net/dom_server_protocol.h",
-        "release/update_resolver.py"
+        "tools/release/update_resolver.py"
       ],
       "bounded_entry_suitability": "first_wave_candidate",
       "rationale": "This family can remain proof-bearing and bounded, but it stays caution-heavy because cutover legality and stronger receipt anchors are still unresolved."
@@ -368,7 +368,7 @@
       ],
       "evidence_refs": [
         "contracts/registry/provenance_classification_registry.json",
-        "release/update_resolver.py"
+        "tools/release/update_resolver.py"
       ],
       "bounded_entry_suitability": "later_wave_candidate",
       "rationale": "This family is an enabling layer, but it changes canonical evidence posture and therefore must not outrun the final gate freeze."
@@ -450,7 +450,7 @@
         "contracts/registry/trust_policy_registry.json",
         "contracts/registry/trust_root_registry.json",
         "tools/validators/security/trust/trust_verifier.py",
-        "release/update_resolver.py"
+        "tools/release/update_resolver.py"
       ],
       "bounded_entry_suitability": "not_admissible",
       "rationale": "Trust policy and admission doctrine exist, but live execution remains blocked while trust roots are empty and convergence is unrealized."

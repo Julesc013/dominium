@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `game/include/dominium/mods/mod_loader.h`
-- `game/mods/runtime/mod_loader.cpp`
+- `runtime/package/mod/mod_loader.cpp`
 
 ## Scorecard
 
 - `game/include/dominium/mods/mod_loader.h` disposition=`canonical` rank=`1` total_score=`62.88` risk=`HIGH`
-- `game/mods/runtime/mod_loader.cpp` disposition=`quarantine` rank=`2` total_score=`62.14` risk=`HIGH`
+- `runtime/package/mod/mod_loader.cpp` disposition=`quarantine` rank=`2` total_score=`62.14` risk=`HIGH`
 
 ## Usage Sites
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

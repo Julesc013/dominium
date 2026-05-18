@@ -34,7 +34,7 @@
     {
       "root": "governance",
       "paths": ["governance/__init__.py", "governance/governance_profile.py"],
-      "reason": "Active policy/governance Python helpers with release/setup/dist/tool/test consumers.",
+      "reason": "Active policy/governance Python helpers with release/setup/archive/generated/dist/tool/test consumers.",
       "next_step": "consumer import-boundary plan"
     },
     {

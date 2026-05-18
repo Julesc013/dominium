@@ -13,7 +13,7 @@
   },
   "roots": ["data", "packs", "profiles", "bundles"],
   "included_moves": [
-    {"salvage_id": "C-DATA-REGISTRIES", "source_path": "data/registries/**", "target_path": "contracts/registries/data/", "action": "convert_to_contract", "file_count": 412},
+    {"salvage_id": "C-DATA-REGISTRIES", "source_path": "data/registries/**", "target_path": "contracts/registry/data/", "action": "convert_to_contract", "file_count": 412},
     {"salvage_id": "C-DATA-CONTENT", "source_path": "data/packs/** data/world/** data/worldgen/** data/profiles/** data/blueprint/** data/reality/** data/defaults/** data/modules/** data/session_templates/** data/*.template.basic", "target_path": "content/", "action": "move_with_reference_rewrites", "file_count": 489},
     {"salvage_id": "C-DATA-RELEASE-RUNTIME-TEST", "source_path": "data/release/** data/runtime/** data/baselines/** data/xstack/** data/perf/**", "target_path": "release/data/ runtime/data/ tests/golden/ tools/xstack/data/ tools/performance/data/", "action": "move_with_reference_rewrites", "file_count": 65},
     {"salvage_id": "C-DATA-CONTRACTS", "source_path": "data/capabilities/** data/law/** data/standards/**", "target_path": "contracts/", "action": "convert_to_contract", "file_count": 4},

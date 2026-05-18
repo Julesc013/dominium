@@ -1,0 +1,26 @@
+SCHEMA: geo/generator_version.schema
+schema_id: dominium.schema.geo.generator_version
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the deterministic GEO-8 generator version lock contract.
+- Bind procedural algorithm semantics to explicit CompatX-governed identifiers.
+
+NON-SEMANTICS:
+- This schema does not encode procedural outputs by itself.
+- This schema does not perform migration automatically.
+
+REQUIRED SHAPE:
+record generator_version
+  required:
+    - generator_version_id: id
+    - description: string
+    - compat_version: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- generator_version_id is immutable for a universe lineage unless migrated explicitly
+- compat_version must align with deterministic migration/refusal policy
+- generator semantic changes require a new generator_version_id or explicit migration route

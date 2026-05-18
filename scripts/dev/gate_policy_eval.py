@@ -27,9 +27,9 @@ _DOC_ONLY_PREFIXES = (
 )
 
 _UI_ONLY_PREFIXES = (
-    "contracts/schemas/ui/",
-    "docs/ui/",
-    "apps/client/ui/",
+    "contracts/schema/ui/",
+    "docs/runtime/ui/",
+    "runtime/ui/client/",
     "libs/ui_",
     "tools/ui_",
 )
@@ -40,7 +40,7 @@ _FAST_CODE_PREFIXES = (
 )
 
 _STRICT_PREFIXES = (
-    "contracts/schemas/",
+    "contracts/schema/",
     "data/registries/",
     "repo/repox/",
     "tests/",

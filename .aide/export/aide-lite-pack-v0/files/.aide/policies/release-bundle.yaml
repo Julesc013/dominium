@@ -34,7 +34,7 @@ source_artifacts:
   - .aide/export/aide-lite-pack-v0
 local_output_locations:
   - .aide/release/dist/
-  - dist/ if repo policy permits
+  - archive/generated/dist/ if repo policy permits
 publication_boundary:
   tag_created: false
   github_release_created: false

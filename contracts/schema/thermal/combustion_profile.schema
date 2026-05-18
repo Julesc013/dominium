@@ -1,0 +1,23 @@
+SCHEMA: thermal/combustion_profile.schema
+schema_id: dominium.schema.thermal.combustion_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic THERM-4 combustion profile for threshold ignition and combustion stub outputs.
+
+REQUIRED SHAPE:
+record combustion_profile
+  required:
+    - schema_version: semver
+    - material_id: id
+    - ignition_threshold: int
+    - heat_release_rate: int
+    - fuel_consumption_rate: int
+    - spread_threshold: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Combustion thresholds and rates are data-defined and deterministic.
+- Fire ignition/combustion behavior is model-driven and policy-auditable.

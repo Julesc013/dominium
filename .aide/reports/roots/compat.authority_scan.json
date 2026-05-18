@@ -2131,7 +2131,7 @@
       "sensitivity_hints": [
         "migration_sensitive"
       ],
-      "snippet": "from tools.compatx.core.migration_runner import apply_migration, load_and_validate"
+      "snippet": "from tools.xstack.compatx.core.migration_runner import apply_migration, load_and_validate"
     },
     {
       "file": "compat/data_format_loader.py",
@@ -5974,7 +5974,7 @@
       "sensitivity_hints": [
         "release_sensitive"
       ],
-      "snippet": "from release.build_id_engine import ("
+      "snippet": "from tools.release.build_id_engine import ("
     },
     {
       "file": "compat/descriptor/descriptor_engine.py",

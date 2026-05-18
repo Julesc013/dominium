@@ -1,0 +1,25 @@
+SCHEMA: logic/arbitration_state.schema
+schema_id: dominium.schema.logic.arbitration_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-bus arbitration progress for LOGIC protocol links.
+
+NON-SEMANTICS:
+- This schema does not define carrier transport delay itself.
+- It does not allow hidden scheduler state outside the explicit arbitration row.
+
+REQUIRED SHAPE:
+record arbitration_state
+  required:
+    - bus_id: id
+    - policy_id: id
+    - token_holder: nullable<id>
+    - last_winner: nullable<id>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Arbitration progression must be deterministic from prior state and queued frames.
+- Token state, when present, must be explicit in `token_holder`.

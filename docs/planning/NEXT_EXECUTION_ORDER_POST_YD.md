@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: `Φ-B5`, later post-`Φ-B5` checkpoint, future `Ζ`
 Replacement Target: later post-`Φ-B5` next-order artifact may refine sequence without replacing the ordering law frozen here
-Binding Sources: `docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md`, `content/data/planning/checkpoints/checkpoint_c_phib5_admission_review.json`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `server/shard/shard_api.h`, `server/shard/dom_shard_lifecycle.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_runtime.h`, `server/net/dom_server_protocol.h`, `contracts/registry/net_replication_policy_registry.json`
+Binding Sources: `docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md`, `contracts/planning/checkpoints/checkpoint_c_phib5_admission_review.json`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `server/shard/shard_api.h`, `server/shard/dom_shard_lifecycle.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_runtime.h`, `server/net/dom_server_protocol.h`, `contracts/registry/net_replication_policy_registry.json`
 
 # Next Execution Order Post-ΥD
 

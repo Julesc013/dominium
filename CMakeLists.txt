@@ -161,7 +161,7 @@ foreach(_doc_ratio_ext IN LISTS DOC_RATIO_EXTS)
 endforeach()
 
 add_custom_target(doc_ratio_check
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/apps/setup/packages/scripts/doc_ratio_check.py ${_doc_ratio_args}
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/release/packaging/setup/scripts/doc_ratio_check.py ${_doc_ratio_args}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMENT "Checking documentation ratios (mode=${DOC_RATIO_MODE})"
     VERBATIM
@@ -270,7 +270,7 @@ add_dependencies(check_all
 set(DOMINIUM_ENGINE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/engine/include")
 set(DOMINIUM_GAME_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/game/include")
 set(DOMINIUM_SETUP_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/include")
-set(DOMINIUM_TOOLS_UI_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/tools/ui_shared/include")
+set(DOMINIUM_TOOLS_UI_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/runtime/ui/include")
 set(DOMINIUM_GENERATED_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated/include")
 set(DOMINIUM_SOURCE_INCLUDE_DIR "${DOMINIUM_ENGINE_INCLUDE_DIR}")
 set(DOMINIUM_INCLUDE_DIR "${DOMINIUM_GENERATED_INCLUDE_DIR};${DOMINIUM_ENGINE_INCLUDE_DIR}")
@@ -442,7 +442,7 @@ if(_dom_platform_lc STREQUAL "sdl2")
             "${CMAKE_SOURCE_DIR}/external/SDL2*"
             "${CMAKE_SOURCE_DIR}/deps/SDL2*"
             "${CMAKE_SOURCE_DIR}/third_party/SDL2*"
-            "${CMAKE_SOURCE_DIR}/artifacts/SDL2*"
+            "${CMAKE_SOURCE_DIR}/archive/generated/artifacts/SDL2*"
         )
         foreach(_dom_path IN LISTS _dom_sdl2_glob)
             if(EXISTS "${_dom_path}/include/SDL.h" OR EXISTS "${_dom_path}/include/SDL2/SDL.h")
@@ -948,7 +948,7 @@ add_custom_target(dom_update_build_number ALL
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/release/packaging/setup/scripts/update_build_number.cmake
     COMMENT "Refreshing build number header (no bump)"
 )
 add_custom_target(dom_bump_build_number
@@ -963,7 +963,7 @@ add_custom_target(dom_bump_build_number
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/release/packaging/setup/scripts/update_build_number.cmake
     COMMENT "Bumping global build number"
 )
 set(DOM_TESTX_TIMEOUT "1200" CACHE STRING "Per-test timeout seconds for TestX gate")
@@ -1031,7 +1031,7 @@ add_custom_target(testx_all
         -DDOM_BUILD_GBN=${DOM_BUILD_GBN}
         -DDOM_BUILD_ID=${DOM_BUILD_ID}
         -DDOM_BUILD_TIMESTAMP=${DOM_BUILD_TIMESTAMP}
-        -P ${CMAKE_CURRENT_SOURCE_DIR}/apps/setup/packages/scripts/update_build_number.cmake
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/release/packaging/setup/scripts/update_build_number.cmake
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     COMMENT "Run TestX verify suite and bump build number on success"
 )
@@ -1107,10 +1107,10 @@ file(MAKE_DIRECTORY
 
 add_subdirectory(cmake/legacy_libs)
 add_subdirectory(engine)
-add_subdirectory(runtime/app)
+add_subdirectory(runtime/shell/lifecycle)
 add_subdirectory(runtime/shell/ui_backends/win32)
-add_subdirectory(tools/ui_shared/ui_ir)
-add_subdirectory(tools/ui_bind)
+add_subdirectory(runtime/ui/ir)
+add_subdirectory(tools/codegen/ui/bind)
 if(WIN32)
     if(NOT TARGET ui_bind_phase)
         add_custom_target(ui_bind_phase
@@ -1124,7 +1124,7 @@ if(DOM_BUILD_GAME)
     add_subdirectory(apps/client)
     add_subdirectory(apps/server)
     if(DOM_BUILD_TESTS)
-        add_subdirectory(game/tests/phase6)
+        add_subdirectory(tests/game/phase6)
     endif()
 endif()
 if(DOM_BUILD_SETUP)
@@ -1308,9 +1308,9 @@ if(TARGET coredata_compile)
 endif()
 
 if(WIN32 AND TARGET dominium-ui-editor)
-    set(DOMUI_INDEX_PATH ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json)
-    set(DOMUI_LAUNCHER_DOC ${CMAKE_SOURCE_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv)
-    set(DOMUI_SETUP_DOC ${CMAKE_SOURCE_DIR}/tools/setup/ui/doc/setup_ui_doc.tlv)
+    set(DOMUI_INDEX_PATH ${CMAKE_SOURCE_DIR}/tools/codegen/ui/index/ui_index.json)
+    set(DOMUI_LAUNCHER_DOC ${CMAKE_SOURCE_DIR}/tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv)
+    set(DOMUI_SETUP_DOC ${CMAKE_SOURCE_DIR}/tools/codegen/ui/setup/doc/setup_ui_doc.tlv)
 
     add_custom_target(ui_scan_all
         COMMAND $<TARGET_FILE:dominium-ui-editor> --scan-ui --out ${DOMUI_INDEX_PATH}
@@ -1358,7 +1358,7 @@ if(DOM_BUILD_TESTS)
 endif()
 
 if(DOMINIUM_ENABLE_PACKAGING)
-    add_subdirectory(apps/setup/packages/scripts/packaging)
+    add_subdirectory(release/packaging/setup/scripts/packaging)
 endif()
 
 get_property(_dom_dist_targets GLOBAL PROPERTY DOM_DIST_ROLE_TARGETS)
@@ -1423,7 +1423,7 @@ set(DOM_BUILD_MANIFEST_JSON "${DOM_DIST_META_PLATFORM_ROOT}/build_manifest.json"
 set(DOM_BUILD_MANIFEST_TLV "${DOM_DIST_META_PLATFORM_ROOT}/build_manifest.tlv")
 
 add_custom_target(pkg_pack_all
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/pkg_pack_all.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/pkg_pack_all.py
         --repo-root ${CMAKE_SOURCE_DIR}
         --build-bin ${CMAKE_BINARY_DIR}/bin
         --build-lib ${CMAKE_BINARY_DIR}/lib
@@ -1441,14 +1441,14 @@ if(WIN32 AND TARGET ui_bind_phase)
 endif()
 
 add_custom_target(pkg_verify_all
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/pkg_verify_all.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/pkg_verify_all.py
         --pkg-dir ${DOM_PKG_OUTPUT_DIR}
     DEPENDS pkg_pack_all
     COMMENT "Verifying dompkg artifacts"
 )
 
 add_custom_target(pkg_index_all
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/tool_pkg_index.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/tool_pkg_index.py
         --pkg-dir ${DOM_PKG_OUTPUT_DIR}
         --out ${DOM_PKG_INDEX_JSON}
         --tlv-out ${DOM_PKG_INDEX_TLV}
@@ -1458,7 +1458,7 @@ add_custom_target(pkg_index_all
 )
 
 add_custom_target(dist_build_manifest
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/build_manifest.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/build_manifest.py
         --index-json ${DOM_PKG_INDEX_JSON}
         --out-json ${DOM_BUILD_MANIFEST_JSON}
         --out-tlv ${DOM_BUILD_MANIFEST_TLV}
@@ -1476,13 +1476,13 @@ add_custom_target(dist_build_manifest
 )
 
 add_custom_target(setup_install_smoke
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/setup_install_smoke.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/setup_install_smoke.py
         --repo-root ${CMAKE_SOURCE_DIR}
     COMMENT "Running deterministic setup smoke"
 )
 
 add_custom_target(launcher_run_smoke
-    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/distribution/launcher_run_smoke.py
+    COMMAND ${Python3_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/package/distribution/launcher_run_smoke.py
         --repo-root ${CMAKE_SOURCE_DIR}
     COMMENT "Running deterministic launcher smoke"
 )

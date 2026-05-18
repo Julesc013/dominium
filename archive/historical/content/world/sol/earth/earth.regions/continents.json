@@ -1,0 +1,112 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [],
+    "region_records": [
+      {
+        "region_id": "earth_land_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_land_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "land",
+          "global"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_africa_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_africa_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "africa"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_eurasia_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_eurasia_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "eurasia"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_north_america_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_north_america_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "north_america"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_south_america_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_south_america_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "south_america"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_antarctica_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_antarctica_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "antarctica"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_australia_region",
+        "surface_ref": "earth_land_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_australia_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_land_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "continent",
+          "australia"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      }
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+SCHEMA: governance/performance_envelope.schema
+schema_id: dominium.schema.governance.performance_envelope
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic performance envelopes used by PerformX.
+- Separate workload definitions from measured output artifacts.
+
+STABILITY GUARANTEES:
+- Required fields MUST remain present.
+- Envelope IDs are stable and immutable once published.
+
+NON-SEMANTICS:
+- Envelopes describe measurement policy only.
+- Envelopes do not alter simulation behavior.
+
+REQUIRED SHAPE:
+record performance_envelope_registry
+  required:
+    - registry_id: id
+    - registry_version: tag
+    - schema_version_ref: tag
+    - envelopes: [performance_envelope]
+    - extensions: map
+
+record performance_envelope
+  required:
+    - envelope_id: id
+    - subsystem: tag
+    - workload_type: tag
+    - metrics: [performance_metric]
+    - tolerances: map
+    - deterministic_required: bool
+    - hardware_normalization: tag
+    - regression_severity: tag
+    - extensions: map
+
+record performance_metric
+  required:
+    - metric_id: id
+    - unit: tag
+    - extensions: map
+

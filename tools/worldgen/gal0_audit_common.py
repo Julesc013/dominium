@@ -10,12 +10,12 @@ from typing import Dict, Iterable, List, Mapping, Tuple
 
 GAL0_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/audit/GAL0_RETRO_AUDIT.md",
-    "docs/worldgen/GALAXY_METADATA_PROXIES.md",
+    "docs/domains/worldgen/GALAXY_METADATA_PROXIES.md",
     "contracts/registry/field_type_registry.json",
     "contracts/registry/field_binding_registry.json",
     "contracts/registry/galactic_region_registry.json",
-    "game/domains/worldgen/galaxy",
-    "game/domains/worldgen/earth/sky/starfield_generator.py",
+    "game/domain/worldgen/galaxy",
+    "game/domain/worldgen/earth/sky/starfield_generator.py",
     "tools/worldgen/gal0_probe.py",
     "tools/worldgen/tool_replay_galaxy_proxies.py",
 )

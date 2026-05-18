@@ -17,7 +17,7 @@ DISCOVERY_ROOTS = [
     ".aide/validators",
     "tools/aide",
     "tools/xstack",
-    "tools/auditx",
+    "tools/xstack/auditx",
     "tools/repox",
     "tools/testx",
     "tools/build",

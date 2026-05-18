@@ -26,7 +26,7 @@ Replacement Target: release-index governed trust-root bundles and signed acquisi
 ## Integration Points
 
 - `setup verify` and pack verification route through `src/security/trust/trust_verifier.py`.
-- `setup update` passes the resolved trust policy into `src/release/update_resolver.py`.
+- `setup update` passes the resolved trust policy into `src/tools/release/update_resolver.py`.
 - `tool_verify_release_manifest` and DIST-2 verification use trust-aware manifest verification.
 - Server policy binding is declared in `data/registries/server_config_registry.json`.
 

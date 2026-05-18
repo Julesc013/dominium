@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/death_pipeline.cpp
+FILE: game/rule/life/death_pipeline.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements deterministic death pipeline and estate creation.

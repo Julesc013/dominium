@@ -1,0 +1,22 @@
+SCHEMA: pollution/exposure_state.schema
+schema_id: dominium.schema.pollution.exposure_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic per-subject pollutant exposure accumulation state.
+- Enable explainable exposure-threshold hooks without full medical simulation.
+
+NON-SEMANTICS:
+- No medical outcome model implementation.
+- No probabilistic health simulation.
+
+REQUIRED SHAPE:
+record exposure_state
+  required:
+    - subject_id: id
+    - pollutant_id: id
+    - accumulated_exposure: number
+    - last_update_tick: int
+    - deterministic_fingerprint: text
+    - extensions: map

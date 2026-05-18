@@ -7,7 +7,7 @@ import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
-from tools.libraries.provides import (
+from tools.package.libraries.provides import (
     REFUSAL_PROVIDES_AMBIGUOUS,
     REFUSAL_PROVIDES_MISSING_PROVIDER,
     infer_resolution_policy_id,
@@ -16,9 +16,9 @@ from tools.libraries.provides import (
     resolve_providers,
 )
 from tools.validators.compatibility.descriptor.descriptor_engine import build_product_descriptor
-from game.domains.geology import build_overlay_manifest, merge_overlay_view
+from game.domain.geology import build_overlay_manifest, merge_overlay_view
 from tools.validators.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
-from tools.compatx.core.semantic_contract_validator import (
+from tools.xstack.compatx.core.semantic_contract_validator import (
     CONTRACT_FIELD_ORDER,
     build_default_universe_contract_bundle,
     bundle_hash,

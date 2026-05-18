@@ -13,7 +13,7 @@ Dominium v0.0.0 defines one portable install skeleton for the MVP runtime bundle
 ## Canonical Layout
 
 ```text
-dist/
+archive/generated/dist/
   bin/
     dominium_client
     dominium_server

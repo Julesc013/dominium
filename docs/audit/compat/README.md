@@ -15,4 +15,4 @@ Artifacts in this directory are generated or refreshed by CompatX validation run
 
 Run:
 
-- `python tools/compatx/compatx.py verify --repo-root .`
+- `python tools/xstack/compatx/compatx.py verify --repo-root .`

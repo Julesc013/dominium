@@ -1,0 +1,24 @@
+SCHEMA: physics/exception_event.schema
+schema_id: dominium.schema.physics.exception_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical deterministic physics exception events for invariant violations and boundary flux logging.
+- Provide proof/ledger alignment payload shape for alternate-physics or explicit conservation exceptions.
+
+NON-SEMANTICS:
+- This schema does not authorize exceptions by itself.
+- Authorization is profile/law governed and process-mediated.
+
+REQUIRED SHAPE:
+record exception_event
+  required:
+    - exception_id: id
+    - tick: u64
+    - exception_kind: enum(boundary_flux|conservation_violation|magic_injection|custom)
+    - affected_quantities: map(quantity_id -> fixed_point_delta)
+    - reason_code: id
+    - originating_process_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map

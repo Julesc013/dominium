@@ -37,11 +37,11 @@ POST-CONVERGE-10L left focused RepoX at 51 failures and 5 warnings. The remainin
 | --- | ---: | --- | --- |
 | RepoX rule paths still pointed at retired `embodiment/`, `geo/`, `worldgen/refinement/`, `universe/`, and `diag/` roots | 28 | `stale_current_reference` | Fixed to exact current paths. |
 | RepoX cache did not hash direct file dependencies | 0 | `retired_domain_rule_false_positive` | Fixed so rule edits invalidate default group cache. |
-| MW-4 fixture imports reach retired `embodiment.*` lazy exports through `game.domains.embodiment` | 2 | `real_current_policy_violation` | Preserved as blockers; product/runtime source behavior change is out of scope. |
+| MW-4 fixture imports reach retired `embodiment.*` lazy exports through `game.domain.embodiment` | 2 | `real_current_policy_violation` | Preserved as blockers; product/runtime source behavior change is out of scope. |
 
 ## Changes Made
 
-- Updated `scripts/ci/check_repox_rules.py` path constants and local expectations to current converged paths under `game/domains/embodiment`, `game/domains/geology`, `game/domains/worldgen/refinement`, `game/domains/universe`, and `runtime/diagnostics`.
+- Updated `scripts/ci/check_repox_rules.py` path constants and local expectations to current converged paths under `game/domain/embodiment`, `game/domain/geology`, `game/domain/worldgen/refinement`, `game/domain/universe`, and `runtime/diagnostics`.
 - Updated RepoX group cache dependency hashing so direct file dependencies such as `scripts/ci/check_repox_rules.py` contribute their file content hash.
 - Added POST-CONVERGE-10M AIDE reports and audit evidence.
 - Updated post-converge status docs and latest AIDE packets.
@@ -58,7 +58,7 @@ POST-CONVERGE-10L left focused RepoX at 51 failures and 5 warnings. The remainin
 ## Remaining Blockers
 
 - Distribution/product proof blockers from POST-CONVERGE-10L: 12 failures.
-- Current `game.domains.embodiment` lazy import blocker: 2 failures.
+- Current `game.domain.embodiment` lazy import blocker: 2 failures.
 - Tool hash/audit staleness: 3 failures plus one warning.
 - Ruleset mapping gaps: 2 failures.
 - Canon supersession, extension registry, worldgen retry-loop, and shadow-bound policy failures: 4 failures.

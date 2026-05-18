@@ -58,7 +58,7 @@ def run(repo_root: str):
 
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.auditx.model import validate_finding_record
+    from tools.xstack.auditx.model import validate_finding_record
 
     for idx, row in enumerate(rows[:80]):
         if not isinstance(row, dict):

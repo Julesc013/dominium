@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Calibration Model Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic diegetic calibration model registry output.",
+  "x-doc-ref": [
+    "docs/diegetics/DIEGETIC_INSTRUMENT_DOCTRINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "calibration_models",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "calibration_models": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "calibration_model_id",
+          "description",
+          "model_kind",
+          "parameters",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "calibration_model_id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "model_kind": {
+            "type": "string"
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "calibration_models": [],
+      "registry_hash": "90a0f3d307e94a17a665f8f8ead7db7f7931d61069b4b0c71f1014ec3e0f7187"
+    }
+  ]
+}

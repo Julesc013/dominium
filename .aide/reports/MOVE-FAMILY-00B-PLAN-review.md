@@ -21,9 +21,9 @@ All three files are classified as projection contract metadata. The examples are
 
 ## Proposed Target Paths
 
-- `contracts/projections/ide/projection_manifest.schema.json`
-- `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
-- `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+- `contracts/projection/ide/projection_manifest.schema.json`
+- `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 ## Consumers And References
 
@@ -55,7 +55,7 @@ The later apply task must run Tier 0, focused RepoX, JSON/TOML parsing, manifest
 
 ## Rollback Plan
 
-Rollback is reverse moves, reverse reference rewrites, reverse exception update, optional removal of empty `contracts/projections/ide/**` directories, then Tier 0 validation.
+Rollback is reverse moves, reverse reference rewrites, reverse exception update, optional removal of empty `contracts/projection/ide/**` directories, then Tier 0 validation.
 
 ## Exception Effect
 

@@ -153,7 +153,7 @@ Services may lawfully bind to:
 
 Services may not lawfully bind by default to:
 
-- generated evidence trees under `build/**`, `artifacts/**`, `.xstack_cache/**`, or `run_meta/**`
+- generated evidence trees under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, or `run_meta/**`
 - validator-facing or projection-facing mirrors as if they were semantic owners
 - directory prominence or product-shell locality alone
 - shared code paths or import adjacency alone
@@ -440,7 +440,7 @@ All checkpoint, ownership, and anti-reinvention cautions remain in force for thi
 
 - `specs/reality/**` outranks `data/reality/**` for semantic meaning
 - `docs/planning/**` outranks planning JSON for checkpoint and execution interpretation
-- generated evidence under `build/**`, `artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless stronger doctrine explicitly promotes a specific emitted form
+- generated evidence under `build/**`, `archive/generated/artifacts/**`, `.xstack_cache/**`, and `run_meta/**` remains non-canonical unless stronger doctrine explicitly promotes a specific emitted form
 
 ### 16.5 Thin `runtime/` root
 

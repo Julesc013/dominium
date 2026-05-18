@@ -1,0 +1,27 @@
+SCHEMA: ipc/ipc_endpoint_descriptor.schema
+schema_id: dominium.schema.ipc.ipc_endpoint_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a deterministic local IPC endpoint descriptor for AppShell attachable products.
+
+NON-SEMANTICS:
+- IPCEndpointDescriptor does not mutate truth.
+- IPCEndpointDescriptor does not authorize attach by itself.
+
+REQUIRED SHAPE:
+record ipc_endpoint_descriptor
+  required:
+    - schema_version: tag
+    - endpoint_id: id
+    - product_id: id
+    - session_id: id
+    - address: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- endpoint addresses must be derived deterministically from product/session identity
+- discovery ordering must not depend on filesystem enumeration order
+- endpoint descriptors must serialize deterministically

@@ -30,19 +30,19 @@ def run(repo_root: str):
 
     schema_checks = (
         (
-            "contracts/schemas/meta/instrumentation_surface.schema",
+            "contracts/schema/meta/instrumentation_surface.schema",
             ("owner_kind", "owner_id", "control_points", "measurement_points", "forensics_points", "deterministic_fingerprint"),
         ),
         (
-            "contracts/schemas/meta/control_point.schema",
+            "contracts/schema/meta/control_point.schema",
             ("control_point_id", "action_template_id", "required_access_policy_id", "safety_interlock_refs"),
         ),
         (
-            "contracts/schemas/meta/measurement_point.schema",
+            "contracts/schema/meta/measurement_point.schema",
             ("measurement_point_id", "quantity_id", "instrument_type_id", "measurement_model_id", "redaction_policy_id"),
         ),
         (
-            "contracts/schemas/meta/forensics_point.schema",
+            "contracts/schema/meta/forensics_point.schema",
             ("forensics_point_id", "explain_contract_id", "redaction_policy_id"),
         ),
     )

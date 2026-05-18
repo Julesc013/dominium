@@ -126,14 +126,14 @@ Until those are explicit, `Ζ` should remain dependency-shadowed rather than tre
 - `server/server_main.py`
 - `server/shard/shard_api.h`
 - `server/shard/shard_api.cpp`
-- `tools/network/policies/policy_server_authoritative.py`
-- `tools/network/srz/shard_coordinator.py`
+- `tools/validators/network/policies/policy_server_authoritative.py`
+- `tools/validators/network/srz/shard_coordinator.py`
 - `tools/governance/control_plane_engine.py`
 - `process/process_run_engine.py`
 - `process/capsules/capsule_executor.py`
 - `server/persistence/**`
 - `server/authority/**`
-- `engine/tests/player_embodiment_tests.cpp`
+- `tests/engine/player_embodiment_tests.cpp`
 - `docs/runtime/**`
 
 `Φ-B` must not replace those surfaces with an abstract greenfield event, snapshot, hotswap, or authority framework detached from repo reality.
@@ -146,18 +146,18 @@ Until those are explicit, `Ζ` should remain dependency-shadowed rather than tre
 - `cmake/toolchains/**`
 - `contracts/repo/release_policy.toml`
 - `docs/release/**`
-- `release/update_resolver.py`
-- `release/archive_policy.py`
-- `release/release_manifest_engine.py`
-- `release/component_graph_resolver.py`
+- `tools/release/update_resolver.py`
+- `tools/release/archive_policy.py`
+- `tools/release/release_manifest_engine.py`
+- `tools/release/component_graph_resolver.py`
 - `security/trust/**`
 - `updates/*.json`
 - `contracts/registry/trust_policy_registry.json`
-- `tools/controlx/README.md`
-- `tools/controlx/controlx.py`
+- `tools/xstack/controlx/README.md`
+- `tools/xstack/controlx/controlx.py`
 - `docs/xstack/CI_GUARDRAILS.md`
 - `tools/xstack/ci/xstack_ci_entrypoint.py`
-- `tools/dist/dist_tree_common.py`
+- `tools/release/dist/dist_tree_common.py`
 
 `Υ` must not invent a parallel release, packaging, archive, trust, or control-plane universe because one root is easier to reason about.
 

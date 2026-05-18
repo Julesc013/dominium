@@ -42,15 +42,15 @@ Checked target failures: 12.
 
 The implicated paths are:
 
-- `dist/bin/client`
-- `dist/bin/engine`
-- `dist/bin/game`
-- `dist/bin/launcher`
-- `dist/bin/server`
-- `dist/bin/setup`
-- `dist/bin/tool_attach_console_stub`
+- `archive/generated/dist/bin/client`
+- `archive/generated/dist/bin/engine`
+- `archive/generated/dist/bin/game`
+- `archive/generated/dist/bin/launcher`
+- `archive/generated/dist/bin/server`
+- `archive/generated/dist/bin/setup`
+- `archive/generated/dist/bin/tool_attach_console_stub`
 
-The authority basis is `data/registries/product_registry.json`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `scripts/ci/check_repox_rules.py`, and the existing partial product proof in `docs/release/PRODUCT_BOOT_PROOF.md`.
+The authority basis is `data/registries/product_registry.json`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `scripts/ci/check_repox_rules.py`, and the existing partial product proof in `docs/release/PRODUCT_BOOT_PROOF.md`.
 
 ## Changes Made
 
@@ -58,7 +58,7 @@ The authority basis is `data/registries/product_registry.json`, `docs/compat/END
 - Added POST-CONVERGE-10L audit and AIDE evidence.
 - Updated post-converge status docs to reflect that distribution/product proof failures are classified but not fixed.
 
-No `dist/bin` wrapper, native binary, package, portable projection, or release artifact was created.
+No `archive/generated/dist/bin` wrapper, native binary, package, portable projection, or release artifact was created.
 
 ## Before/After
 
@@ -72,7 +72,7 @@ No `dist/bin` wrapper, native binary, package, portable projection, or release a
 
 ## Remaining Blockers
 
-- Missing `dist/bin` wrapper/projection surfaces for descriptor emission and AppShell-owned delegation.
+- Missing `archive/generated/dist/bin` wrapper/projection surfaces for descriptor emission and AppShell-owned delegation.
 - Retired-domain path policy checks.
 - Tool hash/audit staleness.
 - Ruleset mapping gaps.

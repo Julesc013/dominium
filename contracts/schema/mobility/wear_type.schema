@@ -1,0 +1,22 @@
+SCHEMA: mobility/wear_type.schema
+schema_id: dominium.schema.mobility.wear_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic mobility wear type policy reference row.
+
+REQUIRED SHAPE:
+record wear_type
+  required:
+    - schema_version: semver
+    - wear_type_id: id
+    - description: string
+    - accumulation_policy_id: id
+    - hazard_threshold: int
+    - effect_modifier_id: id|null
+    - extensions: map
+
+INVARIANTS:
+- `hazard_threshold > 0`.
+- Wear policy selection is explicit and inspectable.

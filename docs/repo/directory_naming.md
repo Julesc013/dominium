@@ -109,15 +109,15 @@ These are target names for future reviewed cleanup only:
 
 | Current | Target |
 | --- | --- |
-| `runtime/appshell/` | `runtime/shell/` |
-| `game/domains/` | `game/domain/` |
-| `content/domain-data/` | `content/domains/` |
-| `contracts/schemas/` | `contracts/schema/` |
-| `contracts/registries/` | `contracts/registry/` |
+| `runtime/shell/` | `runtime/shell/` |
+| `game/domain/` | `game/domain/` |
+| `content/domains/` | `content/domains/` |
+| `contracts/schema/` | `contracts/schema/` |
+| `contracts/registry/` | `contracts/registry/` |
 | `contracts/packages/` | `contracts/package/` |
 | `contracts/profiles/` | `contracts/profile/` |
-| `contracts/protocols/` | `contracts/protocol/` |
-| `contracts/projections/` | `contracts/projection/` |
+| `contracts/protocol/` | `contracts/protocol/` |
+| `contracts/projection/` | `contracts/projection/` |
 
 NAME-00 does not authorize applying those renames, creating aliases, moving files, rewriting imports, rewriting references, or retiring layout exceptions.
 

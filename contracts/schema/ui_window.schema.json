@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Window Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Descriptor-driven non-diegetic tool window contract bound to PerceivedModel-only data binding.",
+  "x-doc-ref": [
+    "docs/architecture/ui_registry.md",
+    "docs/architecture/truth_perceived_render.md",
+    "docs/canon/constitution_v1.md §3 A7/A9"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "window_id",
+    "title",
+    "required_entitlements",
+    "widgets"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "window_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_entitlements": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required_lenses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "widgets": {
+      "$ref": "#/$defs/widget"
+    }
+  },
+  "$defs": {
+    "data_binding": {
+      "type": "object",
+      "required": [
+        "source",
+        "selector"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "type": "string",
+          "const": "perceived_model"
+        },
+        "selector": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "action_binding": {
+      "type": "object",
+      "required": [
+        "intent_id",
+        "process_id",
+        "payload_template"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "intent_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "process_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "payload_template": {
+          "type": "object"
+        }
+      }
+    },
+    "widget": {
+      "type": "object",
+      "required": [
+        "widget_id",
+        "type"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "widget_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "container",
+            "text",
+            "button",
+            "list",
+            "tree",
+            "input_text",
+            "input_number"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string",
+          "enum": [
+            "vertical",
+            "horizontal"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "data_binding": {
+          "$ref": "#/$defs/data_binding"
+        },
+        "action_binding": {
+          "$ref": "#/$defs/action_binding"
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/widget"
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "window_id": "window.tool.goto",
+      "title": "Go-To",
+      "required_entitlements": [
+        "entitlement.teleport"
+      ],
+      "required_lenses": [
+        "lens.diegetic.sensor",
+        "lens.nondiegetic.debug"
+      ],
+      "widgets": {
+        "widget_id": "goto.root",
+        "type": "container",
+        "layout": "vertical",
+        "children": [
+          {
+            "widget_id": "goto.query",
+            "type": "input_text",
+            "label": "Query"
+          },
+          {
+            "widget_id": "goto.results",
+            "type": "list",
+            "label": "Results",
+            "data_binding": {
+              "source": "perceived_model",
+              "selector": "navigation.search_results"
+            }
+          },
+          {
+            "widget_id": "goto.teleport",
+            "type": "button",
+            "label": "Teleport",
+            "action_binding": {
+              "intent_id": "intent.ui.goto.teleport",
+              "process_id": "process.camera_teleport",
+              "payload_template": {
+                "target_object_id": "${selection.object_id}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -54,7 +54,7 @@ DominiumPortable/
 | `CACHE_ROOT` | `cache/` |
 | `OPS_ROOT` | `ops/` |
 | `DOC_ROOT` | `docs/` |
-| `REDIST_ROOT` | `redist/` when shipped |
+| `REDIST_ROOT` | `rearchive/generated/dist/` when shipped |
 | `STORE_LOCK_ROOT` | `store/locks/` |
 | `RUNTIME_LOCK_ROOT` | `runtime/locks/` |
 | `OPS_TRANSACTION_ROOT` | `ops/transactions/` |

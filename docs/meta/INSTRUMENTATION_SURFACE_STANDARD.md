@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Instrumentation Surface Standard
 
-Status: CANONICAL (META-INSTR-0)  
-Last Reviewed: 2026-03-07  
+Status: CANONICAL (META-INSTR-0)
+Last Reviewed: 2026-03-07
 Version: 1.0.0
 
 ## Purpose
@@ -125,7 +125,7 @@ Aggregated dashboards and summaries:
   - control points MUST map to declared `action_template_id`.
 - Info Grammar:
   - measurement outputs are `OBSERVATION` (policy may promote to canonical record where contract declares).
-  - forensics outputs route through explain artifacts/contracts.
+  - forensics outputs route through explain archive/generated/artifacts/contracts.
 - Certification/Drift:
   - instrumentation surfaces may be used as certification/drift inputs but cannot bypass certification/drift process rules.
 - Replay/Determinism:

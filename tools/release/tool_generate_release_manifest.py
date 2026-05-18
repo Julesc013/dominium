@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from release import DEFAULT_RELEASE_CHANNEL, build_release_manifest, write_release_manifest  # noqa: E402
+from tools.release import DEFAULT_RELEASE_CHANNEL, build_release_manifest, write_release_manifest  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:

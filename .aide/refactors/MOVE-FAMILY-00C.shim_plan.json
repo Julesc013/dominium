@@ -53,7 +53,7 @@
       "new_import": "tools.governance.profile",
       "shim_needed": true,
       "shim_path": "governance/__init__.py and governance/governance_profile.py",
-      "shim_lifetime": "one approved apply/proof cycle after release/setup/dist/tool consumers are rewritten",
+      "shim_lifetime": "one approved apply/proof cycle after release/setup/archive/generated/dist/tool consumers are rewritten",
       "allowed_callers": ["existing release, setup, dist, governance tool, and TestX consumers only during migration"],
       "forbidden_new_references": ["new imports from governance after apply"],
       "validator_to_prevent_new_old_imports": "future stale-import check for ^from governance|^import governance outside shim files",

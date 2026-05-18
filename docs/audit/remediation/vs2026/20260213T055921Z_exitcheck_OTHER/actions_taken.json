@@ -26,7 +26,7 @@
       "note": "canonical environment refreshed",
       "status": "applied",
       "strategy": "environment",
-      "tools_dir": "c:/Inbox/Git Repos/dominium/dist/sys/winnt/x64/bin/tools"
+      "tools_dir": "c:/Inbox/Git Repos/dominium/archive/generated/dist/sys/winnt/x64/bin/tools"
     },
     {
       "applied_strategy": "environment",

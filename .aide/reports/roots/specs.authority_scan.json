@@ -4529,7 +4529,7 @@
       "sensitivity_hints": [
         "governance_sensitive"
       ],
-      "snippet": "It formalizes repo-grounded direction already visible in surfaces such as `materials/blueprint_engine.py`, `materials/maintenance/decay_engine.py`, `infrastructure/formalization/inference_engine.py`, `docs/worldgen/CIVILIZATIONS_AND_HISTORY"
+      "snippet": "It formalizes repo-grounded direction already visible in surfaces such as `materials/blueprint_engine.py`, `materials/maintenance/decay_engine.py`, `infrastructure/formalization/inference_engine.py`, `docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY"
     },
     {
       "file": "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
@@ -4835,7 +4835,7 @@
       "sensitivity_hints": [
         "governance_sensitive"
       ],
-      "snippet": "- `docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`"
+      "snippet": "- `docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md`"
     },
     {
       "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
@@ -4871,7 +4871,7 @@
       "sensitivity_hints": [
         "policy_or_contract"
       ],
-      "snippet": "It is also informed by existing repo embodiment in `docs/architecture/macro_capsules.md`, `docs/worldgen/REFINEMENT_CONTRACT.md`, `docs/worldgen/REFINEMENT_LATTICE.md`, `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`, `docs/system/MACROCAPSULE_B"
+      "snippet": "It is also informed by existing repo embodiment in `docs/architecture/macro_capsules.md`, `docs/domains/worldgen/REFINEMENT_CONTRACT.md`, `docs/domains/worldgen/REFINEMENT_LATTICE.md`, `docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md`, `docs/system/MACROCAPSULE_B"
     },
     {
       "file": "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
@@ -5042,7 +5042,7 @@
       "sensitivity_hints": [
         "policy_or_contract"
       ],
-      "snippet": "- `docs/worldgen/REFINEMENT_CONTRACT.md`"
+      "snippet": "- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`"
     },
     {
       "file": "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
@@ -5258,7 +5258,7 @@
       "sensitivity_hints": [
         "policy_or_contract"
       ],
-      "snippet": "- `docs/worldgen/REFINEMENT_CONTRACT.md`"
+      "snippet": "- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`"
     }
   ],
   "moves_applied": false,

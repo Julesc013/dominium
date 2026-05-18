@@ -1,0 +1,27 @@
+SCHEMA: logic/debug_probe_request.schema
+schema_id: dominium.schema.logic.debug_probe_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic single-point LOGIC debug probe requests.
+- Bind the requester, measurement point, and canonical tick target for epistemic evaluation.
+
+NON-SEMANTICS:
+- This schema does not guarantee access approval.
+- It does not authorize direct truth reads outside META-INSTR.
+
+REQUIRED SHAPE:
+record logic_debug_probe_request
+  required:
+    - request_id: id
+    - subject_id: id
+    - measurement_point_id: id
+    - tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `request_id` must be deterministic from the request payload.
+- Probe requests must resolve through instrumentation surfaces and access policy evaluation.
+- Probe requests are bounded to a single measurement point.

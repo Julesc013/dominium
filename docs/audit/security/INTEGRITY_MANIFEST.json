@@ -38,22 +38,22 @@
       {
         "id": "schema.integrity_manifest",
         "sha256": "1a1f0b087d7bfbe32ab78705e02f2b3dc91d0a085bdc45363be904922489a17e",
-        "source": "contracts/schemas/governance/integrity_manifest.schema"
+        "source": "contracts/schema/governance/integrity_manifest.schema"
       },
       {
         "id": "schema.pack_signature",
         "sha256": "39277dfbe2fe9bf92820041d436678c98b8b8f1c554c5b58319b8b2fdf3dbc23",
-        "source": "contracts/schemas/governance/pack_signature.schema"
+        "source": "contracts/schema/governance/pack_signature.schema"
       },
       {
         "id": "schema.privilege_model",
         "sha256": "511798be83df9b92738d94c6d885794eab1fc758aede01226179d5a17712fa65",
-        "source": "contracts/schemas/governance/privilege_model.schema"
+        "source": "contracts/schema/governance/privilege_model.schema"
       },
       {
         "id": "schema.trust_policy",
         "sha256": "4e287bbfa264c635ae7d7b0c8813856e669a0852f668dee187c4193fc509e3a5",
-        "source": "contracts/schemas/governance/trust_policy.schema"
+        "source": "contracts/schema/governance/trust_policy.schema"
       }
     ],
     "schema_version_ref": "dominium.schema.governance.integrity_manifest@1.0.0",
@@ -61,22 +61,22 @@
       {
         "id": "tool.auditx",
         "sha256": "144b6dc8f67d81350e2cf88020af5341a623aa3cda17471dfa3afd2ef474930b",
-        "source": "tools/auditx/auditx.py"
+        "source": "tools/xstack/auditx/auditx.py"
       },
       {
         "id": "tool.compatx",
         "sha256": "684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c",
-        "source": "tools/compatx/compatx.py"
+        "source": "tools/xstack/compatx/compatx.py"
       },
       {
         "id": "tool.controlx",
         "sha256": "665d5d8f7359cd325e2dffe000945ba055af5816f6acc97c61d44341b67fe325",
-        "source": "tools/controlx/controlx.py"
+        "source": "tools/xstack/controlx/controlx.py"
       },
       {
         "id": "tool.securex",
         "sha256": "b23a921afad67e018007a734ad88745d5b7e950b53bab0621d77857ea2f32f46",
-        "source": "tools/securex/securex.py"
+        "source": "tools/xstack/securex/securex.py"
       }
     ]
   },

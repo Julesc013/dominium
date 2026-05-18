@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from tools.validators.compatibility import build_default_endpoint_descriptor  # noqa: E402
-from engine.platform import (  # noqa: E402
+from runtime.platform import (  # noqa: E402
     PLATFORM_ID_ORDER,
     load_platform_capability_registry,
     probe_platform_descriptor,
@@ -25,10 +25,10 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
-PLATFORM_FORMALIZE_REPORT_PATH = "content/data/audit/platform_formalize_report.json"
+PLATFORM_FORMALIZE_REPORT_PATH = "archive/generated/audit/platform_formalize_report.json"
 PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
-PLATFORM_PROBE_PATH = "engine/platform/platform_probe.py"
-PLATFORM_CAPS_PROBE_PATH = "engine/platform/platform_caps_probe.py"
+PLATFORM_PROBE_PATH = "runtime/platform/platform_probe.py"
+PLATFORM_CAPS_PROBE_PATH = "runtime/platform/platform_caps_probe.py"
 
 
 def _token(value: object) -> str:
@@ -138,13 +138,13 @@ def _host_probe_row(repo_root: str, product_id: str) -> dict:
 
 def platform_formalize_violations(repo_root: str) -> list[dict]:
     violations: list[dict] = []
-    selector_text = _file_text(repo_root, "runtime/appshell/ui_mode_selector.py")
+    selector_text = _file_text(repo_root, "runtime/shell/ui_mode_selector.py")
     if "probe_platform_descriptor" not in selector_text:
         violations.append(
             {
                 "code": "selector_not_using_platform_probe",
-                "file_path": "runtime/appshell/ui_mode_selector.py",
-                "message": "UI mode selector must resolve host capabilities through engine.platform.platform_probe.probe_platform_descriptor",
+                "file_path": "runtime/shell/ui_mode_selector.py",
+                "message": "UI mode selector must resolve host capabilities through runtime.platform.platform_probe.probe_platform_descriptor",
                 "rule_id": "INV-UI-MODE-SELECTION-USES-PROBE",
             }
         )
@@ -152,7 +152,7 @@ def platform_formalize_violations(repo_root: str) -> list[dict]:
         violations.append(
             {
                 "code": "legacy_probe_import_left_in_selector",
-                "file_path": "runtime/appshell/ui_mode_selector.py",
+                "file_path": "runtime/shell/ui_mode_selector.py",
                 "message": "UI mode selector must not import the legacy platform_caps_probe wrapper directly",
                 "rule_id": "INV-UI-MODE-SELECTION-USES-PROBE",
             }

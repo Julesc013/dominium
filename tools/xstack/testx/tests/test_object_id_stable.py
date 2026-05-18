@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from game.domains.geology import geo_cell_key_from_position, geo_object_id
+from game.domain.geology import geo_cell_key_from_position, geo_object_id
 
 
 TEST_ID = "test_object_id_stable"

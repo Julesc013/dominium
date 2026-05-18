@@ -24,7 +24,7 @@ def _law_profile():
 
 
 def _seed_state() -> dict:
-    from game.domains.mobility.geometry import build_guide_geometry, build_junction
+    from game.domain.mobility.geometry import build_guide_geometry, build_junction
     from tools.xstack.testx.tests.construction_testlib import base_state
 
     state = base_state()

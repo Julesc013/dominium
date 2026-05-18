@@ -37,5 +37,5 @@ Compile deterministic derived registries and lockfiles from pack manifests and t
 ## Cross-References
 - `tools/xstack/registry_compile/compiler.py`
 - `tools/xstack/registry_compile/lockfile.py`
-- `contracts/schemas/bundle_profile.schema.json`
+- `contracts/schema/bundle_profile.schema.json`
 - `tools/xstack/cache_store/store.py`

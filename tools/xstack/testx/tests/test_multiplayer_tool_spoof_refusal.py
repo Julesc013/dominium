@@ -34,7 +34,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
 
     from client.interaction.interaction_dispatch import run_interaction_command
-    from tools.network.anti_cheat.anti_cheat_engine import ensure_runtime_channels
+    from tools.validators.network.anti_cheat.anti_cheat_engine import ensure_runtime_channels
     from tools.xstack.testx.tests.interaction_testlib import authority_context, base_state, policy_context
 
     perceived_model = {

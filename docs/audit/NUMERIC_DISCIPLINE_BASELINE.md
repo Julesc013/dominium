@@ -40,7 +40,7 @@ Replacement Target: Release-pinned engine numeric policy and compiler matrix doc
 
 ### Tooling-only numeric
 - `tools/audit/`
-- `tools/dist/`
+- `tools/release/dist/`
 - `tools/release/`
 
 ## Tolerances

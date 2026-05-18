@@ -102,7 +102,7 @@ Mismatch details:
 - there is no guaranteed system at any fixed galactic cell
 - there is no current binding from a procedural star-system ID to the official Sol hierarchy
 - there is no active pack under `packs/official/pack.sol.pin_minimal/`
-- the MVP dist/runtime bundle currently references a Sol pack alias only
+- the MVP archive/generated/dist/runtime bundle currently references a Sol pack alias only
 
 Consequence:
 

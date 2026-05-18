@@ -56,7 +56,7 @@ the setup baseline.
 ### Tests
 - `setup/tests/` is empty.
 - Integration test referencing setup contracts:
-  - `game/tests/tests/dominium_integration/setup_flow_test.cpp` (calls
+  - `tests/tests/game/dominium_integration/setup_flow_test.cpp` (calls
     `run_install`, `run_repair`, `run_uninstall`, `run_info` from
     `dom_setup_config.h`).
 - Packaging validation tests exist under
@@ -87,7 +87,7 @@ the setup baseline.
 ## Unreferenced or stranded code paths
 - `setup/include/dsu/_internal/dom_setup/dom_setup_config.h` functions are not
   implemented in `setup/` and only exist in `legacy/setup_core_setup/`.
-- `game/tests/tests/dominium_integration/setup_flow_test.cpp` targets the legacy
+- `tests/tests/game/dominium_integration/setup_flow_test.cpp` targets the legacy
   setup API surface but has no active setup core to execute against.
 
 ## Intentionally deferred (known but not implemented here)

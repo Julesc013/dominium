@@ -17,9 +17,9 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/packs/pack_lock.schema`
 - `schema/packs/pack_compat_manifest.schema`
 - `schema/pack_manifest.schema`
-- `tools/libraries/provides/__init__.py`
-- `tools/libraries/provides/provider_resolution.py`
-- `tools/libraries/instance/instance_validator.py`
+- `tools/package/libraries/provides/__init__.py`
+- `tools/package/libraries/provides/provider_resolution.py`
+- `tools/package/libraries/instance/instance_validator.py`
 - `content/packs/compatibility_payload/pack_compat_validator.py`
 - `content/packs/compatibility_payload/pack_verification_pipeline.py`
 - `tools/ops/ops_cli.py`

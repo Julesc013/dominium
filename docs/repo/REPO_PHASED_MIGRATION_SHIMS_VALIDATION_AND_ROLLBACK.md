@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: authoritative phased migration and rollback packet for later relayout execution prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, the Omega2 coupling-risk packet, the Omega0 option packet, and the Omega1 preferred-target packet
 Replacement Target: later explicit relayout-execution checkpoint or migration-plan replacement only after new baseline-hardening evidence and follow-up approval
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `content/data/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `content/data/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `content/data/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `content/data/repo/repo_target_topology_options_and_comparison.json`, `docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md`, `content/data/repo/repo_authoritative_boundary_model_and_preferred_target.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `tools/import_bridge.py`, `runtime/process_spawn.py`, `server/server_main.py`, `release/release_manifest_engine.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md`, `archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json`, `docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md`, `archive/generated/repo/repo_target_topology_options_and_comparison.json`, `docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md`, `archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `appshell/paths/virtual_paths.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/registry_compile/constants.py`, `tools/import_bridge.py`, `runtime/process_spawn.py`, `server/server_main.py`, `tools/release/release_manifest_engine.py`
 
 # Repo Phased Migration, Shims, Validation, And Rollback
 
@@ -83,7 +83,7 @@ A shim is presumed necessary when:
 Validation gates are selected from Omega0 survival rules plus the audit-backed baseline path:
 
 - `cmake --preset verify`, `cmake --build --preset verify`, and `ctest --preset verify` where build or wrapper surfaces are affected
-- `python tools/validation/tool_run_validation.py --profile FAST` at minimum after every slice
+- `python tools/validators/suite/tool_run_validation.py --profile FAST` at minimum after every slice
 - launcher/setup AppShell health whenever product shells, release/trust, or virtual-root behavior is touched
 - SessionX create/boot, local loopback authority boot, and save/load smoke whenever session, local authority, or generated-intermediate contracts are touched
 - selected `TestX` or `CTest` smoke whenever a phase changes proof surfaces or baseline-adjacent runtime seams
@@ -256,7 +256,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - Likely needs shims:
   no runtime shims; only documentation redirect planning if later report paths change
 - Validation gates after it:
-  JSON parse, markdown/JSON consistency, `git diff --check`, and `python tools/validation/tool_run_validation.py --profile FAST`
+  JSON parse, markdown/JSON consistency, `git diff --check`, and `python tools/validators/suite/tool_run_validation.py --profile FAST`
 - Rollback trigger:
   any increase in source-of-truth ambiguity, contradictory canonical-path claims, or unexpected `FAST` regression
 - Does it threaten the canonical baseline path:
@@ -301,7 +301,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - Conceptual goal:
   separate proof tooling from emitted reports using compatibility aliases and report redirects so validation ownership becomes clearer without breaking consumers.
 - Likely affected roots:
-  `validation/`, `tools/validation/`, `tools/import_bridge.py`, `docs/audit/`, and `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/import_bridge.py`, `docs/audit/`, and `data/audit/`
 - Safe to do early:
   no; it should follow the first low-risk slice because the proof surface is broad and heavily consumed
 - Likely needs shims:
@@ -318,7 +318,7 @@ The following are not part of the normal early-to-mid migration path and must re
 - Conceptual goal:
   align release, trust, install-discovery, and manifest-resolution surfaces to the preferred boundary model while keeping launcher/setup shells stable.
 - Likely affected roots:
-  `release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `dist/`, and related registries or manifests
+  `release/`, `security/trust/`, `repo/`, `tools/setup/`, `tools/launcher/`, `archive/generated/dist/`, and related registries or manifests
 - Safe to do early:
   no
 - Likely needs shims:
@@ -424,7 +424,7 @@ It does not yet attempt:
 ### `MP-0`
 
 - mandatory gates:
-  JSON parse for touched mirrors, prose/mirror consistency, `git diff --check`, and `python tools/validation/tool_run_validation.py --profile FAST`
+  JSON parse for touched mirrors, prose/mirror consistency, `git diff --check`, and `python tools/validators/suite/tool_run_validation.py --profile FAST`
 
 ### `MP-1`
 

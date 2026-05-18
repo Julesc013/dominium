@@ -1,0 +1,22 @@
+SCHEMA: compat/migration_policy.schema
+schema_id: dominium.schema.compat.migration_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic compatibility and migration ranges for one persistent artifact class.
+
+REQUIRED SHAPE:
+record migration_policy
+  required:
+    - artifact_kind_id: id
+    - backward_read_range: map
+    - forward_read_range: map
+    - migration_supported_range: map
+    - read_only_allowed: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- ranges are interpreted deterministically by semver ordering only.
+- policy meaning must not depend on wall-clock, host state, or network state.

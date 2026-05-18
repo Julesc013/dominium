@@ -36,7 +36,7 @@ Version: 1.0.0
 - `module:client`
 - `module:client/adapters`
 - `module:client/app`
-- `module:client/core`
+- `module:apps/client/session`
 - `module:client/gui`
 - `module:client/input`
 - `module:client/modes`

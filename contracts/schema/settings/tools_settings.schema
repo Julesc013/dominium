@@ -1,0 +1,20 @@
+SCHEMA: settings/tools_settings.schema
+schema_id: dominium.schema.settings.tools
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical tool-host settings for output and display.
+
+REQUIRED SHAPE:
+record tools_settings
+  required:
+    - settings_id: id
+    - schema_id: id
+    - schema_version: tag
+    - output_format: enum(text|json)
+    - verbosity: enum(quiet|normal|verbose)
+    - filter_options: map
+    - display_options: map
+    - extensions: map
+

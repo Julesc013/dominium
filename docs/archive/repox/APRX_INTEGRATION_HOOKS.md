@@ -106,7 +106,7 @@ Helper functions live in `cmake/DomIntegration.cmake`.
 ### Renderer backends
 
 
-- Backend code lives under `engine/render/<backend>/`.
+- Backend code lives under `runtime/render/<backend>/`.
 
 
 - Canonical target name: `dom_render_backend_<name>` (INTERFACE marker target).
@@ -133,7 +133,7 @@ Helper functions live in `cmake/DomIntegration.cmake`.
 ### Platform backends
 
 
-- Platform runtime code lives under `engine/modules/system/`.
+- Platform runtime code lives under `runtime/platform/system/`.
 
 
 - Build selection is via `DOM_PLATFORM` (single active backend per build).

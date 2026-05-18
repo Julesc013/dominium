@@ -175,7 +175,7 @@
       "representative_evidence_surfaces": [
         "docs/planning/CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW.md",
         "docs/planning/MERGED_PROGRAM_STATE.md",
-        "content/data/planning/dependency_graph_post_pi.json"
+        "contracts/planning/dependency_graph_post_pi.json"
       ],
       "allowed_output_classes": [
         "checkpoint_docs",
@@ -435,7 +435,7 @@
         "tools/xstack/packagingx/dist_build.py",
         "tools/xstack/securex/check.py",
         "docs/xstack/CI_GUARDRAILS.md",
-        "content/data/xstack/gate_definitions.json"
+        "archive/generated/xstack/gate_definitions.json"
       ],
       "allowed_output_classes": [
         "release_docs",
@@ -483,7 +483,7 @@
         "tools/xstack/auditx/check.py",
         "tools/xstack/compatx/check.py",
         "tools/xstack/securex/check.py",
-        "content/data/xstack/gate_definitions.json"
+        "archive/generated/xstack/gate_definitions.json"
       ],
       "allowed_output_classes": [
         "reports",

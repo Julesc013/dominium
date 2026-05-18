@@ -16,8 +16,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `src/inspection/inspection_engine.py`
 - `src/client/interaction/inspection_overlays.py`
 - `tools/xstack/repox/check.py`
-- `tools/auditx/analyzers/e164_direct_message_smell.py`
-- `tools/auditx/analyzers/e165_knowledge_bypass_smell.py`
+- `tools/xstack/auditx/analyzers/e164_direct_message_smell.py`
+- `tools/xstack/auditx/analyzers/e165_knowledge_bypass_smell.py`
 
 ## Findings
 

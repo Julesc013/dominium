@@ -23,8 +23,8 @@ Shim behavior must be:
 
 | Old Import | New Import | Shim Files | Temporary Old-Import Callers |
 | --- | --- | --- | --- |
-| `validation` | `tools.validators.validation` | `validation/__init__.py`, `validation/validation_engine.py` | `compat/shims/validation_shims.py`, `runtime/appshell/commands/command_engine.py` |
-| `meta.identity` | `tools.validators.identity` | `meta/identity/__init__.py`, `meta/identity/identity_validator.py` | `lib/install/install_validator.py`, `lib/instance/instance_validator.py`, `lib/save/save_validator.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/license_capability.py` |
+| `validation` | `tools.validators.validation` | `validation/__init__.py`, `validation/validation_engine.py` | `compat/shims/validation_shims.py`, `runtime/shell/commands/command_engine.py` |
+| `meta.identity` | `tools.validators.identity` | `meta/identity/__init__.py`, `meta/identity/identity_validator.py` | `lib/install/install_validator.py`, `lib/instance/instance_validator.py`, `lib/save/save_validator.py`, `tools/release/release_manifest_engine.py`, `tools/release/update_resolver.py`, `security/trust/license_capability.py` |
 | `meta.stability` | `tools.validators.stability` | `meta/stability/__init__.py`, `meta/stability/stability_scope.py`, `meta/stability/stability_validator.py` | `compat/shims/common.py`, `tools/governance/governance_model_common.py` |
 
 ## Retirement

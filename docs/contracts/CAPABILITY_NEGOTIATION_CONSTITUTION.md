@@ -179,7 +179,7 @@ If verification fails, replay refuses unless an explicit compatibility or migrat
 - `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`
 - `docs/meta/UNIVERSE_CONTRACT_BUNDLE.md`
 - `docs/meta/EXTENSION_DISCIPLINE.md`
-- `docs/geo/OVERLAY_CONFLICT_POLICIES.md`
+- `docs/domains/geology/OVERLAY_CONFLICT_POLICIES.md`
 - `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`
 - `contracts/registry/capability_registry.json`
 - `contracts/registry/product_registry.json`

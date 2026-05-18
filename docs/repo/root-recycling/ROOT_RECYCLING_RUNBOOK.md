@@ -32,9 +32,9 @@ MOVE-FAMILY-00-PLAN note: a family-level plan may return `BLOCKED` when no safe 
 
 MOVE-FAMILY-00-REFINE note: active-module refinement must split mixed roots by owner before a gate. `ide/manifests/**` should be planned as projection contract metadata under `contracts/projections`; `validation/**`, `meta/identity/**`, and `meta/stability/**` need shim-aware validator namespace planning; `governance/**` needs release/tool import proof; semantic `meta/**` and product/runtime `performance/**` remain preserve-current until their owners are explicit.
 
-MOVE-FAMILY-00B-PLAN note: IDE manifest planning may proceed to a gate only for the three tracked source metadata files under `ide/manifests/**`. The target owner is `contracts/projections/ide/**`, created only by a later approved apply task. Generated `ide/manifests/*.projection.json` output is a separate ignored-output concern and must not be committed. Retire the `ide` source-layout exception only after all tracked files leave `ide/` and validators pass.
+MOVE-FAMILY-00B-PLAN note: IDE manifest planning may proceed to a gate only for the three tracked source metadata files under `ide/manifests/**`. The target owner is `contracts/projection/ide/**`, created only by a later approved apply task. Generated `ide/manifests/*.projection.json` output is a separate ignored-output concern and must not be committed. Retire the `ide` source-layout exception only after all tracked files leave `ide/` and validators pass.
 
-MOVE-FAMILY-00B-APPLY note: apply tasks may retire a source-root exception only after the tracked state and filesystem state both support it. The IDE manifest apply moved exactly three tracked source metadata files to `contracts/projections/ide/**`, applied only five gate-approved current-reference rewrites, removed only the empty `ide/` directory tree left by the move, and retired only `ide_root` after strict validators passed.
+MOVE-FAMILY-00B-APPLY note: apply tasks may retire a source-root exception only after the tracked state and filesystem state both support it. The IDE manifest apply moved exactly three tracked source metadata files to `contracts/projection/ide/**`, applied only five gate-approved current-reference rewrites, removed only the empty `ide/` directory tree left by the move, and retired only `ide_root` after strict validators passed.
 
 MOVE-FAMILY-00B-PROOF note: proof tasks must verify root retirement after apply before another family move starts. The IDE proof confirmed `git ls-files ide` is empty, filesystem `ide/` is absent, `ide_root` is retired, strict validators and focused RepoX pass, and old `ide/manifests/**` references are only historical/planning/audit/AIDE/generated-output references. No new apply authorization is granted by the proof.
 
@@ -182,3 +182,16 @@ partial repair boundary.
 
 The next root-recycling action is not another broad move. It is
 `MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.
+
+## CANON-SPINE-NEW Result
+
+CANON-SPINE-NEW completed the source-spine cleanup layer after bad-root routing.
+
+- Former bad roots remain empty in tracked source.
+- `runtime/shell/` is the canonical shell/app/appshell/appcore owner.
+- Workbench modules live under `apps/workbench/module/`.
+- Root generated/local outputs remain untracked.
+- Strict layout/root validators and AIDE pass.
+
+The next root-recycling action is boundary and full-proof repair:
+`CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof`.

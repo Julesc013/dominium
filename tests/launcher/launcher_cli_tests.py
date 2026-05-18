@@ -14,12 +14,12 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from tools.validators.compatibility import build_product_build_metadata, build_product_descriptor
-from tools.libraries.install import build_product_build_descriptor, deterministic_fingerprint
-from tools.libraries.instance import (
+from tools.package.libraries.install import build_product_build_descriptor, deterministic_fingerprint
+from tools.package.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
 )
-from tools.libraries.save import (
+from tools.package.libraries.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
 )
@@ -30,7 +30,7 @@ from tools.lib.content_store import (
     embed_tree_artifact,
     embed_json_artifact,
 )
-from tools.compatx.core.semantic_contract_validator import build_default_universe_contract_bundle
+from tools.xstack.compatx.core.semantic_contract_validator import build_default_universe_contract_bundle
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
@@ -319,7 +319,7 @@ def _write_instance_manifest(root: str,
                         "category": "packs",
                         "artifact_hash": pack_hash,
                         "artifact_type": "tree",
-                        "artifact_path": "embedded_artifacts/packs/%s" % pack_hash,
+                        "artifact_path": "embedded_archive/generated/artifacts/packs/%s" % pack_hash,
                         "artifact_id": pack_token,
                     }
                 )
@@ -386,14 +386,14 @@ def _write_instance_manifest(root: str,
                 "category": "locks",
                 "artifact_hash": pack_lock_hash,
                 "artifact_type": "json",
-                "artifact_path": "embedded_artifacts/locks/%s" % pack_lock_hash,
+                "artifact_path": "embedded_archive/generated/artifacts/locks/%s" % pack_lock_hash,
                 "artifact_id": pack_lock_payload.get("pack_lock_id"),
             },
             {
                 "category": "profiles",
                 "artifact_hash": profile_bundle_hash,
                 "artifact_type": "json",
-                "artifact_path": "embedded_artifacts/profiles/%s" % profile_bundle_hash,
+                "artifact_path": "embedded_archive/generated/artifacts/profiles/%s" % profile_bundle_hash,
                 "artifact_id": profile_bundle_payload.get("profile_bundle_id"),
             },
         ],

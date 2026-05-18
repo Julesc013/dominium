@@ -22,8 +22,8 @@ Replacement Target: XI-4b bounded follow-up and XI-5 src removal execution
 
 - `build_strict` `cmake --build --preset verify --config Debug --target domino_engine dominium_game dominium_client` -> `pass`
 - `testx_targeted` `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable,test_deprecated_files_not_in_default_build,test_canonical_paths_used_for_core_concepts_smoke,test_convergence_execution_log_deterministic` -> `pass`
-- `validate_fast` `python tools/validation/tool_run_validation.py --repo-root . --profile FAST` -> `fail` note=`repo-global validation refusal: registry entries must declare stability in contracts/registry/toolchain_test_profile_registry.json`
-- `validate_strict` `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT` -> `fail` note=`repo-global validation failure: ARCH-AUDIT disaster worktree cleanup under build/tmp/omega4_disaster_arch_audit failed`
+- `validate_fast` `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST` -> `fail` note=`repo-global validation refusal: registry entries must declare stability in contracts/registry/toolchain_test_profile_registry.json`
+- `validate_strict` `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT` -> `fail` note=`repo-global validation failure: ARCH-AUDIT disaster worktree cleanup under build/tmp/omega4_disaster_arch_audit failed`
 - `omega_1_worldgen_lock` `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .` -> `pass`
 - `omega_2_baseline_universe` `python tools/mvp/tool_verify_baseline_universe.py --repo-root .` -> `pass`
 - `omega_3_gameplay_loop` `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .` -> `pass`
@@ -98,5 +98,5 @@ Replacement Target: XI-4b bounded follow-up and XI-5 src removal execution
 - `duplicate.cluster.05964fb02c313471`
 - `duplicate.cluster.066845c9155f85c7`
 - `duplicate.cluster.06a9effbf03b0573`
-- ... see `content/data/refactor/convergence_execution_log.json` for the full deferred set
+- ... see `archive/generated/refactor/convergence_execution_log.json` for the full deferred set
 

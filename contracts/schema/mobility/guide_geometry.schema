@@ -1,0 +1,27 @@
+SCHEMA: mobility/guide_geometry.schema
+schema_id: dominium.schema.mobility.guide_geometry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic MOB-1 guide geometry artifact descriptor.
+
+REQUIRED SHAPE:
+record guide_geometry
+  required:
+    - schema_version: semver
+    - geometry_id: id
+    - geometry_type_id: id
+    - parent_spatial_id: id
+    - parameters: map
+    - junction_refs: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+    - bounds: map
+
+INVARIANTS:
+- Guide geometry is process-authored only.
+- Geometry identity and fingerprints are deterministic under canonical ordering.
+- Parameters are typed by geometry_type registry contracts.

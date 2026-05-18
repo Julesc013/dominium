@@ -1,0 +1,25 @@
+SCHEMA: time/time_control_policy.schema
+schema_id: dominium.schema.time.time_control_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic time control policy rows for RS-3.
+
+REQUIRED SHAPE:
+record time_control_policy
+  required:
+    - schema_version: semver
+    - time_control_policy_id: id
+    - allow_variable_dt: bool
+    - allow_pause: bool
+    - allow_rate_change: bool
+    - allowed_rate_range: map
+    - dt_quantization_rule_id: id
+    - checkpoint_interval_ticks: u32
+    - compaction_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- Policy is declarative and deterministic.
+- Time control behavior is process-driven; no wall-clock coupling.

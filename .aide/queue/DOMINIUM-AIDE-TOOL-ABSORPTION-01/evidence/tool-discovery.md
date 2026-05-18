@@ -35,7 +35,7 @@ Status: needs_review
 
 - `docs/XSTACK.md`
 - `tools/xstack/**`
-- `tools/auditx/**`
+- `tools/xstack/auditx/**`
 - `tools/xstack/auditx/**`
 - `repo/repox/**`
 - `scripts/repox/**`

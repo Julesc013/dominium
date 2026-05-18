@@ -16,14 +16,14 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from engine.platform.platform_probe import probe_platform_descriptor  # noqa: E402
+from runtime.platform.platform_probe import probe_platform_descriptor  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
+UI_ADAPTER_CONTRACT_PATH = "docs/runtime/ui/UI_ADAPTER_CONTRACT.md"
 UI_SURFACE_MAP_PATH = "docs/audit/UI_SURFACE_MAP.md"
 UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
-UI_SURFACE_REPORT_PATH = "content/data/audit/ui_surface_report.json"
+UI_SURFACE_REPORT_PATH = "archive/generated/audit/ui_surface_report.json"
 
 _GOVERNED_SURFACES = (
     {
@@ -34,42 +34,42 @@ _GOVERNED_SURFACES = (
         "product_scope": "client,launcher,setup,server,engine,game,tool.attach_console_stub",
     },
     {
-        "path": "apps/client/ui/main_menu_surface.py",
+        "path": "runtime/ui/client/main_menu_surface.py",
         "surface_kind": "rendered_menu_surface",
         "status": "governed_active",
         "purpose": "Derived rendered main-menu surface for client menu flows.",
         "product_scope": "client",
     },
     {
-        "path": "apps/client/ui/viewer_shell.py",
+        "path": "runtime/ui/client/viewer_shell.py",
         "surface_kind": "rendered_view_surface",
         "status": "governed_active",
         "purpose": "Derived rendered viewer shell over map, inspection, sky, water, and orbit artifacts.",
         "product_scope": "client",
     },
     {
-        "path": "apps/client/ui/map_views.py",
+        "path": "runtime/ui/client/map_views.py",
         "surface_kind": "derived_view_surface",
         "status": "governed_active",
         "purpose": "Derived map view artifacts for client and TUI map surfaces.",
         "product_scope": "client",
     },
     {
-        "path": "apps/client/ui/inspect_panels.py",
+        "path": "runtime/ui/client/inspect_panels.py",
         "surface_kind": "derived_view_surface",
         "status": "governed_active",
         "purpose": "Derived inspect panels over perceived/inspection artifacts.",
         "product_scope": "client",
     },
     {
-        "path": "runtime/appshell/tui/tui_engine.py",
+        "path": "runtime/shell/tui/tui_engine.py",
         "surface_kind": "tui_adapter",
         "status": "governed_active",
         "purpose": "AppShell TUI adapter over command engine, logs, and derived surfaces.",
         "product_scope": "client,engine,game,launcher,server,setup,tool.attach_console_stub",
     },
     {
-        "path": "runtime/appshell/rendered_stub.py",
+        "path": "runtime/shell/rendered_stub.py",
         "surface_kind": "rendered_adapter",
         "status": "governed_active",
         "purpose": "Rendered-mode adapter that exposes the shared client main-menu surface or a deterministic stub.",
@@ -77,12 +77,12 @@ _GOVERNED_SURFACES = (
     },
 )
 _LEGACY_SURFACE_GLOBS = (
-    "tools/launcher/ui/**/*.py",
-    "tools/setup/ui/**/*.py",
+    "tools/codegen/ui/launcher/**/*.py",
+    "tools/codegen/ui/setup/**/*.py",
     "tools/ui_shared/**/*",
-    "tools/ui_preview_host/**/*",
-    "tools/tool_editor/ui/**/*",
-    "tools/editor_gui/**/*",
+    "apps/workbench/module/ui/preview/**/*",
+    "apps/workbench/module/ui/editor/**/*",
+    "apps/workbench/module/ui/native/**/*",
     "tools/gui/**/*",
     "tools/xstack/sessionx/ui_host.py",
 )
@@ -110,14 +110,14 @@ _BUSINESS_LOGIC_TOKENS = (
 )
 _FORBIDDEN_TRUTH_NAMES = {"truth_model", "universe_state", "process_runtime"}
 _GOVERNED_ADAPTER_PATHS = {
-    "runtime/appshell/tui/tui_engine.py",
-    "runtime/appshell/rendered_stub.py",
-    "apps/client/ui/main_menu_surface.py",
+    "runtime/shell/tui/tui_engine.py",
+    "runtime/shell/rendered_stub.py",
+    "runtime/ui/client/main_menu_surface.py",
 }
 _SHARED_UI_MODEL_REQUIRED_PATHS = {
-    "runtime/appshell/tui/tui_engine.py": "build_ui_model(",
-    "runtime/appshell/rendered_stub.py": "build_client_main_menu_surface(",
-    "apps/client/ui/main_menu_surface.py": "build_ui_model(",
+    "runtime/shell/tui/tui_engine.py": "build_ui_model(",
+    "runtime/shell/rendered_stub.py": "build_client_main_menu_surface(",
+    "runtime/ui/client/main_menu_surface.py": "build_ui_model(",
 }
 _NATIVE_ADAPTER_MARKERS = (
     "src/platform/native_win32_adapter.py",
@@ -126,12 +126,12 @@ _NATIVE_ADAPTER_MARKERS = (
     "src/client/ui/native_win32_adapter.py",
     "src/client/ui/native_cocoa_adapter.py",
     "src/client/ui/native_gtk_adapter.py",
-    "tools/launcher/ui/native_win32_adapter.py",
-    "tools/launcher/ui/native_cocoa_adapter.py",
-    "tools/launcher/ui/native_gtk_adapter.py",
-    "tools/setup/ui/native_win32_adapter.py",
-    "tools/setup/ui/native_cocoa_adapter.py",
-    "tools/setup/ui/native_gtk_adapter.py",
+    "tools/codegen/ui/launcher/native_win32_adapter.py",
+    "tools/codegen/ui/launcher/native_cocoa_adapter.py",
+    "tools/codegen/ui/launcher/native_gtk_adapter.py",
+    "tools/codegen/ui/setup/native_win32_adapter.py",
+    "tools/codegen/ui/setup/native_cocoa_adapter.py",
+    "tools/codegen/ui/setup/native_gtk_adapter.py",
 )
 
 
@@ -188,7 +188,7 @@ def _platform_dependency(rel_path: str) -> str:
 
 def _legacy_status(rel_path: str) -> str:
     token = _norm(rel_path)
-    if token.startswith("tools/ui_shared/") or token.startswith("tools/ui_preview_host/"):
+    if token.startswith("tools/ui_shared/") or token.startswith("apps/workbench/module/ui/preview/"):
         return "legacy_reference_only"
     if token.startswith("tools/xstack/sessionx/"):
         return "contradictory_legacy_host"
@@ -199,15 +199,15 @@ def _legacy_purpose(rel_path: str) -> str:
     token = _norm(rel_path)
     if token.startswith("tools/ui_shared/"):
         return "Legacy cross-platform UI support library and adapter scaffolding."
-    if token.startswith("tools/ui_preview_host/"):
+    if token.startswith("apps/workbench/module/ui/preview/"):
         return "Preview host scaffolding for platform UI experiments."
     if token.startswith("tools/xstack/sessionx/"):
         return "Legacy headless UI host outside the governed AppShell runtime surface."
-    if token.startswith("tools/launcher/ui/"):
+    if token.startswith("tools/codegen/ui/launcher/"):
         return "Launcher native UI scaffold kept outside the governed MVP runtime surface."
-    if token.startswith("tools/setup/ui/"):
+    if token.startswith("tools/codegen/ui/setup/"):
         return "Setup native UI scaffold kept outside the governed MVP runtime surface."
-    if token.startswith("tools/tool_editor/ui/") or token.startswith("tools/editor_gui/") or token.startswith("tools/gui/"):
+    if token.startswith("apps/workbench/module/ui/editor/") or token.startswith("apps/workbench/module/ui/native/") or token.startswith("tools/gui/"):
         return "Editor or tooling UI scaffold kept outside the governed MVP runtime surface."
     return "Legacy or preview UI surface pending post-MVP formalization."
 
@@ -339,8 +339,8 @@ def ui_reconcile_violations(repo_root: str) -> list[dict]:
         (UI_RECONCILE_FINAL_PATH, "INV-UI-SHARES-UI_MODEL", "UI reconcile final report is required"),
         ("tools/release/tool_run_ui_reconcile.py", "INV-UI-SHARES-UI_MODEL", "UI reconcile report tool is required"),
         ("tools/release/ui_reconcile_common.py", "INV-UI-SHARES-UI_MODEL", "UI reconcile helper module is required"),
-        ("tools/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "INV-UI-ADAPTERS-COMMAND-ONLY", "BusinessLogicInUIAdapterSmell analyzer is required"),
-        ("tools/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "INV-NO-TRUTH-READ-IN-UI", "TruthLeakInUISmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e477_business_logic_in_ui_adapter_smell.py", "INV-UI-ADAPTERS-COMMAND-ONLY", "BusinessLogicInUIAdapterSmell analyzer is required"),
+        ("tools/xstack/auditx/analyzers/e478_truth_leak_in_ui_smell.py", "INV-NO-TRUTH-READ-IN-UI", "TruthLeakInUISmell analyzer is required"),
         ("tools/xstack/testx/tests/ui_reconcile_testlib.py", "INV-UI-SHARES-UI_MODEL", "UI reconcile TestX helper is required"),
         ("tools/xstack/testx/tests/test_ui_model_drives_main_menu_flow_via_commands.py", "INV-UI-SHARES-UI_MODEL", "UI model TestX coverage is required"),
         ("tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py", "INV-UI-ADAPTERS-COMMAND-ONLY", "native adapter TestX coverage is required"),

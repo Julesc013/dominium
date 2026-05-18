@@ -26,7 +26,7 @@ def _run_update(repo_root: str, *, update_policy_id: str, update_value: int):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.fields import build_field_cell, build_field_layer
+    from game.domain.fields import build_field_cell, build_field_layer
     from tools.xstack.sessionx.process_runtime import execute_intent
     from tools.xstack.testx.tests.mobility_free_testlib import (
         authority_context,

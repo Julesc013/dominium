@@ -1,0 +1,23 @@
+Status: DERIVED
+Last Reviewed: 2026-02-01
+Supersedes: none
+Superseded By: none
+Stability: provisional
+Future Series: DOC-CONVERGENCE
+Replacement Target: canon-aligned documentation set for convergence and release preparation
+
+# Client UI Layer
+
+The client GUI is renderer-driven and sits entirely in the application layer.
+It does not use OS-native widget toolkits.
+
+## Current implementation
+- UI compositor: `runtime/ui/client/client_ui_compositor.c`
+- Input flow: platform events are polled via `dsys_poll_event()` and forwarded
+  to the compositor (no platform callbacks into game logic).
+- Rendering: the compositor emits `d_gfx_*` commands and draws a procedural
+  debug overlay. `H` toggles the overlay visibility.
+
+## Assets and packs
+No assets or packs are required for GUI startup. The overlay is procedural
+text only.

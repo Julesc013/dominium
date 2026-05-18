@@ -11,7 +11,7 @@
       "classification": "stale_current_reference",
       "recommended_action": "rewrite_current_reference",
       "safe_to_fix_now": true,
-      "canonical_replacement": "game/domains/embodiment/*, game/domains/geology/*, game/domains/worldgen/refinement/*, game/domains/universe/*, runtime/diagnostics/repro_bundle_builder.py",
+      "canonical_replacement": "game/domain/embodiment/*, game/domain/geology/*, game/domain/worldgen/refinement/*, game/domain/universe/*, runtime/diagnostics/repro_bundle_builder.py",
       "authority_basis": "Current files exist at the replacement paths and the old roots are absent; POST-CONVERGE-10L classified these as retired-domain path policy candidates.",
       "reason": "RepoX was checking missing retired roots instead of the current converged source locations."
     },
@@ -28,26 +28,26 @@
       "reason": "The cache dependency list included the RepoX rule implementation file, but the Merkle helper represented file subtrees as an empty hash."
     },
     {
-      "path": "game/domains/embodiment/__init__.py",
+      "path": "game/domain/embodiment/__init__.py",
       "line": 65,
       "reference": "embodiment.* lazy import targets",
       "rule_id": "INV-REFINEMENT-BUDGETED",
       "classification": "real_current_policy_violation",
       "recommended_action": "block",
       "safe_to_fix_now": false,
-      "canonical_replacement": "game.domains.embodiment.*",
-      "authority_basis": "The current MW-4 fixture stack imports apps.client.ui.viewer_shell, which imports game.domains.embodiment and fails through the lazy export map.",
+      "canonical_replacement": "game.domain.embodiment.*",
+      "authority_basis": "The current MW-4 fixture stack imports runtime.ui.client.viewer_shell, which imports game.domain.embodiment and fails through the lazy export map.",
       "reason": "Fixing the package export map would change product/runtime source behavior, which POST-CONVERGE-10M does not authorize."
     },
     {
-      "path": "game/domains/embodiment/__init__.py",
+      "path": "game/domain/embodiment/__init__.py",
       "line": 65,
       "reference": "embodiment.* lazy import targets",
       "rule_id": "INV-NO-BLOCKING-WORLDGEN-IN-UI",
       "classification": "real_current_policy_violation",
       "recommended_action": "block",
       "safe_to_fix_now": false,
-      "canonical_replacement": "game.domains.embodiment.*",
+      "canonical_replacement": "game.domain.embodiment.*",
       "authority_basis": "The current MW-4 viewer stress fixture fails before evaluation with ModuleNotFoundError: No module named 'embodiment'.",
       "reason": "The stale import map is a current source issue and must be handled by a later task that explicitly authorizes product/source behavior changes."
     }
@@ -66,7 +66,7 @@
   ],
   "deferred": [
     {
-      "path": "game/domains/embodiment/__init__.py",
+      "path": "game/domain/embodiment/__init__.py",
       "reason": "source/runtime behavior change is out of 10M scope"
     }
   ],

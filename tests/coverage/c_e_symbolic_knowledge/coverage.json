@@ -3,16 +3,16 @@
   "level_name": "Symbolic knowledge",
   "status": "UNSUPPORTED",
   "required_schemas": [
-    "contracts/schemas/domain.schema",
-    "contracts/schemas/instrument.schema",
-    "contracts/schemas/knowledge.schema",
-    "contracts/schemas/measurement_artifact.schema",
-    "contracts/schemas/process_family.schema",
-    "contracts/schemas/quality.schema",
-    "contracts/schemas/standard.schema",
-    "contracts/schemas/topology.schema",
-    "contracts/schemas/world_definition.schema",
-    "contracts/schemas/worldgen_model.schema"
+    "contracts/schema/domain.schema",
+    "contracts/schema/instrument.schema",
+    "contracts/schema/knowledge.schema",
+    "contracts/schema/measurement_artifact.schema",
+    "contracts/schema/process_family.schema",
+    "contracts/schema/quality.schema",
+    "contracts/schema/standard.schema",
+    "contracts/schema/topology.schema",
+    "contracts/schema/world_definition.schema",
+    "contracts/schema/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-e.process.calibrate",

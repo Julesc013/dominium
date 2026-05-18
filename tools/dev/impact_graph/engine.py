@@ -387,7 +387,7 @@ def build_graph(repo_root: str, changed_files: Optional[List[str]] = None) -> Di
     # Schema nodes and edges
     schema_names: List[str] = []
     for rel in files:
-        if rel.startswith("contracts/schemas/") and rel.endswith(".schema.json"):
+        if rel.startswith("contracts/schema/") and rel.endswith(".schema.json"):
             schema_name = rel.split("/")[-1].replace(".schema.json", "")
             schema_names.append(schema_name)
             nodes.append(_node(_schema_node_id(schema_name), "schema", schema_name, rel))

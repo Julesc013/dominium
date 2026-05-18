@@ -1,0 +1,119 @@
+{
+  "artifact_id": "dominium.planning.zeta_final_admissible_scope",
+  "artifact_version": "1.0.0",
+  "status": "canonical",
+  "stability": "provisional",
+  "last_reviewed": "2026-04-06",
+  "scope_context": {
+    "state": "post-zeta-omega / ready-for-mega-zeta-validation-checkpoint",
+    "concluding_prompt": "Ζ-Ω — REMAINING_ZETA_CONSOLIDATED_CLOSURE-0",
+    "next_major_prompt": {
+      "prompt_id": "C-ZETA_MEGA_VALIDATION_REVIEW",
+      "title": "FINAL_CONSOLIDATED_ZETA_VALIDATION-0"
+    }
+  },
+  "final_scope_markers": {
+    "remaining_admissible_zeta_work_exhausted": true,
+    "additional_later_wave_family_admitted_after_zeta_b4": false,
+    "single_admitted_later_wave_family_retained": true
+  },
+  "completed_zeta_scope": {
+    "planning_and_gating_completions": [
+      "Ζ-P0",
+      "Ζ-P1",
+      "Ζ-P2",
+      "Ζ-B0",
+      "Ζ-B1",
+      "Ζ-B2",
+      "Ζ-B4"
+    ],
+    "bounded_first_wave_doctrine_completions": [
+      "Ζ-A0",
+      "Ζ-A1",
+      "Ζ-A2"
+    ],
+    "single_admitted_later_wave_family": [
+      "Ζ-B3"
+    ]
+  },
+  "bounded_and_constrained_scope": {
+    "bounded_only": [
+      "zeta.family.rollback_bearing_staged_transition_validation"
+    ],
+    "proof_only": [
+      "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "zeta.family.bounded_runtime_cutover_proof_rehearsal"
+    ],
+    "admitted_later_wave_non_realizing": [
+      {
+        "family_id": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+        "constraint": "shadow_or_parallel_evidence_posture_only",
+        "full_review_required_for_reclassification": true
+      }
+    ],
+    "completed_reconciliation_but_not_admitted": [
+      {
+        "family_id": "zeta.family.trust_aware_refusal_and_containment",
+        "constraint": "review_gated_not_admitted"
+      }
+    ]
+  },
+  "outside_completed_zeta_scope": {
+    "still_blocked": [
+      "zeta.family.trust_aware_refusal_and_containment as execution family",
+      "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "zeta.family.live_trust_revocation_and_publication_execution",
+      "zeta.blocker.deterministic_replication_and_state_partition_transfer_proof",
+      "zeta.blocker.distributed_replay_and_proof_anchor_continuity_realization",
+      "zeta.blocker.runtime_cutover_proof_under_lawful_hotswap_and_distributed_authority_boundaries",
+      "zeta.blocker.distributed_trust_and_authority_convergence_realization",
+      "zeta.blocker.live_cutover_receipt_pipeline_realization"
+    ],
+    "future_only_perimeter": [
+      "zeta.family.live_shard_relocation",
+      "zeta.blocker.extreme_pipe_dream_live_operations"
+    ]
+  },
+  "distinction_markers": [
+    {
+      "marker": "doctrine_not_equal_admission",
+      "meaning": "Meaning, classes, and failure modes may be frozen without admitting execution."
+    },
+    {
+      "marker": "admission_not_equal_realization",
+      "meaning": "A family may be admitted in bounded or caution-gated form while realization remains absent."
+    },
+    {
+      "marker": "validation_rehearsal_anchorization_not_equal_live_execution",
+      "meaning": "Bounded validation, proof-only rehearsal, and shadow/parallel anchorization remain non-realizing."
+    },
+    {
+      "marker": "completed_reconciliation_not_equal_second_family_admission",
+      "meaning": "Ζ-B4 completed the last admissible doctrine pass without opening a second later-wave family."
+    }
+  ],
+  "post_zeta_planning_handoff": {
+    "unresolved_realization_territory": [
+      "authority handoff and state transfer",
+      "live trust, revocation, and publication execution",
+      "live receipt-pipeline realization beyond shadow or parallel anchorization",
+      "distributed replay and proof-anchor continuity realization",
+      "lawful runtime cutover proof under hotswap and distributed-authority boundaries",
+      "distributed trust and authority convergence",
+      "live shard relocation",
+      "extreme pipe-dream live operations"
+    ],
+    "guardrails_to_preserve": [
+      "first-wave bounded-only and proof-only guardrails",
+      "Ζ-B3 shadow or parallel evidence posture",
+      "FULL review for any evidence reclassification",
+      "doctrine existence is not realization closure"
+    ]
+  },
+  "mega_checkpoint_should_validate": [
+    "the final admissible scope of Ζ",
+    "the remaining frontier and closure baseline",
+    "the preserved first-wave and later-wave guardrails",
+    "the handoff boundary between completed Ζ doctrine or gating work and unresolved post-Ζ realization territory"
+  ]
+}

@@ -23,7 +23,7 @@ No moves are planned.
 
 | Root | Fate | Count | Reason |
 | --- | --- | ---: | --- |
-| `governance/` | preserve/defer | 2 | Active governance Python helpers with release/setup/dist/tool consumers. |
+| `governance/` | preserve/defer | 2 | Active governance Python helpers with release/setup/archive/generated/dist/tool consumers. |
 | `meta/` | preserve/defer | 26 | Broad active Python subsystem with runtime, game, release, tool, AuditX, RepoX, TestX, and test consumers. |
 | `performance/` | preserve/defer | 3 | Active product/runtime performance helpers. |
 | `validation/` | preserve/defer | 2 | Active validation pipeline and export surface. |

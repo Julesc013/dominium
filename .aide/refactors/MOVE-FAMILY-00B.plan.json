@@ -25,10 +25,10 @@
     "blocked_count": 0,
     "risk": "medium",
     "ready_for_gate": true,
-    "reason": "All tracked ide/manifests source files are projection contract metadata with a clear scoped target under contracts/projections/ide, but the target slot and rewrites require a later gate/apply task."
+    "reason": "All tracked ide/manifests source files are projection contract metadata with a clear scoped target under contracts/projection/ide, but the target slot and rewrites require a later gate/apply task."
   },
   "target_owner": {
-    "path": "contracts/projections/ide",
+    "path": "contracts/projection/ide",
     "exists_now": false,
     "create_during_apply": true,
     "ownership_slot_status": "planned_scoped_contract_slot",
@@ -37,31 +37,31 @@
   "moves": [
     {
       "source_path": "ide/manifests/projection_manifest.schema.json",
-      "target_path": "contracts/projections/ide/projection_manifest.schema.json",
+      "target_path": "contracts/projection/ide/projection_manifest.schema.json",
       "action": "move",
       "reason": "Tracked IDE projection manifest schema belongs with machine-readable projection contract metadata.",
       "risk": "medium",
-      "ownership_slot": "contracts/projections/ide",
+      "ownership_slot": "contracts/projection/ide",
       "shim_required": false,
       "rollback": "Move target back to ide/manifests/projection_manifest.schema.json and restore references."
     },
     {
       "source_path": "ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json",
-      "target_path": "contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json",
+      "target_path": "contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json",
       "action": "move",
       "reason": "Tracked Linux clang projection manifest example is contract example metadata.",
       "risk": "medium",
-      "ownership_slot": "contracts/projections/ide",
+      "ownership_slot": "contracts/projection/ide",
       "shim_required": false,
       "rollback": "Move target back to ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json and restore references."
     },
     {
       "source_path": "ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json",
-      "target_path": "contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
+      "target_path": "contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json",
       "action": "move",
       "reason": "Tracked Win9x VC6 projection manifest example is contract example metadata.",
       "risk": "medium",
-      "ownership_slot": "contracts/projections/ide",
+      "ownership_slot": "contracts/projection/ide",
       "shim_required": false,
       "rollback": "Move target back to ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json and restore references."
     }

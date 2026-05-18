@@ -27,7 +27,7 @@
 - `python tools/validators/check_product_boot_matrix.py --repo-root . --json --strict --run-smoke --timeout 30`: PASS.
 - `python tools/validators/check_portable_projection.py --repo-root . --projection-root .dominium.local/projections/post-converge-12/v0.0.0-post-converge-12/win64/dominium --json --strict`: PASS.
 - `python tools/validators/check_internal_pilot_release.py --repo-root . --release-root .dominium.local/releases/internal-pilot-0 --json --strict`: PASS.
-- `py -3 -m py_compile tools/auditx/graph/builder.py tools/auditx/cache_engine.py tools/release/archive_policy_common.py tools/auditx/analyzers/e536_missing_archive_record_smell.py tools/auditx/analyzers/e537_overwritten_release_index_smell.py`: PASS.
+- `py -3 -m py_compile tools/xstack/auditx/graph/builder.py tools/xstack/auditx/cache_engine.py tools/release/archive_policy_common.py tools/xstack/auditx/analyzers/e536_missing_archive_record_smell.py tools/xstack/auditx/analyzers/e537_overwritten_release_index_smell.py`: PASS.
 
 ## Focused CTest Status
 

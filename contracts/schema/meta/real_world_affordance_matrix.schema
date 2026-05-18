@@ -1,0 +1,35 @@
+SCHEMA: meta/real_world_affordance_matrix.schema
+schema_id: dominium.schema.meta.real_world_affordance_matrix
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical COMPLETENESS-1 real-world affordance matrix metadata.
+
+REQUIRED SHAPE:
+record real_world_affordance_matrix
+  required:
+    - schema_id: const dominium.meta.real_world_affordance_matrix
+    - schema_version: semver
+    - affordances: list
+    - series_affordance_coverage: list
+
+record affordance_entry
+  required:
+    - id: enum
+    - substrates: list
+    - series_implemented: list
+    - series_planned: list
+    - tiers: list (macro|meso|micro)
+    - gaps: list
+
+record series_coverage_entry
+  required:
+    - series_id: string
+    - affordance_ids: list of canonical affordance ids
+    - tiers: list (macro|meso|micro)
+
+INVARIANTS:
+- Exactly nine canonical affordance categories must be represented.
+- Every series declaration must map to at least one canonical affordance.
+- Matrix content is governance metadata only; no runtime semantics.

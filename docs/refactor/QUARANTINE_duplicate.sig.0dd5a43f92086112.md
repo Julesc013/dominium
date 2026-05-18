@@ -51,7 +51,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/ARCHITECTURE.md, docs/appshell/CLI_REFERENCE.md, docs/appshell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/INSTALL_MODEL.md, docs/architecture/INSTANCE_MODEL.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/SAVE_MODEL.md`
+- Docs: `docs/ARCHITECTURE.md, docs/runtime/shell/CLI_REFERENCE.md, docs/runtime/shell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/INSTALL_MODEL.md, docs/architecture/INSTANCE_MODEL.md, docs/architecture/REPORT_GAME_ARCH_DECISIONS.md, docs/architecture/SAVE_MODEL.md`
 
 ## Tests Involved
 
@@ -63,7 +63,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -37,7 +37,7 @@ Authority: canonical. All epistemic systems MUST defer to this.
 - Refinement MUST NOT be granted by camera zoom or viewer privilege.
 
 ## References
-- `docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`
 - `schema/knowledge.schema`
 - `schema/measurement_artifact.schema`

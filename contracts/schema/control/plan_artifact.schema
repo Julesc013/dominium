@@ -1,0 +1,26 @@
+SCHEMA: control/plan_artifact.schema
+schema_id: dominium.schema.control.plan_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic plan artifact for ghost planning and replayable execution inputs.
+
+REQUIRED SHAPE:
+record plan_artifact
+  required:
+    - schema_version: semver
+    - plan_id: id
+    - plan_type_id: enum(structure|track|road|vehicle|custom)
+    - compiled_ir_id: optional_id
+    - compiled_blueprint_ref: optional_id
+    - estimated_bom_ref: optional_id
+    - spatial_preview_data: map
+    - required_resources_summary: map
+    - status: enum(draft|validated|approved|executed|cancelled)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- plan_artifact is deterministic for identical plan compile inputs.
+- ghost/spatial preview is derived-only and must not represent authoritative Truth mutation.

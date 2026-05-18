@@ -63,7 +63,7 @@ Method: static audit only; no runtime tests executed.
 - UPS registry behavior is deterministic for identical manifest inputs
 
 
-  (`engine/modules/ups/d_ups.c`).
+  (`game/domain/systems/ups/d_ups.c`).
 
 
 - Canonical UPS pack manifests exist for base and library packs under
@@ -120,19 +120,19 @@ Status: FAIL
 Evidence:
 
 
-- Legacy path-based package scanning (`engine/modules/core/pkg.c`) and
+- Legacy path-based package scanning (`engine/kernel/pkg.c`) and
 
 
-  package registry (`engine/modules/mod/package_registry.c`) remain active.
+  package registry (`runtime/package/mod/package_registry.c`) remain active.
 
 
 - Direct content editing tools operate on fixed paths
 
 
-  (`tools/game_edit/game_edit_core.c`, `tools/world_edit/world_edit_core.c`,
+  (`apps/workbench/module/game/edit/game_edit_core.c`, `apps/workbench/module/world/editor/world_edit_core.c`,
 
 
-  `tools/save_edit/save_edit_core.c`).
+  `apps/workbench/module/save/editor/save_edit_core.c`).
 
 
 - Authority tokens are declared but not implemented
@@ -159,7 +159,7 @@ Evidence:
 - Engine core scans `data/versions/dev` and `mods/` by path; absence is tolerated,
 
 
-  but tool defaults reference concrete paths (`tools/world_edit/world_edit_core.c`).
+  but tool defaults reference concrete paths (`apps/workbench/module/world/editor/world_edit_core.c`).
 
 
 
@@ -213,7 +213,7 @@ Status: PARTIAL / UNVERIFIED
 Evidence:
 
 
-- Domain volume runtime exists (`engine/modules/world/domain_volume.cpp`), but
+- Domain volume runtime exists (`game/world/domain_volume.cpp`), but
 
 
   field layers and topology integration are absent from runtime code.
@@ -279,7 +279,7 @@ Evidence:
 - Compatibility negotiation exists but is unused
 
 
-  (`engine/modules/compat/compat_modes.c` has no callers).
+  (`runtime/capability/compatibility/compat_modes.c` has no callers).
 
 
 - No runtime integration of `dom_ups_registry_set_compat_decision` or
@@ -303,13 +303,13 @@ Evidence:
 - Active legacy package systems use fixed roots and manifest.ini
 
 
-  (`engine/modules/core/pkg.c`, `docs/specs/SPEC_PACKAGES.md`).
+  (`engine/kernel/pkg.c`, `docs/specs/SPEC_PACKAGES.md`).
 
 
 - Secondary package registry uses package.toml scanning
 
 
-  (`engine/modules/mod/package_registry.c`).
+  (`runtime/package/mod/package_registry.c`).
 
 
 - UPS packs live under `data/packs/` but are not wired into engine startup.
@@ -327,7 +327,7 @@ Status: FAIL / UNVERIFIED
 Evidence:
 
 
-- Save edit tool uses ad-hoc key/value files (`tools/save_edit/save_edit_core.c`).
+- Save edit tool uses ad-hoc key/value files (`apps/workbench/module/save/editor/save_edit_core.c`).
 
 
 - No save/replay schema enforcement or compatibility negotiation observed.

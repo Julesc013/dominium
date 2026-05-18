@@ -1,0 +1,21 @@
+SCHEMA: pollution/exposure_threshold.schema
+schema_id: dominium.schema.pollution.exposure_threshold
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic exposure warning/critical thresholds per pollutant type.
+- Bind POLL-2 threshold crossing detection to registry-driven values.
+
+NON-SEMANTICS:
+- No medical or epidemiology simulation behavior.
+- No penalty/economy handling.
+
+REQUIRED SHAPE:
+record exposure_threshold
+  required:
+    - pollutant_id: id
+    - warning_threshold: int
+    - critical_threshold: int
+    - deterministic_fingerprint: text
+    - extensions: map

@@ -1,0 +1,27 @@
+SCHEMA: logic/watchdog_timeout_event.schema
+schema_id: dominium.schema.logic.watchdog_timeout_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical LOGIC-5 watchdog timeout events.
+- Provide replay-safe evidence for fail-safe timing behavior.
+
+NON-SEMANTICS:
+- This schema does not replace explain artifacts.
+- It does not authorize direct actuator mutation.
+
+REQUIRED SHAPE:
+record watchdog_timeout_event
+  required:
+    - event_id: id
+    - tick: u64
+    - network_id: id
+    - watchdog_id: id
+    - action_on_timeout: enum(signal_set, refusal)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Watchdog timeout events must be tied to a declared watchdog definition.
+- Timeout actions remain explicit, deterministic, and process-mediated.

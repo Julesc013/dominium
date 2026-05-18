@@ -1,0 +1,31 @@
+SCHEMA: meta/tier_contract.schema
+schema_id: dominium.schema.meta.tier_contract
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare mandatory tier discipline contract for each subsystem/process family.
+- Make downgrade ordering, cost model binding, ROI constraints, and shard safety explicit.
+
+NON-SEMANTICS:
+- This schema does not execute downgrade logic.
+- Runtime behavior must remain process-driven and deterministic.
+
+REQUIRED SHAPE:
+record tier_contract
+  required:
+    - contract_id: id
+    - subsystem_id: id
+    - supported_tiers: list<enum{macro,meso,micro}>
+    - deterministic_degradation_order: list<enum{macro,meso,micro}>
+    - cost_model_id: id
+    - shard_safe: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - micro_roi_requirements: map
+
+INVARIANTS:
+- Degradation order must be deterministic and contain only supported tiers.
+- No hidden runtime tier fallback outside declared order.
+

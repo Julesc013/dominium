@@ -44,7 +44,7 @@ Commands executed once for final validation:
 
 ## Policy Outcomes
 
-- `verify|strict|full` routed runner outputs to cache/workspace roots (`.xstack_cache/artifacts/...`).
+- `verify|strict|full` routed runner outputs to cache/workspace roots (`.xstack_cache/archive/generated/artifacts/...`).
 - `verify|strict|full` produced no tracked-file mutations beyond explicitly updated snapshot artifacts in this change.
 - `gate.py snapshot` remains the only command allowed to write `SNAPSHOT_ONLY` tracked audit outputs.
 - runtime trees (`engine/game/client/server`) remain decoupled from `tools/xstack`.

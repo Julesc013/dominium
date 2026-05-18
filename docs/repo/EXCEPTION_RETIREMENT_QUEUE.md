@@ -45,8 +45,8 @@ Result:
 
 Notes:
 
-- `artifacts/` contains tracked toolchain-run provenance JSON and needs release/evidence policy review.
-- `dist/` contains tracked distribution projection wrappers, locks, pack aliases, profile data, and `.gitkeep` files and needs distribution projection policy review.
+- `archive/generated/artifacts/` contains tracked toolchain-run provenance JSON and needs release/evidence policy review.
+- `archive/generated/dist/` contains tracked distribution projection wrappers, locks, pack aliases, profile data, and `.gitkeep` files and needs distribution projection policy review.
 - Python `__pycache__/` residue from validation was removed and `.gitignore` was tightened so broad source allow-list negations do not re-expose bytecode caches.
 
 ### POST-CONVERGE-02 - Root Wrapper / Tooling / Governance Cleanup
@@ -222,8 +222,8 @@ Result:
 
 Notes:
 
-- CompatX schema discovery now prefers `contracts/schemas/` and keeps legacy `schemas/` fallback.
-- RepoX worldgen path references were updated to canonical `game/domains/...` paths.
+- CompatX schema discovery now prefers `contracts/schema/` and keeps legacy `schemas/` fallback.
+- RepoX worldgen path references were updated to canonical `game/domain/...` paths.
 - The remaining FAST drift backlog is too broad for exception retirement or build remediation scope.
 - Next task remains blocked until build proof and FAST drift are resolved or explicitly accepted by review.
 

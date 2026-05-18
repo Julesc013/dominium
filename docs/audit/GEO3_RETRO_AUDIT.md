@@ -21,8 +21,8 @@ Relevant governing invariants:
 - `docs/canon/constitution_v1.md` A1 Determinism is primary
 - `docs/canon/constitution_v1.md` A4 No runtime mode flags
 - `docs/canon/constitution_v1.md` A7 Observer-Renderer-Truth separation
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
 
 ## 2) Direct Distance Usage Audit
 

@@ -11,7 +11,7 @@ Replacement Target: Frozen ecosystem verification baseline for v0.0.0-mock distr
 
 ## Resolver Surfaces
 
-- Component graph resolution is authoritative through `src/release/component_graph_resolver.py`.
+- Component graph resolution is authoritative through `src/tools/release/component_graph_resolver.py`.
 - Deterministic install-profile coverage already exists through `data/audit/component_graph_report.json` and `data/audit/install_profile_report.json`.
 - Tier 1 mock distribution resolution targets `platform.winnt` / `arch.x86_64` / `abi.win64`.
 
@@ -33,7 +33,7 @@ Replacement Target: Frozen ecosystem verification baseline for v0.0.0-mock distr
 
 - Governance selects `trust.default_mock` through `data/governance/governance_profile.json`.
 - Trust enforcement is authoritative through `src/security/trust/trust_verifier.py` and `data/audit/trust_model_report.json`.
-- Release-index selection policy is authoritative through `src/release/update_resolver.py` and `data/audit/release_index_policy_report.json`.
+- Release-index selection policy is authoritative through `src/tools/release/update_resolver.py` and `data/audit/release_index_policy_report.json`.
 - The frozen latest-compatible fixture already excludes a yanked client candidate deterministically.
 
 ## Provides Resolution

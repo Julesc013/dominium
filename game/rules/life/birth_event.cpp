@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/birth_event.cpp
+FILE: game/rule/life/birth_event.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements birth event append-only storage.

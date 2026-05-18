@@ -6,7 +6,7 @@ Stability: stable
 Series Scope: repo-structure discovery and design
 Series Role: risk and coupling packet for later topology-option, preferred-target, shim-design, migration-sequencing, and ownership-reconciliation prompts; downstream of stronger canon, the Omega0 constraint packet, the Omega1 topology reality map, audit evidence, and live implementation evidence
 Replacement Target: later explicit repo-structure follow-up after approved topology decisions or new playable-baseline evidence
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `content/data/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `content/data/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `content/data/audit/install_discovery_report.json`, `content/data/audit/ui_surface_report.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `content/data/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `appshell/paths/virtual_paths.py`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `appshell/supervisor/supervisor_engine.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/mvp/runtime_entry.py`, `tools/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `release/release_manifest_engine.py`, `release/component_graph_resolver.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/import_bridge.py`, `contracts/registry/virtual_root_registry.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md`, `archive/generated/repo/repo_non_negotiables_and_current_reality.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`, `archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `contracts/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `contracts/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md`, `docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md`, `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`, `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `archive/generated/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md`, `archive/generated/xstack/next_execution_order_post_xstack_aide.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `appshell/paths/virtual_paths.py`, `appshell/mode_dispatcher.py`, `appshell/tui_stub.py`, `appshell/supervisor/supervisor_engine.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`, `tools/mvp/runtime_entry.py`, `tools/mvp/runtime_bundle.py`, `tools/xstack/registry_compile/constants.py`, `client/local_server/local_server_controller.py`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`, `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`, `tools/import_bridge.py`, `contracts/registry/virtual_root_registry.json`
 
 # Repo Coupling, Drift, And Relayout Risk Analysis
 
@@ -64,7 +64,7 @@ Examples in this repo:
 
 - cross-root imports from `tools/launcher/launch.py` and `tools/setup/setup_cli.py` into `appshell/`, `release/`, and `security/trust/`
 - `client/local_server/local_server_controller.py` importing `runtime.process_spawn`, `server.*`, and `server.net.loopback_transport`
-- validation entrypoints and reports depending on both `tools/validation/` and `validation/`
+- validation entrypoints and reports depending on both `tools/validators/suite/` and `validation/`
 
 ### What Counts As Path Coupling
 
@@ -77,7 +77,7 @@ Examples in this repo:
 - `tools/xstack/session_boot.py` documenting `saves/<save_id>/session_spec.json`
 - `tools/xstack/sessionx/runner.py` hardcoding `repo_root/saves/<save_id>`
 - SessionX compile outputs depending on `build/registries/` and `build/lockfile.json`
-- launcher and setup flows expecting `dist/manifests/release_manifest.json`
+- launcher and setup flows expecting `archive/generated/dist/manifests/release_manifest.json`
 
 ### What Counts As Ownership Coupling
 
@@ -138,7 +138,7 @@ Move risk is judged conservatively from five factors:
 - Coupling class:
   `critical_coupling_do_not_move_before_baseline_stabilization`
 - What it is coupled to:
-  `tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `contracts/registry/virtual_root_registry.json`, `dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`
+  `tools/launcher/`, `tools/setup/`, `server/server_main.py`, `appshell/supervisor/`, `contracts/registry/virtual_root_registry.json`, `archive/generated/dist/`, `profiles/`, `locks/`, `packs/`, `saves/`, `runtime/`
 - Nature of the coupling:
   import, runtime, path, data, entrypoint, policy
 - Why it matters:
@@ -161,7 +161,7 @@ Move risk is judged conservatively from five factors:
 - Coupling class:
   `high_coupling_likely_needs_shim`
 - What it is coupled to:
-  `runtime/process_spawn.py`, `tools/appshell/supervisor_service.py`, `tools/appshell/supervised_product_host.py`, `VROOT_IPC`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/data/session_templates/session.mvp_default.json`
+  `runtime/process_spawn.py`, `tools/validators/shell/supervisor_service.py`, `tools/validators/shell/supervised_product_host.py`, `VROOT_IPC`, `content/profiles/bundles/bundle.mvp_default.json`, `contracts/package/locks/pack_lock.mvp_default.json`, `content/templates/session/session.mvp_default.json`
 - Nature of the coupling:
   runtime, path, data, policy
 - Why it matters:
@@ -184,7 +184,7 @@ Move risk is judged conservatively from five factors:
 - Coupling class:
   `critical_coupling_do_not_move_before_baseline_stabilization`
 - What it is coupled to:
-  `appshell/`, `release/`, `security/trust/`, `data/registries/`, `dist/`, install discovery, repo-local `saves/`, compiled wrapper expectations
+  `appshell/`, `release/`, `security/trust/`, `data/registries/`, `archive/generated/dist/`, install discovery, repo-local `saves/`, compiled wrapper expectations
 - Nature of the coupling:
   import, runtime, path, data, entrypoint, policy
 - Why it matters:
@@ -299,7 +299,7 @@ Move risk is judged conservatively from five factors:
 - Coupling class:
   `high_coupling_likely_needs_shim`
 - What it is coupled to:
-  `tools/setup/setup_cli.py`, `tools/launcher/launch.py`, `contracts/registry/component_graph_registry.json`, `contracts/registry/install_profile_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `dist/`, `store/`, `manifests/`
+  `tools/setup/setup_cli.py`, `tools/launcher/launch.py`, `contracts/registry/component_graph_registry.json`, `contracts/registry/install_profile_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `archive/generated/dist/`, `store/`, `manifests/`
 - Nature of the coupling:
   import, runtime, path, data, policy
 - Why it matters:
@@ -313,12 +313,12 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   no
 - Evidence notes:
-  `release/release_manifest_engine.py`, `release/component_graph_resolver.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/setup/setup_cli.py`
+  `tools/release/release_manifest_engine.py`, `tools/release/component_graph_resolver.py`, `tools/release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/setup/setup_cli.py`
 
 ### `CRA-009 - validation_testx_ctest_and_report_pipeline`
 
 - Root/path or subsystem:
-  `validation/`, `tools/validation/`, `tools/xstack/testx_all.py`, `tests/`, `docs/audit/`, `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `tests/`, `docs/audit/`, `data/audit/`
 - Coupling class:
   `high_coupling_likely_needs_shim`
 - What it is coupled to:
@@ -336,7 +336,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   yes
 - Evidence notes:
-  `tools/validators/validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/xstack/testx_all.py`, `CMakePresets.json`
+  `tools/validators/suite/validation_engine.py`, `tools/validators/suite/tool_run_validation.py`, `tools/xstack/testx_all.py`, `CMakePresets.json`
 
 ### `CRA-010 - schema_vs_schemas_split`
 
@@ -437,7 +437,7 @@ Move risk is judged conservatively from five factors:
 - Coupling class:
   `high_coupling_likely_needs_shim`
 - What it is coupled to:
-  `tools/validation/tool_run_validation.py`, older report paths in `content/data/audit/install_discovery_report.json`, `content/data/audit/ui_surface_report.json`, path-equivalence lookups from older restructure locks
+  `tools/validators/suite/tool_run_validation.py`, older report paths in `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`, path-equivalence lookups from older restructure locks
 - Nature of the coupling:
   import, path, compatibility, report
 - Why it matters:
@@ -451,7 +451,7 @@ Move risk is judged conservatively from five factors:
 - Should not move yet:
   no
 - Evidence notes:
-  `tools/import_bridge.py`, `tools/validation/tool_run_validation.py`, `content/data/audit/install_discovery_report.json`, `content/data/audit/ui_surface_report.json`
+  `tools/import_bridge.py`, `tools/validators/suite/tool_run_validation.py`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`
 
 ## E. Path-Drift And Doc-Drift Findings
 
@@ -479,7 +479,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this drift can make a candidate relayout look cheaper than it is because the packet appears already abstracted from the old-to-new root transition
 - Evidence notes:
-  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `content/data/audit/install_discovery_report.json`, `content/data/audit/ui_surface_report.json`
+  `docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md`, `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`
 
 ### `DRIFT-003 - portability_overclaim_versus_stub_reality`
 
@@ -527,11 +527,11 @@ Move risk is judged conservatively from five factors:
 - Doc or mirror narrative:
   some older path consumers continue working well enough that the remaining `src` drift is easy to underestimate
 - Live implementation reality:
-  `tools/validation/tool_run_validation.py` installs `src` aliases through `tools/import_bridge.py`, and `tools/validators/validation/validation_engine.py` still emits checked paths such as `src/time`
+  `tools/validators/suite/tool_run_validation.py` installs `src` aliases through `tools/import_bridge.py`, and `tools/validators/suite/validation_engine.py` still emits checked paths such as `src/time`
 - Why it matters:
   later relayout work must treat the bridge as an active shim that preserves stale consumers, not as evidence that current ownership is already normalized
 - Evidence notes:
-  `tools/import_bridge.py`, `tools/validation/tool_run_validation.py`, `tools/validators/validation/validation_engine.py`
+  `tools/import_bridge.py`, `tools/validators/suite/tool_run_validation.py`, `tools/validators/suite/validation_engine.py`
 
 ### `DRIFT-007 - naming_suggests_cleaner_boundaries_than_live_code`
 
@@ -540,11 +540,11 @@ Move risk is judged conservatively from five factors:
 - Doc or mirror narrative:
   top-level root names suggest cleaner subsystem boundaries than the implementation actually exposes
 - Live implementation reality:
-  `launcher/` and `setup/` look canonical but the stronger shells live in `tools/`; `runtime/` looks central but only hosts a thin spawn helper; `validation/` looks isolated but the CLI, report paths, and src-alias bridge live elsewhere; `dist/` looks derived-only but sits on live install-discovery paths
+  `launcher/` and `setup/` look canonical but the stronger shells live in `tools/`; `runtime/` looks central but only hosts a thin spawn helper; `validation/` looks isolated but the CLI, report paths, and src-alias bridge live elsewhere; `archive/generated/dist/` looks derived-only but sits on live install-discovery paths
 - Why it matters:
   later topology prompts must reason from live couplings, not from tidy names
 - Evidence notes:
-  `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `runtime/process_spawn.py`, `tools/validators/validation/validation_engine.py`, `tools/import_bridge.py`
+  `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `runtime/process_spawn.py`, `tools/validators/suite/validation_engine.py`, `tools/import_bridge.py`
 
 ### `DRIFT-008 - stale_mirrors_understate_current_top_level_root_reality`
 
@@ -557,7 +557,7 @@ Move risk is judged conservatively from five factors:
 - Why it matters:
   this understates how much current tooling already depends on the new root family and can obscure which compatibility layers must survive a future relayout
 - Evidence notes:
-  `content/data/audit/install_discovery_report.json`, `content/data/audit/ui_surface_report.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`
+  `archive/generated/audit/install_discovery_report.json`, `archive/generated/audit/ui_surface_report.json`, `docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md`
 
 ## F. Move-Risk Classes
 
@@ -583,10 +583,10 @@ Move risk is judged conservatively from five factors:
 ### Likely Needs Shim
 
 - Release, trust, and install-discovery cluster:
-  `release/`, `security/trust/`, `dist/`, manifest and store path conventions
+  `release/`, `security/trust/`, `archive/generated/dist/`, manifest and store path conventions
   Rationale: the stronger operator shells already depend on manifest, registry, and store projections.
 - Validation and proof cluster:
-  `validation/`, `tools/validation/`, `tools/xstack/testx_all.py`, `docs/audit/`, `data/audit/`
+  `validation/`, `tools/validators/suite/`, `tools/xstack/testx_all.py`, `docs/audit/`, `data/audit/`
   Rationale: relayout would need report-path preservation, mirror regeneration, or validation-path updates.
 - Data-location cluster:
   `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`
@@ -651,7 +651,7 @@ The following are the structural issues most dangerous to the canonical playable
 - save-root disagreement between create and boot flows
 - operator-shell ambiguity around launcher/setup/runtime/session entrypoints
 - launcher supervision fragility
-- dist/manifest and virtual-root discovery ties that the stronger shells already consume
+- archive/generated/dist/manifest and virtual-root discovery ties that the stronger shells already consume
 
 ### Annoying But Not First-Baseline Blockers
 
@@ -688,7 +688,7 @@ The following are the structural issues most dangerous to the canonical playable
 - `client/local_server/`, `runtime/process_spawn.py`, `server/server_main.py`, `server/net/loopback_transport.py`
 - `tools/xstack/session_create.py`, `tools/xstack/session_boot.py`, `tools/xstack/sessionx/creator.py`, `tools/xstack/sessionx/runner.py`
 - `profiles/`, `locks/`, `data/session_templates/`, `data/registries/`
-- `release/`, `security/trust/`, `dist/`, and manifest/registry path conventions
+- `release/`, `security/trust/`, `archive/generated/dist/`, and manifest/registry path conventions
 - validation report paths and machine-readable mirrors used by the repo itself
 
 ## J. Anti-Patterns And Forbidden Shapes

@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-13
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/appshell/SUPERVISOR_MODEL.md`, `docs/appshell/IPC_DISCOVERY.md`, `docs/appshell/LOGGING_AND_TRACING.md`, and `docs/diag/REPRO_BUNDLE.md`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/runtime/shell/SUPERVISOR_MODEL.md`, `docs/runtime/shell/IPC_DISCOVERY.md`, `docs/runtime/shell/LOGGING_AND_TRACING.md`, and `docs/runtime/diagnostics/REPRO_BUNDLE.md`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

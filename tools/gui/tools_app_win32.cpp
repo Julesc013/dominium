@@ -6,7 +6,7 @@ Win32 tools GUI shell (stub).
 #endif
 
 #include "dom_ui_win32/ui_win32.h"
-#include "ui_bind/ui_command_binding_table.h"
+#include "ui_command_binding_table.h"
 
 int WINAPI wWinMain(HINSTANCE inst, HINSTANCE prev, PWSTR cmdline, int show)
 {

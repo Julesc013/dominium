@@ -50,7 +50,7 @@ Active Python implementation code should move to `tools/validators/**`. It shoul
 
 Planned targets:
 
-- `validation/**` -> `tools/validators/validation/**`
+- `validation/**` -> `tools/validators/suite/**`
 - `meta/identity/**` -> `tools/validators/identity/**`
 - `meta/stability/**` -> `tools/validators/stability/**`
 

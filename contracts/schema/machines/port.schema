@@ -1,0 +1,27 @@
+SCHEMA: machines/port.schema
+schema_id: dominium.schema.machines.port
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical machine/structure ports for material, energy, and signal transfer.
+
+REQUIRED SHAPE:
+record port
+  required:
+    - schema_version: semver
+    - port_id: id
+    - machine_id: optional_id
+    - parent_structure_id: optional_id
+    - port_type_id: id
+    - accepted_material_tags: list[id]
+    - accepted_material_ids: list[id]
+    - capacity_mass: optional_fixed_point_raw
+    - current_contents: list<map>
+    - connected_to: optional_id
+    - visibility_policy_id: optional_id
+    - extensions: map
+
+INVARIANTS:
+- At least one of machine_id or parent_structure_id must be set.
+- Port contents must remain deterministically ordered by batch/material identity.

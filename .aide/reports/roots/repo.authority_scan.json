@@ -970,7 +970,7 @@
       "sensitivity_hints": [
         "policy_or_contract"
       ],
-      "snippet": "\"tools/compatx/core/semantic_contract_validator.py\","
+      "snippet": "\"tools/xstack/compatx/core/semantic_contract_validator.py\","
     },
     {
       "file": "repo/repox/rulesets/core.json",
@@ -1558,7 +1558,7 @@
       "sensitivity_hints": [
         "refusal_sensitive"
       ],
-      "snippet": "\"docs/appshell/COMMANDS_AND_REFUSALS.md\","
+      "snippet": "\"docs/runtime/shell/COMMANDS_AND_REFUSALS.md\","
     },
     {
       "file": "repo/repox/rulesets/core.json",
@@ -1585,7 +1585,7 @@
       "sensitivity_hints": [
         "refusal_sensitive"
       ],
-      "snippet": "\"docs/appshell/COMMANDS_AND_REFUSALS.md\","
+      "snippet": "\"docs/runtime/shell/COMMANDS_AND_REFUSALS.md\","
     },
     {
       "file": "repo/repox/rulesets/core.json",
@@ -1621,7 +1621,7 @@
       "sensitivity_hints": [
         "refusal_sensitive"
       ],
-      "snippet": "\"docs/appshell/COMMANDS_AND_REFUSALS.md\","
+      "snippet": "\"docs/runtime/shell/COMMANDS_AND_REFUSALS.md\","
     },
     {
       "file": "repo/repox/rulesets/core.json",
@@ -3855,7 +3855,7 @@
       "sensitivity_hints": [
         "lock_sensitive"
       ],
-      "snippet": "\"dist/locks/pack_lock.mvp_default.json\","
+      "snippet": "\"archive/generated/dist/locks/pack_lock.mvp_default.json\","
     },
     {
       "file": "repo/repox/rulesets/core.json",
@@ -6560,7 +6560,7 @@
       "sensitivity_hints": [
         "governance_sensitive"
       ],
-      "snippet": "\"documentation\": \"docs/governance/REPOX_RULESETS.md#repoxderived_artifacts\","
+      "snippet": "\"documentation\": \"docs/governance/REPOX_RULESETS.md#repoxderived_archive\generated\archive\generated\archive\generated\artifacts\","
     },
     {
       "file": "repo/repox/rulesets/derived_artifacts.json",
@@ -6776,7 +6776,7 @@
       "sensitivity_hints": [
         "schema_sensitive"
       ],
-      "snippet": "\"scope_paths\": [\"dist/pkg\", \"schema/distribution/pkg_manifest.schema\"],"
+      "snippet": "\"scope_paths\": [\"archive/generated/dist/pkg\", \"schema/distribution/pkg_manifest.schema\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",
@@ -6785,7 +6785,7 @@
       "sensitivity_hints": [
         "machine_readable"
       ],
-      "snippet": "\"scope_paths\": [\"dist/pkg\", \"schema/distribution/pkg_manifest.schema\"],"
+      "snippet": "\"scope_paths\": [\"archive/generated/dist/pkg\", \"schema/distribution/pkg_manifest.schema\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",
@@ -6866,7 +6866,7 @@
       "sensitivity_hints": [
         "schema_sensitive"
       ],
-      "snippet": "\"scope_paths\": [\"dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
+      "snippet": "\"scope_paths\": [\"archive/generated/dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",
@@ -6875,7 +6875,7 @@
       "sensitivity_hints": [
         "trust_sensitive"
       ],
-      "snippet": "\"scope_paths\": [\"dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
+      "snippet": "\"scope_paths\": [\"archive/generated/dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",
@@ -6884,7 +6884,7 @@
       "sensitivity_hints": [
         "policy_or_contract"
       ],
-      "snippet": "\"scope_paths\": [\"dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
+      "snippet": "\"scope_paths\": [\"archive/generated/dist/pkg\", \"schema/distribution/trust_policy.schema\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",
@@ -6956,7 +6956,7 @@
       "sensitivity_hints": [
         "schema_sensitive"
       ],
-      "snippet": "\"scope_paths\": [\"data/registries/platform_registry.json\", \"schema/distribution/platform_registry.schema\", \"dist/pkg\"],"
+      "snippet": "\"scope_paths\": [\"data/registries/platform_registry.json\", \"schema/distribution/platform_registry.schema\", \"archive/generated/dist/pkg\"],"
     },
     {
       "file": "repo/repox/rulesets/packaging.json",

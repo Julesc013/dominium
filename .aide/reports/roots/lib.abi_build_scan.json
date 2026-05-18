@@ -403,7 +403,7 @@
       "sensitivity_hints": [
         "runtime_sensitive"
       ],
-      "snippet": "from runtime.appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init"
+      "snippet": "from runtime.shell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init"
     },
     {
       "file": "lib/export/export_engine.py",
@@ -556,7 +556,7 @@
       "sensitivity_hints": [
         "runtime_sensitive"
       ],
-      "snippet": "from runtime.appshell.paths import ("
+      "snippet": "from runtime.shell.paths import ("
     },
     {
       "file": "lib/import/import_engine.py",
@@ -844,7 +844,7 @@
       "sensitivity_hints": [
         "runtime_sensitive"
       ],
-      "snippet": "from runtime.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing"
+      "snippet": "from runtime.shell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing"
     },
     {
       "file": "lib/install/install_validator.py",
@@ -1852,7 +1852,7 @@
       "sensitivity_hints": [
         "runtime_sensitive"
       ],
-      "snippet": "from runtime.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots"
+      "snippet": "from runtime.shell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots"
     },
     {
       "file": "lib/save/save_validator.py",

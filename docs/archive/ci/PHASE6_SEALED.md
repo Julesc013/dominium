@@ -121,10 +121,10 @@ as a stable, deterministic, and scalable foundation for future phases.
 - `tools/ci/arch_checks.py` (ARCH/DET/PERF/SCALE/EPIS guards)
 
 
-- `tools/validation/validate_all` (GOV-VAL-* gates)
+- `tools/validators/suite/validate_all` (GOV-VAL-* gates)
 
 
-- Phase 6 CTests from `game/tests/phase6` (LIFE/CIV/MP0 suites)
+- Phase 6 CTests from `tests/game/phase6` (LIFE/CIV/MP0 suites)
 
 
 

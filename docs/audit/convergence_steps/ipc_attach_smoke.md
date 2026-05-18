@@ -37,4 +37,4 @@ Replacement Target: regenerated convergence step summary for ipc_attach_smoke
 
 ## Remediation
 
-- module=`tools/appshell/tool_run_ipc_unify.py` rule=`INV-IPC-REQUIRES-NEGOTIATION` refusal=`none` command=`python tools/appshell/tool_run_ipc_unify.py --repo-root .`
+- module=`tools/validators/shell/tool_run_ipc_unify.py` rule=`INV-IPC-REQUIRES-NEGOTIATION` refusal=`none` command=`python tools/validators/shell/tool_run_ipc_unify.py --repo-root .`

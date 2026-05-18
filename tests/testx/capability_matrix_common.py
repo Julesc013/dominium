@@ -48,7 +48,7 @@ def load_capability_matrix(repo_root):
 
 
 def parse_command_entries(repo_root):
-    path = os.path.join(repo_root, "libs", "appcore", "command", "command_registry.c")
+    path = os.path.join(repo_root, "runtime", "shell", "command", "command_registry.c")
     text = open(path, "r", encoding="utf-8").read()
     arr_re = re.compile(r"static const char\* (k_[A-Za-z0-9_]+)\[\] = \{([^}]*)\};")
     cap_arrays = {}
@@ -82,7 +82,7 @@ def parse_command_entries(repo_root):
 
 
 def parse_ui_actions(repo_root):
-    path = os.path.join(repo_root, "libs", "appcore", "ui_bind", "ui_command_binding_table.c")
+    path = os.path.join(repo_root, "tools", "codegen", "ui", "bind", "ui_command_binding_table.c")
     text = open(path, "r", encoding="utf-8").read()
     action_re = re.compile(r"\{\s*\"[^\"]+\",\s*\"[^\"]+\",\s*\"([^\"]+)\"")
     return sorted({match.group(1) for match in action_re.finditer(text)})

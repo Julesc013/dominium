@@ -1,0 +1,98 @@
+{
+  "schema_id": "world.surface_and_regions",
+  "schema_version": "1.0.0",
+  "migration_stub": {
+    "from_version": "1.0.0",
+    "to_version": "1.1.0",
+    "status": "placeholder"
+  },
+  "record": {
+    "surface_records": [],
+    "region_records": [
+      {
+        "region_id": "earth_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_ocean_global_v1",
+        "region_type": "natural",
+        "parent_region_ref": null,
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "global"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_pacific_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_pacific_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_ocean_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "pacific"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_atlantic_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_atlantic_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_ocean_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "atlantic"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_indian_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_indian_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_ocean_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "indian"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_arctic_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_arctic_ocean_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_ocean_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "arctic"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      },
+      {
+        "region_id": "earth_southern_ocean_region",
+        "surface_ref": "earth_ocean_surface",
+        "volume_ref": null,
+        "boundary_ref": "boundary.earth_southern_ocean_v1",
+        "region_type": "natural",
+        "parent_region_ref": "earth_ocean_region",
+        "layer_id": "planetary",
+        "region_tags": [
+          "ocean",
+          "southern"
+        ],
+        "provenance_ref": "prov.earth.regions.v1"
+      }
+    ]
+  }
+}

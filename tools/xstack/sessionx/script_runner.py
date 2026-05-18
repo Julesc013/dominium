@@ -12,7 +12,7 @@ from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
 from tools.validators.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from engine.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
-from game.domains.universe import enforce_session_contract_bundle
+from game.domain.universe import enforce_session_contract_bundle
 
 from .common import identity_hash_for_payload, norm, now_utc_iso, read_json_object, refusal, write_canonical_json
 from .observation import build_truth_model, observe_truth
@@ -1314,7 +1314,7 @@ def run_intent_script(
         return refusal(
             "REFUSE_UNIVERSE_STATE_INVALID",
             "post-process UniverseState failed schema validation",
-            "Fix process runtime outputs to match contracts/schemas/universe_state.schema.json.",
+            "Fix process runtime outputs to match contracts/schema/universe_state.schema.json.",
             {"schema_id": "universe_state"},
             "$.universe_state",
         )

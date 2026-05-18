@@ -15,7 +15,7 @@ package-based distribution.
 
 ## Offline Cache Workflow
 
-1. Build package set into `dist/pkg/<platform>/<arch>/`.
+1. Build package set into `archive/generated/dist/pkg/<platform>/<arch>/`.
 2. `setup verify-cache` on source host.
 3. `setup export-cache --dest <portable_path>`.
 4. Transfer exported cache to target host.

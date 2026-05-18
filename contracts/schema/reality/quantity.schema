@@ -1,0 +1,21 @@
+SCHEMA: reality/quantity.schema
+schema_id: dominium.schema.reality.quantity
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical conserved quantity channels for ledger accounting.
+
+REQUIRED SHAPE:
+record quantity
+  required:
+    - schema_version: semver
+    - quantity_id: id
+    - description: text
+    - numeric_type: enum(fixed_point)
+    - units_id: id
+    - extensions: map
+
+INVARIANTS:
+- Ledger channels are fixed-point deterministic quantities.
+- quantity_id is stable and registry-driven.

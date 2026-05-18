@@ -1,0 +1,27 @@
+SCHEMA: meta/coupling_relevance_policy.schema
+schema_id: dominium.schema.meta.coupling_relevance_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic relevance triggers and skip behavior for coupling evaluations.
+- Bind coupling relevance checks to tolerance policy discipline.
+
+NON-SEMANTICS:
+- This schema does not execute model evaluation.
+- It does not bypass process-only mutation paths.
+
+REQUIRED SHAPE:
+record coupling_relevance_policy
+  required:
+    - policy_id: id
+    - relevance_triggers: list
+    - tolerance_policy_ref: id
+    - hold_last_value: bool
+    - safe_default_ref: optional(id)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Relevance checks are deterministic for equivalent inputs.
+- Skip policy behavior must be explicit (hold-last or safe-default).

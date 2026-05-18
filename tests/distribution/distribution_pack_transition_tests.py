@@ -21,13 +21,13 @@ def main():
     empty_root = os.path.join("tests", "distribution", "fixtures", "empty_root")
     bundle_root = os.path.join("tests", "distribution", "fixtures", "packs_maximal")
 
-    compat_empty = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_empty = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                             ["--repo-root", repo_root, "--root", empty_root, "--format", "json"])
     if not compat_empty.get("ok"):
         print("pack transition: expected ok on empty")
         return 1
 
-    compat_bundle = run_tool(repo_root, "tools/distribution/compat_dry_run.py",
+    compat_bundle = run_tool(repo_root, "tools/package/distribution/compat_dry_run.py",
                              ["--repo-root", repo_root, "--root", bundle_root, "--format", "json"])
     if not compat_bundle.get("ok"):
         print("pack transition: expected ok on bundle")

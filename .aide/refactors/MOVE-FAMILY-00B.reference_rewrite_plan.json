@@ -17,7 +17,7 @@
     {
       "referencing_file": ".gitignore",
       "current_reference": "/ide/** plus !/ide/, !/ide/manifests/, and !/ide/manifests/**",
-      "proposed_reference": "keep /ide/** ignored; remove tracked-source unignore rules for ide/manifests after moved files are staged at contracts/projections/ide",
+      "proposed_reference": "keep /ide/** ignored; remove tracked-source unignore rules for ide/manifests after moved files are staged at contracts/projection/ide",
       "reference_kind": "tooling_config",
       "rewrite_phase": "apply",
       "risk": "medium",
@@ -26,7 +26,7 @@
     {
       "referencing_file": "scripts/verify_docs_sanity.py",
       "current_reference": "ide/manifests/projection_manifest.schema.json",
-      "proposed_reference": "contracts/projections/ide/projection_manifest.schema.json",
+      "proposed_reference": "contracts/projection/ide/projection_manifest.schema.json",
       "reference_kind": "active_validator",
       "rewrite_phase": "apply",
       "risk": "medium",
@@ -35,7 +35,7 @@
     {
       "referencing_file": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
       "current_reference": "/docs/architecture/IDE_PROJECTIONS.md, /ide/manifests/** as authoritative metadata",
-      "proposed_reference": "/docs/architecture/IDE_PROJECTIONS.md and /contracts/projections/ide/** as authoritative metadata; /ide/** remains generated projection output",
+      "proposed_reference": "/docs/architecture/IDE_PROJECTIONS.md and /contracts/projection/ide/** as authoritative metadata; /ide/** remains generated projection output",
       "reference_kind": "docs_current",
       "rewrite_phase": "apply",
       "risk": "low",
@@ -44,7 +44,7 @@
     {
       "referencing_file": "docs/architecture/PROJECTION_LIFECYCLE.md",
       "current_reference": "Schema: /ide/manifests/projection_manifest.schema.json",
-      "proposed_reference": "Schema: /contracts/projections/ide/projection_manifest.schema.json",
+      "proposed_reference": "Schema: /contracts/projection/ide/projection_manifest.schema.json",
       "reference_kind": "docs_current",
       "rewrite_phase": "apply",
       "risk": "low",
@@ -53,7 +53,7 @@
     {
       "referencing_file": "docs/architecture/IDE_PROJECTIONS.md",
       "current_reference": "/ide/manifests/** (schema + examples)",
-      "proposed_reference": "/contracts/projections/ide/** (schema + examples) and /ide/manifests/ for generated projection manifests",
+      "proposed_reference": "/contracts/projection/ide/** (schema + examples) and /ide/manifests/ for generated projection manifests",
       "reference_kind": "docs_current",
       "rewrite_phase": "apply",
       "risk": "low",

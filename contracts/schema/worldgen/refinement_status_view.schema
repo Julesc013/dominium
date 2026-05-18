@@ -1,0 +1,28 @@
+SCHEMA: worldgen/refinement_status_view.schema
+schema_id: dominium.schema.worldgen.refinement_status_view
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the derived MW-4 refinement-status view consumed by UI and inspection
+  surfaces.
+- Surface queued, present, deferred, and cache-backed refinement state without
+  exposing TruthModel internals directly.
+
+NON-SEMANTICS:
+- This schema does not authorize direct renderer reads of process runtime state.
+- This schema does not change worldgen artifact meaning.
+
+REQUIRED SHAPE:
+record refinement_status_view
+  required:
+    - region_id: id
+    - cell_keys: [map]
+    - status_per_level: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- refinement status is derived-only
+- status ordering is deterministic by semantic GEO cell ordering and level
+- deferred or refused states must remain explainable and replay-stable

@@ -1,0 +1,25 @@
+SCHEMA: physics/energy_ledger_entry.schema
+schema_id: dominium.schema.physics.energy_ledger_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical deterministic PHYS-3 energy ledger entries emitted by authoritative processes.
+- Provide proof/replay anchor rows for energy conversion accounting.
+
+NON-SEMANTICS:
+- This schema does not authorize conversions.
+- Conversion legality comes from registry + profile + process governance.
+
+REQUIRED SHAPE:
+record energy_ledger_entry
+  required:
+    - entry_id: id
+    - tick: u64
+    - transformation_id: id
+    - source_id: id
+    - input_values: map(quantity_id -> fixed_point_value)
+    - output_values: map(quantity_id -> fixed_point_value)
+    - energy_total_delta: fixed_point
+    - deterministic_fingerprint: sha256
+    - extensions: map

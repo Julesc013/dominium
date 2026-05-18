@@ -32,7 +32,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/platform/platform_gfx.py`
 - `src/platform/platform_input.py`
 - `src/platform/platform_input_routing.py`
-- `src/tools/validators/validation/validation_engine.py`
+- `src/tools/validators/suite/validation_engine.py`
 - `src/worldgen/earth/sky/sky_view_engine.py`
 - `tools/earth/earth9_stress_common.py`
 
@@ -54,12 +54,12 @@ Replacement Target: XI-4b manual review resolution
 - `src/astro/views/orbit_view_engine.py` disposition=`drop` rank=`14` total_score=`56.07` risk=`HIGH`
 - `src/geo/projection/view_adapters.py` disposition=`drop` rank=`15` total_score=`55.21` risk=`HIGH`
 - `src/worldgen/earth/sky/sky_view_engine.py` disposition=`drop` rank=`16` total_score=`53.75` risk=`HIGH`
-- `src/tools/validators/validation/validation_engine.py` disposition=`merge` rank=`17` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/suite/validation_engine.py` disposition=`merge` rank=`17` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/GLOSSARY.md, docs/app/CLIENT_UI_LAYER.md, docs/app/CLI_CONTRACTS.md, docs/app/RUNTIME_LOOP.md, docs/app/TESTX_INVENTORY.md, docs/app/TUI_MODE.md, docs/architecture/ARCH_BUILD_ENFORCEMENT.md, docs/architecture/ARCH_ENFORCEMENT.md`
+- Docs: `docs/GLOSSARY.md, docs/apps/CLIENT_UI_LAYER.md, docs/apps/CLI_CONTRACTS.md, docs/apps/RUNTIME_LOOP.md, docs/apps/TESTX_INVENTORY.md, docs/apps/TUI_MODE.md, docs/architecture/ARCH_BUILD_ENFORCEMENT.md, docs/architecture/ARCH_ENFORCEMENT.md`
 
 ## Tests Involved
 
@@ -71,7 +71,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

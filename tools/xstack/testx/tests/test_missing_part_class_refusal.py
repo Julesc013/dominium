@@ -19,7 +19,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.materials.blueprint_engine import (
+    from game.domain.materials.blueprint_engine import (
         REFUSAL_BLUEPRINT_MISSING_PART_CLASS,
         BlueprintCompileError,
         compile_blueprint_artifacts,

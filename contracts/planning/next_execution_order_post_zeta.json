@@ -1,0 +1,107 @@
+{
+  "ordering_id": "NEXT_EXECUTION_ORDER_POST_ZETA",
+  "checkpoint_state": "post-zeta-completion-review",
+  "recommended_next_prompt": {
+    "prompt_id": "POST-ZETA-0",
+    "title": "FRONTIER_RECONCILIATION_AND_HANDOFF-0",
+    "readiness_status": "ready"
+  },
+  "ordering_mode": "reconciliation_and_consolidation_first",
+  "prompt_order": [
+    {
+      "order": 1,
+      "prompt_id": "POST-ZETA-0",
+      "title": "FRONTIER_RECONCILIATION_AND_HANDOFF-0",
+      "readiness_status": "ready",
+      "dependencies": [
+        "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+        "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+        "docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md",
+        "data/planning/zeta_remaining_frontier_and_closure_baseline.json",
+        "docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md",
+        "data/planning/zeta_final_admissible_scope.json",
+        "docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md",
+        "docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md",
+        "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
+        "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
+        "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md"
+      ],
+      "human_review_requirements": [
+        "receipt_and_provenance_reclassification FULL review if any shadow or parallel evidence is promoted toward canonical receipt truth",
+        "trust_root_governance_changes FULL review if any work implies trust-root promotion rotation revocation execution or publication execution",
+        "distributed_authority_model_changes FULL review if any work implies authority movement handoff legality or cutover legality beyond closed Ζ scope",
+        "frontier_realization_rebinding FULL review if any blocked or future-only frontier item is proposed as near-term executable scope"
+      ],
+      "stop_conditions": [
+        "stop if POST-ZETA-0 reopens blocked Ζ frontier items as if they were already admitted",
+        "stop if POST-ZETA-0 treats bounded-only proof-only or guarded later-wave families as realization complete",
+        "stop if POST-ZETA-0 bypasses the explicit handoff boundary between completed Ζ doctrine and unresolved frontier realization"
+      ],
+      "notes": [
+        "This prompt begins post-Ζ frontier reconciliation and consolidation rather than a new internal Ζ band.",
+        "It must preserve the exact completed admissible Ζ envelope and hand off blocked realization-heavy work honestly."
+      ]
+    },
+    {
+      "order": 2,
+      "prompt_id": "C-POST_ZETA_FRONTIER_REVIEW",
+      "title": "POST_FRONTIER_RECONCILIATION_ADMISSION_REVIEW-0",
+      "readiness_status": "required_after_post_zeta_0",
+      "dependencies": [
+        "completed POST-ZETA-0 artifacts",
+        "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
+        "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md"
+      ],
+      "human_review_requirements": [
+        "checkpoint must verify completed admissible Ζ scope was preserved exactly",
+        "checkpoint must verify no bounded-only proof-only or guarded later-wave family widened by convenience",
+        "checkpoint must verify no blocked or future-only frontier item was silently re-admitted"
+      ],
+      "stop_conditions": [
+        "stop before any new frontier realization-planning band until this checkpoint exists"
+      ],
+      "notes": [
+        "This checkpoint validates the post-Ζ handoff before any new frontier planning or realization-adjacent band is proposed."
+      ]
+    }
+  ],
+  "blocked_or_dangerous_items": [
+    {
+      "item": "zeta.family.rollback_bearing_staged_transition_validation",
+      "status": "bounded_only"
+    },
+    {
+      "item": "zeta.family.distributed_replay_and_proof_anchor_verification",
+      "status": "proof_only"
+    },
+    {
+      "item": "zeta.family.bounded_runtime_cutover_proof_rehearsal",
+      "status": "proof_only"
+    },
+    {
+      "item": "zeta.family.live_cutover_receipt_pipeline_anchorization",
+      "status": "guarded_later_wave_only_shadow_parallel"
+    },
+    {
+      "item": "zeta.family.trust_aware_refusal_and_containment",
+      "status": "blocked_execution_family"
+    },
+    {
+      "item": "zeta.family.bounded_authority_handoff_and_state_transfer",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_trust_revocation_and_publication_execution",
+      "status": "blocked"
+    },
+    {
+      "item": "zeta.family.live_shard_relocation",
+      "status": "future_only_prohibited"
+    }
+  ],
+  "stability": {
+    "status": "provisional",
+    "last_reviewed": "2026-04-06",
+    "replacement_target": "later post-zeta frontier planning artifacts may refine sequence without replacing the ordering law frozen here"
+  }
+}

@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`.
+Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `src/server/net/loopback_transport.py`, and `src/client/local_server/local_server_controller.py`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

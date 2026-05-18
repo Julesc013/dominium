@@ -65,7 +65,7 @@ and the setup CLI call into this layer instead of duplicating logic.
 
 ## Actions
 - `install`: create install/data/log roots, copy the distribution manifest from
-  `<app_root>/dist/` into the install root, and ensure a default instance is
+  `<app_root>/archive/generated/dist/` into the install root, and ensure a default instance is
   registered via `dom_inst_create`.
 - `repair`: re-run the copy/instance steps, replacing missing or damaged files.
 - `uninstall`: remove the default instance (if present) and delete the install
@@ -73,8 +73,8 @@ and the setup CLI call into this layer instead of duplicating logic.
 - `verify`: walk the manifest under the install root and report missing files.
 
 ## Distribution seed
-- The current manifest is a stub: it copies `dist/bin/dominium-placeholder.txt`
-  and `dist/data/readme.txt` into the install root. A later revision replaces
+- The current manifest is a stub: it copies `archive/generated/dist/bin/dominium-placeholder.txt`
+  and `archive/generated/dist/data/readme.txt` into the install root. A later revision replaces
   this with an auto-generated package manifest.
 
 ## CLI wrapper

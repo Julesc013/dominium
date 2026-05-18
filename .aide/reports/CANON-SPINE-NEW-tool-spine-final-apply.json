@@ -1,0 +1,4624 @@
+{
+  "collisions": [],
+  "mode": "apply",
+  "move_result": {
+    "applied": [],
+    "failed": []
+  },
+  "post_segment_findings": {
+    "capabilities": 1,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 1,
+    "validator": 1
+  },
+  "pre_segment_findings": {
+    "capabilities": 1,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 1,
+    "validator": 1
+  },
+  "reason_counts": {},
+  "rewrite_result": {
+    "files": [
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".agentignore",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": ".aide/changelog/changelog.preview.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/context/ignore.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/context/repo-map.json",
+        "replacements": 518
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/context/repo-map.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/context/repo-snapshot.json",
+        "replacements": 519
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/context/test-map.json",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/evals/runs/latest-golden-tasks.json",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/evals/runs/latest-golden-tasks.md",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/context/ignore.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/file-classification.yaml",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/github-release-draft.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-artifacts.yaml",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-bundle.yaml",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-risk.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/release/README.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/aide_lite.py",
+        "replacements": 18
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/tests/test_aide_lite.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/install/latest-install-observation.json",
+        "replacements": 318
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/install/latest-install-plan.json",
+        "replacements": 147
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/policies/file-classification.yaml",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/policies/github-release-draft.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/policies/release-artifacts.yaml",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/policies/release-bundle.yaml",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/policies/root-risk.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/q50-readiness.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/repo-state.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/changed-files.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/source-bundle-review.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/task.yaml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00.active_module_ownership.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00.import_reference_map.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00.plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00C-A.import_consumers.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00C-A.import_rewrite_plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00C.exception_update_plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00C.import_reference_map.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/refactors/MOVE-FAMILY-00C.shim_plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/README.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/dist/aide-lite-pack-v0.checksums.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/dist/manifest.yaml",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/dist/release-assets.json",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/dist/release-provenance.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/dist/release-validation.json",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/latest-release-artifacts.json",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/release/latest-release-bundle.json",
+        "replacements": 32
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repair/latest-repair-observation.json",
+        "replacements": 465
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/dependency-map.json",
+        "replacements": 6111
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/doc-link-map.json",
+        "replacements": 1190
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/file-inventory.json",
+        "replacements": 181
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/generated-map.json",
+        "replacements": 47
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/orphan-candidates.json",
+        "replacements": 134
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/repo/ownership-map.json",
+        "replacements": 181
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-FAMILY-00-PLAN-candidate-table.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-FAMILY-00-PLAN-review.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-FAMILY-00-REFINE-active-module-boundaries.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-FAMILY-00C-PLAN-import-map.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-FAMILY-00C-PLAN-summary.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-ROUTER-02-import-repairs.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-ROUTER-02-import-repairs.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/MOVE-ROUTER-02-path-reference-repairs.json",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-directory-naming.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-directory-naming.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-file-naming.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-file-naming.md",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-path-conflicts.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/NAME-00-path-conflicts.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10G-repox-failure-families.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10G-repox-failure-families.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10L-blockers.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10L-distribution-product-findings.json",
+        "replacements": 24
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10L-distribution-product-findings.md",
+        "replacements": 13
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10L-next-family-recommendation.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/POST-CONVERGE-10L-post-converge-11-readiness.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/RESTRUCTURE-REPAIR-00-master-remediation-ledger.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/SEMANTIC-LINTS-disposition.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/SEMANTIC-LINTS-findings.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/dominium-stable-aide-install.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/file-quality-ledger.json",
+        "replacements": 2858
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/latest-warning-disposition.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/reuse-modularity-report.md",
+        "replacements": 111
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/bundles.references.json",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/compat.references.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/control.references.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/core.references.json",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/data.identity_scan.json",
+        "replacements": 117
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/data.inventory.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/data.references.json",
+        "replacements": 43
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/governance.references.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/ide.references.json",
+        "replacements": 179
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/lib.references.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/libs.references.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/locks.references.json",
+        "replacements": 31
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/meta.references.json",
+        "replacements": 47
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/net.references.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": ".aide/reports/roots/net.semantic_scan.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/packs.references.json",
+        "replacements": 43
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/profiles.references.json",
+        "replacements": 26
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/repo.authority_scan.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/repo.references.json",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/safety.references.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/security.references.json",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/specs.references.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/templates.references.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/updates.references.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/roots/validation.references.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/reports/tool-recycling-inventory.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/rollback/latest-rollback-plan.json",
+        "replacements": 147
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/roots/latest-root-classification.json",
+        "replacements": 171
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/scripts/aide_lite.py",
+        "replacements": 18
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/scripts/tests/test_aide_lite.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/dominium-tool-classification.json",
+        "replacements": 151
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/dominium-tool-inventory.json",
+        "replacements": 302
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/latest-tool-adapter-map.json",
+        "replacements": 215
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/latest-tool-classification.json",
+        "replacements": 680
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/latest-tool-inventory.json",
+        "replacements": 302
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/latest-tool-wrap-plan.json",
+        "replacements": 151
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/tool-risk-summary.md",
+        "replacements": 151
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/tools/xstack-wrapper-registry.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/uninstall/latest-uninstall-dry-run.json",
+        "replacements": 147
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/uninstall/latest-uninstall-observation.json",
+        "replacements": 294
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/uninstall/latest-uninstall-plan.json",
+        "replacements": 294
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".aide/verification/latest-verification-report.md",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".github/copilot-instructions.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".github/workflows/ci.yml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": ".gitignore",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "AGENTS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "CMakeLists.txt",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/cli/setup_cli_main.c",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/ci/launcher_cli_smoke_matrix.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/ci/test_support_bundle_determinism.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/diagnostics/make_support_bundle.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.bat",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.sh",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "apps/setup/packages/scripts/legacy/build_packages.bat",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/legacy/build_packages.sh",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/packaging/CMakeLists.txt",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/packaging/linux/CMakeLists.txt",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/packaging/macos/CMakeLists.txt",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/packaging/pipeline.py",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/packaging/windows/CMakeLists.txt",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/release/run_release_gate.bat",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/release/run_release_gate.sh",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/release/run_setup_release_gate.bat",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/release/run_setup_release_gate.sh",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "apps/setup/packages/scripts/setup/run_conformance.bat",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/setup/packages/scripts/setup/run_conformance.sh",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "apps/setup/packages/scripts/test_all.bat",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "apps/workbench/module/ui/preview/CMakeLists.txt",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/analysis/duplicate_cluster_rankings.json",
+        "replacements": 199
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/analysis/implementation_scores.json",
+        "replacements": 662
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/architecture/architecture_graph.json",
+        "replacements": 193
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/architecture/architecture_graph.v1.json",
+        "replacements": 193
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/architecture/module_boundary_rules.v1.json",
+        "replacements": 22
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/architecture/module_dependency_graph.json",
+        "replacements": 81
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/results.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/results.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2/run_manifest.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run_manifest.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/arch_audit2_report.json",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/arch_audit_report.json",
+        "replacements": 47
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/architecture_scan_report.json",
+        "replacements": 263
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/build_graph.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ci_run_report.json",
+        "replacements": 45
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/clean_room_win64.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/convergence_steps/dist_verify.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/dist_content_audit.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "archive/generated/audit/dist_tree_assembly_report.json",
+        "replacements": 29
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/dist_verify_win64.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/distribution_architecture_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/duplicate_clusters.json",
+        "replacements": 79
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/duplicate_impls.json",
+        "replacements": 120
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ecosystem_verify_run.json",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/include_graph.json",
+        "replacements": 506
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/numeric_discipline_report.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/repo_inventory.json",
+        "replacements": 49
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/supervisor_hardening_report.json",
+        "replacements": 60
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/symbol_index.json",
+        "replacements": 413
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ultra_repo_audit_entrypoints.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ultra_repo_audit_gap_ledger.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ultra_repo_audit_product_assembly_plan.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ultra_repo_audit_system_inventory.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/ultra_repo_audit_wiring_map.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/universal_identity_report.json",
+        "replacements": 27
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/update_model_report.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/update_sim_run.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/validation_report_FAST.json",
+        "replacements": 13
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/validation_report_STRICT.json",
+        "replacements": 13
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "archive/generated/audit/virtual_paths_report.json",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "archive/generated/audit/xi5a_preflight_disaster_cleanup_fix.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/audit/xi5a_preflight_repair.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/performance/perf_report_win64.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/refactor/convergence_actions.json",
+        "replacements": 397
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/refactor/convergence_execution_log.json",
+        "replacements": 397
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/refactor/convergence_plan.json",
+        "replacements": 194
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/refactor/convergence_risk_map.json",
+        "replacements": 346
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/release/dist_final_expected_artifacts.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/repo/repo_authoritative_boundary_model_and_preferred_target.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/repo/repo_coupling_drift_and_relayout_risk_analysis.json",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/repo/repo_phased_migration_shims_validation_and_rollback.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/repo/repo_topology_paths_and_ownership_reality_map.json",
+        "replacements": 19
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/restructure/src_domain_mapping.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/restructure/src_tool_only_set.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "archive/generated/restructure/xi5a_execution_log.json",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/xstack/gate_definitions.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/generated/xstack/xstack_inventory_and_classification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/engine_modules_engine/engine/CMakeLists.txt",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/launcher_core_launcher/launcher/CMakeLists.txt",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/launcher_core_launcher/launcher/core/include/launcher_artifact_store.h",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/setup_core_setup/setup/CMakeLists.txt",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/setup_core_setup/setup/adapters/linux/package/tarball/README.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "archive/legacy/setup_core_setup/setup/adapters/steam/dominium_setup_steam_main.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/setup_core_setup/setup/adapters/winnt/cli/setup_ui_gui.cpp",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "archive/legacy/setup_core_setup/setup/adapters/winnt/package/exe/dominium_setup_win_exe_main.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "archive/legacy/source/tests/CMakeLists.txt",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "cmake/dominium_dist.cmake",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "cmake/dominium_dist_meta.cmake",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/audit/arch_matrix_report.json",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/audit/archive_policy_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/audit/governance_policy_report.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/audit/release_index_policy_report.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/distribution/layout.contract.toml",
+        "replacements": 15
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/planning/checkpoints/checkpoint_post_sigma_b_pre_phib_upsilon.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/planning/reality/toolchain_and_preset_map.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/planning/reconciliation/assumption_invalidations.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/architecture/module_registry.json",
+        "replacements": 219
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/architecture/module_registry.v1.json",
+        "replacements": 219
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/command_registry.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/derived_artifacts.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/extension_interpretation_registry.json",
+        "replacements": 15
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/gate_policy.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/testx_groups.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/registry/toolchain_matrix_registry.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/release/component_matrix.contract.toml",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/repo/layout_exceptions.toml",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/repo/ownership_slots.toml",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/repo/repox/rulesets/core.json",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/repo/repox/rulesets/packaging.json",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/repo/semantic_lint_allowlist.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/schema/planning/reality/schema_registry_inventory.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "contracts/xstack/codex_repo_operating_contract.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/BUNDLE_MODEL.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/CONTENT_AND_STORAGE_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/DIRECTORY_CONTEXT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/INSTANCE_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/LOCKFILES.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/REPOSITORY_STRUCTURE_v1.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/REPO_INTENT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/REPO_OWNERSHIP_AND_PROJECTIONS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/deterministic_packaging.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/architecture/session_lifecycle.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/archive/build/APR5_BUILD_INVENTORY.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/APPSHELL0_RETRO_AUDIT.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/APPSHELL_BOOTSTRAP_BASELINE.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ARCHIVE_OFFLINE0_RETRO_AUDIT.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ARCH_GRAPH_BOOTSTRAP.md",
+        "replacements": 22
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ARCH_MATRIX_FINAL.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/AUDITX_BASELINE_REPORT.md",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/BINARY_BUILD_MATRIX.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/BUILD_PRESET_AND_WORKFLOW_REPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/CAP_NEG1_RETRO_AUDIT.md",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/CAP_NEG4_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/CLEAN_ROOM_win64.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/COMPAT_SEM2_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/CURRENT_STATE_DETAILED_REPORT_2026-03-31.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/DIST1_RETRO_AUDIT.md",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/DIST2_RETRO_AUDIT.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/DIST3_FINAL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/DIST_FINAL_DRYRUN.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/DIST_VERIFY_win64.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ENDPOINT_DESCRIPTOR_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/INSTANCE_MANIFEST_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/INTERFACE_LAUNCH_REPORT.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/INVENTORY.json",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/INVENTORY_MACHINE.json",
+        "replacements": 135
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/LIB6_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/MARKER_SCAN.txt",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/MODULE_DISCOVERY_REPORT.md",
+        "replacements": 22
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/MODULE_DUPLICATION_REPORT.md",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/MVP1_RETRO_AUDIT.md",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/MVP_RUNTIME_BASELINE.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/NUMERIC_DISCIPLINE_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/OMEGA10_RETRO_AUDIT.md",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/PACK_VERIFICATION_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/PKG_IMPLEMENTATION_REPORT.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/PLATFORM_AND_PORTABILITY_CONSISTENCY_REPORT.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/PLATFORM_RENDERER_SURFACE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/RELEASE0_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/RELEASE1_RETRO_AUDIT.md",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/RELEASE2_RETRO_AUDIT.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/RELEASE_MANIFEST_BASELINE.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/REPO_FREEZE_VERIFICATION.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/REPO_INVENTORY_SUMMARY.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/REPO_STRUCTURE_AUDIT.json",
+        "replacements": 134
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SDK_READINESS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SHIM_COVERAGE_REPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SIG5_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SOL0_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/STATEVEC0_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SUPERVISOR_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/SYS0_RETRO_AUDIT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/TIER_TRANSITION_CONSTITUTION_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/TOOLCHAIN_MATRIX_BASELINE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/TOPOLOGY_MAP.json",
+        "replacements": 90
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/VIRTUAL_PATHS_BASELINE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/XI_3_FINAL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_DIAGNOSIS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/XI_5A_PREFLIGHT_DISASTER_CLEANUP_FIX_FINAL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/XI_5A_PREFLIGHT_REPAIR.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/auditx/FINDINGS.json",
+        "replacements": 244
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/auditx/FINDINGS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/auditx/INVARIANT_MAP.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
+        "replacements": 24
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/convergence_steps/dist_verify.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/proof_manifest.json",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER/actions_taken.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T080838Z_verify_OTHER/actions_taken.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T081813Z_verify_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T090841Z_verify_OTHER/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T111036Z_verify_OTHER/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T121513Z_verify_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T130308Z_verify_ok/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T130308Z_verify_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T163146Z_verify_OTHER/actions_taken.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T233128Z_verify_ok/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260211T233128Z_verify_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260212T143108Z_verify_ok/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260212T143108Z_verify_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260213T054938Z_exitcheck_OTHER/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260213T055921Z_exitcheck_OTHER/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE/actions_taken.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/remediation/vs2026/20260213T075116Z_strict_ok/verification.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/repox/REPOX_PROFILE.json",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/system/XSTACK_FINAL_POLISH_REPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/audit/system/XSTACK_PRODUCTION_FINAL_REPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/ci/DIST_PKG_PIPELINE.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/ci/HYGIENE_QUEUE.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/compatibility/ENDPOINT_DESCRIPTORS.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/development/GUI_TO_COMMAND_WORKFLOW.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/development/IMPACT_GRAPH.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/development/PORTABLE_TESTING.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/development/TOOL_INVOCATION_POLICY.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/development/UI_BINDING_PIPELINE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/DIST_PLATFORM_DOCTRINE.md",
+        "replacements": 16
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/DIST_TREE_CONTRACT.md",
+        "replacements": 15
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/MEDIA_LAYOUT.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/OFFLINE_AND_STEAM_MAPPING.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/PACKAGE_EXPORT_ROOTS.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/PORTABLE_INSTALL_LAYOUT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/PORTABLE_PROJECTION_SMOKE_PROOF.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/distribution/SYMBOLS_AND_PROVENANCE_LAYOUT.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/domains/thermal/FIRE_AND_RUNAWAY_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/GATE_AUTONOMY_POLICY.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/REPOX_RULESETS.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/REPOX_TOOL_RULES.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/TESTX_ARCHITECTURE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/XSTACK_PORTABILITY.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/XSTACK_SCOPE_TEMPLATE.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/governance/XSTACK_TRACK_IGNORE_POLICY.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/BUILD_DIST.md",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/BUILD_OVERVIEW.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/build_output.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/context/dominium_newcontext.txt",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "docs/guides/release/BUILD_AND_PACKAGE.md",
+        "replacements": 25
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/release/RELEASE_READINESS_CHECKLIST.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/CAPABILITY_TEST.md",
+        "replacements": 13
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/CLI.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/IDE_LIVE_EDITING.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/IMPORT_EXPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/guides/ui_editor/TEST_MINECRAFT_LAUNCHER.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/guides/ui_editor/TEST_MINECRAFT_SETUP.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "docs/guides/ui_editor/WORKFLOW_END_TO_END.md",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/ide/vscode/launch.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/ide/vscode/tasks.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/guides/ui_editor/ide/xcode/README.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/meta/IDENTITY_INTEGRATION_MAP.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/meta/INSTRUMENTATION_SURFACE_STANDARD.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/mvp/MVP_INSTALL_LAYOUT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/mvp/TOOLCHAIN_MATRIX_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/packs/PACK_VERIFICATION_PIPELINE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/CHECKPOINT_C_SIGMAA1_PHIA2_REVIEW.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/REALITY_EXTRACTION_REPORT.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/generated-data/checkpoints/checkpoint_c_sigma0_phia1.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/planning/generated-data/checkpoints/checkpoint_c_sigmaa1_phia2.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/process/YIELD_DEFECT_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/CONVERGENCE_PLAN.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/CONVERGENCE_RISK_REPORT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.03ab149d795288bb.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.33b8e7eba7858b47.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.415ed4b579603554.md",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.73f5830efa7cb7fd.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.8923df228349c5e2.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.b511496002d746b7.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.cluster.d0cbd7cd52f71a40.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.0bb8d9b37100d6bc.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.20a117a44d94b482.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.40135b783fa93b05.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.41d20753b86fcf69.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.451676edbd390be4.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.5405537abf17ccb2.md",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.5b0a023fe6353d98.md",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.b5fe8fa6a6069466.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.deb315f495b54ce9.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.eab672571035c647.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/refactor/QUARANTINE_duplicate.sig.ee5c752efd7bcc67.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/DISTRIBUTION_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/DIST_BUNDLE_ASSEMBLY.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/DIST_FINAL_CHECKLIST.md",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/DIST_FINAL_PLAN_v0_0_0_mock.md",
+        "replacements": 23
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/DIST_VERIFICATION_RULES.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/LOCAL_RUNTIME_PROOF.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/NATIVE_BINARY_PROOF.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/OFFLINE_ARCHIVE_MODEL_v0_0_0.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/PACKAGE_SMOKE_PROOF.md",
+        "replacements": 5
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/PORTABLE_PROJECTION_PROOF.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/PRODUCT_BOOT_PROOF.md",
+        "replacements": 13
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/release/PRODUCT_MODE_MATRIX.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/BUILD_VERIFICATION_PATHS.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/DISTRIBUTION_LAYOUT_CANON.md",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/EXCEPTION_RETIREMENT_QUEUE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/FAST_GATE_REMEDIATION.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/MOVE_FAMILY_REGRESSION_REQUIREMENTS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/MOVE_MAP.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/OWNERSHIP_RULES.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/POST_CONVERGE_NEXT_STEPS.md",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_AUTHORITATIVE_BOUNDARY_MODEL_AND_PREFERRED_TARGET.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_CONSTITUTION.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_COUPLING_DRIFT_AND_RELAYOUT_RISK_ANALYSIS.md",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_LAYOUT_TARGET.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_PHASED_MIGRATION_SHIMS_VALIDATION_AND_ROLLBACK.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_TARGET_TOPOLOGY_OPTIONS_AND_COMPARISON.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
+        "replacements": 22
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/ROOT_FILE_POLICY.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/ROOT_INVENTORY.md",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/CONVERGE_00_BASELINE.md",
+        "replacements": 17
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/CONVERGE_12_FINAL_AUDIT.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_01_GENERATED_OUTPUT_CLEANUP.md",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_07_LOCAL_RUNTIME_PROOF.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_08_PRODUCT_BOOT_MATRIX_PROOF.md",
+        "replacements": 12
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_09_PORTABLE_PROJECTION_PROOF.md",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10C_CMAKE_PATH_REMEDIATION.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10E_CTEST_AUDITX_REMEDIATION.md",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10K_CONTRACT_REGISTRY_ACCEPTANCE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10L_DISTRIBUTION_PRODUCT_PROOF.md",
+        "replacements": 9
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_10_BUILD_BINARY_PROOF.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/POST_CONVERGE_EXCEPTION_TRIAGE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/audits/STALE_PATH_REFERENCE_AUDIT.md",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/bad_root_routing.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/data/agent_mirror_registry.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/final_repository_structure.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/repo/root-recycling/MOVE_FAMILY_00_GOVERNANCE_META_PERFORMANCE_VALIDATION_IDE_PLAN.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/restructure/FUTURE_LAYOUT_PROPOSAL.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/restructure/RESTRUCTURE_RISKS.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/CANONICAL_LOCAL_PLAYTEST.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/LIFECYCLE_MANAGER.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/STATE_EXTERNALIZATION.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/shell/CLI_REFERENCE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/runtime/shell/TOOL_REFERENCE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/SPEC_ARTIFACT_STORE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/SPEC_SETUP_CORE.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/launcher/ARTIFACT_STORE.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/launcher/INSTANCE_MODEL.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/setup/HANDOFF_SNAPSHOT.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/setup/SETUP_LINUX.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/setup/SETUP_MACOS.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/specs/setup/SETUP_WINDOWS.md",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/time/DRIFT_AND_SYNC_POLICY.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "runtime/platform/platform_probe.py",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "runtime/ui/ui_model.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "scripts/audit/generate_inventory.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "scripts/ci/check_repox_rules.py",
+        "replacements": 14
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "scripts/dev/env_tools_lib.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "scripts/dev/gate_policy_eval.py",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "scripts/verify_build_target_boundaries.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "scripts/verify_ide_quarantine.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/app/path_hygiene_tests.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/app/slice0_hardcoded_ids.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/app/slice1_hardcoded_constants.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/app/slice2_hardcoded_roles.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/contentlib/contentlib_fixture_scenarios_tests.py",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/data_1/data1_fixture_scenarios_tests.py",
+        "replacements": 15
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_legacy_pack_tests.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_lockfile_determinism_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_max_bundle_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_pack_transition_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_profile_recommendation_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/distribution/distribution_zero_pack_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/disaster/disaster_suite_cases.json",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/trust/signed_release_index.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/trust/unsigned_release_index.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/update_sim/release_index_baseline.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/update_sim/release_index_strict.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/update_sim/release_index_upgrade.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/baselines/update_sim/release_index_yanked.json",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/fixtures/regression/ecosystem_verify_baseline.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/game/tests/setup/CMakeLists.txt",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "tests/game/tests/setup/conformance/setup_conformance_runner.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/invariant/gate_write_policy_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/invariant/test_workspace_isolation.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "tests/invariant/workspace_isolation_tests.py",
+        "replacements": 7
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/launcher/launcher_cli_tests.py",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "tests/ops/artifact_manifest_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "tests/ops/content_store_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tests/ops/export_import_bundle_tests.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/aide/root_recycling_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/bind/CMakeLists.txt",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/bind/ui_bind_index.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/bind/ui_bind_main.cpp",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/bind/ui_doc_annotate_main.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/index/ui_index.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/index/ui_index.json.bak1",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/index/ui_index.json.bak2",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/index/ui_index.json.bak3",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.cpp.bak1",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.h.bak1",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak1",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak2",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak3",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak4",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak5",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak6",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_apply_report.json.bak7",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak1",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak2",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak3",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak4",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak5",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak6",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_codegen_report.json.bak7",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak1",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak2",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak3",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak4",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak5",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak6",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/launcher_format_report.json.bak7",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/reports/regen_report.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.h",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/doc/setup_ui_apply_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/doc/setup_ui_format_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.cpp.bak1",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.h.bak1",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/registry/setup_ui_codegen_report.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/regen_report.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak1",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak2",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak3",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak4",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak5",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak6",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_apply_report.json.bak7",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak1",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak2",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak3",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak4",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak5",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak6",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_codegen_report.json.bak7",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak1",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak2",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak3",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak4",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak5",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak6",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/reports/setup_format_report.json.bak7",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.cpp",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.h",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/compat/tool_generate_descriptor_manifest.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/convergence/convergence_gate_common.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/engine/numeric_discipline_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/export/export_engine.py",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/lib/lib_stress_common.py",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/migration/root_move_map.json",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/mvp/disaster_suite_common.py",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/mvp/toolchain_matrix_common.py",
+        "replacements": 4
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/arch_matrix_common.py",
+        "replacements": 3
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/component_graph_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/dist/dist_verify_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/dist/ux_smoke_common.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/distribution_model_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/install_discovery_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/install_profile_common.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/shim_coverage_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/ui_reconcile_common.py",
+        "replacements": 10
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/release/update_model_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/review/architecture_graph_bootstrap_common.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/review/repo_inventory_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/review/xi8_common.py",
+        "replacements": 6
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/security/trust_model_common.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/share/share_cli.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/system/anb_omega.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/validate_dist.cmake",
+        "replacements": 11
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/validators/check_distribution_layout.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/a1_reachability_orphaned.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/a5_capability_misuse.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/b7_workspace_contamination.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/c2_mode_flag_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e113_deprecated_usage_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e121_plan_bypass_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e294_undeclared_inference_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e353_hardcoded_pack_path_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e420_ad_hoc_entry_point_smell.py",
+        "replacements": 8
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e497_absolute_path_in_manifest_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e498_non_deterministic_file_order_smell.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e499_absolute_path_leak_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e500_xstack_in_dist_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e502_external_store_access_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e503_platform_capabilities_mismatch_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e504_mode_fallback_not_logged_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e505_missing_remediation_hint_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e506_unstructured_user_facing_error_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e507_silent_degrade_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e508_negotiation_record_missing_smell.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/auditx/analyzers/e517_hardcoded_component_set_smell.py",
+        "replacements": 2
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/core/merkle_tree.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path"
+        ],
+        "path": "tools/xstack/packagingx/dist_build.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "backslash path",
+          "slash path"
+        ],
+        "path": "tools/xstack/repox/check.py",
+        "replacements": 27
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/sessionx/session_control.py",
+        "replacements": 1
+      },
+      {
+        "kinds": [
+          "slash path"
+        ],
+        "path": "tools/xstack/testx/tests/test_each_product_has_descriptor.py",
+        "replacements": 2
+      }
+    ],
+    "files_changed": 651,
+    "replacement_count": 23899
+  },
+  "routes": [],
+  "schema_version": "dominium.canon_spine_new.v1",
+  "status": "PASS",
+  "summary": {
+    "applied_moves": 0,
+    "candidate_routes": 0,
+    "collision_reroutes": 0,
+    "failed_moves": 0,
+    "text_files_changed": 651,
+    "text_replacements": 23899
+  }
+}

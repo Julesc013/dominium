@@ -351,7 +351,7 @@ evidence = "Distribution projection contract defines media layout."
 [packaging.symbols_debug_package]
 status = "planned"
 tier = "T1"
-evidence = "Distribution projection contract defines dist/sym and symbols/provenance lanes."
+evidence = "Distribution projection contract defines archive/generated/dist/sym and symbols/provenance lanes."
 
 [packaging.source_archive]
 status = "planned"
@@ -401,7 +401,7 @@ evidence = "SDL convenience adapter is not product identity."
 [input_backends.keyboard_mouse]
 status = "provisional"
 tier = "T0"
-evidence = "apps/client/input contains input binding source; AppShell command routing remains authoritative."
+evidence = "runtime/input/client contains input binding source; AppShell command routing remains authoritative."
 
 [input_backends.raw_input]
 status = "planned"
@@ -496,7 +496,7 @@ evidence = "Source repo layout contract exists under contracts/repo."
 [distribution_projections.dist_output]
 status = "provisional"
 tier = "T0"
-evidence = "Distribution layout contract defines dist/pkg, dist/sys, dist/sym, and dist/meta projections."
+evidence = "Distribution layout contract defines archive/generated/dist/pkg, archive/generated/dist/sys, archive/generated/dist/sym, and archive/generated/dist/meta projections."
 
 [distribution_projections.compressed_archive]
 status = "planned"

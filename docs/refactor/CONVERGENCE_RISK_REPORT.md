@@ -21,19 +21,19 @@ Superseded By: none
 | `duplicate.cluster.0284e66e92fa82a8` | `system_id` | `game/include/dominium/rules/governance/governance_system.h` | `game/include/dominium/rules/war/war_system.h` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.02a76b808e9594ff` | `require_keys` | `tools/ci/validate_earth_data.py` | `tools/ci/validate_milky_way_data.py` | `quarantine` | `worldgen_lock_or_overlay` |
 | `duplicate.cluster.03a31072d7ac07a9` | `REFUSAL_TEMPLATE_INVALID` | `src/system/templates/__init__.py` | `src/system/templates/template_compiler.py` | `quarantine` | `semantic_contracts` |
-| `duplicate.cluster.03ab149d795288bb` | `normalize_list` | `tools/distribution/profile_inspect.py` | `tools/fab/fab_validate.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
+| `duplicate.cluster.03ab149d795288bb` | `normalize_list` | `tools/package/distribution/profile_inspect.py` | `tools/fab/fab_validate.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.03d1718b6abbb996` | `load_fixture_lockfile` | `tools/xstack/testx/tests/pack_compat0_testlib.py` | `tools/xstack/testx/tests/mod_policy0_testlib.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.0631a59ef2fe2be3` | `validate_extensions_map` | `src/tools/repo/meta/extensions/__init__.py` | `src/meta_extensions_engine.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.065d7d23b936c46c` | `property_patch_hash_chain` | `src/geo/overlay/__init__.py` | `src/geo/overlay/overlay_merge_engine.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
 | `duplicate.cluster.06f2c33736385885` | `_write_canonical_json` | `tools/worldgen/worldgen_lock_common.py` | `tools/mvp/update_sim_common.py` | `quarantine` | `trust_enforcement, worldgen_lock_or_overlay` |
 | `duplicate.cluster.07162c47dda2a254` | `build_water_view_surface` | `src/worldgen/earth/water/__init__.py` | `src/worldgen/earth/water/water_view_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |
-| `duplicate.cluster.07c7e7b9365cb9dc` | `RESOLUTION_POLICY_EXPLICIT_REQUIRED` | `src/tools/libraries/provides/__init__.py` | `src/tools/libraries/provides/provider_resolution.py` | `quarantine` | `semantic_contracts` |
+| `duplicate.cluster.07c7e7b9365cb9dc` | `RESOLUTION_POLICY_EXPLICIT_REQUIRED` | `src/tools/package/libraries/provides/__init__.py` | `src/tools/package/libraries/provides/provider_resolution.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.0873f4be504cdfe1` | `_refusal_reason` | `tools/xstack/testx/tests/test_promotion_requires_replication.py` | `tools/xstack/testx/tests/test_proc9_candidate_promotion_requires_replication.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.0954e6658a2eb4fa` | `_material_or_surface_class` | `src/worldgen/earth/climate_field_engine.py` | `src/worldgen/earth/tide_field_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |
 | `duplicate.cluster.0a8e71d06f3c5f95` | `_runtime` | `src/server/runtime/tick_loop.py` | `src/server/net/loopback_transport.py` | `quarantine` | `protocol_negotiation, time_anchor` |
-| `duplicate.cluster.0b7c5e4a1d1e1287` | `canonical_sha256` | `src/tools/libraries/bundle/__init__.py` | `src/tools/libraries/bundle/bundle_manifest.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
+| `duplicate.cluster.0b7c5e4a1d1e1287` | `canonical_sha256` | `src/tools/package/libraries/bundle/__init__.py` | `src/tools/package/libraries/bundle/bundle_manifest.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
 | `duplicate.cluster.0bb6cc4d90e796fb` | `run_ops` | `tests/ops/ops_manifest_tests.py` | `tests/ops/compatibility_tests.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
-| `duplicate.cluster.0bbdf1ddf2183c6a` | `tlv_u32` | `setup/packages/scripts/gen_launcher_ui_schema_v1.py` | `game/tests/tests/vectors/gen_tlv_vectors.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
+| `duplicate.cluster.0bbdf1ddf2183c6a` | `tlv_u32` | `setup/packages/scripts/gen_launcher_ui_schema_v1.py` | `tests/tests/game/vectors/gen_tlv_vectors.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.0c2a75870f52b0dd` | `_hash_int` | `src/worldgen/mw/mw_cell_generator.py` | `src/geo/worldgen/worldgen_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |
 
 ## Manual Review Queue
@@ -46,7 +46,7 @@ Superseded By: none
 | `duplicate.cluster.1df1d8bf8a458b7f` | `_ensure_repo_root` | `tools/xstack/testx/tests/earth10_testlib.py` | `tools/xstack/testx/tests/sol2_testlib.py` | `0.0` | `worldgen_lock_or_overlay` |
 | `duplicate.cluster.247bcbbd2c68dad0` | `_infer` | `tools/xstack/testx/tests/test_accept_candidate_creates_commitments.py` | `tools/xstack/testx/tests/test_formalization_accept_creates_geometry.py` | `0.0` | `worldgen_lock_or_overlay` |
 | `duplicate.cluster.3b31f4cda90f9694` | `_canon` | `src/mobility/vehicle/vehicle_engine.py` | `src/models/model_engine.py` | `0.0` | `pack_compat_install_resolver, time_anchor, worldgen_lock_or_overlay` |
-| `duplicate.cluster.3da650173c632c38` | `timeval` | `engine/modules/system/dsys_platform_stub.c` | `engine/modules/system/dsys_posix.c` | `0.0` | `time_anchor` |
+| `duplicate.cluster.3da650173c632c38` | `timeval` | `runtime/platform/system/dsys_platform_stub.c` | `runtime/platform/system/dsys_posix.c` | `0.0` | `time_anchor` |
 | `duplicate.cluster.415ed4b579603554` | `_token` | `tools/release/dist_final_common.py` | `tools/review/doc_inventory_common.py` | `0.0` | `pack_compat_install_resolver, protocol_negotiation, semantic_contracts, time_anchor, trust_enforcement` |
 | `duplicate.cluster.488b950540e0191a` | `check_invariants` | `tests/app/mmo0_distributed_contract_tests.py` | `tests/app/scale0_contract_tests.py` | `0.0` | `semantic_contracts` |
 | `duplicate.cluster.4bf0e6e0bfc79928` | `find_compiler` | `tests/contract/public_header_c89_compile.py` | `tests/contract/public_header_cpp98_compile.py` | `0.0` | `semantic_contracts` |

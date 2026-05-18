@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Domain Contract Registry Schema",
+  "version": "1.0.0",
+  "description": "Structural contract registry for domain/solver conservation and transition constraints.",
+  "x-doc-ref": [
+    "docs/scale/CONTRACTS_AND_CONSERVATION.md",
+    "schema/scale/domain_contract.schema"
+  ],
+  "type": "object",
+  "required": [
+    "schema_id",
+    "schema_version",
+    "records"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_id": {
+      "type": "string",
+      "const": "dominium.registry.domain_contract_registry"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "contract_id",
+          "human_name",
+          "conservation_tags",
+          "invariant_notes",
+          "violation_refusal_codes",
+          "transition_requirements",
+          "extensions"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "contract_id": {
+            "type": "string",
+            "pattern": "^dom\\.contract\\.[a-z0-9_.-]+$"
+          },
+          "human_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "conservation_tags": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "invariant_notes": {
+            "type": "string",
+            "minLength": 1
+          },
+          "violation_refusal_codes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "transition_requirements": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "schema_id": "dominium.registry.domain_contract_registry",
+      "schema_version": "1.0.0",
+      "records": [
+        {
+          "contract_id": "dom.contract.deterministic_transition",
+          "human_name": "Deterministic Transition",
+          "conservation_tags": [
+            "determinism"
+          ],
+          "invariant_notes": "Collapse/expand transitions produce stable deterministic outcomes for identical inputs.",
+          "violation_refusal_codes": [
+            "refusal.contract_violation"
+          ],
+          "transition_requirements": [
+            "transition_support must explicitly include requested direction",
+            "domain and contract bindings must exist for selected solver"
+          ],
+          "extensions": {}
+        }
+      ]
+    }
+  ]
+}

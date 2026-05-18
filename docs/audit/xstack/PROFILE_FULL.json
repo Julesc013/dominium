@@ -921,7 +921,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--changed-only",
           "--format",
@@ -963,7 +963,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/compatx/compatx.py",
+          "tools/xstack/compatx/compatx.py",
           "verify",
           "--repo-root",
           "c:\\Inbox\\Git Repos\\dominium"
@@ -1024,7 +1024,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/performx/performx.py",
+          "tools/xstack/performx/performx.py",
           "run",
           "--repo-root",
           "c:\\Inbox\\Git Repos\\dominium"
@@ -1075,7 +1075,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/securex/securex.py",
+          "tools/xstack/securex/securex.py",
           "verify",
           "--repo-root",
           "c:\\Inbox\\Git Repos\\dominium"
@@ -1408,7 +1408,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--format",
           "json"

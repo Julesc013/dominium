@@ -18,19 +18,19 @@ from tools.import_bridge import install_src_aliases
 install_src_aliases(REPO_ROOT_HINT)
 
 from tools.validators.compatibility.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
-from game.domains.geology import (
+from game.domain.geology import (
     build_default_overlay_manifest,
     build_worldgen_request,
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
-from tools.libraries.instance.instance_validator import (
+from tools.package.libraries.instance.instance_validator import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
 from tools.validators.identity import IDENTITY_KIND_INSTANCE, attach_universal_identity_block
-from release.component_graph_resolver import DEFAULT_INSTALL_PROFILE_ID, load_install_profile_registry, select_install_profile
+from tools.release.component_graph_resolver import DEFAULT_INSTALL_PROFILE_ID, load_install_profile_registry, select_install_profile
 from tools.validators.security.trust import DEFAULT_TRUST_POLICY_ID
 from engine.time.epoch_anchor_engine import (
     ANCHOR_REASON_INTERVAL,
@@ -39,8 +39,8 @@ from engine.time.epoch_anchor_engine import (
     build_epoch_anchor_record,
     load_time_anchor_policy,
 )
-from game.domains.universe import build_universe_contract_bundle_payload
-from game.domains.worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
+from game.domain.universe import build_universe_contract_bundle_payload
+from game.domain.worldgen.mw import build_planet_surface_cell_key, resolve_sol_anchor_cell_key, sol_anchor_object_ids, surface_tile_artifact_hash_chain
 from tools.worldgen.worldgen_lock_common import (
     WORLDGEN_LOCK_ID,
     WORLDGEN_LOCK_VERSION,

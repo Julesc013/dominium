@@ -1,0 +1,23 @@
+SCHEMA: electric/elec_node_payload.schema
+schema_id: dominium.schema.electric.elec_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for PowerNetworkGraph nodes.
+
+REQUIRED SHAPE:
+record elec_node_payload
+  required:
+    - schema_version: semver
+    - node_kind: enum(bus|generator|load|storage|breaker)
+    - model_bindings: list[id]
+    - safety_instances: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Electrical node behavior remains model- and safety-driven.
+- Payload mutation must be process-authored and deterministic.

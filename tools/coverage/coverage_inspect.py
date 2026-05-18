@@ -4,7 +4,10 @@ import os
 import re
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "distribution")))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "package", "distribution")))
 
 from distribution_lib import discover_pack_manifests  # noqa: E402
 

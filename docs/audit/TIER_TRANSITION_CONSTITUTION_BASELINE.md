@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Tier Transition Constitution Baseline (RS-4)
 
-Date: 2026-02-26  
+Date: 2026-02-26
 Status: Baseline complete (deterministic transition governance, invariant checks, epistemic safety, and multiplayer integration)
 
 ## 1) Canonical Tier Taxonomy
@@ -60,7 +60,7 @@ Transition constitution is integrated across A/B/C styles:
 - per-tick multiplayer hash envelope now includes deterministic transition-event hash material
 
 Additional strict-gate packaging fix:
-- `tools/xstack/packagingx/dist_build.py` now sources registry export mapping from `sessionx.runner.REGISTRY_FILE_MAP` to prevent registry drift (including `arbitration_rule.registry.json`) during dist/lab validation.
+- `tools/xstack/packagingx/dist_build.py` now sources registry export mapping from `sessionx.runner.REGISTRY_FILE_MAP` to prevent registry drift (including `arbitration_rule.registry.json`) during archive/generated/dist/lab validation.
 
 ## 5) RS4 Guardrails Added
 
@@ -92,7 +92,7 @@ Added deterministic transition coverage:
 - Result: `pass` (existing warn findings reported)
 
 ### TestX PASS (RS4 coverage subset + MP/epistemic regressions)
-- Command:  
+- Command:
   `py -3 tools/xstack/testx/runner.py --profile STRICT --subset testx.reality.transition_selection_deterministic,testx.reality.hysteresis_no_thrash_deterministic,testx.reality.invariant_checks_on_collapse_expand,testx.reality.epistemic_invariance_on_expand,testx.reality.multiplayer_distributed_players_arbitration,testx.net.mp_authoritative_full_stack,testx.net.mp_srz_hybrid_full_stack,testx.regression.multiplayer_baseline_hash,testx.epistemics.lod_macro_to_micro_no_precision_gain,testx.epistemics.lod_precision_quantization_stable`
 - Result: `pass` (10/10)
 

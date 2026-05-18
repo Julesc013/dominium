@@ -60,7 +60,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.core.flow.flow_engine import tick_flow_channels
+    from tools.validators.core.flow.flow_engine import tick_flow_channels
 
     first = tick_flow_channels(
         channels=_channels(),

@@ -51,7 +51,7 @@ The authoritative mapping is `contracts/registry/derived_artifacts.json`.
 ## Ignored Paths
 
 - `.xstack_cache/**`
-- `dist/ws/**`
+- `archive/generated/dist/ws/**`
 - `out/**`
 - `build/**`
 - `tmp/**`

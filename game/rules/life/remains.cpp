@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/remains.cpp
+FILE: game/rule/life/remains.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements remains registries and aggregate collapse/refine.

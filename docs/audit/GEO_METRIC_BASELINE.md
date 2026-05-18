@@ -16,7 +16,7 @@ GEO-3 freezes the deterministic metric-query layer on top of GEO-0 topology and 
 
 The authoritative doctrine is:
 
-- `docs/geo/METRIC_QUERY_ENGINE.md`
+- `docs/domains/geology/METRIC_QUERY_ENGINE.md`
 
 Relevant invariants and contracts upheld:
 
@@ -26,10 +26,10 @@ Relevant invariants and contracts upheld:
 - `docs/canon/constitution_v1.md` A4 No runtime mode flags
 - `docs/canon/constitution_v1.md` C1 Version semantics
 - `docs/canon/constitution_v1.md` C3 CompatX obligations
-- `docs/geo/GEO_CONSTITUTION.md`
-- `docs/geo/SPATIAL_INDEX_AND_IDENTITY.md`
-- `docs/geo/REFERENCE_FRAMES_AND_PRECISION.md`
-- `docs/geo/METRIC_QUERY_ENGINE.md`
+- `docs/domains/geology/GEO_CONSTITUTION.md`
+- `docs/domains/geology/SPATIAL_INDEX_AND_IDENTITY.md`
+- `docs/domains/geology/REFERENCE_FRAMES_AND_PRECISION.md`
+- `docs/domains/geology/METRIC_QUERY_ENGINE.md`
 
 ## 2) Retro Audit Summary
 
@@ -167,7 +167,7 @@ These are deliberate adapter migrations, not broad domain rewrites. GEO-3 freeze
 
 Proof/replay integration added:
 
-- `tools/geo/tool_verify_metric_stability.py`
+- `tools/validators/domain/geology/tool_verify_metric_stability.py`
 - control proof bundle GEO extensions now accept:
   - `topology_profile_ids`
   - `metric_profile_ids`
@@ -240,7 +240,7 @@ Executed during GEO-3 baseline:
   - `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset test_euclidean_distance_deterministic,test_torus_wrap_distance_correct,test_spherical_stub_geodesic_bounded_error,test_neighbors_deterministic_order,test_cross_platform_metric_hash_match,test_neighbors_deterministic_r2_r3`
   - result: `pass`
 - GEO metric stability verifier:
-  - `py -3 tools/geo/tool_verify_metric_stability.py`
+  - `py -3 tools/validators/domain/geology/tool_verify_metric_stability.py`
   - result: `complete`
   - tool deterministic fingerprint: `110be6cdf0eac104510ec7bd1b8c4bce777db487395bb72b02e80c69e61e0776`
   - proof surface deterministic fingerprint: `57188ad69d5704d8c761dfa5bfa4ada35331820d2ebfcafe70af994ca88dcdfa`

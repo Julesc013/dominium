@@ -8,23 +8,23 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # Repository Inventory Summary
 
-Machine-readable inventory: `docs/audit/INVENTORY_MACHINE.json`  
-Cross-linked inventory: `docs/audit/INVENTORY.json`  
-Stub classification: `docs/audit/STUB_REPORT.json`  
+Machine-readable inventory: `docs/audit/INVENTORY_MACHINE.json`
+Cross-linked inventory: `docs/audit/INVENTORY.json`
+Stub classification: `docs/audit/STUB_REPORT.json`
 Test coverage inventory: `docs/audit/TEST_COVERAGE_MATRIX.md`
 
 ## Code subsystems (source roots)
 
 - `engine` — `docs/engine/README.md`
 - `game` — `docs/game/README.md`
-- `client` — `docs/app/README.md`
-- `server` — `docs/app/README.md`
-- `launcher` — `docs/app/README.md`
-- `setup` — `docs/app/README.md`
-- `tools` — `docs/tools/TOOLING_OVERVIEW.md`
+- `client` — `docs/apps/README.md`
+- `server` — `docs/apps/README.md`
+- `launcher` — `docs/apps/README.md`
+- `setup` — `docs/apps/README.md`
+- `tools` — `docs/development/tools/TOOLING_OVERVIEW.md`
 - `libs` — `docs/architecture/PROJECT_LIBRARIES.md`
-- `app` — `docs/app/`
-- `shared_ui_win32` — `docs/ui/`
+- `app` — `docs/apps/`
+- `shared_ui_win32` — `docs/runtime/ui/`
 - `sdk` — `docs/`
 
 ## Data domains (`data/` top-level)
@@ -87,4 +87,4 @@ Pack validation status is captured in `docs/audit/PACK_AUDIT.txt`.
 
 - CI: `ci/`, `scripts/ci/`, `.github/workflows/`
 - Build: `build/`, `out/build/`, `cmake/`, `CMakePresets.json`, `CMakeLists.txt`
-- Distribution: `dist/`, `updates/`, `docs/distribution/`, `docs/build/`
+- Distribution: `archive/generated/dist/`, `updates/`, `docs/distribution/`, `docs/build/`

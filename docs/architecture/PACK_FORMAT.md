@@ -73,7 +73,7 @@ The canonical manifest schema is:
 
 
 - `schema/pack_manifest.schema`
-- `contracts/schemas/pack_manifest.schema` is the canonical contract home used by current repo layout tooling.
+- `contracts/schema/pack_manifest.schema` is the canonical contract home used by current repo layout tooling.
 
 
 

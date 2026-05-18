@@ -1,0 +1,23 @@
+SCHEMA: mobility/geometry_candidate.schema
+schema_id: dominium.schema.mobility.geometry_candidate
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic FORM-1 candidate bridge record for GuideGeometry acceptance.
+
+REQUIRED SHAPE:
+record geometry_candidate
+  required:
+    - schema_version: semver
+    - candidate_id: id
+    - formalization_id: id
+    - geometry_preview_ref: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - proposed_spec_id: id
+
+INVARIANTS:
+- Candidates remain derived-only until formal acceptance process.
+- Candidate identity is deterministic and replay-stable.

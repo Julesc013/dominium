@@ -9,11 +9,11 @@ from typing import Dict, List, Mapping, Tuple
 
 GAL1_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/audit/GAL1_RETRO_AUDIT.md",
-    "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md",
-    "contracts/schemas/worldgen/galaxy_object_stub.schema",
-    "contracts/schemas/galaxy_object_stub.schema.json",
+    "docs/domains/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md",
+    "contracts/schema/worldgen/galaxy_object_stub.schema",
+    "contracts/schema/galaxy_object_stub.schema.json",
     "contracts/registry/object_kind_registry.json",
-    "game/domains/worldgen/galaxy",
+    "game/domain/worldgen/galaxy",
     "tools/worldgen/gal1_audit_common.py",
     "tools/worldgen/gal1_probe.py",
     "tools/worldgen/tool_replay_galaxy_objects.py",

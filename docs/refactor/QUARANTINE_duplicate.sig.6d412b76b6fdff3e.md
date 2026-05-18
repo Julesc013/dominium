@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `tools/fluid/tool_run_fluid_stress.py`
-- `tools/geo/geo10_stress_runtime.py`
+- `tools/validators/domain/geology/geo10_stress_runtime.py`
 
 ## Scorecard
 
 - `tools/fluid/tool_run_fluid_stress.py` disposition=`canonical` rank=`1` total_score=`71.36` risk=`HIGH`
-- `tools/geo/geo10_stress_runtime.py` disposition=`quarantine` rank=`2` total_score=`64.89` risk=`HIGH`
+- `tools/validators/domain/geology/geo10_stress_runtime.py` disposition=`quarantine` rank=`2` total_score=`64.89` risk=`HIGH`
 
 ## Usage Sites
 
@@ -38,7 +38,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

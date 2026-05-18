@@ -29,7 +29,7 @@ def _loss_registry() -> dict:
 
 
 def _delivery_state_once() -> str:
-    from game.domains.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
+    from game.domain.signals import build_signal_channel, process_signal_send, process_signal_transport_tick
 
     channels = [
         build_signal_channel(

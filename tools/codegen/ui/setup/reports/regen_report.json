@@ -1,0 +1,18 @@
+{
+  "command": "headless-codegen",
+  "input": "tools/codegen/ui/setup/doc/setup_ui_doc.tlv",
+  "output_files": [
+    "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.cpp",
+    "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.h",
+    "tools/codegen/ui/setup/registry/setup_actions_registry.json",
+    "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.cpp",
+    "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.h"
+  ],
+  "errors": [
+  ],
+  "warnings": [
+  ],
+  "created_ids": {},
+  "exit_code": 0,
+  "status": "ok"
+}

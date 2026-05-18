@@ -8,15 +8,15 @@ for descriptive purposes only. Such references do not confer
 authority and are not normative.
 
 STUB FILES
-engine/modules/system/dsys_platform_stub.c
-engine/modules/system/dsys_proc_stub.c
-engine/modules/system/dsys_sdl2_stub.c
-engine/modules/system/dsys_stub.c
-engine/modules/system/dsys_terminal_detect_stub.c
-engine/modules/system/dsys_window_stub.c
-engine/render/d_gfx_caps_stub.c
-engine/render/stub/d_gfx_stub.c
-engine/render/stub/d_gfx_stub.h
+runtime/platform/system/dsys_platform_stub.c
+runtime/platform/system/dsys_proc_stub.c
+runtime/platform/system/dsys_sdl2_stub.c
+runtime/platform/system/dsys_stub.c
+runtime/platform/system/dsys_terminal_detect_stub.c
+runtime/platform/system/dsys_window_stub.c
+runtime/render/d_gfx_caps_stub.c
+runtime/render/stub/d_gfx_stub.c
+runtime/render/stub/d_gfx_stub.h
 game/dominium_game_stub.c
 game/include/dominium/life/life_events_stub.h
 game/include/dominium/rules/city/city_services_stub.h
@@ -24,9 +24,9 @@ game/include/dominium/rules/logistics/routing_stub.h
 game/rules/city/city_services_stub.cpp
 game/rules/life/life_events_stub.cpp
 game/rules/logistics/routing_stub.cpp
-game/tests/civ1/dom_civ1_stub_refusal_tests.cpp
-game/tests/test_stub.c
-game/tests/tests/domino_sys/test_dsys_stub.c
+tests/game/civ1/dom_civ1_stub_refusal_tests.cpp
+tests/game/test_stub.c
+tests/tests/game/domino_sys/test_dsys_stub.c
 launcher/core/launcher_config_stub.c
 launcher/core/launcher_mods_stub.c
 launcher/core/launcher_process_stub.c
@@ -34,13 +34,13 @@ launcher/core/launcher_profile_stub.c
 launcher/gui/launcher_gui_stub.c
 launcher/gui/win32/launcher_gui_stub.c
 launcher/tui/launcher_tui_stub.c
-legacy/_orphaned/legacy_source_game/game/core/game_stub.c
+legacy/_orphaned/legacy_source_game/game/rule/game_stub.c
 legacy/_orphaned/legacy_source_game/game/gui/dom_sdl/dom_sdl_stub.cpp
 legacy/_orphaned/legacy_source_game/game/rules/rules_stub.c
 legacy/engine_modules_engine/engine/mod/host/mod_stub.c
-legacy/engine_modules_engine/engine/render/api/gfx_stub.c
-legacy/engine_modules_engine/engine/render/dgfx_stub.c
-legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c
+legacy/engine_modules_engine/runtime/render/api/gfx_stub.c
+legacy/engine_modules_engine/runtime/render/dgfx_stub.c
+legacy/engine_modules_engine/runtime/render/null/dom_rend_stub.c
 legacy/engine_modules_engine/engine/sim/api/sim_stub.c
 legacy/engine_modules_engine/engine/system/_legacy/dom_engine_stub.c
 legacy/engine_modules_engine/engine/system/core/domino_ui_stub.c
@@ -121,7 +121,7 @@ docs/ci/CODEHYGIENE_RULES.md:150 [TODO] - TODO_FUTURE must reference docs/archit
 docs/ci/CODEHYGIENE_RULES.md:153 [TODO] - TODO_DOC must reference the target doc.
 docs/ci/CODEHYGIENE_RULES.md:192 [TODO] - scripts/ci/check_todo_blockers.py
 docs/ci/HYGIENE_QUEUE.md:285 [TODO] | HYG-0159ed9b | OPEN | D | scripts/ci/check_hygiene_scan.py:291 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:828 [TODO] | HYG-04cf72cb | OPEN | D | engine/modules/world/d_world.h:65 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:828 [TODO] | HYG-04cf72cb | OPEN | D | game/world/d_world.h:65 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:1536 [TODO] | HYG-08e6ccd1 | OPEN | D | scripts/ci/check_todo_blockers.py:8 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:2106 [TODO] | HYG-0ca5679d | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2901 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:2382 [TODO] | HYG-0e9aff95 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:10791 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
@@ -134,25 +134,25 @@ docs/ci/HYGIENE_QUEUE.md:4989 [TODO] | HYG-1d41d5ce | OPEN | D | scripts/ci/chec
 docs/ci/HYGIENE_QUEUE.md:5463 [TODO] | HYG-1ff48787 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2988 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:5568 [TODO] | HYG-209c4f1c | OPEN | D | docs/ci/HYGIENE_QUEUE.md:8980 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:6348 [TODO] | HYG-25c83e50 | OPEN | D | scripts/ci/check_hygiene_scan.py:300 | TODO without required prefix (TODO_BLOCKER/FUTURE/DOC). | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:7281 [TODO] | HYG-2bbdf6a4 | OPEN | D | engine/modules/view/d_view.c:57 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:7281 [TODO] | HYG-2bbdf6a4 | OPEN | D | runtime/ui/view/d_view.c:57 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:7404 [TODO] | HYG-2c94f20e | OPEN | D | docs/ci/CODEHYGIENE_RULES.md:49 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:7680 [TODO] | HYG-2e5f21d7 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:1657 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:8571 [TODO] | HYG-3449c99b | OPEN | D | scripts/ci/check_todo_blockers.py:72 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:8703 [TODO] | HYG-3507db75 | OPEN | D | engine/modules/content/d_blueprint.c:127 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:8703 [TODO] | HYG-3507db75 | OPEN | D | runtime/package/content/d_blueprint.c:127 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:8733 [TODO] | HYG-3530a9eb | OPEN | D | scripts/ci/check_todo_blockers.py:53 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:8994 [TODO] | HYG-36df81bb | OPEN | D | tools/modcheck/dom_modcheck.cpp:93 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:9435 [TODO] | HYG-39b23930 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:8828 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:9738 [TODO] | HYG-3c0543a9 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2107 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:10044 [TODO] | HYG-3dcb5ea0 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:94 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:12291 [TODO] | HYG-4c07223b | OPEN | D | docs/ci/HYGIENE_QUEUE.md:5685 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:12849 [TODO] | HYG-4f574bb2 | OPEN | D | engine/modules/content/d_blueprint.c:36 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:12996 [TODO] | HYG-5079e48e | OPEN | D | engine/modules/content/d_blueprint.c:91 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:13002 [TODO] | HYG-507b6d62 | OPEN | D | engine/modules/content/d_blueprint.c:100 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:12849 [TODO] | HYG-4f574bb2 | OPEN | D | runtime/package/content/d_blueprint.c:36 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:12996 [TODO] | HYG-5079e48e | OPEN | D | runtime/package/content/d_blueprint.c:91 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:13002 [TODO] | HYG-507b6d62 | OPEN | D | runtime/package/content/d_blueprint.c:100 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:13038 [TODO] | HYG-50b09c36 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:8346 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:13287 [TODO] | HYG-51f619e9 | OPEN | D | docs/ci/CI_ENFORCEMENT_MATRIX.md:349 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:13830 [TODO] | HYG-553a0a32 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:800 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:14160 [TODO] | HYG-56c52890 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:13198 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:14637 [TODO] | HYG-59985057 | OPEN | D | engine/modules/content/d_blueprint.c:29 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:14637 [TODO] | HYG-59985057 | OPEN | D | runtime/package/content/d_blueprint.c:29 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:14982 [TODO] | HYG-5be0e54f | OPEN | D | docs/guides/IMPLEMENTATION_BACKLOG_CANON.md:7 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:15234 [TODO] | HYG-5d32b75d | OPEN | D | docs/guides/IMPLEMENTATION_BACKLOG_CANON.md:8 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:15795 [TODO] | HYG-60d3c73e | OPEN | D | docs/ci/HYGIENE_QUEUE.md:275 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
@@ -161,14 +161,14 @@ docs/ci/HYGIENE_QUEUE.md:17112 [TODO] | HYG-68bcfb58 | OPEN | D | docs/guides/co
 docs/ci/HYGIENE_QUEUE.md:17148 [TODO] | HYG-68f0be4d | OPEN | D | docs/ci/HYGIENE_QUEUE.md:12356 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:17451 [TODO] | HYG-6ae0cddf | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2847 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:18258 [TODO] | HYG-6fa7243d | OPEN | D | docs/ci/HYGIENE_QUEUE.md:1065 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:18462 [TODO] | HYG-71075c91 | OPEN | D | engine/modules/content/d_blueprint.c:109 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:18462 [TODO] | HYG-71075c91 | OPEN | D | runtime/package/content/d_blueprint.c:109 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:18579 [TODO] | HYG-71e8128e | OPEN | D | docs/ci/HYGIENE_QUEUE.md:11125 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:19161 [TODO] | HYG-755a2afd | OPEN | D | scripts/ci/check_todo_blockers.py:49 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:19230 [TODO] | HYG-75b98a7e | OPEN | D | engine/include/domino/dspace_env.h:38 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:19551 [TODO] | HYG-779390c2 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:6386 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:20175 [TODO] | HYG-7bad04e7 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:11704 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:20304 [TODO] | HYG-7c32f6bd | OPEN | D | docs/ci/HYGIENE_QUEUE.md:4977 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:21354 [TODO] | HYG-82ce0e7c | OPEN | D | tools/save_inspector/dom_save_inspector_controller.cpp:199 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:21354 [TODO] | HYG-82ce0e7c | OPEN | D | apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp:199 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:22665 [TODO] | HYG-8afd83b9 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2891 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:23496 [TODO] | HYG-8ff8ba05 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:2459 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:25128 [TODO] | HYG-9a78b935 | OPEN | D | docs/ci/CODEHYGIENE_RULES.md:50 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
@@ -196,16 +196,16 @@ docs/ci/HYGIENE_QUEUE.md:32907 [TODO] | HYG-ca847a1d | OPEN | D | docs/guides/IM
 docs/ci/HYGIENE_QUEUE.md:33042 [TODO] | HYG-cb69095c | OPEN | D | docs/ci/HYGIENE_QUEUE.md:10928 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:33495 [TODO] | HYG-cdf0fd4f | OPEN | D | docs/guides/dev/dominium_new_scripts.txt:216 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:33501 [TODO] | HYG-cdf491a5 | OPEN | D | docs/guides/IMPLEMENTATION_BACKLOG_CANON.md:9 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:34191 [TODO] | HYG-d216aff3 | OPEN | D | engine/modules/content/d_blueprint.c:82 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:34191 [TODO] | HYG-d216aff3 | OPEN | D | runtime/package/content/d_blueprint.c:82 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:34668 [TODO] | HYG-d5520cd7 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:4318 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:35244 [TODO] | HYG-d8ac897d | OPEN | D | docs/ci/CODEHYGIENE_RULES.md:48 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:35346 [TODO] | HYG-d92c0927 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:9695 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:35649 [TODO] | HYG-db1ff0d7 | OPEN | D | engine/modules/content/d_blueprint.c:118 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:35649 [TODO] | HYG-db1ff0d7 | OPEN | D | runtime/package/content/d_blueprint.c:118 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:35946 [TODO] | HYG-dcd8091b | OPEN | D | docs/ci/HYGIENE_QUEUE.md:9754 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:36036 [TODO] | HYG-dd62b56a | OPEN | D | docs/ci/HYGIENE_QUEUE.md:7091 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:36123 [TODO] | HYG-ddfee539 | OPEN | D | docs/guides/IMPLEMENTATION_BACKLOG_UNIVERSE.md:7 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:37032 [TODO] | HYG-e3d074f4 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:1538 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
-docs/ci/HYGIENE_QUEUE.md:37212 [TODO] | HYG-e4ecdd23 | OPEN | D | tools/replay_viewer/dom_replay_viewer_controller.cpp:100 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
+docs/ci/HYGIENE_QUEUE.md:37212 [TODO] | HYG-e4ecdd23 | OPEN | D | apps/workbench/module/replay/viewer/dom_replay_viewer_controller.cpp:100 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:38334 [TODO] | HYG-ec46f1f1 | OPEN | D | docs/ci/HYGIENE_QUEUE.md:11354 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:38613 [TODO] | HYG-ee385508 | OPEN | D | scripts/ci/check_hygiene_scan.py:301 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
 docs/ci/HYGIENE_QUEUE.md:39744 [TODO] | HYG-f55e6b7a | OPEN | D | docs/guides/IMPLEMENTATION_BACKLOG_UNIVERSE.md:3 | Unscoped todo comment without required prefix. | Convert to standardized TODO_* and update docs. | S | KNOWN_BLOCKERS | todo policy scan |
@@ -261,7 +261,7 @@ docs/specs/SPEC_KNOWLEDGE.md:39 [PLACEHOLDER] Any `dknowledge_*` naming here is 
 docs/specs/SPEC_ORBITS.md:70 [PLACEHOLDER] - `dspace_env.h` defines `BeltField` and `MagneticField` placeholders; registry and query stubs:
 docs/specs/SPEC_PLAYER_CONTINUITY.md:57 [PLACEHOLDER] - Gradual fidelity changes (placeholder → detailed) without stalling input.
 docs/specs/SPEC_PLAYER_CONTINUITY.md:81 [PLACEHOLDER] - placeholder rendering when derived data is missing
-docs/specs/SPEC_SETUP_CORE.md:73 [PLACEHOLDER] - The current manifest is a stub: it copies `dist/bin/dominium-placeholder.txt`
+docs/specs/SPEC_SETUP_CORE.md:73 [PLACEHOLDER] - The current manifest is a stub: it copies `archive/generated/dist/bin/dominium-placeholder.txt`
 docs/specs/SPEC_SIM_SCHEDULER.md:86 [PLACEHOLDER]    - Placeholder for physics/constraint solvers.
 docs/specs/SPEC_SURFACE_STREAMING.md:75 [PLACEHOLDER] `ACTIVE` indicates placeholder data is available; `ACTIVE_READY` indicates
 docs/specs/SPEC_SURFACE_STREAMING.md:81 [PLACEHOLDER] - Missing chunks never block the UI; render placeholders until ready.
@@ -273,7 +273,7 @@ docs/specs/launcher/SPEC_LAUNCHER_GUI.md:44 [PLACEHOLDER]     placeholders using
 docs/specs/launcher/SPEC_LAUNCHER_PROTOCOL.md:62 [PLACEHOLDER]     (`last_played` is currently a placeholder).
 docs/specs/setup/STATUS_SR2.md:16 [PLACEHOLDER] - Process, perms, registry/pkgmgr/codesign remain placeholders.
 docs/specs/setup/STATUS_SR7.md:21 [PLACEHOLDER] - Windows EXE GUI is a placeholder dialog.
-docs/ui/CLIENT_MENU_GUIDE.md:41 [PLACEHOLDER] - No placeholder actions.
+docs/runtime/ui/CLIENT_MENU_GUIDE.md:41 [PLACEHOLDER] - No placeholder actions.
 engine/include/domino/dactor.h:79 [PLACEHOLDER]     /* Simple inventory placeholder */
 engine/include/domino/dspace_env.h:38 [TODO]     /* TODO: dipole/torus parameters */
 engine/include/domino/gfx.h:182 [PLACEHOLDER] /* Reserved extension slots (placeholders) */
@@ -283,27 +283,27 @@ engine/include/domino/mod.h:199 [PLACEHOLDER]     uint32_t placeholder;
 engine/include/domino/simd.h:39 [PLACEHOLDER] /* Reserved extension slots (placeholders) */
 engine/include/domino/io/container.h:376 [PLACEHOLDER]  * Purpose: Open a file for writing and write a placeholder container header.
 engine/include/domino/pkg/repo.h:139 [PLACEHOLDER]  * - This is a placeholder implementation with hard-coded path components and a minimal JSON extractor.
-engine/modules/content/d_blueprint.c:29 [TODO]     /* TODO: implement strict validation once blueprint payload schemas exist. */
-engine/modules/content/d_blueprint.c:36 [TODO]     /* TODO: compile blueprint payload into protos and register via d_content. */
-engine/modules/content/d_blueprint.c:82 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile building into d_proto_building. */
-engine/modules/content/d_blueprint.c:91 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile vehicle + modules into registries. */
-engine/modules/content/d_blueprint.c:100 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile weapon blueprint. */
-engine/modules/content/d_blueprint.c:109 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile module/subassembly. */
-engine/modules/content/d_blueprint.c:118 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile spline profile blueprint. */
-engine/modules/content/d_blueprint.c:127 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile machine config blueprint. */
-engine/modules/core/dom_time_frames.c:23 [PLACEHOLDER]     /* Placeholder: no frame offset until ephemeris data is available. */
-engine/modules/core/dom_time_frames.c:28 [PLACEHOLDER]     /* Placeholder: no frame offset until galactic model is available. */
-engine/modules/core/dom_time_frames.c:33 [PLACEHOLDER]     /* Placeholder: no frame offset until cosmological model is available. */
-engine/modules/core/d_registry.c:166 [TODO]     /* TODO_FUTURE(REGISTRY-OPENADDR-001): docs/architecture/FUTURE_PROOFING.md - upgrade to open-addressing or sorted lookup if hot. */
-engine/modules/execution/ir/cost_model.cpp:8 [PLACEHOLDER] /* Placeholder translation unit for future helpers. */
-engine/modules/input/input.c:190 [PLACEHOLDER]     /* placeholder for future frame finalization */
-engine/modules/io/dtlv.c:757 [PLACEHOLDER] static int dtlv_writer_write_header_placeholder(dtlv_writer* w) {
-engine/modules/io/dtlv.c:794 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
-engine/modules/io/dtlv.c:813 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
-engine/modules/view/d_view.c:57 [TODO]     /* TODO: hook world rendering once world draw is available. */
-engine/modules/world/d_world.h:120 [TODO]     /* TODO: add spatial indexing, chunk lookup tables, etc. */
-engine/render/dgfx_trace.c:97 [PLACEHOLDER]     trace_append_u32(0u); /* event count placeholder */
-engine/render/dgfx_trace.c:98 [PLACEHOLDER]     trace_append_u32(0u); /* flags placeholder */
+runtime/package/content/d_blueprint.c:29 [TODO]     /* TODO: implement strict validation once blueprint payload schemas exist. */
+runtime/package/content/d_blueprint.c:36 [TODO]     /* TODO: compile blueprint payload into protos and register via d_content. */
+runtime/package/content/d_blueprint.c:82 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile building into d_proto_building. */
+runtime/package/content/d_blueprint.c:91 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile vehicle + modules into registries. */
+runtime/package/content/d_blueprint.c:100 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile weapon blueprint. */
+runtime/package/content/d_blueprint.c:109 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile module/subassembly. */
+runtime/package/content/d_blueprint.c:118 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile spline profile blueprint. */
+runtime/package/content/d_blueprint.c:127 [TODO]         vt.compile = d_blueprint_compile_stub; /* TODO: compile machine config blueprint. */
+engine/kernel/dom_time_frames.c:23 [PLACEHOLDER]     /* Placeholder: no frame offset until ephemeris data is available. */
+engine/kernel/dom_time_frames.c:28 [PLACEHOLDER]     /* Placeholder: no frame offset until galactic model is available. */
+engine/kernel/dom_time_frames.c:33 [PLACEHOLDER]     /* Placeholder: no frame offset until cosmological model is available. */
+engine/kernel/d_registry.c:166 [TODO]     /* TODO_FUTURE(REGISTRY-OPENADDR-001): docs/architecture/FUTURE_PROOFING.md - upgrade to open-addressing or sorted lookup if hot. */
+engine/execution/ir/cost_model.cpp:8 [PLACEHOLDER] /* Placeholder translation unit for future helpers. */
+runtime/input/input.c:190 [PLACEHOLDER]     /* placeholder for future frame finalization */
+runtime/storage/io/dtlv.c:757 [PLACEHOLDER] static int dtlv_writer_write_header_placeholder(dtlv_writer* w) {
+runtime/storage/io/dtlv.c:794 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
+runtime/storage/io/dtlv.c:813 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
+runtime/ui/view/d_view.c:57 [TODO]     /* TODO: hook world rendering once world draw is available. */
+game/world/d_world.h:120 [TODO]     /* TODO: add spatial indexing, chunk lookup tables, etc. */
+runtime/render/dgfx_trace.c:97 [PLACEHOLDER]     trace_append_u32(0u); /* event count placeholder */
+runtime/render/dgfx_trace.c:98 [PLACEHOLDER]     trace_append_u32(0u); /* flags placeholder */
 game/include/dominium/world_edit_api.h:24 [PLACEHOLDER] /* Temporary placeholder until real chunk format is wired */
 legacy/engine_modules_engine/engine/daggregate.c:186 [TODO]     /* TODO: derive from materials, geometry, and fluid volume */
 legacy/engine_modules_engine/engine/dblueprint.c:115 [PLACEHOLDER]         def.work_time_s = (Q16_16)(1 << 16); /* placeholder 1s */
@@ -322,43 +322,43 @@ legacy/engine_modules_engine/engine/io/container/dtlv.c:757 [PLACEHOLDER] static
 legacy/engine_modules_engine/engine/io/container/dtlv.c:794 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
 legacy/engine_modules_engine/engine/io/container/dtlv.c:813 [PLACEHOLDER]     if (dtlv_writer_write_header_placeholder(w) != 0) {
 legacy/engine_modules_engine/engine/mod/host/mod_stub.c:21 [PLACEHOLDER]     ctx->placeholder = 0;
-legacy/engine_modules_engine/engine/render/dgfx_trace.c:86 [PLACEHOLDER]     trace_append_u32(0u); /* event count placeholder */
-legacy/engine_modules_engine/engine/render/dgfx_trace.c:87 [PLACEHOLDER]     trace_append_u32(0u); /* flags placeholder */
-legacy/engine_modules_engine/engine/render/api/domino_gfx_core.c:123 [TODO]         /* TODO: implement GPU backends */
-legacy/engine_modules_engine/engine/render/api/dom_render_api.c:32 [PLACEHOLDER]         /* Not implemented yet; fall through to software/null placeholder. */
-legacy/engine_modules_engine/engine/render/api/gfx_stub.c:14 [TODO] /* TODO: legacy renderer stub; superseded by domino_gfx_core/soft backend */
-legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.c:27 [PLACEHOLDER]     /* Simple deterministic placeholder: 8px per glyph, 8px tall. */
-legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.h:23 [PLACEHOLDER] /* Deterministic placeholder text metrics used by vector-only paths. */
-legacy/engine_modules_engine/engine/render/api/core/dom_view.h:65 [PLACEHOLDER] /* Build draw commands for a given view (scene is opaque placeholder for now). */
-legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c:18 [PLACEHOLDER]  * Placeholder view-to-draw-command builder.
-legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c:43 [TODO]             /* TODO: emit grid/outlines/labels */
-legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c:45 [TODO]             /* TODO: emit textured sprites/tiles + overlays */
-legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c:49 [TODO]             /* TODO: emit wireframe/flat TRIANGLE commands */
-legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c:51 [TODO]             /* TODO: emit textured TRIANGLE commands */
-legacy/engine_modules_engine/engine/render/dx/dx9/dom_render_dx9.c:191 [PLACEHOLDER] static void dom_dx9_draw_placeholder_sprite(IDirect3DDevice9 *dev,
-legacy/engine_modules_engine/engine/render/dx/dx9/dom_render_dx9.c:248 [PLACEHOLDER]             /* Vector-only path draws placeholders instead of sampling textures. */
-legacy/engine_modules_engine/engine/render/dx/dx9/dom_render_dx9.c:250 [PLACEHOLDER]                 dom_dx9_draw_placeholder_sprite(st->device,
-legacy/engine_modules_engine/engine/render/dx/dx9/dom_render_dx9.c:256 [PLACEHOLDER]             /* Textured path not implemented yet: render placeholder deterministically. */
-legacy/engine_modules_engine/engine/render/dx/dx9/dom_render_dx9.c:257 [PLACEHOLDER]             dom_dx9_draw_placeholder_sprite(st->device,
-legacy/engine_modules_engine/engine/render/null/dom_rend_stub.c:14 [TODO] /* TODO: legacy render stub; replaced by domino_gfx + soft backend */
-legacy/engine_modules_engine/engine/render/soft/core/domino_soft_core.c:21 [PLACEHOLDER]     int placeholder;
-legacy/engine_modules_engine/engine/render/soft/core/domino_soft_core.c:152 [PLACEHOLDER]     tex->placeholder = 0;
-legacy/engine_modules_engine/engine/render/soft/core/dom_render_software.c:224 [PLACEHOLDER] static void dom_sw_draw_placeholder_sprite(DomRenderSoftwareState *st,
-legacy/engine_modules_engine/engine/render/soft/core/dom_render_software.c:268 [PLACEHOLDER]                 dom_sw_draw_placeholder_sprite(st,
-legacy/engine_modules_engine/engine/render/soft/core/dom_render_software.c:274 [PLACEHOLDER]             /* Textured path not implemented yet; draw deterministic placeholder. */
-legacy/engine_modules_engine/engine/render/soft/core/dom_render_software.c:275 [PLACEHOLDER]             dom_sw_draw_placeholder_sprite(st,
-legacy/engine_modules_engine/engine/render/soft/core/dom_render_software.c:281 [PLACEHOLDER]             dom_sw_draw_placeholder_sprite(st,
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:457 [TODO]     /* TODO: fill enabledExtensionCount / ppEnabledExtensionNames based
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:473 [TODO]     /* TODO: implement per platform:
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:480 [PLACEHOLDER]     return false; /* placeholder until platform surface creation is wired */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:508 [TODO]             /* TODO: query queue family support and surface presentation. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:540 [TODO]     /* TODO: enable swapchain extension and optional features */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:560 [TODO]     /* TODO: query VkSurfaceCapabilitiesKHR, VkSurfaceFormatKHR, VkPresentModeKHR. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:782 [TODO]     /* TODO: create a host-visible uniform buffer for camera/world matrices. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:793 [TODO]     /* TODO: create descriptor set layouts, pipeline layouts, shader modules, and pipelines. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:928 [TODO]     /* TODO: upload quad vertices and issue vkCmdDraw. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:956 [TODO]     /* TODO: upload line vertices and issue vkCmdDraw. */
-legacy/engine_modules_engine/engine/render/vk1/vk1_gfx.c:984 [TODO]     /* TODO: parse mesh payload, bind buffers, and issue vkCmdDrawIndexed. */
+legacy/engine_modules_engine/runtime/render/dgfx_trace.c:86 [PLACEHOLDER]     trace_append_u32(0u); /* event count placeholder */
+legacy/engine_modules_engine/runtime/render/dgfx_trace.c:87 [PLACEHOLDER]     trace_append_u32(0u); /* flags placeholder */
+legacy/engine_modules_engine/runtime/render/api/domino_gfx_core.c:123 [TODO]         /* TODO: implement GPU backends */
+legacy/engine_modules_engine/runtime/render/api/dom_render_api.c:32 [PLACEHOLDER]         /* Not implemented yet; fall through to software/null placeholder. */
+legacy/engine_modules_engine/runtime/render/api/gfx_stub.c:14 [TODO] /* TODO: legacy renderer stub; superseded by domino_gfx_core/soft backend */
+legacy/engine_modules_engine/runtime/render/api/core/dom_text_layout.c:27 [PLACEHOLDER]     /* Simple deterministic placeholder: 8px per glyph, 8px tall. */
+legacy/engine_modules_engine/runtime/render/api/core/dom_text_layout.h:23 [PLACEHOLDER] /* Deterministic placeholder text metrics used by vector-only paths. */
+legacy/engine_modules_engine/runtime/render/api/core/dom_view.h:65 [PLACEHOLDER] /* Build draw commands for a given view (scene is opaque placeholder for now). */
+legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c:18 [PLACEHOLDER]  * Placeholder view-to-draw-command builder.
+legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c:43 [TODO]             /* TODO: emit grid/outlines/labels */
+legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c:45 [TODO]             /* TODO: emit textured sprites/tiles + overlays */
+legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c:49 [TODO]             /* TODO: emit wireframe/flat TRIANGLE commands */
+legacy/engine_modules_engine/runtime/render/api/core/dom_view_build.c:51 [TODO]             /* TODO: emit textured TRIANGLE commands */
+legacy/engine_modules_engine/runtime/render/dx/dx9/dom_render_dx9.c:191 [PLACEHOLDER] static void dom_dx9_draw_placeholder_sprite(IDirect3DDevice9 *dev,
+legacy/engine_modules_engine/runtime/render/dx/dx9/dom_render_dx9.c:248 [PLACEHOLDER]             /* Vector-only path draws placeholders instead of sampling textures. */
+legacy/engine_modules_engine/runtime/render/dx/dx9/dom_render_dx9.c:250 [PLACEHOLDER]                 dom_dx9_draw_placeholder_sprite(st->device,
+legacy/engine_modules_engine/runtime/render/dx/dx9/dom_render_dx9.c:256 [PLACEHOLDER]             /* Textured path not implemented yet: render placeholder deterministically. */
+legacy/engine_modules_engine/runtime/render/dx/dx9/dom_render_dx9.c:257 [PLACEHOLDER]             dom_dx9_draw_placeholder_sprite(st->device,
+legacy/engine_modules_engine/runtime/render/null/dom_rend_stub.c:14 [TODO] /* TODO: legacy render stub; replaced by domino_gfx + soft backend */
+legacy/engine_modules_engine/runtime/render/soft/core/domino_soft_core.c:21 [PLACEHOLDER]     int placeholder;
+legacy/engine_modules_engine/runtime/render/soft/core/domino_soft_core.c:152 [PLACEHOLDER]     tex->placeholder = 0;
+legacy/engine_modules_engine/runtime/render/soft/core/dom_render_software.c:224 [PLACEHOLDER] static void dom_sw_draw_placeholder_sprite(DomRenderSoftwareState *st,
+legacy/engine_modules_engine/runtime/render/soft/core/dom_render_software.c:268 [PLACEHOLDER]                 dom_sw_draw_placeholder_sprite(st,
+legacy/engine_modules_engine/runtime/render/soft/core/dom_render_software.c:274 [PLACEHOLDER]             /* Textured path not implemented yet; draw deterministic placeholder. */
+legacy/engine_modules_engine/runtime/render/soft/core/dom_render_software.c:275 [PLACEHOLDER]             dom_sw_draw_placeholder_sprite(st,
+legacy/engine_modules_engine/runtime/render/soft/core/dom_render_software.c:281 [PLACEHOLDER]             dom_sw_draw_placeholder_sprite(st,
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:457 [TODO]     /* TODO: fill enabledExtensionCount / ppEnabledExtensionNames based
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:473 [TODO]     /* TODO: implement per platform:
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:480 [PLACEHOLDER]     return false; /* placeholder until platform surface creation is wired */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:508 [TODO]             /* TODO: query queue family support and surface presentation. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:540 [TODO]     /* TODO: enable swapchain extension and optional features */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:560 [TODO]     /* TODO: query VkSurfaceCapabilitiesKHR, VkSurfaceFormatKHR, VkPresentModeKHR. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:782 [TODO]     /* TODO: create a host-visible uniform buffer for camera/world matrices. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:793 [TODO]     /* TODO: create descriptor set layouts, pipeline layouts, shader modules, and pipelines. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:928 [TODO]     /* TODO: upload quad vertices and issue vkCmdDraw. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:956 [TODO]     /* TODO: upload line vertices and issue vkCmdDraw. */
+legacy/engine_modules_engine/runtime/render/vk1/vk1_gfx.c:984 [TODO]     /* TODO: parse mesh payload, bind buffers, and issue vkCmdDrawIndexed. */
 legacy/engine_modules_engine/engine/sim/_legacy/core_sim/dom_sim_events.c:262 [PLACEHOLDER]     /* No-op placeholder: cross-lane queues are already collected for next tick. */
 legacy/engine_modules_engine/engine/sim/_legacy/core_sim/dom_sim_jobs.c:192 [PLACEHOLDER]     /* Placeholder: future cleanup or completion sweep can be placed here. */
 legacy/engine_modules_engine/engine/struct/model/dg_struct_volume.h:51 [PLACEHOLDER] /* Sweep is reserved for later; kept as a deterministic placeholder. */
@@ -426,8 +426,8 @@ legacy/_orphaned/legacy_source_game/game/SPEC_COMMANDS.md:6 [TODO] TODO: define 
 legacy/_orphaned/legacy_source_game/game/SPEC_CONTENT.md:3 [PLACEHOLDER] Status: placeholder for M1.
 legacy/_orphaned/legacy_source_game/game/SPEC_CONTENT.md:6 [TODO] TODO: define content pack layout, ids, and versioning strategy.
 legacy/_orphaned/legacy_source_game/game/cli/game_cli.c:14 [TODO] /* TODO: legacy CLI entrypoint; not yet wired into dominium_game target. */
-legacy/_orphaned/legacy_source_game/game/content/dom_game_content_placeholder.c:1 [PLACEHOLDER] /* Placeholder translation unit for the content skeleton (M1). */
-legacy/_orphaned/legacy_source_game/game/content/dom_game_content_placeholder.c:2 [PLACEHOLDER] enum { DOM_GAME_CONTENT_PLACEHOLDER = 0 };
+legacy/_orphaned/legacy_source_content/domains/game/domain/game/dom_game_content_placeholder.c:1 [PLACEHOLDER] /* Placeholder translation unit for the content skeleton (M1). */
+legacy/_orphaned/legacy_source_content/domains/game/domain/game/dom_game_content_placeholder.c:2 [PLACEHOLDER] enum { DOM_GAME_CONTENT_PLACEHOLDER = 0 };
 legacy/_orphaned/legacy_source_game/game/frontends/gui/dom_game_frontend_gui_placeholder.cpp:1 [PLACEHOLDER] /* Placeholder translation unit for the GUI frontend skeleton (M1). */
 legacy/_orphaned/legacy_source_game/game/frontends/gui/dom_game_frontend_gui_placeholder.cpp:2 [PLACEHOLDER] enum { DOM_GAME_FRONTEND_GUI_PLACEHOLDER = 0 };
 legacy/_orphaned/legacy_source_game/game/frontends/headless/dom_game_frontend_headless_placeholder.cpp:1 [PLACEHOLDER] /* Placeholder translation unit for the headless frontend skeleton (M1). */
@@ -498,10 +498,10 @@ tools/audit/scan_markers.py:5 [TODO] MARKERS = ("TODO", "FIXME", "PLACEHOLDER")
 tools/audit/scan_markers.py:5 [FIXME] MARKERS = ("TODO", "FIXME", "PLACEHOLDER")
 tools/audit/scan_markers.py:5 [PLACEHOLDER] MARKERS = ("TODO", "FIXME", "PLACEHOLDER")
 tools/ci/arch_checks.py:175 [PLACEHOLDER] FIDELITY_APPROX_RE = re.compile(r"\b(approx(?:imate|imation)?|simplif\w*|placeholder|coarse|lod)\b",
-tools/editor_gui/editor_gui.c:144 [PLACEHOLDER]     /* Placeholder for real dgfx/dom_ui rendering. */
+apps/workbench/module/ui/native/editor_gui.c:144 [PLACEHOLDER]     /* Placeholder for real dgfx/dom_ui rendering. */
 tools/modcheck/dom_modcheck.cpp:93 [TODO]     std::printf("modcheck: dependency/reference checks TODO.\n");
-tools/replay_viewer/dom_replay_viewer_controller.cpp:100 [TODO]     status = "Read-only tool (export TODO).";
-tools/save_inspector/dom_save_inspector_controller.cpp:199 [TODO]     status = "Read-only tool (export TODO).";
+apps/workbench/module/replay/viewer/dom_replay_viewer_controller.cpp:100 [TODO]     status = "Read-only tool (export TODO).";
+apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp:199 [TODO]     status = "Read-only tool (export TODO).";
 tools/ui_shared/src/dui/dui_gtk.c:5 [PLACEHOLDER] RESPONSIBILITY: GTK native backend placeholder (registered only when enabled on UNIX hosts).
 tools/ui_shared/src/dui/dui_gtk.c:12 [PLACEHOLDER] EXTENSION POINTS: Replace placeholder with real GTK2/GTK3 implementation.
 tools/ui_shared/src/dui/dui_gtk.c:46 [PLACEHOLDER]     /* Placeholder reports core widget bits but create_window returns unavailable

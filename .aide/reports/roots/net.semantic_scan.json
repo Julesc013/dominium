@@ -2023,7 +2023,7 @@
       "sensitivity_hints": [
         "server_authority_sensitive"
       ],
-      "snippet": "server[\"anti_cheat_proof_artifacts\"] = {"
+      "snippet": "server[\"anti_cheat_proof_archive\generated\archive\generated\archive\generated\artifacts\"] = {"
     },
     {
       "file": "net/anti_cheat/anti_cheat_engine.py",
@@ -2032,7 +2032,7 @@
       "sensitivity_hints": [
         "authority_sensitive"
       ],
-      "snippet": "server[\"anti_cheat_proof_artifacts\"] = {"
+      "snippet": "server[\"anti_cheat_proof_archive\generated\archive\generated\archive\generated\artifacts\"] = {"
     },
     {
       "file": "net/anti_cheat/anti_cheat_engine.py",
@@ -2275,7 +2275,7 @@
       "sensitivity_hints": [
         "authority_sensitive"
       ],
-      "snippet": "\"export_proof_artifacts\","
+      "snippet": "\"export_proof_archive\generated\archive\generated\archive\generated\artifacts\","
     },
     {
       "file": "net/policies/policy_lockstep.py",
@@ -2968,7 +2968,7 @@
       "sensitivity_hints": [
         "integrity_sensitive"
       ],
-      "snippet": "from game.domains.mobility import compute_mobility_proof_hashes"
+      "snippet": "from game.domain.mobility import compute_mobility_proof_hashes"
     },
     {
       "file": "net/policies/policy_server_authoritative.py",
@@ -2977,7 +2977,7 @@
       "sensitivity_hints": [
         "authority_sensitive"
       ],
-      "snippet": "from game.domains.mobility import compute_mobility_proof_hashes"
+      "snippet": "from game.domain.mobility import compute_mobility_proof_hashes"
     },
     {
       "file": "net/policies/policy_server_authoritative.py",
@@ -13489,7 +13489,7 @@
       "sensitivity_hints": [
         "integrity_sensitive"
       ],
-      "snippet": "from game.domains.mobility import compute_mobility_proof_hashes"
+      "snippet": "from game.domain.mobility import compute_mobility_proof_hashes"
     },
     {
       "file": "net/srz/shard_coordinator.py",
@@ -13498,7 +13498,7 @@
       "sensitivity_hints": [
         "authority_sensitive"
       ],
-      "snippet": "from game.domains.mobility import compute_mobility_proof_hashes"
+      "snippet": "from game.domain.mobility import compute_mobility_proof_hashes"
     },
     {
       "file": "net/srz/shard_coordinator.py",

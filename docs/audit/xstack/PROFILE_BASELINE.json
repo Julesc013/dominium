@@ -828,7 +828,7 @@
       "meta": {
         "argv": [
           "C:\\Users\\Jules\\AppData\\Local\\Programs\\Python\\Python38-32\\python.exe",
-          "tools/auditx/auditx.py",
+          "tools/xstack/auditx/auditx.py",
           "scan",
           "--changed-only",
           "--format",

@@ -1,0 +1,24 @@
+SCHEMA: interaction/task_type.schema
+schema_id: dominium.schema.interaction.task_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define task type templates for deterministic ActionSurface-to-Task mapping.
+
+REQUIRED SHAPE:
+record task_type
+  required:
+    - schema_version: semver
+    - task_type_id: id
+    - description: string
+    - default_progress_units_total: fixed_point_raw
+    - required_tool_tags: list[id]
+    - allowed_surface_types: list[id]
+    - completion_process_id: id
+    - progress_model_id: id
+    - extensions: map
+
+INVARIANTS:
+- No hardcoded item-specific logic; mapping is data-defined.
+- completion_process_id is process-only mutation handoff target.

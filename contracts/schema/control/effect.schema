@@ -1,0 +1,30 @@
+SCHEMA: control/effect.schema
+schema_id: dominium.schema.control.effect
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic CTRL-8 temporary modifier record.
+- Encodes process-applied effects that influence control/process parameters without direct Truth bypass.
+
+REQUIRED SHAPE:
+record effect
+  required:
+    - schema_version: semver
+    - effect_id: id
+    - effect_type_id: id
+    - target_id: id
+    - applied_tick: u64
+    - magnitude: fixed_point_or_map
+    - stacking_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - expires_tick: u64
+    - duration_ticks: u64
+    - source_event_id: id
+
+INVARIANTS:
+- Effects are process-authored and deterministic.
+- Expiration uses simulation tick only (no wall-clock usage).
+- Effects modify process/control parameters; they do not directly mutate TruthModel outside process semantics.

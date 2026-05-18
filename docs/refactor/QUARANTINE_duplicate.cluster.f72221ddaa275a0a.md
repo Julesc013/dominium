@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/tools/validators/validation/validation_engine.py`
+- `src/tools/validators/suite/validation_engine.py`
 - `tools/audit/arch_audit_common.py`
 - `tools/mvp/cross_platform_gate_common.py`
 - `tools/mvp/mvp_smoke_common.py`
@@ -32,7 +32,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/mvp/stress_gate_common.py` disposition=`quarantine` rank=`3` total_score=`62.8` risk=`HIGH`
 - `tools/audit/arch_audit_common.py` disposition=`merge` rank=`4` total_score=`53.57` risk=`HIGH`
 - `tools/time/time_anchor_common.py` disposition=`merge` rank=`5` total_score=`47.62` risk=`HIGH`
-- `src/tools/validators/validation/validation_engine.py` disposition=`merge` rank=`6` total_score=`41.37` risk=`HIGH`
+- `src/tools/validators/suite/validation_engine.py` disposition=`merge` rank=`6` total_score=`41.37` risk=`HIGH`
 
 ## Usage Sites
 
@@ -46,7 +46,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

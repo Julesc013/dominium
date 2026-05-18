@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "geo", "overlay", "ordering"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from game.domains.geology import explain_property_origin
+    from game.domain.geology import explain_property_origin
     from tools.xstack.testx.tests.geo9_testlib import OBJECT_ID_EARTH, overlay_fixture_merge_result
 
     first = overlay_fixture_merge_result(include_mods=True, include_save=False)

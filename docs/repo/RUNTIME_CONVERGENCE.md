@@ -14,8 +14,8 @@ CONVERGE-07 consolidates safe runtime-facing source roots under `runtime/` witho
 
 ## What Moved
 
-- `appshell/` moved to `runtime/appshell/`.
-- `app/` moved to `runtime/app/`.
+- `appshell/` moved to `runtime/shell/`.
+- `app/` moved to `runtime/shell/lifecycle/`.
 - `ui/` moved to `runtime/ui/`.
 - `diag/` moved to `runtime/diagnostics/`.
 
@@ -50,6 +50,6 @@ UI runtime source may present and route UI state. It must not mutate truth direc
 ## Future Work
 
 - CONVERGE-08: product entrypoints into `apps/`. Completed for root-level `client/`, `server/`, `setup/`, and `launcher/`.
-- CONVERGE-09: domain split into contracts/game/content/docs/tests.
+- CONVERGE-09: domain split into contracts/content/domains/game/docs/tests.
 - CONVERGE-11: product, platform, render, native, toolchain, and packaging matrices.
 - CONVERGE-12: stale-doc and cross-reference cleanup.

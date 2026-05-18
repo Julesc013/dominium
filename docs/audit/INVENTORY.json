@@ -60,21 +60,21 @@
       "docs": [
         "docs/architecture"
       ],
-      "path": "dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe",
+      "path": "archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe",
       "subsystem": "root"
     },
     {
       "docs": [
         "docs/architecture"
       ],
-      "path": "dist/sys/winnt/x64/bin/tools/tool_ui_doc_annotate.exe",
+      "path": "archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_doc_annotate.exe",
       "subsystem": "root"
     },
     {
       "docs": [
         "docs/architecture"
       ],
-      "path": "dist/sys/winnt/x64/bin/tools/tool_ui_validate.exe",
+      "path": "archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_validate.exe",
       "subsystem": "root"
     },
     {
@@ -1803,30 +1803,30 @@
     "docs/agents/AGENT_NON_GOALS.md",
     "docs/agents/AGENT_PLANNING.md",
     "docs/agents/AGENT_POWER.md",
-    "docs/app/ARTIFACT_IDENTITY.md",
-    "docs/app/CLIENT_IDE_START_POINTS.md",
-    "docs/app/CLIENT_READONLY_INTEGRATION.md",
-    "docs/app/CLIENT_RENDERER_UI.md",
-    "docs/app/CLIENT_UI_LAYER.md",
-    "docs/app/CLI_CONTRACTS.md",
-    "docs/app/COMPATIBILITY_ENFORCEMENT.md",
-    "docs/app/ENGINE_GAME_DIAGNOSTICS.md",
-    "docs/app/GUI_MODE.md",
-    "docs/app/HEADLESS_AND_ZERO_PACK.md",
-    "docs/app/IDE_WORKFLOW.md",
-    "docs/app/NATIVE_UI_POLICY.md",
-    "docs/app/OBSERVABILITY_PIPELINES.md",
-    "docs/app/PRODUCT_BOUNDARIES.md",
-    "docs/app/README.md",
-    "docs/app/READONLY_ADAPTER.md",
-    "docs/app/RUNTIME_LOOP.md",
-    "docs/app/TESTX_COMPLIANCE.md",
-    "docs/app/TESTX_INVENTORY.md",
-    "docs/app/TIMING_AND_CLOCKS.md",
-    "docs/app/TOOLS_OBSERVABILITY.md",
-    "docs/app/TOOLS_UI_POLICY.md",
-    "docs/app/TUI_MODE.md",
-    "docs/app/UI_MODES.md",
+    "docs/apps/ARTIFACT_IDENTITY.md",
+    "docs/apps/CLIENT_IDE_START_POINTS.md",
+    "docs/apps/CLIENT_READONLY_INTEGRATION.md",
+    "docs/apps/CLIENT_RENDERER_UI.md",
+    "docs/apps/CLIENT_UI_LAYER.md",
+    "docs/apps/CLI_CONTRACTS.md",
+    "docs/apps/COMPATIBILITY_ENFORCEMENT.md",
+    "docs/apps/ENGINE_GAME_DIAGNOSTICS.md",
+    "docs/apps/GUI_MODE.md",
+    "docs/apps/HEADLESS_AND_ZERO_PACK.md",
+    "docs/apps/IDE_WORKFLOW.md",
+    "docs/apps/NATIVE_UI_POLICY.md",
+    "docs/apps/OBSERVABILITY_PIPELINES.md",
+    "docs/apps/PRODUCT_BOUNDARIES.md",
+    "docs/apps/README.md",
+    "docs/apps/READONLY_ADAPTER.md",
+    "docs/apps/RUNTIME_LOOP.md",
+    "docs/apps/TESTX_COMPLIANCE.md",
+    "docs/apps/TESTX_INVENTORY.md",
+    "docs/apps/TIMING_AND_CLOCKS.md",
+    "docs/apps/TOOLS_OBSERVABILITY.md",
+    "docs/apps/TOOLS_UI_POLICY.md",
+    "docs/apps/TUI_MODE.md",
+    "docs/apps/UI_MODES.md",
     "docs/architecture/ADOPTION_PROTOCOL.md",
     "docs/architecture/AI_AND_DELEGATED_AUTONOMY_MODEL.md",
     "docs/architecture/AI_BUDGET_MODEL.md",
@@ -2166,22 +2166,22 @@
     "docs/content/UPS.md",
     "docs/content/UPS_OVERVIEW.md",
     "docs/content/WORLDGEN_PACKS.md",
-    "docs/dev/BUILD_MATRIX.md",
-    "docs/dev/DEBUG_AND_DIAGNOSTICS_MODEL.md",
-    "docs/dev/EXPLORATION_SCALING_TESTS.md",
-    "docs/dev/GUI_TO_COMMAND_WORKFLOW.md",
-    "docs/dev/IDE_SETUP.md",
-    "docs/dev/LOCAL_BUILD_RULES.md",
-    "docs/dev/PLAYTESTING_GUIDE.md",
-    "docs/dev/README.md",
-    "docs/dev/REPLAY_DEBUGGING.md",
-    "docs/dev/REPLAY_WORKFLOW.md",
-    "docs/dev/TOOLS_GUIDE.md",
-    "docs/dev/TOOLS_OVERVIEW.md",
-    "docs/dev/UI_BINDING_PIPELINE.md",
-    "docs/dev/UI_BINDING_RULES.md",
-    "docs/dev/UI_GUIDELINES.md",
-    "docs/dev/UI_NAMING_CONVENTIONS.md",
+    "docs/development/BUILD_MATRIX.md",
+    "docs/development/DEBUG_AND_DIAGNOSTICS_MODEL.md",
+    "docs/development/EXPLORATION_SCALING_TESTS.md",
+    "docs/development/GUI_TO_COMMAND_WORKFLOW.md",
+    "docs/development/IDE_SETUP.md",
+    "docs/development/LOCAL_BUILD_RULES.md",
+    "docs/development/PLAYTESTING_GUIDE.md",
+    "docs/development/README.md",
+    "docs/development/REPLAY_DEBUGGING.md",
+    "docs/development/REPLAY_WORKFLOW.md",
+    "docs/development/TOOLS_GUIDE.md",
+    "docs/development/TOOLS_OVERVIEW.md",
+    "docs/development/UI_BINDING_PIPELINE.md",
+    "docs/development/UI_BINDING_RULES.md",
+    "docs/development/UI_GUIDELINES.md",
+    "docs/development/UI_NAMING_CONVENTIONS.md",
     "docs/distribution/LAUNCHER_GUIDE.md",
     "docs/distribution/LAUNCHER_SCOPE.md",
     "docs/distribution/LAUNCHER_SETUP_CONTRACT.md",
@@ -2345,13 +2345,13 @@
     "docs/physical/NETWORKS_AND_INFRASTRUCTURE.md",
     "docs/physical/PARTS_AND_ASSEMBLIES.md",
     "docs/physical/TERRAIN_MODEL.md",
-    "docs/platform/EVENT_QUEUE.md",
-    "docs/platform/EXTENSIONS.md",
-    "docs/platform/LIFECYCLE_AND_SIGNALS.md",
-    "docs/platform/MULTI_WINDOW.md",
-    "docs/platform/PLATFORM_RUNTIME.md",
-    "docs/platform/README.md",
-    "docs/platform/WINDOW_MODES_DPI_INPUT.md",
+    "docs/runtime/platform/EVENT_QUEUE.md",
+    "docs/runtime/platform/EXTENSIONS.md",
+    "docs/runtime/platform/LIFECYCLE_AND_SIGNALS.md",
+    "docs/runtime/platform/MULTI_WINDOW.md",
+    "docs/runtime/platform/PLATFORM_RUNTIME.md",
+    "docs/runtime/platform/README.md",
+    "docs/runtime/platform/WINDOW_MODES_DPI_INPUT.md",
     "docs/player/PLAYER_AS_AGENT.md",
     "docs/player/PLAYER_AUTHORITY.md",
     "docs/player/PLAYER_FAILURE.md",
@@ -2388,10 +2388,10 @@
     "docs/realities/FALSE_SCIENCE.md",
     "docs/realities/MAGIC_IS_DATA.md",
     "docs/realities/REALITY_DOMAINS.md",
-    "docs/render/BACKENDS.md",
-    "docs/render/README.md",
-    "docs/render/RENDER_INTERFACE.md",
-    "docs/render/SWAPCHAINS_AND_SURFACES.md",
+    "docs/runtime/render/BACKENDS.md",
+    "docs/runtime/render/README.md",
+    "docs/runtime/render/RENDER_INTERFACE.md",
+    "docs/runtime/render/SWAPCHAINS_AND_SURFACES.md",
     "docs/repox/APRX_INTEGRATION_HOOKS.md",
     "docs/roadmap/FAILURE_PREMORTEM.md",
     "docs/roadmap/MMO_OPS_ACCEPTANCE.md",
@@ -2714,75 +2714,75 @@
     "docs/specs/setup/TUI_REFERENCE.md",
     "docs/specs/setup/UI_CONTRACT_MAPPING.md",
     "docs/specs/setup/WINDOWS_MSI_WRAPPER.md",
-    "docs/tools/AGENT_INSPECTOR.md",
-    "docs/tools/CACHE_POLICY.md",
-    "docs/tools/DETERMINISM_TOOLS.md",
-    "docs/tools/HISTORY_VIEWER.md",
-    "docs/tools/REFINEMENT_RUNNER.md",
-    "docs/tools/REPLAY_SYSTEM.md",
-    "docs/tools/TOOLING_OVERVIEW.md",
-    "docs/tools/TOOL_UI_GUIDELINES.md",
-    "docs/tools/VALIDATION.md",
-    "docs/tools/WORLDGEN_TOOLING.md",
-    "docs/tools/WORLD_INSPECTOR.md",
-    "docs/ui/CLIENT_MENU_GUIDE.md",
-    "docs/ui/CLIENT_OUT_OF_GAME_SCOPE.md",
-    "docs/ui/CLI_CANON.md",
-    "docs/ui/CLI_TUI_GUI_PARITY.md",
-    "docs/ui/CONSOLE_AND_DEBUG.md",
-    "docs/ui/DEBUG_AND_INSPECT.md",
-    "docs/ui/HUD_COMPOSITION.md",
-    "docs/ui/LAUNCHER_WALKTHROUGH.md",
-    "docs/ui/LOCALIZATION_MODEL.md",
-    "docs/ui/ONBOARDING_GUIDE.md",
-    "docs/ui/PRODUCT_SHELL_OVERVIEW.md",
-    "docs/ui/SETTINGS_GUIDE.md",
-    "docs/ui/SHARING_UX.md",
-    "docs/ui/UI_FORBIDDEN_BEHAVIORS.md",
-    "docs/ui/UI_PHILOSOPHY.md",
-    "docs/ui/UX_OVERVIEW.md",
-    "docs/ui/UX_RULES.md",
-    "docs/ui/WORLD_CREATION_FLOW.md",
-    "docs/ui/WORLD_CREATION_UI.md",
-    "docs/ui/ZERO_ASSET_GUI.md",
+    "docs/development/tools/AGENT_INSPECTOR.md",
+    "docs/development/tools/CACHE_POLICY.md",
+    "docs/development/tools/DETERMINISM_TOOLS.md",
+    "docs/development/tools/HISTORY_VIEWER.md",
+    "docs/development/tools/REFINEMENT_RUNNER.md",
+    "docs/development/tools/REPLAY_SYSTEM.md",
+    "docs/development/tools/TOOLING_OVERVIEW.md",
+    "docs/development/tools/TOOL_UI_GUIDELINES.md",
+    "docs/development/tools/VALIDATION.md",
+    "docs/development/tools/WORLDGEN_TOOLING.md",
+    "docs/development/tools/WORLD_INSPECTOR.md",
+    "docs/runtime/ui/CLIENT_MENU_GUIDE.md",
+    "docs/runtime/ui/CLIENT_OUT_OF_GAME_SCOPE.md",
+    "docs/runtime/ui/CLI_CANON.md",
+    "docs/runtime/ui/CLI_TUI_GUI_PARITY.md",
+    "docs/runtime/ui/CONSOLE_AND_DEBUG.md",
+    "docs/runtime/ui/DEBUG_AND_INSPECT.md",
+    "docs/runtime/ui/HUD_COMPOSITION.md",
+    "docs/runtime/ui/LAUNCHER_WALKTHROUGH.md",
+    "docs/runtime/ui/LOCALIZATION_MODEL.md",
+    "docs/runtime/ui/ONBOARDING_GUIDE.md",
+    "docs/runtime/ui/PRODUCT_SHELL_OVERVIEW.md",
+    "docs/runtime/ui/SETTINGS_GUIDE.md",
+    "docs/runtime/ui/SHARING_UX.md",
+    "docs/runtime/ui/UI_FORBIDDEN_BEHAVIORS.md",
+    "docs/runtime/ui/UI_PHILOSOPHY.md",
+    "docs/runtime/ui/UX_OVERVIEW.md",
+    "docs/runtime/ui/UX_RULES.md",
+    "docs/runtime/ui/WORLD_CREATION_FLOW.md",
+    "docs/runtime/ui/WORLD_CREATION_UI.md",
+    "docs/runtime/ui/ZERO_ASSET_GUI.md",
     "docs/visualization/OBSERVATION_MODEL.md",
     "docs/visualization/VISUALIZATION_CONTRACT.md",
-    "docs/worldgen/AI_AUTONOMY_BASELINE.md",
-    "docs/worldgen/ANIMALS_BASELINE.md",
-    "docs/worldgen/BUILDING_AND_DESTRUCTION_BASELINE.md",
-    "docs/worldgen/BUILTIN_TEMPLATES.md",
-    "docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
-    "docs/worldgen/CLIMATE_AND_BIOMES_BASELINE.md",
-    "docs/worldgen/CLIMATE_BODY_SHAPES.md",
-    "docs/worldgen/CONFLICT_BASELINE.md",
-    "docs/worldgen/CRAFTING_BASELINE.md",
-    "docs/worldgen/EDUCATION_AND_LEARNING_BASELINE.md",
-    "docs/worldgen/ENERGY_BASELINE.md",
-    "docs/worldgen/FLUIDS_AND_CONTAINMENT_BASELINE.md",
-    "docs/worldgen/GEOLOGY_AND_RESOURCES_BASELINE.md",
-    "docs/worldgen/GEOLOGY_STORAGE.md",
-    "docs/worldgen/HAZARDS_AND_SAFETY_BASELINE.md",
-    "docs/worldgen/HEAT_AND_FAILURE_BASELINE.md",
-    "docs/worldgen/INSURANCE_AND_ACCOUNTABILITY_BASELINE.md",
-    "docs/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
-    "docs/worldgen/LOGISTICS_AND_MARKETS_BASELINE.md",
-    "docs/worldgen/MICRO_DETAIL_GUARANTEE.md",
-    "docs/worldgen/MINING_AND_EXTRACTION_BASELINE.md",
-    "docs/worldgen/MODEL_REGISTRY.md",
-    "docs/worldgen/NETWORKS_AND_DATA_BASELINE.md",
-    "docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md",
-    "docs/worldgen/REALISM_IS_CONTENT.md",
-    "docs/worldgen/REFINEMENT_CONTRACT.md",
-    "docs/worldgen/REFINEMENT_LATTICE.md",
-    "docs/worldgen/STANDARDS_AND_TOOLCHAINS_BASELINE.md",
-    "docs/worldgen/TEMPLATE_REGISTRY.md",
-    "docs/worldgen/TERRAIN_GEOMETRY_BASELINE.md",
-    "docs/worldgen/TERRAIN_STORAGE_STRATEGY.md",
-    "docs/worldgen/TRAVEL_AND_TRANSPORT_BASELINE.md",
-    "docs/worldgen/TRUST_AND_REPUTATION_BASELINE.md",
-    "docs/worldgen/VEGETATION_BASELINE.md",
-    "docs/worldgen/WEATHER_BASELINE.md",
-    "docs/worldgen/WORLDGEN_OVERVIEW.md"
+    "docs/domains/worldgen/AI_AUTONOMY_BASELINE.md",
+    "docs/domains/worldgen/ANIMALS_BASELINE.md",
+    "docs/domains/worldgen/BUILDING_AND_DESTRUCTION_BASELINE.md",
+    "docs/domains/worldgen/BUILTIN_TEMPLATES.md",
+    "docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md",
+    "docs/domains/worldgen/CLIMATE_AND_BIOMES_BASELINE.md",
+    "docs/domains/worldgen/CLIMATE_BODY_SHAPES.md",
+    "docs/domains/worldgen/CONFLICT_BASELINE.md",
+    "docs/domains/worldgen/CRAFTING_BASELINE.md",
+    "docs/domains/worldgen/EDUCATION_AND_LEARNING_BASELINE.md",
+    "docs/domains/worldgen/ENERGY_BASELINE.md",
+    "docs/domains/worldgen/FLUIDS_AND_CONTAINMENT_BASELINE.md",
+    "docs/domains/worldgen/GEOLOGY_AND_RESOURCES_BASELINE.md",
+    "docs/domains/worldgen/GEOLOGY_STORAGE.md",
+    "docs/domains/worldgen/HAZARDS_AND_SAFETY_BASELINE.md",
+    "docs/domains/worldgen/HEAT_AND_FAILURE_BASELINE.md",
+    "docs/domains/worldgen/INSURANCE_AND_ACCOUNTABILITY_BASELINE.md",
+    "docs/domains/worldgen/LAW_AND_GOVERNANCE_BASELINE.md",
+    "docs/domains/worldgen/LOGISTICS_AND_MARKETS_BASELINE.md",
+    "docs/domains/worldgen/MICRO_DETAIL_GUARANTEE.md",
+    "docs/domains/worldgen/MINING_AND_EXTRACTION_BASELINE.md",
+    "docs/domains/worldgen/MODEL_REGISTRY.md",
+    "docs/domains/worldgen/NETWORKS_AND_DATA_BASELINE.md",
+    "docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md",
+    "docs/domains/worldgen/REALISM_IS_CONTENT.md",
+    "docs/domains/worldgen/REFINEMENT_CONTRACT.md",
+    "docs/domains/worldgen/REFINEMENT_LATTICE.md",
+    "docs/domains/worldgen/STANDARDS_AND_TOOLCHAINS_BASELINE.md",
+    "docs/domains/worldgen/TEMPLATE_REGISTRY.md",
+    "docs/domains/worldgen/TERRAIN_GEOMETRY_BASELINE.md",
+    "docs/domains/worldgen/TERRAIN_STORAGE_STRATEGY.md",
+    "docs/domains/worldgen/TRAVEL_AND_TRANSPORT_BASELINE.md",
+    "docs/domains/worldgen/TRUST_AND_REPUTATION_BASELINE.md",
+    "docs/domains/worldgen/VEGETATION_BASELINE.md",
+    "docs/domains/worldgen/WEATHER_BASELINE.md",
+    "docs/domains/worldgen/WORLDGEN_OVERVIEW.md"
   ],
   "libraries": [
     {
@@ -7632,7 +7632,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/blueprint_editor/main_blueprint_editor.cpp",
+      "path": "apps/workbench/module/schema/blueprint/main_blueprint_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -7944,7 +7944,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/distribution/compat_dry_run.py",
+      "path": "tools/package/distribution/compat_dry_run.py",
       "subsystem": "tools"
     },
     {
@@ -7952,7 +7952,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/distribution/distribution_lib.py",
+      "path": "tools/package/distribution/distribution_lib.py",
       "subsystem": "tools"
     },
     {
@@ -7960,7 +7960,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/distribution/lockfile_inspect.py",
+      "path": "tools/package/distribution/lockfile_inspect.py",
       "subsystem": "tools"
     },
     {
@@ -7968,7 +7968,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/distribution/pack_discover.py",
+      "path": "tools/package/distribution/pack_discover.py",
       "subsystem": "tools"
     },
     {
@@ -7976,7 +7976,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/distribution/profile_inspect.py",
+      "path": "tools/package/distribution/profile_inspect.py",
       "subsystem": "tools"
     },
     {
@@ -8016,7 +8016,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/editor_gui/editor_gui.c",
+      "path": "apps/workbench/module/ui/native/editor_gui.c",
       "subsystem": "tools"
     },
     {
@@ -8072,7 +8072,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/game_edit/game_edit_core.c",
+      "path": "apps/workbench/module/game/edit/game_edit_core.c",
       "subsystem": "tools"
     },
     {
@@ -8080,7 +8080,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/game_edit/tool_game_edit_cli.c",
+      "path": "apps/workbench/module/game/edit/tool_game_edit_cli.c",
       "subsystem": "tools"
     },
     {
@@ -8088,7 +8088,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/geology/geology_cli.cpp",
+      "path": "tools/validators/domain/geology/geology_cli.cpp",
       "subsystem": "tools"
     },
     {
@@ -8240,7 +8240,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/item_editor/main_item_editor.cpp",
+      "path": "apps/workbench/module/domain/item/main_item_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8264,7 +8264,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.cpp",
+      "path": "tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.cpp",
       "subsystem": "tools"
     },
     {
@@ -8272,7 +8272,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/launcher/ui/gen/ui_launcher_ui_actions_gen.h",
+      "path": "tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.h",
       "subsystem": "tools"
     },
     {
@@ -8280,7 +8280,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/launcher/ui/user/ui_launcher_ui_actions_user.cpp",
+      "path": "tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.cpp",
       "subsystem": "tools"
     },
     {
@@ -8288,7 +8288,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/launcher/ui/user/ui_launcher_ui_actions_user.h",
+      "path": "tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.h",
       "subsystem": "tools"
     },
     {
@@ -8440,7 +8440,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/network/network_cli.cpp",
+      "path": "tools/validators/network/network_cli.cpp",
       "subsystem": "tools"
     },
     {
@@ -8632,7 +8632,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/pack_editor/main_pack_editor.cpp",
+      "path": "apps/workbench/module/pack/editor/main_pack_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8680,7 +8680,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/policy_editor/main_policy_editor.cpp",
+      "path": "apps/workbench/module/policy/editor/main_policy_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8688,7 +8688,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/process_editor/main_process_editor.cpp",
+      "path": "apps/workbench/module/process/editor/main_process_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8704,7 +8704,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_analyzer/ra_diff.cpp",
+      "path": "apps/workbench/module/replay/analyzer/ra_diff.cpp",
       "subsystem": "tools"
     },
     {
@@ -8712,7 +8712,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_analyzer/ra_diff.h",
+      "path": "apps/workbench/module/replay/analyzer/ra_diff.h",
       "subsystem": "tools"
     },
     {
@@ -8720,7 +8720,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_analyzer/ra_main.cpp",
+      "path": "apps/workbench/module/replay/analyzer/ra_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -8728,7 +8728,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_analyzer/ra_parser.cpp",
+      "path": "apps/workbench/module/replay/analyzer/ra_parser.cpp",
       "subsystem": "tools"
     },
     {
@@ -8736,7 +8736,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_analyzer/ra_parser.h",
+      "path": "apps/workbench/module/replay/analyzer/ra_parser.h",
       "subsystem": "tools"
     },
     {
@@ -8744,7 +8744,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_viewer/dom_replay_viewer_controller.cpp",
+      "path": "apps/workbench/module/replay/viewer/dom_replay_viewer_controller.cpp",
       "subsystem": "tools"
     },
     {
@@ -8752,7 +8752,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_viewer/dom_replay_viewer_controller.h",
+      "path": "apps/workbench/module/replay/viewer/dom_replay_viewer_controller.h",
       "subsystem": "tools"
     },
     {
@@ -8760,7 +8760,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/replay_viewer/main_replay_viewer.cpp",
+      "path": "apps/workbench/module/replay/viewer/main_replay_viewer.cpp",
       "subsystem": "tools"
     },
     {
@@ -8776,7 +8776,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/save_edit/save_edit_core.c",
+      "path": "apps/workbench/module/save/editor/save_edit_core.c",
       "subsystem": "tools"
     },
     {
@@ -8784,7 +8784,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/save_edit/tool_save_edit_cli.c",
+      "path": "apps/workbench/module/save/editor/tool_save_edit_cli.c",
       "subsystem": "tools"
     },
     {
@@ -8792,7 +8792,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/save_inspector/dom_save_inspector_controller.cpp",
+      "path": "apps/workbench/module/save/inspector/dom_save_inspector_controller.cpp",
       "subsystem": "tools"
     },
     {
@@ -8800,7 +8800,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/save_inspector/dom_save_inspector_controller.h",
+      "path": "apps/workbench/module/save/inspector/dom_save_inspector_controller.h",
       "subsystem": "tools"
     },
     {
@@ -8808,7 +8808,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/save_inspector/main_save_inspector.cpp",
+      "path": "apps/workbench/module/save/inspector/main_save_inspector.cpp",
       "subsystem": "tools"
     },
     {
@@ -8848,7 +8848,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/setup/ui/gen/ui_setup_ui_actions_gen.cpp",
+      "path": "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.cpp",
       "subsystem": "tools"
     },
     {
@@ -8856,7 +8856,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/setup/ui/gen/ui_setup_ui_actions_gen.h",
+      "path": "tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.h",
       "subsystem": "tools"
     },
     {
@@ -8864,7 +8864,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/setup/ui/user/ui_setup_ui_actions_user.cpp",
+      "path": "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.cpp",
       "subsystem": "tools"
     },
     {
@@ -8872,7 +8872,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/setup/ui/user/ui_setup_ui_actions_user.h",
+      "path": "tools/codegen/ui/setup/user/ui_setup_ui_actions_user.h",
       "subsystem": "tools"
     },
     {
@@ -8904,7 +8904,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/struct_editor/main_struct_editor.cpp",
+      "path": "apps/workbench/module/schema/structure/main_struct_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8920,7 +8920,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tech_editor/main_tech_editor.cpp",
+      "path": "apps/workbench/module/domain/technology/main_tech_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -8968,7 +8968,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/tool_editor_actions.h",
+      "path": "apps/workbench/module/tool/editor/tool_editor_actions.h",
       "subsystem": "tools"
     },
     {
@@ -8976,7 +8976,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/tool_editor_docgen.cpp",
+      "path": "apps/workbench/module/tool/editor/tool_editor_docgen.cpp",
       "subsystem": "tools"
     },
     {
@@ -8984,7 +8984,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/tool_editor_main_win32.cpp",
+      "path": "apps/workbench/module/tool/editor/tool_editor_main_win32.cpp",
       "subsystem": "tools"
     },
     {
@@ -8992,7 +8992,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp",
+      "path": "apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp",
       "subsystem": "tools"
     },
     {
@@ -9000,7 +9000,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h",
+      "path": "apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h",
       "subsystem": "tools"
     },
     {
@@ -9008,7 +9008,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/ui/user/ui_tool_editor_actions_user.cpp",
+      "path": "apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.cpp",
       "subsystem": "tools"
     },
     {
@@ -9016,7 +9016,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/tool_editor/ui/user/ui_tool_editor_actions_user.h",
+      "path": "apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.h",
       "subsystem": "tools"
     },
     {
@@ -9032,7 +9032,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/transport_editor/main_transport_editor.cpp",
+      "path": "apps/workbench/module/domain/transport/main_transport_editor.cpp",
       "subsystem": "tools"
     },
     {
@@ -9056,7 +9056,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_bind/ui_bind_index.cpp",
+      "path": "tools/codegen/ui/bind/ui_bind_index.cpp",
       "subsystem": "tools"
     },
     {
@@ -9064,7 +9064,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_bind/ui_bind_index.h",
+      "path": "tools/codegen/ui/bind/ui_bind_index.h",
       "subsystem": "tools"
     },
     {
@@ -9072,7 +9072,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_bind/ui_bind_main.cpp",
+      "path": "tools/codegen/ui/bind/ui_bind_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -9080,7 +9080,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_bind/ui_doc_annotate_main.cpp",
+      "path": "tools/codegen/ui/bind/ui_doc_annotate_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -9088,7 +9088,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_editor/ui_editor_main_win32.cpp",
+      "path": "apps/workbench/module/ui/editor/ui_editor_main_win32.cpp",
       "subsystem": "tools"
     },
     {
@@ -9096,7 +9096,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_preview_host/common/ui_preview_common.cpp",
+      "path": "apps/workbench/module/ui/preview/support/ui_preview_common.cpp",
       "subsystem": "tools"
     },
     {
@@ -9104,7 +9104,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_preview_host/common/ui_preview_common.h",
+      "path": "apps/workbench/module/ui/preview/support/ui_preview_common.h",
       "subsystem": "tools"
     },
     {
@@ -9112,7 +9112,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_preview_host/linux/ui_preview_host_linux.cpp",
+      "path": "apps/workbench/module/ui/preview/linux/ui_preview_host_linux.cpp",
       "subsystem": "tools"
     },
     {
@@ -9120,7 +9120,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_preview_host/macos/ui_preview_host_macos.cpp",
+      "path": "apps/workbench/module/ui/preview/macos/ui_preview_host_macos.cpp",
       "subsystem": "tools"
     },
     {
@@ -9128,7 +9128,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_preview_host/win32/ui_preview_host_win32.cpp",
+      "path": "apps/workbench/module/ui/preview/win32/ui_preview_host_win32.cpp",
       "subsystem": "tools"
     },
     {
@@ -9136,7 +9136,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_shared/include/dui/domui_event.h",
+      "path": "runtime/ui/include/dui/domui_event.h",
       "subsystem": "tools"
     },
     {
@@ -9144,7 +9144,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_shared/include/dui/dui_api_v1.h",
+      "path": "runtime/ui/include/dui/dui_api_v1.h",
       "subsystem": "tools"
     },
     {
@@ -9152,7 +9152,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_shared/include/dui/dui_schema_tlv.h",
+      "path": "runtime/ui/include/dui/dui_schema_tlv.h",
       "subsystem": "tools"
     },
     {
@@ -9160,7 +9160,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/ui_shared/include/dui/dui_win32.h",
+      "path": "runtime/ui/include/dui/dui_win32.h",
       "subsystem": "tools"
     },
     {
@@ -9488,7 +9488,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/universe_editor/ue_commands.cpp",
+      "path": "apps/workbench/module/domain/universe/ue_commands.cpp",
       "subsystem": "tools"
     },
     {
@@ -9496,7 +9496,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/universe_editor/ue_commands.h",
+      "path": "apps/workbench/module/domain/universe/ue_commands.h",
       "subsystem": "tools"
     },
     {
@@ -9504,7 +9504,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/universe_editor/ue_main.cpp",
+      "path": "apps/workbench/module/domain/universe/ue_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -9512,7 +9512,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/universe_editor/ue_queries.cpp",
+      "path": "apps/workbench/module/domain/universe/ue_queries.cpp",
       "subsystem": "tools"
     },
     {
@@ -9520,7 +9520,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/universe_editor/ue_queries.h",
+      "path": "apps/workbench/module/domain/universe/ue_queries.h",
       "subsystem": "tools"
     },
     {
@@ -9528,7 +9528,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/hygiene_validate_cli.cpp",
+      "path": "tools/validators/hygiene_validate_cli.cpp",
       "subsystem": "tools"
     },
     {
@@ -9536,7 +9536,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/policy_validation.cpp",
+      "path": "tools/validators/policy_validation.cpp",
       "subsystem": "tools"
     },
     {
@@ -9544,7 +9544,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/policy_validation.h",
+      "path": "tools/validators/policy_validation.h",
       "subsystem": "tools"
     },
     {
@@ -9552,7 +9552,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/registry_dump_cli.cpp",
+      "path": "tools/validators/registry_dump_cli.cpp",
       "subsystem": "tools"
     },
     {
@@ -9560,7 +9560,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/tool_validation.cpp",
+      "path": "tools/validators/tool_validation.cpp",
       "subsystem": "tools"
     },
     {
@@ -9568,7 +9568,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validate/tool_validation.h",
+      "path": "tools/validators/tool_validation.h",
       "subsystem": "tools"
     },
     {
@@ -9576,7 +9576,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/fixtures/bad_float/schema/demo/schema_defs.c",
+      "path": "tools/validators/suite/fixtures/bad_float/schema/demo/schema_defs.c",
       "subsystem": "tools"
     },
     {
@@ -9584,7 +9584,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/fixtures/bad_ui/game/ui/bad_ui.cpp",
+      "path": "tools/validators/suite/fixtures/bad_ui/game/ui/bad_ui.cpp",
       "subsystem": "tools"
     },
     {
@@ -9592,7 +9592,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validate_all_main.cpp",
+      "path": "tools/validators/suite/validate_all_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -9600,7 +9600,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validator_common.cpp",
+      "path": "tools/validators/suite/validator_common.cpp",
       "subsystem": "tools"
     },
     {
@@ -9608,7 +9608,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validator_common.h",
+      "path": "tools/validators/suite/validator_common.h",
       "subsystem": "tools"
     },
     {
@@ -9616,7 +9616,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validator_reports.cpp",
+      "path": "tools/validators/suite/validator_reports.cpp",
       "subsystem": "tools"
     },
     {
@@ -9624,7 +9624,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validator_reports.h",
+      "path": "tools/validators/suite/validator_reports.h",
       "subsystem": "tools"
     },
     {
@@ -9632,7 +9632,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validators_registry.cpp",
+      "path": "tools/validators/suite/validators_registry.cpp",
       "subsystem": "tools"
     },
     {
@@ -9640,7 +9640,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validation/validators_registry.h",
+      "path": "tools/validators/suite/validators_registry.h",
       "subsystem": "tools"
     },
     {
@@ -9648,7 +9648,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validator/validator_checks.cpp",
+      "path": "tools/validators/validator_checks.cpp",
       "subsystem": "tools"
     },
     {
@@ -9656,7 +9656,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validator/validator_checks.h",
+      "path": "tools/validators/validator_checks.h",
       "subsystem": "tools"
     },
     {
@@ -9664,7 +9664,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/validator/validator_main.cpp",
+      "path": "tools/validators/validator_main.cpp",
       "subsystem": "tools"
     },
     {
@@ -9696,7 +9696,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/world_edit/tool_world_edit_cli.c",
+      "path": "apps/workbench/module/world/editor/tool_world_edit_cli.c",
       "subsystem": "tools"
     },
     {
@@ -9704,7 +9704,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/world_edit/world_edit_core.c",
+      "path": "apps/workbench/module/world/editor/world_edit_core.c",
       "subsystem": "tools"
     },
     {
@@ -9712,7 +9712,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/world_editor/dom_world_editor_controller.cpp",
+      "path": "apps/workbench/module/world/editor/dom_world_editor_controller.cpp",
       "subsystem": "tools"
     },
     {
@@ -9720,7 +9720,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/world_editor/dom_world_editor_controller.h",
+      "path": "apps/workbench/module/world/editor/dom_world_editor_controller.h",
       "subsystem": "tools"
     },
     {
@@ -9728,7 +9728,7 @@
         "docs/architecture",
         "docs/tools"
       ],
-      "path": "tools/world_editor/main_world_editor.cpp",
+      "path": "apps/workbench/module/world/editor/main_world_editor.cpp",
       "subsystem": "tools"
     },
     {

@@ -12,7 +12,7 @@
 Detected and preserved:
 
 - `tools/xstack/**`
-- `tools/auditx/**`
+- `tools/xstack/auditx/**`
 - `tools/repox/**`
 - `tools/testx/**`
 - `tools/buildx/**`

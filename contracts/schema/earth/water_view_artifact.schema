@@ -1,0 +1,30 @@
+SCHEMA: earth/water_view_artifact.schema
+schema_id: dominium.schema.earth.water_view_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the compactable EARTH-8 derived water-view artifact.
+- Preserve bounded ocean, river, lake, and tide-offset presentation rows for a requested region.
+
+NON-SEMANTICS:
+- This schema does not encode authoritative water volume state.
+- This schema does not imply fluid simulation, shoreline erosion, or wave dynamics.
+
+REQUIRED SHAPE:
+record water_view_artifact
+  required:
+    - view_id: id
+    - tick: integer
+    - region_cell_keys: list
+    - ocean_mask_ref: list
+    - river_mask_ref: list
+    - lake_mask_ref: list
+    - tide_offset_ref: list
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- the artifact is derived-only and compactable
+- region scope remains bounded by requested ROI and policy caps
+- tide offsets are visual proxies only and must not mutate authoritative terrain or fluid state

@@ -333,7 +333,7 @@ Server code must be authoritative, deterministic, and independent from client pr
 **MUST NOT**
 
 
-- Include `engine/modules/**` or `engine/render/**` headers.
+- Include `engine/modules/**` or `runtime/render/**` headers.
 
 
 - Depend on `game/` or `setup/`.
@@ -681,7 +681,7 @@ Public include boundaries are the enforcement mechanism for stable APIs and isol
 
 
 
-- All render backends MUST live in `engine/render/**`.
+- All render backends MUST live in `runtime/render/**`.
 
 
 - `client/` MUST NOT own rendering logic or renderer backends.
@@ -726,7 +726,7 @@ The following actions are permanently FORBIDDEN:
 - Adding "temporary exceptions" to determinism rules.
 
 
-- Adding renderer-specific code outside `engine/render/**`.
+- Adding renderer-specific code outside `runtime/render/**`.
 
 
 - Adding UI code that reads authoritative world state.

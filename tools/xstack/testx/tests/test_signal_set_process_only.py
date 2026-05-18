@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "logic", "process"]
 
 
 def run(repo_root: str):
-    from game.domains.logic.signal import process_signal_set
+    from game.domain.logic.signal import process_signal_set
 
     process_registry_path = os.path.join(repo_root, "contracts/registry/process_registry.json".replace("/", os.sep))
     runtime_path = os.path.join(repo_root, "tools/xstack/sessionx/process_runtime.py".replace("/", os.sep))

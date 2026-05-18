@@ -21,9 +21,9 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-MODULE_ROOTS = ("engine", "game", "client", "server", "platform", "src", "launcher", "setup")
-SCHEMA_ROOTS = ("contracts/schemas",)
-REGISTRY_ROOTS = ("data/registries", "data/governance")
+MODULE_ROOTS = ("engine", "game", "runtime", "apps/client", "apps/server", "apps/launcher", "apps/setup")
+SCHEMA_ROOTS = ("contracts/schema",)
+REGISTRY_ROOTS = ("contracts/registry", "contracts/governance")
 TOOL_ROOT = "tools"
 PROCESS_RE = re.compile(r"\bprocess\.[A-Za-z0-9_.]+\b")
 TEXT_EXTENSIONS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".json", ".md", ".schema", ".schema.json")
@@ -55,14 +55,14 @@ TOPOLOGY_CONTRACT_VALIDATOR_NODE_IDS = (
 )
 
 DOMAIN_TO_MODULE_NODE_ID = {
-    "ELEC": "module:src/electric",
-    "THERM": "module:src/thermal",
-    "MOB": "module:src/mobility",
-    "SIG": "module:src/signals",
-    "PHYS": "module:src/physics",
-    "FIELD": "module:src/fields",
-    "MECH": "module:src/mechanics",
-    "CTRL": "module:src/control",
+    "ELEC": "module:game/domain/electricity",
+    "THERM": "module:game/domain/thermal",
+    "MOB": "module:game/domain/mobility",
+    "SIG": "module:game/domain/signals",
+    "PHYS": "module:game/domain/physics",
+    "FIELD": "module:game/domain/fields",
+    "MECH": "module:game/domain/mechanics",
+    "CTRL": "module:runtime/shell",
 }
 
 GIT_HOSTED_BLOB_HARD_LIMIT_BYTES = 100 * 1024 * 1024
@@ -118,7 +118,7 @@ def _repository_hash(repo_root: str, explicit_commit_hash: str = "") -> str:
     if head:
         return "HEAD:{}".format(head)
     file_tokens: List[str] = []
-    for root in ("src", "contracts/schemas", "data/registries", "data/governance", "tools/xstack", "docs/architecture"):
+    for root in ("engine", "game", "runtime", "contracts/schema", "contracts/registry", "contracts/governance", "tools/xstack", "docs/architecture"):
         abs_root = os.path.join(repo_root, root.replace("/", os.sep))
         if not os.path.exists(abs_root):
             continue
@@ -632,7 +632,7 @@ def generate_topology_map(
         for target_id in policy_node_ids + contract_node_ids:
             edges.append(_edge(edge_kind="validates", from_node_id=tool_node, to_node_id=target_id))
 
-    # Module/contracts/schemas/registry textual dependency approximation.
+    # Module/contracts/schema/registry textual dependency approximation.
     schema_tokens = dict(
         (
             os.path.basename(str(node.get("path") or "")).replace(".schema.json", "").replace(".schema", "").lower(),

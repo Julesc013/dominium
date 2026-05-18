@@ -72,7 +72,7 @@ Base schema:
 ```json
 {
   "command": "headless-validate",
-  "input": "tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv",
+  "input": "apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv",
   "output_files": [],
   "errors": [],
   "warnings": [],
@@ -88,7 +88,7 @@ Reports include `status` for all commands; validation reports also include `targ
 ```json
 {
   "command": "headless-validate",
-  "input": "tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv",
+  "input": "apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv",
   "output_files": [],
   "errors": [],
   "warnings": [],
@@ -106,10 +106,10 @@ Reports include `status` for all commands; validation reports also include `targ
 ```json
 {
   "command": "headless-format",
-  "input": "tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv",
+  "input": "apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv",
   "output_files": [
-    "tools/tool_editor/ui/doc/tool_editor_ui_doc.json",
-    "tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv"
+    "apps/workbench/module/ui/doc/tool_editor_ui_doc.json",
+    "apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv"
   ],
   "errors": [],
   "warnings": [],
@@ -124,10 +124,10 @@ Reports include `status` for all commands; validation reports also include `targ
 ```json
 {
   "command": "headless-apply",
-  "input": "tools/launcher/ui/doc/launcher_ui_doc.tlv",
+  "input": "tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv",
   "output_files": [
-    "tools/launcher/ui/doc/launcher_ui_doc.json",
-    "tools/launcher/ui/doc/launcher_ui_doc.tlv"
+    "tools/codegen/ui/launcher/doc/launcher_ui_doc.json",
+    "tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv"
   ],
   "errors": [],
   "warnings": [],
@@ -144,10 +144,10 @@ Reports include `status` for all commands; validation reports also include `targ
 
 ```
 dominium-ui-editor --help
-dominium-ui-editor --scan-ui --out tools/ui_index/ui_index.json
-dominium-ui-editor --headless-validate tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --report out/validate.json
-dominium-ui-editor --headless-format tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --report out/format.json
-dominium-ui-editor --headless-codegen --in tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --out tools/tool_editor/ui/gen --registry tools/tool_editor/ui/registry/ui_actions_registry.json --docname tool_editor_ui_doc
-dominium-ui-editor --headless-build-ui --in tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --docname tool_editor_ui_doc --out-root tools/tool_editor/ui
-dominium-ui-editor --headless-apply tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv --script ops.json --report out/apply.json
+dominium-ui-editor --scan-ui --out tools/codegen/ui/index/ui_index.json
+dominium-ui-editor --headless-validate apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --report out/validate.json
+dominium-ui-editor --headless-format apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --report out/format.json
+dominium-ui-editor --headless-codegen --in apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --out apps/workbench/module/ui/editor/gen --registry apps/workbench/module/ui/registry/ui_actions_registry.json --docname tool_editor_ui_doc
+dominium-ui-editor --headless-build-ui --in apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --docname tool_editor_ui_doc --out-root apps/workbench/module/ui/editor
+dominium-ui-editor --headless-apply apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv --script ops.json --report out/apply.json
 ```

@@ -15,8 +15,8 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from tools.core.schedule.schedule_engine import normalize_schedule
-    from game.domains.signals.aggregation.aggregation_engine import normalize_schedule_rows
+    from tools.validators.core.schedule.schedule_engine import normalize_schedule
+    from game.domain.signals.aggregation.aggregation_engine import normalize_schedule_rows
 
     schedule_row = {
         "schedule_id": "schedule.temp0.binding.default",

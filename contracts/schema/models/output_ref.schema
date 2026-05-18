@@ -1,0 +1,19 @@
+SCHEMA: models/output_ref.schema
+schema_id: dominium.schema.models.output_ref
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical constitutive model output dependency descriptor.
+
+REQUIRED SHAPE:
+record output_ref
+  required:
+    - schema_version: semver
+    - output_kind: enum(effect|hazard_increment|flow_adjustment|derived_quantity|compliance_signal)
+    - output_id: id
+    - extensions: map
+
+INVARIANTS:
+- Outputs declare process-only side effect categories.
+- Output IDs are deterministic and inspectable.

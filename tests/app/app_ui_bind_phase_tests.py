@@ -32,9 +32,9 @@ def main():
         "--repo-root",
         repo_root,
         "--ui-index",
-        os.path.join(repo_root, "tools", "ui_index", "ui_index.json"),
+        os.path.join(repo_root, "tools", "codegen", "ui", "index", "ui_index.json"),
         "--out-dir",
-        os.path.join(repo_root, "libs", "appcore", "ui_bind"),
+        os.path.join(repo_root, "tools", "codegen", "ui", "bind"),
         "--check",
     ]
 

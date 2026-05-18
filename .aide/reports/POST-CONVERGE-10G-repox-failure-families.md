@@ -29,12 +29,12 @@ POST-CONVERGE-10G reduced focused RepoX from 1844 failures and 5 warnings to 176
 | `INV-CANON-INDEX` | 84 | INV-CANON-INDEX: canonical doc not listed in CANON_INDEX: docs/agents/AGENT_MIRROR_POLICY.md |
 | `INV-CANON-NO-HIST-REF` | 81 | INV-CANON-NO-HIST-REF: archived doc referenced by docs/refactor/QUARANTINE_duplicate.cluster.0a8e71d06f3c5f95.md |
 | `INV-NEW-CONTRACT-REQUIRES-ENTRY` | 9 | INV-NEW-CONTRACT-REQUIRES-ENTRY: semantic contract token missing registry entry contract.arch.graph.v1 (data/architecture/architecture_graph.v1.json) |
-| `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | 7 | INV-ALL-PRODUCTS-EMIT-DESCRIPTOR: missing dist/bin/client |
-| `INV-NO-ADHOC-MAIN` | 5 | INV-NO-ADHOC-MAIN: missing dist/bin/engine |
+| `INV-ALL-PRODUCTS-EMIT-DESCRIPTOR` | 7 | INV-ALL-PRODUCTS-EMIT-DESCRIPTOR: missing archive/generated/dist/bin/client |
+| `INV-NO-ADHOC-MAIN` | 5 | INV-NO-ADHOC-MAIN: missing archive/generated/dist/bin/engine |
 | `INV-TOOLS-REQUIRE-ENTITLEMENT` | 5 | INV-TOOLS-REQUIRE-ENTITLEMENT: missing embodiment/tools/logic_tool.py |
 | `INV-REPLAY-REFUSES-CONTRACT-MISMATCH` | 4 | INV-REPLAY-REFUSES-CONTRACT-MISMATCH: universe\universe_contract_enforcer.py missing token Replay requires SessionSpec.semantic_contract_registry_hash |
 | `INV-CACHE-KEY-INCLUDES-CONTRACTS` | 2 | INV-CACHE-KEY-INCLUDES-CONTRACTS: missing geo/worldgen/worldgen_engine.py |
-| `INV-TOOL-VERSION-MISMATCH` | 2 | INV-TOOL-VERSION-MISMATCH: hash mismatch for tools/compatx/compatx.py (expected 14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a, got 684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c) |
+| `INV-TOOL-VERSION-MISMATCH` | 2 | INV-TOOL-VERSION-MISMATCH: hash mismatch for tools/xstack/compatx/compatx.py (expected 14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a, got 684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c) |
 | `INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE` | 2 | INV-UNIVERSE-MUST-HAVE-CONTRACT-BUNDLE: missing universe\universe_contract_enforcer.py |
 | `INV-BODY-MOTION-PROCESS-ONLY` | 1 | INV-BODY-MOTION-PROCESS-ONLY: missing embodiment/body/body_system.py |
 | `INV-CAMERA-SMOOTH-RENDER-ONLY` | 1 | INV-CAMERA-SMOOTH-RENDER-ONLY: missing embodiment/lens/camera_smoothing.py |

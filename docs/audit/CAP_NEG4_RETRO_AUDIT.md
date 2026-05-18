@@ -24,7 +24,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - `data/registries/degrade_ladder_registry.json` and `data/registries/capability_fallback_registry.json` cover rendered-ui fallback, compiled-logic fallback, protocol-layer disablement, and read-only contract fallback.
   - `src/compat/negotiation/degrade_enforcer.py` can already enforce negotiated disabled/substituted capabilities at runtime.
 - Real product descriptors are available offline.
-  - `dist/bin/*` wrappers exist for `client`, `server`, `engine`, `game`, `launcher`, `setup`, and `tool_attach_console_stub`.
+  - `archive/generated/dist/bin/*` wrappers exist for `client`, `server`, `engine`, `game`, `launcher`, `setup`, and `tool_attach_console_stub`.
   - `tools/compat/tool_generate_descriptor_manifest.py` can already emit a stable offline manifest from those wrappers.
 - Missing CAP-NEG-4 surfaces are tooling and regression locks, not core negotiation semantics.
   - There is no current synthetic interop-matrix generator.

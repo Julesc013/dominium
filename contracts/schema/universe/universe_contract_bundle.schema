@@ -1,0 +1,27 @@
+SCHEMA: universe/universe_contract_bundle.schema
+schema_id: dominium.schema.universe.contract_bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define immutable semantic contract pins for a universe lineage.
+- Keep behavior-version metadata separate from UniverseIdentity hashing.
+
+NON-SEMANTICS:
+- This schema does not change simulation behavior.
+- It declares pinned meaning versions and replay compatibility anchors only.
+
+REQUIRED SHAPE:
+record universe_contract_bundle
+  required:
+    - contract_worldgen_refinement_version: id
+    - contract_overlay_merge_version: id
+    - contract_logic_eval_version: id
+    - contract_proc_capsule_version: id
+    - contract_sys_collapse_version: id
+    - contract_geo_metric_version: id
+    - contract_geo_projection_version: id
+    - contract_geo_partition_version: id
+    - contract_appshell_lifecycle_version: id
+    - deterministic_fingerprint: tag
+    - extensions: map

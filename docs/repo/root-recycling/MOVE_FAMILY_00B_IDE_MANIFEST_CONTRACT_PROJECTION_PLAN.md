@@ -46,7 +46,7 @@ The tracked schema and examples are projection contract metadata. They are not g
 The correct planned owner is:
 
 ```text
-contracts/projections/ide/**
+contracts/projection/ide/**
 ```
 
 This target does not exist yet. A later apply task should introduce it as a scoped contract/projection ownership path under the existing `contracts/` root. It should not create a new top-level root.
@@ -55,9 +55,9 @@ This target does not exist yet. A later apply task should introduce it as a scop
 
 | Source | Target |
 | --- | --- |
-| `ide/manifests/projection_manifest.schema.json` | `contracts/projections/ide/projection_manifest.schema.json` |
-| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json` |
-| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json` |
+| `ide/manifests/projection_manifest.schema.json` | `contracts/projection/ide/projection_manifest.schema.json` |
+| `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` | `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json` |
+| `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` | `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json` |
 
 ## Deferred Material
 
@@ -110,7 +110,7 @@ Rollback is:
 1. Move the three files back to their current `ide/manifests/**` paths.
 2. Restore `.gitignore`, docs sanity, and architecture references.
 3. Restore the active `ide` layout exception if it was retired.
-4. Remove empty `contracts/projections/ide/**` directories if created only by the apply task.
+4. Remove empty `contracts/projection/ide/**` directories if created only by the apply task.
 5. Rerun Tier 0 validation and generated-output checks.
 
 ## Exception Update Plan
@@ -125,7 +125,7 @@ Ready for gate review.
 
 The gate must confirm:
 
-- `contracts/projections/ide/**` is acceptable as a scoped contract ownership path;
+- `contracts/projection/ide/**` is acceptable as a scoped contract ownership path;
 - the generated-output path distinction is acceptable;
 - the five apply-phase reference rewrite groups are sufficient;
 - exception retirement is conditional on `git ls-files ide` becoming empty.
@@ -138,15 +138,15 @@ MOVE-FAMILY-00B-PLAN made no source-root moves, deletes, renames, reference rewr
 
 MOVE-FAMILY-00B-GATE passed with warnings and authorizes only `MOVE-FAMILY-00B-APPLY` for the three planned tracked IDE manifest moves:
 
-- `ide/manifests/projection_manifest.schema.json` -> `contracts/projections/ide/projection_manifest.schema.json`
-- `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` -> `contracts/projections/ide/examples/example_linux_clang_modern_client_gui.projection.json`
-- `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` -> `contracts/projections/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
+- `ide/manifests/projection_manifest.schema.json` -> `contracts/projection/ide/projection_manifest.schema.json`
+- `ide/manifests/projection_manifest_examples/example_linux_clang_modern_client_gui.projection.json` -> `contracts/projection/ide/examples/example_linux_clang_modern_client_gui.projection.json`
+- `ide/manifests/projection_manifest_examples/example_win_vc6_win9x_client_gui.projection.json` -> `contracts/projection/ide/examples/example_win_vc6_win9x_client_gui.projection.json`
 
 No other move wave is authorized. The `ide` layout exception may retire only after the apply task proves `git ls-files ide` is empty and validators pass.
 
 ## MOVE-FAMILY-00B-APPLY Result
 
-MOVE-FAMILY-00B-APPLY consumed the gate authorization and applied the three planned moves to `contracts/projections/ide/**`.
+MOVE-FAMILY-00B-APPLY consumed the gate authorization and applied the three planned moves to `contracts/projection/ide/**`.
 
 - Applied moves: 3.
 - Applied rewrite groups: 5.

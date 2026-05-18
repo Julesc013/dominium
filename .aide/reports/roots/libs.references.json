@@ -1047,7 +1047,7 @@
     },
     {
       "classification": "docs",
-      "file": "docs/app/TESTX_INVENTORY.md",
+      "file": "docs/apps/TESTX_INVENTORY.md",
       "line": 42,
       "snippet": "- Product version macros: `libs/contracts/include/dom_contracts/version.h` (`DOMINIUM_*_VERSION`)."
     },
@@ -1385,7 +1385,7 @@
       "classification": "docs",
       "file": "docs/audit/CONSISTENCY_AUDIT_REPORT.md",
       "line": 32,
-      "snippet": "- `RISK`: `docs/app/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md` claims mode-specific capability checks for memory/observer camera modes, but command metadata currently encodes only `ui.camera.mode.embodied` for `camera.set_mode` (`libs/appcore/c"
+      "snippet": "- `RISK`: `docs/apps/COMMAND_GRAPH_CAMERA_AND_BLUEPRINT.md` claims mode-specific capability checks for memory/observer camera modes, but command metadata currently encodes only `ui.camera.mode.embodied` for `camera.set_mode` (`libs/appcore/c"
     },
     {
       "classification": "docs",
@@ -1421,7 +1421,7 @@
       "classification": "docs",
       "file": "docs/audit/INTERFACE_LAUNCH_REPORT.md",
       "line": 30,
-      "snippet": "| `dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe` | PASS | `--repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` -> PASS | N/A | N/A | canonical UI bind check passed |"
+      "snippet": "| `archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe` | PASS | `--repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --check` -> PASS | N/A | N/A | canonical UI bind check passed |"
     },
     {
       "classification": "docs",
@@ -1851,61 +1851,61 @@
     },
     {
       "classification": "docs",
-      "file": "docs/dev/GUI_TO_COMMAND_WORKFLOW.md",
+      "file": "docs/development/GUI_TO_COMMAND_WORKFLOW.md",
       "line": 43,
-      "snippet": "tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --write"
+      "snippet": "tool_ui_bind --repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --write"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/GUI_TO_COMMAND_WORKFLOW.md",
+      "file": "docs/development/GUI_TO_COMMAND_WORKFLOW.md",
       "line": 58,
       "snippet": "Generated artifacts under `libs/appcore/ui_bind/` are checked in and must remain in sync."
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "file": "docs/development/UI_BINDING_PIPELINE.md",
       "line": 35,
       "snippet": "- Canonical command registry: `libs/appcore/command/command_registry.c`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "file": "docs/development/UI_BINDING_PIPELINE.md",
       "line": 40,
       "snippet": "- `libs/appcore/ui_bind/`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_PIPELINE.md",
+      "file": "docs/development/UI_BINDING_PIPELINE.md",
       "line": 67,
-      "snippet": "tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --write"
+      "snippet": "tool_ui_bind --repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --write"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_RULES.md",
+      "file": "docs/development/UI_BINDING_RULES.md",
       "line": 56,
       "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.h`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_RULES.md",
+      "file": "docs/development/UI_BINDING_RULES.md",
       "line": 57,
       "snippet": "- `libs/appcore/ui_bind/ui_command_binding_table.c`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_RULES.md",
+      "file": "docs/development/UI_BINDING_RULES.md",
       "line": 58,
       "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.h`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_RULES.md",
+      "file": "docs/development/UI_BINDING_RULES.md",
       "line": 59,
       "snippet": "- `libs/appcore/ui_bind/ui_accessibility_map.c`"
     },
     {
       "classification": "docs",
-      "file": "docs/dev/UI_BINDING_RULES.md",
+      "file": "docs/development/UI_BINDING_RULES.md",
       "line": 60,
       "snippet": "- `libs/appcore/ui_bind/ui_localisation_usage_report.json`"
     },
@@ -2363,7 +2363,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
       "line": 42,
-      "snippet": "| Build command | `scripts/dev/env_tools.py --repo-root <repo> run -- tool_ui_bind --repo-root <repo> --ui-index <repo>/tools/ui_index/ui_index.json --out-dir <repo>/libs/appcore/ui_bind --check` |"
+      "snippet": "| Build command | `scripts/dev/env_tools.py --repo-root <repo> run -- tool_ui_bind --repo-root <repo> --ui-index <repo>/tools/codegen/ui/index/ui_index.json --out-dir <repo>/libs/appcore/ui_bind --check` |"
     },
     {
       "classification": "docs",
@@ -2387,7 +2387,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
       "line": 57,
-      "snippet": "| `tool_ui_bind --write` | `tools/ui_bind/ui_bind_main.cpp` | generator mode | used | scoped to `libs/appcore/ui_bind/` |"
+      "snippet": "| `tool_ui_bind --write` | `tools/codegen/ui/bind/ui_bind_main.cpp` | generator mode | used | scoped to `libs/appcore/ui_bind/` |"
     },
     {
       "classification": "docs",
@@ -2447,7 +2447,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/POST_CONVERGE_10D_UI_BIND_FRESHNESS.md",
       "line": 144,
-      "snippet": "| `python scripts/dev/env_tools.py --repo-root . run -- tool_ui_bind --repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` | pass | after regeneration and LF policy |"
+      "snippet": "| `python scripts/dev/env_tools.py --repo-root . run -- tool_ui_bind --repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --check` | pass | after regeneration and LF policy |"
     },
     {
       "classification": "docs",
@@ -4665,31 +4665,31 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/a2_ownership_boundary.py",
+      "file": "tools/xstack/auditx/analyzers/a2_ownership_boundary.py",
       "line": 145,
       "snippet": "ui_prefixes = (\"apps/client/\", \"apps/launcher/\", \"tools/\", \"libs/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/a7_legacy_contamination.py",
+      "file": "tools/xstack/auditx/analyzers/a7_legacy_contamination.py",
       "line": 27,
       "snippet": "canonical_roots = (\"apps/client/\", \"apps/launcher/\", \"apps/setup/\", \"engine/\", \"game/\", \"libs/\", \"tools/\", \"app/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "file": "tools/xstack/auditx/analyzers/b3_capability_drift.py",
       "line": 10,
       "snippet": "WATCH_PREFIXES = (\"libs/appcore/command/\", \"tests/testx/capability_sets/\", \"data/registries/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "file": "tools/xstack/auditx/analyzers/b3_capability_drift.py",
       "line": 60,
       "snippet": "file_path=\"libs/appcore/command/command_registry.c\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/b3_capability_drift.py",
+      "file": "tools/xstack/auditx/analyzers/b3_capability_drift.py",
       "line": 69,
       "snippet": "\"libs/appcore/command/command_registry.c\","
     },
@@ -4857,37 +4857,37 @@
     },
     {
       "classification": "tools",
-      "file": "tools/ui_bind/CMakeLists.txt",
+      "file": "tools/codegen/ui/bind/CMakeLists.txt",
       "line": 12,
       "snippet": "${CMAKE_SOURCE_DIR}/libs/appcore"
     },
     {
       "classification": "tools",
-      "file": "tools/ui_bind/CMakeLists.txt",
+      "file": "tools/codegen/ui/bind/CMakeLists.txt",
       "line": 37,
       "snippet": "${CMAKE_SOURCE_DIR}/libs/appcore"
     },
     {
       "classification": "tools",
-      "file": "tools/ui_bind/CMakeLists.txt",
+      "file": "tools/codegen/ui/bind/CMakeLists.txt",
       "line": 61,
       "snippet": "--out-dir ${CMAKE_SOURCE_DIR}/libs/appcore/ui_bind"
     },
     {
       "classification": "tools",
-      "file": "tools/ui_bind/ui_bind_main.cpp",
+      "file": "tools/codegen/ui/bind/ui_bind_main.cpp",
       "line": 705,
       "snippet": "out_dir_storage = std::string(repo_root) + \"/libs/appcore/ui_bind\";"
     },
     {
       "classification": "tools",
-      "file": "tools/validate/hygiene_validate_cli.cpp",
+      "file": "tools/validators/hygiene_validate_cli.cpp",
       "line": 6,
       "snippet": "ALLOWED DEPENDENCIES: engine public headers + libs/contracts public headers."
     },
     {
       "classification": "tools",
-      "file": "tools/validate/registry_dump_cli.cpp",
+      "file": "tools/validators/registry_dump_cli.cpp",
       "line": 6,
       "snippet": "ALLOWED DEPENDENCIES: engine public headers + libs/contracts public headers."
     },

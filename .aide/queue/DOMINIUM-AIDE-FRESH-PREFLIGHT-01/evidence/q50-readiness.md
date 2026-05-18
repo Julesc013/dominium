@@ -41,7 +41,7 @@ Readiness status: `READY_FOR_Q50_WITH_WARNINGS`.
 ## Forbidden Paths For Q50
 
 - Product/source/doctrine/tool roots unless the Q50 prompt explicitly expands scope: `runtime/**`, `engine/**`, `game/**`, `apps/**`, `content/**`, `contracts/**`, `specs/**`, `data/**`, `docs/**`, `tools/**`, `scripts/**`, `cmake/**`, `.github/**`.
-- `.git/**`, `.aide.local/**`, `.dominium.local/**`, ignored build/dist/out/cache directories.
+- `.git/**`, `.aide.local/**`, `.dominium.local/**`, ignored build/archive/generated/dist/out/cache directories.
 - Release, security, update, branch, tag, CI, remote, publish, and active hook state.
 
 ## Validation Q50 Must Run

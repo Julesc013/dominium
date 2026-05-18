@@ -1,0 +1,31 @@
+SCHEMA: logic/logic_node_payload.schema
+schema_id: dominium.schema.logic.logic_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic node payloads for LOGIC NetworkGraph specialization.
+- Bind topology nodes to logic ports, junctions, buses, and protocol endpoints without embedding evaluation semantics.
+
+NON-SEMANTICS:
+- This schema does not execute logic evaluation.
+- It does not imply physical carrier behavior.
+- It does not authorize direct mutation outside deterministic Processes.
+
+REQUIRED SHAPE:
+record logic_node_payload
+  required:
+    - node_kind: enum(port_in|port_out|junction|bus_junction|protocol_endpoint)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - element_instance_id: id
+    - port_id: id
+    - bus_id: id
+    - protocol_id: id
+
+INVARIANTS:
+- Port node payloads must declare `element_instance_id` and `port_id`.
+- `bus_id` is only meaningful for `bus_junction` and compatible endpoint nodes.
+- `protocol_id` is only meaningful for `protocol_endpoint` and protocol-aware edge validation.
+- Payload meaning is topological and substrate-agnostic.

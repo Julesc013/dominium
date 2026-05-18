@@ -1,0 +1,24 @@
+SCHEMA: interior/interior_volume.schema
+schema_id: dominium.schema.interior.interior_volume
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic InteriorVolume node payload for InteriorVolumeGraph.
+
+REQUIRED SHAPE:
+record interior_volume
+  required:
+    - schema_version: semver
+    - volume_id: id
+    - parent_spatial_id: id
+    - local_transform: object
+    - bounding_shape: object
+    - volume_type_id: id
+    - tags: list<string>
+    - extensions: map
+
+INVARIANTS:
+- `volume_id` is stable and unique within its interior graph.
+- `parent_spatial_id` must resolve in SpatialNode hierarchy at runtime.
+- local transform must remain deterministic fixed-point compatible.

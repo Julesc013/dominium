@@ -3,14 +3,14 @@
   "level_name": "Post-human or speculative",
   "status": "UNSUPPORTED",
   "required_schemas": [
-    "contracts/schemas/cross_shard_message.schema",
-    "contracts/schemas/macro_capsule.schema",
-    "contracts/schemas/macro_event_queue.schema",
-    "contracts/schemas/macro_schedule.schema",
-    "contracts/schemas/process_family.schema",
-    "contracts/schemas/topology.schema",
-    "contracts/schemas/world_definition.schema",
-    "contracts/schemas/worldgen_model.schema"
+    "contracts/schema/cross_shard_message.schema",
+    "contracts/schema/macro_capsule.schema",
+    "contracts/schema/macro_event_queue.schema",
+    "contracts/schema/macro_schedule.schema",
+    "contracts/schema/process_family.schema",
+    "contracts/schema/topology.schema",
+    "contracts/schema/world_definition.schema",
+    "contracts/schema/worldgen_model.schema"
   ],
   "required_process_families": [
     "org.dominium.coverage.c-h.process.alternate-physics",

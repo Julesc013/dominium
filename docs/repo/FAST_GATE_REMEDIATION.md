@@ -24,7 +24,7 @@ Initial POST-CONVERGE-06 reproduction:
 - runner: `repox_runner`
 - XStack failure class: `STRUCTURAL`
 - concrete exception: `ValueError: invalid mod policy registry`
-- cause: `tools/xstack/compatx/schema_registry.py` discovered root `schemas/`, while canonical JSON schemas now live under `contracts/schemas/`.
+- cause: `tools/xstack/compatx/schema_registry.py` discovered root `schemas/`, while canonical JSON schemas now live under `contracts/schema/`.
 
 After remediation:
 
@@ -42,9 +42,9 @@ After remediation:
 
 Fixed:
 
-- `tools/xstack/compatx/schema_registry.py` now discovers canonical `contracts/schemas/` first and retains legacy `schemas/` fallback.
-- `game/domains/worldgen/mw/mw_surface_refiner_l3.py` now imports the Earth surface generator through `game.domains.worldgen.earth`.
-- `scripts/ci/check_repox_rules.py` now points worldgen source-path constants at the canonical `game/domains/...` locations.
+- `tools/xstack/compatx/schema_registry.py` now discovers canonical `contracts/schema/` first and retains legacy `schemas/` fallback.
+- `game/domain/worldgen/mw/mw_surface_refiner_l3.py` now imports the Earth surface generator through `game.domain.worldgen.earth`.
+- `scripts/ci/check_repox_rules.py` now points worldgen source-path constants at the canonical `game/domain/...` locations.
 
 Remaining:
 
@@ -116,7 +116,7 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 
 - Result: PARTIAL.
 - Focused RepoX is 51 failures / 5 warnings after repairing a transient missing status header in the POST-CONVERGE-10K audit report.
-- The target distribution/product proof failures are classified, not fixed: missing `dist/bin` wrapper/projection surfaces remain for product descriptor emission and AppShell-owned delegation.
+- The target distribution/product proof failures are classified, not fixed: missing `archive/generated/dist/bin` wrapper/projection surfaces remain for product descriptor emission and AppShell-owned delegation.
 - FAST remains blocked because non-proof RepoX failures still exist, including retired-domain path policy checks, tool hash/audit staleness, and ruleset mapping gaps.
 - Next recommended semantic task: `POST-CONVERGE-10M - Retired-Domain Path Policy and Tool Hash Drift Remediation`.
 
@@ -125,7 +125,7 @@ POST-CONVERGE-10H reduced RepoX from 1769 failures to 153 failures by repairing 
 - Result: PARTIAL.
 - Focused RepoX improved from 51 failures / 5 warnings to 23 failures / 5 warnings.
 - The stale missing-file failures for retired `embodiment/`, `geo/`, `worldgen/refinement/`, `universe/`, and `diag/` RepoX rule paths are fixed.
-- FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, a current `game.domains.embodiment` lazy import blocker, tool hash/audit staleness, ruleset mapping gaps, and smaller policy failures.
+- FAST remains blocked because focused RepoX still fails on distribution/product proof blockers, a current `game.domain.embodiment` lazy import blocker, tool hash/audit staleness, ruleset mapping gaps, and smaller policy failures.
 - Next recommended semantic task: `POST-CONVERGE-10N - Tool Hash, Audit Staleness, Ruleset Mapping, and Remaining RepoX Gate Classification`.
 
 ## POST-CONVERGE-10N Update - Tool Hash and Audit Staleness

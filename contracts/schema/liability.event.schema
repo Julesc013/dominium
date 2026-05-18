@@ -1,0 +1,79 @@
+SCHEMA: liability.event.schema
+schema_id: dominium.schema.liability.event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define loss events for liability attribution and insurance claims.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+- Identifiers are stable and MUST NOT be reused with new meaning.
+
+NON-SEMANTICS:
+- Events do NOT imply blame without attribution.
+- Loss amounts are symbolic without economy integration.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- quantity: value + unit tag.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record liability_event_catalog
+  required:
+    - catalog_id: id
+    - domain_id: id
+    - events: [liability_event]
+    - unit_annotations: map
+    - provenance: provenance
+    - maturity: tag
+    - extensions: map
+  optional:
+    - metadata: map
+
+record liability_event
+  required:
+    - event_id: id
+    - risk_type_id: id
+    - hazard_ref_id: id
+    - exposure_ref_id: id
+    - loss_amount: quantity
+    - event_tick: quantity
+    - provenance: provenance
+    - unit_annotations: map
+    - maturity: tag
+    - extensions: map
+  optional:
+    - subject_ref: id
+    - region_id: id
+    - location_ref: id
+    - metadata: map
+
+TYPE DEFINITIONS:
+record quantity
+  required:
+    - value: number
+    - unit: tag
+  optional:
+    - scale_hint: tag
+    - overflow_behavior: tag
+
+record provenance
+  required:
+    - provenance_id: id
+  optional:
+    - provenance_tags: [tag]
+    - metadata: map
+
+MIGRATION:
+- Transform-only migrations are permitted via versioned transforms.
+- Old data MUST NOT be reinterpreted without explicit transformation or refusal.
+
+UNIT POLICY:
+- loss_amount uses `unit.risk.impact`.
+- event_tick uses `unit.time.act_tick`.
+- All numeric values MUST reference a unit tag from `docs/architecture/UNIT_SYSTEM_POLICY.md`.

@@ -14,8 +14,8 @@ Touched Paths:
 - process/software/pipeline_engine.py
 - tools/xstack/repox/check.py
 - tools/xstack/auditx/check.py
-- tools/auditx/analyzers/e305_unmetered_loop_smell.py
-- tools/auditx/analyzers/e306_silent_throttle_smell.py
+- tools/xstack/auditx/analyzers/e305_unmetered_loop_smell.py
+- tools/xstack/auditx/analyzers/e306_silent_throttle_smell.py
 - tests/invariant/compute_budgeting_tests.py
 
 Demand IDs:

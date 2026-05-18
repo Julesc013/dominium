@@ -1,0 +1,50 @@
+SCHEMA: accessibility_preset.schema
+schema_id: dominium.schema.accessibility_preset
+schema_version: 1.0.0
+stability: extension
+
+PURPOSE:
+- Define data-driven accessibility presets for presentation-only behavior.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Presets do NOT alter simulation, authority, or outcomes.
+- Presets only affect presentation and input ergonomics.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- number: numeric scalar (integer or fixed-point).
+- bool: true or false.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record accessibility_preset
+  required:
+    - preset_id: id
+    - preset_version: tag
+    - preset_format_version: integer
+    - extensions: map
+  optional:
+    - description: tag
+    - ui_scale_percent: number
+    - palette: tag
+    - log_level: tag
+    - ui_density: tag
+    - verbosity: tag
+    - reduced_motion: bool
+    - keyboard_only: bool
+    - screen_reader: bool
+    - low_cognitive_load: bool
+    - keybind_profile_id: id
+    - provenance_ref: provenance_ref
+    - notes: map
+
+TYPE DEFINITIONS:
+record provenance_ref
+  required:
+    - provenance_id: id

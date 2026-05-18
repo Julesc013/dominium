@@ -32,4 +32,4 @@ This document freezes the post-Xi-5 architecture graph as the canonical Xi-6 bas
 ## Provisional Notes
 
 - `unknown.root` is retained as a provisional repo-support surface pending later non-runtime cleanup.
-- transitional compat helpers still located under `tools.compatx.core` and `tools.xstack.compatx` are treated as explicit support bridges during Xi-6.
+- transitional compat helpers still located under `tools.xstack.compatx.core` and `tools.xstack.compatx` are treated as explicit support bridges during Xi-6.

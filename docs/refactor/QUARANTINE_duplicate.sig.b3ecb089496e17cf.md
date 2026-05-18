@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/tools/network/srz/shard_coordinator.py`
+- `src/tools/validators/network/srz/shard_coordinator.py`
 - `src/process/qc/qc_engine.py`
 - `src/tools/validators/safety/safety_engine.py`
 - `src/signals/trust/trust_engine.py`
@@ -30,7 +30,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/xstack/sessionx/process_runtime.py` disposition=`quarantine` rank=`2` total_score=`64.17` risk=`HIGH`
 - `src/tools/validators/safety/safety_engine.py` disposition=`merge` rank=`3` total_score=`53.69` risk=`HIGH`
 - `src/signals/trust/trust_engine.py` disposition=`drop` rank=`4` total_score=`51.85` risk=`HIGH`
-- `src/tools/network/srz/shard_coordinator.py` disposition=`merge` rank=`5` total_score=`41.29` risk=`HIGH`
+- `src/tools/validators/network/srz/shard_coordinator.py` disposition=`merge` rank=`5` total_score=`41.29` risk=`HIGH`
 
 ## Usage Sites
 
@@ -46,7 +46,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

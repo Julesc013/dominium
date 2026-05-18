@@ -3,7 +3,7 @@ Last Reviewed: 2026-02-01
 Supersedes: none
 Superseded By: none
 
-This message is the deterministic dev-spec for engine/render/.
+This message is the deterministic dev-spec for runtime/render/.
 This directory is the lowest-level, platform-agnostic rendering layer.
 It defines one abstract rendering API used by the engine and game, and multiple backend implementations:
 • Software (fallback)
@@ -311,7 +311,7 @@ Renderers cannot ever feed information back into the sim.
 • Backends must treat unknown commands as NO-OP.
 
 7. Summary
-engine/render/ defines a stable, deterministic, backend-independent rendering pipeline:
+runtime/render/ defines a stable, deterministic, backend-independent rendering pipeline:
 • dom_render_api.h — the only header engine/game code touches.
 • Command buffer — deterministic, integer, fixed-size operations.
 • Backends — plug-in GL1/GL2/DX9/DX11/Vector/Software implementations.

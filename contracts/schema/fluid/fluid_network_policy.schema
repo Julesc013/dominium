@@ -1,0 +1,22 @@
+SCHEMA: fluid/fluid_network_policy.schema
+schema_id: dominium.schema.fluid.fluid_network_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic tier and degradation policy for FLUID network execution.
+- Keep FLUID optional and policy-driven at boot/runtime selection.
+
+NON-SEMANTICS:
+- No solver implementation.
+- No domain side effects.
+
+REQUIRED SHAPE:
+record fluid_network_policy
+  required:
+    - policy_id: id
+    - tier_mode: enum(F0|F1)
+    - degradation_order: [enum(F0|F1)]
+    - cost_model_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

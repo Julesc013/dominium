@@ -45,7 +45,7 @@
     "import smoke old imports for shim paths",
     "import smoke new imports for tools.validators.validation tools.validators.identity tools.validators.stability",
     "run or import-smoke affected consumers from the import rewrite plan",
-    "run validation FAST through tools/validation/tool_run_validation.py if available",
+    "run validation FAST through tools/validators/suite/tool_run_validation.py if available",
     "run identity helper smoke for validate_identity_repo and validate_identity_path",
     "run stability helper smoke for validate_all_registries and validate_pack_compat",
     "run legacy-import static check from the static check plan",

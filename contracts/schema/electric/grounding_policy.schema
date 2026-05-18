@@ -1,0 +1,22 @@
+SCHEMA: electric/grounding_policy.schema
+schema_id: dominium.schema.electric.grounding_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic grounding behavior policy for meso electrical fault detection and protection.
+
+REQUIRED SHAPE:
+record grounding_policy
+  required:
+    - schema_version: semver
+    - grounding_policy_id: id
+    - default_mode: enum(grounded|floating)
+    - gfci_required: bool
+    - fault_detection_rule_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Grounding behavior is policy-driven and deterministic.
+- Ground-fault handling must use registered policy and protection process paths.

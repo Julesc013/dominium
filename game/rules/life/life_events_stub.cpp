@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/life_events_stub.cpp
+FILE: game/rule/life/life_events_stub.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements continuation command stubs for lockstep/server-auth parity.

@@ -1,0 +1,26 @@
+SCHEMA: worldgen/hydrology_params.schema
+schema_id: dominium.schema.worldgen.hydrology_params
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic macro hydrology parameters for EARTH-1 and future surface hydrology stubs.
+- Keep drainage thresholds and bounded recompute parameters explicit data rather than hidden code constants.
+
+NON-SEMANTICS:
+- This schema does not encode real river datasets.
+- This schema does not encode fluid volume dynamics.
+- This schema does not authorize unbounded whole-planet solves.
+
+REQUIRED SHAPE:
+record hydrology_params
+  required:
+    - accumulation_threshold: integer
+    - lake_elevation_delta_threshold: integer
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- hydrology thresholds remain deterministic and data-light
+- local recompute bounds remain explicit data, never implicit loops
+- future FLUID/POLL layers may consume these parameters without replacing tile identity

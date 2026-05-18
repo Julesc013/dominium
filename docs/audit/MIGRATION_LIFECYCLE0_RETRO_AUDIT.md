@@ -24,10 +24,10 @@ Replacement Target: migration-policy-governed artifact loaders and release-pinne
 - `src/lib/instance/instance_validator.py`
   - validates instance manifests deterministically
   - currently has no explicit migration policy consultation
-- `src/release/release_manifest_engine.py`
+- `src/tools/release/release_manifest_engine.py`
   - canonicalizes release manifests with `manifest_version`
   - does not currently expose migration-policy decisions
-- `src/release/update_resolver.py`
+- `src/tools/release/update_resolver.py`
   - canonicalizes release indices and install plans
   - no shared migration lifecycle policy is consulted during load
 

@@ -123,7 +123,7 @@
       "blockers": "FAST run attempt timed out, so audit cannot mark the lane green.",
       "build_status": "verified",
       "evidence": "Help works and validator sources exist.",
-      "path": "python tools/validation/tool_run_validation.py",
+      "path": "python tools/validators/suite/tool_run_validation.py",
       "run_status": "likely",
       "subject": "Unified validation",
       "test_status": "likely"
@@ -141,7 +141,7 @@
       "blockers": "No external multiplayer transport beyond loopback is implemented.",
       "build_status": "verified",
       "evidence": "Both transport modules exist as explicit not_implemented stubs.",
-      "path": "tools/network/transport/tcp_stub.py and tools/network/transport/udp_stub.py",
+      "path": "tools/validators/network/transport/tcp_stub.py and tools/validators/network/transport/udp_stub.py",
       "run_status": "blocked",
       "subject": "TCP/UDP transport",
       "test_status": "unknown"

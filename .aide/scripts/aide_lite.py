@@ -5221,6 +5221,8 @@ REPO_LOCAL_FORBIDDEN_PATTERNS = [".aide.local/**", ".aide.local", ".env", "secre
 REPO_GENERATED_PATH_PATTERNS = [
     "artifacts/**",
     "dist/**",
+    "archive/generated/artifacts/**",
+    "archive/generated/dist/**",
     ".aide/export/**",
     ".aide/intake/latest-*",
     ".aide/git/workflow-detection.*",
@@ -15683,7 +15685,7 @@ XSTACK_SYSTEM_DEFINITIONS: tuple[dict[str, object], ...] = (
         "label": "AuditX",
         "wrapper_id": "dominium.auditx.status",
         "aide_command": "xstack status --system auditx",
-        "source_globs": ["tools/auditx/**", "tools/xstack/auditx/**", "**/*auditx*"],
+        "source_globs": ["tools/xstack/auditx/**", "**/*auditx*"],
         "capabilities": ["audit", "docs", "repo_policy", "security"],
         "risk_class": "authority_sensitive",
         "recommended_fate": "keep_wrap_adapt",
@@ -22065,6 +22067,8 @@ def pattern_matches_normalized(rel: str, pattern: str) -> bool:
         return False
     if pattern.endswith("/**"):
         base = pattern[:-3].rstrip("/")
+        if base in {"artifacts", "build", "dist", "out", "reports", "target", "tmp"}:
+            return rel == base or rel.startswith(base + "/")
         if "/" not in base and not base.startswith("."):
             return base in rel.split("/")
         return rel == base or rel.startswith(base + "/")

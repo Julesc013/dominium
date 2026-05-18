@@ -53,10 +53,10 @@ Required roots:
 | --- | --- | --- | --- | --- |
 | blocked | configure canonical verify lane | `cmake --preset verify` | configure succeeds | `out/build/vs2026/verify/` |
 | blocked | build product binaries | `cmake --build --preset verify` | native product binaries produced | `out/build/vs2026/verify/bin/` |
-| blocked | assemble artifact root | `python apps/setup/packages/scripts/packaging/pipeline.py assemble --build-dir out/build/vs2026/verify --out <temp>/artifact_root --version 0.0.0-smoke` | artifact root produced from build outputs | temp only |
-| blocked | create portable archive | `python apps/setup/packages/scripts/packaging/pipeline.py portable --artifact <temp>/artifact_root --out <temp>/portable --version 0.0.0-smoke` | portable archive generated | temp only |
+| blocked | assemble artifact root | `python release/packaging/setup/scripts/packaging/pipeline.py assemble --build-dir out/build/vs2026/verify --out <temp>/artifact_root --version 0.0.0-smoke` | artifact root produced from build outputs | temp only |
+| blocked | create portable archive | `python release/packaging/setup/scripts/packaging/pipeline.py portable --artifact <temp>/artifact_root --out <temp>/portable --version 0.0.0-smoke` | portable archive generated | temp only |
 | partial | audit projection contract and commands | `python tools/validators/check_portable_projection.py --repo-root . --dry-run` | expected layout and command sequence printed | none |
-| partial | smoke `.dompkg` pack/verify toolchain | `python tools/distribution/tool_pkg_pack.py ...` then `python tools/distribution/tool_pkg_verify.py --pkg <temp>/smoke_docs.dompkg` | temporary docs package packs and verifies | temp output removed |
+| partial | smoke `.dompkg` pack/verify toolchain | `python tools/package/distribution/tool_pkg_pack.py ...` then `python tools/package/distribution/tool_pkg_verify.py --pkg <temp>/smoke_docs.dompkg` | temporary docs package packs and verifies | temp output removed |
 
 ## Actual Result
 
@@ -77,7 +77,7 @@ Required roots:
 - The packaging pipeline `assemble` command requires a build directory containing built outputs.
 - No current command was proven to generate `install.manifest.json`, `semantic_contract_registry.json`, and `release.manifest.json` into a portable root.
 - Product boot proof remains partial and does not prove native binaries for `bin/`.
-- Setup Python bridge and `dist/bin/dom` blockers remain from POST-CONVERGE-08.
+- Setup Python bridge and `archive/generated/dist/bin/dom` blockers remain from POST-CONVERGE-08.
 
 ## Non-Goals
 

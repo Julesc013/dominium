@@ -1,0 +1,23 @@
+SCHEMA: core/state_transition.schema
+schema_id: dominium.schema.core.state_transition
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic transition rows referenced by StateMachineComponent.
+
+REQUIRED SHAPE:
+record state_transition
+  required:
+    - schema_version: semver
+    - transition_id: id
+    - from_state: id
+    - to_state: id
+    - trigger_process_id: id
+    - guard_conditions: map
+    - priority: i32
+    - extensions: map
+
+INVARIANTS:
+- Transition triggers are process IDs; ad-hoc trigger channels are forbidden.
+- Guard condition evaluation order must be deterministic.

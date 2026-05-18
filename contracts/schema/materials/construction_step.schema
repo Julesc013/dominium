@@ -1,0 +1,26 @@
+SCHEMA: materials/construction_step.schema
+schema_id: dominium.schema.materials.construction_step
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic construction step declarations per AG node.
+
+REQUIRED SHAPE:
+record construction_step
+  required:
+    - schema_version: semver
+    - step_id: id
+    - project_id: id
+    - ag_node_id: id
+    - required_materials: list<map>
+    - required_part_classes: list<map>
+    - scheduled_start_tick: int
+    - scheduled_end_tick: int
+    - status: enum(planned|executing|completed|failed)
+    - output_batch_id: id|null
+    - extensions: map
+
+INVARIANTS:
+- scheduled_end_tick must be >= scheduled_start_tick.
+- ag_node_id ordering must be deterministic within a project schedule.

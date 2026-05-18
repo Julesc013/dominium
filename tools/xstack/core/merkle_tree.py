@@ -31,12 +31,12 @@ DEFAULT_SKIP_PREFIXES: Tuple[str, ...] = (
     "docs/audit/remediation/",
     ".xstack_cache/",
     "build/",
-    "dist/",
+    "archive/generated/dist/",
     "tmp/",
-    "tools/auditx/cache/",
-    "tools/compatx/cache/",
-    "tools/performx/cache/",
-    "tools/securex/cache/",
+    "tools/xstack/auditx/cache/",
+    "tools/xstack/compatx/cache/",
+    "tools/xstack/performx/cache/",
+    "tools/xstack/securex/cache/",
 )
 
 

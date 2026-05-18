@@ -1,0 +1,31 @@
+SCHEMA: infrastructure/formalization_state.schema
+schema_id: dominium.schema.infrastructure.formalization_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical FORM-1 infrastructure lifecycle state row.
+- Tracks deterministic RAW->INFERRED->FORMAL->NETWORKED state evolution.
+
+REQUIRED SHAPE:
+record formalization_state
+  required:
+    - schema_version: semver
+    - formalization_id: id
+    - target_kind: enum(track|road|path|canal|tunnel|custom)
+    - target_context_id: id
+    - state: enum(raw|inferred|formal|networked)
+    - raw_sources: [id]
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - inferred_artifact_ref: id
+    - formal_artifact_ref: id
+    - network_graph_ref: id
+    - spec_id: id
+
+INVARIANTS:
+- Inference references are derived-only and do not imply truth mutation.
+- Formal/networked transitions are process-authored and event-sourced.
+- All ordering and state transitions are tick-deterministic.

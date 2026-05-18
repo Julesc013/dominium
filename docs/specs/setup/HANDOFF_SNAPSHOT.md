@@ -40,7 +40,7 @@ Known limitations (documented):
 - Advanced Steam verify/repair mapping deferred (docs/setup/FUTURE_BACKLOG.md)
 
 Gold master artifacts:
-- artifacts/setup/gold_master/
+- archive/generated/artifacts/setup/gold_master/
 
 How to reproduce:
 - Build: scripts/ci/setup_build.bat or scripts/ci/setup_build.sh

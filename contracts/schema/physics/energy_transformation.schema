@@ -1,0 +1,23 @@
+SCHEMA: physics/energy_transformation.schema
+schema_id: dominium.schema.physics.energy_transformation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare canonical deterministic PHYS-3 energy transformation rows.
+- Make conversion pathways explicit, registered, and auditable.
+
+NON-SEMANTICS:
+- This schema does not execute solver behavior.
+- Runtime/process layers are responsible for applying declared transforms.
+
+REQUIRED SHAPE:
+record energy_transformation
+  required:
+    - transformation_id: id
+    - input_quantities: map(quantity_id -> fixed_point_coefficient)
+    - output_quantities: map(quantity_id -> fixed_point_coefficient)
+    - boundary_allowed: bool
+    - requires_profile_flag: optional(id)
+    - deterministic_fingerprint: sha256
+    - extensions: map

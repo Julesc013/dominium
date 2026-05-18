@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "geo", "geometry", "replay"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.geo.tool_replay_geometry_window import verify_geometry_window_fixture
+    from tools.validators.domain.geology.tool_replay_geometry_window import verify_geometry_window_fixture
 
     report = verify_geometry_window_fixture()
     if str(report.get("result", "")) != "complete":

@@ -1,0 +1,1106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bundle Lockfile Schema",
+  "version": "1.0.0",
+  "description": "Deterministic bundle lockfile contract for resolved pack composition and registry hashes.",
+  "x-doc-ref": [
+    "docs/architecture/lockfile.md",
+    "docs/architecture/registry_compile.md",
+    "docs/contracts/versioning_and_migration.md"
+  ],
+  "type": "object",
+  "required": [
+    "lockfile_version",
+    "bundle_id",
+    "resolved_packs",
+    "registries",
+    "compatibility_version",
+    "pack_lock_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "lockfile_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "bundle_id": {
+      "type": "string"
+    },
+    "mod_policy_id": {
+      "type": "string"
+    },
+    "mod_policy_registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "mod_policy_proof_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "overlay_conflict_policy_id": {
+      "type": "string"
+    },
+    "resolved_packs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pack_id",
+          "version",
+          "canonical_hash",
+          "signature_status"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "pack_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "canonical_hash": {
+            "type": "string"
+          },
+          "signature_status": {
+            "type": "string"
+          },
+          "trust_level_id": {
+            "type": "string"
+          },
+          "capability_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "trust_descriptor_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "capabilities_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "compat_manifest_hash": {
+            "type": "string",
+            "pattern": "^[A-Fa-f0-9]{64}$"
+          },
+          "pack_degrade_mode_id": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "registries": {
+      "type": "object",
+      "required": [
+        "conservation_contract_set_registry_hash",
+        "quantity_registry_hash",
+        "exception_type_registry_hash",
+        "base_dimension_registry_hash",
+        "dimension_registry_hash",
+        "unit_registry_hash",
+        "quantity_type_registry_hash",
+        "element_registry_hash",
+        "compound_registry_hash",
+        "mixture_registry_hash",
+        "material_class_registry_hash",
+        "quality_distribution_registry_hash",
+        "part_class_registry_hash",
+        "connection_type_registry_hash",
+        "blueprint_registry_hash",
+        "interior_volume_type_registry_hash",
+        "portal_type_registry_hash",
+        "compartment_flow_policy_registry_hash",
+        "portal_flow_template_registry_hash",
+        "core_routing_policy_registry_hash",
+        "core_flow_solver_policy_registry_hash",
+        "quantity_bundle_registry_hash",
+        "component_capacity_policy_registry_hash",
+        "component_loss_policy_registry_hash",
+        "core_constraint_type_registry_hash",
+        "core_state_machine_type_registry_hash",
+        "core_hazard_type_registry_hash",
+        "core_schedule_policy_registry_hash",
+        "logistics_routing_rule_registry_hash",
+        "logistics_graph_registry_hash",
+        "provenance_event_type_registry_hash",
+        "construction_policy_registry_hash",
+        "failure_mode_registry_hash",
+        "maintenance_policy_registry_hash",
+        "backlog_growth_rule_registry_hash",
+        "commitment_type_registry_hash",
+        "causality_strictness_registry_hash",
+        "universe_physics_profile_registry_hash",
+        "time_model_registry_hash",
+        "time_control_policy_registry_hash",
+        "dt_quantization_rule_registry_hash",
+        "compaction_policy_registry_hash",
+        "numeric_precision_policy_registry_hash",
+        "tier_taxonomy_registry_hash",
+        "transition_policy_registry_hash",
+        "arbitration_rule_registry_hash",
+        "budget_envelope_registry_hash",
+        "arbitration_policy_registry_hash",
+        "inspection_cache_policy_registry_hash",
+        "inspection_section_registry_hash",
+        "boundary_model_registry_hash",
+        "domain_registry_hash",
+        "law_registry_hash",
+        "experience_registry_hash",
+        "lens_registry_hash",
+        "control_action_registry_hash",
+        "capability_registry_hash",
+        "control_policy_registry_hash",
+        "effect_type_registry_hash",
+        "stacking_policy_registry_hash",
+        "field_type_registry_hash",
+        "field_update_policy_registry_hash",
+        "safety_pattern_registry_hash",
+        "spec_type_registry_hash",
+        "tolerance_policy_registry_hash",
+        "compliance_check_registry_hash",
+        "formalization_target_registry_hash",
+        "formalization_policy_registry_hash",
+        "interaction_action_registry_hash",
+        "surface_type_registry_hash",
+        "posture_registry_hash",
+        "mount_tag_registry_hash",
+        "control_binding_registry_hash",
+        "geometry_type_registry_hash",
+        "junction_type_registry_hash",
+        "geometry_snap_policy_registry_hash",
+        "mobility_vehicle_class_registry_hash",
+        "mobility_constraint_type_registry_hash",
+        "mobility_signal_type_registry_hash",
+        "signal_type_registry_hash",
+        "signal_rule_policy_registry_hash",
+        "mobility_speed_policy_registry_hash",
+        "mobility_node_kind_registry_hash",
+        "mobility_edge_kind_registry_hash",
+        "mobility_max_speed_policy_registry_hash",
+        "port_type_registry_hash",
+        "tool_tag_registry_hash",
+        "tool_type_registry_hash",
+        "tool_effect_model_registry_hash",
+        "surface_visibility_policy_registry_hash",
+        "port_visibility_policy_registry_hash",
+        "machine_type_registry_hash",
+        "machine_operation_registry_hash",
+        "task_type_registry_hash",
+        "progress_model_registry_hash",
+        "controller_type_registry_hash",
+        "governance_type_registry_hash",
+        "diplomatic_state_registry_hash",
+        "cohort_mapping_policy_registry_hash",
+        "order_type_registry_hash",
+        "role_registry_hash",
+        "institution_type_registry_hash",
+        "demography_policy_registry_hash",
+        "death_model_registry_hash",
+        "birth_model_registry_hash",
+        "migration_model_registry_hash",
+        "body_shape_registry_hash",
+        "view_mode_registry_hash",
+        "view_policy_registry_hash",
+        "instrument_type_registry_hash",
+        "calibration_model_registry_hash",
+        "render_proxy_registry_hash",
+        "cosmetic_registry_hash",
+        "cosmetic_policy_registry_hash",
+        "render_primitive_registry_hash",
+        "procedural_material_template_registry_hash",
+        "label_policy_registry_hash",
+        "lod_policy_registry_hash",
+        "representation_rule_registry_hash",
+        "net_replication_policy_registry_hash",
+        "net_resync_strategy_registry_hash",
+        "net_server_policy_registry_hash",
+        "securex_policy_registry_hash",
+        "server_profile_registry_hash",
+        "shard_map_registry_hash",
+        "perception_interest_policy_registry_hash",
+        "epistemic_policy_registry_hash",
+        "retention_policy_registry_hash",
+        "decay_model_registry_hash",
+        "eviction_rule_registry_hash",
+        "anti_cheat_policy_registry_hash",
+        "anti_cheat_module_registry_hash",
+        "activation_policy_registry_hash",
+        "budget_policy_registry_hash",
+        "fidelity_policy_registry_hash",
+        "worldgen_constraints_registry_hash",
+        "astronomy_catalog_index_hash",
+        "site_registry_index_hash",
+        "ephemeris_registry_hash",
+        "terrain_tile_registry_hash",
+        "real_world_affordance_matrix_hash",
+        "ui_registry_hash",
+        "model_type_registry_hash",
+        "model_cache_policy_registry_hash",
+        "constitutive_model_registry_hash"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "conservation_contract_set_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quantity_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "exception_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "base_dimension_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "dimension_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "unit_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quantity_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "element_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compound_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mixture_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "material_class_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quality_distribution_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "part_class_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "connection_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "blueprint_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "interior_volume_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "portal_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compartment_flow_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "portal_flow_template_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_routing_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_flow_solver_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quantity_bundle_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "component_capacity_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "component_loss_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_constraint_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_state_machine_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_hazard_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "core_schedule_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "logistics_routing_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "logistics_graph_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "provenance_event_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "construction_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "failure_mode_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "maintenance_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "backlog_growth_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "commitment_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "causality_strictness_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "universe_physics_profile_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "time_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "time_control_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "dt_quantization_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compaction_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "numeric_precision_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "tier_taxonomy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "transition_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "arbitration_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "budget_envelope_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "arbitration_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "inspection_cache_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "inspection_section_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "boundary_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "domain_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "law_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "experience_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "lens_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "control_action_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "capability_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "control_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "effect_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "stacking_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "field_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "field_update_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "safety_pattern_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "spec_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "tolerance_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "compliance_check_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "formalization_target_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "formalization_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "interaction_action_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "surface_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "posture_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mount_tag_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "control_binding_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "geometry_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "junction_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "geometry_snap_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_vehicle_class_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_constraint_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_signal_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "signal_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "signal_rule_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_speed_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_node_kind_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_edge_kind_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "mobility_max_speed_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "port_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "tool_tag_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "tool_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "tool_effect_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "surface_visibility_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "port_visibility_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "machine_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "machine_operation_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "task_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "progress_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "controller_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "governance_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "diplomatic_state_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "cohort_mapping_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "order_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "role_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "institution_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "demography_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "death_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "birth_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "migration_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "body_shape_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "view_mode_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "view_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "instrument_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "calibration_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "render_proxy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "cosmetic_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "cosmetic_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "render_primitive_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "procedural_material_template_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "label_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "lod_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "representation_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "net_replication_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "net_resync_strategy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "net_server_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "securex_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "server_profile_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "shard_map_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "perception_interest_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "epistemic_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "retention_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "decay_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "eviction_rule_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "anti_cheat_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "anti_cheat_module_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "activation_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "budget_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "fidelity_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "worldgen_constraints_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "astronomy_catalog_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "site_registry_index_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "ephemeris_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "terrain_tile_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "real_world_affordance_matrix_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "ui_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "model_type_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "model_cache_policy_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "constitutive_model_registry_hash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        }
+      }
+    },
+    "compatibility_version": {
+      "type": "string"
+    },
+    "pack_lock_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "bundle_id": "bundle_id.example",
+      "compatibility_version": "1.0.0",
+      "lockfile_version": "1.0.0",
+      "pack_lock_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "registries": {
+        "activation_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "anti_cheat_module_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "anti_cheat_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "arbitration_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "arbitration_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "astronomy_catalog_index_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "backlog_growth_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "base_dimension_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "birth_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "blueprint_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "body_shape_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "boundary_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "budget_envelope_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "budget_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "calibration_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "capability_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "causality_strictness_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "cohort_mapping_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "commitment_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "compaction_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "compartment_flow_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "compliance_check_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "component_capacity_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "component_loss_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "compound_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "connection_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "conservation_contract_set_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "constitutive_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "construction_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "control_action_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "control_binding_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "control_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "controller_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_constraint_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_flow_solver_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_hazard_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_routing_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_schedule_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "core_state_machine_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "cosmetic_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "cosmetic_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "death_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "decay_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "demography_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "dimension_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "diplomatic_state_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "domain_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "dt_quantization_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "effect_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "element_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "ephemeris_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "epistemic_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "eviction_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "exception_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "experience_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "failure_mode_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "fidelity_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "field_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "field_update_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "formalization_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "formalization_target_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "geometry_snap_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "geometry_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "governance_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "inspection_cache_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "inspection_section_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "institution_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "instrument_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "interaction_action_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "interior_volume_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "junction_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "label_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "law_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "lens_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "lod_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "logistics_graph_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "logistics_routing_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "machine_operation_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "machine_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "maintenance_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "material_class_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "migration_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mixture_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_constraint_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_edge_kind_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_max_speed_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_node_kind_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_signal_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_speed_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mobility_vehicle_class_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "model_cache_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "model_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "mount_tag_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "net_replication_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "net_resync_strategy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "net_server_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "numeric_precision_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "order_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "part_class_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "perception_interest_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "port_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "port_visibility_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "portal_flow_template_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "portal_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "posture_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "procedural_material_template_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "progress_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "provenance_event_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "quality_distribution_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "quantity_bundle_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "quantity_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "quantity_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "real_world_affordance_matrix_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "render_primitive_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "render_proxy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "representation_rule_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "retention_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "role_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "safety_pattern_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "securex_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "server_profile_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "shard_map_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signal_rule_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "signal_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "site_registry_index_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "spec_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "stacking_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "surface_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "surface_visibility_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "task_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "terrain_tile_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tier_taxonomy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "time_control_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "time_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tolerance_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tool_effect_model_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tool_tag_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "tool_type_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "transition_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "ui_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "unit_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "universe_physics_profile_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "view_mode_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "view_policy_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "worldgen_constraints_registry_hash": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "resolved_packs": []
+    },
+    {
+      "lockfile_version": "1.0.0",
+      "bundle_id": "bundle.base.lab",
+      "resolved_packs": [],
+      "registries": {
+        "conservation_contract_set_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "quantity_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "exception_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "universe_physics_profile_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "time_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "time_control_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "dt_quantization_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "compaction_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "numeric_precision_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "tier_taxonomy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "transition_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "arbitration_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "budget_envelope_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "arbitration_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "inspection_cache_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "inspection_section_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "boundary_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "domain_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "law_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "experience_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "lens_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "control_action_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "capability_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "control_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "field_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "field_update_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "safety_pattern_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "formalization_target_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "formalization_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "interaction_action_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "surface_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "posture_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mount_tag_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "control_binding_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "geometry_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "junction_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "geometry_snap_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_vehicle_class_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_constraint_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_signal_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "signal_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "signal_rule_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_speed_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_node_kind_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_edge_kind_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "mobility_max_speed_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "port_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "tool_tag_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "tool_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "tool_effect_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "surface_visibility_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "port_visibility_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "machine_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "machine_operation_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "task_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "progress_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "controller_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "governance_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "diplomatic_state_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "cohort_mapping_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "order_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "role_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "institution_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "demography_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "death_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "birth_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "migration_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "body_shape_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "view_mode_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "view_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "instrument_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "calibration_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "render_proxy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "cosmetic_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "cosmetic_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "render_primitive_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "procedural_material_template_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "label_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "lod_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "representation_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "net_replication_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "net_resync_strategy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "net_server_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "securex_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "server_profile_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "shard_map_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "perception_interest_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "epistemic_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "retention_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "decay_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "eviction_rule_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "anti_cheat_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "anti_cheat_module_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "activation_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "budget_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "fidelity_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "worldgen_constraints_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "astronomy_catalog_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "site_registry_index_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "ephemeris_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "terrain_tile_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "real_world_affordance_matrix_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "ui_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "model_type_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "model_cache_policy_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f",
+        "constitutive_model_registry_hash": "9cfe7faff7054298ca87557e15a10262de8d90e6e4abf37be4f8f9ed90c7112f"
+      },
+      "compatibility_version": "1.0.0",
+      "pack_lock_hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed50ff7c9ab8f0e8c7ed8f2c8f0f64cc"
+    }
+  ]
+}

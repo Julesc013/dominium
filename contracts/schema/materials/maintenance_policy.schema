@@ -1,0 +1,23 @@
+SCHEMA: materials/maintenance_policy.schema
+schema_id: dominium.schema.materials.maintenance_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic maintenance scheduling and backlog policy declarations.
+
+REQUIRED SHAPE:
+record maintenance_policy
+  required:
+    - schema_version: semver
+    - maintenance_policy_id: id
+    - description: string
+    - inspection_interval_ticks: int
+    - maintenance_interval_ticks: int
+    - backlog_growth_rule_id: id
+    - max_backlog: fixed_raw
+    - extensions: map
+
+INVARIANTS:
+- inspection_interval_ticks and maintenance_interval_ticks must be >= 0.
+- backlog_growth_rule_id must resolve through backlog growth registry.

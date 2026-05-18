@@ -22,7 +22,7 @@ ctest --test-dir build\msvc-debug -C Debug -R test_ui_ --output-on-failure
 
 ## Pass/Fail Checklist
 
-- `ui_scan_all` generates `tools/ui_index/ui_index.json`.
+- `ui_scan_all` generates `tools/codegen/ui/index/ui_index.json`.
 - `ui_regen_launcher` regenerates launcher doc, JSON mirror, codegen outputs, and reports.
 - `ui_regen_setup` regenerates setup doc, JSON mirror, codegen outputs, and reports.
 - `ui_validate_all` validates launcher and setup docs with `win32_t1` targets (exit 0).
@@ -31,15 +31,15 @@ ctest --test-dir build\msvc-debug -C Debug -R test_ui_ --output-on-failure
 
 ## Outputs (Expected)
 
-- `tools/launcher/ui/doc/launcher_ui_doc.tlv`
-- `tools/launcher/ui/doc/launcher_ui_doc.json`
-- `tools/launcher/ui/gen/ui_launcher_ui_actions_gen.*`
-- `tools/launcher/ui/user/ui_launcher_ui_actions_user.*`
-- `tools/launcher/ui/registry/launcher_actions_registry.json`
-- `tools/launcher/ui/reports/*.json`
-- `tools/setup/ui/doc/setup_ui_doc.tlv`
-- `tools/setup/ui/doc/setup_ui_doc.json`
-- `tools/setup/ui/gen/ui_setup_ui_actions_gen.*`
-- `tools/setup/ui/user/ui_setup_ui_actions_user.*`
-- `tools/setup/ui/registry/setup_actions_registry.json`
-- `tools/setup/ui/reports/*.json`
+- `tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv`
+- `tools/codegen/ui/launcher/doc/launcher_ui_doc.json`
+- `tools/codegen/ui/launcher/gen/ui_launcher_ui_actions_gen.*`
+- `tools/codegen/ui/launcher/user/ui_launcher_ui_actions_user.*`
+- `tools/codegen/ui/launcher/registry/launcher_actions_registry.json`
+- `tools/codegen/ui/launcher/reports/*.json`
+- `tools/codegen/ui/setup/doc/setup_ui_doc.tlv`
+- `tools/codegen/ui/setup/doc/setup_ui_doc.json`
+- `tools/codegen/ui/setup/gen/ui_setup_ui_actions_gen.*`
+- `tools/codegen/ui/setup/user/ui_setup_ui_actions_user.*`
+- `tools/codegen/ui/setup/registry/setup_actions_registry.json`
+- `tools/codegen/ui/setup/reports/*.json`

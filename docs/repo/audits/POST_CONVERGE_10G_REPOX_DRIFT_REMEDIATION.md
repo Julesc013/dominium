@@ -53,7 +53,7 @@ POST-CONVERGE-10F fixed `invariant_units_present` and left focused tuple `inv_re
 
 - `scripts/ci/check_repox_rules.py` now reads the root allowlist and active layout exceptions for top-level structure checks instead of depending only on the legacy prose intent doc.
 - RepoX top-level scanning ignores generated/local roots that are not source authority.
-- AppShell checks now use `runtime/appshell/` instead of the retired root-level `appshell/` path.
+- AppShell checks now use `runtime/shell/` instead of the retired root-level `appshell/` path.
 - RepoX group cache dependency hashes now include `scripts/ci/check_repox_rules.py` so rule implementation edits invalidate stale cached group results.
 
 ## Before/After

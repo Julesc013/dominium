@@ -1,0 +1,23 @@
+SCHEMA: release/install_profile.schema
+schema_id: dominium.schema.release.install_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic install profiles that expand into component-graph selectors for offline install planning and bundle assembly.
+
+REQUIRED SHAPE:
+record install_profile
+  required:
+    - install_profile_id: id
+    - required_selectors: [id]
+    - optional_selectors: [id]
+    - default_mod_policy_id: id
+    - default_overlay_conflict_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- required_selectors and optional_selectors are canonically ordered.
+- install profile expansion is delegated to the component graph resolver.
+- profile ids are stable; selector contents remain provisional until release-index and trust-policy governance lands.

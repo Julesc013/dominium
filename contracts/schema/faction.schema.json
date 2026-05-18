@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Faction Schema",
+  "version": "1.0.0",
+  "description": "Canonical deterministic faction assembly record.",
+  "x-doc-ref": [
+    "docs/civilisation/FACTIONS_AND_AFFILIATION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "faction_id",
+    "human_name",
+    "description",
+    "created_tick",
+    "founder_agent_id",
+    "governance_type_id",
+    "territory_ids",
+    "diplomatic_relations",
+    "status",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "faction_id": {
+      "type": "string"
+    },
+    "human_name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "created_tick": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "founder_agent_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "governance_type_id": {
+      "type": "string"
+    },
+    "territory_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "diplomatic_relations": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "dissolved"
+      ]
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "faction_id": "faction.seed.001",
+      "human_name": "Seed Assembly",
+      "description": "Baseline structural faction entry.",
+      "created_tick": 0,
+      "founder_agent_id": null,
+      "governance_type_id": "gov.none",
+      "territory_ids": [],
+      "diplomatic_relations": {},
+      "status": "active",
+      "extensions": {}
+    }
+  ]
+}

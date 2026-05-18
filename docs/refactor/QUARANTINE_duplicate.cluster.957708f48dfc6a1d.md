@@ -12,28 +12,28 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/tools/libraries/instance/instance_validator.py`
+- Canonical Candidate: `src/tools/package/libraries/instance/instance_validator.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/tools/libraries/artifact/artifact_validator.py`
-- `src/tools/libraries/install/install_validator.py`
-- `src/tools/libraries/instance/instance_validator.py`
-- `src/tools/libraries/save/save_validator.py`
+- `src/tools/package/libraries/artifact/artifact_validator.py`
+- `src/tools/package/libraries/install/install_validator.py`
+- `src/tools/package/libraries/instance/instance_validator.py`
+- `src/tools/package/libraries/save/save_validator.py`
 
 ## Scorecard
 
-- `src/tools/libraries/instance/instance_validator.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
-- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
-- `src/tools/libraries/save/save_validator.py` disposition=`quarantine` rank=`3` total_score=`69.7` risk=`HIGH`
-- `src/tools/libraries/install/install_validator.py` disposition=`merge` rank=`4` total_score=`58.27` risk=`HIGH`
+- `src/tools/package/libraries/instance/instance_validator.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
+- `src/tools/package/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
+- `src/tools/package/libraries/save/save_validator.py` disposition=`quarantine` rank=`3` total_score=`69.7` risk=`HIGH`
+- `src/tools/package/libraries/install/install_validator.py` disposition=`merge` rank=`4` total_score=`58.27` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/CLI_REFERENCE.md, docs/architecture/INVARIANT_REGISTRY.md, docs/architecture/SCHEMA_CHANGE_NOTES.md, docs/audit/CONTENT_STORE_BASELINE.md, docs/audit/DOC_INDEX.md, docs/audit/ECOSYSTEM_VERIFY0_RETRO_AUDIT.md, docs/audit/GR3_FAST_RESULTS.md, docs/audit/INSTALL_MANIFEST_BASELINE.md`
+- Docs: `docs/runtime/shell/CLI_REFERENCE.md, docs/architecture/INVARIANT_REGISTRY.md, docs/architecture/SCHEMA_CHANGE_NOTES.md, docs/audit/CONTENT_STORE_BASELINE.md, docs/audit/DOC_INDEX.md, docs/audit/ECOSYSTEM_VERIFY0_RETRO_AUDIT.md, docs/audit/GR3_FAST_RESULTS.md, docs/audit/INSTALL_MANIFEST_BASELINE.md`
 
 ## Tests Involved
 
@@ -44,7 +44,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -108,7 +108,7 @@ Future physical convergence is still plausible, but no additional human review i
 - `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
 - `docs/planning/REALITY_EXTRACTION_REPORT.md`
 - `contracts/schema/planning/reality/schema_registry_inventory.json`
-- `content/data/planning/reality/module_map.json`
+- `contracts/planning/reality/module_map.json`
 
 **Final classification**
 
@@ -201,7 +201,7 @@ Later physical or semantic unification is likely enough to justify the `merge_la
 **Reviewed surfaces**
 
 - `build/**`
-- `artifacts/**`
+- `archive/generated/artifacts/**`
 - `.xstack_cache/**`
 - `run_meta/**`
 

@@ -7,8 +7,8 @@ CONVERGE-07 converged safe runtime-facing roots under `runtime/` and left mixed 
 
 | Previous Root | New Location | Action | Notes |
 | --- | --- | --- | --- |
-| `appshell/` | `runtime/appshell/` | moved | AppShell bootstrap, commands, virtual paths, IPC, logging, supervisor, TUI, rendered stub, and mode-selection source moved intact. |
-| `app/` | `runtime/app/` | moved | Shared C app-runtime library moved intact; target names, public include names, and aliases are unchanged. |
+| `appshell/` | `runtime/shell/` | moved | AppShell bootstrap, commands, virtual paths, IPC, logging, supervisor, TUI, rendered stub, and mode-selection source moved intact. |
+| `app/` | `runtime/shell/lifecycle/` | moved | Shared C app-runtime library moved intact; target names, public include names, and aliases are unchanged. |
 | `ui/` | `runtime/ui/` | moved | Shared UI model source moved intact. |
 | `diag/` | `runtime/diagnostics/` | moved | Deterministic repro bundle helper moved intact. |
 | `diagnostics/` | `runtime/diagnostics/` | already absent | No root-level `diagnostics/` source root existed during CONVERGE-07. |
@@ -24,18 +24,24 @@ CONVERGE-07 converged safe runtime-facing roots under `runtime/` and left mixed 
 
 ## Current Runtime Source
 
-- `runtime/app/`
-- `runtime/appshell/`
+- `runtime/shell/lifecycle/`
+- `runtime/shell/`
 - `runtime/diagnostics/`
 - `runtime/ui/`
+- `runtime/render/`
+- `runtime/platform/`
+- `runtime/input/`
+- `runtime/audio/`
+- `runtime/network/`
+- `runtime/storage/`
 - `runtime/process_spawn.py`
 
-No product roots, domain roots, content/data roots, generated roots, or contract/schema roots were moved in CONVERGE-07.
+CANON-SPINE-NEW subsequently collapsed the remaining `runtime/app`, `runtime/appshell`, `runtime/shell/appcore`, engine platform/render/storage wrappers, and shared UI wrapper paths into the canonical runtime spine.
 
 ## References Updated
 
-- Python imports now use `runtime.appshell`, `runtime.ui`, and `runtime.diagnostics`.
-- The root CMake build now adds `runtime/app`.
+- Python imports now use `runtime.shell`, `runtime.ui`, and `runtime.diagnostics`.
+- The root CMake build now adds `runtime/shell/lifecycle`, `runtime/shell`, `runtime/ui/ir`, and `tools/codegen/ui/bind`.
 - Active tooling and tests that referenced moved runtime source paths now point at the runtime subroots.
 
 Historical docs may still mention old root paths as history. Broader stale-doc cleanup remains CONVERGE-12.

@@ -14274,7 +14274,7 @@
       "sensitivity_hints": [
         "public_header_sensitive"
       ],
-      "snippet": "*   across components. Current `struct_version` is 1 (see `source/dominium/tools/core/tool_core.c`)."
+      "snippet": "*   across components. Current `struct_version` is 1 (see `source/dominium/tools/validators/core/tool_core.c`)."
     },
     {
       "file": "libs/contracts/include/dom_contracts/tool_api.h",
@@ -14283,7 +14283,7 @@
       "sensitivity_hints": [
         "executable_or_tool"
       ],
-      "snippet": "*   across components. Current `struct_version` is 1 (see `source/dominium/tools/core/tool_core.c`)."
+      "snippet": "*   across components. Current `struct_version` is 1 (see `source/dominium/tools/validators/core/tool_core.c`)."
     },
     {
       "file": "libs/contracts/include/dom_contracts/tool_api.h",

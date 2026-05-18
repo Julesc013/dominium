@@ -449,13 +449,13 @@
       "classification": "docs",
       "file": "docs/audit/REPO_INVENTORY_SUMMARY.md",
       "line": 90,
-      "snippet": "- Distribution: `dist/`, `updates/`, `docs/distribution/`, `docs/build/`"
+      "snippet": "- Distribution: `archive/generated/dist/`, `updates/`, `docs/distribution/`, `docs/build/`"
     },
     {
       "classification": "docs",
       "file": "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
       "line": 78,
-      "snippet": "| Release manifest and update resolution control plane | release/<br>updates/<br>dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, la"
+      "snippet": "| Release manifest and update resolution control plane | release/<br>updates/<br>archive/generated/dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, la"
     },
     {
       "classification": "docs",
@@ -503,7 +503,7 @@
       "classification": "docs",
       "file": "docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md",
       "line": 66,
-      "snippet": "| Is completed `\u03a5-A` sufficient to begin selected `\u03a5-B` work? | `yes_for_selected_families` | The repo already has strong operational substrate in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`, so a narro"
+      "snippet": "| Is completed `\u03a5-A` sufficient to begin selected `\u03a5-B` work? | `yes_for_selected_families` | The repo already has strong operational substrate in `release/`, `updates/`, `tools/xstack/controlx/`, `tools/xstack/`, and `security/trust/`, so a narro"
     },
     {
       "classification": "docs",
@@ -545,7 +545,7 @@
       "classification": "docs",
       "file": "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
       "line": 167,
-      "snippet": "Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: \u03a5-2, `release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`"
+      "snippet": "Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: \u03a5-2, `tools/release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`"
     },
     {
       "classification": "docs",
@@ -557,7 +557,7 @@
       "classification": "docs",
       "file": "docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md",
       "line": 80,
-      "snippet": "- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/controlx/`, `tools/xstack/`, and `security/trust/`"
+      "snippet": "- release/control-plane operational substrate already exists in `release/`, `updates/`, `tools/xstack/controlx/`, `tools/xstack/`, and `security/trust/`"
     },
     {
       "classification": "docs",
@@ -647,7 +647,7 @@
       "classification": "docs",
       "file": "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
       "line": 353,
-      "snippet": "- thin operational roots such as `tools/controlx/`, `tools/xstack/`, `release/`, `updates/`, or `security/trust/` are important evidence surfaces, but none of them alone becomes execution canon by convenience"
+      "snippet": "- thin operational roots such as `tools/xstack/controlx/`, `tools/xstack/`, `release/`, `updates/`, or `security/trust/` are important evidence surfaces, but none of them alone becomes execution canon by convenience"
     },
     {
       "classification": "docs",
@@ -707,7 +707,7 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -765,7 +765,7 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e159_maintenance_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e159_maintenance_bypass_smell.py",
       "line": 20,
       "snippet": "re.compile(r\"\\bapply_wear_updates\\s*\\(\", re.IGNORECASE),"
     }

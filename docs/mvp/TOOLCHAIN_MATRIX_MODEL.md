@@ -46,7 +46,7 @@ Profile definitions:
 
 ## C) Output Artifacts
 
-Each run writes canonical JSON under `artifacts/toolchain_runs/<env_id>/<run_id>/`:
+Each run writes canonical JSON under `archive/generated/artifacts/toolchain_runs/<env_id>/<run_id>/`:
 
 - `run_manifest.json`
 - `results.json`

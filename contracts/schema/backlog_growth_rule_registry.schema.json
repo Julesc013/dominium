@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Backlog Growth Rule Registry Schema",
+  "version": "1.0.0",
+  "description": "Derived deterministic backlog growth rule registry output.",
+  "x-doc-ref": [
+    "docs/materials/DECAY_FAILURE_MAINTENANCE.md",
+    "docs/architecture/registry_compile.md"
+  ],
+  "type": "object",
+  "required": [
+    "format_version",
+    "generated_from",
+    "rules",
+    "registry_hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "format_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generated_from": {
+      "type": "array"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "backlog_growth_rule.schema.json"
+      }
+    },
+    "registry_hash": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    }
+  },
+  "examples": [
+    {
+      "format_version": "1.0.0",
+      "generated_from": [],
+      "rules": [],
+      "registry_hash": "403f7894f6e32af9f8ef2ea57d8eb4517a6493deaa040ca539f67de33411ce84"
+    }
+  ]
+}

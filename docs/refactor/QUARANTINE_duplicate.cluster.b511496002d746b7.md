@@ -66,12 +66,12 @@ Replacement Target: XI-4b manual review resolution
 - `src/system/statevec/statevec_engine.py`
 - `src/system/templates/template_compiler.py`
 - `src/ui/ui_model.py`
-- `src/tools/validators/validation/validation_engine.py`
-- `tools/appshell/appshell6_probe.py`
+- `src/tools/validators/suite/validation_engine.py`
+- `tools/validators/shell/appshell6_probe.py`
 - `tools/astro/sol2_runtime_common.py`
 - `tools/convergence/convergence_gate_common.py`
-- `tools/dist/dist6_interop_common.py`
-- `tools/dist/dist_verify_common.py`
+- `tools/release/dist/dist6_interop_common.py`
+- `tools/release/dist/dist_verify_common.py`
 - `tools/logic/tool_replay_trace_window.py`
 - `tools/logic/tool_run_logic_stress.py`
 - `tools/mvp/cross_platform_gate_common.py`
@@ -99,7 +99,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/process/tool_replay_capsule_window.py` disposition=`canonical` rank=`1` total_score=`88.33` risk=`HIGH`
 - `tools/process/tool_replay_qc_window.py` disposition=`quarantine` rank=`2` total_score=`87.8` risk=`HIGH`
 - `tools/process/tool_replay_quality_window.py` disposition=`quarantine` rank=`3` total_score=`87.8` risk=`HIGH`
-- `tools/dist/dist_verify_common.py` disposition=`quarantine` rank=`4` total_score=`87.32` risk=`HIGH`
+- `tools/release/dist/dist_verify_common.py` disposition=`quarantine` rank=`4` total_score=`87.32` risk=`HIGH`
 - `tools/mvp/ecosystem_verify_common.py` disposition=`quarantine` rank=`5` total_score=`84.11` risk=`HIGH`
 - `tools/process/tool_replay_proc_window.py` disposition=`quarantine` rank=`6` total_score=`83.21` risk=`HIGH`
 - `tools/release/offline_archive_common.py` disposition=`quarantine` rank=`7` total_score=`83.04` risk=`HIGH`
@@ -107,9 +107,9 @@ Replacement Target: XI-4b manual review resolution
 - `tools/mvp/gameplay_loop_common.py` disposition=`quarantine` rank=`9` total_score=`82.26` risk=`HIGH`
 - `tools/mvp/mvp_smoke_common.py` disposition=`quarantine` rank=`10` total_score=`81.79` risk=`HIGH`
 - `tools/mvp/cross_platform_gate_common.py` disposition=`quarantine` rank=`11` total_score=`81.43` risk=`HIGH`
-- `tools/appshell/appshell6_probe.py` disposition=`quarantine` rank=`12` total_score=`79.99` risk=`HIGH`
+- `tools/validators/shell/appshell6_probe.py` disposition=`quarantine` rank=`12` total_score=`79.99` risk=`HIGH`
 - `src/tools/repo/meta/numeric.py` disposition=`quarantine` rank=`13` total_score=`79.64` risk=`HIGH`
-- `tools/dist/dist6_interop_common.py` disposition=`merge` rank=`14` total_score=`78.21` risk=`HIGH`
+- `tools/release/dist/dist6_interop_common.py` disposition=`merge` rank=`14` total_score=`78.21` risk=`HIGH`
 - `tools/mvp/toolchain_matrix_common.py` disposition=`merge` rank=`15` total_score=`77.85` risk=`HIGH`
 - `tools/security/trust_strict_common.py` disposition=`merge` rank=`16` total_score=`77.8` risk=`HIGH`
 - `tools/process/tool_replay_maturity_window.py` disposition=`drop` rank=`17` total_score=`77.76` risk=`HIGH`
@@ -170,16 +170,16 @@ Replacement Target: XI-4b manual review resolution
 - `src/astro/ephemeris/kepler_proxy_engine.py` disposition=`drop` rank=`72` total_score=`52.89` risk=`HIGH`
 - `src/embodiment/movement/jump_process.py` disposition=`drop` rank=`73` total_score=`52.83` risk=`HIGH`
 - `src/logic/compile/logic_proof_engine.py` disposition=`drop` rank=`74` total_score=`52.38` risk=`HIGH`
-- `src/tools/validators/validation/validation_engine.py` disposition=`drop` rank=`75` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/suite/validation_engine.py` disposition=`drop` rank=`75` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/ARCHITECTURE.md, docs/GLOSSARY.md, docs/appshell/CLI_REFERENCE.md, docs/appshell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/LOCKLIST.md, docs/architecture/RISK_AND_LIABILITY_MODEL.md`
+- Docs: `docs/ARCHITECTURE.md, docs/GLOSSARY.md, docs/runtime/shell/CLI_REFERENCE.md, docs/runtime/shell/TOOL_REFERENCE.md, docs/architecture/CANON_INDEX.md, docs/architecture/CONTRACTS_INDEX.md, docs/architecture/LOCKLIST.md, docs/architecture/RISK_AND_LIABILITY_MODEL.md`
 
 ## Tests Involved
 
-- `python tools/appshell/tool_run_supervisor_hardening.py --repo-root .`
+- `python tools/validators/shell/tool_run_supervisor_hardening.py --repo-root .`
 - `python tools/compat/tool_run_interop_stress.py --repo-root .`
 - `python tools/convergence/tool_run_convergence_gate.py --repo-root .`
 - `python tools/mvp/tool_run_all_stress.py --repo-root .`
@@ -189,7 +189,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

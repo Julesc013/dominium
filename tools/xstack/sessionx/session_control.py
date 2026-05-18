@@ -318,7 +318,7 @@ def resume_session_spec(
         return refusal(
             "refusal.resume_hash_mismatch",
             "pack_lock_hash mismatch detected during resume",
-            "Use a compatible dist/lockfile for this save.",
+            "Use a compatible archive/generated/dist/lockfile for this save.",
             {
                 "save_id": save_id,
             },

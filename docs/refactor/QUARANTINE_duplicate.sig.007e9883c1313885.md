@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/tools/libraries/save/save_validator.py`
+- Canonical Candidate: `src/tools/package/libraries/save/save_validator.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/tools/libraries/artifact/artifact_validator.py`
-- `src/tools/libraries/instance/instance_validator.py`
-- `src/tools/libraries/save/save_validator.py`
+- `src/tools/package/libraries/artifact/artifact_validator.py`
+- `src/tools/package/libraries/instance/instance_validator.py`
+- `src/tools/package/libraries/save/save_validator.py`
 
 ## Scorecard
 
-- `src/tools/libraries/save/save_validator.py` disposition=`canonical` rank=`1` total_score=`57.8` risk=`HIGH`
-- `src/tools/libraries/instance/instance_validator.py` disposition=`quarantine` rank=`2` total_score=`56.49` risk=`HIGH`
-- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`3` total_score=`55.54` risk=`HIGH`
+- `src/tools/package/libraries/save/save_validator.py` disposition=`canonical` rank=`1` total_score=`57.8` risk=`HIGH`
+- `src/tools/package/libraries/instance/instance_validator.py` disposition=`quarantine` rank=`2` total_score=`56.49` risk=`HIGH`
+- `src/tools/package/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`3` total_score=`55.54` risk=`HIGH`
 
 ## Usage Sites
 
@@ -42,7 +42,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

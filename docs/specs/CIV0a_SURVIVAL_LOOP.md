@@ -51,7 +51,7 @@ It is deterministic, event-driven, and minimal by design.
 - Macro scheduler hooks support FP3 integration.
 
 ## Tests
-Required tests live in `game/tests/civ0a/dom_civ0a_survival_tests.cpp`:
+Required tests live in `tests/game/civ0a/dom_civ0a_survival_tests.cpp`:
 - consumption determinism
 - batch vs step equivalence
 - starvation death trigger

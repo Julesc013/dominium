@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-11
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compat/ENDPOINT_DESCRIPTORS.md`, `docs/compat/NEGOTIATION_HANDSHAKES.md`, `docs/compat/DEGRADE_LADDERS.md`, `tools/compat/cap_neg4_common.py`, and `data/regression/cap_neg_full_baseline.json`.
+Compatibility: Derived from `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `docs/compatibility/ENDPOINT_DESCRIPTORS.md`, `docs/compatibility/NEGOTIATION_HANDSHAKES.md`, `docs/compatibility/DEGRADE_LADDERS.md`, `tools/compat/cap_neg4_common.py`, and `data/regression/cap_neg_full_baseline.json`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation

@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/estate.cpp
+FILE: game/rule/life/estate.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements estate registries, account ownership, and person-account mapping.

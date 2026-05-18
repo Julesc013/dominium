@@ -13,8 +13,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from game.domains.geology import generate_worldgen_result  # noqa: E402
-from game.domains.worldgen.galaxy import build_galaxy_proxy_update_plan, galaxy_proxy_window_hash  # noqa: E402
+from game.domain.geology import generate_worldgen_result  # noqa: E402
+from game.domain.worldgen.galaxy import build_galaxy_proxy_update_plan, galaxy_proxy_window_hash  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import execute_intent  # noqa: E402
 from tools.xstack.testx.tests.geo8_testlib import seed_worldgen_state, worldgen_request_row  # noqa: E402

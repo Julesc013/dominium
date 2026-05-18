@@ -31,7 +31,7 @@ Replacement Target: XI-4b manual review resolution
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/audit/EARTH_MVP_FINAL_BASELINE.md, docs/audit/EARTH_TERRAIN_COLLISION_BASELINE.md, docs/audit/GEO7_RETRO_AUDIT.md, docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/embodiment/TERRAIN_COLLISION_MODEL.md, docs/geo/GEOMETRY_EDIT_CONTRACT.md, docs/specs/SPEC_DETERMINISM.md`
+- Docs: `docs/audit/EARTH_MVP_FINAL_BASELINE.md, docs/audit/EARTH_TERRAIN_COLLISION_BASELINE.md, docs/audit/GEO7_RETRO_AUDIT.md, docs/audit/GEO_GEOMETRY_EDIT_BASELINE.md, docs/audit/REPO_TREE_INDEX.md, docs/embodiment/TERRAIN_COLLISION_MODEL.md, docs/domains/geology/GEOMETRY_EDIT_CONTRACT.md, docs/specs/SPEC_DETERMINISM.md`
 
 ## Tests Involved
 
@@ -42,7 +42,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_product_boot_matrix.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

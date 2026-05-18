@@ -1,0 +1,61 @@
+SCHEMA: bugreport.bundle.schema
+schema_id: dominium.schema.bugreport_bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a canonical, portable bugreport bundle for reproducible failures.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Bundles do not grant authority or bypass capability checks.
+- Bundles do not contain executable code.
+- Bundles do not alter simulation state.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- integer: non-negative whole number.
+- timestamp: ISO-8601 UTC string.
+- path_ref: relative path within the bundle container.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record bugreport_bundle
+  required:
+    - replay_bundle_ref: path_ref
+    - install_manifest_ref: path_ref
+    - instance_manifest_ref: path_ref
+    - runtime_descriptor_ref: path_ref
+    - compat_report_ref: path_ref
+    - ops_log_ref: path_ref
+    - refusal_summary_ref: path_ref
+    - environment_summary_ref: path_ref
+    - created_at: timestamp
+    - extensions: map
+  optional:
+    - bugreport_id: id
+    - save_bundle_ref: path_ref
+    - reporter_notes_ref: path_ref
+    - redaction_summary_ref: path_ref
+    - tool_version: tag
+    - created_by: tag
+    - bundle_format_version: integer
+    - bundle_tags: [tag]
+    - content_index: [content_entry]
+    - notes: map
+
+TYPE DEFINITIONS:
+record content_entry
+  required:
+    - content_path: path_ref
+    - content_kind: tag
+    - sha256: tag
+    - size_bytes: integer
+  optional:
+    - content_id: id
+    - ref_tags: [tag]

@@ -37,13 +37,13 @@ Tracked manifests:
 - Planned moves: 3.
 - Deferred tracked files: 0.
 - Blocked files: 0.
-- Target owner: `contracts/projections/ide/**`.
+- Target owner: `contracts/projection/ide/**`.
 - Ready for `MOVE-FAMILY-00B-GATE`: true.
 - Apply authorized now: false.
 
 ## Warnings
 
-- `contracts/projections/ide/**` does not exist yet.
+- `contracts/projection/ide/**` does not exist yet.
 - `ownership_slots.toml` does not yet define an explicit projection contract slot.
 - Generated projection manifests may continue to be emitted under `ide/manifests/*.projection.json`; that is generated output, not tracked source authority.
 

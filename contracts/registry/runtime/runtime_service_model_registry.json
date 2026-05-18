@@ -74,7 +74,7 @@
       "representative_evidence_roots": [
         "server/persistence",
         "engine/modules/replay",
-        "engine/modules/core/event.c",
+        "engine/kernel/event.c",
         "app/ui_event_log.c"
       ]
     },
@@ -95,7 +95,7 @@
         "control/planning",
         "process",
         "core",
-        "game/core/execution"
+        "game/rule/execution"
       ]
     },
     {
@@ -254,8 +254,8 @@
       "id": "planning_order_drift",
       "paths": [
         "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
-        "content/data/planning/final_prompt_inventory.json",
-        "content/data/planning/dependency_graph_post_pi.json"
+        "contracts/planning/final_prompt_inventory.json",
+        "contracts/planning/dependency_graph_post_pi.json"
       ],
       "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
     }

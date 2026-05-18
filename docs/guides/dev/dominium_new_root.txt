@@ -1701,7 +1701,7 @@ o Apply ordering rules when multiple hits are coincident.
 
 
 
-2.6 /engine/render/
+2.6 /runtime/render/
 
 
 dom_render_api.[ch]
@@ -1773,7 +1773,7 @@ Backends sdl_mixer, null:
 
 
 
-2.8 /engine/platform/
+2.8 /runtime/platform/
 
 
 dom_platform_api.[ch]

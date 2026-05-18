@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Time Control Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic RS-3 simulation time control policy row.",
+  "x-doc-ref": [
+    "docs/reality/TIME_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "time_control_policy_id",
+    "allow_variable_dt",
+    "allow_pause",
+    "allow_rate_change",
+    "allowed_rate_range",
+    "dt_quantization_rule_id",
+    "checkpoint_interval_ticks",
+    "compaction_policy_id",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "time_control_policy_id": {
+      "type": "string"
+    },
+    "allow_variable_dt": {
+      "type": "boolean"
+    },
+    "allow_pause": {
+      "type": "boolean"
+    },
+    "allow_rate_change": {
+      "type": "boolean"
+    },
+    "allowed_rate_range": {
+      "type": "object",
+      "required": [
+        "min",
+        "max"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "dt_quantization_rule_id": {
+      "type": "string"
+    },
+    "checkpoint_interval_ticks": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "compaction_policy_id": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "time_control_policy_id": "time.policy.default_realistic",
+      "allow_variable_dt": true,
+      "allow_pause": true,
+      "allow_rate_change": true,
+      "allowed_rate_range": {
+        "min": 250,
+        "max": 4000
+      },
+      "dt_quantization_rule_id": "dt.rule.standard",
+      "checkpoint_interval_ticks": 16,
+      "compaction_policy_id": "compaction.policy.default",
+      "extensions": {
+        "allowed_time_model_ids": [
+          "time.single_axis_branching_allowed"
+        ]
+      }
+    }
+  ]
+}

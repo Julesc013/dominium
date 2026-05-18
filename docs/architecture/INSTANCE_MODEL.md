@@ -68,7 +68,7 @@ Supported kinds:
 
 ## Portable Topology
 
-- Required reusable artifacts are materialized under `embedded_artifacts/`.
+- Required reusable artifacts are materialized under `embedded_archive/generated/artifacts/`.
 - Optional embedded binaries are described through `embedded_builds`.
 - Portable instances must remain valid after directory copy without a shared store.
 - Exported portable instances must be self-contained and offline-usable.

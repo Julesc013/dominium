@@ -1,0 +1,43 @@
+{
+  "collisions": [],
+  "mode": "dry_run",
+  "move_result": {
+    "applied": [],
+    "failed": []
+  },
+  "post_segment_findings": {
+    "appcore": 2,
+    "appshell": 26,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "pre_segment_findings": {
+    "appcore": 2,
+    "appshell": 26,
+    "capabilities": 4,
+    "registries": 3,
+    "saves": 1,
+    "schemas": 1,
+    "validation": 19
+  },
+  "reason_counts": {},
+  "rewrite_result": {
+    "files": [],
+    "files_changed": 0,
+    "replacement_count": 0
+  },
+  "routes": [],
+  "schema_version": "dominium.canon_spine_new.v1",
+  "status": "PASS",
+  "summary": {
+    "applied_moves": 0,
+    "candidate_routes": 0,
+    "collision_reroutes": 0,
+    "failed_moves": 0,
+    "text_files_changed": 0,
+    "text_replacements": 0
+  }
+}

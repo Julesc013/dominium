@@ -1,0 +1,23 @@
+SCHEMA: meta/compile_request.schema
+schema_id: dominium.schema.meta.compile_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic compile requests for source graphs/model sets.
+- Capture requested compiled target type and error policy.
+
+NON-SEMANTICS:
+- No guarantee that compilation succeeds for every source.
+- No authority to bypass proof requirements.
+
+REQUIRED SHAPE:
+record compile_request
+  required:
+    - request_id: id
+    - source_kind: text
+    - source_ref: map
+    - target_compiled_type_id: id
+    - error_bound_policy_id: id|null
+    - deterministic_fingerprint: sha256
+    - extensions: map

@@ -1,0 +1,57 @@
+SCHEMA: network.schema
+schema_id: dominium.schema.network
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define networks, node references, edge references, and flow descriptors.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or renaming without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Network types do NOT imply transport rules.
+- Capacity and loss descriptors do NOT enforce simulation behavior.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record network
+  required:
+    - network_id: id
+    - network_type: tag
+  optional:
+    - node_refs: [node_ref]
+    - edge_refs: [edge_ref]
+    - capacity_desc: map
+    - loss_desc: map
+    - flow_type_tags: [tag]
+    - provenance_ref: provenance_ref
+    - extensions: map
+
+TYPE DEFINITIONS:
+record node_ref
+  required:
+    - ref_type: tag
+    - ref_id: id
+  optional:
+    - ref_tags: [tag]
+
+record edge_ref
+  required:
+    - from_node_ref: node_ref
+    - to_node_ref: node_ref
+  optional:
+    - edge_tags: [tag]
+    - capacity_desc: map
+    - loss_desc: map
+    - metadata: map
+
+record provenance_ref
+  required:
+    - provenance_id: id

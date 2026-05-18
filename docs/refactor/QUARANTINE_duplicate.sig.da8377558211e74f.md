@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `tools/auditx/analyzers/e308_unmetered_logic_compute_smell.py`
+- Canonical Candidate: `tools/xstack/auditx/analyzers/e308_unmetered_logic_compute_smell.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `tools/auditx/analyzers/e308_unmetered_logic_compute_smell.py`
-- `tools/auditx/analyzers/e309_omniscient_logic_debug_smell.py`
-- `tools/auditx/analyzers/e323_random_failure_smell.py`
+- `tools/xstack/auditx/analyzers/e308_unmetered_logic_compute_smell.py`
+- `tools/xstack/auditx/analyzers/e309_omniscient_logic_debug_smell.py`
+- `tools/xstack/auditx/analyzers/e323_random_failure_smell.py`
 
 ## Scorecard
 
-- `tools/auditx/analyzers/e308_unmetered_logic_compute_smell.py` disposition=`canonical` rank=`1` total_score=`64.65` risk=`HIGH`
-- `tools/auditx/analyzers/e309_omniscient_logic_debug_smell.py` disposition=`quarantine` rank=`2` total_score=`64.65` risk=`HIGH`
-- `tools/auditx/analyzers/e323_random_failure_smell.py` disposition=`quarantine` rank=`3` total_score=`58.94` risk=`HIGH`
+- `tools/xstack/auditx/analyzers/e308_unmetered_logic_compute_smell.py` disposition=`canonical` rank=`1` total_score=`64.65` risk=`HIGH`
+- `tools/xstack/auditx/analyzers/e309_omniscient_logic_debug_smell.py` disposition=`quarantine` rank=`2` total_score=`64.65` risk=`HIGH`
+- `tools/xstack/auditx/analyzers/e323_random_failure_smell.py` disposition=`quarantine` rank=`3` total_score=`58.94` risk=`HIGH`
 
 ## Usage Sites
 
@@ -40,7 +40,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

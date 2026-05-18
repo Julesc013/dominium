@@ -14,7 +14,7 @@
   "deferred_count": 0,
   "blocked_count": 0,
   "apply_rewrite_group_count": 5,
-  "target_owner": "contracts/projections/ide",
+  "target_owner": "contracts/projection/ide",
   "target_owner_exists_now": false,
   "ready_for_gate": true,
   "next_task": "MOVE-FAMILY-00B-GATE - IDE Manifest Projection Apply Readiness Gate",

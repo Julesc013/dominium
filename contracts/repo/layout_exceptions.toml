@@ -71,14 +71,14 @@ notes = "POST-CONVERGE-02 found active imports from release and tooling helpers.
 path = "ide"
 kind = "directory"
 classification = "partial_review"
-reason = "Tracked IDE README and projection manifest schema/examples were moved to docs/architecture and contracts/projections/ide; remaining ide/ material is generated local output only."
+reason = "Tracked IDE README and projection manifest schema/examples were moved to docs/architecture and contracts/projection/ide; remaining ide/ material is generated local output only."
 retirement_phase = "MOVE-FAMILY-00B-APPLY"
-target = "tracked manifest source metadata lives under contracts/projections/ide; generated IDE projection output remains ignored local output"
+target = "tracked manifest source metadata lives under contracts/projection/ide; generated IDE projection output remains ignored local output"
 risk = "low"
 created_phase = "CONVERGE-10"
 active = false
 retired_phase = "MOVE-FAMILY-00B-APPLY"
-retired_reason = "git ls-files ide returned no tracked files after moving the three approved IDE manifest files to contracts/projections/ide."
+retired_reason = "git ls-files ide returned no tracked files after moving the three approved IDE manifest files to contracts/projection/ide."
 notes = "Retained for audit history only. Do not add tracked source authority under ide/; generated projection output under ide/ remains ignored local output."
 
 [retired_exceptions.labs_root]
@@ -207,7 +207,7 @@ target = "provenance/evidence policy review; possible release or archive evidenc
 risk = "review"
 created_phase = "CONVERGE-10"
 active = true
-notes = "POST-CONVERGE-01 found 10 tracked JSON evidence files under artifacts/toolchain_runs; left active and unchanged."
+notes = "POST-CONVERGE-01 found 10 tracked JSON evidence files under archive/generated/artifacts/toolchain_runs; left active and unchanged."
 
 [retired_exceptions.build_root]
 path = "build"
@@ -395,7 +395,7 @@ kind = "directory"
 classification = "partial_review"
 reason = "Active network transport, server-authoritative, lockstep, SRZ hybrid, anti-cheat, shard coordination, and deterministic test-harness modules are imported by apps/client, apps/server, tools, and XStack tests."
 retirement_phase = "POST-CONVERGE"
-target = "protected network ownership review: runtime adapters to runtime/network, server composition to apps/server, protocol contracts to contracts/protocols/network, docs/tests/tools to their owning roots"
+target = "protected network ownership review: runtime adapters to runtime/network, server composition to apps/server, protocol contracts to contracts/protocol/network, docs/tests/tools to their owning roots"
 risk = "high"
 created_phase = "CONVERGE-10"
 active = false

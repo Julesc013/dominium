@@ -1,0 +1,24 @@
+SCHEMA: mobility/junction.schema
+schema_id: dominium.schema.mobility.junction
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic junction descriptor linking guide geometries.
+
+REQUIRED SHAPE:
+record junction
+  required:
+    - schema_version: semver
+    - junction_id: id
+    - parent_spatial_id: id
+    - connected_geometry_ids: list[id]
+    - junction_type_id: enum(endpoint|switch|merge|split|station)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - state_machine_id: id
+
+INVARIANTS:
+- Junction connectivity ordering is deterministic.
+- Switch-state semantics are explicit via optional state machine.

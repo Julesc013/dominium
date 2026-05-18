@@ -41,7 +41,7 @@
     "validation has runtime AppShell and compatibility consumers",
     "meta.identity has release/security/lib/tool consumers",
     "meta.stability has validation, governance, RepoX, AuditX, release, security, and TestX consumers",
-    "governance has release/setup/dist/tool consumers",
+    "governance has release/setup/archive/generated/dist/tool consumers",
     "meta semantic/runtime modules and performance modules are not tools namespace candidates"
   ]
 }

@@ -12,27 +12,27 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `engine/modules/core/d_subsystem.h`
+- Canonical Candidate: `engine/kernel/d_subsystem.h`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `engine/modules/core/d_org.h`
-- `engine/modules/core/d_subsystem.h`
-- `engine/modules/policy/d_policy.h`
-- `engine/modules/research/d_research_state.h`
-- `engine/modules/world/d_serialize.h`
-- `engine/modules/world/d_worldgen.h`
+- `engine/kernel/d_org.h`
+- `engine/kernel/d_subsystem.h`
+- `game/rule/policy/d_policy.h`
+- `game/domain/research/d_research_state.h`
+- `game/world/d_serialize.h`
+- `game/world/d_worldgen.h`
 
 ## Scorecard
 
-- `engine/modules/core/d_subsystem.h` disposition=`canonical` rank=`1` total_score=`90.48` risk=`HIGH`
-- `engine/modules/world/d_worldgen.h` disposition=`quarantine` rank=`2` total_score=`89.4` risk=`HIGH`
-- `engine/modules/core/d_org.h` disposition=`quarantine` rank=`3` total_score=`87.86` risk=`HIGH`
-- `engine/modules/world/d_serialize.h` disposition=`quarantine` rank=`4` total_score=`87.38` risk=`HIGH`
-- `engine/modules/policy/d_policy.h` disposition=`quarantine` rank=`5` total_score=`84.23` risk=`HIGH`
-- `engine/modules/research/d_research_state.h` disposition=`merge` rank=`6` total_score=`71.55` risk=`HIGH`
+- `engine/kernel/d_subsystem.h` disposition=`canonical` rank=`1` total_score=`90.48` risk=`HIGH`
+- `game/world/d_worldgen.h` disposition=`quarantine` rank=`2` total_score=`89.4` risk=`HIGH`
+- `engine/kernel/d_org.h` disposition=`quarantine` rank=`3` total_score=`87.86` risk=`HIGH`
+- `game/world/d_serialize.h` disposition=`quarantine` rank=`4` total_score=`87.38` risk=`HIGH`
+- `game/rule/policy/d_policy.h` disposition=`quarantine` rank=`5` total_score=`84.23` risk=`HIGH`
+- `game/domain/research/d_research_state.h` disposition=`merge` rank=`6` total_score=`71.55` risk=`HIGH`
 
 ## Usage Sites
 
@@ -46,7 +46,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

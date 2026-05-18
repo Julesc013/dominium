@@ -11,8 +11,8 @@ TEST_TAGS = ["fast", "appshell", "platform", "logging"]
 
 
 def run(repo_root: str):
-    from runtime.appshell import bootstrap as bootstrap_module
-    from runtime.appshell.logging import build_default_log_file_path
+    from runtime.shell import bootstrap as bootstrap_module
+    from runtime.shell.logging import build_default_log_file_path
 
     original = bootstrap_module.select_ui_mode
     repo_root_abs = os.path.normpath(os.path.abspath(repo_root))

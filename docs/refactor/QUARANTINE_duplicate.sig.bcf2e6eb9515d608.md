@@ -19,17 +19,17 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `client/shell/client_shell.c`
-- `server/app/main_server.c`
+- `apps/server/main_server.c`
 
 ## Scorecard
 
 - `client/shell/client_shell.c` disposition=`canonical` rank=`1` total_score=`85.83` risk=`HIGH`
-- `server/app/main_server.c` disposition=`quarantine` rank=`2` total_score=`84.64` risk=`HIGH`
+- `apps/server/main_server.c` disposition=`quarantine` rank=`2` total_score=`84.64` risk=`HIGH`
 
 ## Usage Sites
 
 - Build Targets: `dominium_client`
-- Docs: `docs/app/CLI_CONTRACTS.md, docs/app/GUI_MODE.md, docs/app/OBSERVABILITY_PIPELINES.md, docs/app/PRODUCT_BOUNDARIES.md, docs/app/README.md, docs/app/UI_MODES.md, docs/appshell/APPSHELL_CONSTITUTION.md, docs/appshell/CLI_REFERENCE.md`
+- Docs: `docs/apps/CLI_CONTRACTS.md, docs/apps/GUI_MODE.md, docs/apps/OBSERVABILITY_PIPELINES.md, docs/apps/PRODUCT_BOUNDARIES.md, docs/apps/README.md, docs/apps/UI_MODES.md, docs/runtime/shell/APPSHELL_CONSTITUTION.md, docs/runtime/shell/CLI_REFERENCE.md`
 
 ## Tests Involved
 
@@ -39,7 +39,7 @@ Replacement Target: XI-4b manual review resolution
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
 - `python tools/time/tool_verify_longrun_ticks.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

@@ -3,7 +3,10 @@ import json
 import os
 import sys
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "distribution")))
+REPO_ROOT_HINT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+if REPO_ROOT_HINT not in sys.path:
+    sys.path.insert(0, REPO_ROOT_HINT)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "package", "distribution")))
 
 from distribution_lib import (  # noqa: E402
     discover_pack_manifests,
@@ -76,18 +79,21 @@ def selection_from_ids(all_packs, ids):
 def selection_from_roots(roots):
     selected = []
     for root in roots:
-        manifest = os.path.join(root, "pack_manifest.json")
-        if os.path.isfile(manifest):
+        for manifest_name in ("pack_manifest.json", "pack.json", "pack.toml"):
+            manifest = os.path.join(root, manifest_name)
+            if not os.path.isfile(manifest):
+                continue
             record = load_manifest(manifest)
             if record.get("pack_id"):
                 selected.append({
                     "pack_id": record.get("pack_id"),
-                    "pack_version": record.get("pack_version"),
+                    "pack_version": record.get("pack_version") or record.get("version"),
                     "provides": extract_capabilities(record.get("provides")),
                     "depends": extract_capabilities(record.get("depends") or record.get("dependencies")),
                     "root": os.path.abspath(root),
-                    "manifest_relpath": "pack_manifest.json",
+                    "manifest_relpath": manifest_name,
                 })
+            break
     return selected
 
 
@@ -121,7 +127,7 @@ def main():
     args = parser.parse_args()
 
     repo_root = os.path.abspath(args.repo_root)
-    all_packs = discover_pack_manifests(["data/packs", "data/worldgen"], repo_root)
+    all_packs = discover_pack_manifests(["content/packs"], repo_root)
     provider_map = build_provider_map(all_packs)
 
     selected = []

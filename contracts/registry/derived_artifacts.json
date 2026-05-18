@@ -12,9 +12,9 @@
           "Deterministic semantic findings output."
         ],
         "path": "docs/audit/auditx/FINDINGS.json",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "tools/auditx/auditx.py",
+        "regeneration_tool": "tools/xstack/auditx/auditx.py",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -39,9 +39,9 @@
           "Deterministic invariant mapping output."
         ],
         "path": "docs/audit/auditx/INVARIANT_MAP.json",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "tools/auditx/auditx.py",
+        "regeneration_tool": "tools/xstack/auditx/auditx.py",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -62,16 +62,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/auditx/auditx.py scan --format json"
+          "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json"
         },
         "notes": [
           "Promotion candidates are deterministic suggestions only.",
           "Activation requires explicit RepoX acceptance."
         ],
         "path": "docs/audit/auditx/PROMOTION_CANDIDATES.json",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/auditx/auditx.py scan --format json",
+        "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -92,16 +92,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_timestamps",
-          "regeneration_tool": "python tools/auditx/auditx.py scan --format json"
+          "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json"
         },
         "notes": [
           "Trend summary derived from canonical findings only.",
           "No wall-clock metadata allowed."
         ],
         "path": "docs/audit/auditx/TRENDS.json",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/auditx/auditx.py scan --format json",
+        "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format json",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -126,9 +126,9 @@
           "Never used as an input to gate determinism checks."
         ],
         "path": ".xstack_cache/auditx/RUN_META.json",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "tools/auditx/auditx.py",
+        "regeneration_tool": "tools/xstack/auditx/auditx.py",
         "used_for_gating": false,
         "write_root": "cache",
         "stability": {
@@ -148,16 +148,16 @@
         "canonical_hash_required": false,
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
-          "regeneration_tool": "python tools/auditx/auditx.py scan --format md"
+          "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md"
         },
         "notes": [
           "Human-facing derived report.",
           "Formatting changes are non-semantic."
         ],
         "path": "docs/audit/auditx/FINDINGS.md",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/auditx/auditx.py scan --format md",
+        "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md",
         "used_for_gating": false,
         "write_root": "docs_audit",
         "stability": {
@@ -177,16 +177,16 @@
         "canonical_hash_required": false,
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
-          "regeneration_tool": "python tools/auditx/auditx.py scan --format md"
+          "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md"
         },
         "notes": [
           "Human-facing derived summary.",
           "Formatting changes are non-semantic."
         ],
         "path": "docs/audit/auditx/SUMMARY.md",
-        "producer": "tools/auditx/auditx.py",
+        "producer": "tools/xstack/auditx/auditx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/auditx/auditx.py scan --format md",
+        "regeneration_tool": "python tools/xstack/auditx/auditx.py scan --format md",
         "used_for_gating": false,
         "write_root": "docs_audit",
         "stability": {
@@ -435,7 +435,7 @@
           "Package index consumed by packaging and install validation.",
           "Determinism checks compare semantic hash only."
         ],
-        "path": "dist/pkg/winnt/x86_64/index/pkg_index.json",
+        "path": "archive/generated/dist/pkg/winnt/x86_64/index/pkg_index.json",
         "producer": "dist_all",
         "regenerable": true,
         "regeneration_tool": "dist_all",
@@ -462,7 +462,7 @@
           "Generated command binding table.",
           "Must be deterministic for identical UI index and command graph."
         ],
-        "path": "runtime/shell/appcore/ui_bind/ui_command_binding_table.c",
+        "path": "tools/codegen/ui/bind/ui_command_binding_table.c",
         "producer": "tool_ui_bind --write",
         "regenerable": true,
         "regeneration_tool": "tool_ui_bind --write",
@@ -486,16 +486,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+          "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root ."
         },
         "notes": [
           "Canonical envelope results.",
           "No timestamps or machine identifiers allowed."
         ],
         "path": "docs/audit/performance/PERFORMX_RESULTS.json",
-        "producer": "tools/performx/performx.py",
+        "producer": "tools/xstack/performx/performx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
+        "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root .",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -516,16 +516,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+          "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root ."
         },
         "notes": [
           "Canonical regression report derived from performance results and baseline.",
           "Hardware identifiers are excluded from canonical output."
         ],
         "path": "docs/audit/performance/PERFORMX_REGRESSIONS.json",
-        "producer": "tools/performx/performx.py",
+        "producer": "tools/xstack/performx/performx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
+        "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root .",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -545,16 +545,16 @@
         "canonical_hash_required": false,
         "commit_policy": "NEVER",
         "extensions": {
-          "regeneration_tool": "python tools/performx/performx.py run --repo-root ."
+          "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root ."
         },
         "notes": [
           "Run metadata for diagnostics.",
           "May include timestamps and hardware profile details."
         ],
         "path": ".xstack_cache/performx/RUN_META.json",
-        "producer": "tools/performx/performx.py",
+        "producer": "tools/xstack/performx/performx.py",
         "regenerable": true,
-        "regeneration_tool": "python tools/performx/performx.py run --repo-root .",
+        "regeneration_tool": "python tools/xstack/performx/performx.py run --repo-root .",
         "used_for_gating": false,
         "write_root": "cache",
         "stability": {
@@ -575,16 +575,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/performx/performx.py baseline --repo-root . --update --justification <path>"
+          "regeneration_tool": "python tools/xstack/performx/performx.py baseline --repo-root . --update --justification <path>"
         },
         "notes": [
           "Explicit baseline for regression comparison.",
           "Update requires deterministic justification and RepoX approval."
         ],
         "path": "docs/audit/performance/PERFORMX_BASELINE.json",
-        "producer": "tools/performx/performx.py baseline --update",
+        "producer": "tools/xstack/performx/performx.py baseline --update",
         "regenerable": true,
-        "regeneration_tool": "python tools/performx/performx.py baseline --repo-root . --update --justification <path>",
+        "regeneration_tool": "python tools/xstack/performx/performx.py baseline --repo-root . --update --justification <path>",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -605,16 +605,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root ."
+          "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root ."
         },
         "notes": [
           "Canonical compatibility baseline for schema, pack, save, replay, protocol, API, and ABI.",
           "Contains deterministic compatibility transitions and migration linkage only."
         ],
         "path": "docs/audit/compat/COMPAT_BASELINE.json",
-        "producer": "tools/compatx/compatx.py verify",
+        "producer": "tools/xstack/compatx/compatx.py verify",
         "regenerable": true,
-        "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root .",
+        "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root .",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -634,16 +634,16 @@
         "canonical_hash_required": false,
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
-          "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root ."
+          "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root ."
         },
         "notes": [
           "Human-readable compatibility baseline summary.",
           "Formatting changes are non-semantic."
         ],
         "path": "docs/audit/compat/COMPAT_BASELINE.md",
-        "producer": "tools/compatx/compatx.py verify",
+        "producer": "tools/xstack/compatx/compatx.py verify",
         "regenerable": true,
-        "regeneration_tool": "python tools/compatx/compatx.py verify --repo-root .",
+        "regeneration_tool": "python tools/xstack/compatx/compatx.py verify --repo-root .",
         "used_for_gating": false,
         "write_root": "docs_audit",
         "stability": {
@@ -664,16 +664,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_timestamps",
-          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+          "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root ."
         },
         "notes": [
           "Canonical security findings emitted by SecureX.",
           "No run metadata fields are allowed in this artifact."
         ],
         "path": "docs/audit/security/FINDINGS.json",
-        "producer": "tools/securex/securex.py verify",
+        "producer": "tools/xstack/securex/securex.py verify",
         "regenerable": true,
-        "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
+        "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root .",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -694,16 +694,16 @@
         "commit_policy": "SNAPSHOT_ONLY",
         "extensions": {
           "canonicalization_rules": "stable_sort+no_run_meta_fields",
-          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+          "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root ."
         },
         "notes": [
           "Canonical integrity manifest for tool and artifact hashes.",
           "Used to enforce tool-version consistency."
         ],
         "path": "docs/audit/security/INTEGRITY_MANIFEST.json",
-        "producer": "tools/securex/securex.py verify",
+        "producer": "tools/xstack/securex/securex.py verify",
         "regenerable": true,
-        "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
+        "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root .",
         "used_for_gating": true,
         "write_root": "docs_audit",
         "stability": {
@@ -723,16 +723,16 @@
         "canonical_hash_required": false,
         "commit_policy": "NEVER",
         "extensions": {
-          "regeneration_tool": "python tools/securex/securex.py verify --repo-root ."
+          "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root ."
         },
         "notes": [
           "Run metadata for SecureX diagnostics.",
           "May vary across runs and is excluded from determinism checks."
         ],
         "path": ".xstack_cache/securex/RUN_META.json",
-        "producer": "tools/securex/securex.py verify",
+        "producer": "tools/xstack/securex/securex.py verify",
         "regenerable": true,
-        "regeneration_tool": "python tools/securex/securex.py verify --repo-root .",
+        "regeneration_tool": "python tools/xstack/securex/securex.py verify --repo-root .",
         "used_for_gating": false,
         "write_root": "cache",
         "stability": {

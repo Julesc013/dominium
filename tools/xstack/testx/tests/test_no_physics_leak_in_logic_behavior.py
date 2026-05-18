@@ -34,8 +34,8 @@ def _read(repo_root: str, rel_path: str) -> str:
 
 def run(repo_root: str):
     rel_paths = (
-        "contracts/schemas/logic/logic_behavior_model.schema",
-        "contracts/schemas/logic/state_machine_definition.schema",
+        "contracts/schema/logic/logic_behavior_model.schema",
+        "contracts/schema/logic/state_machine_definition.schema",
         "content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json",
         "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json",
     )

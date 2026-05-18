@@ -7,7 +7,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from release import build_release_manifest, verify_release_manifest, write_release_manifest
+from tools.release import build_release_manifest, verify_release_manifest, write_release_manifest
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 

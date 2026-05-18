@@ -1,0 +1,24 @@
+SCHEMA: mobility/coupling_constraint.schema
+schema_id: dominium.schema.mobility.coupling_constraint
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic coupling relation between two vehicles for consist motion.
+
+REQUIRED SHAPE:
+record coupling_constraint
+  required:
+    - schema_version: semver
+    - constraint_id: id
+    - vehicle_a_id: id
+    - vehicle_b_id: id
+    - coupling_type_id: id
+    - active: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Coupling creation/removal is process-mediated only.
+- Vehicle pair ordering is canonicalized for deterministic IDs.
+- Coupling type semantics are registry-driven.

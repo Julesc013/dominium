@@ -25,7 +25,7 @@ Product boot proof is currently partial. See `docs/release/PRODUCT_BOOT_PROOF.md
 | launcher | partial | Python AppShell launcher help exits 0 | no built `launcher` binary |
 | client | partial | tracked wrapper and MVP runtime entry emit AppShell client help | no built `client` binary |
 | server | partial | tracked wrapper and MVP runtime entry emit AppShell server help | no built `server` binary; direct server script ignores CLI args |
-| tools | partial | attach-console tool stub emits AppShell help | no built `tools` binary; `dist/bin/dom` target is missing |
+| tools | partial | attach-console tool stub emits AppShell help | no built `tools` binary; `archive/generated/dist/bin/dom` target is missing |
 
 This note does not promote any product mode status. The matrix below remains a planning and status view until native product binaries and runtime smoke commands are build-proven.
 

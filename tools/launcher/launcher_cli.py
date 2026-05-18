@@ -23,17 +23,17 @@ from tools.lib.content_store import (
     resolve_instance_artifact_root,
     resolve_locator_path,
 )
-from tools.libraries.artifact import (
+from tools.package.libraries.artifact import (
     ARTIFACT_KIND_PROFILE_BUNDLE,
     evaluate_artifact_load,
 )
-from tools.libraries.install import (
+from tools.package.libraries.install import (
     compare_required_contract_ranges,
     compare_required_product_builds,
     normalize_contract_range,
     validate_install_manifest,
 )
-from tools.libraries.instance import (
+from tools.package.libraries.instance import (
     INSTANCE_KIND_CLIENT,
     INSTANCE_KIND_SERVER,
     INSTANCE_KIND_TOOLING,
@@ -49,7 +49,7 @@ from tools.libraries.instance import (
     instance_ui_mode_default,
     validate_instance_manifest,
 )
-from tools.libraries.provides import (
+from tools.package.libraries.provides import (
     REFUSAL_PROVIDES_AMBIGUOUS,
     REFUSAL_PROVIDES_EXPLICIT_REQUIRED,
     REFUSAL_PROVIDES_MISSING_PROVIDER,
@@ -57,11 +57,11 @@ from tools.libraries.provides import (
     normalize_provides_resolutions,
     resolve_providers,
 )
-from tools.libraries.save import (
+from tools.package.libraries.save import (
     evaluate_save_open,
     resolve_save_manifest_path,
 )
-from runtime.appshell.paths import (
+from runtime.shell.paths import (
     VROOT_LOGS,
     VROOT_PACKS,
     VROOT_PROFILES,

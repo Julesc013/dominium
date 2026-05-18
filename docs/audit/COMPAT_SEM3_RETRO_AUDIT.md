@@ -24,7 +24,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
   - Multiple patches against the same `(object_id, property_path)` are applied in deterministic order.
   - There is no conflict artifact, no strict refusal path, and no prompt-stub remediation surface.
 - Current explain tooling has the right insertion point.
-  - `tools/geo/tool_explain_property_origin.py` already declares `overlay_conflict_contract_id = "explain.overlay_conflict"`.
+  - `tools/validators/domain/geology/tool_explain_property_origin.py` already declares `overlay_conflict_contract_id = "explain.overlay_conflict"`.
   - `explain_property_origin(...)` can be extended to attach conflict notes without changing renderer/UI truth boundaries.
 
 ## Integration Direction

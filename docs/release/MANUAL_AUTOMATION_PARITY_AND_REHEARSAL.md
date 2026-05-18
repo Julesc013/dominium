@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: Υ-B1, Υ-B2, later checkpoints, risky Φ-B4, risky Φ-B5, future Ζ planning
 Replacement Target: later release-ops, operator-transaction, publication, and live-ops operational doctrine may refine execution procedures and tooling without replacing the parity and rehearsal semantics frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/agents/AGENT_TASKS.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/FOUNDATION_PHASES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `tools/controlx/README.md`, `tools/controlx/controlx.py`, `tools/controlx/core/execution_router.py`, `tools/xstack/run.py`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/sessionx/stage_parity.py`, `tools/xstack/testx/tests/test_stage_parity_status_surfaces.py`, `tools/xstack/testx/tests/test_stage_parity_transitions_surfaces.py`, `tools/xstack/testx/tests/test_dryrun_tool_runs.py`, `release/update_resolver.py`, `contracts/repo/release_policy.toml`, `docs/release/updates/README.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_YA_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YA.md`, `docs/agents/AGENT_TASKS.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md`, `docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/FOUNDATION_PHASES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `tools/xstack/controlx/README.md`, `tools/xstack/controlx/controlx.py`, `tools/xstack/controlx/core/execution_router.py`, `tools/xstack/run.py`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/sessionx/stage_parity.py`, `tools/xstack/testx/tests/test_stage_parity_status_surfaces.py`, `tools/xstack/testx/tests/test_stage_parity_transitions_surfaces.py`, `tools/xstack/testx/tests/test_dryrun_tool_runs.py`, `tools/release/update_resolver.py`, `contracts/repo/release_policy.toml`, `docs/release/updates/README.md`
 
 # Manual Automation Parity And Rehearsal
 
@@ -74,7 +74,7 @@ The repo already shows real parity pressure:
 
 - `tools/xstack/sessionx/stage_parity.py` routes `cli`, `tui`, and `gui` surfaces through shared session-control semantics
 - `tools/xstack/testx/tests/test_stage_parity_status_surfaces.py` and `tools/xstack/testx/tests/test_stage_parity_transitions_surfaces.py` verify equal status and transition results across surfaces
-- `tools/controlx/controlx.py` and `tools/controlx/core/execution_router.py` already distinguish dry-run from live routing while preserving gate-aware execution structure
+- `tools/xstack/controlx/controlx.py` and `tools/xstack/controlx/core/execution_router.py` already distinguish dry-run from live routing while preserving gate-aware execution structure
 
 Without parity doctrine, later release and rollback work would drift toward:
 
@@ -100,7 +100,7 @@ The repo already shows that rehearsal is expected, but not yet operationalized a
 
 - `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` marks compatibility-governed update rehearsal as ready-now while treating production-like rehearsal as foundation-ready but not implemented
 - `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md` repeatedly converts uncertainty into manual review and rehearsal-only design review rather than live rollout
-- `tools/controlx/core/execution_router.py` already has an explicit dry-run path that preserves gate structure without silently claiming live success
+- `tools/xstack/controlx/core/execution_router.py` already has an explicit dry-run path that preserves gate structure without silently claiming live success
 
 Rehearsal provides:
 

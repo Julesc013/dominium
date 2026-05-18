@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pollution Field Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic POLL tier and field-cell update policy declaration.",
+  "x-doc-ref": [
+    "docs/pollution/POLLUTION_CONSTITUTION.md",
+    "docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "policy_id",
+    "tier",
+    "cell_update_rule_id",
+    "wind_modifier_enabled",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "P0",
+        "P1",
+        "P2"
+      ]
+    },
+    "cell_update_rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "wind_modifier_enabled": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "policy_id": "poll.policy.none",
+      "tier": "P0",
+      "cell_update_rule_id": "rule.pollution.noop",
+      "wind_modifier_enabled": false,
+      "deterministic_fingerprint": "",
+      "extensions": {
+        "null_boot_safe": true
+      }
+    }
+  ]
+}

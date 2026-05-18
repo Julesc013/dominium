@@ -13,7 +13,7 @@ This document explains the generated inventory. It is not authoritative over the
 
 ## CONVERGE-09 Note
 
-CONVERGE-09 split safe root-level domain implementation packages into `game/domains/`. Root-level domain folders moved in this pass are absent from the present-root inventory and recorded as completed entries in `tools/migration/root_move_map.json`.
+CONVERGE-09 split safe root-level domain implementation packages into `game/domain/`. Root-level domain folders moved in this pass are absent from the present-root inventory and recorded as completed entries in `tools/migration/root_move_map.json`.
 
 No product, runtime, archive, generated-output, schema-root, or content-root moves occurred, and no new domain features were added.
 
@@ -128,35 +128,35 @@ No product, runtime, archive, generated-output, schema-root, or content-root mov
 
 ## Split-Required Domain Roots
 
-- `astro`: `split` -> `game/domains/astronomy`; status `completed`; phase `CONVERGE-09`.
-- `chem`: `split` -> `game/domains/chemistry`; status `completed`; phase `CONVERGE-09`.
-- `diegetics`: `split` -> `game/domains/diegetics`; status `completed`; phase `CONVERGE-09`.
-- `electric`: `split` -> `game/domains/electricity`; status `completed`; phase `CONVERGE-09`.
-- `embodiment`: `split` -> `game/domains/embodiment`; status `completed`; phase `CONVERGE-09`.
-- `epistemics`: `split` -> `game/domains/epistemics`; status `completed`; phase `CONVERGE-09`.
-- `field`: `split` -> `game/domains/fields/from_root_field`; status `completed`; phase `CONVERGE-09`.
-- `fields`: `split` -> `game/domains/fields`; status `completed`; phase `CONVERGE-09`.
-- `fluid`: `split` -> `game/domains/fluids`; status `completed`; phase `CONVERGE-09`.
-- `geo`: `split` -> `game/domains/geology`; status `completed`; phase `CONVERGE-09`.
-- `infrastructure`: `split` -> `game/domains/infrastructure`; status `completed`; phase `CONVERGE-09`.
-- `inspection`: `split` -> `game/domains/inspection`; status `completed`; phase `CONVERGE-09`.
-- `interaction`: `split` -> `game/domains/interaction`; status `completed`; phase `CONVERGE-09`.
-- `interior`: `split` -> `game/domains/interior`; status `completed`; phase `CONVERGE-09`.
-- `logic`: `split` -> `game/domains/logic`; status `completed`; phase `CONVERGE-09`.
-- `logistics`: `split` -> `game/domains/logistics`; status `completed`; phase `CONVERGE-09`.
-- `machines`: `split` -> `game/domains/machines`; status `completed`; phase `CONVERGE-09`.
-- `materials`: `split` -> `game/domains/materials`; status `completed`; phase `CONVERGE-09`.
-- `mechanics`: `split` -> `game/domains/mechanics`; status `completed`; phase `CONVERGE-09`.
-- `mobility`: `split` -> `game/domains/mobility`; status `completed`; phase `CONVERGE-09`.
-- `physics`: `split` -> `game/domains/physics`; status `completed`; phase `CONVERGE-09`.
-- `pollution`: `split` -> `game/domains/pollution`; status `completed`; phase `CONVERGE-09`.
-- `process`: `split` -> `game/domains/processes`; status `completed`; phase `CONVERGE-09`.
-- `reality`: `split` -> `game/domains/reality`; status `completed`; phase `CONVERGE-09`.
-- `signals`: `split` -> `game/domains/signals`; status `completed`; phase `CONVERGE-09`.
-- `system`: `split` -> `game/domains/systems`; status `completed`; phase `CONVERGE-09`.
-- `thermal`: `split` -> `game/domains/thermal`; status `completed`; phase `CONVERGE-09`.
-- `universe`: `split` -> `game/domains/universe`; status `completed`; phase `CONVERGE-09`.
-- `worldgen`: `split` -> `game/domains/worldgen`; status `completed`; phase `CONVERGE-09`.
+- `astro`: `split` -> `game/domain/astronomy`; status `completed`; phase `CONVERGE-09`.
+- `chem`: `split` -> `game/domain/chemistry`; status `completed`; phase `CONVERGE-09`.
+- `diegetics`: `split` -> `game/domain/diegetics`; status `completed`; phase `CONVERGE-09`.
+- `electric`: `split` -> `game/domain/electricity`; status `completed`; phase `CONVERGE-09`.
+- `embodiment`: `split` -> `game/domain/embodiment`; status `completed`; phase `CONVERGE-09`.
+- `epistemics`: `split` -> `game/domain/epistemics`; status `completed`; phase `CONVERGE-09`.
+- `field`: `split` -> `game/domain/fields/from_root_field`; status `completed`; phase `CONVERGE-09`.
+- `fields`: `split` -> `game/domain/fields`; status `completed`; phase `CONVERGE-09`.
+- `fluid`: `split` -> `game/domain/fluids`; status `completed`; phase `CONVERGE-09`.
+- `geo`: `split` -> `game/domain/geology`; status `completed`; phase `CONVERGE-09`.
+- `infrastructure`: `split` -> `game/domain/infrastructure`; status `completed`; phase `CONVERGE-09`.
+- `inspection`: `split` -> `game/domain/inspection`; status `completed`; phase `CONVERGE-09`.
+- `interaction`: `split` -> `game/domain/interaction`; status `completed`; phase `CONVERGE-09`.
+- `interior`: `split` -> `game/domain/interior`; status `completed`; phase `CONVERGE-09`.
+- `logic`: `split` -> `game/domain/logic`; status `completed`; phase `CONVERGE-09`.
+- `logistics`: `split` -> `game/domain/logistics`; status `completed`; phase `CONVERGE-09`.
+- `machines`: `split` -> `game/domain/machines`; status `completed`; phase `CONVERGE-09`.
+- `materials`: `split` -> `game/domain/materials`; status `completed`; phase `CONVERGE-09`.
+- `mechanics`: `split` -> `game/domain/mechanics`; status `completed`; phase `CONVERGE-09`.
+- `mobility`: `split` -> `game/domain/mobility`; status `completed`; phase `CONVERGE-09`.
+- `physics`: `split` -> `game/domain/physics`; status `completed`; phase `CONVERGE-09`.
+- `pollution`: `split` -> `game/domain/pollution`; status `completed`; phase `CONVERGE-09`.
+- `process`: `split` -> `game/domain/processes`; status `completed`; phase `CONVERGE-09`.
+- `reality`: `split` -> `game/domain/reality`; status `completed`; phase `CONVERGE-09`.
+- `signals`: `split` -> `game/domain/signals`; status `completed`; phase `CONVERGE-09`.
+- `system`: `split` -> `game/domain/systems`; status `completed`; phase `CONVERGE-09`.
+- `thermal`: `split` -> `game/domain/thermal`; status `completed`; phase `CONVERGE-09`.
+- `universe`: `split` -> `game/domain/universe`; status `completed`; phase `CONVERGE-09`.
+- `worldgen`: `split` -> `game/domain/worldgen`; status `completed`; phase `CONVERGE-09`.
 
 ## Generated Or Ephemeral Roots
 
@@ -210,7 +210,7 @@ Current enforcement summary after CONVERGE-10:
 
 Strict mode now passes only because every remaining generated, transitional, missing, unknown, or review root has an active entry in `contracts/repo/layout_exceptions.toml`.
 
-Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
+Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `updates/`, and root-level compatibility or review files such as `meta_extensions_engine.py`, `numeric_discipline.py`, and `tool_ui_*.cmd`.
 
 New root-level entries must either match the contracts and allowlist or add a specific, bounded exception. No broad wildcard exception exists.
 
@@ -236,7 +236,7 @@ POST-CONVERGE-01 removed ignored, untracked generated/cache roots `.xstack_cache
 
 Current generated/output exception state:
 
-- Active generated/output exceptions: `artifacts/` and `dist/`.
+- Active generated/output exceptions: `archive/generated/artifacts/` and `archive/generated/dist/`.
 - Retired generated/output exceptions: `.xstack_cache/`, `build/`, and `out/`.
 - Active layout exception count: 34.
 - Unexcepted strict violations: 0.

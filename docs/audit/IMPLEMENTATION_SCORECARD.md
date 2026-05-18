@@ -18,7 +18,7 @@ Replacement Target: XI-3 convergence winner selection
 - `REFUSAL_PACK_REGISTRY_MISSING` -> `src/packs/compat/__init__.py` score=`79.05` gap=`24.65` module=`unknown.src.packs.compat`
 - `REFUSAL_SAVE_PACK_LOCK_MISMATCH` -> `src/lib/save/__init__.py` score=`79.05` gap=`21.25` module=`unknown.src.lib.save`
 - `DEFAULT_CONTRACT_BUNDLE_REF` -> `src/lib/save/__init__.py` score=`79.05` gap=`16.49` module=`unknown.src.lib.save`
-- `load_semantic_contract_registry` -> `tools/compatx/core/semantic_contract_validator.py` score=`84.05` gap=`24.76` module=`tools.compatx.core`
+- `load_semantic_contract_registry` -> `tools/xstack/compatx/core/semantic_contract_validator.py` score=`84.05` gap=`24.76` module=`tools.xstack.compatx.core`
 - `mod_manifest_init` -> `game/include/dominium/mods/mod_manifest.h` score=`89.4` gap=`25.1` module=`game.include.dominium.mods`
 - `dom_data_schema_find` -> `engine/include/domino/io/data_validate.h` score=`85.95` gap=`15.23` module=`engine.include.domino.io`
 - `dom_data_schema_register` -> `engine/include/domino/io/data_validate.h` score=`78.81` gap=`16.49` module=`engine.include.domino.io`
@@ -62,7 +62,7 @@ Replacement Target: XI-3 convergence winner selection
 
 - `REFUSAL_COMPAT_FEATURE_DISABLED` lead=`src/compat/negotiation/degrade_enforcer.py` score=`62.5` gap=`1.55`
 - `enforce_negotiated_capability` lead=`src/compat/negotiation/__init__.py` score=`55.45` gap=`6.84`
-- `_run_verify` lead=`tools/compatx/compatx.py` score=`68.93` gap=`2.38`
+- `_run_verify` lead=`tools/xstack/compatx/compatx.py` score=`68.93` gap=`2.38`
 - `DEFAULT_UI_CAPABILITY_PREFERENCE` lead=`src/compat/negotiation/__init__.py` score=`59.48` gap=`7.08`
 - `_semver_tuple` lead=`src/compat/capability_negotiation.py` score=`59.29` gap=`10.23`
 - `_read_json` lead=`src/compat/capability_negotiation.py` score=`73.57` gap=`2.8`
@@ -95,7 +95,7 @@ Replacement Target: XI-3 convergence winner selection
 ### Contracts
 
 - `dom_data_schema_find` lead=`engine/include/domino/io/data_validate.h` score=`85.95` confidence=`high`
-- `load_semantic_contract_registry` lead=`tools/compatx/core/semantic_contract_validator.py` score=`84.05` confidence=`high`
+- `load_semantic_contract_registry` lead=`tools/xstack/compatx/core/semantic_contract_validator.py` score=`84.05` confidence=`high`
 - `_refusal` lead=`tools/xstack/ui_bind.py` score=`80.48` confidence=`high`
 - `REFUSAL_PACK_REGISTRY_MISSING` lead=`src/packs/compat/__init__.py` score=`79.05` confidence=`high`
 - `REFUSAL_COMPILE_INVALID` lead=`src/meta/compile/__init__.py` score=`79.05` confidence=`high`

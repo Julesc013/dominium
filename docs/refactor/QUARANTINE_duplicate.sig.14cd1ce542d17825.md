@@ -19,25 +19,25 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/appshell/command_registry.py`
-- `tools/appshell/tool_generate_command_docs.py`
+- `tools/codegen/shell/tool_generate_command_docs.py`
 
 ## Scorecard
 
 - `src/appshell/command_registry.py` disposition=`canonical` rank=`1` total_score=`69.4` risk=`MED`
-- `tools/appshell/tool_generate_command_docs.py` disposition=`drop` rank=`2` total_score=`67.11` risk=`LOW`
+- `tools/codegen/shell/tool_generate_command_docs.py` disposition=`drop` rank=`2` total_score=`67.11` risk=`LOW`
 
 ## Usage Sites
 
 - Build Targets: `none`
-- Docs: `docs/appshell/LOGGING_AND_TRACING.md, docs/audit/APPSHELL2_RETRO_AUDIT.md, docs/audit/META_STABILITY0_RETRO_AUDIT.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/OBSERVABILITY0_RETRO_AUDIT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/VALIDATION_STACK_MAP.md`
+- Docs: `docs/runtime/shell/LOGGING_AND_TRACING.md, docs/audit/APPSHELL2_RETRO_AUDIT.md, docs/audit/META_STABILITY0_RETRO_AUDIT.md, docs/audit/MODULE_DUPLICATION_REPORT.md, docs/audit/OBSERVABILITY0_RETRO_AUDIT.md, docs/audit/REPO_TREE_INDEX.md, docs/audit/STABILITY_CLASSIFICATION_BASELINE.md, docs/audit/VALIDATION_STACK_MAP.md`
 
 ## Tests Involved
 
 - `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
 - `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
 - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile FAST`
-- `python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile FAST`
+- `python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`
 - `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
 - `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_convergence_plan_deterministic,test_decision_rules_stable`
 

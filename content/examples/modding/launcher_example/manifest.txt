@@ -1,0 +1,6 @@
+id=launcher_example
+kind=mod
+version=0.0.1
+author=Dominium
+target=launcher
+launcher_ext=1

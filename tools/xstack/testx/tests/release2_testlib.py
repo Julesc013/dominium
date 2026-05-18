@@ -7,7 +7,7 @@ import os
 import tempfile
 from contextlib import contextmanager
 
-from release import (
+from tools.release import (
     build_build_id_input_payload,
     build_id_identity_from_input_payload,
     build_mock_signature_block,

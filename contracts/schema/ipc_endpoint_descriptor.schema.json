@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IPC Endpoint Descriptor Schema",
+  "version": "1.0.0",
+  "description": "Deterministic local AppShell IPC endpoint descriptor.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "endpoint_id",
+    "product_id",
+    "session_id",
+    "address",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "endpoint_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "product_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "address": {
+      "type": "string",
+      "minLength": 1
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "address": "example",
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "endpoint_id": "endpoint_id.example",
+      "extensions": {},
+      "product_id": "product_id.example",
+      "schema_version": "1.0.0",
+      "session_id": "session_id.example"
+    }
+  ]
+}

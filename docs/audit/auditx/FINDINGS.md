@@ -14,9 +14,9 @@ Superseded By: none
 
 ## Top Findings
 
-- `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domains/inspection/inspection_engine.py)
+- `E118_SILENT_DOWNGRADE_SMELL:0001` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domain/inspection/inspection_engine.py)
   - domain downgrade path missing negotiation downgrade surface
-- `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domains/materials/materialization/materialization_engine.py)
+- `E118_SILENT_DOWNGRADE_SMELL:0002` VIOLATION `E118_SILENT_DOWNGRADE_SMELL` `architecture.silent_downgrade_smell` (game/domain/materials/materialization/materialization_engine.py)
   - domain downgrade path missing negotiation downgrade surface
 - `E119_UNLOGGED_REFUSAL_SMELL:0001` VIOLATION `E119_UNLOGGED_REFUSAL_SMELL` `architecture.unlogged_refusal_smell` (control/control_plane_engine.py)
   - refused result path not obviously tied to decision log emission
@@ -36,7 +36,7 @@ Superseded By: none
 - `E132_MISSING_DECISION_LOG_SMELL:0003` VIOLATION `E132_MISSING_DECISION_LOG_SMELL` `architecture.missing_decision_log_smell` (control/control_plane_engine.py)
   - refusal path not tied to decision-log emission
   - return {"result": "refused", "refusal": refusal_payload}
-- `E323_RANDOM_FAILURE_SMELL:0001` VIOLATION `E323_RANDOM_FAILURE_SMELL` `logic.random_failure_smell` (game/domains/logic/noise/noise_engine.py)
+- `E323_RANDOM_FAILURE_SMELL:0001` VIOLATION `E323_RANDOM_FAILURE_SMELL` `logic.random_failure_smell` (game/domain/logic/noise/noise_engine.py)
   - logic noise engine missing deterministic-noise token
   - build_logic_noise_decision_row(
 - `E60_HARDCODED_BLUEPRINT_SMELL:0001` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
@@ -60,73 +60,73 @@ Superseded By: none
 - `E60_HARDCODED_BLUEPRINT_SMELL:0007` VIOLATION `E60_HARDCODED_BLUEPRINT_SMELL` `materials.hardcoded_blueprint_smell` (scripts/ci/check_repox_rules.py)
   - hardcoded blueprint token detected in non-data source
   - "\"migration.blueprint.v1_to_v2\"",
-- `A1_REACHABILITY_ORPHANED:0001` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domains/embodiment/__init__.py)
+- `A1_REACHABILITY_ORPHANED:0001` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domain/embodiment/__init__.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A1_REACHABILITY_ORPHANED:0002` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+- `A1_REACHABILITY_ORPHANED:0002` RISK `A1_REACHABILITY_ORPHANED` `reachability` (game/domain/worldgen/earth/lighting/horizon_shadow_engine.py)
   - No non-test or non-doc incoming references found.
   - Likely orphaned or prototype leakage candidate.
-- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+- `A4_SCHEMA_USAGE:0001` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/earth/lighting/horizon_shadow_engine.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/earth/lighting/horizon_shadow_engine.py)
+- `A4_SCHEMA_USAGE:0002` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/earth/lighting/horizon_shadow_engine.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0003` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0004` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0005` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0006` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0007` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0008` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0009` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0010` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0011` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0012` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0013` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0014` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0015` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0016` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0017` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0018` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0019` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0020` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
-- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domains/worldgen/mw/mw_system_refiner_l2.py)
+- `A4_SCHEMA_USAGE:0021` RISK `A4_SCHEMA_USAGE` `schema_usage` (game/domain/worldgen/mw/mw_system_refiner_l2.py)
   - Detected key access without obvious schema anchor: deterministic_fingerprint
   - Best-effort heuristic; verify if schema declaration exists.
 - `A4_SCHEMA_USAGE:0022` RISK `A4_SCHEMA_USAGE` `schema_usage` (scripts/ci/check_repox_rules.py)
@@ -234,7 +234,7 @@ Superseded By: none
 - `A8_DERIVED_FRESHNESS_SMELL:0007` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (.xstack_cache/xstack/FULL_PLAN_TOO_LARGE.md)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.xstack.full_plan_warning
-- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (dist/pkg/winnt/x86_64/index/pkg_index.json)
+- `A8_DERIVED_FRESHNESS_SMELL:0008` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (archive/generated/dist/pkg/winnt/x86_64/index/pkg_index.json)
   - Derived artifact listed in registry is missing on disk.
   - artifact_id=artifact.pkg.index
 - `A8_DERIVED_FRESHNESS_SMELL:0009` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (docs/audit/perf/profile_trace.sample.json)
@@ -264,7 +264,7 @@ Superseded By: none
 - `A8_DERIVED_FRESHNESS_SMELL:0017` RISK `A8_DERIVED_FRESHNESS_SMELL` `derived_freshness` (packs/derived/org.dominium.sol.ephemeris/pack.trust.json)
   - Derived pack JSON artifact has no provenance object.
   - Expected deterministic source->derived traceability header.
-- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (apps/client/core/client_command_bridge.c)
+- `C3_CAPABILITY_BYPASS_SMELL:0001` RISK `C3_CAPABILITY_BYPASS_SMELL` `capability_bypass_smell` (apps/apps/client/session/client_command_bridge.c)
   - Bridge is missing required capability/entitlement guard markers.
   - Missing markers: refuse.profile_not_selected
 - `E106_UNDECLARED_SUBSYSTEM_SMELL:0001` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/aide)
@@ -275,65 +275,65 @@ Superseded By: none
   - subsystem 'migration' is present in repository but missing from topology owner_subsystem declarations
 - `E106_UNDECLARED_SUBSYSTEM_SMELL:0004` RISK `E106_UNDECLARED_SUBSYSTEM_SMELL` `architecture.undeclared_subsystem_smell` (tools/validators)
   - subsystem 'validators' is present in repository but missing from topology owner_subsystem declarations
-- `E107_UNDECLARED_SCHEMA_SMELL:0001` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/accessibility_preset.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0001` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/accessibility_preset.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0002` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_family.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0002` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/action_family.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0003` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_surface.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0003` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/action_surface.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0004` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/action_template.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0004` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/action_template.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0005` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/activation_policy.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0005` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/activation_policy.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0006` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/activation_policy_registry.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0006` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/activation_policy_registry.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0007` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affiliation.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0007` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/affiliation.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0008` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affordance.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0008` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/affordance.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0009` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/affordance_list.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0009` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/affordance_list.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0010` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ag_edge.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0010` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/ag_edge.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0011` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ag_node.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0011` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/ag_node.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0012` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.autonomy_budget.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0012` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/agent.autonomy_budget.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0013` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.delegation.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0013` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/agent.delegation.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0014` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent.goal.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0014` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/agent.goal.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0015` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent_move_intent.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0015` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/agent_move_intent.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0016` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/agent_rotate_intent.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0016` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/agent_rotate_intent.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0017` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ai.profile.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0017` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/ai.profile.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0018` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/ambient_boundary.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0018` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/ambient_boundary.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0019` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/animal.agent.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0019` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/animal.agent.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0020` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/animal.species.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0020` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/animal.species.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0021` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/anti_cheat_module_registry.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0021` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/anti_cheat_module_registry.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0022` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/anti_cheat_policy_registry.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0022` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/anti_cheat_policy_registry.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0023` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/app_mode.schema.json)
+- `E107_UNDECLARED_SCHEMA_SMELL:0023` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/app_mode.schema.json)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0024` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/app_mode.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0024` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/app_mode.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0025` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/command_descriptor.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0025` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/command_descriptor.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0026` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/exit_code_registry.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0026` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/exit_code_registry.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0027` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_category_registry.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0027` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/log_category_registry.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0028` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_event.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0028` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/log_event.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0029` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/log_sink_config.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0029` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/log_sink_config.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0030` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/message_key_registry.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0030` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/message_key_registry.schema)
   - schema path missing from topology schema nodes
-- `E107_UNDECLARED_SCHEMA_SMELL:0031` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schemas/appshell/refusal_code_registry.schema)
+- `E107_UNDECLARED_SCHEMA_SMELL:0031` RISK `E107_UNDECLARED_SCHEMA_SMELL` `architecture.undeclared_schema_smell` (contracts/schema/shell/refusal_code_registry.schema)
   - schema path missing from topology schema nodes

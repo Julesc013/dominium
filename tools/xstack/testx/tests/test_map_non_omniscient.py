@@ -63,7 +63,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.diegetics.instrument_kernel import compute_diegetic_instruments
+    from game.domain.diegetics.instrument_kernel import compute_diegetic_instruments
 
     perceived_now = {
         "camera_viewpoint": {

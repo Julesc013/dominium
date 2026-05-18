@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -73,7 +73,7 @@ Deterministic degrade order under budget pressure is fixed as:
 3. `degrade.chem.defer_noncritical_yield`
 4. `degrade.chem.eval_cap`
 
-Policy is documented in `docs/chemistry/CHEM_STRESS_DEGRADATION_POLICY.md` and enforced in the CHEM stress harness/runtime path.
+Policy is documented in `docs/domains/chemistry/CHEM_STRESS_DEGRADATION_POLICY.md` and enforced in the CHEM stress harness/runtime path.
 
 ## Conservation Verification Summary
 

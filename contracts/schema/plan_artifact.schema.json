@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Plan Artifact Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-4 plan artifact payload for ghost planning and replayable execution.",
+  "x-doc-ref": [
+    "docs/control/CONTROL_PLANE_CONSTITUTION.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "plan_id",
+    "plan_type_id",
+    "spatial_preview_data",
+    "required_resources_summary",
+    "status",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "plan_type_id": {
+      "type": "string",
+      "enum": [
+        "structure",
+        "track",
+        "road",
+        "vehicle",
+        "custom"
+      ]
+    },
+    "compiled_ir_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "compiled_blueprint_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "estimated_bom_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "spatial_preview_data": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "required_resources_summary": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "validated",
+        "approved",
+        "executed",
+        "cancelled"
+      ]
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "plan_id": "plan.5d8cff251b652130fe23d37a",
+      "plan_type_id": "structure",
+      "compiled_ir_id": "control.ir.plan.7a5df66570203988",
+      "compiled_blueprint_ref": "blueprint.hab.module",
+      "estimated_bom_ref": "bom.estimate.4a0d8bb0fa593205",
+      "spatial_preview_data": {
+        "renderables": [
+          {
+            "renderable_id": "overlay.plan.node.0001",
+            "primitive": "box_wire",
+            "material_id": "mat.plan.preview.0001"
+          }
+        ],
+        "materials": [
+          {
+            "material_id": "mat.plan.preview.0001",
+            "albedo_rgb": [
+              166,
+              199,
+              118
+            ],
+            "hashed": true
+          }
+        ]
+      },
+      "required_resources_summary": {
+        "material_mass_raw": {
+          "material.steel": 240
+        },
+        "part_counts": {
+          "part.structural_beam": 12
+        }
+      },
+      "status": "draft",
+      "deterministic_fingerprint": "4bdff4f0b7222fdffbb766c84d71f7790fbf5f96472a8cf1f08448dffde79d51",
+      "extensions": {}
+    }
+  ]
+}

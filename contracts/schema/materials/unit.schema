@@ -1,0 +1,24 @@
+SCHEMA: materials/unit.schema
+schema_id: dominium.schema.materials.unit
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic unit conversion metadata for dimensions.
+
+REQUIRED SHAPE:
+record unit
+  required:
+    - schema_version: semver
+    - unit_id: id
+    - dimension_id: id
+    - scale_factor_to_canonical: fixed_point
+    - display_symbol: text
+    - description: text
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- unit_id is registry-governed.
+- scale_factor_to_canonical is fixed-point and deterministic.

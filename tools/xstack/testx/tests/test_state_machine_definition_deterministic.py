@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.logic import normalize_state_machine_definition_rows
+    from game.domain.logic import normalize_state_machine_definition_rows
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
     payload = _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json")

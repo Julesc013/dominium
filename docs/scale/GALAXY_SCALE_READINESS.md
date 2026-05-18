@@ -41,7 +41,7 @@ Readiness checklist for deterministic traversal from Milky Way macro scale to Ea
 3. Expanded scientific fidelity remains future work; governance contracts are in place now.
 
 ## Cross-References
-- `docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md`
+- `docs/domains/worldgen/REAL_DATA_IMPORT_PIPELINE.md`
 - `docs/architecture/registry_compile.md`
 - `docs/architecture/camera_and_navigation.md`
 - `docs/architecture/interest_regions.md`

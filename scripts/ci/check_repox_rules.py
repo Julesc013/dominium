@@ -264,7 +264,7 @@ FORBIDDEN_RENDER_TRUTH_TOKENS = (
     "hidden_truth_cache",
 )
 
-RULESET_ROOT = os.path.join("repo", "repox", "rulesets")
+RULESET_ROOT = os.path.join("contracts", "repo", "repox", "rulesets")
 REPOX_EXEMPTIONS_PATH = os.path.join("repo", "repox", "repox_exemptions.json")
 PROOF_MANIFEST_DEFAULT = os.path.join("docs", "audit", "proof_manifest.json")
 REPOX_PROFILE_REL = os.path.join("docs", "audit", "repox", "REPOX_PROFILE.json")
@@ -800,10 +800,10 @@ TOOL_SCAN_EXTS = (
     ".sh",
 )
 TOOL_SCAN_SKIP_PREFIXES = (
-    "tools/auditx/cache/",
-    "tools/compatx/cache/",
-    "tools/performx/cache/",
-    "tools/securex/cache/",
+    "tools/xstack/auditx/cache/",
+    "tools/xstack/compatx/cache/",
+    "tools/xstack/performx/cache/",
+    "tools/xstack/securex/cache/",
     ".xstack_cache/",
     "docs/audit/remediation/",
 )
@@ -1434,7 +1434,7 @@ def _build_proof_manifest(repo_root, warnings, failures):
         top = parts[1] if len(parts) > 1 and parts[0] == "apps" else (parts[0] if parts else path)
         if top in ("engine", "game", "client", "server", "launcher", "setup", "tools", "schema", "data", "docs", "tests", "runtime"):
             impacted_subsystems.add(top)
-        if path.startswith("apps/client/") or path.startswith("runtime/shell/appcore/command/") or path.startswith("runtime/shell/appcore/ui_bind/"):
+        if path.startswith("apps/client/") or path.startswith("runtime/shell/command/") or path.startswith("tools/codegen/ui/bind/"):
             required_tests.update({
                 "capability_runtime_enforcement",
                 "freecam_epistemics",
@@ -1458,7 +1458,7 @@ def _build_proof_manifest(repo_root, warnings, failures):
                 "INV-PROCESS-REGISTRY",
                 "INV-PROCESS-RUNTIME-ID",
             })
-        if path.startswith("contracts/schemas/") or path.startswith("data/"):
+        if path.startswith("contracts/schema/") or path.startswith("data/"):
             required_tests.update({
                 "schema_version_immutability_contracts",
                 "schema_migration_contracts",
@@ -1771,7 +1771,7 @@ def check_schema_version_bumps(repo_root):
     changed_files = get_changed_files(repo_root)
     if changed_files is None:
         return ["{}: unable to determine changed files; set DOM_CHANGED_FILES or DOM_BASELINE_REF".format(invariant_id)]
-    schema_files = [path for path in changed_files if path.startswith("contracts/schemas/") and path.endswith(".schema")]
+    schema_files = [path for path in changed_files if path.startswith("contracts/schema/") and path.endswith(".schema")]
     if not schema_files:
         return []
     baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
@@ -1969,7 +1969,7 @@ def check_schema_migration_routes(repo_root):
         return violations
 
     baseline = os.environ.get("DOM_BASELINE_REF", "").strip() or "origin/main"
-    schema_files = [path for path in changed_files if path.startswith("contracts/schemas/") and path.endswith(".schema")]
+    schema_files = [path for path in changed_files if path.startswith("contracts/schema/") and path.endswith(".schema")]
     for rel in schema_files:
         baseline_blob = run_git(["show", "{}:{}".format(baseline, rel)], repo_root)
         if baseline_blob is None:
@@ -2012,7 +2012,7 @@ def check_schema_no_implicit_defaults(repo_root):
     default_re = re.compile(r"\bdefault\b", re.IGNORECASE)
     for rel_path, lines in added.items():
         rel = rel_path.replace("\\", "/")
-        if not rel.startswith("contracts/schemas/") or not rel.endswith(".schema"):
+        if not rel.startswith("contracts/schema/") or not rel.endswith(".schema"):
             continue
         for idx, line in enumerate(lines, start=1):
             if default_re.search(line):
@@ -2618,10 +2618,10 @@ def check_dist_sys_derived(repo_root):
     else:
         violations.append("{}: unable to locate pkg_pack_all in CMakeLists.txt".format(invariant_id))
 
-    pack_script_rel = os.path.join("tools", "distribution", "pkg_pack_all.py")
+    pack_script_rel = os.path.join("tools", "package", "distribution", "pkg_pack_all.py")
     pack_script = read_text(os.path.join(repo_root, pack_script_rel)) or ""
     if "dist/sys" in pack_script.replace("\\", "/"):
-        violations.append("{}: tools/distribution/pkg_pack_all.py references dist/sys as packaging input".format(
+        violations.append("{}: tools/package/distribution/pkg_pack_all.py references dist/sys as packaging input".format(
             invariant_id
         ))
     return violations
@@ -3327,8 +3327,8 @@ def check_observer_freecam_entitlement_gate(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "apps/client/shell/client_shell.c"
-    path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
+    rel = "runtime/shell/client/client_shell.c"
+    path = os.path.join(repo_root, "runtime", "shell", "client", "client_shell.c")
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]
 
@@ -3419,8 +3419,8 @@ def check_runtime_command_capability_guards(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "apps/client/shell/client_shell.c"
-    path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
+    rel = "runtime/shell/client/client_shell.c"
+    path = os.path.join(repo_root, "runtime", "shell", "client", "client_shell.c")
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]
 
@@ -3464,9 +3464,9 @@ def check_client_canonical_bridge(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    bridge_rel = "apps/client/core/client_command_bridge.c"
-    registry_rel = "apps/client/core/client_commands_registry.c"
-    runtime_rel = "apps/client/app/main_client.c"
+    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
+    registry_rel = "apps/apps/client/session/client_commands_registry.c"
+    runtime_rel = "apps/client/main_client.c"
     mode_files = (
         "apps/client/modes/client_mode_cli.c",
         "apps/client/modes/client_mode_tui.c",
@@ -3673,8 +3673,8 @@ def check_authority_context_required(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    session_rel = "contracts/schemas/session/session_spec.schema"
-    authority_rel = "contracts/schemas/authority/authority_context.schema"
+    session_rel = "contracts/schema/session/session_spec.schema"
+    authority_rel = "contracts/schema/authority/authority_context.schema"
     required_session_fields = (
         "universe_id",
         "save_id",
@@ -3804,8 +3804,8 @@ def check_universe_identity_immutability(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    identity_rel = "contracts/schemas/universe/universe_identity.schema"
-    state_rel = "contracts/schemas/universe/universe_state.schema"
+    identity_rel = "contracts/schema/universe/universe_identity.schema"
+    state_rel = "contracts/schema/universe/universe_state.schema"
     identity_path = os.path.join(repo_root, identity_rel.replace("/", os.sep))
     state_path = os.path.join(repo_root, state_rel.replace("/", os.sep))
     violations = []
@@ -3929,7 +3929,7 @@ def check_survival_diegetic_contract(repo_root):
         return []
 
     law_rel = "contracts/registry/law_profiles.json"
-    bridge_rel = "apps/client/core/client_command_bridge.c"
+    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     if not os.path.isfile(law_path):
@@ -3989,8 +3989,8 @@ def check_authority_context_required_for_intents(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "contracts/schemas/authority/authority_context.schema"
-    client_rel = "apps/client/core/client_command_bridge.c"
+    schema_rel = "contracts/schema/authority/authority_context.schema"
+    client_rel = "apps/apps/client/session/client_command_bridge.c"
     server_h_rel = "apps/server/authority/dom_server_authority.h"
     server_cpp_rel = "apps/server/authority/dom_server_authority.cpp"
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
@@ -4036,10 +4036,10 @@ def check_session_spec_required_for_run(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    schema_rel = "contracts/schemas/session/session_spec.schema"
+    schema_rel = "contracts/schema/session/session_spec.schema"
     registry_rel = "contracts/registry/session_defaults.json"
-    bridge_rel = "apps/client/core/client_command_bridge.c"
-    commands_rel = "apps/client/core/client_commands_registry.c"
+    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
+    commands_rel = "apps/apps/client/session/client_commands_registry.c"
     violations = []
     schema_path = os.path.join(repo_root, schema_rel.replace("/", os.sep))
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
@@ -4466,8 +4466,8 @@ def check_extensions_deterministic_serialization(repo_root):
         SESSION_COMMON_REL: ("normalize_extensions_tree(",),
         DISTRIBUTION_LIB_REL: ("normalize_extensions_tree(",),
         PACK_LOADER_REL: ("normalize_extensions_tree(",),
-        "game/domains/geology/overlay/overlay_merge_engine.py": ("normalize_extensions_tree(",),
-        "game/domains/geology/worldgen/worldgen_engine.py": ("normalize_extensions_tree(",),
+        "game/domain/geology/overlay/overlay_merge_engine.py": ("normalize_extensions_tree(",),
+        "game/domain/geology/worldgen/worldgen_engine.py": ("normalize_extensions_tree(",),
         EXTENSION_DISCIPLINE_DOC_REL: ("serialized in sorted key order", "Deterministic normalization must happen before canonical hashing and fingerprinting."),
     }
     for rel_path, tokens in required_tokens.items():
@@ -4557,7 +4557,7 @@ def check_negotiation_required_for_connections(repo_root):
         ),
         doctrine_rel: (
             "Identify themselves and their capabilities",
-            "Choose a mutually supported “compatibility mode”",
+            "Choose a mutually supported â€œcompatibility modeâ€",
             "Produce a signed/hashed negotiation record",
         ),
         server_probe_rel: (
@@ -5357,29 +5357,29 @@ def check_products_must_use_appshell(repo_root):
             "run_tui_mode(",
         ),
         wrapper_stub_rel: (
-            "from runtime.appshell import appshell_main",
+            "from runtime.shell import appshell_main",
             "--product-id",
             "legacy_main=None",
         ),
         runtime_entry_rel: (
-            "from runtime.appshell import appshell_main",
+            "from runtime.shell import appshell_main",
             "def appshell_product_bootstrap(",
             "def client_main(",
             "def server_main(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         server_main_rel: (
-            "from runtime.appshell import appshell_main",
+            "from runtime.shell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         setup_rel: (
-            "from runtime.appshell import appshell_main",
+            "from runtime.shell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
         launcher_rel: (
-            "from runtime.appshell import appshell_main",
+            "from runtime.shell import appshell_main",
             "def appshell_product_bootstrap(",
             "product_bootstrap=appshell_product_bootstrap",
         ),
@@ -5445,7 +5445,7 @@ def check_no_adhoc_main(repo_root):
     for rel_path in (runtime_entry_rel, server_main_rel, setup_rel, launcher_rel):
         path = os.path.join(repo_root, rel_path.replace("/", os.sep))
         text = read_text(path) or ""
-        if "from runtime.appshell import appshell_main" not in text:
+        if "from runtime.shell import appshell_main" not in text:
             violations.append("{}: {} missing appshell_main import".format(invariant_id, normalize_path(rel_path)))
         if "def appshell_product_bootstrap(" not in text:
             violations.append(
@@ -5872,7 +5872,7 @@ def check_no_printf_logging(repo_root):
     if "class LogEngine" not in log_engine_text or "sys.stderr.write" not in log_engine_text or "append_jsonl(" not in log_engine_text:
         violations.append("{}: {} missing shared structured logging engine markers".format(invariant_id, normalize_path(log_engine_rel)))
     sink_text = read_text(os.path.join(repo_root, sink_rel.replace("/", os.sep))) or ""
-    if "from runtime.appshell.logging import append_jsonl, build_log_event" not in sink_text:
+    if "from runtime.shell.logging import append_jsonl, build_log_event" not in sink_text:
         violations.append("{}: {} no longer delegates through the shared log engine".format(invariant_id, normalize_path(sink_rel)))
     print_re = re.compile(r"\bprint\s*\(")
     for rel_path in guarded_rels:
@@ -5894,12 +5894,12 @@ def check_log_engine_only(repo_root):
             "log_emit(",
         ),
         appshell_rel("commands", "command_engine.py"): (
-            "from runtime.appshell.logging import get_current_log_engine, log_emit",
+            "from runtime.shell.logging import get_current_log_engine, log_emit",
             "message_key",
             "diag snapshot",
         ),
         os.path.join("apps", "server", "net", "loopback_transport.py"): (
-            "from runtime.appshell.logging import build_log_event, get_current_log_engine",
+            "from runtime.shell.logging import build_log_event, get_current_log_engine",
             "message_key=",
         ),
         os.path.join("apps", "server", "runtime", "tick_loop.py"): (
@@ -6265,11 +6265,11 @@ def check_mod_policy_enforced(repo_root):
         MOD_POLICY_SESSION_CREATE_REL: (
             "--mod-policy-id",
         ),
-        "contracts/schemas/session_spec.schema.json": (
+        "contracts/schema/session_spec.schema.json": (
             '"mod_policy_id"',
             '"mod_policy_registry_hash"',
         ),
-        "contracts/schemas/bundle_lockfile.schema.json": (
+        "contracts/schema/bundle_lockfile.schema.json": (
             '"mod_policy_id"',
             '"mod_policy_registry_hash"',
             '"mod_policy_proof_hash"',
@@ -6686,30 +6686,30 @@ def check_artifacts_must_have_format_version(repo_root):
         return []
 
     required_tokens = {
-        "docs/compat/DATA_FORMAT_VERSIONING.md": (
+        "docs/compatibility/DATA_FORMAT_VERSIONING.md": (
             "format_version",
             "engine_version_created",
             "semantic_contract_bundle_hash",
         ),
-        "contracts/schemas/save_file.schema.json": (
+        "contracts/schema/save_file.schema.json": (
             "\"format_version\"",
             "\"semantic_contract_bundle_hash\"",
             "\"engine_version_created\"",
         ),
-        "contracts/schemas/blueprint_file.schema.json": (
+        "contracts/schema/blueprint_file.schema.json": (
             "\"format_version\"",
             "\"required_contract_ranges\"",
             "\"engine_version_created\"",
         ),
-        "contracts/schemas/profile_bundle.schema.json": (
+        "contracts/schema/profile_bundle.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "contracts/schemas/session_template.schema.json": (
+        "contracts/schema/session_template.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "contracts/schemas/pack_lock.schema.json": (
+        "contracts/schema/pack_lock.schema.json": (
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
@@ -6744,7 +6744,7 @@ def check_no_silent_format_interpretation(repo_root):
         return []
 
     required_tokens = {
-        "docs/compat/DATA_FORMAT_VERSIONING.md": (
+        "docs/compatibility/DATA_FORMAT_VERSIONING.md": (
             "No silent fallback to reinterpretation.",
             "attempt deterministic migration path",
             "attempt read-only mode",
@@ -10929,7 +10929,7 @@ def check_cache_key_includes_contracts(repo_root):
     try:
         if repo_root not in sys.path:
             sys.path.insert(0, repo_root)
-        from game.domains.worldgen.refinement.refinement_cache import build_refinement_cache_key
+        from game.domain.worldgen.refinement.refinement_cache import build_refinement_cache_key
         from tools.xstack.testx.tests.geo8_testlib import worldgen_cell_key
 
         common = {
@@ -11300,8 +11300,8 @@ def check_ui_entitlement_gating(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "apps/client/core/client_commands_registry.c"
-    bridge_rel = "apps/client/core/client_command_bridge.c"
+    rel = "apps/apps/client/session/client_commands_registry.c"
+    bridge_rel = "apps/apps/client/session/client_command_bridge.c"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
     violations = []
@@ -12064,7 +12064,7 @@ def check_process_runtime_literals(repo_root):
     violations = []
     for path in iter_files(roots, DEFAULT_EXCLUDES, SOURCE_EXTS):
         rel = repo_rel(repo_root, path)
-        if rel.startswith("engine/tests/") or rel.startswith("game/tests/") or rel.startswith("tests/"):
+        if rel.startswith("tests/engine/") or rel.startswith("tests/game/") or rel.startswith("tests/"):
             continue
         text = read_text(path) or ""
         for idx, line in enumerate(text.splitlines(), start=1):
@@ -12629,7 +12629,7 @@ def check_data_first_behavior(repo_root):
     if not runtime_changed:
         return []
 
-    data_first_roots = ("contracts/schemas/", "data/", "docs/", "repo/", "tests/fixtures/")
+    data_first_roots = ("contracts/schema/", "data/", "docs/", "repo/", "tests/fixtures/")
     has_data_first_change = False
     for rel in changed:
         rel_norm = normalize_path(rel)
@@ -12644,7 +12644,7 @@ def check_data_first_behavior(repo_root):
         if _has_marker(repo_root, rel, MECHANISM_ONLY_MARKER):
             continue
         violations.append(
-            "{}: runtime behavior change without contracts/schemas/data anchor {} (add {} if mechanism-only)".format(
+            "{}: runtime behavior change without contracts/schema/data anchor {} (add {} if mechanism-only)".format(
                 invariant_id, rel, MECHANISM_ONLY_MARKER
             )
         )
@@ -12818,7 +12818,7 @@ def check_new_feature_requires_data_first(repo_root):
     data_touch = False
     for rel in changed:
         rel_norm = normalize_path(rel)
-        if rel_norm.startswith("data/") or rel_norm.startswith("contracts/schemas/") or rel_norm.startswith("docs/"):
+        if rel_norm.startswith("data/") or rel_norm.startswith("contracts/schema/") or rel_norm.startswith("docs/"):
             data_touch = True
             break
     if data_touch:
@@ -12829,7 +12829,7 @@ def check_new_feature_requires_data_first(repo_root):
         if _has_marker(repo_root, rel, INFRA_ONLY_MARKER):
             continue
         violations.append(
-            "{}: runtime feature touched without data/contracts/schemas/docs anchor {} (file {})".format(
+            "{}: runtime feature touched without data/contracts/schema/docs anchor {} (file {})".format(
                 invariant_id, INFRA_ONLY_MARKER, rel
             )
         )
@@ -13150,7 +13150,7 @@ def check_schema_deprecated_fields(repo_root):
     changed_files = get_changed_files(repo_root)
     if changed_files is None:
         return []
-    candidates = [path for path in changed_files if path.startswith("contracts/schemas/") or path.startswith("data/")]
+    candidates = [path for path in changed_files if path.startswith("contracts/schema/") or path.startswith("data/")]
     violations = []
     for rel in sorted(candidates):
         diff = run_git(["diff", "--unified=0", "--", rel], repo_root)
@@ -13595,12 +13595,12 @@ def check_auditx_artifact_headers(repo_root):
 def check_auditx_deterministic_contract(repo_root):
     invariant_id = "INV-AUDITX-DETERMINISM"
     checks = (
-        ("tools/auditx/auditx.py", ("sort_findings(", "compute_fingerprint(", "build_analysis_graph(", "build_cache_context(")),
-        ("tools/auditx/model/serialization.py", ("sort_keys=True", "sha256(")),
-        ("tools/auditx/graph/analysis_graph.py", ("stable_hash(", "sort_keys=True")),
-        ("tools/auditx/output/writers.py", ("sort_keys=True", "_build_invariant_map(", "_build_promotion_candidates(", "_build_trends(")),
-        ("tools/auditx/canonicalize.py", ("canonical_json_string(", "canonicalize_json_payload(")),
-        ("tools/auditx/cache_engine.py", ("build_cache_context(", "changed_paths_from_state(")),
+        ("tools/xstack/auditx/auditx.py", ("sort_findings(", "compute_fingerprint(", "build_analysis_graph(", "build_cache_context(")),
+        ("tools/xstack/auditx/model/serialization.py", ("sort_keys=True", "sha256(")),
+        ("tools/xstack/auditx/graph/analysis_graph.py", ("stable_hash(", "sort_keys=True")),
+        ("tools/xstack/auditx/output/writers.py", ("sort_keys=True", "_build_invariant_map(", "_build_promotion_candidates(", "_build_trends(")),
+        ("tools/xstack/auditx/canonicalize.py", ("canonical_json_string(", "canonicalize_json_payload(")),
+        ("tools/xstack/auditx/cache_engine.py", ("build_cache_context(", "changed_paths_from_state(")),
     )
 
     violations = []
@@ -13632,7 +13632,7 @@ def check_auditx_nonruntime_leak(repo_root):
         rel = repo_rel(repo_root, path)
         text = read_text(path) or ""
         lowered = text.lower()
-        if "tools/auditx" in lowered or "tools\\auditx" in lowered or "auditx.py" in lowered:
+        if "tools/xstack/auditx" in lowered or "tools\\xstack\\auditx" in lowered or "auditx.py" in lowered:
             violations.append(
                 "{}: runtime source references AuditX implementation {}".format(invariant_id, rel)
             )
@@ -13691,7 +13691,7 @@ def check_auditx_promotion_candidates(repo_root):
             violations.append("{}: candidate {} sets forbidden auto_activate=true in {}".format(invariant_id, idx, rel))
         suggested_ruleset = normalize_path(str(row.get("suggested_ruleset", "")).strip())
         if suggested_ruleset and "/" not in suggested_ruleset:
-            expected = normalize_path(os.path.join("repo", "repox", "rulesets", suggested_ruleset))
+            expected = normalize_path(os.path.join("contracts", "repo", "repox", "rulesets", suggested_ruleset))
             if not os.path.isfile(os.path.join(repo_root, expected.replace("/", os.sep))):
                 violations.append("{}: candidate {} references unknown ruleset '{}'".format(
                     invariant_id, idx, suggested_ruleset

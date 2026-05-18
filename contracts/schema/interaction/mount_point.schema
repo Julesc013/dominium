@@ -1,0 +1,23 @@
+SCHEMA: interaction/mount_point.schema
+schema_id: dominium.schema.interaction.mount_point
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic generic assembly mount interfaces for attach/detach operations.
+
+REQUIRED SHAPE:
+record mount_point
+  required:
+    - schema_version: semver
+    - mount_point_id: id
+    - parent_assembly_id: id
+    - mount_tags: list[id]
+    - alignment_constraints: optional_map
+    - state_machine_id: id
+    - connected_to_mount_point_id: optional_id
+    - extensions: map
+
+INVARIANTS:
+- Mount attach/detach is process-driven only.
+- Connected mount references must be symmetric after successful attach.

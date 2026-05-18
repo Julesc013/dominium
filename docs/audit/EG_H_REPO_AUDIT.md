@@ -117,7 +117,7 @@ Present canonical files required by EG-H:
 - `docs/architectureitecture/` contains prior canonical-style docs from earlier prompts.
 
 
-- `docs/worldgen/` contains refinement contract and worldgen philosophy.
+- `docs/domains/worldgen/` contains refinement contract and worldgen philosophy.
 
 
 - `docs/content/` contains UPS overview and fallback docs.
@@ -126,7 +126,7 @@ Present canonical files required by EG-H:
 - `docs/modding/` now contains mod authoring rules.
 
 
-- `docs/tools/` contains offline worldgen tooling docs.
+- `docs/development/tools/` contains offline worldgen tooling docs.
 
 
 

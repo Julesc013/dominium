@@ -9,7 +9,7 @@ from typing import Dict, List, Tuple
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.compatx.schema_registry import load_version_registry
-from game.domains.universe import (
+from game.domain.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
     pin_contract_bundle_metadata,
@@ -24,9 +24,9 @@ from tools.xstack.registry_compile.compiler import compile_bundle
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.bundle_profile import resolve_bundle_selection
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
-from game.domains.worldgen.core.pipeline import run_worldgen_pipeline
+from game.domain.worldgen.core.pipeline import run_worldgen_pipeline
 
-from game.domains.geology import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
+from game.domain.geology import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
 from tools.repo.meta.profile import resolve_effective_profile_snapshot
 from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
 
@@ -532,7 +532,7 @@ def _load_constraints_payload(
         return {}, refusal(
             "REFUSE_CONSTRAINTS_SCHEMA_INVALID",
             "worldgen constraints payload failed schema validation",
-            "Fix constraints fields to satisfy contracts/schemas/worldgen_constraints.schema.json.",
+            "Fix constraints fields to satisfy contracts/schema/worldgen_constraints.schema.json.",
             {"constraints_file": norm(abs_path)},
             "$.worldgen.constraints",
         )
@@ -981,7 +981,7 @@ def _validate_universe_identity(repo_root: str, payload: dict) -> Dict[str, obje
         return refusal(
             "REFUSE_UNIVERSE_IDENTITY_INVALID",
             "UniverseIdentity payload failed schema validation",
-            "Fix universe identity fields to match contracts/schemas/universe_identity.schema.json.",
+            "Fix universe identity fields to match contracts/schema/universe_identity.schema.json.",
             {"schema_id": "universe_identity"},
             "$.universe_identity",
         )
@@ -1909,7 +1909,7 @@ def create_session_spec(
         return refusal(
             "REFUSE_UNIVERSE_STATE_INVALID",
             "generated UniverseState failed schema validation",
-            "Review generated initial state fields against contracts/schemas/universe_state.schema.json.",
+            "Review generated initial state fields against contracts/schema/universe_state.schema.json.",
             {"schema_id": "universe_state"},
             "$.universe_state",
         )

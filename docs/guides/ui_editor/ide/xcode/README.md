@@ -14,7 +14,7 @@ Add a Run Script phase to `dominium-ui-preview-host-macos` with a command like:
 set -e
 
 ROOT_DIR="${SRCROOT}"
-UI_DOC="${ROOT_DIR}/tools/launcher/ui/doc/launcher_ui_doc.tlv"
+UI_DOC="${ROOT_DIR}/tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv"
 UI_ROOT="${ROOT_DIR}/tools/launcher/ui"
 
 # Adjust UI_EDITOR to your local tool path if needed.

@@ -53,7 +53,7 @@ Once verified, payloads are immutable.
 The store lives under the launcher state root:
 
 ```
-<state_root>/artifacts/
+<state_root>/archive/generated/artifacts/
   sha256/
     <hash_hex>/
       artifact.tlv
@@ -65,7 +65,7 @@ Rules:
 - `<hash_hex>` is lowercase hex of the SHA-256 digest (64 chars).
 - `payload/payload.bin` is never modified after verification.
 - Instances reference artifacts read-only by hash; instances never write into
-  `artifacts/`.
+  `archive/generated/artifacts/`.
 
 ## 3. Metadata (`artifact.tlv`)
 

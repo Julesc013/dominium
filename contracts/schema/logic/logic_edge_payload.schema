@@ -1,0 +1,33 @@
+SCHEMA: logic/logic_edge_payload.schema
+schema_id: dominium.schema.logic.logic_edge_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic edge payloads for LOGIC NetworkGraph specialization.
+- Bind links to signal, carrier, delay, noise, and protocol declarations without embedding propagation runtime.
+
+NON-SEMANTICS:
+- This schema does not execute propagation.
+- It does not authorize cross-shard synchronous wiring.
+- It does not embed electrical or physical solver semantics.
+
+REQUIRED SHAPE:
+record logic_edge_payload
+  required:
+    - edge_kind: enum(link|bus_link|protocol_link|sig_link)
+    - signal_type_id: id
+    - carrier_type_id: id
+    - delay_policy_id: id
+    - noise_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - protocol_id: id
+    - capacity: u64
+
+INVARIANTS:
+- `signal_type_id` must resolve for all edge kinds.
+- `protocol_id` is required for `protocol_link` and optional otherwise.
+- Carrier identity constrains policy, cost, and access only.
+- Cross-shard edges must declare boundary-safe behavior in `extensions` or use `edge_kind = sig_link`.

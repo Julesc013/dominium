@@ -40,7 +40,7 @@ Implementation-first ledger of the live repo state as inspected on 2026-04-06.
 
 | Subsystem | Roots | Languages | Maturity | Usage | Entrypoints | Surface | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Client runtime, viewer shell, and compatibility-aware UI | client/ | C, C++, Python | implemented_and_used | wired_to_entrypoints | client_binary_verify, client_mvp_runtime_entry | product_facing | client.exe help and headless smoke both succeeded; client/app/main_client.c contains extensive compatibility and UI flow handling. |
+| Client runtime, viewer shell, and compatibility-aware UI | client/ | C, C++, Python | implemented_and_used | wired_to_entrypoints | client_binary_verify, client_mvp_runtime_entry | product_facing | client.exe help and headless smoke both succeeded; apps/client/main_client.c contains extensive compatibility and UI flow handling. |
 
 ## Content/Worldgen/Domain Surfaces
 
@@ -53,7 +53,7 @@ Implementation-first ledger of the live repo state as inspected on 2026-04-06.
 
 | Subsystem | Roots | Languages | Maturity | Usage | Entrypoints | Surface | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Audit and repo-inspection tools | tools/audit/<br>tools/auditx/ | Python | partial | implemented_but_not_critical_to_boot | - | tooling | Repo contains substantial audit tooling and many generated reports, but some auditx analyzers still carry TODO markers and were not re-run during this audit. |
+| Audit and repo-inspection tools | tools/audit/<br>tools/xstack/auditx/ | Python | partial | implemented_but_not_critical_to_boot | - | tooling | Repo contains substantial audit tooling and many generated reports, but some auditx analyzers still carry TODO markers and were not re-run during this audit. |
 
 ## Launcher/Setup
 
@@ -80,7 +80,7 @@ Implementation-first ledger of the live repo state as inspected on 2026-04-06.
 
 | Subsystem | Roots | Languages | Maturity | Usage | Entrypoints | Surface | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Release manifest and update resolution control plane | release/<br>updates/<br>dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, launcher_python_appshell | infrastructure_and_release | Launcher and setup compat-status both found dist/manifests/release_manifest.json and reported repo_wrapper_shim install discovery. |
+| Release manifest and update resolution control plane | release/<br>updates/<br>archive/generated/dist/manifests/release_manifest.json<br>repo/release_policy.toml | Python, JSON, TOML | implemented_and_used | wired_to_entrypoints | setup_python_appshell, launcher_python_appshell | infrastructure_and_release | Launcher and setup compat-status both found archive/generated/dist/manifests/release_manifest.json and reported repo_wrapper_shim install discovery. |
 | Offline-first trust verification | security/ | Python | implemented_and_used | wired_to_entrypoints | setup_python_appshell, launcher_python_appshell | infrastructure_and_release | security/trust/trust_verifier.py defines offline trust policy and signature verification helpers used by release_manifest_engine.py and update_resolver.py. |
 | Static update feed artifacts | updates/ | JSON, Markdown | implemented_but_isolated | support_data_only | setup_python_appshell | release_support | updates/ contains stable.json, beta.json, nightly.json, pinned.json, changelog.json, and README.md, but no update runtime code lives there. |
 
@@ -114,4 +114,4 @@ Implementation-first ledger of the live repo state as inspected on 2026-04-06.
 | Subsystem | Roots | Languages | Maturity | Usage | Entrypoints | Surface | Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | CMake verify lane and build boundary checks | CMakeLists.txt<br>CMakePresets.json<br>scripts/ | CMake, Python | implemented_and_used | wired_to_entrypoints | cmake_preset_verify | infrastructure | cmake --preset verify completed successfully on 2026-04-06 and wrote out/build/vs2026/verify. |
-| Validation, TestX, CTest, and playtest suites | tools/validation/<br>tools/xstack/testx_all.py<br>tests/<br>validation/ | Python, C++ | implemented_and_used | wired_to_entrypoints | validation_python, testx_all_python, ctest_verify | tooling_and_infrastructure | tool_run_validation.py and testx_all.py exist; ctest -N enumerated 493 tests including playtest_scenario_parity, playtest_variant_replay, playtest_replay_regression, and playtest_mode_parity. |
+| Validation, TestX, CTest, and playtest suites | tools/validators/suite/<br>tools/xstack/testx_all.py<br>tests/<br>validation/ | Python, C++ | implemented_and_used | wired_to_entrypoints | validation_python, testx_all_python, ctest_verify | tooling_and_infrastructure | tool_run_validation.py and testx_all.py exist; ctest -N enumerated 493 tests including playtest_scenario_parity, playtest_variant_replay, playtest_replay_regression, and playtest_mode_parity. |

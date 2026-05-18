@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `content/data/planning/merged_series_state.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `contracts/planning/merged_series_state.json`
 
 # Chat Handoff Policy
 
@@ -49,10 +49,10 @@ Every future planning or execution chat should begin by reading, at minimum:
 - `docs/canon/glossary_v1.md`
 - `AGENTS.md`
 - `docs/planning/MERGED_PROGRAM_STATE.md`
-- `content/data/planning/merged_series_state.json`
+- `contracts/planning/merged_series_state.json`
 - `docs/planning/GATES_AND_PROOFS.md`
-- the relevant slice of `content/data/planning/final_prompt_inventory.json`
-- the relevant slice of `content/data/planning/dependency_graph_post_pi.json`
+- the relevant slice of `contracts/planning/final_prompt_inventory.json`
+- the relevant slice of `contracts/planning/dependency_graph_post_pi.json`
 
 If the task is prompt-specific, the chat must also read the direct prerequisite artifacts named for that prompt.
 

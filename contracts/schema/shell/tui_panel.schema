@@ -1,0 +1,26 @@
+SCHEMA: appshell/tui_panel.schema
+schema_id: dominium.schema.appshell.tui_panel
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic AppShell TUI panel descriptors.
+
+NON-SEMANTICS:
+- TUIPanel does not mutate truth.
+- TUIPanel does not bypass lens or instrumentation gating.
+
+REQUIRED SHAPE:
+record tui_panel
+  required:
+    - schema_version: tag
+    - panel_id: id
+    - title: text
+    - required_capabilities: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- panel ordering and titles must be stable for a pinned AppShell contract
+- panels that expose world state must do so only through derived view artifacts
+- panel serialization must be deterministic

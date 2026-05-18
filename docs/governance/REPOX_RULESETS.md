@@ -26,7 +26,7 @@ RepoX rules are organized into policy packs under `repo/repox/rulesets/`.
 - `repox/security`: epistemic and anti-cheat checks.
 - `repox/change_shape`: repository-shape and ambiguity checks.
 - `repox/derived_artifacts`: machine-generated contract surfaces (e.g., solver registry, AuditX derived reports).
-- `repox/packaging`: package/distribution governance for `dompkg` and `dist/*`.
+- `repox/packaging`: package/distribution governance for `dompkg` and `archive/generated/dist/*`.
 
 Each rule record defines:
 
@@ -61,7 +61,7 @@ See `docs/governance/TESTX_PROOF_MODEL.md` for runtime proof semantics.
   - `deferred_reason`.
 - RepoX enforces this with `INV-BUGREPORT-RESOLUTION`.
 
-See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
+See `docs/development/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ## Rule References
 
@@ -297,7 +297,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-TOOL-NAME-ONLY / INV-TOOLS-DIR-EXISTS / INV-TOOLS-DIR-MISSING / INV-TOOL-UNRESOLVABLE
 
 - Enforces canonical tool invocation by name only.
-- Enforces in-process PATH canonicalization to `dist/sys/<platform>/<arch>/bin/tools`.
+- Enforces in-process PATH canonicalization to `archive/generated/dist/sys/<platform>/<arch>/bin/tools`.
 - Enforces explicit missing-directory failure (`INV-TOOLS-DIR-MISSING`) with remediation hint.
 - Enforces discoverability probes for required canonical tools at RepoX runtime.
 - Detailed policy: `docs/governance/REPOX_TOOL_RULES.md`.
@@ -399,8 +399,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-DIST-SYS-DERIVED
 
-- Fails when packaging input is sourced from `dist/sys`.
-- Enforces `dist/pkg` as shipping source and `dist/sys` as realized output only.
+- Fails when packaging input is sourced from `archive/generated/dist/sys`.
+- Enforces `archive/generated/dist/pkg` as shipping source and `archive/generated/dist/sys` as realized output only.
 
 ### INV-MODE-BACKEND-SELECTION
 
@@ -410,7 +410,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-PORTABLE-RUN-CONTRACT
 
 - Fails when setup/launcher CLI surfaces do not expose explicit portable/install contract arguments.
-- Contract reference: `docs/dev/PORTABLE_TESTING.md`.
+- Contract reference: `docs/development/PORTABLE_TESTING.md`.
 
 ### INV-BUILD-PRESET-CONTRACT
 
@@ -427,8 +427,8 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-CLIENT-CANONICAL-BRIDGE
 
 - Fails when canonical client command bridge sources are missing.
-- Fails when `client/app/main_client.c` does not call `client_command_bridge_prepare`.
-- Fails when required `client.*` command families are absent from `client/core/client_commands_registry.c`.
+- Fails when `apps/client/main_client.c` does not call `client_command_bridge_prepare`.
+- Fails when required `client.*` command families are absent from `apps/client/session/client_commands_registry.c`.
 - Fails when bridge refusal semantics are missing capability/unavailable refusal markers.
 
 ### INV-PREALPHA-PACK-ISOLATION
@@ -584,7 +584,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-ALL-PRODUCTS-EMIT-DESCRIPTOR
 
 - Fails when the CAP-NEG-1 descriptor doctrine, product capability defaults, descriptor engine/tooling, or dist wrapper surfaces disappear.
-- Fails when governed `dist/bin` product surfaces stop exposing deterministic `--descriptor` or `--descriptor-file` behavior for the shipped engine/game/client/server/setup/launcher/tool products.
+- Fails when governed `archive/generated/dist/bin` product surfaces stop exposing deterministic `--descriptor` or `--descriptor-file` behavior for the shipped engine/game/client/server/setup/launcher/tool products.
 - Preserves offline, self-describing product binaries so setup, launcher, and future handshakes can negotiate from emitted descriptors alone.
 
 ### INV-DESCRIPTOR-DETERMINISTIC
@@ -607,7 +607,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-NO-ADHOC-MAIN
 
-- Fails when governed `dist/bin` wrappers regain wrapper-local descriptor handling or other entrypoint-specific shell branches.
+- Fails when governed `archive/generated/dist/bin` wrappers regain wrapper-local descriptor handling or other entrypoint-specific shell branches.
 - Fails when active product mains stop delegating to AppShell and fall back to ad hoc argument parsing at the top-level entrypoint boundary.
 - Preserves one AppShell-owned outer shell instead of product-by-product startup drift.
 
@@ -866,19 +866,19 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-MVP-PACKS-MINIMAL
 
 - Fails when `contracts/package/locks/pack_lock.mvp_default.json` does not resolve to exactly the three MVP install-visible pack IDs.
-- Fails when `dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set.
+- Fails when `archive/generated/dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set.
 - Prevents v0.0.0 bundle drift from accreting non-minimal install-visible content.
 
 ### INV-PACK-LOCK-REQUIRED
 
 - Fails when the canonical MVP pack lock artifact is missing or omits `pack_lock_hash`.
-- Fails when `content/data/session_templates/session.mvp_default.json` does not record the canonical `pack_lock_hash`.
+- Fails when `content/templates/session/session.mvp_default.json` does not record the canonical `pack_lock_hash`.
 - Fails when the MVP runtime entry surface omits the explicit `--pack_lock` CLI contract.
 
 ### INV-PROFILE-BUNDLE-REQUIRED
 
 - Fails when the canonical MVP profile bundle artifact is missing or malformed.
-- Fails when shipped dist artifacts omit `dist/profiles/bundle.mvp_default.json`.
+- Fails when shipped dist artifacts omit `archive/generated/dist/profiles/bundle.mvp_default.json`.
 - Fails when the MVP runtime entry surface omits the explicit `--profile_bundle` CLI contract.
 
 ### INV-NO-CATALOG-REQUIRED

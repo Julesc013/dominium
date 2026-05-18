@@ -77,7 +77,7 @@
       "classification": "unknown",
       "file": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
       "line": 10,
-      "snippet": "- Compat/Control/Governance families: `tools/compatx/**`, `tools/controlx/**`, `tools/governance/**`, `validation/validation_engine.py`, `control/**`, `governance/**`."
+      "snippet": "- Compat/Control/Governance families: `tools/xstack/compatx/**`, `tools/xstack/controlx/**`, `tools/governance/**`, `validation/validation_engine.py`, `control/**`, `governance/**`."
     },
     {
       "classification": "unknown",
@@ -89,163 +89,163 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2836,
-      "snippet": "\"contracts/schemas/control/budget_allocation_record.schema\","
+      "snippet": "\"contracts/schema/control/budget_allocation_record.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2837,
-      "snippet": "\"contracts/schemas/control/capability.schema\","
+      "snippet": "\"contracts/schema/control/capability.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2838,
-      "snippet": "\"contracts/schemas/control/capability_binding.schema\","
+      "snippet": "\"contracts/schema/control/capability_binding.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2839,
-      "snippet": "\"contracts/schemas/control/control_action.schema\","
+      "snippet": "\"contracts/schema/control/control_action.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2840,
-      "snippet": "\"contracts/schemas/control/control_decision_log.schema\","
+      "snippet": "\"contracts/schema/control/control_decision_log.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2841,
-      "snippet": "\"contracts/schemas/control/control_intent.schema\","
+      "snippet": "\"contracts/schema/control/control_intent.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2842,
-      "snippet": "\"contracts/schemas/control/control_ir.schema\","
+      "snippet": "\"contracts/schema/control/control_ir.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2843,
-      "snippet": "\"contracts/schemas/control/control_ir_block.schema\","
+      "snippet": "\"contracts/schema/control/control_ir_block.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2844,
-      "snippet": "\"contracts/schemas/control/control_ir_op.schema\","
+      "snippet": "\"contracts/schema/control/control_ir_op.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2845,
-      "snippet": "\"contracts/schemas/control/control_ir_verification_report.schema\","
+      "snippet": "\"contracts/schema/control/control_ir_verification_report.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2846,
-      "snippet": "\"contracts/schemas/control/control_policy.schema\","
+      "snippet": "\"contracts/schema/control/control_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2847,
-      "snippet": "\"contracts/schemas/control/control_proof_bundle.schema\","
+      "snippet": "\"contracts/schema/control/control_proof_bundle.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2848,
-      "snippet": "\"contracts/schemas/control/control_resolution.schema\","
+      "snippet": "\"contracts/schema/control/control_resolution.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2849,
-      "snippet": "\"contracts/schemas/control/downgrade_entry.schema\","
+      "snippet": "\"contracts/schema/control/downgrade_entry.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2850,
-      "snippet": "\"contracts/schemas/control/effect.schema\","
+      "snippet": "\"contracts/schema/control/effect.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2851,
-      "snippet": "\"contracts/schemas/control/effect_type.schema\","
+      "snippet": "\"contracts/schema/control/effect_type.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2852,
-      "snippet": "\"contracts/schemas/control/epistemic_policy.schema\","
+      "snippet": "\"contracts/schema/control/epistemic_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2853,
-      "snippet": "\"contracts/schemas/control/execute_plan_intent.schema\","
+      "snippet": "\"contracts/schema/control/execute_plan_intent.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2854,
-      "snippet": "\"contracts/schemas/control/fidelity_allocation.schema\","
+      "snippet": "\"contracts/schema/control/fidelity_allocation.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2855,
-      "snippet": "\"contracts/schemas/control/fidelity_request.schema\","
+      "snippet": "\"contracts/schema/control/fidelity_request.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2856,
-      "snippet": "\"contracts/schemas/control/negotiation_request.schema\","
+      "snippet": "\"contracts/schema/control/negotiation_request.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2857,
-      "snippet": "\"contracts/schemas/control/negotiation_result.schema\","
+      "snippet": "\"contracts/schema/control/negotiation_result.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2858,
-      "snippet": "\"contracts/schemas/control/plan_artifact.schema\","
+      "snippet": "\"contracts/schema/control/plan_artifact.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2859,
-      "snippet": "\"contracts/schemas/control/plan_intent.schema\","
+      "snippet": "\"contracts/schema/control/plan_intent.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2860,
-      "snippet": "\"contracts/schemas/control/stacking_policy.schema\","
+      "snippet": "\"contracts/schema/control/stacking_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2861,
-      "snippet": "\"contracts/schemas/control/view_binding.schema\","
+      "snippet": "\"contracts/schema/control/view_binding.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 2862,
-      "snippet": "\"contracts/schemas/control/view_policy.schema\","
+      "snippet": "\"contracts/schema/control/view_policy.schema\","
     },
     {
       "classification": "unknown",
@@ -975,301 +975,301 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/budget_allocation_record.schema.json",
+      "file": "contracts/schema/budget_allocation_record.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_action.schema.json",
+      "file": "contracts/schema/control_action.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_action_registry.schema.json",
+      "file": "contracts/schema/control_action_registry.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_decision_log.schema.json",
+      "file": "contracts/schema/control_decision_log.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_intent.schema.json",
+      "file": "contracts/schema/control_intent.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_ir.schema.json",
+      "file": "contracts/schema/control_ir.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_ir_block.schema.json",
+      "file": "contracts/schema/control_ir_block.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_ir_op.schema.json",
+      "file": "contracts/schema/control_ir_op.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_ir_verification_report.schema.json",
+      "file": "contracts/schema/control_ir_verification_report.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_policy.schema.json",
+      "file": "contracts/schema/control_policy.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_policy_registry.schema.json",
+      "file": "contracts/schema/control_policy_registry.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_proof_bundle.schema.json",
+      "file": "contracts/schema/control_proof_bundle.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_EXTENSION_CONTRACT.md\","
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control_resolution.schema.json",
+      "file": "contracts/schema/control_resolution.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/downgrade_entry.schema.json",
+      "file": "contracts/schema/downgrade_entry.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/execute_plan_intent.schema.json",
+      "file": "contracts/schema/execute_plan_intent.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/fidelity_allocation.schema.json",
+      "file": "contracts/schema/fidelity_allocation.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/fidelity_request.schema.json",
+      "file": "contracts/schema/fidelity_request.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/negotiation_request.schema.json",
+      "file": "contracts/schema/negotiation_request.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/negotiation_result.schema.json",
+      "file": "contracts/schema/negotiation_result.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/plan_artifact.schema.json",
+      "file": "contracts/schema/plan_artifact.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/plan_intent.schema.json",
+      "file": "contracts/schema/plan_intent.schema.json",
       "line": 7,
       "snippet": "\"docs/control/CONTROL_PLANE_CONSTITUTION.md\""
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/budget_allocation_record.schema",
+      "file": "contracts/schema/control/budget_allocation_record.schema",
       "line": 1,
       "snippet": "SCHEMA: control/budget_allocation_record.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/capability.schema",
+      "file": "contracts/schema/control/capability.schema",
       "line": 1,
       "snippet": "SCHEMA: control/capability.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/capability_binding.schema",
+      "file": "contracts/schema/control/capability_binding.schema",
       "line": 1,
       "snippet": "SCHEMA: control/capability_binding.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_action.schema",
+      "file": "contracts/schema/control/control_action.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_action.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_decision_log.schema",
+      "file": "contracts/schema/control/control_decision_log.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_decision_log.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_intent.schema",
+      "file": "contracts/schema/control/control_intent.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_intent.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_ir.schema",
+      "file": "contracts/schema/control/control_ir.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_ir.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_ir_block.schema",
+      "file": "contracts/schema/control/control_ir_block.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_ir_block.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_ir_op.schema",
+      "file": "contracts/schema/control/control_ir_op.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_ir_op.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_ir_verification_report.schema",
+      "file": "contracts/schema/control/control_ir_verification_report.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_ir_verification_report.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_policy.schema",
+      "file": "contracts/schema/control/control_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_proof_bundle.schema",
+      "file": "contracts/schema/control/control_proof_bundle.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_proof_bundle.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/control_resolution.schema",
+      "file": "contracts/schema/control/control_resolution.schema",
       "line": 1,
       "snippet": "SCHEMA: control/control_resolution.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/downgrade_entry.schema",
+      "file": "contracts/schema/control/downgrade_entry.schema",
       "line": 1,
       "snippet": "SCHEMA: control/downgrade_entry.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/effect.schema",
+      "file": "contracts/schema/control/effect.schema",
       "line": 1,
       "snippet": "SCHEMA: control/effect.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/effect.schema",
+      "file": "contracts/schema/control/effect.schema",
       "line": 8,
       "snippet": "- Encodes process-applied effects that influence control/process parameters without direct Truth bypass."
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/effect_type.schema",
+      "file": "contracts/schema/control/effect_type.schema",
       "line": 1,
       "snippet": "SCHEMA: control/effect_type.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/epistemic_policy.schema",
+      "file": "contracts/schema/control/epistemic_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: control/epistemic_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/execute_plan_intent.schema",
+      "file": "contracts/schema/control/execute_plan_intent.schema",
       "line": 1,
       "snippet": "SCHEMA: control/execute_plan_intent.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/fidelity_allocation.schema",
+      "file": "contracts/schema/control/fidelity_allocation.schema",
       "line": 1,
       "snippet": "SCHEMA: control/fidelity_allocation.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/fidelity_request.schema",
+      "file": "contracts/schema/control/fidelity_request.schema",
       "line": 1,
       "snippet": "SCHEMA: control/fidelity_request.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/negotiation_request.schema",
+      "file": "contracts/schema/control/negotiation_request.schema",
       "line": 1,
       "snippet": "SCHEMA: control/negotiation_request.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/negotiation_result.schema",
+      "file": "contracts/schema/control/negotiation_result.schema",
       "line": 1,
       "snippet": "SCHEMA: control/negotiation_result.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/plan_artifact.schema",
+      "file": "contracts/schema/control/plan_artifact.schema",
       "line": 1,
       "snippet": "SCHEMA: control/plan_artifact.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/plan_intent.schema",
+      "file": "contracts/schema/control/plan_intent.schema",
       "line": 1,
       "snippet": "SCHEMA: control/plan_intent.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/stacking_policy.schema",
+      "file": "contracts/schema/control/stacking_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: control/stacking_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/view_binding.schema",
+      "file": "contracts/schema/control/view_binding.schema",
       "line": 1,
       "snippet": "SCHEMA: control/view_binding.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/control/view_policy.schema",
+      "file": "contracts/schema/control/view_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: control/view_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/life/SPEC_LIFE_CONTINUITY.md",
+      "file": "contracts/schema/life/SPEC_LIFE_CONTINUITY.md",
       "line": 57,
       "snippet": "- ownership_roles (references to control/authority records)"
     },
@@ -1859,25 +1859,25 @@
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 27,
-      "snippet": "- `apps.client.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 28,
-      "snippet": "- `apps.client.ui` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.ui.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 30,
-      "snippet": "- `apps.server.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/architecture/MODULE_BOUNDARIES_v1.md",
       "line": 31,
-      "snippet": "- `apps.server.runtime` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.shell.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -3287,13 +3287,13 @@
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 32,
-      "snippet": "- `apps.client.net` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.client` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 33,
-      "snippet": "- `apps.client.ui` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.ui.client` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -3305,13 +3305,13 @@
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 36,
-      "snippet": "- `apps.server.net` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.network.server` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
       "file": "docs/audit/XI_6_FINAL.md",
       "line": 37,
-      "snippet": "- `apps.server.runtime` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
+      "snippet": "- `runtime.shell.server` / `runtime_tools_contamination` -> Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening."
     },
     {
       "classification": "docs",
@@ -6929,13 +6929,13 @@
       "classification": "docs",
       "file": "docs/repo/ROOT_FILE_POLICY.md",
       "line": 155,
-      "snippet": "After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domains/` when domain-specific; new control"
+      "snippet": "After POST-CONVERGE-05, `core/`, `control/`, and `net/` remain explicit active protected review exceptions. New deterministic substrate should normally land under `engine/` when universal or `game/domain/` when domain-specific; new control"
     },
     {
       "classification": "docs",
       "file": "docs/repo/ROOT_INVENTORY.md",
       "line": 208,
-      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`artifacts/`, `dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
+      "snippet": "Active exceptions cover the missing canonical `external/`, generated roots (`archive/generated/artifacts/`, `archive/generated/dist/`), review roots such as `compat/`, `control/`, `core/`, `data/`, `locks/`, `meta/`, `net/`, `packs/`, `repo/`, `security/`, `specs/`, and `upda"
     },
     {
       "classification": "docs",
@@ -6971,7 +6971,7 @@
       "classification": "docs",
       "file": "docs/repo/audits/CONVERGE_00_BASELINE.md",
       "line": 433,
-      "snippet": "CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/appshell/`, `app/` moved to `runtime/app/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`"
+      "snippet": "CONVERGE-07 completed runtime/AppShell convergence for safe runtime-facing roots. Root-level `appshell/` moved to `runtime/shell/`, `app/` moved to `runtime/shell/lifecycle/`, `ui/` moved to `runtime/ui/`, and `diag/` moved to `runtime/diagnostics/`"
     },
     {
       "classification": "docs",
@@ -7143,7 +7143,7 @@
     },
     {
       "classification": "unknown",
-      "file": "game/domains/MANIFEST.md",
+      "file": "game/domain/MANIFEST.md",
       "line": 42,
       "snippet": "| `control/` | control | none | review | review | Left in place because it is process-control sensitive and mixed with runtime/contract concerns. |"
     },
@@ -7227,253 +7227,253 @@
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e104_direct_intent_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e104_direct_intent_bypass_smell.py",
       "line": 13,
       "snippet": "\"control/control_plane_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e111_intent_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e111_intent_bypass_smell.py",
       "line": 22,
       "snippet": "\"src/control/**\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e116_macro_behavior_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e116_macro_behavior_smell.py",
       "line": 14,
       "snippet": "\"control/ir/control_ir_programs.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e116_macro_behavior_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e116_macro_behavior_smell.py",
       "line": 76,
       "snippet": "related_paths=[runtime_rel, \"control/ir/control_ir_programs.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e117_ir_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e117_ir_nondeterminism_smell.py",
       "line": 12,
       "snippet": "\"src/control/ir/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e117_ir_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e117_ir_nondeterminism_smell.py",
       "line": 16,
       "snippet": "\"control/ir/control_ir_verifier.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e117_ir_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e117_ir_nondeterminism_smell.py",
       "line": 17,
       "snippet": "\"control/ir/control_ir_compiler.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e117_ir_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e117_ir_nondeterminism_smell.py",
       "line": 18,
       "snippet": "\"control/ir/control_ir_programs.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e117_ir_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e117_ir_nondeterminism_smell.py",
       "line": 19,
       "snippet": "\"control/ir/control_ir_multiplayer.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e118_silent_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e118_silent_downgrade_smell.py",
       "line": 12,
       "snippet": "\"control/control_plane_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e118_silent_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e118_silent_downgrade_smell.py",
       "line": 36,
       "snippet": "control_plane_rel = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e119_unlogged_refusal_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e119_unlogged_refusal_smell.py",
       "line": 12,
       "snippet": "\"control/control_plane_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e119_unlogged_refusal_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e119_unlogged_refusal_smell.py",
       "line": 39,
       "snippet": "rel_path = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e121_plan_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e121_plan_bypass_smell.py",
       "line": 14,
       "snippet": "\"control/planning/plan_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e121_plan_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e121_plan_bypass_smell.py",
       "line": 77,
       "snippet": "related_paths=[runtime_rel, \"control/planning/plan_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e122_silent_fidelity_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e122_silent_fidelity_downgrade_smell.py",
       "line": 12,
       "snippet": "\"src/control/fidelity/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e122_silent_fidelity_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e122_silent_fidelity_downgrade_smell.py",
       "line": 37,
       "snippet": "fidelity_core_rel = \"control/fidelity/fidelity_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e123_unbounded_cost_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e123_unbounded_cost_smell.py",
       "line": 12,
       "snippet": "\"src/control/fidelity/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e123_unbounded_cost_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e123_unbounded_cost_smell.py",
       "line": 37,
       "snippet": "fidelity_engine_rel = \"control/fidelity/fidelity_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e125_type_branch_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e125_type_branch_smell.py",
       "line": 13,
       "snippet": "\"src/control/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e125_type_branch_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e125_type_branch_smell.py",
       "line": 98,
       "snippet": "related_paths=[rel_path, \"control/capability/capability_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e126_hidden_feature_flag_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e126_hidden_feature_flag_smell.py",
       "line": 13,
       "snippet": "\"src/control/\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e126_hidden_feature_flag_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e126_hidden_feature_flag_smell.py",
       "line": 100,
       "snippet": "related_paths=[rel_path, \"control/capability/capability_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e127_temp_modifier_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e127_temp_modifier_smell.py",
       "line": 36,
       "snippet": "effect_engine_rel = \"control/effects/effect_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e128_effect_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e128_effect_bypass_smell.py",
       "line": 31,
       "snippet": "control_rel = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e129_control_plane_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e129_control_plane_bypass_smell.py",
       "line": 20,
       "snippet": "CONTROL_PLANE_NODE_ID = \"module:control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e129_control_plane_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e129_control_plane_bypass_smell.py",
       "line": 133,
       "snippet": "if rel_path.startswith((\"src/control/\", \"tools/\", \"docs/\")):"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e129_control_plane_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e129_control_plane_bypass_smell.py",
       "line": 190,
       "snippet": "related_paths=[rel_path, \"control/control_plane_engine.py\"],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
       "line": 20,
       "snippet": "CONTROL_PLANE_NODE_ID = \"module:control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
       "line": 25,
       "snippet": "re.compile(r\"\\bentitlement\\.control\\.admin\\b\", re.IGNORECASE),"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e130_hidden_privilege_escalation_smell.py",
       "line": 107,
       "snippet": "if rel_path.startswith((\"src/control/\", \"tools/\", \"docs/\")):"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e131_silent_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e131_silent_downgrade_smell.py",
       "line": 19,
       "snippet": "CONTROL_PLANE_REL = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e131_silent_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e131_silent_downgrade_smell.py",
       "line": 20,
       "snippet": "CONTROL_PLANE_NODE_ID = \"module:control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e131_silent_downgrade_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e131_silent_downgrade_smell.py",
       "line": 144,
       "snippet": "if rel_path.startswith((\"src/control/\", \"tools/\", \"docs/\")):"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e132_missing_decision_log_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e132_missing_decision_log_smell.py",
       "line": 19,
       "snippet": "CONTROL_PLANE_REL = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e132_missing_decision_log_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e132_missing_decision_log_smell.py",
       "line": 20,
       "snippet": "CONTROL_PLANE_NODE_ID = \"module:control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e132_missing_decision_log_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e132_missing_decision_log_smell.py",
       "line": 173,
       "snippet": "if rel_path.startswith(\"src/control/\"):"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e134_spec_bypass_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e134_spec_bypass_smell.py",
       "line": 12,
       "snippet": "CONTROL_REL = \"control/control_plane_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e13_player_special_case_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e13_player_special_case_smell.py",
       "line": 86,
       "snippet": "\"Hardcoded player literal detected in control/runtime code path.\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e191_direct_breaker_toggle_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e191_direct_breaker_toggle_smell.py",
       "line": 86,
       "snippet": "evidence=[\"breaker toggle appears to bypass control/runtime process path\", snippet[:140]],"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e265_silent_forced_expand_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e265_silent_forced_expand_smell.py",
       "line": 84,
       "snippet": "\"control/proof/control_proof_bundle.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e347_unlogged_terrain_edit_smell.py",
       "line": 30,
       "snippet": "\"control/proof/control_proof_bundle.py\": ("
     },

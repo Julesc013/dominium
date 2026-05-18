@@ -1,0 +1,26 @@
+{
+  "migration_stub": {
+    "from_version": "0.1.0",
+    "status": "stub",
+    "to_version": "0.1.0"
+  },
+  "record": {
+    "region_records": [
+      {
+        "age_class": "stub",
+        "boundary_ref": "milky_way_disk_boundary",
+        "density_class": "stub",
+        "hazard_tags": [],
+        "name": "Disk",
+        "parent_region_ref": null,
+        "provenance_ref": "stub_provenance",
+        "region_id": "milky_way_disk",
+        "region_tags": [
+          "disk"
+        ],
+        "region_type": "disk"
+      }
+    ]
+  },
+  "schema_version": "0.1.0"
+}

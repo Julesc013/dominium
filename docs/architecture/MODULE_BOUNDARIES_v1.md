@@ -8,7 +8,7 @@ Replacement Target: superseded by a later explicit ARCH-GRAPH-UPDATE freeze only
 
 # Module Boundaries v1
 
-The canonical per-module rule matrix lives in `content/data/architecture/module_boundary_rules.v1.json`.
+The canonical per-module rule matrix lives in `archive/generated/architecture/module_boundary_rules.v1.json`.
 
 ## Constitutional Alignment
 
@@ -26,11 +26,11 @@ The canonical per-module rule matrix lives in `content/data/architecture/module_
 
 - `apps.client.interaction` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
 - `apps.client.local_server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
-- `apps.client.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
-- `apps.client.ui` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
+- `runtime.network.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
+- `runtime.ui.client` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
 - `apps.server` -> `app_truth_surface, runtime_tools_contamination`; replacement plan: Move app-facing truth access behind declared process/runtime façades before the next boundary tightening pass.
-- `apps.server.net` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
-- `apps.server.runtime` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
+- `runtime.network.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
+- `runtime.shell.server` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
 - `appshell.commands` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
 - `appshell.supervisor` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.
 - `diag` -> `runtime_tools_contamination`; replacement plan: Lift shared helpers into runtime/lib surfaces or isolate the dependency behind declared compat/control/runtime APIs before Xi-7 tightening.

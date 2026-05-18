@@ -25,9 +25,9 @@
     "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "content/data/xstack/xstack_scope_freeze.json",
+    "archive/generated/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "content/data/xstack/xstack_inventory_and_classification.json",
+    "archive/generated/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "contracts/xstack/aide_portable_task_contract.json",
     "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
@@ -46,10 +46,10 @@
     "tools/tool_surface_adapter.py",
     "tools/setup/setup_cli.py",
     "tools/import_bridge.py",
-    "tools/controlx/core/remediation_bridge.py",
+    "tools/xstack/controlx/core/remediation_bridge.py",
     "client/render/render_model_adapter.py",
     "geo/projection/view_adapters.py",
-    "tools/validators/validation/validation_engine.py",
+    "tools/validators/suite/validation_engine.py",
     "schemas/tool_adapter_output.schema.json",
     "docs/development/templates/adapter_template.md",
     "contracts/registry/reality/cross_domain_bridge_registry.json",
@@ -69,9 +69,9 @@
   },
   "dependencies": {
     "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "required_scope_freeze_json": "content/data/xstack/xstack_scope_freeze.json",
+    "required_scope_freeze_json": "archive/generated/xstack/xstack_scope_freeze.json",
     "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "required_inventory_json": "content/data/xstack/xstack_inventory_and_classification.json",
+    "required_inventory_json": "archive/generated/xstack/xstack_inventory_and_classification.json",
     "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
     "required_task_contract_json": "contracts/xstack/aide_portable_task_contract.json",
     "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
@@ -314,7 +314,7 @@
       "why_it_matters": "Shows shell bridge payload translation and refusal mapping that remain local to setup surfaces."
     },
     {
-      "path": "tools/validators/validation/validation_engine.py",
+      "path": "tools/validators/suite/validation_engine.py",
       "why_it_matters": "Shows adapter inventories with active and coverage adapters, proving that adapter naming alone does not imply portability or completeness."
     },
     {
@@ -349,8 +349,8 @@
     "render and view adapters in client/render/render_model_adapter.py and geo/projection/view_adapters.py",
     "setup bridge payload translation in tools/setup/setup_cli.py",
     "import alias bridges in tools/import_bridge.py",
-    "ControlX remediation bridges in tools/controlx/core/remediation_bridge.py",
-    "validation adapter inventories and coverage adapters in tools/validators/validation/validation_engine.py",
+    "ControlX remediation bridges in tools/xstack/controlx/core/remediation_bridge.py",
+    "validation adapter inventories and coverage adapters in tools/validators/suite/validation_engine.py",
     "deprecation shims in tools/validators/compatibility/shims/tool_shims.py"
   ],
   "deferred_until_post_baseline": [

@@ -75,7 +75,7 @@ def _seed_embodied_agent(runtime: dict) -> None:
 
 
 def _run_once(repo_root: str):
-    from tools.network.policies.policy_srz_hybrid import run_hybrid_simulation
+    from tools.validators.network.policies.policy_srz_hybrid import run_hybrid_simulation
     from tools.xstack.testx.tests.net_hybrid_testlib import clone_runtime, prepare_hybrid_runtime_fixture
 
     fixture = prepare_hybrid_runtime_fixture(

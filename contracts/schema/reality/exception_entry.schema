@@ -1,0 +1,28 @@
+SCHEMA: reality/exception_entry.schema
+schema_id: dominium.schema.reality.exception_entry
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define one deterministic conservation exception entry.
+
+REQUIRED SHAPE:
+record exception_entry
+  required:
+    - schema_version: semver
+    - entry_id: id
+    - tick: u64
+    - shard_id: id
+    - quantity_id: id
+    - exception_type_id: id
+    - domain_id: id
+    - process_id: id
+    - delta: fixed_point
+    - reason_code: id
+    - evidence: [text]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Entry ordering and fingerprints are deterministic.
+- Delta is signed and attributed.

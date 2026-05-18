@@ -1,0 +1,56 @@
+{
+  "record": {
+    "dependencies": [
+      {
+        "capability_id": "worldgen.model.cosmology"
+      },
+      {
+        "capability_id": "reality.alt_physics"
+      },
+      {
+        "capability_id": "worldgen.model.alt_physics"
+      },
+      {
+        "capability_id": "reality.hyperspace"
+      },
+      {
+        "capability_id": "worldgen.model.hyperspace"
+      },
+      {
+        "capability_id": "topology.universe"
+      }
+    ],
+    "entitlements": [],
+    "extensions": {
+      "notes": "Exemplar: multiple cosmologies with alternate physics and hyperspace overlays."
+    },
+    "optional": true,
+    "optional_capabilities": [],
+    "pack_format_version": 1,
+    "pack_id": "org.dominium.examples.multicosmology",
+    "pack_version": "1.0.0",
+    "provenance_ref": {
+      "provenance_id": "prov.org.dominium.examples.multicosmology.manifest.v1"
+    },
+    "provides": [
+      {
+        "capability_id": "example.multicosmology"
+      }
+    ],
+    "provides_capabilities": [
+      {
+        "capability_id": "example.multicosmology"
+      }
+    ],
+    "required_engine_version": "0.0.0",
+    "required_protocol_versions": [
+      {
+        "protocol_id": "dominium.protocol.pack_manifest",
+        "version_constraint": "1"
+      }
+    ],
+    "requires_capabilities": []
+  },
+  "schema_id": "dominium.schema.pack_manifest",
+  "schema_version": "2.3.0"
+}

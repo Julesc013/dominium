@@ -1,0 +1,25 @@
+SCHEMA: mechanics/structural_node.schema
+schema_id: dominium.schema.mechanics.structural_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic structural node state row for load/deformation updates.
+
+REQUIRED SHAPE:
+record structural_node
+  required:
+    - schema_version: semver
+    - node_id: id
+    - assembly_part_id: id
+    - applied_force: fixed
+    - applied_torque: fixed
+    - elastic_strain: fixed
+    - plastic_strain: fixed
+    - failure_state: enum(none|yielded|failed)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Node mechanics state is process-owned and tick-deterministic.
+- plastic_strain is monotonic non-decreasing unless explicit repair/reset process applies.

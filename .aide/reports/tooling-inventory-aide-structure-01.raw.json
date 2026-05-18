@@ -26,24 +26,24 @@
     {
       "classification": "candidate_tooling",
       "examples": [
-        "tools/auditx/__pycache__/cache_engine.cpython-39.pyc",
-        "tools/auditx/__pycache__/canonicalize.cpython-39.pyc",
-        "tools/auditx/analyzers/__init__.py",
-        "tools/auditx/analyzers/__pycache__/__init__.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a1_reachability_orphaned.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a2_ownership_boundary.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a3_canon_drift.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a4_schema_usage.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a5_capability_misuse.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a6_ui_parity_bypass.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a7_legacy_contamination.cpython-39.pyc",
-        "tools/auditx/analyzers/__pycache__/a8_derived_freshness_smell.cpython-39.pyc"
+        "tools/xstack/auditx/__pycache__/cache_engine.cpython-39.pyc",
+        "tools/xstack/auditx/__pycache__/canonicalize.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__init__.py",
+        "tools/xstack/auditx/analyzers/__pycache__/__init__.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a1_reachability_orphaned.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a2_ownership_boundary.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a3_canon_drift.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a4_schema_usage.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a5_capability_misuse.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a6_ui_parity_bypass.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a7_legacy_contamination.cpython-39.pyc",
+        "tools/xstack/auditx/analyzers/__pycache__/a8_derived_freshness_smell.cpython-39.pyc"
       ],
       "executed": false,
       "execution_inferred_safe": false,
       "file_count": 1135,
       "kind": "directory",
-      "path": "tools/auditx",
+      "path": "tools/xstack/auditx",
       "present": true
     },
     {

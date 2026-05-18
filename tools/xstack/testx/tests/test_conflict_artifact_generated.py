@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "geo", "overlay", "compat", "explain"]
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.geo.tool_explain_property_origin import explain_property_origin_report
+    from tools.validators.domain.geology.tool_explain_property_origin import explain_property_origin_report
     from tools.xstack.testx.tests.geo9_testlib import OBJECT_ID_EARTH, overlay_fixture_merge_result
 
     merge = dict(

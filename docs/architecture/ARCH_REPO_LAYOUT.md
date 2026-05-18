@@ -140,7 +140,7 @@ Top-level domains:
 - Public engine headers: `engine/include/**` only.
 
 
-- Engine internals: `engine/modules/**` and `engine/render/**` are private.
+- Engine internals: `engine/modules/**` and `runtime/render/**` are private.
 
 
 - Game code must not include `engine/modules/**`.
@@ -149,7 +149,7 @@ Top-level domains:
 - Launcher/setup/tools must not include engine internals.
 
 
-- Render backends live under `engine/render/**`, not under `client/` or `game/`.
+- Render backends live under `runtime/render/**`, not under `client/` or `game/`.
 
 
 - Game rules and economy never live under `engine/`.

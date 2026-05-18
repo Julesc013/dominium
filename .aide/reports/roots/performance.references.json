@@ -17,19 +17,19 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3657,
-      "snippet": "\"contracts/schemas/performance/arbitration_policy.schema\","
+      "snippet": "\"contracts/schema/performance/arbitration_policy.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3658,
-      "snippet": "\"contracts/schemas/performance/budget_envelope.schema\","
+      "snippet": "\"contracts/schema/performance/budget_envelope.schema\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 3659,
-      "snippet": "\"contracts/schemas/performance/inspection_cache_policy.schema\","
+      "snippet": "\"contracts/schema/performance/inspection_cache_policy.schema\","
     },
     {
       "classification": "unknown",
@@ -77,13 +77,13 @@
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 10433,
-      "snippet": "\"game/domains/materials/performance/__init__.py\","
+      "snippet": "\"game/domain/materials/performance/__init__.py\","
     },
     {
       "classification": "unknown",
       "file": ".aide/repo/ownership-map.json",
       "line": 10434,
-      "snippet": "\"game/domains/materials/performance/mat_scale_engine.py\","
+      "snippet": "\"game/domain/materials/performance/mat_scale_engine.py\","
     },
     {
       "classification": "unknown",
@@ -105,19 +105,19 @@
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/performance/arbitration_policy.schema",
+      "file": "contracts/schema/performance/arbitration_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: performance/arbitration_policy.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/performance/budget_envelope.schema",
+      "file": "contracts/schema/performance/budget_envelope.schema",
       "line": 1,
       "snippet": "SCHEMA: performance/budget_envelope.schema"
     },
     {
       "classification": "unknown",
-      "file": "contracts/schemas/performance/inspection_cache_policy.schema",
+      "file": "contracts/schema/performance/inspection_cache_policy.schema",
       "line": 1,
       "snippet": "SCHEMA: performance/inspection_cache_policy.schema"
     },
@@ -297,9 +297,9 @@
     },
     {
       "classification": "docs",
-      "file": "docs/app/TESTX_INVENTORY.md",
+      "file": "docs/apps/TESTX_INVENTORY.md",
       "line": 24,
-      "snippet": "- Engine tests: `engine_smoke`, performance/IR tests (`engine/tests/CMakeLists.txt`)."
+      "snippet": "- Engine tests: `engine_smoke`, performance/IR tests (`tests/engine/CMakeLists.txt`)."
     },
     {
       "classification": "docs",
@@ -449,7 +449,7 @@
       "classification": "docs",
       "file": "docs/audit/performance/PERFORMX_BASELINE.md",
       "line": 18,
-      "snippet": "- `python tools/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
+      "snippet": "- `python tools/xstack/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
     },
     {
       "classification": "docs",
@@ -573,115 +573,115 @@
     },
     {
       "classification": "tests",
-      "file": "tests/tools/performx_determinism_tests.py",
+      "file": "tests/tools/xstack/performx_determinism_tests.py",
       "line": 10,
       "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
     },
     {
       "classification": "tests",
-      "file": "tests/tools/performx_determinism_tests.py",
+      "file": "tests/tools/xstack/performx_determinism_tests.py",
       "line": 11,
       "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
     },
     {
       "classification": "tests",
-      "file": "tests/tools/performx_smoke_tests.py",
+      "file": "tests/tools/xstack/performx_smoke_tests.py",
       "line": 55,
       "snippet": "\"docs/audit/performance/PERFORMX_RESULTS.json\","
     },
     {
       "classification": "tests",
-      "file": "tests/tools/performx_smoke_tests.py",
+      "file": "tests/tools/xstack/performx_smoke_tests.py",
       "line": 56,
       "snippet": "\"docs/audit/performance/PERFORMX_REGRESSIONS.json\","
     },
     {
       "classification": "tests",
-      "file": "tests/tools/performx_smoke_tests.py",
+      "file": "tests/tools/xstack/performx_smoke_tests.py",
       "line": 57,
       "snippet": "\"docs/audit/performance/RUN_META.json\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e229_wallclock_use_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e229_wallclock_use_smell.py",
       "line": 12,
-      "snippet": "WATCH_PREFIXES = (\"src/time/\", \"game/domains/reality/transitions/\", \"src/performance/\", \"game/domains/mobility/\", \"tools/xstack/sessionx/\")"
+      "snippet": "WATCH_PREFIXES = (\"src/time/\", \"game/domain/reality/transitions/\", \"src/performance/\", \"game/domain/mobility/\", \"tools/xstack/sessionx/\")"
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e48_performance_nondeterminism_smell.py",
       "line": 13,
       "snippet": "\"performance/cost_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e48_performance_nondeterminism_smell.py",
       "line": 14,
       "snippet": "\"performance/inspection_cache.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e48_performance_nondeterminism_smell.py",
       "line": 58,
       "snippet": "\"performance/cost_engine.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e48_performance_nondeterminism_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e48_performance_nondeterminism_smell.py",
       "line": 63,
       "snippet": "\"performance/inspection_cache.py\": ("
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e535_performance_regression_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e535_performance_regression_smell.py",
       "line": 158,
       "snippet": "\"docs/performance/PERFORMANCE_ENVELOPE_v0_0_0_mock.md\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e73_unbounded_inspection_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e73_unbounded_inspection_smell.py",
       "line": 13,
       "snippet": "INSPECTION_CACHE_PATH = \"performance/inspection_cache.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e74_unbounded_work_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e74_unbounded_work_smell.py",
       "line": 13,
-      "snippet": "\"game/domains/materials/performance/mat_scale_engine.py\","
+      "snippet": "\"game/domain/materials/performance/mat_scale_engine.py\","
     },
     {
       "classification": "tools",
-      "file": "tools/auditx/analyzers/e75_thrash_smell.py",
+      "file": "tools/xstack/auditx/analyzers/e75_thrash_smell.py",
       "line": 11,
-      "snippet": "MAT_SCALE_ENGINE_PATH = \"game/domains/materials/performance/mat_scale_engine.py\""
+      "snippet": "MAT_SCALE_ENGINE_PATH = \"game/domain/materials/performance/mat_scale_engine.py\""
     },
     {
       "classification": "tools",
-      "file": "tools/performx/README.md",
+      "file": "tools/xstack/performx/README.md",
       "line": 14,
-      "snippet": "- `python tools/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
+      "snippet": "- `python tools/xstack/performx/performx.py baseline --repo-root . --update --justification docs/audit/performance/PERFORMX_BASELINE.md`"
     },
     {
       "classification": "tools",
-      "file": "tools/performx/README.md",
+      "file": "tools/xstack/performx/README.md",
       "line": 19,
       "snippet": "- `docs/audit/performance/PERFORMX_RESULTS.json`"
     },
     {
       "classification": "tools",
-      "file": "tools/performx/README.md",
+      "file": "tools/xstack/performx/README.md",
       "line": 20,
       "snippet": "- `docs/audit/performance/PERFORMX_REGRESSIONS.json`"
     },
     {
       "classification": "tools",
-      "file": "tools/performx/README.md",
+      "file": "tools/xstack/performx/README.md",
       "line": 22,
       "snippet": "- `docs/audit/performance/RUN_META.json`"
     },
     {
       "classification": "tools",
-      "file": "tools/performx/README.md",
+      "file": "tools/xstack/performx/README.md",
       "line": 24,
       "snippet": "- `docs/audit/performance/PERFORMX_BASELINE.json`"
     },

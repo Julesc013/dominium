@@ -1,0 +1,22 @@
+SCHEMA: thermal/thermal_node_kind.schema
+schema_id: dominium.schema.thermal.thermal_node_kind
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Registry-driven node-kind row for THERM thermal network topology declarations.
+
+REQUIRED SHAPE:
+record thermal_node_kind
+  required:
+    - schema_version: semver
+    - node_kind_id: id
+    - description: string
+    - tags: list[id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Thermal node semantics are data-defined and deterministic.
+- Node kinds are registry-driven and must not introduce hardcoded runtime mode flags.
+

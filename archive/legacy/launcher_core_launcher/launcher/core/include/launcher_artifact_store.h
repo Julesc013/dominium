@@ -78,7 +78,7 @@ bool launcher_artifact_metadata_from_tlv_bytes(const unsigned char* data,
 
 /* Artifact store layout (read-only for instance operations):
  *
- * <state_root>/artifacts/<algo>/<hash_hex>/
+ * <state_root>/archive/generated/artifacts/<algo>/<hash_hex>/
  *   artifact.tlv
  *   payload/payload.bin
  */

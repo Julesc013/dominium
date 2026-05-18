@@ -44,12 +44,12 @@ Status: needs_review
 - `.aide/scripts/aide_lite.py`: PASS.
 - `tools/xstack/run.py`: PASS.
 - `tools/xstack/bundle_validate.py`: PASS.
-- `tools/auditx/auditx.py`: PASS.
-- `tools/auditx/README.md`: PASS.
+- `tools/xstack/auditx/auditx.py`: PASS.
+- `archive/quarantine/canon-spine/tools/xstack/auditx/README.md`: PASS.
 - `tools/xstack/testx_all.py`: PASS.
 - `scripts/dev/gate.py`: PASS.
 - `scripts/ci/check_repox_rules.py`: PASS.
-- Directory-level and non-tool data paths such as `tools/xstack/`, `tools/auditx/`, `repo/repox/`, and `validation/validation_engine.py`: MISSING/unsupported as direct explain-tool targets.
+- Directory-level and non-tool data paths such as `tools/xstack/`, `tools/xstack/auditx/`, `repo/repox/`, and `validation/validation_engine.py`: MISSING/unsupported as direct explain-tool targets.
 
 ## Final Validation
 

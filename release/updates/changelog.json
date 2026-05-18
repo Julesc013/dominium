@@ -4343,8 +4343,8 @@
     {
       "hash": "53ca3a1713ad68189dfb88cbc9ecfccbf6090556",
       "scope": "uncategorized",
-      "summary": "audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - tools/ui_preview_host/common/ui_preview_common.h/.cpp",
-      "subject": "audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - tools/ui_preview_host/common/ui_preview_common.h/.cpp"
+      "summary": "audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - apps/workbench/module/ui/preview/support/ui_preview_common.h/.cpp",
+      "subject": "audit: catalog canon backlog and unblock baseline build - docs/IMPLEMENTATION_BACKLOG_CANON.md - include/domino/core/spacetime.h - source/dominium/game/CMakeLists.txt - source/dominium/launcher/dom_launcher_app.cpp - apps/workbench/module/ui/preview/support/ui_preview_common.h/.cpp"
     },
     {
       "hash": "dd5dcdb1acc9ff76aa3442b554f3696948ee6226",
@@ -5459,8 +5459,8 @@
     {
       "hash": "7116cc27b28c16117f6cb276ac1d2559e13cc5bd",
       "scope": "uncategorized",
-      "summary": "Add UI project discovery and index generation - tools/ui_editor/ui_editor_main_win32.cpp: repo scan, index JSON output, CLI scan option, startup refresh",
-      "subject": "Add UI project discovery and index generation - tools/ui_editor/ui_editor_main_win32.cpp: repo scan, index JSON output, CLI scan option, startup refresh"
+      "summary": "Add UI project discovery and index generation - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp: repo scan, index JSON output, CLI scan option, startup refresh",
+      "subject": "Add UI project discovery and index generation - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp: repo scan, index JSON output, CLI scan option, startup refresh"
     },
     {
       "hash": "27d169e92d36cb2a94c86180b2dd0b1fd8fcb6bd",
@@ -5591,26 +5591,26 @@
     {
       "hash": "0463a0765af81c31e6e6ca3afb4426d6b64ba786",
       "scope": "uncategorized",
-      "summary": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - tools/ui_editor/ui_editor_main_win32.cpp - tools/ui_editor/CMakeLists.txt",
-      "subject": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - tools/ui_editor/ui_editor_main_win32.cpp - tools/ui_editor/CMakeLists.txt"
+      "summary": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt",
+      "subject": "Commit pending UI editor, action/codegen, and DUI event updates - docs/ui_editor/README.md - docs/ui_editor/SPEC_ACTIONS_AND_EVENTS.md - include/dui/domui_event.h - include/dui/dui_api_v1.h - include/dui/dui_schema_tlv.h - source/domino/dui/dui_win32.c - source/domino/ui_codegen/ui_codegen.cpp - source/domino/ui_codegen/ui_codegen.h - source/domino/ui_codegen/ui_codegen_main.cpp - source/domino/ui_codegen/tests/ui_codegen_tests.cpp - apps/workbench/module/ui/editor/ui_editor_main_win32.cpp - apps/workbench/module/ui/editor/CMakeLists.txt"
     },
     {
       "hash": "0a3a22802216e7e37c4949de05f420702c558c7b",
       "scope": "uncategorized",
-      "summary": "Add minimal Tool Editor host that loads DUI doc and edits UI docs - tools/tool_editor/tool_editor_main_win32.cpp",
-      "subject": "Add minimal Tool Editor host that loads DUI doc and edits UI docs - tools/tool_editor/tool_editor_main_win32.cpp"
+      "summary": "Add minimal Tool Editor host that loads DUI doc and edits UI docs - apps/workbench/module/tool/editor/tool_editor_main_win32.cpp",
+      "subject": "Add minimal Tool Editor host that loads DUI doc and edits UI docs - apps/workbench/module/tool/editor/tool_editor_main_win32.cpp"
     },
     {
       "hash": "3b2989c6ff0f8dc2e5c131017b6412d4e56134e2",
       "scope": "uncategorized",
-      "summary": "Add Tool Editor codegen integration and docs - tools/tool_editor/CMakeLists.txt - tools/tool_editor/tool_editor_docgen.cpp - tools/tool_editor/tool_editor_actions.h - tools/tool_editor/README.md - tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp - tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h - tools/tool_editor/ui/user/ui_tool_editor_actions_user.cpp - tools/tool_editor/ui/user/ui_tool_editor_actions_user.h - tools/tool_editor/ui/registry/ui_actions_registry.json",
-      "subject": "Add Tool Editor codegen integration and docs - tools/tool_editor/CMakeLists.txt - tools/tool_editor/tool_editor_docgen.cpp - tools/tool_editor/tool_editor_actions.h - tools/tool_editor/README.md - tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.cpp - tools/tool_editor/ui/gen/ui_tool_editor_actions_gen.h - tools/tool_editor/ui/user/ui_tool_editor_actions_user.cpp - tools/tool_editor/ui/user/ui_tool_editor_actions_user.h - tools/tool_editor/ui/registry/ui_actions_registry.json"
+      "summary": "Add Tool Editor codegen integration and docs - apps/workbench/module/tool/editor/CMakeLists.txt - apps/workbench/module/tool/editor/tool_editor_docgen.cpp - apps/workbench/module/tool/editor/tool_editor_actions.h - apps/workbench/module/tool/editor/README.md - apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp - apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h - apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.cpp - apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.h - apps/workbench/module/ui/registry/ui_actions_registry.json",
+      "subject": "Add Tool Editor codegen integration and docs - apps/workbench/module/tool/editor/CMakeLists.txt - apps/workbench/module/tool/editor/tool_editor_docgen.cpp - apps/workbench/module/tool/editor/tool_editor_actions.h - apps/workbench/module/tool/editor/README.md - apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.cpp - apps/workbench/module/ui/editor/gen/ui_tool_editor_actions_gen.h - apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.cpp - apps/workbench/module/ui/editor/user/ui_tool_editor_actions_user.h - apps/workbench/module/ui/registry/ui_actions_registry.json"
     },
     {
       "hash": "626708c107b1825d8f19be731d73b7afbe359559",
       "scope": "uncategorized",
-      "summary": "Add initial Tool Editor UI documents - tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv - tools/tool_editor/ui/doc/tool_editor_ui_doc.json - tools/tool_editor/ui/doc/ui_doc_template_basic.tlv - tools/tool_editor/ui/doc/ui_doc_template_basic.json",
-      "subject": "Add initial Tool Editor UI documents - tools/tool_editor/ui/doc/tool_editor_ui_doc.tlv - tools/tool_editor/ui/doc/tool_editor_ui_doc.json - tools/tool_editor/ui/doc/ui_doc_template_basic.tlv - tools/tool_editor/ui/doc/ui_doc_template_basic.json"
+      "summary": "Add initial Tool Editor UI documents - apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv - apps/workbench/module/ui/doc/tool_editor_ui_doc.json - apps/workbench/module/ui/doc/ui_doc_template_basic.tlv - apps/workbench/module/ui/doc/ui_doc_template_basic.json",
+      "subject": "Add initial Tool Editor UI documents - apps/workbench/module/ui/doc/tool_editor_ui_doc.tlv - apps/workbench/module/ui/doc/tool_editor_ui_doc.json - apps/workbench/module/ui/doc/ui_doc_template_basic.tlv - apps/workbench/module/ui/doc/ui_doc_template_basic.json"
     },
     {
       "hash": "c2831dabe4c6c6009f19db32751170dba964d92b",

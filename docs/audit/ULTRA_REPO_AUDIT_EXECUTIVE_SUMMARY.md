@@ -27,8 +27,8 @@ Superseded By: none
 | Launcher and setup AppShell command surfaces | tools/launcher/launch.py<br>tools/setup/setup_cli.py<br>appshell/ | These are the strongest live repo-local command surfaces for packs, profiles, compat, trust, and supervision. |
 | Default profile bundle, pack lock, and session template | profiles/bundles/bundle.mvp_default.json<br>locks/pack_lock.mvp_default.json<br>data/session_templates/session.mvp_default.json | They already define a coherent baseline configuration for a near-term playable slice. |
 | Loopback authority and local singleplayer controller | client/local_server/local_server_controller.py<br>server/net/loopback_transport.py<br>runtime/process_spawn.py | This is the most evidence-backed way to get a local authoritative playtest loop before real network transport exists. |
-| Release manifest, update resolver, and trust verifier | release/release_manifest_engine.py<br>release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should be reused rather than replaced. |
-| CTest/TestX/validation surface | tools/validation/<br>tools/xstack/testx_all.py<br>tests/playtest/ | The repo already has broad coverage scaffolding; it should gate baseline assembly rather than be rebuilt. |
+| Release manifest, update resolver, and trust verifier | tools/release/release_manifest_engine.py<br>tools/release/update_resolver.py<br>security/trust/trust_verifier.py | These surfaces are already wired into setup/launcher compatibility and should be reused rather than replaced. |
+| CTest/TestX/validation surface | tools/validators/suite/<br>tools/xstack/testx_all.py<br>tests/playtest/ | The repo already has broad coverage scaffolding; it should gate baseline assembly rather than be rebuilt. |
 
 ## Most Incomplete
 

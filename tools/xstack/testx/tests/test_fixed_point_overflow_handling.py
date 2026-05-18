@@ -13,7 +13,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from game.domains.materials.dimension_engine import FixedPointOverflow, INT64_MAX, fixed_point_add
+    from game.domain.materials.dimension_engine import FixedPointOverflow, INT64_MAX, fixed_point_add
 
     try:
         fixed_point_add(INT64_MAX, 1)

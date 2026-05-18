@@ -1,0 +1,25 @@
+SCHEMA: embodiment/collision_provider.schema
+schema_id: dominium.schema.embodiment.collision_provider
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic terrain/body collision providers for embodiment grounding.
+- Keep provider kind and bounded sampling behavior explicit data rather than hidden code branches.
+
+NON-SEMANTICS:
+- This schema does not authorize direct renderer or UI collision mutation.
+- This schema does not define a rigid-body solver.
+
+REQUIRED SHAPE:
+record collision_provider
+  required:
+    - provider_id: id
+    - kind: string
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- collision providers remain deterministic for identical body/surface inputs
+- provider behavior is bounded by declared sampling parameters
+- macro collision remains replaceable by future micro or mesh providers

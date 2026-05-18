@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/inheritance_scheduler.cpp
+FILE: game/rule/life/inheritance_scheduler.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements deterministic inheritance scheduling over ACT.

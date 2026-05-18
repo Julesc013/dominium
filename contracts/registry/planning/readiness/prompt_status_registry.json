@@ -14,7 +14,7 @@
       "evidence_refs": [
         "control/capability",
         "packs",
-        "content/data/planning/reconciliation/subsystem_classification.json"
+        "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Normalize and pin existing capability surfaces during Λ instead of inventing a parallel model.",
       "depends_on": [],
@@ -28,9 +28,9 @@
       "status": "waits_for_quarantine_review",
       "rationale": "Cross-domain bridge work is real and needed, but the field, schema, and pack split-ownership zones make final bridge semantics unsafe to freeze silently.",
       "evidence_refs": [
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
-        "content/data/planning/reconciliation/assumption_invalidations.json",
-        "content/data/planning/reality/content_domain_surfaces.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/assumption_invalidations.json",
+        "contracts/planning/reality/content_domain_surfaces.json"
       ],
       "next_action_implication": "Map bridge candidates first, then route any disputed ownership through explicit review.",
       "depends_on": [],
@@ -63,7 +63,7 @@
       "evidence_refs": [
         "infrastructure",
         "control/proof",
-        "content/data/planning/reality/content_domain_surfaces.json"
+        "contracts/planning/reality/content_domain_surfaces.json"
       ],
       "next_action_implication": "Freeze the chain from live semantic and proof surfaces rather than from abstract theory alone.",
       "depends_on": [],
@@ -151,7 +151,7 @@
         "docs/agents",
         "docs/governance",
         "docs/xstack",
-        "content/data/planning/reconciliation/subsystem_classification.json"
+        "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Merge and normalize the existing mirror surfaces immediately after initial Λ framing.",
       "depends_on": [
@@ -169,7 +169,7 @@
       "evidence_refs": [
         "AGENTS.md",
         "docs/governance",
-        "tools/controlx/controlx.py",
+        "tools/xstack/controlx/controlx.py",
         "tools/xstack/ui_bind.py"
       ],
       "next_action_implication": "Preserve the existing safety baseline and only consolidate wording and routing.",
@@ -186,9 +186,9 @@
       "status": "waits_for_lambda",
       "rationale": "Wrapper infrastructure already exists, but canonical wrapper contracts should inherit stable capability and task semantics from Λ first.",
       "evidence_refs": [
-        "tools/controlx/controlx.py",
+        "tools/xstack/controlx/controlx.py",
         "tools/xstack/ui_bind.py",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Delay wrapper freezing until after Λ and the governed task vocabulary are in place.",
       "depends_on": [
@@ -205,9 +205,9 @@
       "status": "waits_for_lambda",
       "rationale": "Natural-language binding is high leverage, but it should not freeze before Λ stabilizes capability surfaces, semantic bridges, and acceptance boundaries.",
       "evidence_refs": [
-        "tools/controlx/controlx.py",
+        "tools/xstack/controlx/controlx.py",
         "docs/agents/AGENT_PLANNING.md",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Define the bridge only after Λ core vocabulary lands.",
       "depends_on": [
@@ -227,7 +227,7 @@
       "evidence_refs": [
         "tools/xstack",
         "docs/blueprint/FINAL_PROMPT_INVENTORY.md",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Reuse the live XStack tooling, but delay the final catalog until after Λ.",
       "depends_on": [
@@ -245,8 +245,8 @@
       "rationale": "The repo already acknowledges tool and asset-pipeline surfaces, but there is not yet one frozen runtime-facing asset pipeline boundary.",
       "evidence_refs": [
         "docs/architecture/ARCH_ENFORCEMENT.md",
-        "docs/app/TESTX_COMPLIANCE.md",
-        "content/data/planning/reality/toolchain_and_preset_map.json"
+        "docs/apps/TESTX_COMPLIANCE.md",
+        "contracts/planning/reality/toolchain_and_preset_map.json"
       ],
       "next_action_implication": "Map the existing tooling and pipeline surfaces before any deeper render or live-ops work.",
       "depends_on": [
@@ -263,8 +263,8 @@
       "status": "waits_for_lambda",
       "rationale": "The runtime substrate is real, but component ownership cannot be frozen safely before Λ resolves semantic and pack-law grounding.",
       "evidence_refs": [
-        "content/data/planning/reconciliation/subsystem_classification.json",
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
+        "contracts/planning/reconciliation/subsystem_classification.json",
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json",
         "docs/blueprint/FOUNDATION_PHASES.md"
       ],
       "next_action_implication": "Derive the component model from the live runtime substrate only after Λ core semantics are pinned.",
@@ -283,7 +283,7 @@
       "status": "dangerous",
       "rationale": "The repo has only precursor references for authority handoff and shard behavior; freezing distributed authority now would outrun both runtime and semantic grounding.",
       "evidence_refs": [
-        "client/app/main_client.c",
+        "apps/client/main_client.c",
         "server/tests/shard_api_tests.cpp",
         "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
         "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
@@ -344,7 +344,7 @@
       "evidence_refs": [
         "docs/blueprint/SERIES_EXECUTION_STRATEGY.md",
         "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "next_action_implication": "Treat hotswap only as a late boundary-design concern, not an early runtime task.",
       "depends_on": [
@@ -364,7 +364,7 @@
       "evidence_refs": [
         "docs/blueprint/FOUNDATION_PHASES.md",
         "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
-        "content/data/planning/reconciliation/subsystem_classification.json"
+        "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Map insertion points first; do not imply that lifecycle control already exists as a frozen subsystem.",
       "depends_on": [
@@ -402,7 +402,7 @@
       "evidence_refs": [
         "tools/validators/compatibility/capability_negotiation.py",
         "tools/validators/compatibility/migration_lifecycle.py",
-        "content/data/planning/reconciliation/assumption_invalidations.json"
+        "contracts/planning/reconciliation/assumption_invalidations.json"
       ],
       "next_action_implication": "Keep coexistence planning tied to quarantine resolution rather than freezing it early.",
       "depends_on": [
@@ -421,7 +421,7 @@
         "engine",
         "game",
         "app/app_runtime.c",
-        "content/data/planning/reconciliation/subsystem_classification.json"
+        "contracts/planning/reconciliation/subsystem_classification.json"
       ],
       "next_action_implication": "Extract the model from the live spine instead of inventing a new kernel story.",
       "depends_on": [
@@ -440,7 +440,7 @@
         "tools/governance/control_plane_engine.py",
         "server/runtime/tick_loop.py",
         "tools/observability",
-        "content/data/planning/reality/runtime_surfaces.json"
+        "contracts/planning/reality/runtime_surfaces.json"
       ],
       "next_action_implication": "Formalize service boundaries from existing surfaces instead of creating a fresh service layer.",
       "depends_on": [
@@ -457,8 +457,8 @@
       "status": "partially_exists",
       "rationale": "Sandbox tests and sandbox-like product surfaces exist, but a canonical runtime sandbox model is not yet frozen.",
       "evidence_refs": [
-        "game/tests/tests/setup/test_services_fs_sandbox.cpp",
-        "client/core/client_command_bridge.c",
+        "tests/tests/game/setup/test_services_fs_sandbox.cpp",
+        "apps/client/session/client_command_bridge.c",
         "schema/authority/README.md"
       ],
       "next_action_implication": "Extend the existing sandbox and refusal surfaces instead of assuming the repo has no sandbox model.",
@@ -514,7 +514,7 @@
       "rationale": "Archive support, archive policy code, and archive policy registries already exist, but the final publication constitution is not frozen.",
       "evidence_refs": [
         "archive",
-        "release/archive_policy.py",
+        "tools/release/archive_policy.py",
         "contracts/registry/archive_policy_registry.json"
       ],
       "next_action_implication": "Consolidate existing archive and mirror rules rather than inventing them from scratch.",
@@ -552,7 +552,7 @@
       "evidence_refs": [
         "CMakePresets.json",
         "cmake/toolchains",
-        "content/data/planning/reality/toolchain_and_preset_map.json"
+        "contracts/planning/reality/toolchain_and_preset_map.json"
       ],
       "next_action_implication": "Turn the existing matrix into a governed reproducibility artifact.",
       "depends_on": [
@@ -568,7 +568,7 @@
       "status": "partially_exists",
       "rationale": "Rollback selection, yanked handling, and downgrade-related release behavior already exist, but the policy is not yet frozen under one explicit constitution.",
       "evidence_refs": [
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "release/updates/stable.json",
         "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],
@@ -606,7 +606,7 @@
       "status": "partially_exists",
       "rationale": "The repo already contains parity tests, governed command wrappers, and UI binding surfaces, but not one frozen parity doctrine.",
       "evidence_refs": [
-        "game/tests/tests/setup/parity_lock/setup_parity_lock_tests.cpp",
+        "tests/tests/game/setup/parity_lock/setup_parity_lock_tests.cpp",
         "tools/xstack/run.py",
         "tools/xstack/ui_bind.py"
       ],
@@ -624,7 +624,7 @@
       "status": "partially_exists",
       "rationale": "Install/update transaction log machinery already exists, but the broader operator-transaction contract is not yet generalized.",
       "evidence_refs": [
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "release/updates/changelog.json",
         "tools/release"
       ],
@@ -699,7 +699,7 @@
       "rationale": "Release policy, update indices, yanked selection, and trust checks already exist, but the policy is still distributed across code, manifests, and audits.",
       "evidence_refs": [
         "contracts/repo/release_policy.toml",
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "release/updates/stable.json"
       ],
       "next_action_implication": "Consolidate the existing release index logic into a clearer constitution.",
@@ -851,7 +851,7 @@
       "evidence_refs": [
         "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
         "docs/blueprint/CAPABILITY_LADDER.md",
-        "content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+        "contracts/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
       ],
       "next_action_implication": "Treat replaceability as a late-stage governed outcome, not a near-term implementation target.",
       "depends_on": [
@@ -869,7 +869,7 @@
       "status": "partially_exists",
       "rationale": "Rollback, yanked-release, and transaction-log machinery already exist, but canary and live rollout orchestration are not yet fully frozen.",
       "evidence_refs": [
-        "release/update_resolver.py",
+        "tools/release/update_resolver.py",
         "release/updates/stable.json",
         "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
       ],

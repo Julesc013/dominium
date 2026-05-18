@@ -64,7 +64,7 @@ def infer_subsystem(rel_path: str) -> str:
     ):
         if rel_path.startswith(prefix):
             return prefix.rstrip("/")
-    if rel_path.startswith("contracts/schemas/"):
+    if rel_path.startswith("contracts/schema/"):
         return "schema"
     if rel_path.startswith("data/"):
         return "data"
@@ -293,8 +293,8 @@ def collect_stub_report(repo_root: Path):
             elif "permanent stub" in text.lower() or "intentionally" in text.lower():
                 classification = "acceptable_permanent_stub"
                 reason = "explicitly documented stub"
-            elif rel.startswith(("engine/modules/core/", "engine/modules/sim/", "engine/modules/world/",
-                                 "game/core/", "game/rules/")):
+            elif rel.startswith(("engine/kernel/", "game/domain/simulation/", "game/world/",
+                                 "game/rule/", "game/rules/")):
                 classification = "forbidden_stub"
                 reason = "authoritative stub in core runtime"
             stubs.append({

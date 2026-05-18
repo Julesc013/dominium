@@ -27,8 +27,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 | `build/msvc-base/bin/launcher.exe` | PASS | `capabilities` -> PASS | PASS (`launcher: shutdown=app_request`) | PASS headless (`--ui=gui --headless --renderer null --ui-frames 1`) | no hidden logic observed |
 | `build/msvc-base/bin/client.exe` | PASS | `--smoke` -> PASS (`MP0 client local hash`) | PASS (`client: shutdown=app_request`) | PASS headless (`--ui=gui --headless --renderer null --ui-frames 1`) | deterministic smoke hash emitted |
 | `build/msvc-base/bin/server.exe` | PASS | `--smoke` -> PASS (`MP0 loopback hash`) | REFUSAL (`server: tui not implemented`) | REFUSAL (`server: gui not implemented`) | deterministic refusal path present |
-| `dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe` | PASS | `--repo-root . --ui-index tools/ui_index/ui_index.json --out-dir libs/appcore/ui_bind --check` -> PASS | N/A | N/A | canonical UI bind check passed |
-| `dist/sys/winnt/x64/bin/tools/tool_ui_validate.exe` | PASS | `--input tools/launcher/ui/doc/launcher_ui_doc.tlv --tier win32_t1` -> deterministic validation errors | N/A | N/A | explicit structured errors, no crash |
+| `archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_bind.exe` | PASS | `--repo-root . --ui-index tools/codegen/ui/index/ui_index.json --out-dir libs/appcore/ui_bind --check` -> PASS | N/A | N/A | canonical UI bind check passed |
+| `archive/generated/dist/sys/winnt/x64/bin/tools/tool_ui_validate.exe` | PASS | `--input tools/codegen/ui/launcher/doc/launcher_ui_doc.tlv --tier win32_t1` -> deterministic validation errors | N/A | N/A | explicit structured errors, no crash |
 | `tools/pack/pack_validate.py` | PASS | `--repo-root . --pack-root tmp/irc0_extension/org.dominium.test.integration_probe --format json` -> PASS | N/A | N/A | schema/manifest validation deterministic |
 
 ## Determinism / Refusal Observations

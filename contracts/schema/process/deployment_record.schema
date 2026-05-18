@@ -1,0 +1,26 @@
+SCHEMA: process/deployment_record.schema
+schema_id: dominium.schema.process.deployment_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical deployment records for deterministic software package delivery.
+
+NON-SEMANTICS:
+- Does not replace SIG transport semantics.
+- Does not imply delivery trust without receipts.
+
+REQUIRED SHAPE:
+record deployment_record
+  required:
+    - deploy_id: id
+    - artifact_id: id
+    - from_subject_id: id
+    - to_address: text
+    - tick: nonnegative_int
+    - deterministic_fingerprint: text
+    - extensions: map
+
+INVARIANTS:
+- Deployment records are canonical and replay-hash stable.
+- Deploy path must remain explicit and SIG-governed.

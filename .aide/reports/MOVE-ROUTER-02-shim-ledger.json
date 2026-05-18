@@ -5,17 +5,17 @@
   },
   "shims": [
     {
-      "path": "runtime/control/__init__.py",
+      "path": "archive/quarantine/canon-spine/runtime/control/__init__.py",
       "purpose": "temporary runtime-facing import compatibility after routing governance control code out of the former control root",
       "retirement_task": "MOVE-ROUTER-02R"
     },
     {
-      "path": "runtime/control/effects/__init__.py",
+      "path": "runtime/capability/effects/__init__.py",
       "purpose": "temporary runtime-facing import compatibility for control effects imports",
       "retirement_task": "MOVE-ROUTER-02R"
     },
     {
-      "path": "runtime/control/fidelity/__init__.py",
+      "path": "runtime/capability/fidelity/__init__.py",
       "purpose": "temporary runtime-facing import compatibility for control fidelity imports",
       "retirement_task": "MOVE-ROUTER-02R"
     }

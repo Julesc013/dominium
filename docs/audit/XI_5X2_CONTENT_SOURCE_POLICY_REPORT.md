@@ -17,5 +17,5 @@ Replacement Target: Xi-6 freeze inputs after residual convergence
 ## Rationale
 
 - `docs/architecture/deterministic_packaging.md` excludes `packs/source/*` from default dist output unless a bundle explicitly selects it.
-- `docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md` states that runtime reads derived packs only while source packs are upstream import inputs.
+- `docs/domains/worldgen/REAL_DATA_IMPORT_PIPELINE.md` states that runtime reads derived packs only while source packs are upstream import inputs.
 - import tools and determinism tests still consume `packs/source` directly for reproducible raw-data ingestion.

@@ -58,23 +58,23 @@ from tools.review.xi4b_src_domain_mapping_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_REL = "content/data/restructure/src_domain_mapping.json"
-SRC_DOMAIN_MAPPING_CANDIDATES_REL = "content/data/restructure/src_domain_mapping_candidates.json"
-SRC_DOMAIN_MAPPING_CONFLICTS_REL = "content/data/restructure/src_domain_mapping_conflicts.json"
-SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "content/data/restructure/src_domain_mapping_lock_proposal.json"
-SRC_RUNTIME_CRITICAL_SET_REL = "content/data/restructure/src_runtime_critical_set.json"
-SRC_TOOL_ONLY_SET_REL = "content/data/restructure/src_tool_only_set.json"
-SRC_GENERATED_SET_REL = "content/data/restructure/src_generated_set.json"
+SRC_DOMAIN_MAPPING_REL = "archive/generated/restructure/src_domain_mapping.json"
+SRC_DOMAIN_MAPPING_CANDIDATES_REL = "archive/generated/restructure/src_domain_mapping_candidates.json"
+SRC_DOMAIN_MAPPING_CONFLICTS_REL = "archive/generated/restructure/src_domain_mapping_conflicts.json"
+SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "archive/generated/restructure/src_domain_mapping_lock_proposal.json"
+SRC_RUNTIME_CRITICAL_SET_REL = "archive/generated/restructure/src_runtime_critical_set.json"
+SRC_TOOL_ONLY_SET_REL = "archive/generated/restructure/src_tool_only_set.json"
+SRC_GENERATED_SET_REL = "archive/generated/restructure/src_generated_set.json"
 SRC_TEST_ONLY_SET_REL = "tests/fixtures/restructure/src_test_only_set.json"
-SRC_LEGACY_SET_REL = "content/data/restructure/src_legacy_set.json"
+SRC_LEGACY_SET_REL = "archive/generated/restructure/src_legacy_set.json"
 SRC_CLUSTER_RESOLUTION_ORDER_REL = "data/restructure/src_cluster_resolution_order.json"
 SRC_QUARANTINE_RESOLUTION_PLAN_REL = "data/restructure/src_quarantine_resolution_plan.json"
 XI4B_REVIEW_MANIFEST_REL = "contracts/restructure/xi4b_review_manifest.json"
 
-SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL = "content/data/restructure/src_domain_mapping_lock_approved.json"
-SRC_DOMAIN_MAPPING_DECISIONS_REL = "content/data/restructure/src_domain_mapping_decisions.json"
-SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "content/data/restructure/src_domain_mapping_attic_approved.json"
-SRC_DOMAIN_MAPPING_DEFERRED_REL = "content/data/restructure/src_domain_mapping_deferred.json"
+SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL = "archive/generated/restructure/src_domain_mapping_lock_approved.json"
+SRC_DOMAIN_MAPPING_DECISIONS_REL = "archive/generated/restructure/src_domain_mapping_decisions.json"
+SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "archive/generated/restructure/src_domain_mapping_attic_approved.json"
+SRC_DOMAIN_MAPPING_DEFERRED_REL = "archive/generated/restructure/src_domain_mapping_deferred.json"
 XI5_READINESS_CONTRACT_REL = "contracts/restructure/xi5_readiness_contract.json"
 XI4Z_DECISION_MANIFEST_REL = "contracts/restructure/xi4z_decision_manifest.json"
 
@@ -93,7 +93,7 @@ OPTION_C = "C"
 
 DEFERRED_PATHS = {
     "apps/client/interaction/__init__.py",
-    "tools/libraries/store/__init__.py",
+    "tools/package/libraries/store/__init__.py",
 }
 
 ESSENTIAL_UPSTREAM_RELS = (
@@ -129,11 +129,11 @@ CRITICAL_CORE_INPUTS = {
     "docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
     "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
     "docs/restructure/XI_4B_REVIEW_GUIDE.md",
-    "content/data/restructure/src_domain_mapping.json",
-    "content/data/restructure/src_domain_mapping_candidates.json",
-    "content/data/restructure/src_domain_mapping_conflicts.json",
-    "content/data/restructure/src_domain_mapping_lock_proposal.json",
-    "content/data/restructure/src_runtime_critical_set.json",
+    "archive/generated/restructure/src_domain_mapping.json",
+    "archive/generated/restructure/src_domain_mapping_candidates.json",
+    "archive/generated/restructure/src_domain_mapping_conflicts.json",
+    "archive/generated/restructure/src_domain_mapping_lock_proposal.json",
+    "archive/generated/restructure/src_runtime_critical_set.json",
     "contracts/restructure/xi4b_review_manifest.json",
 }
 
@@ -295,11 +295,11 @@ def _approved_module_for_override(path: str, approved_domain: str, current_modul
         return "compat.handshake"
     if normalized.startswith("src/compat/negotiation/"):
         return "compat.negotiation"
-    if normalized.startswith("game/domains/geology/index/"):
+    if normalized.startswith("game/domain/geology/index/"):
         return "engine.geo.index"
-    if normalized.startswith("game/domains/geology/lens/"):
+    if normalized.startswith("game/domain/geology/lens/"):
         return "engine.geo.lens"
-    if normalized.startswith("game/domains/geology/projection/"):
+    if normalized.startswith("game/domain/geology/projection/"):
         return "engine.geo.projection"
     if current_module_id and current_module_id.split(".", 1)[0] == approved_domain:
         return current_module_id
@@ -315,19 +315,19 @@ def _decision_override(path: str) -> tuple[str, str, str]:
         return ("approved_for_xi5", "ui", "Shared DUI code is reusable UI infrastructure and should move under the approved UI domain.")
     if normalized.startswith("libs/ui_backends/win32/src/"):
         return ("approved_for_xi5", "platform", "Win32 UI backend stubs are platform adapters and are approved under the platform domain.")
-    if normalized == "runtime/appshell/commands/command_engine.py":
+    if normalized == "runtime/shell/commands/command_engine.py":
         return ("approved_for_xi5", "apps", "Appshell command routing belongs with application shell runtime rather than generic tools.")
     if normalized.startswith("src/appshell/"):
         return ("approved_for_xi5", "apps", "Appshell surfaces are approved with the application runtime shell baseline.")
     if normalized.startswith("src/client/render/"):
         return ("approved_for_xi5", "apps", "Client render surfaces remain product-facing app shell code under the approved layout.")
-    if normalized.startswith("game/domains/interaction/"):
+    if normalized.startswith("game/domain/interaction/"):
         return ("approved_for_xi5", "apps", "Interaction surfaces are application runtime entry surfaces, not free-floating tools.")
     if normalized.startswith("src/compat/"):
         return ("approved_for_xi5", "compat", "Negotiation, handshake, descriptor, and shim code belongs under compat.")
     if normalized.startswith("src/lib/") and normalized not in DEFERRED_PATHS:
         return ("approved_for_xi5", "lib", "Reusable runtime support code is approved under lib.")
-    if normalized.startswith("game/domains/geology/"):
+    if normalized.startswith("game/domain/geology/"):
         return ("approved_for_xi5", "engine", "Geo engine helpers are approved into the engine domain despite tool-skewed duplicate evidence.")
     if normalized.startswith("src/security/trust/"):
         return ("approved_for_xi5", "engine", "Trust verification remains an engine-level invariant surface.")
@@ -566,8 +566,8 @@ def _json_payloads(
 
     readiness_payload = {
         "allowed_actions": [
-            "move only rows listed in content/data/restructure/src_domain_mapping_lock_approved.json approved_for_xi5",
-            "route only rows listed in content/data/restructure/src_domain_mapping_lock_approved.json approved_to_attic",
+            "move only rows listed in archive/generated/restructure/src_domain_mapping_lock_approved.json approved_for_xi5",
+            "route only rows listed in archive/generated/restructure/src_domain_mapping_lock_approved.json approved_to_attic",
             "update include paths and build references only for moved approved rows",
             "refuse if additional unmapped runtime-critical source-like paths are encountered outside the approved or deferred sets",
         ],
@@ -703,7 +703,7 @@ def _render_readiness(decisions: Sequence[Mapping[str, object]], missing_inputs:
             "",
             "## Exact Constraints",
             "",
-            "- consume only `content/data/restructure/src_domain_mapping_lock_approved.json` as the structural authority",
+            "- consume only `archive/generated/restructure/src_domain_mapping_lock_approved.json` as the structural authority",
             f"- consume only `{XI5_READINESS_CONTRACT_REL}` as the readiness contract",
             "- move only `approved_for_xi5` rows",
             "- route only `approved_to_attic` rows",
@@ -778,7 +778,7 @@ def _review_first_text(selected_option: str, counts: Mapping[str, int]) -> str:
             "1. docs/restructure/XI_4Z_DECISION_REPORT.md",
             "2. docs/restructure/XI_4Z_XI5_READINESS.md",
             "3. docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
-            "4. content/data/restructure/src_domain_mapping_lock_approved.json",
+            "4. archive/generated/restructure/src_domain_mapping_lock_approved.json",
             "5. contracts/restructure/xi5_readiness_contract.json",
             "",
             "XI-5 is now allowed to:",

@@ -1,5 +1,5 @@
 /*
-FILE: game/core/life/rights_post_death.cpp
+FILE: game/rule/life/rights_post_death.cpp
 MODULE: Dominium
 LAYER / SUBSYSTEM: Game / life
 RESPONSIBILITY: Implements post-death rights registry.

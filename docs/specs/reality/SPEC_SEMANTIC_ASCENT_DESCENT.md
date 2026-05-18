@@ -306,9 +306,9 @@ Any future change to the meaning of ascent, descent, or their relation to ladder
 - `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
 - `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`
 - `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`
-- `docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
-- `docs/worldgen/REFINEMENT_LATTICE.md`
-- `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
+- `docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/REFINEMENT_LATTICE.md`
+- `docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 - `docs/knowledge/EPISTEMICS_OVERVIEW.md`
-- `docs/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`
+- `docs/domains/worldgen/OBJECTIVE_VS_SUBJECTIVE_REALITY.md`

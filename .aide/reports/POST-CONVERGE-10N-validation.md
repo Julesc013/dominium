@@ -17,7 +17,7 @@ Last Reviewed: 2026-05-17
 | Command | Result | Notes |
 | --- | --- | --- |
 | `python tools/ci/tool_identity_fingerprint.py --repo-root . --check` | PASS | Identity fingerprint matches generator output. |
-| `python tools/securex/securex.py integrity-manifest --repo-root . --output .dominium.local/securex-integrity-10n-after.json` plus `git diff --no-index` | PASS | Tracked integrity manifest matches generator output. |
+| `python tools/xstack/securex/securex.py integrity-manifest --repo-root . --output .dominium.local/securex-integrity-10n-after.json` plus `git diff --no-index` | PASS | Tracked integrity manifest matches generator output. |
 | `python -m py_compile scripts/ci/check_repox_rules.py` | PASS | RepoX check script compiles. |
 
 ## AIDE

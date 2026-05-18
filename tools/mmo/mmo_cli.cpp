@@ -6,8 +6,8 @@ RESPONSIBILITY: Deterministic MMO-1 runtime inspection scenarios.
 */
 #include "mmo_cli.h"
 
-#include "net/dom_server_runtime.h"
-#include "net/dom_server_protocol.h"
+#include "dom_server_runtime.h"
+#include "dom_server_protocol.h"
 #include "shard/dom_shard_lifecycle.h"
 
 #include <stdio.h>

@@ -16,7 +16,7 @@ It is subordinate to:
 - `docs/canon/glossary_v1.md`
 - `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
 - `docs/embodiment/EMBODIMENT_BASELINE.md`
-- `docs/worldgen/REFINEMENT_PIPELINE_MODEL.md`
+- `docs/domains/worldgen/REFINEMENT_PIPELINE_MODEL.md`
 
 ## Relevant Invariants
 

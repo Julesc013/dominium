@@ -1,0 +1,19 @@
+{
+  "task": "CANON-SPINE-NEW",
+  "result": "PASS_WITH_WARNINGS",
+  "head_before": "ce504d4e1a0a5397123f014036cca78e49355658",
+  "origin_main_before": "ce504d4e1a0a5397123f014036cca78e49355658",
+  "bad_root_tracked_files_after": 0,
+  "staged_renames_before_final_add": 4578,
+  "scripted_route_applications": 198,
+  "scripted_route_collisions": 0,
+  "tracked_generated_local_roots": 0,
+  "aide": "PASS",
+  "strict_layout_validators": "PASS",
+  "smoke_ctest": "PASS",
+  "cmake_configure": "PASS",
+  "full_verify_ctest": "NOT_GREEN",
+  "build_target_boundaries": "FAIL_WITH_KNOWN_WARNINGS",
+  "feature_work_authorized": false,
+  "next_task": "CANON-SPINE-BOUNDARY-01 - Repair Remaining Boundary Imports and Full Proof"
+}

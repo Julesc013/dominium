@@ -9,15 +9,15 @@ from typing import Dict, Iterable, List, Tuple
 
 EARTH10_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/audit/EARTH10_RETRO_AUDIT.md",
-    "docs/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md",
+    "docs/domains/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md",
     "contracts/registry/material_proxy_registry.json",
     "contracts/registry/surface_flag_registry.json",
     "contracts/registry/field_type_registry.json",
     "contracts/registry/field_binding_registry.json",
     "contracts/registry/process_registry.json",
-    "game/domains/worldgen/earth/material",
-    "game/domains/worldgen/earth/water/water_view_engine.py",
-    "game/domains/worldgen/earth/lighting/lighting_view_engine.py",
+    "game/domain/worldgen/earth/material",
+    "game/domain/worldgen/earth/water/water_view_engine.py",
+    "game/domain/worldgen/earth/lighting/lighting_view_engine.py",
     "tools/worldgen/earth10_probe.py",
     "tools/worldgen/tool_replay_material_proxy_window.py",
 )

@@ -1,0 +1,162 @@
+{
+  "generated_for": "0-0",
+  "repo_status": "post-Ω/Ξ/Π",
+  "generated_on": "2026-04-02",
+  "ordering": "keys and arrays are intentionally stable for chat-to-chat continuity",
+  "completed_program_layers": [
+    "Ω",
+    "Ξ",
+    "Π",
+    "P-0",
+    "P-1",
+    "P-2",
+    "P-3",
+    "P-4",
+    "0-0"
+  ],
+  "active_series": "Λ",
+  "next_executable_prompt": "Λ-0",
+  "next_review_checkpoint": "RG-SEM-0",
+  "current_recommended_order": [
+    "Λ-0",
+    "Λ-1",
+    "Λ-2",
+    "Λ-3",
+    "Λ-4",
+    "Λ-5",
+    "RG-SEM-0",
+    "Λ-6",
+    "CHK-ΛΣΦ-0",
+    "Σ-A",
+    "Σ-B",
+    "CHK-ΣΦ-0",
+    "Φ-grounding",
+    "RG-PHI-0",
+    "Υ",
+    "Φ-advanced",
+    "Ζ"
+  ],
+  "active_quarantine_items": [
+    {
+      "id": "field_vs_fields",
+      "paths": [
+        "field",
+        "fields"
+      ],
+      "review_required": true
+    },
+    {
+      "id": "schema_vs_schemas",
+      "paths": [
+        "schema",
+        "schemas"
+      ],
+      "review_required": true
+    },
+    {
+      "id": "packs_vs_data_packs",
+      "paths": [
+        "packs",
+        "data/packs"
+      ],
+      "review_required": true
+    },
+    {
+      "id": "generated_release_echoes",
+      "paths": [
+        ".xstack_cache",
+        "artifacts",
+        "build",
+        "run_meta"
+      ],
+      "review_required": true
+    },
+    {
+      "id": "legacy_quarantine_roots",
+      "paths": [
+        "attic/src_quarantine",
+        "legacy",
+        "quarantine"
+      ],
+      "review_required": true
+    }
+  ],
+  "doctrine_locks": [
+    {
+      "id": "constitutional_lock",
+      "label": "constitution and glossary remain binding",
+      "sources": [
+        "docs/canon/constitution_v1.md",
+        "docs/canon/glossary_v1.md"
+      ]
+    },
+    {
+      "id": "agent_control_lock",
+      "label": "repo task and validation discipline remains binding",
+      "sources": [
+        "AGENTS.md"
+      ]
+    },
+    {
+      "id": "intake_authority_lock",
+      "label": "P-0 intake and authority order remain active",
+      "sources": [
+        "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
+        "docs/planning/AUTHORITY_ORDER.md",
+        "data/planning/snapshot_intake_policy.json"
+      ]
+    },
+    {
+      "id": "extend_over_replace_lock",
+      "label": "P-2 reconciliation remains the anti-reinvention baseline",
+      "sources": [
+        "docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md",
+        "data/planning/reconciliation/keep_extend_merge_replace_quarantine.json"
+      ]
+    },
+    {
+      "id": "readiness_lock",
+      "label": "P-3 readiness remains the default execution gate",
+      "sources": [
+        "docs/planning/FOUNDATION_READINESS_REPORT.md",
+        "data/planning/readiness/series_readiness_matrix.json"
+      ]
+    },
+    {
+      "id": "execution_order_lock",
+      "label": "P-4 sequence and dependency graph remain the active program",
+      "sources": [
+        "docs/planning/POST_PI_EXECUTION_PLAN.md",
+        "data/planning/final_prompt_inventory.json",
+        "data/planning/dependency_graph_post_pi.json"
+      ]
+    }
+  ],
+  "extension_over_replacement_priority_zones": [
+    "products_applications",
+    "engine_game_spine",
+    "runtime_substrate_cluster",
+    "control_plane_backbone",
+    "operator_and_trust_tooling",
+    "semantic_domain_roots",
+    "planning_and_governance_surfaces",
+    "build_and_preset_matrix"
+  ],
+  "blocked_or_gated_areas": [
+    "Λ-6 waits for semantic ownership review",
+    "Σ-B waits for Λ capability and acceptance vocabulary",
+    "Φ-7 through Φ-11 remain blocked by missing runtime foundations",
+    "Φ-12 waits for quarantine review",
+    "Φ-13 and Φ-14 remain dangerous",
+    "Υ publication and licensing policy require explicit human review",
+    "Ζ remains late-gated, blocked, or dangerous"
+  ],
+  "current_boundary_checkpoint_map": {
+    "current": "RG-SEM-0",
+    "after_lambda": "CHK-ΛΣΦ-0",
+    "after_sigma": "CHK-ΣΦ-0",
+    "before_deep_phi": "RG-PHI-0",
+    "before_trust_or_publication_sensitive_zeta": "RG-PUB-0",
+    "before_distributed_or_extreme_zeta": "RG-ZETA-0"
+  }
+}

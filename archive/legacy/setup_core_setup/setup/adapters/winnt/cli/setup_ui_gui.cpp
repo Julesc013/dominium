@@ -260,7 +260,7 @@ static bool load_dui_schema(const std::string& argv0,
     out_loaded_path.clear();
     out_error.clear();
 
-    canonical.push_back("tools/setup/ui/doc/setup_ui_doc.tlv");
+    canonical.push_back("tools/codegen/ui/setup/doc/setup_ui_doc.tlv");
     canonical.push_back("tools\\setup\\ui\\doc\\setup_ui_doc.tlv");
     for (i = 0; i < (int)canonical.size(); ++i) {
         if (file_exists_stdio(canonical[(size_t)i])) {
@@ -293,7 +293,7 @@ static bool load_dui_schema(const std::string& argv0,
     cur = dirname_of(argv0);
     for (i = 0; i < 10; ++i) {
         if (!cur.empty()) {
-            const std::string cc0 = path_join(cur, "tools/setup/ui/doc/setup_ui_doc.tlv");
+            const std::string cc0 = path_join(cur, "tools/codegen/ui/setup/doc/setup_ui_doc.tlv");
             const std::string c0 = path_join(cur, "source/dominium/setup/ui_schema/setup_ui_v1.tlv");
             const std::string c1 = path_join(cur, "ui_schema/setup_ui_v1.tlv");
             const std::string c2 = path_join(cur, "setup_ui_v1.tlv");

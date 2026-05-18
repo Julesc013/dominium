@@ -52,7 +52,7 @@ Audit existing persistent artifact surfaces before introducing deterministic for
   - `src/packs/compat/pack_verification_pipeline.py`
 
 ### Migration Tooling
-- Generic CompatX migration helpers already exist in `tools/compatx/core/migration_runner.py`.
+- Generic CompatX migration helpers already exist in `tools/xstack/compatx/core/migration_runner.py`.
 - Existing migration registry `data/registries/migrations.json` is governance-oriented and not the artifact-level registry requested for PACK-COMPAT-2.
 - No shared artifact loader currently:
   - detects older/newer formats

@@ -1,0 +1,20 @@
+SCHEMA: process/process_step_record.schema
+schema_id: dominium.schema.process.process_step_record
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical RECORD for deterministic step-level lifecycle events within a ProcessRun.
+
+NON-SEMANTICS:
+- No authority grant or runtime-side mutation rights.
+
+REQUIRED SHAPE:
+record process_step_record
+  required:
+    - run_id: id
+    - step_id: id
+    - tick: u64
+    - status: enum(started|completed|failed)
+    - deterministic_fingerprint: text
+    - extensions: map

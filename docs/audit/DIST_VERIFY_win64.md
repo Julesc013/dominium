@@ -7,7 +7,7 @@ Replacement Target: DIST-3 clean-room distribution verification baseline
 # DIST Verify - win64
 
 - result: `complete`
-- bundle_root: `dist/v0.0.0-mock/win64/dominium`
+- bundle_root: `archive/generated/dist/v0.0.0-mock/win64/dominium`
 - deterministic_fingerprint: `0693d807a43fba8611bc57fd48bf3ae92476b95e6bbce385f9cab4acd1e44b20`
 
 ## Layout Check

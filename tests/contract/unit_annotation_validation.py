@@ -66,7 +66,7 @@ REQUIRED_SCHEMA_UNIT_TOKENS = [
 
 
 
-    ("contracts/schemas/process.schema", "unit: tag"),
+    ("contracts/schema/process.schema", "unit: tag"),
 
 
 

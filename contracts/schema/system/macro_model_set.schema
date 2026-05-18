@@ -1,0 +1,22 @@
+SCHEMA: system/macro_model_set.schema
+schema_id: dominium.schema.system.macro_model_set
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic macro model set bindings for SYS capsules.
+- Bind macro behavior to registered constitutive models with explicit error policies.
+
+NON-SEMANTICS:
+- No solver implementation.
+- No direct mutation authority.
+
+REQUIRED SHAPE:
+record macro_model_set
+  required:
+    - macro_model_set_id: id
+    - model_bindings: list
+    - validity_conditions: map
+    - error_bound_policy_id: id
+    - deterministic_fingerprint: text
+    - extensions: map

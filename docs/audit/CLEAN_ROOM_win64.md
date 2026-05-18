@@ -9,7 +9,7 @@ Replacement Target: DIST-4 platform clean-room matrix
 # Clean Room - win64
 
 - result: `complete`
-- source_bundle_root: `dist/v0.0.0-mock/win64/dominium`
+- source_bundle_root: `archive/generated/dist/v0.0.0-mock/win64/dominium`
 - seed: `456`
 - mode_policy: `cli`
 - deterministic_fingerprint: `f9715b489dcd45d9e0642b75e85e77c69adc0ae87d7525413e7c63d0cc97dbc6`

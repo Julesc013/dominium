@@ -24,8 +24,8 @@ Do not use for implementation.
 Archived: point-in-time extension audit.
 Reason: APR audit snapshot; current platform interfaces supersede it.
 Superseded by:
-- `docs/platform/PLATFORM_RUNTIME.md`
-- `docs/platform/EXTENSIONS.md`
+- `docs/runtime/platform/PLATFORM_RUNTIME.md`
+- `docs/runtime/platform/EXTENSIONS.md`
 Still useful: background on early platform extension inventory.
 
 # APR2 Extension Audit
@@ -46,7 +46,7 @@ backends, window creation path, and optional tool UIs.
 - Single FIFO event queue with timestamps (`dsys_event.timestamp_us`)
 - `dsys_inject_event()` for internal/TUI sources
 - `dsys_event` now includes `window` and `window_id` for per-window routing
-- Deterministic vs interactive timing defined in `docs/app/TIMING_AND_CLOCKS.md`
+- Deterministic vs interactive timing defined in `docs/apps/TIMING_AND_CLOCKS.md`
 
 ## Renderer registry + backends (APR0)
 - Backends: `soft` + `null` are implemented
@@ -64,7 +64,7 @@ backends, window creation path, and optional tool UIs.
 
 ## Extension status by platform/backend
 
-### Win32 backend (`engine/modules/system/dsys_window_winnt.c`)
+### Win32 backend (`runtime/platform/system/dsys_window_winnt.c`)
 - DPI: implemented (`WM_DPICHANGED`, `dsys_window_get_dpi_scale`,
   `dsys_window_get_framebuffer_size`)
 - Text input: `WM_CHAR` -> `DSYS_EVENT_TEXT_INPUT`

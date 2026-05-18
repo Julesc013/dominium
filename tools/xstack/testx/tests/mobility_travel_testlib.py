@@ -82,8 +82,8 @@ def policy_context(*, vehicle_gauge_mm: int = 1000, edge_gauge_mm: int = 1000) -
 
 
 def seed_state(*, vehicle_gauge_mm: int = 1000, edge_gauge_mm: int = 1000) -> dict:
-    from game.domains.mobility.geometry import build_guide_geometry
-    from game.domains.mobility.vehicle.vehicle_engine import (
+    from game.domain.mobility.geometry import build_guide_geometry
+    from game.domain.mobility.vehicle.vehicle_engine import (
         build_motion_state,
         build_vehicle,
         deterministic_motion_state_ref,

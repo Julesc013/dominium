@@ -15,7 +15,7 @@ _HASH64 = re.compile(r"^[0-9a-f]{64}$")
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from tools.geo.tool_replay_worldgen_cell import verify_worldgen_cell_replay
+    from tools.validators.domain.geology.tool_replay_worldgen_cell import verify_worldgen_cell_replay
 
     report = verify_worldgen_cell_replay()
     if str(report.get("result", "")) != "complete":

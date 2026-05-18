@@ -46,7 +46,7 @@ This prompt does not yet define:
 - ownership winners in quarantine-sensitive semantic zones
 
 This framework inherits from `Λ-0` and `Λ-1`.
-It is also informed by existing repo embodiment in `docs/architecture/macro_capsules.md`, `docs/worldgen/REFINEMENT_CONTRACT.md`, `docs/worldgen/REFINEMENT_LATTICE.md`, `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`, `docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md`, `docs/specs/SPEC_LOD.md`, and live world/domain baseline material.
+It is also informed by existing repo embodiment in `docs/architecture/macro_capsules.md`, `docs/domains/worldgen/REFINEMENT_CONTRACT.md`, `docs/domains/worldgen/REFINEMENT_LATTICE.md`, `docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md`, `docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md`, `docs/specs/SPEC_LOD.md`, and live world/domain baseline material.
 
 ## B. Core Definition
 
@@ -407,9 +407,9 @@ Any change to the meaning of ladder families, lawful substitution, or continuity
 - `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`
 - `docs/architecture/macro_capsules.md`
 - `docs/architecture/truth_perceived_render.md`
-- `docs/worldgen/REFINEMENT_CONTRACT.md`
-- `docs/worldgen/REFINEMENT_LATTICE.md`
-- `docs/worldgen/UNIVERSE_SCALE_STRATEGY.md`
+- `docs/domains/worldgen/REFINEMENT_CONTRACT.md`
+- `docs/domains/worldgen/REFINEMENT_LATTICE.md`
+- `docs/domains/worldgen/UNIVERSE_SCALE_STRATEGY.md`
 - `docs/system/MACROCAPSULE_BEHAVIOR_MODEL.md`
 - `docs/specs/SPEC_LOD.md`
-- `docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
+- `docs/domains/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`

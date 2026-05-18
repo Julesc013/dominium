@@ -27,7 +27,7 @@ work with zero packs and zero hardcoded world assumptions.
 Scope (binding for SLICE-0):
 
 
-- client/, launcher/, tools/, docs/architecture/, docs/ui/, tests/
+- client/, launcher/, tools/, docs/architecture/, docs/runtime/ui/, tests/
 
 
 - Documentation and tests may be added/updated; engine/game simulation is untouched.

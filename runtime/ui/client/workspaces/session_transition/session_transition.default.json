@@ -1,0 +1,272 @@
+{
+  "schema_id": "dominium.schema.ui.workspace@1.0.0",
+  "schema_version": "1.0.0",
+  "record": {
+    "workspace_id": "org.dominium.client.workspace.session_transition.default",
+    "schema_version_ref": "dominium.schema.ui.workspace@1.0.0",
+    "docking_rules": {
+      "root_layout": "two_column",
+      "left_ratio": 0.62,
+      "right_ratio": 0.38,
+      "allow_float": false
+    },
+    "panels": [
+      {
+        "panel_id": "progress",
+        "panel_kind": "timeline",
+        "panel_title": "Progress",
+        "dock": "left",
+        "command_bindings": [
+          "client.session.stage",
+          "client.session.begin"
+        ],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "panel_kind": "kv_table",
+        "panel_title": "Details",
+        "dock": "left",
+        "command_bindings": [],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {}
+      },
+      {
+        "panel_id": "messages",
+        "panel_kind": "log",
+        "panel_title": "Messages",
+        "dock": "right",
+        "command_bindings": [],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {}
+      },
+      {
+        "panel_id": "actions",
+        "panel_kind": "actions",
+        "panel_title": "Actions",
+        "dock": "right",
+        "command_bindings": [
+          "client.session.stage",
+          "client.session.abort",
+          "client.session.resume",
+          "client.session.begin"
+        ],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {}
+      },
+      {
+        "panel_id": "preview_minimap",
+        "panel_kind": "preview_stub",
+        "panel_title": "Preview Minimap (SOON)",
+        "dock": "right",
+        "command_bindings": [],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {
+          "status": "SOON",
+          "stub_refusal": "refuse.unavailable"
+        }
+      },
+      {
+        "panel_id": "network_diag",
+        "panel_kind": "diagnostics_stub",
+        "panel_title": "Network Diagnostics (SOON)",
+        "dock": "right",
+        "command_bindings": [],
+        "visibility_modes": [
+          "cli",
+          "tui",
+          "gui"
+        ],
+        "metadata": {
+          "status": "SOON",
+          "stub_refusal": "refuse.unavailable"
+        }
+      }
+    ],
+    "stage_bindings": [
+      {
+        "stage_id": "stage.resolve_session",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions"
+        ],
+        "metadata": {}
+      },
+      {
+        "stage_id": "stage.acquire_world",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions"
+        ],
+        "metadata": {}
+      },
+      {
+        "stage_id": "stage.verify_world",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions"
+        ],
+        "metadata": {}
+      },
+      {
+        "stage_id": "stage.warmup_simulation",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions"
+        ],
+        "metadata": {}
+      },
+      {
+        "stage_id": "stage.warmup_presentation",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions",
+          "preview_minimap",
+          "network_diag"
+        ],
+        "metadata": {}
+      },
+      {
+        "stage_id": "stage.session_ready",
+        "visible_panels": [
+          "progress",
+          "details",
+          "messages",
+          "actions"
+        ],
+        "metadata": {}
+      }
+    ],
+    "observable_bindings": [
+      {
+        "panel_id": "progress",
+        "source_key": "session.pipeline.stage",
+        "formatter": "stage_name",
+        "metadata": {}
+      },
+      {
+        "panel_id": "progress",
+        "source_key": "session.warmup.simulation_step",
+        "formatter": "identity",
+        "metadata": {}
+      },
+      {
+        "panel_id": "progress",
+        "source_key": "session.warmup.presentation_step",
+        "formatter": "identity",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.world.hash",
+        "formatter": "hex",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.pack_set.hash",
+        "formatter": "hex",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.capabilities",
+        "formatter": "csv",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.simulation.time_advanced",
+        "formatter": "int",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.world.ready",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.camera.placed",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.agent.actions_executed",
+        "formatter": "int",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.map.open",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.stats.visible",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "details",
+        "source_key": "session.replay.recording_enabled",
+        "formatter": "bool",
+        "metadata": {}
+      },
+      {
+        "panel_id": "messages",
+        "source_key": "session.refusal_code",
+        "formatter": "identity",
+        "metadata": {}
+      },
+      {
+        "panel_id": "actions",
+        "source_key": "session.available_actions",
+        "formatter": "action_list",
+        "metadata": {}
+      }
+    ],
+    "extensions": {
+      "aaa_todo_panels": [
+        "cinematic_transitions"
+      ]
+    },
+    "metadata": {
+      "deterministic_ordering": "panel_id_asc"
+    }
+  }
+}

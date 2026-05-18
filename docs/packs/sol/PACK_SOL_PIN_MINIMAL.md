@@ -15,9 +15,9 @@ It is subordinate to:
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
-- `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
-- `docs/worldgen/STAR_SYSTEM_SEED_MODEL.md`
-- `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
+- `docs/domains/worldgen/MILKY_WAY_CONSTITUTION.md`
+- `docs/domains/worldgen/STAR_SYSTEM_SEED_MODEL.md`
+- `docs/domains/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
 
 ## Relevant Invariants
 
@@ -28,8 +28,8 @@ It is subordinate to:
 - `docs/canon/constitution_v1.md` `E4` Named RNG streams
 - `docs/canon/constitution_v1.md` `E6` Replay equivalence
 - `docs/specs/SPEC_MVP0_SCOPE_CONSTITUTION.md`
-- `docs/worldgen/MILKY_WAY_CONSTITUTION.md`
-- `docs/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
+- `docs/domains/worldgen/MILKY_WAY_CONSTITUTION.md`
+- `docs/domains/worldgen/STAR_SYSTEM_ORBITAL_PRIORS.md`
 
 ## 1. Purpose
 

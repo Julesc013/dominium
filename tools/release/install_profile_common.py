@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping
 
-from release import (
+from tools.release import (
     DEFAULT_COMPONENT_GRAPH_ID,
     DEFAULT_INSTALL_PROFILE_ID,
     DEFAULT_INSTALL_PROFILE_REGISTRY_REL,
@@ -16,7 +16,7 @@ from release import (
     select_install_profile,
 )
 from tools.import_bridge import resolve_repo_path_equivalent
-from release.component_graph_resolver import deterministic_fingerprint
+from tools.release.component_graph_resolver import deterministic_fingerprint
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -341,12 +341,12 @@ def install_profile_violations(repo_root: str) -> list[dict]:
             continue
         violations.append({"code": "missing_required_file", "message": message, "file_path": effective_rel if effective_rel != _norm_rel(rel_path) else rel_path, "rule_id": rule_id})
     for rel_path, token, message, rule_id in (
-        ("release/component_graph_resolver.py", "select_install_profile(", "component resolver must load and select install profiles", RULE_USE_PROFILES),
-        ("release/component_graph_resolver.py", "disabled_optional_components", "install plans must report disabled optional components", RULE_USE_PROFILES),
+        ("tools/release/component_graph_resolver.py", "select_install_profile(", "component resolver must load and select install profiles", RULE_USE_PROFILES),
+        ("tools/release/component_graph_resolver.py", "disabled_optional_components", "install plans must report disabled optional components", RULE_USE_PROFILES),
         ("tools/setup/setup_cli.py", "\"plan\"", "setup install surface must expose install-profile plan/apply commands", RULE_USE_PROFILES),
         ("tools/setup/setup_cli.py", "install_profile_id", "setup install plan/apply must thread install_profile_id through the resolver", RULE_USE_PROFILES),
-        ("tools/dist/dist_tree_common.py", "install_profile_id", "dist assembly must choose bundle contents through an install profile", RULE_NO_HARDCODED),
-        ("tools/dist/tool_assemble_dist_tree.py", "--install-profile-id", "dist assembly CLI must accept install_profile_id", RULE_USE_PROFILES),
+        ("tools/release/dist/dist_tree_common.py", "install_profile_id", "dist assembly must choose bundle contents through an install profile", RULE_NO_HARDCODED),
+        ("tools/release/dist/tool_assemble_dist_tree.py", "--install-profile-id", "dist assembly CLI must accept install_profile_id", RULE_USE_PROFILES),
         ("tools/launcher/launch.py", "install_profile_id", "launcher instance surfaces must expose instance install profile targeting", RULE_USE_PROFILES),
     ):
         try:

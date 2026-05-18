@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Formalization Policy Schema",
+  "version": "1.0.0",
+  "description": "Registry entry for FORM-1 formalization lifecycle policy behavior.",
+  "x-doc-ref": [
+    "docs/infrastructure/FORMALIZATION_MODEL.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "formalization_policy_id",
+    "description",
+    "allow_auto_accept",
+    "allow_auto_network",
+    "require_confirmation",
+    "admin_instant_allowed",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "formalization_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string"
+    },
+    "allow_auto_accept": {
+      "type": "boolean"
+    },
+    "allow_auto_network": {
+      "type": "boolean"
+    },
+    "require_confirmation": {
+      "type": "boolean"
+    },
+    "admin_instant_allowed": {
+      "type": "boolean"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "formalization_policy_id": "policy.assisted",
+      "description": "Suggest and require explicit user confirmation.",
+      "allow_auto_accept": false,
+      "allow_auto_network": false,
+      "require_confirmation": true,
+      "admin_instant_allowed": false,
+      "extensions": {}
+    }
+  ]
+}

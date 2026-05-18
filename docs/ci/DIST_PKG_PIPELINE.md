@@ -36,9 +36,9 @@ contract.
 
 ## Required Outputs
 
-- Package artifacts under `dist/pkg/<platform>/<arch>/`.
-- Package index artifact under `dist/meta/<platform>/<arch>/`.
-- Build manifest under `dist/meta/build_manifest.json`.
+- Package artifacts under `archive/generated/dist/pkg/<platform>/<arch>/`.
+- Package index artifact under `archive/generated/dist/meta/<platform>/<arch>/`.
+- Build manifest under `archive/generated/dist/meta/build_manifest.json`.
 
 ## Failure Policy
 

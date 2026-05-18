@@ -522,7 +522,7 @@
     "tools/xstack/session_control.py",
     "tools/xstack/session_surface.py",
     "tools/xstack/srz_status.py",
-    "tools/controlx/controlx.py",
+    "tools/xstack/controlx/controlx.py",
     "docs/xstack/CI_GUARDRAILS.md"
   ],
   "prohibited_exposure_shapes": [

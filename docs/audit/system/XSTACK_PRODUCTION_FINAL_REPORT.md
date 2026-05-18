@@ -106,7 +106,7 @@ Interpretation: corruption/orphan detection is active and correctly reporting no
 - Observed run-meta/cache roots are workspace-scoped:
   - `.xstack_cache/ws-75c51ab75ed51088/...`
   - `out/build/ws-75c51ab75ed51088/...`
-  - `dist/ws/ws-75c51ab75ed51088/...`
+  - `archive/generated/dist/ws/ws-75c51ab75ed51088/...`
 
 ## Ledger, Extensions, Portability
 

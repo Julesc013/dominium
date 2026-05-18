@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stacking Policy Schema",
+  "version": "1.0.0",
+  "description": "Deterministic CTRL-8 effect stacking policy declaration.",
+  "x-doc-ref": [
+    "docs/audit/EFFECT_SYSTEM_BASELINE.md"
+  ],
+  "type": "object",
+  "required": [
+    "schema_version",
+    "stacking_policy_id",
+    "mode",
+    "tie_break_rule",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "stacking_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "replace",
+        "max",
+        "min",
+        "add",
+        "multiply"
+      ]
+    },
+    "tie_break_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "1.0.0",
+      "stacking_policy_id": "stack.min",
+      "mode": "min",
+      "tie_break_rule": "order.effect_type_applied_tick_effect_id",
+      "extensions": {}
+    }
+  ]
+}

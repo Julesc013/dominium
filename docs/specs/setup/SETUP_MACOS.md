@@ -15,7 +15,7 @@ macOS GUI flows must follow the same canonical UX steps (expert UI allowed).
 
 ## Prerequisites
 - macOS with Xcode command line tools (for `pkgbuild`, `productbuild`, `hdiutil`).
-- Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/dist/`):
+- Staged payload under `DOMINIUM_DIST_DIR` (defaults to `<build>/archive/generated/dist/`):
   - `dominium_launcher_cli` (will be renamed to the bundle executable)
   - `dominium-setup`
   - Optional data payload (copied manually into the bundle or handled by the CLI)
@@ -37,7 +37,7 @@ Key cache variables:
 - `DOMINIUM_BUILD_MACOS_PKG` — build `dominium_macos_pkg` / `dominium_macos_dmg` (default ON).
 - `DOMINIUM_GAME_VERSION` — installer/app version string (default `0.1.0`).
 - `DOMINIUM_DIST_DIR` — staging root containing built binaries/data.
-- `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/dist/installers/macos` by default.
+- `DOMINIUM_INSTALLER_DIR` — outputs go to `<build>/archive/generated/dist/installers/macos` by default.
 - `DOMINIUM_BUNDLE_IDENTIFIER` — CFBundleIdentifier (default `com.yourorg.dominium`).
 - `DOMINIUM_BUNDLE_EXECUTABLE` — name inside `Dominium.app/Contents/MacOS` (default `dominium-launcher`).
 - `DOMINIUM_MACOS_MINIMUM_VERSION` — minimum supported macOS version (default `10.13`).
@@ -50,7 +50,7 @@ cmake --build build/macos --target dominium_macos_pkg
 cmake --build build/macos --target dominium_macos_dmg  # builds .pkg then .dmg
 ```
 
-Outputs (`dist/installers/macos/` by default):
+Outputs (`archive/generated/dist/installers/macos/` by default):
 - `Dominium-<version>-installer.pkg` (distribution pkg)
 - `Dominium-<version>.pkg` (component pkg)
 - `Dominium-<version>.dmg` (DMG with `.app`, Applications symlink, and the pkg)

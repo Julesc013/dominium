@@ -14,7 +14,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - `gate.py strict --profile-report` (cold) passed.
 - `gate.py strict --profile-report` (warm) passed.
 - `gate.py full --profile-report` passed.
-- `python tools/auditx/auditx.py scan --changed-only --format json` passed.
+- `python tools/xstack/auditx/auditx.py scan --changed-only --format json` passed.
 
 ## Runtime Metrics
 

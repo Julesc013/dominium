@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GC Policy Schema",
+  "version": "1.0.0",
+  "type": "object",
+  "required": [
+    "gc_policy_id",
+    "mode",
+    "quarantine_enabled",
+    "deterministic_fingerprint",
+    "extensions"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "gc_policy_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "safe",
+        "aggressive"
+      ]
+    },
+    "quarantine_enabled": {
+      "type": "boolean"
+    },
+    "deterministic_fingerprint": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "examples": [
+    {
+      "deterministic_fingerprint": "0000000000000000000000000000000000000000000000000000000000000000",
+      "extensions": {},
+      "gc_policy_id": "gc_policy_id.example",
+      "mode": "none",
+      "quarantine_enabled": false
+    }
+  ]
+}

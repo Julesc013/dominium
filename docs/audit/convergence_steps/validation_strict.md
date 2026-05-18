@@ -36,4 +36,4 @@ Replacement Target: regenerated convergence step summary for validation_strict
 
 ## Remediation
 
-- module=`tools/validation/tool_run_validation.py` rule=`INV-VALIDATE-ALL-AVAILABLE` refusal=`none` command=`python tools/validation/tool_run_validation.py --repo-root . --profile STRICT`
+- module=`tools/validators/suite/tool_run_validation.py` rule=`INV-VALIDATE-ALL-AVAILABLE` refusal=`none` command=`python tools/validators/suite/tool_run_validation.py --repo-root . --profile STRICT`

@@ -86,11 +86,11 @@
       "before_count": 12,
       "classification": "real_policy_violation",
       "count": 12,
-      "example": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR: missing dist/bin/client",
+      "example": "INV-ALL-PRODUCTS-EMIT-DESCRIPTOR: missing archive/generated/dist/bin/client",
       "id": "distribution_descriptor_backlog",
       "recommended_action": "document_blocker",
       "safe_to_fix_now": false,
-      "source": "dist/bin product descriptor expectations"
+      "source": "archive/generated/dist/bin product descriptor expectations"
     },
     {
       "action_taken": "Classified but not remapped broadly; requires domain-owner path review.",
@@ -110,7 +110,7 @@
       "before_count": null,
       "classification": "stale_canonical_evidence",
       "count": 3,
-      "example": "INV-TOOL-VERSION-MISMATCH: hash mismatch for tools/compatx/compatx.py (expected 14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a, got 684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c)",
+      "example": "INV-TOOL-VERSION-MISMATCH: hash mismatch for tools/xstack/compatx/compatx.py (expected 14038782c57cde4ba0b1645fefa3b6b23d3d488a60201fa66d39c6470d503d1a, got 684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c)",
       "id": "tool_hash_and_audit_staleness",
       "recommended_action": "needs_generator",
       "safe_to_fix_now": false,
