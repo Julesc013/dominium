@@ -1,0 +1,121 @@
+# NAME-00 No src/source Directory Report
+
+- Status: `PASS_WITH_WARNINGS`
+- Findings: `106`
+- Blockers: `0`
+- Warnings: `13`
+- Info: `93`
+
+## Counts By Segment
+
+- `source`: 105
+- `src`: 1
+
+## Sample Findings
+
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_null.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_keychain_null.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_net_null.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_null.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_os_integration_null.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_registry.c`
+- `info` `source` `historical_archive`: `archive/historical/attic/src_quarantine/legacy/source/provider/provider_trust_null.c`
+- `info` `src` `historical_archive`: `archive/historical/attic/src_quarantine/src/worldgen/__init__.py`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/CMakeLists.txt`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/agent_behavior_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_compile_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_compile_schema_failure_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_validate_policy_error_fails.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_validate_schema_error_fails.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_validate_tlv_pack_passes.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/coredata_validate_valid_passes.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/determinism_regression_scan_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ai_budget_baseline_cap_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ai_budget_behavior_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ai_determinism_same_seed_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ai_persistence_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ai_replay_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_caps_hash_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_construction_overlap_refusal_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_construction_placement_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_construction_replay_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_construction_save_load_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_contract_runtime_schedule_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_cosmo_bundle_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_cosmo_graph_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_cosmo_transit_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_derived_order_independence_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_econ_access_control_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_econ_pack_load_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_frames_transform_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_frames_validation_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_handshake_identity_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_landing_attachment_invariance_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ledger_core_tests.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_logistics_inventory_conservation_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_logistics_save_load_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_logistics_schedule_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_auction_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_barter_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_batch_equivalence_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_due_tick_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_orderbook_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_quote_stream_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_market_settlement_conservation_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_money_standard_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_no_modal_loading_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_orbit_event_consistency_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_orbit_golden_vectors_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_orbit_replay_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_orbit_warp_authority_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_orbit_warp_invariance_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_production_tick_invariance_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_qos_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_qos_no_sim_effect_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_qos_overload_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_replay_analyzer_basic_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_replay_epoch_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_session_authority_tests.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_snapshot_isolation_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_surface_chunk_activation_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_surface_latlong_determinism_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_surface_streaming_no_modal_loading_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_time_core_tests.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_tool_handshake_validation_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_topology_default_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ui_continuity_tests.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ui_projection_tests.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_ui_widgets_tests.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_universe_bundle_epoch_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_universe_bundle_systems_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_universe_editor_roundtrip_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dom_validator_invalid_content_test.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/domains_frames_prop_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/dominium_capability_tests.cpp`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/domino_dui_smoke.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/domino_sys_smoke.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/graph_toolkit_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/launcher_ui_backend_swap_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/lod_framework_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/numeric_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/pkt_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/pose_anchor_quant_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/sched_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/stimulus_determinism_test.c`
+- `info` `source` `historical_archive`: `archive/legacy/source/tests/ui_cli_determinism_test.cpp`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/data/dem_source.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/data/raw/N00E000.asc`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/pack.capabilities.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/pack.compat.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/pack.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.earth.srtm/pack.trust.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/data/ephemeris_source.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/data/kernels/de440s.bsp`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/data/kernels/naif0012.tls`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/pack.capabilities.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/pack.compat.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/pack.json`
+- `warning` `source` `excepted_transitional_debt`: `packs/source/org.dominium.sol.spice/pack.trust.json`

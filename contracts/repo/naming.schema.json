@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dominium.repo.naming.schema.v1",
+  "title": "Dominium Repository Naming Contract",
+  "type": "object",
+  "required": [
+    "contract",
+    "root_policy",
+    "forbidden_roots",
+    "naming_rules",
+    "planned_internal_renames",
+    "language"
+  ],
+  "properties": {
+    "contract": {
+      "type": "object",
+      "required": ["id", "status", "phase", "scope"],
+      "properties": {
+        "id": { "const": "dominium.repo.naming.v1" },
+        "status": { "type": "string" },
+        "phase": { "type": "string" },
+        "scope": { "type": "string" },
+        "no_physical_moves_authorized": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+    "root_policy": {
+      "type": "object",
+      "required": ["canonical_roots", "generated_or_local_roots", "optional_future_roots"],
+      "properties": {
+        "canonical_roots": {
+          "type": "array",
+          "items": { "type": "string" },
+          "contains": { "const": "contracts" }
+        },
+        "generated_or_local_roots": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "optional_future_roots": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "forbidden_roots": {
+      "type": "object",
+      "required": ["terms"],
+      "properties": {
+        "terms": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    },
+    "naming_rules": {
+      "type": "object",
+      "required": ["directory_case", "file_case"],
+      "additionalProperties": true
+    },
+    "planned_internal_renames": {
+      "type": "object",
+      "additionalProperties": { "type": "string" }
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "allowed": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "forbidden": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

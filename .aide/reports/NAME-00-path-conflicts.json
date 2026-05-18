@@ -1,0 +1,4521 @@
+{
+  "blocker_count": 0,
+  "counts_by_term": {
+    "common": 48,
+    "compat": 57,
+    "legacy": 1232,
+    "shared": 7,
+    "source": 105,
+    "src": 1
+  },
+  "finding_count": 1450,
+  "findings": [
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.bat",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/build_legacy_windows.sh",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/build_packages.bat",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/build_packages.sh",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/run_setup_tests.bat",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "needs_owner_review",
+      "path": "apps/setup/packages/scripts/legacy/run_setup_tests.sh",
+      "reason": "nested generic/status term needs owner review",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "warning"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_local_fs.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_content_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_keychain_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_keychain_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_net_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_net_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_os_integration_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_os_integration_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_registry.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_registry.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_trust_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/legacy/source/provider/provider_trust_null.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "source",
+      "segment_index": 5,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/historical/attic/src_quarantine/src/worldgen/__init__.py",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "src",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/launcher.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/launcher_data.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/launcher_harness.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/launcher_ui.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher/ui_layout.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_audit.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_audit.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_caps.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_caps.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_err.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_err.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_installed_state.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_installed_state.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_job.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_job.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_job_schema.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_job_schema.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_log.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_log.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_solver.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_solver.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_reader.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_reader.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_validate.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_validate.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_writer.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_framed_writer.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_schema.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_schema.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_stream.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/core_tlv_stream.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_instance.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_instance.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_paths.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_paths.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_repo.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dmn_repo.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_budget_enforcer.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_budget_enforcer.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_budget_enforcer.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_budget_enforcer.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps_split.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_caps_split.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_compat.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_compat.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_compat.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_compat.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_feature_epoch.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_feature_epoch.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_feature_epoch.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_feature_epoch.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_instance.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_instance.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_instance.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_instance.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_migration.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_migration.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_migration.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_migration.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_packset.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_packset.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_packset.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_packset.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_paths.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_paths.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_paths.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_paths.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profile_cli.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profile_cli.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profile_cli.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profile_cli.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profiler.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profiler.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profiler.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_profiler.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_schema_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_schema_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_schema_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_schema_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_session.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_session.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_session.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dom_session.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_product_info.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_product_info.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_product_manifest.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_product_manifest.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_version.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/dominium_version.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/game_content_api.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common/game_content_api.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "common",
+      "segment_index": 4,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/CMakeLists.runtime.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_COMMANDS.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_CONTENT.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_REPLAY.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_RUNTIME.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_SAVE.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/SPEC_UI_FLOW.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/_legacy/sdk/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/dom_cli_main.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/dominium_game_cli_main.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/game_cli.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/server/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/server/dom_server_main.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/content/dom_game_content_placeholder.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/app_mode/app_mode.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/dom_client_main.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/dom_client_main.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/default_bindings.json",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_actions.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_mapping.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input/dom_input_mapping.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/dominium_game_main.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_modes.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_modes.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_runtime.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/g_runtime.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/game_stub.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/product_info.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_app.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_app.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_camera.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_camera.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_cli.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_cli.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_net.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_net.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_phase.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_phase.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_replay.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_replay.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_save.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_save.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_states.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_states.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_tools_build.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_tools_build.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_ui.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_ui.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_ui_debug.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/dom_game_ui_debug.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/entry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/gui/dom_game_frontend_gui.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/gui/dom_game_frontend_gui_placeholder.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/headless/dom_game_frontend_headless.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/headless/dom_game_frontend_headless_placeholder.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/tui/dom_game_frontend_tui.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/tui/dom_game_frontend_tui_placeholder.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/game_app.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/dom_sdl/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/dom_sdl/dom_sdl_stub.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/main.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_app.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_app.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display_cli.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display_gui.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display_headless.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/runtime_display_tui.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/main_game.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/actors.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/constructions.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/content_materials.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/content_parts.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/content_prefabs.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/economy.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/environment.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/game_api.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/net_data.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/net_fluid.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/net_power.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/rules_stub.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules/world.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_planner_events.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_planner_events.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_planner_logistics.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_planner_logistics.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_scheduler.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ai_scheduler.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_asset_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_asset_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_atmos_provider.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_atmos_provider.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_atmos_provider_profile_v1.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_belief_store.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_belief_store.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_body_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_body_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_calendar.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_calendar.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_capability_engine.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_capability_engine.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_capability_types.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_construction_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_construction_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_contract_runtime.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_contract_runtime.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_contract_templates.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_contract_templates.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_coredata_load.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_coredata_load.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_cosmo_graph.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_cosmo_graph.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_cosmo_transit.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_cosmo_transit.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_derived_jobs.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_derived_jobs.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_econ_access_control.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_econ_access_control.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_econ_pack_load.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_econ_pack_load.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_faction_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_faction_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_fidelity.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_fidelity.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_frames.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_frames.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_budgets.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_budgets.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_command.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_content_id.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_content_id.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_handshake.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_handshake.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_hash.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_hash.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_net_driver.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_net_driver.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_net_snapshot.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_net_snapshot.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_paths.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_paths.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_query.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_replay.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_replay.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_runtime.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_runtime.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_runtime_placeholder.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_save.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_save.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_session.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_game_session.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_instrument_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_instrument_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_io_guard.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_io_guard.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_jurisdiction_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_jurisdiction_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_lane_scheduler.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_lane_scheduler.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_macro_economy.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_macro_economy.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_macro_events.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_macro_events.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_auction.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_barter.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_clearinghouse.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_fixed_price.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_orderbook.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_provider_impl.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_quote_stream.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_market_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_mech_profiles.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_mech_profiles.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_media_provider.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_media_provider.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_money_standard.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_money_standard.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ocean_provider.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_ocean_provider.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_orbit_lane.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_orbit_lane.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_production.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_production.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_qos.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_qos.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_route_graph.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_route_graph.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_snapshot.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_snapshot.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_station_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_station_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_chunks.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_chunks.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_height.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_height.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_topology.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_topology.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_topology_ellipsoid.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_topology_sphere.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_surface_topology_torus.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_system_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_system_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_tax_rules.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_tax_rules.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_time_knowledge.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_time_knowledge.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_transfer_scheduler.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_transfer_scheduler.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_universe_bundle.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_universe_bundle.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_vehicle_aero.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_vehicle_aero.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_weather_provider.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime/dom_weather_provider.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_projection.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_projection.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_state.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_state.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_views.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_views.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_widgets.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui/dom_ui_widgets.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned/temp_files/temp.cmd",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_content_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_content_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_dui_util.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_dui_util.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_pack_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_pack_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_app.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_app.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_cli.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_cli.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_controller_content.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_controller_content.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_diagnostics.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_diagnostics.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_engine.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_engine.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_io.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_io.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_ops.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_ops.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_registry.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_session.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_tlv.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_tlv.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_validate.cpp",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_common/dom_tool_validate.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_core/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_core/product_info.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_core/tool_core.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/_orphaned_stage2/tools_core/tool_host_cli.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/README.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/blueprint_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/items_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/mod_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/pack_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/policy_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/process_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/struct_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/tech_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/transport_demo.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_demo/world_demo.dwrl",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/data/tools_registry.tlv",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_core_dominium/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_core_dominium/canvas.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_core_dominium/sim.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_core_launcher/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_core_launcher/launcher_ext_loader.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/act/dg_intent_buffer.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/act/dg_intent_buffer.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/act/dg_intent_dispatch.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/act/dg_intent_dispatch.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/group/dg_group.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/group/dg_group.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/group/dg_group_ctrl.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/group/dg_group_ctrl.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/mind/dg_mind.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/mind/dg_mind.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/mind/dg_mind_registry.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/agent/mind/dg_mind_registry.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/app/startup.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/cli/cli.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dactor.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/daggregate.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dbiome.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dblueprint.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dbody.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dclimate.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/deconomy.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/d_decor_compile.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_compile.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_compile.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_dirty.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_dirty.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_instances.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_instances.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_promote.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_promote.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_tiles.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/compile/dg_decor_tiles.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/README.md",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/d_decor_model.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_host.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_host.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_ids.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_item.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_item.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_override.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_override.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_rulepack.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/decor/model/dg_decor_rulepack.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/denergy.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dfield.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dhydro.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/djob.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dknowledge.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dmachine.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dmatter.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dnet.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dnumeric.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dorbit.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/drecipe.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dresearch.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dsim.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dspace_env.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dspace_graph.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dtransport.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dvehicle.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dweather.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dworld.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/dzone.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/gui/gui.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/gui/style.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/io/container/dtlv.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/io/schema_registry.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/mod/host/mod_stub.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/pkg/repo.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_camera.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_camera.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_draw_common.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_draw_common.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_render_debug.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_render_debug.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_sprite_batch.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_sprite_batch.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_target.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_target.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_text_layout.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/core/dom_view_build.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/dom_render_api.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/dom_render_api.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/domino_gfx_core.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/domino_gfx_internal.h",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/gfx_stub.c",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    },
+    {
+      "disposition": "allowed_exception",
+      "path": "archive/legacy/engine_modules_engine/engine/render/api/ui/CMakeLists.txt",
+      "reason": "historical material under archive",
+      "rule": "forbidden_path_terms",
+      "segment": "legacy",
+      "segment_index": 1,
+      "severity": "info"
+    }
+  ],
+  "generated_utc": "2026-05-18T09:59:03Z",
+  "info_count": 1372,
+  "repo_root": "C:/Inbox/Git Repos/dominium",
+  "schema_version": "dominium.repo.naming.path_terms.v1",
+  "status": "PASS_WITH_WARNINGS",
+  "truncated": true,
+  "warning_count": 78
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "dominium.repo.naming.next_readiness.v1",
+  "task_id": "NAME-00",
+  "status": "READY_FOR_SEMANTIC_LINT_REPAIR_OR_BATCH_A_REFERENCE_REFINEMENT",
+  "doe_00_ready": false,
+  "feature_work_ready": false,
+  "move_bulk_b_g_apply_ready": false,
+  "move_bulk_b_g_refinement_ready": true,
+  "post_restructure_full_proof_ready": false,
+  "recommended_next_order": [
+    "POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS",
+    "MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT",
+    "MOVE-BULK-BG-REFINEMENT-00",
+    "MOVE-BULK-02R through MOVE-BULK-07R only after refined gates",
+    "MOVE-BULK-08R-FINAL-EXCEPTION-CLOSURE",
+    "POST-RESTRUCTURE-01-FULL-PROOF",
+    "DOE-00"
+  ],
+  "naming_contract_for_future_routes": "contracts/repo/naming.contract.toml",
+  "constraints": [
+    "No broad move may target a generic src/source/code/common/shared/misc bucket.",
+    "No move may apply planned internal renames without a reviewed rename task.",
+    "Contracts and manifests define identity; path movement must preserve identity values.",
+    "Language placement debt must be classified before conversion or relocation."
+  ]
+}

@@ -132,6 +132,23 @@ Planning references:
 - `docs/release/NATIVE_BINARY_PROOF.md`
 - `docs/build/BUILD_CONTRACT.md`
 
+## NAME-00 Naming Canon Update
+
+NAME-00 locks directory, file, language, and ownership naming law before additional broad cleanup.
+
+New naming authority:
+
+- `contracts/repo/naming.contract.toml`
+- `docs/repo/directory_naming.md`
+- `docs/repo/file_naming.md`
+- `docs/repo/no_src_source_policy.md`
+- `docs/repo/module_layout.md`
+- `docs/repo/language_ownership.md`
+
+Naming validators live under `tools/validators/repo/` and are warning-oriented classifiers for current debt. They do not replace the strict layout/root/distribution/component validators.
+
+Future MOVE-BULK B-G refinement must not route files to `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets. Planned internal renames such as `runtime/appshell/ -> runtime/shell/`, `game/domains/ -> game/domain/`, and `contracts/schemas/ -> contracts/schema/` remain future reviewed migrations only.
+
 ## What Can Proceed
 
 The repository is ready for scoped work in these areas:

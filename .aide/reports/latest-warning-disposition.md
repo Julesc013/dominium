@@ -1,6 +1,6 @@
 # Latest Warning Disposition
 
-Current task: `RESTRUCTURE-REPAIR-00`.
+Current task: `NAME-00`.
 
 ## Accepted Local/Generated Warnings
 
@@ -22,7 +22,15 @@ Current task: `RESTRUCTURE-REPAIR-00`.
 
 - Full CTest is not green and cannot be marked green.
 - `slice0_hardcoded_ids` and `slice1_hardcoded_constants` need doctrine-backed remediation.
-- AuditX CTest wall-time needs partitioning or performance repair.
+- AuditX CTest wall-time was partitioned by TEST-PERF-01 and now runs under the `auditx` shard.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
+- NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
 
-Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.
+Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+
+## NAME-00 Warning Disposition
+
+- path-term conflicts: accepted as current warning debt unless a future task creates new unexcepted forbidden roots.
+- no-`src`/`source` findings: historical archive or active exception debt, not current authority.
+- directory/file naming findings: warning-only until a reviewed enforcement phase.
+- language ownership findings: warning-only existing placement debt; no conversion or relocation authorized.

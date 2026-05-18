@@ -1,0 +1,3363 @@
+{
+  "blocker_count": 0,
+  "counts_by_disposition": {
+    "existing_evidence_or_archive": 379,
+    "hyphenated_directory": 13,
+    "noncanonical_directory_case": 7,
+    "uppercase_directory": 19
+  },
+  "finding_count": 418,
+  "findings": [
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/adapter-managed-section-determinism",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/branch_role_detection_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/changelog_json_shape_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/changelog_preview_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/commit_message_standard_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/compact-task-packet-required-sections",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/context-packet-no-full-repo-dump",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/docs_consistency_report_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/drop_candidate_not_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/export_pack_commit_policy_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/export_pack_excludes_source_branch_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/export_pack_git_policy_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/export_pack_task_recovery_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/file_classification_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/file_quality_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/file_quality_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/fixture_import_governance_commands_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_helper_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_land_plan_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_live_repo_no_mutation_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_promote_plan_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_prune_guard_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/git_workflow_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_ci_advisory_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_export_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_protection_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_asset_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_assets_have_checksums_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_checklist_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_draft_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_draft_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_no_publish_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_release_upload_plan_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/github_report_only_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_conflict_report_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_no_source_state_leak_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_ownership_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_preservation_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/install_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_compile_destructive_prompt_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_compile_git_prompt_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_compile_install_prompt_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_compile_overbroad_prompt_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_compile_vague_prompt_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/intent_packet_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/malformed_commit_reporting_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/migration_ledger_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/migration_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/migration_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/move_map_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/move_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/path_alias_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/path_alias_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/promotion_rules_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/prune_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/quality_ledger_generation_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/quality_no_delete_recommendation_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/refactor_map_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/refactor_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/refactor_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/refactor_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/reference_rewrite_plan_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_archive_generation_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_asset_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_bundle_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_checksum_validation_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_fixture_extraction_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_forbidden_paths_excluded_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_manifest_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_no_publish_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/release_notes_preview_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_blocks_local_state_and_secrets_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_classes_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_doctor_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_dry_run_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repair_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_dependency_map_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_doc_link_map_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_explain_file_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_intelligence_no_local_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/repo_ownership_map_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/reuse_modularity_report_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/review-packet-evidence-only",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/rollback_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/rollback_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/rollback_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_exception_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_fate_no_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_file_classification_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_record_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_recycling_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/root_recycling_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/roots_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/salvage_map_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/salvage_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/sync_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/task_resumption_standard_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/test_coverage_map_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/token-ledger-budget-check",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_absorption_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_adapter_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_fate_no_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_record_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tool_wrap_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/tools_no_execution_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/uninstall_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/uninstall_no_blanket_aide_delete_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/uninstall_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/uninstall_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/uninstall_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_compatibility_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_dry_run_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_mandatory_migration_gate_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_no_source_state_leak_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/upgrade_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/verifier-detects-bad-evidence",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/workunit_idempotency_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/evals/golden-tasks/workunit_sizing_policy_golden",
+      "rule": "directory_case",
+      "segment": "golden-tasks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide.local.example",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide.local.example/cache",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide.local.example/ledgers",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide.local.example/traces",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/cache",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/changelog",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/changelog/templates",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/commands",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/context",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/adapter-managed-section-determinism",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/branch_role_detection_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/changelog_json_shape_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/changelog_preview_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/commit_message_standard_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/compact-task-packet-required-sections",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/context-packet-no-full-repo-dump",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/docs_consistency_report_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/drop_candidate_not_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/export_pack_commit_policy_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/export_pack_excludes_source_branch_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/export_pack_git_policy_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/export_pack_task_recovery_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/file_classification_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/file_quality_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/file_quality_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/fixture_import_governance_commands_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_helper_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_land_plan_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_live_repo_no_mutation_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_promote_plan_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_prune_guard_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/git_workflow_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_ci_advisory_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_export_inclusion_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_protection_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_asset_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_assets_have_checksums_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_checklist_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_draft_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_draft_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_no_publish_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_release_upload_plan_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/github_report_only_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_conflict_report_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_no_source_state_leak_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_ownership_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_preservation_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/install_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_compile_destructive_prompt_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_compile_git_prompt_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_compile_install_prompt_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_compile_overbroad_prompt_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_compile_vague_prompt_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/intent_packet_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/malformed_commit_reporting_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/migration_ledger_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/migration_ledger_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/migration_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/move_map_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/move_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/path_alias_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/path_alias_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/promotion_rules_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/prune_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/quality_ledger_generation_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/quality_no_delete_recommendation_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/refactor_map_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/refactor_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/refactor_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/refactor_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/reference_rewrite_plan_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_archive_generation_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_asset_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_bundle_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_checksum_validation_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_fixture_extraction_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_forbidden_paths_excluded_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_manifest_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_no_publish_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/release_notes_preview_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_blocks_local_state_and_secrets_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_classes_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_doctor_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_dry_run_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repair_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_dependency_map_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_doc_link_map_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_explain_file_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_intelligence_no_local_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/repo_ownership_map_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/reuse_modularity_report_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/review-packet-evidence-only",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/rollback_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/rollback_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/rollback_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_exception_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_fate_no_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_file_classification_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_record_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_recycling_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/root_recycling_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/roots_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/salvage_map_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/salvage_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/sync_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/task_resumption_standard_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/test_coverage_map_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/token-ledger-budget-check",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_absorption_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_adapter_map_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_fate_no_delete_approval_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_inventory_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_record_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tool_wrap_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/tools_no_execution_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/uninstall_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/uninstall_no_blanket_aide_delete_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/uninstall_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/uninstall_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/uninstall_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_compatibility_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_dry_run_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_mandatory_migration_gate_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_no_apply_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_no_source_state_leak_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_plan_schema_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/upgrade_preserves_target_state_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/verifier-detects-bad-evidence",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/workunit_idempotency_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/workunit_sizing_policy_golden",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/gateway",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/github",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/hooks",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/install",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/intake",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/memory",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/models",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/prompts",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/providers",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/quality",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/queue",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/refactors",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/release",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/repair",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/repo",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/reports",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/rollback",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/roots",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/scripts",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/scripts/tests",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/tools",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/uninstall",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/upgrade",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference",
+      "rule": "directory_case",
+      "segment": "aide-lite-pack-v0",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/generated/adapters/continue-checks",
+      "rule": "directory_case",
+      "segment": "continue-checks",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/generated/adapters/cursor-rules",
+      "rule": "directory_case",
+      "segment": "cursor-rules",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/generated/adapters/windsurf-rules",
+      "rule": "directory_case",
+      "segment": "windsurf-rules",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/command-logs",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-current",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/command-logs-rerun",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/final-command-logs-rerun",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs",
+      "rule": "directory_case",
+      "segment": "DCHECK-01-dominium-aide-operating-baseline-audit",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-BASELINE-REPAIR-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-BASELINE-REPAIR-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-FRESH-PREFLIGHT-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-FRESH-PREFLIGHT-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/command-logs",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/command-logs-final",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/logs",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-OPERATING-BASELINE-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-PILOT-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-ROOT-RECYCLING-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-ROOT-RECYCLING-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-STABLE-INSTALL-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-STABLE-INSTALL-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-SYNC-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-SYNC-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-TOOL-ABSORPTION-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence",
+      "rule": "directory_case",
+      "segment": "DOMINIUM-AIDE-TOOL-ABSORPTION-01",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/tools/command-contracts",
+      "rule": "directory_case",
+      "segment": "command-contracts",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/tools/wrapper-contracts",
+      "rule": "directory_case",
+      "segment": "wrapper-contracts",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": ".aide/tools/wrapper-plans",
+      "rule": "directory_case",
+      "segment": "wrapper-plans",
+      "severity": "info"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/launcher/include/launcher/_internal",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/launcher/include/launcher/_internal/dom_launcher",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/launcher/include/launcher/_internal/launcher_internal",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/setup/include/dsu/_internal",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/setup/include/dsu/_internal/dom_setup",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/setup/packages/scripts/packaging/linux/deb/DEBIAN",
+      "rule": "directory_case",
+      "segment": "DEBIAN",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/setup/packages/scripts/packaging/macos/Dominium.app",
+      "rule": "directory_case",
+      "segment": "Dominium.app",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "apps/setup/packages/scripts/packaging/macos/Dominium.app/Contents",
+      "rule": "directory_case",
+      "segment": "Dominium.app",
+      "severity": "warning"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/engine_has_launcher_module/launcher",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_common",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_common/common",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/_legacy",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/_legacy/sdk",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/cli/server",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/content",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/app_mode",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/core/client/input",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/gui",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/headless",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/frontends/tui",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/gui/dom_sdl",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/rules",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/runtime",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/legacy_source_game/game/ui",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned/temp_files",
+      "rule": "directory_case",
+      "segment": "_orphaned",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned_stage2",
+      "rule": "directory_case",
+      "segment": "_orphaned_stage2",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned_stage2/tools_common",
+      "rule": "directory_case",
+      "segment": "_orphaned_stage2",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/_orphaned_stage2/tools_core",
+      "rule": "directory_case",
+      "segment": "_orphaned_stage2",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/engine_modules_engine/engine/sim/_legacy",
+      "rule": "directory_case",
+      "segment": "_legacy",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/engine_modules_engine/engine/sim/_legacy/core_sim",
+      "rule": "directory_case",
+      "segment": "_legacy",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/engine_modules_engine/engine/system/_legacy",
+      "rule": "directory_case",
+      "segment": "_legacy",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/engine_modules_engine/engine/system/_legacy/scratch",
+      "rule": "directory_case",
+      "segment": "_legacy",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMac.xcodeproj",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMac.xcodeproj",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMacApp",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMacApp",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMacApp",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Assets.xcassets/AppIcon.appiconset",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMacApp",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "archive/legacy/setup_core_setup/setup/adapters/macosx/gui/xcode/DominiumSetupMacApp/Resources/Base.lproj",
+      "rule": "directory_case",
+      "segment": "DominiumSetupMacApp",
+      "severity": "info"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026",
+      "rule": "directory_case",
+      "segment": "winnt-msvc-x86_64-vs2026",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "artifacts/toolchain_runs/winnt-msvc-x86_64-vs2026/run.5ea8970d1739f5c2",
+      "rule": "directory_case",
+      "segment": "winnt-msvc-x86_64-vs2026",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "content/domain-data",
+      "rule": "directory_case",
+      "segment": "domain-data",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "contracts/schemas/from-root-schemas",
+      "rule": "directory_case",
+      "segment": "from-root-schemas",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/anb-omega-empty-path",
+      "rule": "directory_case",
+      "segment": "anb-omega-empty-path",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/anb-omega-empty-path/20260211T215035Z_precheck_ok",
+      "rule": "directory_case",
+      "segment": "anb-omega-empty-path",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/anb-omega-empty-path/20260211T220047Z_precheck_OTHER",
+      "rule": "directory_case",
+      "segment": "anb-omega-empty-path",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T080631Z_verify_DERIVED_ARTIFACT_STALE",
+      "rule": "directory_case",
+      "segment": "20260211T080631Z_verify_DERIVED_ARTIFACT_STALE",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T080838Z_verify_OTHER",
+      "rule": "directory_case",
+      "segment": "20260211T080838Z_verify_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T081813Z_verify_ok",
+      "rule": "directory_case",
+      "segment": "20260211T081813Z_verify_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T083343Z_verify_DERIVED_ARTIFACT_STALE",
+      "rule": "directory_case",
+      "segment": "20260211T083343Z_verify_DERIVED_ARTIFACT_STALE",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T090841Z_verify_OTHER",
+      "rule": "directory_case",
+      "segment": "20260211T090841Z_verify_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T111036Z_verify_OTHER",
+      "rule": "directory_case",
+      "segment": "20260211T111036Z_verify_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T121513Z_verify_ok",
+      "rule": "directory_case",
+      "segment": "20260211T121513Z_verify_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T130308Z_verify_ok",
+      "rule": "directory_case",
+      "segment": "20260211T130308Z_verify_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T163146Z_verify_OTHER",
+      "rule": "directory_case",
+      "segment": "20260211T163146Z_verify_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260211T233128Z_verify_ok",
+      "rule": "directory_case",
+      "segment": "20260211T233128Z_verify_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260212T143108Z_verify_ok",
+      "rule": "directory_case",
+      "segment": "20260212T143108Z_verify_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE",
+      "rule": "directory_case",
+      "segment": "20260213T052649Z_precheck_DERIVED_ARTIFACT_STALE",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260213T054938Z_exitcheck_OTHER",
+      "rule": "directory_case",
+      "segment": "20260213T054938Z_exitcheck_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260213T055921Z_exitcheck_OTHER",
+      "rule": "directory_case",
+      "segment": "20260213T055921Z_exitcheck_OTHER",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260213T063945Z_verify_DERIVED_ARTIFACT_STALE",
+      "rule": "directory_case",
+      "segment": "20260213T063945Z_verify_DERIVED_ARTIFACT_STALE",
+      "severity": "warning"
+    },
+    {
+      "disposition": "uppercase_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/vs2026/20260213T075116Z_strict_ok",
+      "rule": "directory_case",
+      "segment": "20260213T075116Z_strict_ok",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/ws-426fb129fc29daec",
+      "rule": "directory_case",
+      "segment": "ws-426fb129fc29daec",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070322Z_verify_DERIVED_ARTIFACT_STALE",
+      "rule": "directory_case",
+      "segment": "ws-426fb129fc29daec",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/audit/remediation/ws-426fb129fc29daec/20260226T070425Z_strict_BUILD_OUTPUT_MISSING",
+      "rule": "directory_case",
+      "segment": "ws-426fb129fc29daec",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/planning/generated-data",
+      "rule": "directory_case",
+      "segment": "generated-data",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/planning/generated-data/checkpoints",
+      "rule": "directory_case",
+      "segment": "generated-data",
+      "severity": "warning"
+    },
+    {
+      "disposition": "hyphenated_directory",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "docs/repo/root-recycling",
+      "rule": "directory_case",
+      "segment": "root-recycling",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "libs/contracts/include/dom_contracts/_internal",
+      "rule": "directory_case",
+      "segment": "_internal",
+      "severity": "warning"
+    },
+    {
+      "disposition": "noncanonical_directory_case",
+      "message": "directory segment is not lower_snake_or_single_lowerword",
+      "path": "tools/_shared",
+      "rule": "directory_case",
+      "segment": "_shared",
+      "severity": "warning"
+    }
+  ],
+  "generated_utc": "2026-05-18T09:58:21Z",
+  "info_count": 379,
+  "repo_root": "C:/Inbox/Git Repos/dominium",
+  "schema_version": "dominium.repo.naming.directory_naming.v1",
+  "status": "PASS_WITH_WARNINGS",
+  "truncated": false,
+  "warning_count": 39
+}

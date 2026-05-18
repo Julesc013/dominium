@@ -1,0 +1,243 @@
+[contract]
+id = "dominium.repo.naming.v1"
+status = "active"
+phase = "NAME-00"
+scope = "source repository naming, ownership slots, file roles, and language placement; not install, package, media, or runtime projection layout"
+authority_order = [
+  "docs/canon/constitution_v1.md",
+  "docs/canon/glossary_v1.md",
+  "AGENTS.md",
+  "contracts/repo/layout.contract.toml",
+  "contracts/repo/root_allowlist.toml",
+  "contracts/repo/layout_exceptions.toml",
+  "contracts/repo/naming.contract.toml"
+]
+enforcement = "audit_with_warning_only_new_validators"
+no_physical_moves_authorized = true
+
+[root_policy]
+canonical_roots = [
+  ".aide",
+  ".github",
+  "apps",
+  "engine",
+  "game",
+  "runtime",
+  "contracts",
+  "content",
+  "docs",
+  "tests",
+  "tools",
+  "scripts",
+  "cmake",
+  "external",
+  "release",
+  "archive"
+]
+generated_or_local_roots = [".aide.local", ".dominium.local", "build", "out", "dist"]
+generated_adjacent_exception_roots = ["artifacts"]
+optional_future_roots = ["sdk", "examples"]
+source_repo_layout_is_not_projection_layout = true
+
+[forbidden_roots]
+terms = [
+  "src",
+  "source",
+  "sources",
+  "code",
+  "impl",
+  "common",
+  "shared",
+  "misc",
+  "new",
+  "old",
+  "modern",
+  "legacy",
+  "classic",
+  "universal",
+  "compat"
+]
+rule = "Forbidden terms must not become top-level source ownership roots. Nested use is warning-only until an owner review proves the term names real ownership."
+
+[allowed_term_exceptions]
+"archive/legacy" = "historical classification under the archive root"
+"contracts/compatibility" = "compatibility contract ownership"
+"docs/compatibility" = "compatibility documentation ownership"
+
+[active_transitional_debt]
+source = "contracts/repo/layout_exceptions.toml and docs/repo/root-recycling/MOVE_BULK_08_FINAL_EXCEPTION_CLOSURE.md"
+remaining_bad_roots = [
+  "core",
+  "control",
+  "data",
+  "packs",
+  "profiles",
+  "bundles",
+  "compat",
+  "lib",
+  "libs",
+  "locks",
+  "repo",
+  "safety",
+  "security",
+  "specs",
+  "updates",
+  "meta",
+  "governance",
+  "performance",
+  "validation",
+  "modding",
+  "models",
+  "templates",
+  "net"
+]
+tracked_file_count_at_name_00 = 1764
+status = "excepted_transitional_debt"
+rule = "Existing tracked files under active exceptions are not made blockers by NAME-00. New files must use the naming canon unless a later reviewed task extends an exception."
+
+[naming_rules]
+directory_names_encode = "ownership"
+file_names_encode = "artifact_role"
+directory_case = "lower_snake_or_single_lowerword"
+file_case = "lower_snake_case_by_default"
+status_words_forbidden_for_new_active_paths = ["new", "old", "future", "modern", "classic", "legacy", "universal"]
+generic_implementation_buckets_forbidden = ["src", "source", "sources", "code", "impl", "common", "shared", "misc"]
+api_or_toolchain_names_allowed_only_as_leaf_adapters = true
+contracts_and_manifests_define_identity = true
+path_is_storage_not_identity = true
+
+[singular_plural]
+singular_for = [
+  "code_planes",
+  "service_planes",
+  "protocol_families",
+  "contract_categories",
+  "runtime_subsystems"
+]
+plural_for = [
+  "artifact_collections",
+  "product_collections",
+  "content_collections",
+  "test_collections",
+  "tool_collections",
+  "docs_collections"
+]
+
+[target_internal_slots.apps]
+plural = true
+role = "thin product entrypoints and product composition"
+preferred_children = ["client", "server", "setup", "launcher", "tools"]
+
+[target_internal_slots.engine]
+singular_plane = true
+role = "C89 deterministic substrate"
+preferred_children = ["include", "kernel", "determinism", "identity", "time", "math", "memory", "order", "schedule", "event", "state", "execution", "replay", "proof", "diagnostics"]
+
+[target_internal_slots.game]
+singular_plane = true
+role = "game law, rules, process semantics, and domain implementation"
+preferred_children = ["authority", "law", "rule", "process", "world", "scenario", "domain"]
+
+[target_internal_slots.runtime]
+singular_plane = true
+role = "host services, product shell, platform adapters, render adapters, input, audio, network, storage, IPC, diagnostics, package/profile/update services"
+preferred_children = ["shell", "capability", "component", "platform", "render", "ui", "input", "audio", "network", "storage", "ipc", "diagnostics", "supervisor", "package", "profile", "instance", "save", "replay", "update"]
+
+[target_internal_slots.contracts]
+singular_categories = true
+role = "machine-readable law and identity contracts"
+preferred_children = ["abi", "architecture", "build", "capability", "command", "compatibility", "component", "diagnostics", "distribution", "domain", "event", "governance", "identity", "install", "lock", "manifest", "package", "policy", "product", "profile", "projection", "protocol", "registry", "release", "repo", "replay", "safety", "schema", "security", "service", "stability", "update", "version", "view"]
+
+[target_internal_slots.content]
+plural_collections = true
+role = "authored payloads, data, packs, profiles, templates, themes, assets, locale, examples, fixtures"
+preferred_children = ["assets", "bundles", "defaults", "domains", "examples", "fixtures", "locale", "packs", "profiles", "templates", "themes"]
+
+[planned_internal_renames]
+"runtime/appshell" = "runtime/shell"
+"game/domains" = "game/domain"
+"content/domain-data" = "content/domains"
+"contracts/schemas" = "contracts/schema"
+"contracts/registries" = "contracts/registry"
+"contracts/packages" = "contracts/package"
+"contracts/profiles" = "contracts/profile"
+"contracts/protocols" = "contracts/protocol"
+"contracts/projections" = "contracts/projection"
+status = "planned_future_migration_only"
+rule = "NAME-00 does not authorize applying these renames, creating aliases, rewriting imports, or retiring exceptions."
+
+[move_bulk_effect]
+next_refinement_task = "MOVE-BULK-BG-REFINEMENT-00"
+rule = "Future B-G refinement must route to the target internal slots in this contract when doing so does not conflict with stronger identity, ABI, runtime, release, or policy evidence."
+no_apply_authorized = true
+batch_a = "Refine skipped references first; preserve historical and audit references."
+batch_b = "Use content/templates, content/assets or docs/modding only after proving template/model/modding role."
+batch_c = "Use content/packs, content/profiles, content/bundles, content/domains, contracts/package, contracts/profile, or release only after identity proof."
+batch_d = "Use contracts/compatibility, contracts/lock, contracts/safety, contracts/security, contracts/update, release, tools, or docs according to authority role."
+batch_e = "Use tools/validators, tools/audit, tools/migration, tools/performance, contracts/governance, or docs/governance only after import/shim proof."
+batch_f = "Use engine, game, runtime, or contracts only after deterministic/runtime/build ownership proof."
+batch_g = "Use engine, runtime, external, contracts/abi, or tools/build only after ABI/build ownership proof."
+
+[file_naming]
+default_case = "lower_snake_case"
+role_suffixes = ["schema.json", "registry.json", "manifest.json", "contract.toml", "policy.toml", "matrix.toml", "lock.json", "proof.json", "report.md", "report.json", "audit.md", "audit.json"]
+conventional_exceptions = ["README.md", "LICENSE", "LICENSE.md", "CHANGELOG.md", "SECURITY.md", "CONTRIBUTING.md", "AGENTS.md", "CLAUDE.md", "CMakeLists.txt", "CMakePresets.json", "VERSION_*"]
+existing_uppercase_docs = "allowed_transitional_debt"
+
+[language.engine]
+allowed = ["c89", "headers"]
+forbidden = ["python_runtime_behavior", "shell_runtime_behavior", "modern_cpp_without_exception"]
+notes = "Engine is Domino, the deterministic universe simulation core. Public headers must remain C89 and C++98 parseable."
+
+[language.game]
+allowed = ["c89", "cpp98"]
+forbidden = ["python_runtime_behavior_without_review", "modern_cpp_without_exception", "platform_adapter_ownership"]
+notes = "Game owns Dominium gameplay meaning and law. Existing Python domain implementation remains transitional debt until a reviewed conversion or isolation task."
+
+[language.runtime]
+allowed = ["c89", "cpp98", "platform_adapter_language_when_isolated"]
+forbidden = ["game_truth", "domain_law", "process_authority"]
+notes = "Runtime hosts, adapts, presents, connects, stores, and diagnoses. It must not own simulation truth."
+
+[language.apps]
+allowed = ["cpp98", "c89", "product_specific_thin_shell_language_when_isolated"]
+forbidden = ["simulation_truth", "domain_law", "runtime_adapter_ownership"]
+
+[language.contracts]
+allowed = ["json", "toml", "yaml", "schema", "manifest", "registry", "policy", "matrix", "lock"]
+forbidden = ["runtime_executable_code", "truth_mutation"]
+
+[language.content]
+allowed = ["data", "assets", "packs", "profiles", "templates", "themes", "locale"]
+forbidden = ["executable_code", "truth_mutation", "untrusted_pack_code"]
+
+[language.tools]
+allowed = ["python", "powershell", "bash", "cmd", "cmake_helpers", "c89", "cpp98", "codegen"]
+forbidden = ["runtime_product_dependency_from_engine_game_runtime"]
+
+[language.scripts]
+allowed = ["python_wrappers", "powershell_wrappers", "bash_wrappers", "cmd_wrappers"]
+forbidden = ["product_behavior", "simulation_truth"]
+
+[language.cmake]
+allowed = ["cmake_modules", "presets", "toolchains"]
+forbidden = ["source_domain_ownership", "generated_build_output"]
+
+[language.external]
+allowed = ["third_party_language_as_vendored"]
+forbidden = ["dominium_owned_source_without_reclassification"]
+
+[language.archive]
+allowed = ["historical_languages", "superseded_material", "quarantined_material"]
+forbidden = ["active_authority_without_review"]
+
+[language.aide]
+allowed = ["aide_policy", "aide_evidence", "aide_scripts", "aide_context"]
+forbidden = ["provider_secrets", "raw_prompt_logs", "local_cache_state"]
+
+[validator_policy]
+default_mode = "audit"
+strict_mode_available = true
+current_name_00_validators_are_warning_or_blocker_classifiers = true
+initial_warning_only_rules = ["path_terms", "directory_case", "file_case", "language_placement_existing_debt", "planned_internal_renames"]
+initial_blocking_rules = ["new_unexcepted_top_level_forbidden_root", "new_unexcepted_src_or_source_directory_outside_archive_or_active_exception"]

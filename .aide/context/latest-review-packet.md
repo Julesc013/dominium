@@ -2,7 +2,7 @@
 
 ## Review Objective
 
-Review the RESTRUCTURE-REPAIR-00 partial repair follow-up for scope, policy preservation, validation accuracy, and remaining blocker disposition.
+Review NAME-00 naming canon work for scope, no-apply discipline, validator warning posture, and consistency with the post-CONVERGE layout authority.
 
 ## Decision Requested
 
@@ -22,22 +22,23 @@ Review the RESTRUCTURE-REPAIR-00 partial repair follow-up for scope, policy pres
 
 ## Evidence Packet References
 
-- `.aide/reports/RESTRUCTURE-REPAIR-00-status.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-validation.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-blockers.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-final-readiness.md`
-- `.aide/reports/RESTRUCTURE-REPAIR-00-master-remediation-ledger.md`
+- `.aide/reports/NAME-00-status.md`
+- `.aide/reports/NAME-00-validation.md`
+- `.aide/reports/NAME-00-blockers.md`
+- `.aide/reports/NAME-00-path-conflicts.md`
+- `.aide/reports/NAME-00-language-ownership-findings.md`
+- `.aide/reports/NAME-00-next-readiness.md`
 - `.aide/verification/review-decision-policy.yaml`
-- `docs/repo/audits/RESTRUCTURE_REPAIR_00_FULL_REMEDIATION.md`
-- `docs/repo/RESTRUCTURE_REPAIR_STATUS.md`
+- `docs/repo/audits/NAME_00_NAMING_CANON_AUDIT.md`
+- `contracts/repo/naming.contract.toml`
 
 ## Changed Files Summary
 
-The follow-up updates deterministic frozen-hash evidence, removes expired overrides, refreshes replay fixture hashes from current stubs, narrows AuditX generated-evidence scanning, keeps incomplete generated AuditX JSON out of scope, and refreshes repair evidence reports.
+NAME-00 adds a machine-readable naming contract, human naming docs, warning-oriented naming validators, and evidence reports. It does not move, delete, rename, rewrite, create shims, apply move maps, or retire exceptions.
 
 ## Validation Summary
 
-Passing: AIDE after packet format repair, docs sanity, JSON parsing, focused RepoX, smoke CTest, native configure, build-only `ALL_BUILD`, product boot, portable projection, internal pilot, frozen contract guard, override policy tests, and replay hash invariance. Not green: full CTest, `slice0_hardcoded_ids`, `slice1_hardcoded_constants`, and AuditX wall-time.
+Expected validation: AIDE doctor/validate, Python compile for new validators, JSON parse for naming evidence/schema, naming validators, strict layout/root/distribution/component validators, focused RepoX, smoke CTest, and `git diff --check`. Full CTest remains out of scope for NAME-00.
 
 ## Token Summary
 

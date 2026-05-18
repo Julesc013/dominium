@@ -81,3 +81,19 @@ POST-RESTRUCTURE-00 did not run the full proof chain because MOVE-BULK-08 closur
 Safe repair may fix stale paths, stale test fixtures, deterministic proof metadata, and current-status evidence. It must not force deferred root moves, refresh frozen contract hashes, extend expired overrides, accept replay hash drift, or retire layout exceptions unless the root is empty and the exception plan permits it.
 
 RESTRUCTURE-REPAIR-00 confirmed that 23 formerly bad roots still require deferred owner-specific remediation. The next root cleanup task remains `MOVE-BULK-A-SKIPPED-REFERENCE-REFINEMENT`.
+
+<!-- NAME-00 -->
+
+## NAME-00 Naming Canon Rule
+
+Before any further MOVE-BULK refinement or apply task, consume `contracts/repo/naming.contract.toml`.
+
+Naming canon effects:
+
+- do not route moved files through `src/`, `source/`, `sources/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` buckets;
+- use singular names for code, service, runtime, and contract-category ownership planes;
+- use plural names for authored content, products, tools, docs, tests, and artifact collections;
+- keep contract, pack, profile, bundle, release, product, and ABI identity values stable across future path moves;
+- treat planned internal renames as future reviewed work, not as implicit MOVE-BULK authorization.
+
+NAME-00 does not authorize moves, rewrites, shims, exception retirement, or feature work.

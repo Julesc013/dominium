@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
+UNSPECIFIED - NAME-00 Directory File Language and Ownership Naming Canon
 
 ## GOAL
 
-TEST-PERF-01 CTest Sharding and AuditX Wall-Time Baseline
+NAME-00 Directory File Language and Ownership Naming Canon
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4176
-- approx_tokens: 1044
+- chars: 4178
+- approx_tokens: 1045
 - budget_status: PASS
 - warnings:
   - none

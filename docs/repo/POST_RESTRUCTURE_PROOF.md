@@ -5,7 +5,7 @@ Superseded By: none
 
 # Post-Restructure Proof
 
-Latest proof state: PARTIAL after `RESTRUCTURE-REPAIR-00` follow-up repairs.
+Latest proof state: PARTIAL after `TEST-PERF-01` and NAME-00 naming-law follow-up.
 
 ## Passing Proof Surfaces
 
@@ -27,8 +27,9 @@ Latest proof state: PARTIAL after `RESTRUCTURE-REPAIR-00` follow-up repairs.
 - Full CTest is not green.
 - 23 formerly bad roots remain under active exceptions with 1,764 tracked files.
 - `slice0_hardcoded_ids` and `slice1_hardcoded_constants` still need doctrine-backed remediation.
-- AuditX CTest wall-time still needs partitioning or performance repair.
+- AuditX CTest wall-time is now partitioned into an explicit `auditx` shard with 1200 second timeout.
 - Large file-quality ledger storage policy remains unresolved.
+- Naming conflicts are classified by NAME-00, but no naming migration has been applied.
 
 ## Rerun Commands
 
@@ -44,8 +45,13 @@ python tools/validators/check_repo_layout.py --repo-root . --strict
 python tools/validators/check_root_allowlist.py --repo-root . --strict
 python tools/validators/check_distribution_layout.py --repo-root . --strict
 python tools/validators/check_component_matrices.py --repo-root . --strict
+python tools/validators/repo/check_no_src_source_dirs.py --repo-root .
+python tools/validators/repo/check_path_terms.py --repo-root .
+python tools/validators/repo/check_directory_naming.py --repo-root .
+python tools/validators/repo/check_file_naming.py --repo-root .
 ctest --preset verify -R inv_repox_rules --output-on-failure --timeout 300
 ctest --preset verify -L smoke --output-on-failure --timeout 300
+ctest --preset verify -L auditx --output-on-failure --timeout 1200
 cmake --preset verify
 cmake --build --preset verify --target ALL_BUILD
 python tools/validators/check_product_boot_matrix.py --repo-root . --json --strict --run-smoke --timeout 30
@@ -57,4 +63,8 @@ python tools/validators/check_internal_pilot_release.py --repo-root . --release-
 
 DOE-00 is not authorized. Feature implementation remains blocked.
 
-Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.
+Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+
+## NAME-00 Naming Proof Note
+
+NAME-00 locks naming law and produces warning-only conflict evidence. It does not make current excepted bad roots clean, and it does not authorize `runtime/appshell -> runtime/shell`, `game/domains -> game/domain`, or contract-category singularization. Those are planned future migrations requiring reviewed scope.

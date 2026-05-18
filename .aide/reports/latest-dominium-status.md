@@ -1,8 +1,8 @@
 # Latest Dominium Status
 
-Current task: `RESTRUCTURE-REPAIR-00`.
+Current task: `NAME-00`.
 
-Result: PARTIAL.
+Result: PARTIAL with naming law locked.
 
 ## Current Green State
 
@@ -35,12 +35,20 @@ Result: PARTIAL.
 - full CTest is not green.
 - slice0_hardcoded_ids still fails on current hardcoded domain/source/tool/test identifiers.
 - slice1_hardcoded_constants still fails on current atmosphere/gravity/oxygen assumptions.
-- tools_auditx still exceeds the 300 second CTest timeout.
+- tools_auditx no longer blocks the 300 second fast lane after TEST-PERF-01; AuditX is now an explicit `auditx` shard with a 1200 second timeout.
 - tracked large AIDE file-quality ledger policy remains unresolved.
 - prior repair commits 51257dfdb and 0a579e3c remain commit-policy warning history and were not amended.
+- NAME-00 naming conflicts are warning-classified and not moved.
 
 DOE-00 readiness: no.
 
 Feature implementation authorized: no.
 
-Next task: `TEST-PERF-01 - CTest Sharding and AuditX Wall-Time Baseline`.
+Next task: `POST-RESTRUCTURE-REPAIR-SEMANTIC-LINTS - Hardcoded Identifier and Constant Disposition`.
+
+## NAME-00 Additions
+
+- `contracts/repo/naming.contract.toml`
+- naming docs under `docs/repo/`
+- naming validators under `tools/validators/repo/`
+- conflict/readiness evidence under `.aide/reports/NAME-00-*`

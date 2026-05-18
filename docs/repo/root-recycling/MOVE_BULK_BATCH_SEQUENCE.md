@@ -98,3 +98,18 @@ The repair pass did not authorize Batch B-G movement. It fixed only safe stale-p
 2. Gate any deferred Batch B-G work explicitly.
 3. Run final exception closure only after prior batches are applied and proven.
 4. Rerun full post-restructure proof only after closure says ready.
+
+<!-- NAME-00 -->
+
+## NAME-00 Sequence Update
+
+NAME-00 must be consumed before any additional Batch B-G gate or apply task.
+
+The batch sequence now has an additional refinement constraint: every proposed target path must satisfy `contracts/repo/naming.contract.toml`, and every deviation must be explicitly listed as deferred or review-gated.
+
+This means:
+
+- no batch may introduce `src/`, `source/`, `code/`, `impl/`, `common/`, `shared/`, or `misc` ownership buckets;
+- target paths should use singular contract and service categories such as `contracts/schema`, `contracts/registry`, `contracts/package`, `contracts/profile`, `contracts/protocol`, `runtime/shell`, and `game/domain` only when the batch explicitly gates those future migrations;
+- identity-sensitive B/C/D/G items must preserve manifest and contract IDs even if future path storage changes;
+- planned internal renames remain future reviewed migrations, not hidden side effects of a bulk move.

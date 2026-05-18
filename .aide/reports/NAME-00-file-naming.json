@@ -1,0 +1,4020 @@
+{
+  "blocker_count": 0,
+  "counts_by_disposition": {
+    "existing_evidence_or_archive": 1006,
+    "existing_uppercase_doc": 3932,
+    "hyphenated_file": 17,
+    "noncanonical_file_case": 241,
+    "uppercase_file": 110
+  },
+  "finding_count": 5306,
+  "findings": [
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AGENTS.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/adapters/templates/AGENTS.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "CLAUDE.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/adapters/templates/CLAUDE.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "continue-checks.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/adapters/templates/continue-checks.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "cursor-rule.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/adapters/templates/cursor-rule.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "windsurf-rule.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/adapters/templates/windsurf-rule.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "key-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/cache/key-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-cache-keys.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/cache/latest-cache-keys.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-cache-keys.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/cache/latest-cache-keys.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "CHANGELOG.preview.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/CHANGELOG.preview.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "RELEASE_NOTES.preview.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/RELEASE_NOTES.preview.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-changelog-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/latest-changelog-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "malformed-commits.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/malformed-commits.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-notes.preview.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/release-notes.preview.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-notes.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/changelog/templates/release-notes.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "context-index.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/context-index.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "dominium-doctrine-refs.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/dominium-doctrine-refs.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "excerpt-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/excerpt-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-context-packet.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/latest-context-packet.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-review-packet.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/latest-review-packet.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-task-packet.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/latest-task-packet.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/repo-map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-map.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/repo-map.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-snapshot.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/repo-snapshot.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "test-map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/context/test-map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "failure-taxonomy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/controller/failure-taxonomy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-outcome-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/controller/latest-outcome-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-recommendations.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/controller/latest-recommendations.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "outcome-ledger.jsonl",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/controller/outcome-ledger.jsonl",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "missing-sections.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures/missing-sections.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-golden-tasks.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/evals/runs/latest-golden-tasks.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-golden-tasks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/evals/runs/latest-golden-tasks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "export-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/export-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AGENTS.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates/AGENTS.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "CLAUDE.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates/CLAUDE.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "continue-checks.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates/continue-checks.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "cursor-rule.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates/cursor-rule.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "windsurf-rule.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/adapters/templates/windsurf-rule.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "key-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/cache/key-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-notes.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/changelog/templates/release-notes.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "excerpt-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/context/excerpt-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "missing-sections.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/evals/golden-tasks/verifier-detects-bad-evidence/fixtures/missing-sections.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "security-boundary.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/gateway/security-boundary.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-roles.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/branch-roles.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/commit-template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "helper-commands.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/helper-commands.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "helper-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/helper-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "project-profiles.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/project-profiles.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "promotion-rules.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/promotion-rules.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prune-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/prune-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/git/sync-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-msg",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/hooks/commit-msg",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-policy.template.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/import-policy.template.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-report.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/import-report.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "intent-examples.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/intake/intent-examples.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "open-risks.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/memory/open-risks.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "project-state.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/memory/project-state.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "hard-floors.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/models/hard-floors.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-protection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/branch-protection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-roles.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/branch-roles.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ci-gates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/ci-gates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-messages.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/commit-messages.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "dependency-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/dependency-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doc-link-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/doc-link-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "docs-consistency.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/docs-consistency.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "export-import.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/export-import.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-classification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/file-classification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-quality.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/file-quality.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "git-workflow.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/git-workflow.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-protection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/github-protection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-release-draft.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/github-release-draft.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-conflicts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/install-conflicts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-migrations.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/install-migrations.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-ownership.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/install-ownership.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-preservation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/install-preservation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/install-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "local-state.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/local-state.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "migration-ledger.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/migration-ledger.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "module-quality.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/module-quality.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "move-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/move-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ownership-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/ownership-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "path-aliases.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/path-aliases.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "promotion-rules.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/promotion-rules.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prompt-normalization.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/prompt-normalization.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "provider-adapters.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/provider-adapters.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prune-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/prune-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-application.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/refactor-application.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-evidence.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/refactor-evidence.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/refactor-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "reference-rewrite.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/reference-rewrite.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-artifacts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-artifacts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-bundle.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-bundle.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-checklist.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-checklist.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-provenance.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-provenance.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-publication-boundary.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-publication-boundary.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-upload-plan.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-upload-plan.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-validation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-validation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-versioning.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/release-versioning.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/repair-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-detection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/repair-detection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/repair-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/repair-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-intelligence.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/repo-intelligence.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "reuse-modularity.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/reuse-modularity.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "risk-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/risk-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/rollback-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/rollback-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/rollback-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-exceptions.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-exceptions.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-fates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-fates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-inventory.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-inventory.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-recycling.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-recycling.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-risk.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/root-risk.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "salvage-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/salvage-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/sync-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "task-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/task-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "task-resumption.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/task-resumption.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "test-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/test-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-budget.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/token-budget.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-ledger.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/token-ledger.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-absorption.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-absorption.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-capabilities.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-capabilities.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-fates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-fates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-inventory.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-inventory.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-risk.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-risk.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-wrapping.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/tool-wrapping.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/uninstall-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/uninstall-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/uninstall-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-compatibility.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/upgrade-compatibility.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-conflicts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/upgrade-conflicts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-migrations.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/upgrade-migrations.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-preservation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/upgrade-preservation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/upgrade-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "work-units.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/work-units.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "workunit-sizing.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/policies/workunit-sizing.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "codex-token-mode.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/prompts/codex-token-mode.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "compact-task.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/prompts/compact-task.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "evidence-review.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/prompts/evidence-review.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "adapter-contract.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/providers/adapter-contract.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "capability-matrix.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/providers/capability-matrix.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "provider-catalog.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/providers/provider-catalog.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "README.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/queue/README.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "path-aliases.template.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/refactors/path-aliases.template.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-commit-message-standard.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/reports/aide-commit-message-standard.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-task-resumption-standard.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/reports/aide-task-resumption-standard.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-workunit-recovery-standard.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/reports/aide-workunit-recovery-standard.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "architecture-decision.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/architecture-decision.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "context-compiler.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/context-compiler.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "deterministic-estimate.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/deterministic-estimate.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "evidence-review.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/evidence-review.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "golden-task-failure.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/golden-task-failure.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "security-review.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/security-review.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "self-modification.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/routing/examples/self-modification.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "diff-scope-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/diff-scope-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "evidence-packet.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/evidence-packet.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-reference-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/file-reference-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "review-decision-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/review-decision-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "review-packet.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/review-packet.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "secret-scan-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/.aide/verification/secret-scan-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AGENTS.md.template",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/AGENTS.md.template",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-roles.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/branch-roles.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changelog-preview.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/changelog-preview.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-discipline.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/commit-discipline.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "git-helper-workflow.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/git-helper-workflow.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "git-workflow-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/git-workflow-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-protection-ci-advisory.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/github-protection-ci-advisory.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "promotion-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/promotion-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "workunit-idempotency.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/files/docs/reference/workunit-idempotency.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/export/aide-lite-pack-v0/import-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-gateway-status.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/gateway/latest-gateway-status.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-gateway-status.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/gateway/latest-gateway-status.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "security-boundary.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/gateway/security-boundary.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-token-survival.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/generated/adapters/continue-checks/aide-token-survival.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-token-survival.mdc",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/generated/adapters/cursor-rules/aide-token-survival.mdc",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "drift-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/generated/adapters/drift-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-token-survival.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/generated/adapters/windsurf-rules/aide-token-survival.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-roles.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/branch-roles.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/commit-template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "helper-commands.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/helper-commands.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "helper-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/helper-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-helper-plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/latest-helper-plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-helper-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/latest-helper-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "project-profiles.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/project-profiles.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "promotion-rules.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/promotion-rules.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prune-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/prune-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-policy.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/sync-policy.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "workflow-detection.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/workflow-detection.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "workflow-detection.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/git/workflow-detection.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-protection-plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/branch-protection-plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-protection-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/branch-protection-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ci-advisory.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/ci-advisory.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ci-advisory.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/ci-advisory.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-advisory.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/github-advisory.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-advisory.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/github-advisory.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-github-status.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/github/latest-github-status.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-msg",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/hooks/commit-msg",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-policy.template.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import-policy.template.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-report.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import-report.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/import-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-report.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/import-report.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "target-decisions-template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/target-decisions-template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "target-open-risks-template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/target-open-risks-template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "target-profile-template.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/target-profile-template.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "target-project-state-template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/import/target-project-state-template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-conflict-report.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-conflict-report.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-conflict-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-conflict-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-dry-run.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-dry-run.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-dry-run.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-dry-run.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-observation.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-observation.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-observation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-observation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-install-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-install-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-ownership-ledger.example.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-ownership-ledger.example.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-preservation-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-preservation-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-verification-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/install/latest-verification-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "intent-examples.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/intake/intent-examples.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-intent-packet.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/intake/latest-intent-packet.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-intent-packet.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/intake/latest-intent-packet.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-workunit-draft.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/intake/latest-workunit-draft.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-workunit-draft.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/intake/latest-workunit-draft.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "open-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/memory/open-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "open-risks.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/memory/open-risks.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "project-state.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/memory/project-state.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "project-state.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/memory/project-state.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "hard-floors.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/models/hard-floors.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-protection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/branch-protection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "branch-roles.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/branch-roles.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ci-gates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/ci-gates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-messages.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/commit-messages.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "dependency-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/dependency-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doc-link-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/doc-link-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "docs-consistency.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/docs-consistency.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "export-import.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/export-import.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-classification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/file-classification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-quality.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/file-quality.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "git-workflow.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/git-workflow.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-protection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/github-protection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "github-release-draft.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/github-release-draft.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-conflicts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/install-conflicts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-migrations.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/install-migrations.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-ownership.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/install-ownership.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-preservation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/install-preservation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/install-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "local-state.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/local-state.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "migration-ledger.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/migration-ledger.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "module-quality.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/module-quality.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "move-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/move-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ownership-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/ownership-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "path-aliases.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/path-aliases.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "promotion-rules.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/promotion-rules.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prompt-normalization.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/prompt-normalization.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "provider-adapters.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/provider-adapters.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "prune-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/prune-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-application.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/refactor-application.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-evidence.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/refactor-evidence.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "refactor-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/refactor-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "reference-rewrite.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/reference-rewrite.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-artifacts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-artifacts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-bundle.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-bundle.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-checklist.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-checklist.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-provenance.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-provenance.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-publication-boundary.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-publication-boundary.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-upload-plan.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-upload-plan.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-validation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-validation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-versioning.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/release-versioning.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/repair-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-detection.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/repair-detection.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/repair-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repair-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/repair-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-intelligence.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/repo-intelligence.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "reuse-modularity.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/reuse-modularity.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "risk-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/risk-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/rollback-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/rollback-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "rollback-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/rollback-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-exceptions.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/root-exceptions.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-fates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/root-fates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-inventory.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/root-inventory.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-recycling.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/root-recycling.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-risk.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/root-risk.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "salvage-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/salvage-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-policy.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/sync-policy.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "task-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/task-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "task-resumption.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/task-resumption.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "test-map.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/test-map.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-budget.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/token-budget.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-ledger.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/token-ledger.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-absorption.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-absorption.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-capabilities.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-capabilities.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-fates.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-fates.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-inventory.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-inventory.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-risk.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-risk.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-wrapping.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/tool-wrapping.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-classes.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/uninstall-classes.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-safety.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/uninstall-safety.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "uninstall-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/uninstall-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-compatibility.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/upgrade-compatibility.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-conflicts.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/upgrade-conflicts.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-migrations.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/upgrade-migrations.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-preservation.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/upgrade-preservation.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "upgrade-verification.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/upgrade-verification.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "work-units.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/work-units.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "workunit-sizing.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/policies/workunit-sizing.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "codex-token-mode.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/prompts/codex-token-mode.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "compact-task.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/prompts/compact-task.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "evidence-review.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/prompts/evidence-review.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "adapter-contract.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/providers/adapter-contract.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "capability-matrix.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/providers/capability-matrix.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-provider-status.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/providers/latest-provider-status.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-provider-status.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/providers/latest-provider-status.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "provider-catalog.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/providers/provider-catalog.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-command-surface-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/aide-command-surface-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "audit-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/audit-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "command-summary.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/command-logs/command-summary.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doctrine-preservation-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/doctrine-preservation-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commands-run.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/commands-run.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "secret-scan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/evidence/secret-scan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "existing-tool-absorption-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/existing-tool-absorption-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "final-summary.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/final-command-logs/final-summary.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "no-apply-boundary-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/no-apply-boundary-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "operating-baseline-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/operating-baseline-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "phase-completion-matrix.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/phase-completion-matrix.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "product-boundary-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/product-boundary-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "readiness-and-next-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/readiness-and-next-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "red-herring-defer-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/red-herring-defer-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-recycling-pilot-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/root-recycling-pilot-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "stable-install-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/stable-install-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "warning-disposition-audit.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DCHECK-01-dominium-aide-operating-baseline-audit/warning-disposition-audit.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "review-packet-repair.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence/review-packet-repair.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "xstack-integration.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-BASELINE-REPAIR-01/evidence/xstack-integration.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doctrine-preservation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/doctrine-preservation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "existing-aide-state.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-aide-state.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "existing-tool-systems.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/existing-tool-systems.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-upgrade-risk-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/install-upgrade-risk-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q50-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/q50-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-bundle-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/release-bundle-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "repo-state.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-FRESH-PREFLIGHT-01/evidence/repo-state.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "final-summary.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/command-logs-final/final-summary.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "command-summary.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/command-logs/command-summary.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "baseline-summary.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/baseline-summary.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "capability-matrix.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/capability-matrix.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "next-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/next-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "operating-runbook.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/operating-runbook.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "preservation-contract.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/preservation-contract.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-root-state.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/tool-root-state.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "warning-disposition.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/evidence/warning-disposition.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q53-core-py314-results.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/logs/q53-core-py314-results.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q53-remaining-results.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/logs/q53-remaining-results.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q53-rerun-py314-results.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-OPERATING-BASELINE-01/logs/q53-rerun-py314-results.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doctrine-context-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/doctrine-context-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "import-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/import-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "quality-and-limitations.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/quality-and-limitations.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-savings-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-PILOT-01/token-savings-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "file-classification.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/file-classification.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "preservation-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/preservation-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q53-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/q53-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-inventory.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/root-inventory.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-recycling-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/root-recycling-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-risk-assessment.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/root-risk-assessment.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "root-selection.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-ROOT-RECYCLING-01/evidence/root-selection.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "generated-target-state.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/generated-target-state.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "install-upgrade-decision.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/install-upgrade-decision.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "post-sync-validation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/post-sync-validation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "preservation-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/preservation-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q51-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/q51-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "source-bundle-review.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/source-bundle-review.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/sync-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-doctrine-preservation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-STABLE-INSTALL-01/evidence/tool-doctrine-preservation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "commit-workunit-git-governance.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/commit-workunit-git-governance.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "doctrine-preservation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/doctrine-preservation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "source-pack-review.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/source-pack-review.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "sync-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/sync-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "token-quality-confirmation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-SYNC-01/evidence/token-quality-confirmation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "ExecPlan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/ExecPlan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "capability-map.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/capability-map.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "changed-files.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/changed-files.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "preservation-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/preservation-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "q52-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/q52-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "remaining-risks.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/remaining-risks.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-classification.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-classification.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "tool-discovery.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/tool-discovery.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "wrap-plan.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/wrap-plan.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "xstack-auditx-repox-testx.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/DOMINIUM-AIDE-TOOL-ABSORPTION-01/evidence/xstack-auditx-repox-testx.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "README.template.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/queue/README.template.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.reference_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.reference_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-01.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-01.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.no_candidate.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.no_candidate.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.reference_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.reference_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "AIDE-MOVE-02.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/AIDE-MOVE-02.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_A_docs_archive.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_A_docs_archive.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_B_templates_models_modding.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_B_templates_models_modding.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_C_content_identity.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_C_content_identity.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_D_authority_policy.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_D_authority_policy.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_E_active_tools.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_E_active_tools.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_F_runtime_core_net.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_F_runtime_core_net.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_G_libs_abi.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_G_libs_abi.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.batch_H_exception_closure.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.batch_H_exception_closure.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_exception_retirement_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_exception_retirement_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_import_rewrite_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_import_rewrite_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_move_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_move_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_reference_rewrite_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_reference_rewrite_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_salvage_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_salvage_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_shim_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_shim_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-BULK-00.global_validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-BULK-00.global_validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.active_module_ownership.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.active_module_ownership.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.ide_manifest_ownership.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.ide_manifest_ownership.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.import_reference_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.import_reference_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.reference_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.reference_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.refined_cleanup_strategy.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.refined_cleanup_strategy.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.refined_cleanup_strategy.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.salvage_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.salvage_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.ide_manifest_inventory.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.ide_manifest_inventory.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.ide_manifest_ownership.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.ide_manifest_ownership.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.reference_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.reference_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00B.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00B.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.import_consumers.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.import_consumers.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.import_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.import_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.package_inventory.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.package_inventory.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.shim_contract.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.shim_contract.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.static_check_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.static_check_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.target_namespace_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.target_namespace_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C-A.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C-A.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.active_tool_inventory.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.active_tool_inventory.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.exception_update_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.exception_update_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.import_reference_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.import_reference_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.ownership_map.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.ownership_map.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.plan.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.plan.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.reference_rewrite_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.reference_rewrite_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.rollback_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.rollback_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.shim_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.shim_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "MOVE-FAMILY-00C.validation_plan.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/MOVE-FAMILY-00C.validation_plan.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "draft_move_wave_AIDE-MOVE-01.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/draft_move_wave_AIDE-MOVE-01.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "draft_move_wave_AIDE-MOVE-01.toml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/draft_move_wave_AIDE-MOVE-01.toml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-refactor-plan.example.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/latest-refactor-plan.example.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-refactor-plan.example.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/latest-refactor-plan.example.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-refactor-readiness.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/latest-refactor-readiness.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-refactor-readiness.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/latest-refactor-readiness.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "map-validation-report.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/map-validation-report.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "map-validation-report.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/map-validation-report.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "migration-ledger.example.jsonl",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/migration-ledger.example.jsonl",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "path-aliases.template.yaml",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/refactors/path-aliases.template.yaml",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "CHANGELOG.preview.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/CHANGELOG.preview.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "RELEASE_NOTES.preview.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/RELEASE_NOTES.preview.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "SHA256SUMS.txt",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/SHA256SUMS.txt",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "aide-lite-pack-v0.checksums.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/aide-lite-pack-v0.checksums.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-assets.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/release-assets.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-provenance.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/release-provenance.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-validation.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/release-validation.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "release-validation.md",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/dist/release-validation.md",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-release-artifacts.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/latest-release-artifacts.json",
+      "rule": "file_case",
+      "severity": "info"
+    },
+    {
+      "disposition": "existing_evidence_or_archive",
+      "file": "latest-release-bundle.json",
+      "message": "file name is not lower_snake_case or a conventional exception",
+      "path": ".aide/release/latest-release-bundle.json",
+      "rule": "file_case",
+      "severity": "info"
+    }
+  ],
+  "generated_utc": "2026-05-18T09:59:03Z",
+  "info_count": 1006,
+  "repo_root": "C:/Inbox/Git Repos/dominium",
+  "schema_version": "dominium.repo.naming.file_naming.v1",
+  "status": "PASS_WITH_WARNINGS",
+  "truncated": true,
+  "warning_count": 4300
+}

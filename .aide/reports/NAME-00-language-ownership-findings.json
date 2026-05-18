@@ -1,0 +1,71 @@
+{
+  "schema_version": "dominium.repo.naming.language_ownership_findings.v1",
+  "task_id": "NAME-00",
+  "status": "PASS_WITH_WARNINGS",
+  "blocker_count": 0,
+  "summary": {
+    "contracts_or_schemas_changed": true,
+    "no_behavior_changed": true,
+    "no_moves_or_renames": true,
+    "classification": "existing_language_placement_debt_only"
+  },
+  "active_root_language_counts": {
+    "engine": { "c": 209, "cpp": 87, "headers": 338, "python": 19 },
+    "game": { "c": 46, "cpp": 220, "headers": 215, "python": 299 },
+    "runtime": { "c": 6, "headers": 6, "python": 37 },
+    "apps": { "bat": 20, "c": 40, "cpp": 30, "headers": 74, "python": 52, "sh": 17 },
+    "tools": { "c": 35, "cmd": 115, "cpp": 126, "headers": 70, "powershell": 1, "python": 2970 },
+    "scripts": { "bat": 2, "cmd": 2, "powershell": 1, "python": 42, "sh": 2 },
+    "release": { "python": 6 },
+    "archive": { "c": 370, "cmd": 1, "cpp": 309, "headers": 387, "python": 3, "sh": 7 }
+  },
+  "former_bad_root_python_counts": {
+    "compat": 17,
+    "control": 21,
+    "core": 16,
+    "governance": 2,
+    "lib": 22,
+    "meta": 26,
+    "meta_extensions_engine.py": 1,
+    "modding": 2,
+    "models": 2,
+    "net": 17,
+    "numeric_discipline.py": 1,
+    "packs": 4,
+    "performance": 3,
+    "safety": 2,
+    "security": 4,
+    "specs": 2,
+    "validation": 2
+  },
+  "findings": [
+    {
+      "id": "LANG-ENGINE-PYTHON-EXISTING",
+      "severity": "warning",
+      "path_scope": "engine/**/*.py",
+      "finding": "Existing Python appears under engine even though final engine law is C89 deterministic substrate by default.",
+      "disposition": "transitional debt; not changed by NAME-00"
+    },
+    {
+      "id": "LANG-GAME-PYTHON-EXISTING",
+      "severity": "warning",
+      "path_scope": "game/**/*.py",
+      "finding": "Existing Python domain implementation appears under game even though final game law is C89/C++98 unless isolated and approved.",
+      "disposition": "transitional debt; not changed by NAME-00"
+    },
+    {
+      "id": "LANG-RUNTIME-PYTHON-EXISTING",
+      "severity": "warning",
+      "path_scope": "runtime/**/*.py",
+      "finding": "Existing Python appears under runtime even though final shared runtime law is C89/C++98 with isolated adapter exceptions.",
+      "disposition": "transitional debt; not changed by NAME-00"
+    },
+    {
+      "id": "LANG-BAD-ROOT-PYTHON-EXISTING",
+      "severity": "warning",
+      "path_scope": "excepted former bad roots",
+      "finding": "Active Python remains under excepted roots such as core, control, compat, lib, meta, net, and validation.",
+      "disposition": "deferred to MOVE-BULK B-G owner-specific gates"
+    }
+  ]
+}
