@@ -37,3 +37,11 @@ Generated: 2026-05-18
 
 MOVE-ROUTER-02 is a valid partial repair boundary. It preserves the routed
 structure and records exact remaining blocker classes for the next pass.
+
+## Post-Commit Check
+
+The first closeout commit completed, then `py -3 .aide/scripts/aide_lite.py commit check --latest`
+reported commit-message policy failures for missing `## Changelog` and
+`AIDE-Token-Impact`. The commit was not amended because the task forbids
+amending. This follow-up evidence records the check result and closes with a
+policy-compliant latest commit.
