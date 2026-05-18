@@ -8,14 +8,14 @@ import subprocess
 import sys
 from typing import Mapping, Sequence
 
-from meta.identity import (
+from tools.validators.identity import (
     IDENTITY_KIND_SUITE_RELEASE,
     UNIVERSAL_IDENTITY_FIELD,
     attach_universal_identity_block,
 )
 from release.build_id_engine import build_build_id_input_payload, build_id_identity_from_input_payload
 from release.component_graph_resolver import DEFAULT_COMPONENT_GRAPH_ID, load_default_component_graph
-from security.trust import (
+from tools.validators.security.trust import (
     ARTIFACT_KIND_RELEASE_MANIFEST,
     effective_trust_policy_id,
     verify_artifact_trust,

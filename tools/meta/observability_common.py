@@ -7,8 +7,8 @@ import os
 import re
 from typing import Mapping
 
-from meta.stability import build_stability_marker
-from meta.observability import (
+from tools.validators.stability import build_stability_marker
+from tools.repo.meta.observability import (
     load_log_category_registry,
     load_log_message_key_registry,
     load_observability_guarantee_registry,
@@ -312,7 +312,7 @@ def observability_violations(repo_root: str) -> list[dict]:
                 {
                     "code": "category_not_declared",
                     "message": "guaranteed category '{}' must exist in log_category_registry".format(category_id),
-                    "file_path": "data/registries/log_category_registry.json",
+                    "file_path": "contracts/registry/log_category_registry.json",
                     "rule_id": RULE_GUARANTEES,
                 }
             )
@@ -321,7 +321,7 @@ def observability_violations(repo_root: str) -> list[dict]:
                 {
                     "code": "category_has_no_message_keys",
                     "message": "guaranteed category '{}' must declare stable message keys".format(category_id),
-                    "file_path": "data/registries/log_message_key_registry.json",
+                    "file_path": "contracts/registry/log_message_key_registry.json",
                     "rule_id": RULE_GUARANTEES,
                 }
             )
@@ -333,7 +333,7 @@ def observability_violations(repo_root: str) -> list[dict]:
                 {
                     "code": "required_message_key_missing",
                     "message": "guaranteed category '{}' is missing message key '{}'".format(category_id, message_key),
-                    "file_path": "data/registries/log_message_key_registry.json",
+                    "file_path": "contracts/registry/log_message_key_registry.json",
                     "rule_id": RULE_GUARANTEES,
                 }
             )

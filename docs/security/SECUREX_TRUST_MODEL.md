@@ -86,4 +86,4 @@ No silent downgrade is allowed for ranked requirements.
 - `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
 - `schemas/pack_manifest.schema.json`
 - `schemas/securex_policy_registry.schema.json`
-- `data/registries/securex_policy_registry.json`
+- `contracts/registry/securex_policy_registry.json`

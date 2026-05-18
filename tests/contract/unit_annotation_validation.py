@@ -165,7 +165,7 @@ def load_registry_units(repo_root: str, violations: List[str]) -> List[str]:
 
 
 
-        violations.append("unable to read data/registries/unit_registry.json: {}".format(exc))
+        violations.append("unable to read contracts/registry/unit_registry.json: {}".format(exc))
 
 
 
@@ -181,7 +181,7 @@ def load_registry_units(repo_root: str, violations: List[str]) -> List[str]:
 
 
 
-        violations.append("data/registries/unit_registry.json has no record.units list")
+        violations.append("contracts/registry/unit_registry.json has no record.units list")
 
 
 

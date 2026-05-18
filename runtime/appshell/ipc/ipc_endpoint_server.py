@@ -9,7 +9,7 @@ from typing import Mapping
 
 from runtime.appshell.compat_adapter import emit_descriptor_payload
 from runtime.appshell.logging import get_current_log_engine, log_emit
-from compat import (
+from tools.validators.compatibility import (
     COMPAT_MODE_READ_ONLY,
     REFUSAL_CONNECTION_NO_NEGOTIATION,
     REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,

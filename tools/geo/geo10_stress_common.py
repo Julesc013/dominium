@@ -266,11 +266,11 @@ def _pollution_field_id() -> str:
 
 
 def _field_binding_payload() -> dict:
-    return _read_json("data/registries/field_binding_registry.json")
+    return _read_json("contracts/registry/field_binding_registry.json")
 
 
 def _interpolation_policy_payload() -> dict:
-    return _read_json("data/registries/interpolation_policy_registry.json")
+    return _read_json("contracts/registry/interpolation_policy_registry.json")
 
 
 def _universe_identity(seed: int) -> dict:

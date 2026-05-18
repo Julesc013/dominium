@@ -14,7 +14,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 DISTRIBUTION_MODEL_PATH = "docs/release/DISTRIBUTION_MODEL.md"
 DISTRIBUTION_ARCHITECTURE_FREEZE_PATH = "docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md"
-DISTRIBUTION_ARCHITECTURE_REPORT_PATH = "data/audit/distribution_architecture_report.json"
+DISTRIBUTION_ARCHITECTURE_REPORT_PATH = "content/data/audit/distribution_architecture_report.json"
 RELEASE_MANIFEST_REL = "dist/manifests/release_manifest.json"
 
 RULE_NO_DEV_ARTIFACTS = "INV-DIST-NO-DEV-ARTIFACTS"

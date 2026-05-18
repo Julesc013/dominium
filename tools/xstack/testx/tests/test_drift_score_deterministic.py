@@ -26,7 +26,7 @@ def run(repo_root: str):
 
     from game.domains.processes.drift import drift_policy_rows_by_id, evaluate_process_drift
 
-    registry = _load_json(repo_root, "data/registries/process_drift_policy_registry.json")
+    registry = _load_json(repo_root, "contracts/registry/process_drift_policy_registry.json")
     policy = dict(drift_policy_rows_by_id(registry).get("drift.default") or {})
     if not policy:
         return {"status": "fail", "message": "missing drift.default policy"}

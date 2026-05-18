@@ -1,0 +1,39 @@
+# MOVE-ROUTER-02 Validation
+
+Status: PARTIAL
+Generated: 2026-05-18
+
+## Passed
+
+- `git diff --check`: PASS.
+- `python -m py_compile tools/xstack/core/plan.py tests/integration/exploration_scale_guard_tests.py`: PASS.
+- `python tests/integration/test_gate_fast_strict_full_profiles.py --repo-root . --case full_shards_groups`: PASS.
+- `cmake --preset verify`: PASS.
+- `python tools/validators/repo/check_bad_root_absence.py --repo-root . --json`: PASS; tracked bad-root file count is 0.
+- `python tools/validators/repo/check_no_src_source_dirs.py --repo-root .`: PASS_WITH_WARNINGS; warnings are historical/archive findings.
+- `python tools/validators/repo/check_forbidden_root_names.py --repo-root .`: PASS_WITH_WARNINGS; blocker count is 0.
+- `python tools/validators/check_root_allowlist.py --repo-root . --strict`: PASS.
+- `python tools/validators/check_repo_layout.py --repo-root . --strict`: PASS.
+
+## Partial Or Failed
+
+- `cmake --build --preset verify`: PARTIAL.
+  - Compilation completed far enough to run the integrated fast/smoke CTest set.
+  - 57/57 fast/smoke tests passed in the build output.
+  - The broader portability/TestX phase failed with 140 failures out of 344 tests.
+- Focused RepoX is not green because current ruleset discovery still references `repo/repox/rulesets` instead of `contracts/repo/repox/rulesets`.
+- Full proof was not claimed.
+
+## Not Run In Closeout
+
+- Full CTest outside the build-triggered suite.
+- Projection generation.
+- Release generation.
+- Product boot proof.
+- Internal pilot proof.
+- Public release, tags, uploads, or installer work.
+
+## Validation Interpretation
+
+MOVE-ROUTER-02 is a valid partial repair boundary. It preserves the routed
+structure and records exact remaining blocker classes for the next pass.

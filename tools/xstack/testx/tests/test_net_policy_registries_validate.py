@@ -29,13 +29,13 @@ def run(repo_root: str):
     from tools.xstack.registry_compile.compiler import compile_bundle
 
     source_paths = [
-        "data/registries/net_replication_policy_registry.json",
-        "data/registries/net_resync_strategy_registry.json",
-        "data/registries/net_server_policy_registry.json",
-        "data/registries/securex_policy_registry.json",
-        "data/registries/server_profile_registry.json",
-        "data/registries/anti_cheat_policy_registry.json",
-        "data/registries/anti_cheat_module_registry.json",
+        "contracts/registry/net_replication_policy_registry.json",
+        "contracts/registry/net_resync_strategy_registry.json",
+        "contracts/registry/net_server_policy_registry.json",
+        "contracts/registry/securex_policy_registry.json",
+        "contracts/registry/server_profile_registry.json",
+        "contracts/registry/anti_cheat_policy_registry.json",
+        "contracts/registry/anti_cheat_module_registry.json",
     ]
     for rel in source_paths:
         payload, err = _read_json(os.path.join(repo_root, rel.replace("/", os.sep)))

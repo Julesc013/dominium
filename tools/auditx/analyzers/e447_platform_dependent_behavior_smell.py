@@ -12,7 +12,7 @@ DOCTRINE_REL = "docs/mvp/MVP_CROSS_PLATFORM_GATE.md"
 HELPER_REL = "tools/mvp/cross_platform_gate_common.py"
 TOOL_REL = "tools/mvp/tool_run_cross_platform_matrix.py"
 REPORT_REL = "build/mvp/mvp_cross_platform_matrix.json"
-BASELINE_REL = "data/regression/mvp_cross_platform_baseline.json"
+BASELINE_REL = "tests/fixtures/regression/mvp_cross_platform_baseline.json"
 FINAL_REL = "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"
 TEST_RELS = (
     "tools/xstack/testx/tests/test_cross_platform_hash_agreement.py",

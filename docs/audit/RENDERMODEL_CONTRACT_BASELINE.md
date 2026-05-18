@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # RenderModel Contract Baseline (RND-1)
 
-Date: 2026-02-26  
+Date: 2026-02-26
 Status: Baseline complete (Perceived->Render contract, deterministic resolver, null-assets behavior)
 
 ## 1) Schemas and Registries

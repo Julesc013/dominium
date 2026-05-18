@@ -6,7 +6,7 @@ import copy
 import os
 from typing import Dict, Mapping
 
-from compat.data_format_loader import load_versioned_artifact
+from tools.validators.compatibility.data_format_loader import load_versioned_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

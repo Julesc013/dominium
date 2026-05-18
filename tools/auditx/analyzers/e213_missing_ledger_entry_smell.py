@@ -37,7 +37,7 @@ def _read_json(repo_root: str, rel_path: str) -> dict:
 
 
 def _registered_transform_ids(repo_root: str) -> set[str]:
-    payload = _read_json(repo_root, "data/registries/energy_transformation_registry.json")
+    payload = _read_json(repo_root, "contracts/registry/energy_transformation_registry.json")
     rows = list(payload.get("energy_transformations") or [])
     if not isinstance(rows, list):
         rows = list((dict(payload.get("record") or {})).get("energy_transformations") or [])
@@ -120,7 +120,7 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.missing_ledger_entry_smell",
                     severity="RISK",
                     confidence=0.9,
-                    file_path="data/registries/energy_transformation_registry.json",
+                    file_path="contracts/registry/energy_transformation_registry.json",
                     line=1,
                     evidence=["required transform id missing in registry", transform_id],
                     suggested_classification="TODO-BLOCKED",
@@ -128,7 +128,7 @@ def run(graph, repo_root, changed_files=None):
                     related_invariants=[
                         "INV-ENERGY-TRANSFORM-REGISTERED",
                     ],
-                    related_paths=["data/registries/energy_transformation_registry.json"],
+                    related_paths=["contracts/registry/energy_transformation_registry.json"],
                 )
             )
             continue
@@ -148,7 +148,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=[
                     "INV-ENERGY-TRANSFORM-REGISTERED",
                 ],
-                related_paths=[runtime_rel, "data/registries/energy_transformation_registry.json"],
+                related_paths=[runtime_rel, "contracts/registry/energy_transformation_registry.json"],
             )
         )
 

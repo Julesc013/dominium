@@ -19,14 +19,14 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/negotiation/__init__.py`
-- `src/control/negotiation/negotiation_kernel.py`
+- `src/tools/governance/negotiation/__init__.py`
+- `src/tools/governance/negotiation/negotiation_kernel.py`
 
 ## Scorecard
 
 - `src/control/__init__.py` disposition=`canonical` rank=`1` total_score=`67.02` risk=`HIGH`
-- `src/control/negotiation/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.95` risk=`HIGH`
-- `src/control/negotiation/negotiation_kernel.py` disposition=`drop` rank=`3` total_score=`50.9` risk=`HIGH`
+- `src/tools/governance/negotiation/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.95` risk=`HIGH`
+- `src/tools/governance/negotiation/negotiation_kernel.py` disposition=`drop` rank=`3` total_score=`50.9` risk=`HIGH`
 
 ## Usage Sites
 

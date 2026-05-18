@@ -12,7 +12,7 @@
     {
       "rule_id": "INV-RENDER-NO-TRUTH-ACCESS",
       "severity": "FAIL",
-      "scope_paths": ["client", "libs/appcore", "libs/appcore/command/command_registry.c", "tests/integration/freecam_epistemics_tests.py"],
+      "scope_paths": ["client", "libs/appcore", "runtime/shell/appcore/command/command_registry.c", "tests/integration/freecam_epistemics_tests.py"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-render-no-truth-access",
       "exemption_policy": "deny"
     },
@@ -26,14 +26,14 @@
     {
       "rule_id": "INV-SECUREX-TRUST-POLICY-VALID",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/trust_policy.schema", "data/registries/trust_policy.json"],
+      "scope_paths": ["schema/governance/trust_policy.schema", "contracts/registry/trust_policy.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-securex-trust-policy-valid",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SECUREX-PRIVILEGE-MODEL",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/privilege_model.schema", "data/registries/security_roles.json", "client", "launcher", "setup", "server"],
+      "scope_paths": ["schema/governance/privilege_model.schema", "contracts/registry/security_roles.json", "client", "launcher", "setup", "server"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-securex-privilege-model",
       "exemption_policy": "deny"
     },

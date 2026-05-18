@@ -118,7 +118,7 @@ def capture_bundle(
 ) -> dict:
     ensure_repo_on_path(repo_root)
 
-    from compat import emit_product_descriptor
+    from tools.validators.compatibility import emit_product_descriptor
     from runtime.diagnostics import write_repro_bundle
     from tools.mvp.runtime_bundle import MVP_PACK_LOCK_REL
 

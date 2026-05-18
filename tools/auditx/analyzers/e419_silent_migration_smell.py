@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E419_SILENT_MIGRATION_SMELL"
 REQUIRED_TOKENS = {
-    "compat/data_format_loader.py": (
+    "tools/validators/compatibility/data_format_loader.py": (
         "REFUSAL_FORMAT_MIGRATION_MISSING",
         "\"migration_events\"",
         "\"read_only_applied\"",

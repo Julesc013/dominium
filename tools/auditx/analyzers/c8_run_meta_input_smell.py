@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "C8_RUN_META_INPUT_SMELL"
-DERIVED_ARTIFACTS_REL = "data/registries/derived_artifacts.json"
+DERIVED_ARTIFACTS_REL = "contracts/registry/derived_artifacts.json"
 
 
 def _load_json(path):

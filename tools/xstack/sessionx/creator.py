@@ -15,7 +15,7 @@ from game.domains.universe import (
     pin_contract_bundle_metadata,
     validate_pinned_contract_bundle_metadata,
 )
-from modding import DEFAULT_MOD_POLICY_ID, load_mod_policy_registry, mod_policy_registry_hash, mod_policy_rows_by_id
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, load_mod_policy_registry, mod_policy_registry_hash, mod_policy_rows_by_id
 from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
@@ -27,8 +27,8 @@ from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
 from game.domains.worldgen.core.pipeline import run_worldgen_pipeline
 
 from game.domains.geology import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
-from meta.profile import resolve_effective_profile_snapshot
-from compat.data_format_loader import stamp_artifact_metadata
+from tools.repo.meta.profile import resolve_effective_profile_snapshot
+from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
 
 from .common import (
     DEFAULT_TIMESTAMP_UTC,
@@ -252,7 +252,7 @@ DEFAULT_INSTRUMENT_ASSEMBLIES = [
         "last_update_tick": 0,
     },
 ]
-DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "data/registries/worldgen_module_registry.json"
+DEFAULT_WORLDGEN_MODULE_REGISTRY_REL = "contracts/registry/worldgen_module_registry.json"
 
 REGISTRY_FILE_MAP = {
     "universe_physics_profile_registry_hash": "universe_physics_profile.registry.json",
@@ -420,7 +420,7 @@ def _load_worldgen_module_registry(repo_root: str) -> Tuple[dict, Dict[str, obje
         return {}, refusal(
             "REFUSE_WORLDGEN_MODULE_REGISTRY_MISSING",
             "worldgen module registry is missing or invalid",
-            "Provide a valid data/registries/worldgen_module_registry.json artifact.",
+            "Provide a valid contracts/registry/worldgen_module_registry.json artifact.",
             {"registry_path": norm(DEFAULT_WORLDGEN_MODULE_REGISTRY_REL)},
             "$.worldgen.module_registry",
         )
@@ -1437,7 +1437,7 @@ def create_session_spec(
         return refusal(
             "REFUSE_MOD_POLICY_REGISTRY_INVALID",
             "mod policy registry failed validation during session creation",
-            "Repair data/registries/mod_policy_registry.json and retry session creation.",
+            "Repair contracts/registry/mod_policy_registry.json and retry session creation.",
             {"errors": mod_policy_registry_errors},
             "$.mod_policy_registry",
         )
@@ -1552,7 +1552,7 @@ def create_session_spec(
             return refusal(
                 "REFUSE_SEMANTIC_CONTRACT_REGISTRY_MISSING",
                 "semantic contract registry could not be loaded",
-                "Restore data/registries/semantic_contract_registry.json and retry session creation.",
+                "Restore contracts/registry/semantic_contract_registry.json and retry session creation.",
                 {"registry_id": "dominium.registry.semantic_contracts"},
                 "$.universe_contract_bundle",
             )

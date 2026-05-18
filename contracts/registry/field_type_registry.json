@@ -205,7 +205,7 @@
         "deterministic_fingerprint": "0e71c0e772d3a9d2ccad42f182c361640cc8b4f6ffb2db3d7ab08e1857348db1",
         "extensions": {
           "encoding_kind": "enum_code",
-          "registry_rel_path": "data/registries/material_proxy_registry.json",
+          "registry_rel_path": "contracts/registry/material_proxy_registry.json",
           "reserved_zero_unknown": true,
           "source": "EARTH10-2"
         },
@@ -239,7 +239,7 @@
         "deterministic_fingerprint": "56566c2c05c4361298636a04c697efa04448a97b49eedfe0dfd622dc72bfc490",
         "extensions": {
           "encoding_kind": "bitmask",
-          "registry_rel_path": "data/registries/surface_flag_registry.json",
+          "registry_rel_path": "contracts/registry/surface_flag_registry.json",
           "reserved_zero_none": true,
           "source": "EARTH10-2"
         },
@@ -405,7 +405,7 @@
         "deterministic_fingerprint": "14c6a67c9d0deec07fdeb97f8033e2194398f430993c9c616c024b2b5e7e94c9",
         "extensions": {
           "encoding_kind": "enum_code",
-          "registry_rel_path": "data/registries/galactic_region_registry.json",
+          "registry_rel_path": "contracts/registry/galactic_region_registry.json",
           "reserved_zero_unknown": true,
           "source": "GAL0-2"
         },

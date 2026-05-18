@@ -16,19 +16,19 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
-      "data/planning/next_execution_order_post_za_first_wave.json"
+      "content/data/planning/next_execution_order_post_za_first_wave.json"
     ],
     "planning_and_boundary_inputs": [
       "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
-      "data/planning/later_wave_boundary_reconciliation_registry.json",
+      "contracts/registry/planning/later_wave_boundary_reconciliation_registry.json",
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
-      "data/planning/live_operations_prerequisite_matrix.json",
+      "contracts/planning/live_operations_prerequisite_matrix.json",
       "docs/planning/ZETA_EXECUTION_GATES.md",
-      "data/planning/zeta_execution_gates_registry.json"
+      "contracts/registry/planning/zeta_execution_gates_registry.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
@@ -45,14 +45,14 @@
       "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
     ],
     "evidence_roots": [
-      "data/registries/net_replication_policy_registry.json",
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json",
-      "data/registries/provenance_classification_registry.json",
+      "contracts/registry/net_replication_policy_registry.json",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json",
+      "contracts/registry/provenance_classification_registry.json",
       "server/shard/dom_cross_shard_log.h",
       "server/net/dom_server_protocol.h",
       "server/net/dom_server_runtime.h",
-      "security/trust/trust_verifier.py"
+      "tools/validators/security/trust/trust_verifier.py"
     ]
   },
   "family_category_identifiers": [
@@ -219,9 +219,9 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/trust_root_registry.json",
-        "data/registries/trust_policy_registry.json",
-        "security/trust/trust_verifier.py"
+        "contracts/registry/trust_root_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "later_wave_suitability": "plausible_refresh_candidate_but_review_gated",
       "rationale": [
@@ -260,7 +260,7 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/provenance_classification_registry.json",
+        "contracts/registry/provenance_classification_registry.json",
         "server/net/dom_server_runtime.h",
         "server/net/dom_server_protocol.h"
       ],
@@ -310,7 +310,7 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/net_replication_policy_registry.json",
+        "contracts/registry/net_replication_policy_registry.json",
         "server/shard/dom_cross_shard_log.h",
         "server/net/dom_server_protocol.h"
       ],
@@ -351,9 +351,9 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/trust_root_registry.json",
-        "data/registries/trust_policy_registry.json",
-        "security/trust/trust_verifier.py"
+        "contracts/registry/trust_root_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "later_wave_suitability": "not_admissible_current_band",
       "rationale": [
@@ -400,7 +400,7 @@
       "evidence_refs": [
         "server/shard/dom_cross_shard_log.h",
         "server/net/dom_server_runtime.h",
-        "data/registries/net_replication_policy_registry.json"
+        "contracts/registry/net_replication_policy_registry.json"
       ],
       "later_wave_suitability": "future_only_perimeter",
       "rationale": [

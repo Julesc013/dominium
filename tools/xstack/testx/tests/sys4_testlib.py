@@ -39,7 +39,7 @@ def _sorted_tokens(values: object) -> list[str]:
 
 
 def combined_template_registry(*, repo_root: str) -> dict:
-    core = _read_registry_payload(repo_root=repo_root, rel_path="data/registries/system_template_registry.json")
+    core = _read_registry_payload(repo_root=repo_root, rel_path="contracts/registry/system_template_registry.json")
     out_rows = _rows(core, "system_templates")
     optional_paths = _sorted_tokens(list(dict(dict(core.get("record") or {}).get("extensions") or {}).get("optional_pack_paths") or []))
     for rel in optional_paths:
@@ -60,23 +60,23 @@ def compile_template(*, repo_root: str, template_id: str, instantiation_mode: st
         system_template_registry_payload=combined_template_registry(repo_root=repo_root),
         interface_signature_template_registry_payload=_read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/interface_signature_template_registry.json",
+            rel_path="contracts/registry/interface_signature_template_registry.json",
         ),
         boundary_invariant_template_registry_payload=_read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/boundary_invariant_template_registry.json",
+            rel_path="contracts/registry/boundary_invariant_template_registry.json",
         ),
         macro_model_set_registry_payload=_read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/macro_model_set_registry.json",
+            rel_path="contracts/registry/macro_model_set_registry.json",
         ),
         tier_contract_registry_payload=_read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/tier_contract_registry.json",
+            rel_path="contracts/registry/tier_contract_registry.json",
         ),
         domain_registry_payload=_read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/domain_registry.json",
+            rel_path="contracts/registry/domain_registry.json",
         ),
     )
 

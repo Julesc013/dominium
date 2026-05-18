@@ -5124,7 +5124,7 @@ static int client_open_readonly(dom_app_readonly_adapter* ro,
 
 int client_main(int argc, char** argv)
 {
-    const char* control_registry_path = "data/registries/control_capabilities.registry";
+    const char* control_registry_path = "contracts/registry/control_capabilities.registry";
     const char* control_enable = 0;
     const char* accessibility_preset_path = 0;
     const char* locale_id = 0;

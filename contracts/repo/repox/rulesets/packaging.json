@@ -12,7 +12,7 @@
     {
       "rule_id": "INV-PKG-CAPABILITY-METADATA",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "data/profiles", "data/registries/product_graph.json"],
+      "scope_paths": ["dist/pkg", "data/profiles", "contracts/registry/product_graph.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-pkg-capability-metadata",
       "exemption_policy": "allow_with_expiry"
     },
@@ -40,14 +40,14 @@
     {
       "rule_id": "INV-PLATFORM-REGISTRY",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/platform_registry.json", "schema/distribution/platform_registry.schema", "dist/pkg"],
+      "scope_paths": ["contracts/registry/platform_registry.json", "schema/distribution/platform_registry.schema", "dist/pkg"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-registry",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-PLATFORM-ID-CANONICAL",
       "severity": "FAIL",
-      "scope_paths": ["dist/pkg", "dist/meta", "dist/sym", "dist/sys", "data/registries/platform_registry.json", "data/registries/mode_backend.json"],
+      "scope_paths": ["dist/pkg", "dist/meta", "dist/sym", "dist/sys", "contracts/registry/platform_registry.json", "contracts/registry/mode_backend.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-platform-id-canonical",
       "exemption_policy": "allow_with_expiry"
     },
@@ -61,21 +61,21 @@
     {
       "rule_id": "INV-PRODUCT-GRAPH-CONSTRAINTS",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/product_graph.json", "schema/distribution/product_graph.schema"],
+      "scope_paths": ["contracts/registry/product_graph.json", "schema/distribution/product_graph.schema"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-product-graph-constraints",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-MODE-BACKEND-REGISTRY",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/mode_backend.json", "schema/ui/mode_backend.schema", "data/registries/platform_registry.json"],
+      "scope_paths": ["contracts/registry/mode_backend.json", "schema/ui/mode_backend.schema", "contracts/registry/platform_registry.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-registry",
       "exemption_policy": "allow_with_expiry"
     },
     {
       "rule_id": "INV-MODE-BACKEND-SELECTION",
       "severity": "FAIL",
-      "scope_paths": ["launcher", "client", "setup", "app", "tools/launcher", "tools/setup", "data/registries/mode_backend.json"],
+      "scope_paths": ["launcher", "client", "setup", "app", "tools/launcher", "tools/setup", "contracts/registry/mode_backend.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-mode-backend-selection",
       "exemption_policy": "allow_with_expiry"
     },

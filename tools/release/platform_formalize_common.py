@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat import build_default_endpoint_descriptor  # noqa: E402
+from tools.validators.compatibility import build_default_endpoint_descriptor  # noqa: E402
 from engine.platform import (  # noqa: E402
     PLATFORM_ID_ORDER,
     load_platform_capability_registry,
@@ -25,8 +25,8 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
-PLATFORM_FORMALIZE_REPORT_PATH = "data/audit/platform_formalize_report.json"
-PLATFORM_CAPABILITY_REGISTRY_PATH = "data/registries/platform_capability_registry.json"
+PLATFORM_FORMALIZE_REPORT_PATH = "content/data/audit/platform_formalize_report.json"
+PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
 PLATFORM_PROBE_PATH = "engine/platform/platform_probe.py"
 PLATFORM_CAPS_PROBE_PATH = "engine/platform/platform_caps_probe.py"
 
@@ -242,7 +242,7 @@ def platform_formalize_violations(repo_root: str) -> list[dict]:
         violations.append(
             {
                 "code": "endpoint_descriptor_missing_platform_metadata",
-                "file_path": "compat/capability_negotiation.py",
+                "file_path": "tools/validators/compatibility/capability_negotiation.py",
                 "message": "Endpoint descriptors must include '{}'".format(key),
                 "rule_id": "INV-PLATFORM-CAPS-DECLARED",
             }

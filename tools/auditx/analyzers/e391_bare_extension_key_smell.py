@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E391_BARE_EXTENSION_KEY_SMELL"
-REGISTRY_REL = "data/registries/extension_interpretation_registry.json"
+REGISTRY_REL = "contracts/registry/extension_interpretation_registry.json"
 ENGINE_REL = "meta_extensions_engine.py"
-WRAPPER_REL = "meta/extensions/extensions_engine.py"
+WRAPPER_REL = "tools/repo/meta/extensions/extensions_engine.py"
 DOC_REL = "docs/meta/EXTENSION_DISCIPLINE.md"
 MIGRATION_DOC_REL = "docs/meta/EXTENSION_MIGRATION_NOTES.md"
 REQUIRED_TOKENS = {

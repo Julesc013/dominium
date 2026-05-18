@@ -16,7 +16,7 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 def build_default_pair(repo_root: str) -> tuple[dict, dict]:
     ensure_repo_on_path(repo_root)
-    from compat import build_default_endpoint_descriptor
+    from tools.validators.compatibility import build_default_endpoint_descriptor
 
     client = build_default_endpoint_descriptor(
         repo_root,
@@ -33,7 +33,7 @@ def build_default_pair(repo_root: str) -> tuple[dict, dict]:
 
 def negotiate(repo_root: str, client: dict, server: dict, *, allow_read_only: bool = False) -> dict:
     ensure_repo_on_path(repo_root)
-    from compat import negotiate_endpoint_descriptors
+    from tools.validators.compatibility import negotiate_endpoint_descriptors
 
     return negotiate_endpoint_descriptors(
         repo_root,
@@ -46,6 +46,6 @@ def negotiate(repo_root: str, client: dict, server: dict, *, allow_read_only: bo
 
 def runtime_state(repo_root: str, negotiation_record: dict) -> dict:
     ensure_repo_on_path(repo_root)
-    from compat import build_degrade_runtime_state
+    from tools.validators.compatibility import build_degrade_runtime_state
 
     return build_degrade_runtime_state(dict(negotiation_record or {}))

@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.tier_policy_violation_smell",
                 severity="BLOCKER",
                 confidence=0.99,
-                file_path=rel_path or "data/registries/target_matrix_registry.json",
+                file_path=rel_path or "contracts/registry/target_matrix_registry.json",
                 evidence=[
                     str(item.get("message", "")).strip() or "target-tier policy violation detected",
                     str(item.get("snippet", "")).strip() or "tier mismatch",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ALIGN_RELEASE_INDEX_AND_PLATFORM_CLAIMS_WITH_TARGET_MATRIX_TIER_POLICY",
                 related_invariants=[RULE_ID],
-                related_paths=[rel_path or "data/registries/target_matrix_registry.json", "tools/release/arch_matrix_common.py"],
+                related_paths=[rel_path or "contracts/registry/target_matrix_registry.json", "tools/release/arch_matrix_common.py"],
             )
         )
     return findings

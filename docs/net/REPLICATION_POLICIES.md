@@ -50,7 +50,7 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 3. Resync:
    - `resync.authoritative.snapshot`
 4. Snapshot cadence:
-   - policy-driven via `data/registries/net_replication_policy_registry.json` extensions (`snapshot_cadence_ticks`).
+   - policy-driven via `contracts/registry/net_replication_policy_registry.json` extensions (`snapshot_cadence_ticks`).
 
 ### `policy.net.srz_hybrid`
 
@@ -83,10 +83,10 @@ Define policy IDs for canonical multiplayer replication behaviors over shared pr
 
 ## Cross-References
 
-- `data/registries/net_replication_policy_registry.json`
-- `data/registries/net_resync_strategy_registry.json`
-- `data/registries/shard_map_registry.json`
-- `data/registries/perception_interest_policy_registry.json`
+- `contracts/registry/net_replication_policy_registry.json`
+- `contracts/registry/net_resync_strategy_registry.json`
+- `contracts/registry/shard_map_registry.json`
+- `contracts/registry/perception_interest_policy_registry.json`
 - `docs/net/SRZ_HYBRID_POLICY.md`
 - `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/contracts/refusal_contract.md`

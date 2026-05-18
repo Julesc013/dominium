@@ -14,13 +14,13 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json",
       "docs/planning/CHECKPOINT_C_PHIB5_ADMISSION_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_phib5_admission_review.json",
       "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
-      "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
-      "data/planning/next_execution_order_post_phib5.json"
+      "content/data/planning/next_execution_order_post_phib5.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
@@ -38,17 +38,17 @@
       "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md"
     ],
     "evidence_roots": [
-      "data/runtime/distributed_authority_foundations_registry.json",
-      "data/registries/net_replication_policy_registry.json",
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json",
-      "data/registries/provenance_classification_registry.json",
+      "contracts/registry/runtime/distributed_authority_foundations_registry.json",
+      "contracts/registry/net_replication_policy_registry.json",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json",
+      "contracts/registry/provenance_classification_registry.json",
       "server/shard/shard_api.h",
       "server/shard/dom_cross_shard_log.h",
       "server/net/dom_server_protocol.h",
       "server/net/dom_server_runtime.h",
       "release/update_resolver.py",
-      "security/trust/trust_verifier.py",
+      "tools/validators/security/trust/trust_verifier.py",
       "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
       "docs/blueprint/CAPABILITY_LADDER.md",
       "docs/blueprint/MANUAL_REVIEW_GATES.md",
@@ -149,7 +149,7 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/runtime/distributed_authority_foundations_registry.json"
+        "contracts/registry/runtime/distributed_authority_foundations_registry.json"
       ],
       "missing_realization_or_admission": [
         "descendant blockers now survive under replication proof, distributed replay/proof-anchor continuity, runtime cutover proof, and distributed trust convergence"
@@ -176,8 +176,8 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json"
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json"
       ],
       "missing_realization_or_admission": [
         "live trust, revocation, and publication execution realization still remains active"
@@ -205,7 +205,7 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/provenance_classification_registry.json",
+        "contracts/registry/provenance_classification_registry.json",
         "release/update_resolver.py"
       ],
       "missing_realization_or_admission": [
@@ -234,7 +234,7 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/trust_policy_registry.json",
+        "contracts/registry/trust_policy_registry.json",
         "release/update_resolver.py"
       ],
       "missing_realization_or_admission": [
@@ -293,7 +293,7 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/net_replication_policy_registry.json",
+        "contracts/registry/net_replication_policy_registry.json",
         "server/net/dom_server_runtime.h",
         "server/net/dom_server_runtime.cpp"
       ],
@@ -401,9 +401,9 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json",
-        "security/trust/trust_verifier.py"
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "missing_realization_or_admission": [
         "converged distributed trust posture",
@@ -437,10 +437,10 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/trust_root_registry.json",
-        "data/registries/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
+        "contracts/registry/trust_policy_registry.json",
         "release/update_resolver.py",
-        "security/trust/trust_verifier.py"
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "missing_realization_or_admission": [
         "live trust-root rotation realization",
@@ -473,7 +473,7 @@
         "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md"
       ],
       "evidence_refs": [
-        "data/registries/provenance_classification_registry.json",
+        "contracts/registry/provenance_classification_registry.json",
         "release/update_resolver.py"
       ],
       "missing_realization_or_admission": [

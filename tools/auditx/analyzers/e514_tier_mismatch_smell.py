@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
                 related_invariants=[_RULE_ID],
                 related_paths=[
                     "docs/audit/ARCH_MATRIX_FINAL.md",
-                    "data/audit/arch_matrix_report.json",
+                    "contracts/audit/arch_matrix_report.json",
                     "tools/release/arch_matrix_common.py",
                 ],
             )

@@ -234,7 +234,7 @@ Known gaps:
 
 Mandatory:
 
-- every new series must update `data/meta/real_world_affordance_matrix.json`
+- every new series must update `contracts/meta/real_world_affordance_matrix.json`
 - every new series must map to at least one canonical affordance
 - every declared affordance mapping must list substrates, tiers, determinism, and replay/proof impact
 - no new ontology primitive can bypass matrix declaration

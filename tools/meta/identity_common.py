@@ -12,7 +12,7 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from meta.identity import (  # noqa: E402
+from tools.validators.identity import (  # noqa: E402
     IDENTITY_KINDS,
     UNIVERSAL_IDENTITY_FIELD,
     validate_identity_repo,

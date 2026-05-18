@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.hazards.hazard_engine import tick_hazard_models
-from core.schedule.schedule_engine import tick_schedules
-from core.state.state_machine_engine import StateMachineError, apply_transition
+from tools.core.hazards.hazard_engine import tick_hazard_models
+from tools.core.schedule.schedule_engine import tick_schedules
+from engine.state.state.state_machine_engine import StateMachineError, apply_transition
 from game.domains.materials.dimension_engine import fixed_point_config_from_policy
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

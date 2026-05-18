@@ -46,7 +46,7 @@ Docs may mention aliases only for migration or operator guidance.
   `arm64`, `wasm32`).
 - `abi` values are namespaced (`abi:<platform>:<toolchain>`).
 - Package manifests MUST use tuples declared in
-  `data/registries/platform_registry.json`.
+  `contracts/registry/platform_registry.json`.
 
 ## Compression Policy Metadata
 
@@ -60,7 +60,7 @@ Platform registry entries carry compression compatibility metadata in
 
 To add a platform:
 
-1. Add tuple(s) to `data/registries/platform_registry.json`.
+1. Add tuple(s) to `contracts/registry/platform_registry.json`.
 2. Keep IDs canonical and lower-case.
 3. Add any new ABI IDs explicitly.
 4. Update RepoX/TestX enforcement and docs in the same change.

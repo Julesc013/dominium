@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "resolve.deterministic_highest_priority",
         "resolve.deterministic_lowest_pack_id",
     ),
-    "lib/provides/provider_resolution.py": (
+    "tools/libraries/provides/provider_resolution.py": (
         "selection_logged",
         "resolve_providers(",
         "REFUSAL_PROVIDES_AMBIGUOUS",

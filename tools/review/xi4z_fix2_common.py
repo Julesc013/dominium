@@ -35,10 +35,10 @@ from tools.review.xi4z_fix1_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL = "data/restructure/src_domain_mapping_lock_approved_v3.json"
-XI5_READINESS_CONTRACT_V3_REL = "data/restructure/xi5_readiness_contract_v3.json"
-SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL = "data/restructure/src_domain_mapping_target_paths_v3.json"
-XI4Z_FIX2_REPORT_JSON_REL = "data/restructure/xi4z_fix2_report.json"
+SRC_DOMAIN_MAPPING_LOCK_APPROVED_V3_REL = "content/data/restructure/src_domain_mapping_lock_approved_v3.json"
+XI5_READINESS_CONTRACT_V3_REL = "contracts/restructure/xi5_readiness_contract_v3.json"
+SRC_DOMAIN_MAPPING_TARGET_PATHS_V3_REL = "content/data/restructure/src_domain_mapping_target_paths_v3.json"
+XI4Z_FIX2_REPORT_JSON_REL = "content/data/restructure/xi4z_fix2_report.json"
 
 XI_4Z_PACKAGE_COLLISION_REPORT_REL = "docs/restructure/XI_4Z_PACKAGE_COLLISION_REPORT.md"
 XI_4Z_FIX2_FINAL_REL = "docs/audit/XI_4Z_FIX2_FINAL.md"
@@ -310,8 +310,8 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
 
     readiness_v3 = {
         "allowed_actions": [
-            "move only rows listed in data/restructure/src_domain_mapping_lock_approved_v3.json approved_for_xi5 using their explicit source_path and target_path values",
-            "route only rows listed in data/restructure/src_domain_mapping_lock_approved_v3.json approved_to_attic using their explicit source_path and target_path values",
+            "move only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v3.json approved_for_xi5 using their explicit source_path and target_path values",
+            "route only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v3.json approved_to_attic using their explicit source_path and target_path values",
             "update include paths and build references only for explicitly listed approved rows",
             "refuse if additional unmapped runtime-critical source-like paths are encountered outside the approved or deferred sets",
         ],

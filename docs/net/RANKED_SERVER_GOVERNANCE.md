@@ -93,5 +93,5 @@ Server must emit explicit deterministic refusals for governance failures:
 - `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/net/ANTI_CHEAT_POLICY_FRAMEWORK.md`
 - `docs/contracts/refusal_contract.md`
-- `data/registries/server_profile_registry.json`
-- `data/registries/securex_policy_registry.json`
+- `contracts/registry/server_profile_registry.json`
+- `contracts/registry/securex_policy_registry.json`

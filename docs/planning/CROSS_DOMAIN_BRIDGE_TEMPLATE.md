@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: domain constitution run
 Replacement Target: later bridge-instance checkpoints may refine domain-specific content without replacing this template floor
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `specs/reality/SPEC_CAPABILITY_SURFACES.md`, `specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md`
 
 # Cross-Domain Bridge Template
 

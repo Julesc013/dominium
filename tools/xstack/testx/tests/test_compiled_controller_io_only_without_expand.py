@@ -41,9 +41,9 @@ def run(repo_root: str):
     )
     compiled_logic_network_state["logic_network_binding_rows"] = binding_rows
 
-    surfaces = _load(repo_root, "data/registries/instrumentation_surface_registry.json")
-    access = _load(repo_root, "data/registries/access_policy_registry.json")
-    models = _load(repo_root, "data/registries/measurement_model_registry.json")
+    surfaces = _load(repo_root, "contracts/registry/instrumentation_surface_registry.json")
+    access = _load(repo_root, "contracts/registry/access_policy_registry.json")
+    models = _load(repo_root, "contracts/registry/measurement_model_registry.json")
     inputs = fixture["inputs"]
     authority_context = {"privilege_level": "admin", "entitlements": ["entitlement.inspect", "entitlement.admin"]}
 

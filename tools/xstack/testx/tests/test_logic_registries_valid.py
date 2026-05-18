@@ -26,13 +26,13 @@ def _rows(payload: dict, key: str) -> list[dict]:
 def run(repo_root: str):
     checks = (
         (
-            "data/registries/signal_type_registry.json",
+            "contracts/registry/signal_type_registry.json",
             "signal_types",
             "signal_type_id",
             {"signal.boolean", "signal.scalar", "signal.pulse", "signal.message", "signal.bus"},
         ),
         (
-            "data/registries/carrier_type_registry.json",
+            "contracts/registry/carrier_type_registry.json",
             "carrier_types",
             "carrier_type_id",
             {
@@ -45,7 +45,7 @@ def run(repo_root: str):
             },
         ),
         (
-            "data/registries/logic_policy_registry.json",
+            "contracts/registry/logic_policy_registry.json",
             "logic_policies",
             "policy_id",
             {"logic.default", "logic.rank_strict", "logic.lab_experimental"},

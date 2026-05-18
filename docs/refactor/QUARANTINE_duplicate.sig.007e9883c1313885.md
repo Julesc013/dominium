@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/save/save_validator.py`
+- Canonical Candidate: `src/tools/libraries/save/save_validator.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/lib/artifact/artifact_validator.py`
-- `src/lib/instance/instance_validator.py`
-- `src/lib/save/save_validator.py`
+- `src/tools/libraries/artifact/artifact_validator.py`
+- `src/tools/libraries/instance/instance_validator.py`
+- `src/tools/libraries/save/save_validator.py`
 
 ## Scorecard
 
-- `src/lib/save/save_validator.py` disposition=`canonical` rank=`1` total_score=`57.8` risk=`HIGH`
-- `src/lib/instance/instance_validator.py` disposition=`quarantine` rank=`2` total_score=`56.49` risk=`HIGH`
-- `src/lib/artifact/artifact_validator.py` disposition=`quarantine` rank=`3` total_score=`55.54` risk=`HIGH`
+- `src/tools/libraries/save/save_validator.py` disposition=`canonical` rank=`1` total_score=`57.8` risk=`HIGH`
+- `src/tools/libraries/instance/instance_validator.py` disposition=`quarantine` rank=`2` total_score=`56.49` risk=`HIGH`
+- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`3` total_score=`55.54` risk=`HIGH`
 
 ## Usage Sites
 

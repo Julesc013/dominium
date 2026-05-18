@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Φ-B, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/agents/AGENT_TASKS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md`, `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `specs/reality/SPEC_CAPABILITY_SURFACES.md`, `specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/agents/AGENT_TASKS.md`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md`, `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/agents/MCP_INTERFACE_MODEL.md`, `docs/agents/AGENT_SAFETY_POLICY.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_POST_SIGMA_B_PRE_PHIB_UPSILON.md`, `docs/planning/NEXT_TWO_SERIES_PLAN_PHIB_UPSILON.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`
 
 # Dominium Event Log And Replay Doctrine
 
@@ -49,8 +49,8 @@ Repo-grounded extension surfaces already exist and must be treated as evidence r
 - `engine/include/domino/snapshot.h`
 - `runtime/app/ui_event_log.c`
 - `runtime/app/include/dominium/app/ui_event_log.h`
-- `control/control_plane_engine.py`
-- `net/anti_cheat/anti_cheat_engine.py`
+- `tools/governance/control_plane_engine.py`
+- `tools/network/anti_cheat/anti_cheat_engine.py`
 
 ## 2. Core Definition
 
@@ -88,7 +88,7 @@ The distinction is already visible in repo reality:
 - `runtime/app/ui_event_log.*` is an optional UI event helper and is not sufficient as authoritative replay
 - `engine/modules/replay` is a deterministic replay subsystem surface and points toward authoritative replay concerns
 - `server/persistence/dom_checkpointing.h` and `engine/include/domino/snapshot.h` show checkpoints and snapshots as distinct continuity artifacts
-- `control/control_plane_engine.py` explicitly restricts replay-only mode to read-only reenactment and view behavior
+- `tools/governance/control_plane_engine.py` explicitly restricts replay-only mode to read-only reenactment and view behavior
 
 ## 3. Why Replay Law Is Necessary
 
@@ -315,7 +315,7 @@ The governing rules are:
 The repo already shows this pressure:
 
 - `server/shard/dom_cross_shard_log.*` preserves deterministic ordering, causal keys, and idempotency for cross-shard messages
-- `control/control_plane_engine.py` explicitly refuses replay-mode mutation
+- `tools/governance/control_plane_engine.py` explicitly refuses replay-mode mutation
 
 Those surfaces are evidence that replay history must preserve legality, not just payload order.
 
@@ -363,8 +363,8 @@ The governing operator rules are:
 
 This distinction is already visible in repo surfaces:
 
-- `control/control_plane_engine.py` restricts replay mode to read-only reenactment controls
-- `net/anti_cheat/anti_cheat_engine.py` treats replay detection as an enforcement and audit concern
+- `tools/governance/control_plane_engine.py` restricts replay mode to read-only reenactment controls
+- `tools/network/anti_cheat/anti_cheat_engine.py` treats replay detection as an enforcement and audit concern
 - `runtime/app/ui_event_log.*` remains a UI-facing event helper and not authoritative replay by default
 
 ## 13. Event and Log Invalidity and Failure

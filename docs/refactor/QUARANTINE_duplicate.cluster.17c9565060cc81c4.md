@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/proof/__init__.py`
+- Canonical Candidate: `src/tools/governance/proof/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/control/proof/__init__.py`
-- `src/control/proof/control_proof_bundle.py`
+- `src/tools/governance/proof/__init__.py`
+- `src/tools/governance/proof/control_proof_bundle.py`
 
 ## Scorecard
 
-- `src/control/proof/__init__.py` disposition=`canonical` rank=`1` total_score=`62.73` risk=`HIGH`
-- `src/control/proof/control_proof_bundle.py` disposition=`quarantine` rank=`2` total_score=`59.8` risk=`HIGH`
+- `src/tools/governance/proof/__init__.py` disposition=`canonical` rank=`1` total_score=`62.73` risk=`HIGH`
+- `src/tools/governance/proof/control_proof_bundle.py` disposition=`quarantine` rank=`2` total_score=`59.8` risk=`HIGH`
 
 ## Usage Sites
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Dict, List, Mapping
 
-from meta.compute import request_compute
+from tools.repo.meta.compute import request_compute
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

@@ -688,7 +688,7 @@ target_link_libraries(dominium_registry_tests PRIVATE
     libs::contracts
 )
 target_compile_definitions(dominium_registry_tests PRIVATE
-    DOMINIUM_LAW_TARGETS_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/law_targets.registry"
+    DOMINIUM_LAW_TARGETS_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/law_targets.registry"
 )
 set_target_properties(dominium_registry_tests PROPERTIES
     CXX_STANDARD 98

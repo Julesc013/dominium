@@ -19,8 +19,8 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases
 install_src_aliases(REPO_ROOT_HINT)
 
-from compat.migration_lifecycle import load_migration_policy_registry
-from governance import governance_profile_hash, load_governance_profile
+from tools.validators.compatibility.migration_lifecycle import load_migration_policy_registry
+from tools.governance import governance_profile_hash, load_governance_profile
 from release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,
@@ -30,7 +30,7 @@ from release import (
     write_release_index,
 )
 from release.archive_policy import release_index_history_rel
-from security.trust import load_trust_root_registry
+from tools.validators.security.trust import load_trust_root_registry
 from tools.compatx.core.semantic_contract_validator import (
     load_semantic_contract_registry,
     registry_hash as semantic_contract_registry_hash,

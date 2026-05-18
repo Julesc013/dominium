@@ -19,8 +19,8 @@ def _load(repo_root: str, rel_path: str):
 
 
 def run(repo_root: str):
-    logic_payload, logic_err = _load(repo_root, "data/registries/logic_policy_registry.json")
-    compute_payload, compute_err = _load(repo_root, "data/registries/compute_budget_profile_registry.json")
+    logic_payload, logic_err = _load(repo_root, "contracts/registry/logic_policy_registry.json")
+    compute_payload, compute_err = _load(repo_root, "contracts/registry/compute_budget_profile_registry.json")
     if logic_err:
         return {"status": "fail", "message": "logic policy registry missing or invalid"}
     if compute_err:

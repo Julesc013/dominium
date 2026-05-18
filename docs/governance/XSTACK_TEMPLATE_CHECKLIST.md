@@ -19,11 +19,11 @@ Use this checklist when bootstrapping XStack in another repository.
 
 ## Registry Checklist
 
-- [ ] `data/registries/gate_policy.json`
-- [ ] `data/registries/testx_groups.json`
-- [ ] `data/registries/auditx_groups.json`
-- [ ] `data/registries/xstack_components.json`
-- [ ] `data/registries/derived_artifacts.json`
+- [ ] `contracts/registry/gate_policy.json`
+- [ ] `contracts/registry/testx_groups.json`
+- [ ] `contracts/registry/auditx_groups.json`
+- [ ] `contracts/registry/xstack_components.json`
+- [ ] `contracts/registry/derived_artifacts.json`
 
 ## Schema Checklist
 

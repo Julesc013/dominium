@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.state.state_machine_engine import normalize_state_machine
+from engine.state.state.state_machine_engine import normalize_state_machine
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

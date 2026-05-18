@@ -13,8 +13,8 @@ Replacement Target: legacy reference surface retained without current binding au
 Reference contracts:
 - `schema/session/session_stage.schema`
 - `schema/session/session_pipeline.schema`
-- `data/registries/session_stage_registry.json`
-- `data/registries/session_pipeline_registry.json`
+- `contracts/registry/session_stage_registry.json`
+- `contracts/registry/session_pipeline_registry.json`
 
 ## stage.session_ready Contract
 

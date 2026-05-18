@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 from runtime.appshell import appshell_main
-from compat import descriptor_json_text, emit_product_descriptor
+from tools.validators.compatibility import descriptor_json_text, emit_product_descriptor
 from tools.mvp.runtime_bundle import (
     MVP_PACK_LOCK_REL,
     MVP_PROFILE_BUNDLE_REL,

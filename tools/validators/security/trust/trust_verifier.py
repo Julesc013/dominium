@@ -415,7 +415,7 @@ def verify_artifact_trust(
             "trusted_signer_ids": [],
             "refusal_code": REFUSAL_TRUST_POLICY_MISSING,
             "reason": "trust policy is missing or undeclared",
-            "remediation_hint": "Declare the requested trust policy in data/registries/trust_policy_registry.json or choose a supported trust policy id.",
+            "remediation_hint": "Declare the requested trust policy in contracts/registry/trust_policy_registry.json or choose a supported trust policy id.",
             "warnings": [],
             "errors": [{"code": REFUSAL_TRUST_POLICY_MISSING, "message": "trust policy is missing or undeclared"}],
             "deterministic_fingerprint": "",

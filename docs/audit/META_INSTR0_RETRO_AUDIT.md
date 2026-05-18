@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # META-INSTR0 Retro Audit
 
-Status: AUDIT COMPLETE  
-Date: 2026-03-07  
+Status: AUDIT COMPLETE
+Date: 2026-03-07
 Scope: instrumentation-like features, epistemic/control bypass risks, and missing instrumentation surfaces.
 
 ## Existing Instrument-Like Features

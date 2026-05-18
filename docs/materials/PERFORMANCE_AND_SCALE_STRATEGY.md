@@ -74,7 +74,7 @@ Under policies A/B/C:
 - proof/replay anchors remain stable across identical runs
 
 ## Regression Locks
-MAT scale regressions are tracked in `data/regression/mat_scale_baseline.json`:
+MAT scale regressions are tracked in `tests/fixtures/regression/mat_scale_baseline.json`:
 - deterministic degradation ordering fingerprints
 - short-run per-tick hash anchor stream
 - inspection cache hit pattern bounds

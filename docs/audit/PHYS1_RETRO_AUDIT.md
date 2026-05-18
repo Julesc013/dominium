@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PHYS1 Retro-Consistency Audit
 
-Status: CANONICAL  
-Last Updated: 2026-03-04  
+Status: CANONICAL
+Last Updated: 2026-03-04
 Scope: PHYS-1 Phase 0 audit for force/momentum substrate alignment with process-only mutation and determinism.
 
 ## 1) Audit Inputs

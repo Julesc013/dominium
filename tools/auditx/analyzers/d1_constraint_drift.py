@@ -12,8 +12,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "D1_CONSTRAINT_DRIFT"
 WATCH_PREFIXES = (
     "packs/",
-    "data/registries/worldgen_constraints_registry.json",
-    "data/registries/worldgen_module_registry.json",
+    "contracts/registry/worldgen_constraints_registry.json",
+    "contracts/registry/worldgen_module_registry.json",
     "contracts/schemas/worldgen_constraints.schema.json",
     "game/domains/worldgen/",
 )
@@ -141,7 +141,7 @@ def run(graph, repo_root, changed_files=None):
                 category="worldgen.constraint_drift",
                 severity="RISK",
                 confidence=0.9,
-                file_path="data/registries/worldgen_constraints_registry.json",
+                file_path="contracts/registry/worldgen_constraints_registry.json",
                 evidence=[
                     "Registry constraints_id has no matching pack contribution: {}".format(missing_id),
                     "Constraint registry can drift from pack content.",
@@ -149,7 +149,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-WORLDGEN-CONSTRAINTS-REGISTERED"],
-                related_paths=["data/registries/worldgen_constraints_registry.json"],
+                related_paths=["contracts/registry/worldgen_constraints_registry.json"],
             )
         )
 
@@ -190,7 +190,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-WORLDGEN-CONSTRAINTS-REGISTERED"],
-                    related_paths=[payload_rel, "data/registries/worldgen_constraints_registry.json"],
+                    related_paths=[payload_rel, "contracts/registry/worldgen_constraints_registry.json"],
                 )
             )
 
@@ -214,7 +214,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="DOC_FIX",
                     related_invariants=["INV-WORLDGEN-CONSTRAINTS-REGISTERED"],
-                    related_paths=[payload_rel, "data/registries/worldgen_module_registry.json"],
+                    related_paths=[payload_rel, "contracts/registry/worldgen_module_registry.json"],
                 )
             )
 

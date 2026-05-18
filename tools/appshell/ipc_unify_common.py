@@ -31,7 +31,7 @@ IPC_SURFACE_MAP_PATH = "docs/audit/IPC_SURFACE_MAP.md"
 IPC_DUPLICATION_FIXES_PATH = "docs/audit/IPC_DUPLICATION_FIXES.md"
 IPC_DISCOVERY_DOC_PATH = "docs/appshell/IPC_DISCOVERY.md"
 IPC_UNIFY_FINAL_PATH = "docs/audit/IPC_UNIFY_FINAL.md"
-IPC_UNIFY_REPORT_PATH = "data/audit/ipc_unify_report.json"
+IPC_UNIFY_REPORT_PATH = "content/data/audit/ipc_unify_report.json"
 IPC_UNIFY_TOOL_PATH = "tools/appshell/tool_run_ipc_unify.py"
 IPC_UNIFY_REPORT_ID = "appshell.ipc_unify.v1"
 LAST_REVIEWED = "2026-03-13"
@@ -51,7 +51,7 @@ CANONICAL_SURFACES = (
         ),
     },
     {
-        "path": "compat/handshake/handshake_engine.py",
+        "path": "tools/validators/compatibility/handshake/handshake_engine.py",
         "surface": "handshake",
         "classification": "canonical",
         "notes": "Single CAP-NEG handshake message builder for IPC attach and session begin.",
@@ -789,7 +789,7 @@ def _render_ipc_discovery(report: Mapping[str, object]) -> str:
         "1. Initialize virtual paths and resolve `VROOT_IPC`.",
         "2. Read `ipc_endpoints.json` and sort rows by `endpoint_id`, `product_id`, and `session_id`.",
         "3. Read the endpoint descriptor file declared by `official.descriptor_rel_path`.",
-        "4. Run CAP-NEG handshake via `compat/handshake/handshake_engine.py` before opening channels.",
+        "4. Run CAP-NEG handshake via `tools/validators/compatibility/handshake/handshake_engine.py` before opening channels.",
         "5. Refuse the attach if negotiation is absent, mismatched, or unlogged.",
         "",
         "## Canonical Channels",
@@ -828,7 +828,7 @@ def _render_final_report(report: Mapping[str, object]) -> str:
         "## Canonical Stack",
         "",
         "- Transport: `runtime/appshell/ipc/ipc_transport.py`",
-        "- Handshake: `compat/handshake/handshake_engine.py`",
+        "- Handshake: `tools/validators/compatibility/handshake/handshake_engine.py`",
         "- Attach client: `runtime/appshell/ipc/ipc_client.py`",
         "- Endpoint server: `runtime/appshell/ipc/ipc_endpoint_server.py`",
         "- Consumers: `runtime/appshell/commands/command_engine.py`, `runtime/appshell/tui/tui_engine.py`, and `runtime/appshell/supervisor/supervisor_engine.py`",

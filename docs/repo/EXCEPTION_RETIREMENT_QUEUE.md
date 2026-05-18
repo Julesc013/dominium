@@ -114,7 +114,7 @@ Notes:
 
 - `data/` is mixed across registries, authored pack declarations, world/domain data, planning mirrors, generated evidence, baselines, release/runtime data, and XStack metadata.
 - `packs/` remains the active runtime pack substrate; `data/packs/` remains scoped authored pack content/declaration authority and residual-quarantined for any single-root convergence.
-- `profiles/bundles/bundle.mvp_default.json` embeds identity, hashes, and rel-path metadata and was not moved.
+- `content/profiles/bundles/bundle.mvp_default.json` embeds identity, hashes, and rel-path metadata and was not moved.
 - `bundles/` remains active bundle profile source referenced by XStack/control tooling.
 - `modding/` and `models/` are active Python implementation packages, not content-only roots.
 - `templates/` remains active because safe relocation crosses protected specs/reality and XStack/AIDE contract references.
@@ -154,7 +154,7 @@ Notes:
 
 - `compat/` remains active implementation and shim code imported by client, server, runtime, tooling, and tests.
 - `lib/` and `libs/` remain active implementation and build/ABI surfaces; no CMake target names, include paths, or ABI headers moved.
-- `locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity and distribution copy behavior.
+- `contracts/package/locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity and distribution copy behavior.
 - `repo/` remains active release/control-plane material for release policy, RepoX rulesets, and canon state.
 - `safety/`, `security/`, and `specs/` remain protected semantics surfaces; `specs/reality/` authority is preserved.
 - `updates/` remains tracked RepoX-generated update feed material referenced by release/update tooling.

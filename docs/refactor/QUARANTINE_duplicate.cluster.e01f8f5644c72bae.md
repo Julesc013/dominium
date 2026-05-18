@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/artifact/__init__.py`
+- Canonical Candidate: `src/tools/libraries/artifact/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/lib/artifact/__init__.py`
-- `src/lib/artifact/artifact_validator.py`
+- `src/tools/libraries/artifact/__init__.py`
+- `src/tools/libraries/artifact/artifact_validator.py`
 
 ## Scorecard
 
-- `src/lib/artifact/__init__.py` disposition=`canonical` rank=`1` total_score=`65.54` risk=`HIGH`
-- `src/lib/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`57.92` risk=`HIGH`
+- `src/tools/libraries/artifact/__init__.py` disposition=`canonical` rank=`1` total_score=`65.54` risk=`HIGH`
+- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`57.92` risk=`HIGH`
 
 ## Usage Sites
 

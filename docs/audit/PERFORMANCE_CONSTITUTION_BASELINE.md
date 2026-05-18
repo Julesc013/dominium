@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Performance Constitution Baseline (RS-5)
 
-Date: 2026-02-26  
+Date: 2026-02-26
 Status: Baseline complete (deterministic performance envelope, arbitration, and inspection caching)
 
 ## 1) Budget Envelope Parameters

@@ -26,7 +26,7 @@ def _load_json(path: str) -> dict:
 def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.instrumentation import normalize_instrumentation_surface_rows
+    from tools.repo.meta.instrumentation import normalize_instrumentation_surface_rows
 
     schema_checks = (
         (
@@ -57,7 +57,7 @@ def run(repo_root: str):
             if str(token) not in text:
                 return {"status": "fail", "message": "{} missing required token '{}'".format(rel_path, token)}
 
-    registry_path = os.path.join(repo_root, "data/registries/instrumentation_surface_registry.json".replace("/", os.sep))
+    registry_path = os.path.join(repo_root, "contracts/registry/instrumentation_surface_registry.json".replace("/", os.sep))
     payload = _load_json(registry_path)
     rows = list((dict(payload.get("record") or {})).get("instrumentation_surfaces") or [])
     if not rows:

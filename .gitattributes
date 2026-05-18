@@ -2,4 +2,4 @@
 source/dominium/setup/tests/golden/** text eol=lf
 
 # Keep tracked UI bind generated sources LF for byte-identical freshness checks.
-libs/appcore/ui_bind/** text eol=lf
+runtime/shell/appcore/ui_bind/** text eol=lf

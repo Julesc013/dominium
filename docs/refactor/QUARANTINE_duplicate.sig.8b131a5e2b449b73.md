@@ -12,18 +12,18 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/compat/descriptor/descriptor_engine.py`
+- Canonical Candidate: `src/tools/validators/compatibility/descriptor/descriptor_engine.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/compat/descriptor/descriptor_engine.py`
+- `src/tools/validators/compatibility/descriptor/descriptor_engine.py`
 - `tools/mvp/toolchain_matrix_common.py`
 
 ## Scorecard
 
-- `src/compat/descriptor/descriptor_engine.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
+- `src/tools/validators/compatibility/descriptor/descriptor_engine.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
 - `tools/mvp/toolchain_matrix_common.py` disposition=`quarantine` rank=`2` total_score=`67.36` risk=`HIGH`
 
 ## Usage Sites

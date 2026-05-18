@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from control.fidelity import (
+from runtime.control.fidelity import (
     DEFAULT_FIDELITY_POLICY_ID,
     REFUSAL_CTRL_FIDELITY_DENIED,
     RANK_FAIR_POLICY_ID,

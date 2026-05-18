@@ -15,7 +15,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from core.schedule.schedule_engine import normalize_schedule
+    from tools.core.schedule.schedule_engine import normalize_schedule
     from game.domains.signals.aggregation.aggregation_engine import normalize_schedule_rows
 
     schedule_row = {

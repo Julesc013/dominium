@@ -11,9 +11,9 @@ import tempfile
 import importlib
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from compat import build_product_descriptor
-from lib.export import export_instance_bundle, export_pack_bundle, export_save_bundle
-from lib.install import (
+from tools.validators.compatibility import build_product_descriptor
+from tools.libraries.export import export_instance_bundle, export_pack_bundle, export_save_bundle
+from tools.libraries.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
     normalize_contract_range,
@@ -21,13 +21,13 @@ from lib.install import (
     normalize_protocol_range,
     validate_install_manifest,
 )
-from lib.instance import (
+from tools.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from lib.instance.instance_clone import clone_instance_local
-from lib.provides import (
+from tools.libraries.instance.instance_clone import clone_instance_local
+from tools.libraries.provides import (
     RESOLUTION_POLICY_DETERMINISTIC_LOWEST_PACK_ID,
     RESOLUTION_POLICY_EXPLICIT_REQUIRED,
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
@@ -35,7 +35,7 @@ from lib.provides import (
     canonicalize_provides_resolution,
     resolve_providers,
 )
-from lib.save import (
+from tools.libraries.save import (
     CURRENT_SAVE_FORMAT_VERSION,
     deterministic_fingerprint as save_deterministic_fingerprint,
     evaluate_save_open,
@@ -43,7 +43,7 @@ from lib.save import (
     validate_save_manifest,
     write_json as write_save_json,
 )
-from packs.compat import verify_pack_set
+from content.packs.compatibility_payload import verify_pack_set
 from tools.launcher.launcher_cli import perform_preflight
 from tools.lib.content_store import (
     build_install_ref,

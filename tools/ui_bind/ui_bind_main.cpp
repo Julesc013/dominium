@@ -702,7 +702,7 @@ int main(int argc, char** argv)
         ui_index_path = ui_index_storage.c_str();
     }
     if (!out_dir) {
-        out_dir_storage = std::string(repo_root) + "/libs/appcore/ui_bind";
+        out_dir_storage = std::string(repo_root) + "/runtime/shell/appcore/ui_bind";
         out_dir = out_dir_storage.c_str();
     }
 

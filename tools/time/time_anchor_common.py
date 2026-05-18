@@ -21,7 +21,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases, resolve_repo_path_equivalent  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from meta.provenance.compaction_engine import compact_provenance_window  # noqa: E402
+from tools.repo.meta.provenance.compaction_engine import compact_provenance_window  # noqa: E402
 from engine.time import (  # noqa: E402
     ANCHOR_REASON_INTERVAL,
     TICK_REFUSAL_THRESHOLD,
@@ -112,7 +112,7 @@ def _report_fingerprint(payload: Mapping[str, object] | None) -> str:
 
 
 def read_provenance_classification_rows(repo_root: str) -> list[dict]:
-    rel_path = "data/registries/provenance_classification_registry.json"
+    rel_path = "contracts/registry/provenance_classification_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     payload = _read_json(abs_path)
     rows = list((dict(payload.get("record") or {})).get("provenance_classifications") or [])

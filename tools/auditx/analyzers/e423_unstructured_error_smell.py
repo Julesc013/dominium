@@ -15,12 +15,12 @@ REQUIRED_TOKENS = {
         "remediation_hint",
         "Exit Codes",
     ),
-    "data/registries/refusal_to_exit_registry.json": (
+    "contracts/registry/refusal_to_exit_registry.json": (
         '"refusal_code": "refusal.io.invalid_args"',
         '"refusal_prefix": "refusal.compat."',
         '"refusal_prefix": "refusal.debug."',
     ),
-    "data/registries/refusal_code_registry.json": (
+    "contracts/registry/refusal_code_registry.json": (
         '"refusal_code": "refusal.debug.command_unavailable"',
         '"refusal_code": "refusal.debug.command_unknown"',
         '"refusal_code": "refusal.io.invalid_args"',

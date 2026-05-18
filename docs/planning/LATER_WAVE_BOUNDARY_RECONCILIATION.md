@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: `Ζ-B1`, `Ζ-B2`, `C-ZETA_B_ADMISSION_REVIEW`, later bounded `Ζ`
 Replacement Target: later `Ζ-B1`, `Ζ-B2`, and the later-wave admission checkpoint may refine family readiness and gate posture without replacing the later-wave boundary law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md`, `docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json`, `data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json`, `data/planning/zeta_blocker_reconciliation_registry.json`, `data/planning/live_operations_prerequisite_matrix.json`, `data/planning/zeta_execution_gates_registry.json`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, `data/registries/provenance_classification_registry.json`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md`, `docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json`, `content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json`, `contracts/registry/planning/zeta_blocker_reconciliation_registry.json`, `contracts/planning/live_operations_prerequisite_matrix.json`, `contracts/registry/planning/zeta_execution_gates_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `tools/validators/security/trust/trust_verifier.py`
 
 # Later-Wave Boundary Reconciliation
 
@@ -84,14 +84,14 @@ The authoritative inputs for this reconciliation are:
   - `PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES`
   - `TRUST_EXECUTION_AND_REVOCATION_CONTINUITY`
 - evidence roots used only as evidence
-  - `data/registries/net_replication_policy_registry.json`
-  - `data/registries/trust_policy_registry.json`
-  - `data/registries/trust_root_registry.json`
-  - `data/registries/provenance_classification_registry.json`
+  - `contracts/registry/net_replication_policy_registry.json`
+  - `contracts/registry/trust_policy_registry.json`
+  - `contracts/registry/trust_root_registry.json`
+  - `contracts/registry/provenance_classification_registry.json`
   - `server/shard/dom_cross_shard_log.h`
   - `server/net/dom_server_protocol.h`
   - `server/net/dom_server_runtime.h`
-  - `security/trust/trust_verifier.py`
+  - `tools/validators/security/trust/trust_verifier.py`
 
 ## D. Candidate Later-Wave Family Taxonomy
 

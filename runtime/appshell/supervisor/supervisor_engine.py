@@ -34,7 +34,7 @@ from runtime.appshell.paths import (
     vpath_root,
 )
 from runtime.appshell.pack_verifier_adapter import verify_pack_root
-from compat import emit_product_descriptor
+from tools.validators.compatibility import emit_product_descriptor
 from runtime.process_spawn import build_python_process_spec, poll_process, spawn_process
 from runtime.appshell.supervisor.args_canonicalizer import canonicalize_args
 from tools.xstack.compatx.canonical_json import canonical_sha256

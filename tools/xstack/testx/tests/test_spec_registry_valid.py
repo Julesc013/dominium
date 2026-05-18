@@ -24,7 +24,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from specs import (
+    from tools.specs import (
         compliance_check_rows_by_id,
         load_spec_sheet_rows,
         spec_sheet_rows_by_id,
@@ -32,9 +32,9 @@ def run(repo_root: str):
         tolerance_policy_rows_by_id,
     )
 
-    spec_type_registry = _read_json(repo_root, "data/registries/spec_type_registry.json")
-    tolerance_registry = _read_json(repo_root, "data/registries/tolerance_policy_registry.json")
-    compliance_registry = _read_json(repo_root, "data/registries/compliance_check_registry.json")
+    spec_type_registry = _read_json(repo_root, "contracts/registry/spec_type_registry.json")
+    tolerance_registry = _read_json(repo_root, "contracts/registry/tolerance_policy_registry.json")
+    compliance_registry = _read_json(repo_root, "contracts/registry/compliance_check_registry.json")
     if (not spec_type_registry) or (not tolerance_registry) or (not compliance_registry):
         return {"status": "fail", "message": "required SpecSheet registries are missing or unreadable"}
 
@@ -66,7 +66,7 @@ def run(repo_root: str):
         return {"status": "fail", "message": "compliance_check_registry missing required baseline checks"}
 
     pack_payloads = []
-    default_pack_rel = "packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_rel = "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
     default_pack_abs = os.path.join(repo_root, default_pack_rel.replace("/", os.sep))
     if os.path.isfile(default_pack_abs):
         default_pack_payload = _read_json(repo_root, default_pack_rel)

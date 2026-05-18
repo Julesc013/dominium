@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E118_SILENT_DOWNGRADE_SMELL"
 WATCH_PREFIXES = (
-    "control/control_plane_engine.py",
+    "tools/governance/control_plane_engine.py",
     "apps/client/interaction/interaction_dispatch.py",
     "game/domains/inspection/inspection_engine.py",
     "game/domains/materials/materialization/materialization_engine.py",
@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    control_plane_rel = "control/control_plane_engine.py"
+    control_plane_rel = "tools/governance/control_plane_engine.py"
     control_plane_text = _read_text(repo_root, control_plane_rel)
     if not control_plane_text:
         findings.append(

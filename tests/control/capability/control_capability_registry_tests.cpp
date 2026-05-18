@@ -8,7 +8,7 @@ Control capability registry determinism tests (TESTX2).
 #include <string.h>
 
 #ifndef DOMINIUM_CONTROL_REGISTRY_PATH
-#define DOMINIUM_CONTROL_REGISTRY_PATH "data/registries/control_capabilities.registry"
+#define DOMINIUM_CONTROL_REGISTRY_PATH "contracts/registry/control_capabilities.registry"
 #endif
 
 #define EXPECT(cond, msg) do { \

@@ -6,18 +6,18 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from compat.migration_lifecycle import (
+from tools.validators.compatibility.migration_lifecycle import (
     ARTIFACT_KIND_INSTANCE_MANIFEST,
     DECISION_READ_ONLY,
     DECISION_REFUSE,
     determine_migration_decision,
 )
-from lib.provides import (
+from tools.libraries.provides import (
     RESOLUTION_POLICY_VALUES,
     normalize_provides_resolutions,
     validate_provides_resolution,
 )
-from meta.identity import UNIVERSAL_IDENTITY_FIELD
+from tools.validators.identity import UNIVERSAL_IDENTITY_FIELD
 from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

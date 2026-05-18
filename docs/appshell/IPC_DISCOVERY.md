@@ -31,7 +31,7 @@ It guarantees:
 1. Initialize virtual paths and resolve `VROOT_IPC`.
 2. Read `ipc_endpoints.json` and sort rows by `endpoint_id`, `product_id`, and `session_id`.
 3. Read the endpoint descriptor file declared by `official.descriptor_rel_path`.
-4. Run CAP-NEG handshake via `compat/handshake/handshake_engine.py` before opening channels.
+4. Run CAP-NEG handshake via `tools/validators/compatibility/handshake/handshake_engine.py` before opening channels.
 5. Refuse the attach if negotiation is absent, mismatched, or unlogged.
 
 ## Canonical Channels

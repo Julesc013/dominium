@@ -21,7 +21,7 @@ Store declarative bundle selections under `bundles/<bundle_id>/bundle.json` for 
 
 ## Commands
 - `tools/xstack/bundle_list`
-- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`
+- `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
 - `tools/xstack/lockfile_build --bundle bundle.base.lab --out build/lockfile.json`
 
 ## Cross-References

@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/validation/validation_engine.py`
+- `src/tools/validators/validation/validation_engine.py`
 - `tools/audit/arch_audit_common.py`
 - `tools/convergence/convergence_gate_common.py`
 - `tools/mvp/baseline_universe_common.py`
@@ -64,7 +64,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/review/repo_inventory_common.py` disposition=`merge` rank=`19` total_score=`56.83` risk=`HIGH`
 - `tools/audit/arch_audit_common.py` disposition=`merge` rank=`20` total_score=`53.57` risk=`HIGH`
 - `tools/time/time_anchor_common.py` disposition=`merge` rank=`21` total_score=`47.62` risk=`HIGH`
-- `src/validation/validation_engine.py` disposition=`merge` rank=`22` total_score=`41.37` risk=`HIGH`
+- `src/tools/validators/validation/validation_engine.py` disposition=`merge` rank=`22` total_score=`41.37` risk=`HIGH`
 
 ## Usage Sites
 

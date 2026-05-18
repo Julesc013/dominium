@@ -17,16 +17,16 @@ Replacement Target: legacy reference surface retained without current binding au
 - `schema/packs/pack_lock.schema`
 - `schema/packs/pack_compat_manifest.schema`
 - `schema/pack_manifest.schema`
-- `lib/provides/__init__.py`
-- `lib/provides/provider_resolution.py`
-- `lib/instance/instance_validator.py`
-- `packs/compat/pack_compat_validator.py`
-- `packs/compat/pack_verification_pipeline.py`
+- `tools/libraries/provides/__init__.py`
+- `tools/libraries/provides/provider_resolution.py`
+- `tools/libraries/instance/instance_validator.py`
+- `content/packs/compatibility_payload/pack_compat_validator.py`
+- `content/packs/compatibility_payload/pack_verification_pipeline.py`
 - `tools/ops/ops_cli.py`
 - `tools/launcher/launcher_cli.py`
 - `tools/xstack/pack_loader/loader.py`
-- `data/registries/provides_registry.json`
-- `data/registries/resolution_policy_registry.json`
+- `contracts/registry/provides_registry.json`
+- `contracts/registry/resolution_policy_registry.json`
 
 ## Demand IDs
 

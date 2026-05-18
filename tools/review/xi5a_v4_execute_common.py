@@ -38,30 +38,30 @@ from tools.review.xi4z_fix3_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_TARGET_PATHS_V4_REL = "data/restructure/src_domain_mapping_target_paths_v4.json"
-SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "data/restructure/src_domain_mapping_attic_approved.json"
-SRC_DOMAIN_MAPPING_DEFERRED_REL = "data/restructure/src_domain_mapping_deferred.json"
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
-INCLUDE_GRAPH_REL = "data/audit/include_graph.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
+SRC_DOMAIN_MAPPING_TARGET_PATHS_V4_REL = "content/data/restructure/src_domain_mapping_target_paths_v4.json"
+SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "content/data/restructure/src_domain_mapping_attic_approved.json"
+SRC_DOMAIN_MAPPING_DEFERRED_REL = "content/data/restructure/src_domain_mapping_deferred.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
 XI_4_FINAL_REL = "docs/audit/XI_4_FINAL.md"
 XI_4B_FINAL_REL = "docs/audit/XI_4B_FINAL.md"
 XI_4Z_FINAL_REL = "docs/audit/XI_4Z_FINAL.md"
 XI_4Z_FIX_FINAL_REL = "docs/audit/XI_4Z_FIX_FINAL.md"
 DEPRECATIONS_REL = "docs/refactor/DEPRECATIONS.md"
 
-XI5A_MOVE_MAP_REL = "data/restructure/xi5a_move_map.json"
-XI5A_ATTIC_MAP_REL = "data/restructure/xi5a_attic_map.json"
-XI5A_EXECUTION_LOG_REL = "data/restructure/xi5a_execution_log.json"
-XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "data/restructure/xi5a_postmove_residual_src_report.json"
+XI5A_MOVE_MAP_REL = "content/data/restructure/xi5a_move_map.json"
+XI5A_ATTIC_MAP_REL = "content/data/restructure/xi5a_attic_map.json"
+XI5A_EXECUTION_LOG_REL = "content/data/restructure/xi5a_execution_log.json"
+XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "content/data/restructure/xi5a_postmove_residual_src_report.json"
 XI_5A_MOVE_PLAN_REL = "docs/restructure/XI_5A_MOVE_PLAN.md"
 XI_5A_EXECUTION_LOG_DOC_REL = "docs/restructure/XI_5A_EXECUTION_LOG.md"
 XI_5A_POSTMOVE_REPORT_REL = "docs/restructure/XI_5A_POSTMOVE_REPORT.md"
 XI_5A_ATTIC_REPORT_REL = "docs/restructure/XI_5A_ATTIC_REPORT.md"
 XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
-XI5A_PREFLIGHT_REPAIR_REL = "data/audit/xi5a_preflight_repair.json"
+XI5A_PREFLIGHT_REPAIR_REL = "content/data/audit/xi5a_preflight_repair.json"
 
 TEMP_ROOT_REL = "build/tmp/xi5a_v4"
 PROGRESS_LOG_REL = TEMP_ROOT_REL + "/progress.json"
@@ -186,8 +186,8 @@ def _required_input_paths() -> tuple[str, ...]:
         XI_4Z_FINAL_REL,
         XI_4Z_FIX_FINAL_REL,
         DEPRECATIONS_REL,
-        "data/audit/validation_report_FAST.json",
-        "data/audit/validation_report_STRICT.json",
+        "content/data/audit/validation_report_FAST.json",
+        "content/data/audit/validation_report_STRICT.json",
     )
 
 
@@ -235,8 +235,8 @@ def _ensure_preflight_green(repo_root: str) -> dict[str, str]:
             errors="replace",
             check=False,
         )
-    fast = _load_validation_report(repo_root, "data/audit/validation_report_FAST.json")
-    strict = _load_validation_report(repo_root, "data/audit/validation_report_STRICT.json")
+    fast = _load_validation_report(repo_root, "content/data/audit/validation_report_FAST.json")
+    strict = _load_validation_report(repo_root, "content/data/audit/validation_report_STRICT.json")
     if _token(fast.get("result")) != "complete" or _token(strict.get("result")) != "complete":
         raise Xi5aV4ExecutionFailure(
             "refusal.xi5a.baseline_gates_red",

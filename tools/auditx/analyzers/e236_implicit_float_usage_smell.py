@@ -27,7 +27,7 @@ _TARGET_FILES = (
     "game/domains/physics/momentum_engine.py",
     "game/domains/physics/energy/energy_ledger_engine.py",
     "game/domains/mobility/micro/free_motion_solver.py",
-    "meta/numeric.py",
+    "tools/repo/meta/numeric.py",
 )
 
 _FLOAT_PATTERN = re.compile(r"\bfloat\s*\(", re.IGNORECASE)
@@ -75,7 +75,7 @@ def run(graph, repo_root, changed_files=None):
                         "INV-NO-IMPLICIT-FLOAT",
                         "INV-DETERMINISTIC-ROUND-ONLY",
                     ],
-                    related_paths=[rel_path, "meta/numeric.py"],
+                    related_paths=[rel_path, "tools/repo/meta/numeric.py"],
                 )
             )
             break

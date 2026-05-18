@@ -11,8 +11,8 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E29_HIDDEN_STATE_LEAK_SMELL"
 TARGET_PATHS = (
     "tools/xstack/sessionx/observation.py",
-    "net/policies/policy_server_authoritative.py",
-    "net/srz/shard_coordinator.py",
+    "tools/network/policies/policy_server_authoritative.py",
+    "tools/network/srz/shard_coordinator.py",
 )
 FORBIDDEN_PATTERN = re.compile(
     r"\b(hidden_inventory|internal_state|micro_solver|native_precision)\b",

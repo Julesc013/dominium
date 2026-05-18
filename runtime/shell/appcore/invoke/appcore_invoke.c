@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/invoke/appcore_invoke.c
+FILE: runtime/shell/appcore/invoke/appcore_invoke.c
 MODULE: Dominium
 PURPOSE: Appcore invoke module implementation (scaffold).
 NOTES: No filesystem probing beyond schema artifacts; deterministic order only.

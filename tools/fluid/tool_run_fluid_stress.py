@@ -16,7 +16,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from control.proof.control_proof_bundle import build_control_proof_bundle_from_markers  # noqa: E402
+from tools.governance.proof.control_proof_bundle import build_control_proof_bundle_from_markers  # noqa: E402
 from game.domains.fluids import process_start_leak, solve_fluid_network_f1  # noqa: E402
 from tools.fluid.tool_generate_fluid_stress import _as_int, _write_json, generate_fluid_stress_scenario  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402

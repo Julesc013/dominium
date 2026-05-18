@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/validate/appcore_validate.h
+FILE: runtime/shell/appcore/validate/appcore_validate.h
 MODULE: Dominium
 PURPOSE: Appcore validate module (scaffold; data-only interfaces).
 NOTES: Stub surface; deterministic iteration required; no side effects.

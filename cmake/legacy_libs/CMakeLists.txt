@@ -24,6 +24,6 @@ target_include_directories(libs_netproto INTERFACE
 )
 add_library(libs::netproto ALIAS libs_netproto)
 
-add_subdirectory(contracts)
-add_subdirectory(appcore)
-add_subdirectory(build_identity)
+add_subdirectory(${CMAKE_SOURCE_DIR}/contracts/abi/dom_contracts ${CMAKE_BINARY_DIR}/contracts/abi/dom_contracts)
+add_subdirectory(${CMAKE_SOURCE_DIR}/runtime/shell/appcore ${CMAKE_BINARY_DIR}/runtime/shell/appcore)
+add_subdirectory(${CMAKE_SOURCE_DIR}/runtime/build_identity ${CMAKE_BINARY_DIR}/runtime/build_identity)

@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/command/command_registry.h
+FILE: runtime/shell/appcore/command/command_registry.h
 MODULE: Dominium
 PURPOSE: Canonical application command registry (data-only descriptors).
 NOTES: CLI is canonical; GUI binds to this registry.

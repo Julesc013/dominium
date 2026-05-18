@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E90_SILENT_FLOW_SMELL"
 WATCH_PREFIXES = ("src/core/flow/", "game/domains/logistics/", "tools/xstack/sessionx/")
 
-FLOW_ENGINE_PATH = "core/flow/flow_engine.py"
+FLOW_ENGINE_PATH = "tools/core/flow/flow_engine.py"
 LOGISTICS_ENGINE_PATH = "game/domains/logistics/logistics_engine.py"
 
 

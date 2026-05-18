@@ -14,11 +14,11 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
-      "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
-      "data/planning/next_execution_order_post_phib5.json",
+      "content/data/planning/next_execution_order_post_phib5.json",
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json"
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
@@ -44,12 +44,12 @@
       "server/shard/dom_cross_shard_log.h",
       "server/net/dom_server_protocol.h",
       "server/net/dom_server_runtime.h",
-      "data/registries/net_replication_policy_registry.json",
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json",
-      "data/registries/provenance_classification_registry.json",
+      "contracts/registry/net_replication_policy_registry.json",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json",
+      "contracts/registry/provenance_classification_registry.json",
       "release/update_resolver.py",
-      "security/trust/trust_verifier.py",
+      "tools/validators/security/trust/trust_verifier.py",
       "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
       "docs/blueprint/CAPABILITY_LADDER.md",
       "docs/blueprint/MANUAL_REVIEW_GATES.md",
@@ -223,7 +223,7 @@
       ],
       "evidence_refs": [
         "release/update_resolver.py",
-        "data/registries/provenance_classification_registry.json"
+        "contracts/registry/provenance_classification_registry.json"
       ],
       "bounded_entry_suitability": "first_wave_candidate",
       "rationale": "Rollback, downgrade, and staged transition law are already stronger than most remaining live-operation families, so this family is the most honest bounded starting point."
@@ -332,8 +332,8 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/trust_policy_registry.json",
-        "security/trust/trust_verifier.py"
+        "contracts/registry/trust_policy_registry.json",
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "bounded_entry_suitability": "later_wave_candidate",
       "rationale": "Containment is safer than live trust execution, but the family still touches sensitive trust posture and cannot be first-wave while trust convergence remains open."
@@ -367,7 +367,7 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/provenance_classification_registry.json",
+        "contracts/registry/provenance_classification_registry.json",
         "release/update_resolver.py"
       ],
       "bounded_entry_suitability": "later_wave_candidate",
@@ -447,9 +447,9 @@
         "zeta.blocker.live_cutover_receipt_pipeline_realization"
       ],
       "evidence_refs": [
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json",
-        "security/trust/trust_verifier.py",
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
+        "tools/validators/security/trust/trust_verifier.py",
         "release/update_resolver.py"
       ],
       "bounded_entry_suitability": "not_admissible",
@@ -537,9 +537,9 @@
   "canonical_vs_derived_distinctions": {
     "canonical": [
       "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
-      "data/planning/live_operations_prerequisite_matrix.json",
+      "contracts/planning/live_operations_prerequisite_matrix.json",
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "active checkpoint law",
       "upstream runtime and release-control doctrine"
     ],

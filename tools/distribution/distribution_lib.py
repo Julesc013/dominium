@@ -8,7 +8,7 @@ REPO_ROOT_HINT = os.path.abspath(os.path.join(THIS_DIR, os.pardir, os.pardir))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from compat.shims import redirect_legacy_path
+from tools.validators.compatibility.shims import redirect_legacy_path
 from meta_extensions_engine import normalize_extensions_tree
 
 

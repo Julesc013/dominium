@@ -6,7 +6,7 @@ import os
 import shutil
 from typing import Mapping, Sequence
 
-from lib.install.install_validator import default_install_registry_path
+from tools.libraries.install.install_validator import default_install_registry_path
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .reachability_engine import (

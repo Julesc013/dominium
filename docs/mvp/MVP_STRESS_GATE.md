@@ -70,5 +70,5 @@ The gate writes deterministic artifacts to:
 - `build/mvp/mvp_stress_report.json`
 - `build/mvp/mvp_stress_hashes.json`
 - `build/mvp/mvp_stress_proof_report.json`
-- `data/regression/mvp_stress_baseline.json`
+- `tests/fixtures/regression/mvp_stress_baseline.json`
 - `docs/audit/MVP_STRESS_FINAL.md`

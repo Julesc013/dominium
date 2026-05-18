@@ -139,13 +139,13 @@ Before substantive work, agents must consult the relevant authoritative repo art
 - `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`
 - `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`
 - the relevant `Λ` semantic constitution artifacts under `specs/reality/` and `data/reality/`
-- `data/planning/final_prompt_inventory.json`
-- `data/planning/dependency_graph_post_pi.json`
+- `content/data/planning/final_prompt_inventory.json`
+- `content/data/planning/dependency_graph_post_pi.json`
 
 Task-specific additions are mandatory when scope expands:
 
 - schema or compatibility work: `schema/**`, `docs/contracts/**`, compat metadata
-- release or control-plane work: `docs/release/**`, `repo/release_policy.toml`, release and update registries
+- release or control-plane work: `docs/release/**`, `contracts/repo/release_policy.toml`, release and update registries
 - runtime extraction work: relevant runtime roots plus ownership review and bridge law
 - bridge or ownership-sensitive work: `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md` before binding to overlapping roots
 

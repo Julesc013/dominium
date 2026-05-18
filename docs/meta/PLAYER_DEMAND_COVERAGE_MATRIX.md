@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Player Demand Coverage Matrix
 
-Canonical source: `data/meta/player_demand_matrix.json`.
+Canonical source: `contracts/meta/player_demand_matrix.json`.
 
 This matrix keeps planning grounded in player fantasies and is enforced through RepoX/AuditX/TestX checks.
 
@@ -21,8 +21,8 @@ This matrix keeps planning grounded in player fantasies and is enforced through 
 
 ## RWAM + Contract Linkage
 
-- Every demand includes `rwam_affordances` and must resolve to `data/meta/real_world_affordance_matrix.json`.
-- Every demand includes `explain` hooks and must resolve to `data/registries/explain_contract_registry.json` (or explicit `TBD:` with `next_series`).
+- Every demand includes `rwam_affordances` and must resolve to `contracts/meta/real_world_affordance_matrix.json`.
+- Every demand includes `explain` hooks and must resolve to `contracts/registry/explain_contract_registry.json` (or explicit `TBD:` with `next_series`).
 
 ## Survival + Primitive Tech
 

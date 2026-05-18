@@ -6,7 +6,7 @@ import os
 import shutil
 from typing import Dict, Mapping
 
-from lib.instance.instance_validator import (
+from tools.libraries.instance.instance_validator import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,

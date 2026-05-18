@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from performance.cost_engine import normalize_subsystem_cost_usage
+from tools.performance.cost_engine import normalize_subsystem_cost_usage
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

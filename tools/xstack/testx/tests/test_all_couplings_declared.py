@@ -24,7 +24,7 @@ _REQUIRED_CONTRACTS = {
 
 
 def run(repo_root: str):
-    rel_path = "data/registries/coupling_contract_registry.json"
+    rel_path = "contracts/registry/coupling_contract_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))

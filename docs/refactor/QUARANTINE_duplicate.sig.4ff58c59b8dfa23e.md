@@ -22,12 +22,12 @@ Replacement Target: XI-4b manual review resolution
 - `src/embodiment/tools/toolbelt_engine.py`
 - `src/fields/field_engine.py`
 - `src/geo/degradation_policy.py`
-- `src/meta/compute/compute_budget_engine.py`
+- `src/tools/repo/meta/compute/compute_budget_engine.py`
 
 ## Scorecard
 
 - `src/fields/field_engine.py` disposition=`canonical` rank=`1` total_score=`63.75` risk=`HIGH`
-- `src/meta/compute/compute_budget_engine.py` disposition=`quarantine` rank=`2` total_score=`58.99` risk=`HIGH`
+- `src/tools/repo/meta/compute/compute_budget_engine.py` disposition=`quarantine` rank=`2` total_score=`58.99` risk=`HIGH`
 - `src/geo/degradation_policy.py` disposition=`merge` rank=`3` total_score=`52.36` risk=`HIGH`
 - `src/embodiment/tools/toolbelt_engine.py` disposition=`drop` rank=`4` total_score=`51.55` risk=`HIGH`
 - `src/client/ui/viewer_shell.py` disposition=`drop` rank=`5` total_score=`49.46` risk=`HIGH`

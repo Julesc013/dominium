@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.platform_capabilities_mismatch_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/audit/dist_platform_matrix.json",
+                file_path=rel_path or "contracts/audit/dist_platform_matrix.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "descriptor platform capability claims drifted from the canonical probe",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REGENERATE_BUNDLE_AND_REALIGN_PLATFORM_CAPABILITY_CLAIMS",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-DIST-PLATFORM-MATRIX-MUST-EXIST"],
-                related_paths=[rel_path or "data/audit/dist_platform_matrix.json", "tools/dist/dist_platform_matrix_common.py"],
+                related_paths=[rel_path or "contracts/audit/dist_platform_matrix.json", "tools/dist/dist_platform_matrix_common.py"],
             )
         )
     return findings

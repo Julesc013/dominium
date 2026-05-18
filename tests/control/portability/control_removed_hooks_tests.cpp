@@ -10,7 +10,7 @@ Control hooks removal tests (TESTX2).
 #include <string.h>
 
 #ifndef DOMINIUM_CONTROL_REGISTRY_PATH
-#define DOMINIUM_CONTROL_REGISTRY_PATH "data/registries/control_capabilities.registry"
+#define DOMINIUM_CONTROL_REGISTRY_PATH "contracts/registry/control_capabilities.registry"
 #endif
 
 static void print_version_banner(void)

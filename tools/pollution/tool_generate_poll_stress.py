@@ -86,7 +86,7 @@ def _write_json(path: str, payload: Mapping[str, object]) -> None:
 
 
 def _pollutant_ids(repo_root: str) -> List[str]:
-    rel = "data/registries/pollutant_type_registry.json"
+    rel = "contracts/registry/pollutant_type_registry.json"
     payload = _read_json(os.path.join(repo_root, rel.replace("/", os.sep)))
     record = _as_map(payload.get("record"))
     rows = list(record.get("pollutant_types") or [])

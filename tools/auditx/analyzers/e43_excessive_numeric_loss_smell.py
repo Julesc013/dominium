@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E43_EXCESSIVE_NUMERIC_LOSS_SMELL"
-CONTRACT_REGISTRY_PATH = "data/registries/conservation_contract_set_registry.json"
+CONTRACT_REGISTRY_PATH = "contracts/registry/conservation_contract_set_registry.json"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
 
 

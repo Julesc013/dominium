@@ -13,10 +13,10 @@ ANALYZER_ID = "E111_INTENT_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "src/",
     "tools/xstack/sessionx/",
-    "data/registries/intent_dispatch_whitelist.json",
+    "contracts/registry/intent_dispatch_whitelist.json",
 )
 
-WHITELIST_REL = "data/registries/intent_dispatch_whitelist.json"
+WHITELIST_REL = "contracts/registry/intent_dispatch_whitelist.json"
 DEFAULT_PATTERNS = (
     "src/net/**",
     "src/control/**",

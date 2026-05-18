@@ -4,7 +4,7 @@
   "authority_basis": [
     "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
     "docs/planning/AUTHORITY_ORDER.md",
-    "data/planning/snapshot_intake_policy.json"
+    "contracts/planning/snapshot_intake_policy.json"
   ],
   "ordering_rules": [
     "Entries are sorted by path ascending.",
@@ -71,7 +71,7 @@
       "notes": "Observed pack.json, pack.compat.json, pack.capabilities.json, and pack.trust.json families."
     },
     {
-      "path": "repo/canon_state.json",
+      "path": "contracts/repo/canon_state.json",
       "inventory_kind": "canon_state_assertion",
       "status_class": "authoritative",
       "canonicality_assessment": "likely canonical",
@@ -82,7 +82,7 @@
       "notes": "Asserts canon level and evidence sources for repox, testx, determinism, and schema validation."
     },
     {
-      "path": "repo/release_policy.toml",
+      "path": "contracts/repo/release_policy.toml",
       "inventory_kind": "release_policy_rules",
       "status_class": "authoritative",
       "canonicality_assessment": "canonical",

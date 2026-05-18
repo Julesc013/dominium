@@ -25,7 +25,7 @@ def _write_contract(repo_root: str) -> None:
             "artifacts": [
                 {
                     "artifact_id": "artifact.structure.ruleset",
-                    "path": "repo/repox/rulesets/core.json",
+                    "path": "contracts/repo/repox/rulesets/core.json",
                     "artifact_class": "CANONICAL",
                     "canonical_hash_required": True,
                     "used_for_gating": True,

@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REGENERATE_AND_FIX_PRODUCT_BOOT_MATRIX",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-PROD-GATE-0-MUST-PASS-BEFORE-RELEASE"],
-                related_paths=[rel_path or "data/audit/product_boot_matrix.json", "tools/mvp/tool_run_product_boot_matrix.py"],
+                related_paths=[rel_path or "contracts/audit/product_boot_matrix.json", "tools/mvp/tool_run_product_boot_matrix.py"],
             )
         )
     return findings

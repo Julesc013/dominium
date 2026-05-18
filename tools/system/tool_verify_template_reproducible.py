@@ -59,7 +59,7 @@ def _registry_rows(payload: Mapping[str, object], entry_key: str) -> list[dict]:
 
 
 def _combined_template_registry(repo_root: str) -> dict:
-    core = _registry_payload(repo_root, "data/registries/system_template_registry.json", "system_templates")
+    core = _registry_payload(repo_root, "contracts/registry/system_template_registry.json", "system_templates")
     core_rows = _registry_rows(core, "system_templates")
     optional_paths = _sorted_tokens(list(_as_map(_as_map(core.get("record")).get("extensions")).get("optional_pack_paths") or []))
     out_rows = [dict(row) for row in core_rows]
@@ -78,14 +78,14 @@ def verify_template_reproducible(
 ) -> dict:
     template_registry = _combined_template_registry(repo_root)
     interface_registry = _registry_payload(
-        repo_root, "data/registries/interface_signature_template_registry.json", "interface_signature_templates"
+        repo_root, "contracts/registry/interface_signature_template_registry.json", "interface_signature_templates"
     )
     invariant_registry = _registry_payload(
-        repo_root, "data/registries/boundary_invariant_template_registry.json", "boundary_invariant_templates"
+        repo_root, "contracts/registry/boundary_invariant_template_registry.json", "boundary_invariant_templates"
     )
-    macro_registry = _registry_payload(repo_root, "data/registries/macro_model_set_registry.json", "macro_model_sets")
-    tier_registry = _registry_payload(repo_root, "data/registries/tier_contract_registry.json", "tier_contracts")
-    domain_registry = _registry_payload(repo_root, "data/registries/domain_registry.json", "records")
+    macro_registry = _registry_payload(repo_root, "contracts/registry/macro_model_set_registry.json", "macro_model_sets")
+    tier_registry = _registry_payload(repo_root, "contracts/registry/tier_contract_registry.json", "tier_contracts")
+    domain_registry = _registry_payload(repo_root, "contracts/registry/domain_registry.json", "records")
 
     compiled_a = compile_system_template(
         template_id=template_id,

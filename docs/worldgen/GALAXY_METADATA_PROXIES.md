@@ -61,7 +61,7 @@ GAL-0 adds a minimal, deterministic metadata layer for galaxy cells. These field
 
 - Inputs:
   - galaxy cell position in `frame.milky_way.galactic`
-  - `data/registries/galaxy_priors_registry.json`
+  - `contracts/registry/galaxy_priors_registry.json`
 - Rules:
   - use integer arithmetic only
   - clamp all proxy outputs to bounded scalar ranges

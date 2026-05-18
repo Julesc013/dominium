@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/security/trust/trust_verifier.py`
+- `src/tools/validators/security/trust/trust_verifier.py`
 - `tools/xstack/sessionx/process_runtime.py`
 - `tools/xstack/sessionx/script_runner.py`
 
@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/xstack/sessionx/script_runner.py` disposition=`canonical` rank=`1` total_score=`63.21` risk=`HIGH`
 - `tools/xstack/sessionx/process_runtime.py` disposition=`quarantine` rank=`2` total_score=`54.64` risk=`HIGH`
-- `src/security/trust/trust_verifier.py` disposition=`drop` rank=`3` total_score=`47.73` risk=`HIGH`
+- `src/tools/validators/security/trust/trust_verifier.py` disposition=`drop` rank=`3` total_score=`47.73` risk=`HIGH`
 
 ## Usage Sites
 

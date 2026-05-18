@@ -65,10 +65,10 @@ Session composition is explicit and schema-driven:
 
 Relevant registries:
 
-- `data/registries/session_defaults.json`
-- `data/registries/experience_profiles.json`
-- `data/registries/law_profiles.json`
-- `data/registries/parameter_bundles.json`
+- `contracts/registry/session_defaults.json`
+- `contracts/registry/experience_profiles.json`
+- `contracts/registry/law_profiles.json`
+- `contracts/registry/parameter_bundles.json`
 
 ## Universe Identity vs Universe State
 
@@ -90,10 +90,10 @@ Profiles are data-driven:
 
 Key registries:
 
-- `data/registries/experience_profiles.json`
-- `data/registries/law_profiles.json`
-- `data/registries/parameter_bundles.json`
-- `data/registries/bundle_profiles.json`
+- `contracts/registry/experience_profiles.json`
+- `contracts/registry/law_profiles.json`
+- `contracts/registry/parameter_bundles.json`
+- `contracts/registry/bundle_profiles.json`
 
 No runtime mode branching is required when profile bindings are complete.
 
@@ -114,7 +114,7 @@ Canonical stages include `ResolveSession`, `AcquireWorld`, `VerifyWorld`, warmup
 Macro-level compression and refinement are contract-based, not ad-hoc:
 
 - `schema/macro_capsule.schema`
-- `data/registries/solver_registry.json`
+- `contracts/registry/solver_registry.json`
 
 The macro capsule contract records invariants, statistics, provenance, and reconstruction seeds required for deterministic expand/collapse transitions.
 
@@ -126,7 +126,7 @@ Domain declarations are schema-defined:
 
 Solver metadata and guarantees are registry-defined:
 
-- `data/registries/solver_registry.json`
+- `contracts/registry/solver_registry.json`
 
 Runtime selection is constrained by deterministic ordering, guarantees, and refusal codes recorded in solver metadata.
 
@@ -191,7 +191,7 @@ Worldgen contracts and registry:
 - `schema/worldgen/worldgen_plan.schema`
 - `schema/worldgen/world_spec.schema`
 - `schema/worldgen/universe_spec.schema`
-- `data/registries/worldgen_module_registry.json`
+- `contracts/registry/worldgen_module_registry.json`
 
 Current module registry includes active baseline modules (`org.dominium.worldgen.terrain_base`, `org.dominium.worldgen.hydrology`) plus explicit experimental stubs with refusal paths.
 

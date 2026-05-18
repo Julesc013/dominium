@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/appshell/paths/virtual_paths.py`
-- `src/lib/install/install_discovery_engine.py`
+- `src/engine/install/install_discovery_engine.py`
 
 ## Scorecard
 
 - `src/appshell/paths/virtual_paths.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`MED`
-- `src/lib/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`73.09` risk=`HIGH`
+- `src/engine/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`73.09` risk=`HIGH`
 
 ## Usage Sites
 

@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Control Plane Enforcement Baseline (CTRL-9)
 
-Status: BASELINE  
-Version: 1.0.0  
+Status: BASELINE
+Version: 1.0.0
 Date: 2026-03-01
 
 ## Scope

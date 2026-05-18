@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.hardcoded_bundle_set_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/registries/install_profile_registry.json",
+                file_path=rel_path or "contracts/registry/install_profile_registry.json",
                 evidence=[
                     str(item.get("code", "")).strip() or "hardcoded_bundle_set",
                     str(item.get("message", "")).strip() or "bundle composition still depends on implicit full-bundle assumptions",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ROUTE_DIST_ASSEMBLY_THROUGH_INSTALL_PROFILE_RESOLUTION",
                 related_invariants=[_RULE_ID],
-                related_paths=[rel_path or "data/registries/install_profile_registry.json", "tools/release/install_profile_common.py"],
+                related_paths=[rel_path or "contracts/registry/install_profile_registry.json", "tools/release/install_profile_common.py"],
             )
         )
     return findings

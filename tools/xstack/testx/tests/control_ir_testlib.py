@@ -120,7 +120,7 @@ def base_policy_context() -> dict:
 
 
 def autopilot_ir() -> dict:
-    from control import build_autopilot_stub_ir
+    from tools.governance import build_autopilot_stub_ir
 
     return build_autopilot_stub_ir(controller_id="agent.alpha", tick=4)
 

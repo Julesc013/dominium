@@ -27,17 +27,17 @@ REQUIRED_FILES = {
         "geometry_edit_event_hash_chain",
         "stable_across_repeated_runs",
     ),
-    "control/proof/control_proof_bundle.py": (
+    "tools/governance/proof/control_proof_bundle.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",
     ),
-    "net/policies/policy_server_authoritative.py": (
+    "tools/network/policies/policy_server_authoritative.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",
     ),
-    "net/srz/shard_coordinator.py": (
+    "tools/network/srz/shard_coordinator.py": (
         "geometry_edit_policy_registry_hash",
         "geometry_state_hash_chain",
         "geometry_edit_event_hash_chain",

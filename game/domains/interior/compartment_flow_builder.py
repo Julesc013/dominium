@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.flow.flow_engine import normalize_flow_channel
-from core.state.state_machine_engine import StateMachineError, normalize_state_machine
+from tools.core.flow.flow_engine import normalize_flow_channel
+from engine.state.state.state_machine_engine import StateMachineError, normalize_state_machine
 from game.domains.interior.interior_engine import normalize_interior_graph, portal_rows_by_id, volume_rows_by_id
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

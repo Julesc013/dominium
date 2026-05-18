@@ -6,9 +6,9 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from lib.install import merge_protocol_ranges, normalize_install_manifest
-from governance import governance_profile_hash
-from meta.identity import (
+from tools.libraries.install import merge_protocol_ranges, normalize_install_manifest
+from tools.governance import governance_profile_hash
+from tools.validators.identity import (
     UNIVERSAL_IDENTITY_FIELD,
     canonicalize_universal_identity_block,
 )
@@ -27,7 +27,7 @@ from release.component_graph_resolver import (
     deterministic_fingerprint,
     resolve_component_graph,
 )
-from security.trust import ARTIFACT_KIND_RELEASE_INDEX, verify_artifact_trust
+from tools.validators.security.trust import ARTIFACT_KIND_RELEASE_INDEX, verify_artifact_trust
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
 
@@ -487,9 +487,9 @@ def component_managed_paths(component_descriptor: Mapping[str, object] | None) -
                 return [rel_token]
             return ["store/{}".format(rel_token)]
     if component_kind == COMPONENT_KIND_PROFILE and component_id == "profile.bundle.mvp_default":
-        return ["store/profiles/bundles/bundle.mvp_default.json"]
+        return ["store/content/profiles/bundles/bundle.mvp_default.json"]
     if component_kind == COMPONENT_KIND_LOCK and component_id == "lock.pack_lock.mvp_default":
-        return ["store/locks/pack_lock.mvp_default.json"]
+        return ["store/contracts/package/locks/pack_lock.mvp_default.json"]
     if component_kind == COMPONENT_KIND_DOCS:
         rel_token = _norm_rel(extensions.get("doc_rel"))
         if rel_token:

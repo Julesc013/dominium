@@ -11,7 +11,7 @@ RULE_ID = "INV-MVP-CROSS-PLATFORM-MUST-PASS"
 HELPER_REL = "tools/mvp/cross_platform_gate_common.py"
 HASHES_REL = "build/mvp/mvp_cross_platform_hashes.json"
 REPORT_REL = "build/mvp/mvp_cross_platform_matrix.json"
-BASELINE_REL = "data/regression/mvp_cross_platform_baseline.json"
+BASELINE_REL = "tests/fixtures/regression/mvp_cross_platform_baseline.json"
 
 
 def _read_text(path):

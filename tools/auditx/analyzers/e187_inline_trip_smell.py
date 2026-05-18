@@ -52,7 +52,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "game/domains/electricity/protection/protection_engine.py",
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:

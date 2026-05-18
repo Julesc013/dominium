@@ -223,7 +223,7 @@
         "tools/distribution",
         "tools/compatx",
         "tools/securex",
-        "repo/release_policy.toml",
+        "contracts/repo/release_policy.toml",
         "schema/release/build_id.schema",
         "schema/identity/artifact_identity.schema"
       ],
@@ -284,8 +284,8 @@
       "readiness_summary": "Ζ remains heavily gated. The repo has rollback, yanked-release, replay, checkpoint, proof, and transaction precursors, but most live cutover, hot-reload, non-blocking save, trust-rotation, and distributed-authority capabilities are still blocked or dangerous.",
       "major_prerequisite_surfaces": [
         "release/update_resolver.py",
-        "updates/stable.json",
-        "updates/changelog.json",
+        "release/updates/stable.json",
+        "release/updates/changelog.json",
         "server/persistence",
         "process/drift",
         "control/proof",

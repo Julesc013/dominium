@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/discover/appcore_discover.c
+FILE: runtime/shell/appcore/discover/appcore_discover.c
 MODULE: Dominium
 PURPOSE: Appcore discover module implementation (scaffold).
 NOTES: No filesystem probing beyond schema artifacts; deterministic order only.

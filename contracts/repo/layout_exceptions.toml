@@ -261,7 +261,7 @@ created_phase = "CONVERGE-10"
 active = false
 retired_phase = "MOVE-ROUTER-01"
 retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
-notes = "POST-CONVERGE-03 found two tracked bundle.json profiles and live references to bundles/bundle.base.lab/bundle.json. Bundle IDs and dependency/lock semantics were not changed."
+notes = "POST-CONVERGE-03 found two tracked bundle.json profiles and live references to content/bundles/bundle.base.lab/bundle.json. Bundle IDs and dependency/lock semantics were not changed."
 
 [retired_exceptions.compat_root]
 path = "compat"
@@ -429,7 +429,7 @@ created_phase = "CONVERGE-10"
 active = false
 retired_phase = "MOVE-ROUTER-01"
 retired_reason = "All tracked files under this former bad root were moved by the deterministic MOVE-ROUTER-01 route table; import/reference/build repair remains assigned to MOVE-ROUTER-02."
-notes = "POST-CONVERGE-03 left profiles/bundles/bundle.mvp_default.json in place because direct release, XStack, RepoX, and baseline references remain live. Profile IDs and hashes were not changed."
+notes = "POST-CONVERGE-03 left content/profiles/bundles/bundle.mvp_default.json in place because direct release, XStack, RepoX, and baseline references remain live. Profile IDs and hashes were not changed."
 
 [retired_exceptions.repo_root]
 path = "repo"

@@ -13,7 +13,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "contracts/schemas/logic/noise_policy.schema",
-    "data/registries/logic_noise_policy_registry.json",
+    "contracts/registry/logic_noise_policy_registry.json",
     "game/domains/logic/noise/noise_engine.py",
     "game/domains/logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
@@ -83,7 +83,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    registry_rel = "data/registries/logic_noise_policy_registry.json"
+    registry_rel = "contracts/registry/logic_noise_policy_registry.json"
     registry_text = _read_text(repo_root, registry_rel)
     for token in ("noise.none", "noise.quantize_default", "noise.named_rng_optional"):
         if token in registry_text:

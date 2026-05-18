@@ -25,28 +25,28 @@
     "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "data/xstack/xstack_scope_freeze.json",
+    "content/data/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "data/xstack/xstack_inventory_and_classification.json",
+    "content/data/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-    "data/xstack/aide_portable_task_contract.json",
+    "contracts/xstack/aide_portable_task_contract.json",
     "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-    "data/xstack/aide_evidence_and_review_contract.json",
-    "data/xstack/gate_definitions.json",
-    "data/registries/control_policy_registry.json",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/securex_policy_registry.json",
-    "data/registries/access_policy_registry.json",
-    "data/registries/tool_capability_registry.json",
-    "data/registries/role_registry.json",
-    "data/registries/security_roles.json",
-    "data/registries/law_profiles.json",
-    "data/registries/controlx_policy.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/refusal_to_exit_registry.json",
+    "contracts/xstack/aide_evidence_and_review_contract.json",
+    "content/data/xstack/gate_definitions.json",
+    "contracts/registry/control_policy_registry.json",
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/securex_policy_registry.json",
+    "contracts/registry/access_policy_registry.json",
+    "contracts/registry/tool_capability_registry.json",
+    "contracts/registry/role_registry.json",
+    "contracts/registry/security_roles.json",
+    "contracts/registry/law_profiles.json",
+    "contracts/registry/controlx_policy.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/refusal_to_exit_registry.json",
     "tools/xstack/registry_compile/compiler.py",
     "tools/xstack/securex/check.py",
-    "security/trust/trust_verifier.py",
+    "tools/validators/security/trust/trust_verifier.py",
     "appshell/command_registry.py",
     "appshell/commands/command_engine.py",
     "appshell/pack_verifier_adapter.py",
@@ -65,13 +65,13 @@
   },
   "dependencies": {
     "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_scope_freeze_json": "content/data/xstack/xstack_scope_freeze.json",
     "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json",
+    "required_inventory_json": "content/data/xstack/xstack_inventory_and_classification.json",
     "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-    "required_task_contract_json": "data/xstack/aide_portable_task_contract.json",
+    "required_task_contract_json": "contracts/xstack/aide_portable_task_contract.json",
     "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-    "required_evidence_review_json": "data/xstack/aide_evidence_and_review_contract.json"
+    "required_evidence_review_json": "contracts/xstack/aide_evidence_and_review_contract.json"
   },
   "portable_policy_definition": {
     "summary": "Portable policy is a canonical declarative rule surface that states which subject classes may attempt which action, capability, artifact, or operation classes under which condition or gate classes, what decision classes are allowed, what escalation or override posture exists, and what evidence or review links constrain interpretation, without embedding runtime enforcement, product-shell dispatch, storage layout, or repo-local operator workflow.",
@@ -252,9 +252,9 @@
   "repo_grounded_rationale": [
     {
       "surface": [
-        "data/registries/control_policy_registry.json",
-        "data/xstack/gate_definitions.json",
-        "data/registries/controlx_policy.json"
+        "contracts/registry/control_policy_registry.json",
+        "content/data/xstack/gate_definitions.json",
+        "contracts/registry/controlx_policy.json"
       ],
       "supports": [
         "policy_id",
@@ -269,9 +269,9 @@
     },
     {
       "surface": [
-        "data/registries/trust_policy_registry.json",
-        "security/trust/trust_verifier.py",
-        "data/registries/securex_policy_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "tools/validators/security/trust/trust_verifier.py",
+        "contracts/registry/securex_policy_registry.json",
         "tools/xstack/registry_compile/compiler.py",
         "tools/xstack/securex/check.py"
       ],
@@ -286,11 +286,11 @@
     },
     {
       "surface": [
-        "data/registries/access_policy_registry.json",
-        "data/registries/tool_capability_registry.json",
-        "data/registries/role_registry.json",
-        "data/registries/security_roles.json",
-        "data/registries/law_profiles.json",
+        "contracts/registry/access_policy_registry.json",
+        "contracts/registry/tool_capability_registry.json",
+        "contracts/registry/role_registry.json",
+        "contracts/registry/security_roles.json",
+        "contracts/registry/law_profiles.json",
         "client/interaction/affordance_generator.py"
       ],
       "supports": [
@@ -308,8 +308,8 @@
       "surface": [
         "appshell/command_registry.py",
         "appshell/commands/command_engine.py",
-        "data/registries/refusal_code_registry.json",
-        "data/registries/refusal_to_exit_registry.json",
+        "contracts/registry/refusal_code_registry.json",
+        "contracts/registry/refusal_to_exit_registry.json",
         "appshell/pack_verifier_adapter.py"
       ],
       "supports": [

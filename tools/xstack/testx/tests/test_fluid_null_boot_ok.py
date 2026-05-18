@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "fluid", "null_boot"]
 
 
 def run(repo_root: str):
-    policy_rel = "data/registries/fluid_network_policy_registry.json"
+    policy_rel = "contracts/registry/fluid_network_policy_registry.json"
     policy_abs = os.path.join(repo_root, policy_rel.replace("/", os.sep))
     try:
         payload = json.load(open(policy_abs, "r", encoding="utf-8"))

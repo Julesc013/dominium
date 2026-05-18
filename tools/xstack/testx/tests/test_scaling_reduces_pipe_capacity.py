@@ -116,8 +116,8 @@ def run(repo_root: str):
     if not effect_rows:
         return {"status": "fail", "message": "missing effect.pipe_capacity_reduction rows for scaling fixture"}
 
-    effect_type_registry = load_registry_payload(repo_root, "data/registries/effect_type_registry.json")
-    stacking_policy_registry = load_registry_payload(repo_root, "data/registries/stacking_policy_registry.json")
+    effect_type_registry = load_registry_payload(repo_root, "contracts/registry/effect_type_registry.json")
+    stacking_policy_registry = load_registry_payload(repo_root, "contracts/registry/stacking_policy_registry.json")
     graph = _graph_payload()
     tank_rows = [
         {"node_id": "node.tank.source", "stored_mass": 120, "max_mass": 120, "last_update_tick": 0, "extensions": {}},

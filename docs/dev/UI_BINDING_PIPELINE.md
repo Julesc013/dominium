@@ -32,7 +32,7 @@ The phase is executed by:
 
 - UI index: `tools/ui_index/ui_index.json`
 - UI IR documents (canonical entries): `.tlv` files referenced by the index
-- Canonical command registry: `libs/appcore/command/command_registry.c`
+- Canonical command registry: `runtime/shell/appcore/command/command_registry.c`
 
 ## Outputs
 

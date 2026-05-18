@@ -12,8 +12,8 @@ from game.domains.materials.blueprint_engine import (
     build_blueprint_ghost_overlay,
     compile_blueprint_artifacts,
 )
-from performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
-from performance.inspection_cache import (
+from tools.performance.cost_engine import normalize_budget_envelope, reserve_inspection_budget
+from tools.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
     build_inspection_snapshot,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
@@ -204,7 +204,7 @@ def _color_from_seed(seed: object, floor: int = 48) -> dict:
 
 
 def _logistics_graph_rows(runtime: dict, repo_root: str) -> list[dict]:
-    registry = _resolve_registry(runtime, "logistics_graph_registry", repo_root, "data/registries/logistics_graph_registry.json")
+    registry = _resolve_registry(runtime, "logistics_graph_registry", repo_root, "contracts/registry/logistics_graph_registry.json")
     rows = list((dict(registry or {})).get("graphs") or [])
     return sorted(
         [dict(item) for item in rows if isinstance(item, dict)],
@@ -1893,10 +1893,10 @@ def _blueprint_overlay_payload(
 ) -> Dict[str, object]:
     repo_root = str(runtime.get("repo_root", "")).strip()
     blueprint_id = str(target_semantic_id).strip()
-    blueprint_registry = _resolve_registry(runtime, "blueprint_registry", repo_root, "data/registries/blueprint_registry.json")
-    part_class_registry = _resolve_registry(runtime, "part_class_registry", repo_root, "data/registries/part_class_registry.json")
-    connection_type_registry = _resolve_registry(runtime, "connection_type_registry", repo_root, "data/registries/connection_type_registry.json")
-    material_class_registry = _resolve_registry(runtime, "material_class_registry", repo_root, "data/registries/material_class_registry.json")
+    blueprint_registry = _resolve_registry(runtime, "blueprint_registry", repo_root, "contracts/registry/blueprint_registry.json")
+    part_class_registry = _resolve_registry(runtime, "part_class_registry", repo_root, "contracts/registry/part_class_registry.json")
+    connection_type_registry = _resolve_registry(runtime, "connection_type_registry", repo_root, "contracts/registry/connection_type_registry.json")
+    material_class_registry = _resolve_registry(runtime, "material_class_registry", repo_root, "contracts/registry/material_class_registry.json")
     if not blueprint_registry or not part_class_registry or not connection_type_registry:
         return {
             "mode": "macro_summary",

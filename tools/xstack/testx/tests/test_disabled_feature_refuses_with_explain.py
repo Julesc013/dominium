@@ -9,7 +9,7 @@ TEST_TAGS = ["fast", "compat", "cap_neg", "degrade", "embodiment"]
 
 def run(repo_root: str):
     from game.domains.embodiment import build_logic_trace_task
-    from compat import build_degrade_runtime_state
+    from tools.validators.compatibility import build_degrade_runtime_state
     from tools.xstack.testx.tests.emb1_testlib import authority_context
 
     runtime_state = build_degrade_runtime_state(

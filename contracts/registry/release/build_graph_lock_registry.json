@@ -24,8 +24,8 @@
       "engine/CMakeLists.txt",
       "game/CMakeLists.txt",
       "launcher/CMakeLists.txt",
-      "libs/CMakeLists.txt",
-      "libs/build_identity/CMakeLists.txt",
+      "cmake/legacy_libs/CMakeLists.txt",
+      "runtime/build_identity/CMakeLists.txt",
       "server/CMakeLists.txt",
       "setup/CMakeLists.txt",
       "setup/packages/scripts/packaging/CMakeLists.txt",
@@ -51,10 +51,10 @@
       "tools/xstack/ci/profiles/FULL.json"
     ],
     "downstream_release_consumers": [
-      "repo/release_policy.toml",
-      "data/registries/target_matrix_registry.json",
-      "data/registries/component_graph_registry.json",
-      "data/registries/install_profile_registry.json",
+      "contracts/repo/release_policy.toml",
+      "contracts/registry/target_matrix_registry.json",
+      "contracts/registry/component_graph_registry.json",
+      "contracts/registry/install_profile_registry.json",
       "release/component_graph_resolver.py",
       "release/release_manifest_engine.py"
     ]

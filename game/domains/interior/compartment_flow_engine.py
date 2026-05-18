@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.flow.flow_engine import FlowEngineError, flow_solver_policy_rows_by_id, tick_flow_channels
-from core.hazards.hazard_engine import tick_hazard_models
+from tools.core.flow.flow_engine import FlowEngineError, flow_solver_policy_rows_by_id, tick_flow_channels
+from tools.core.hazards.hazard_engine import tick_hazard_models
 from game.domains.interior.compartment_flow_builder import (
     CompartmentFlowBuilderError,
     build_compartment_flow_channels,

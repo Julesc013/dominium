@@ -9,7 +9,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 Touched Paths:
 - schemas/control_proof_bundle.schema.json
-- control/control_plane_engine.py
+- tools/governance/control_plane_engine.py
 - electric/protection/protection_engine.py
 - system/system_expand_engine.py
 - tools/xstack/sessionx/process_runtime.py

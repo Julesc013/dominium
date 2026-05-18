@@ -19,10 +19,10 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/archive/deterministic_bundle.py`
-- `src/governance/governance_profile.py`
-- `src/lib/install/install_discovery_engine.py`
-- `src/lib/store/reachability_engine.py`
-- `src/meta/identity/identity_validator.py`
+- `src/tools/governance/governance_profile.py`
+- `src/engine/install/install_discovery_engine.py`
+- `src/contracts/abi/store/reachability_engine.py`
+- `src/tools/validators/identity/identity_validator.py`
 - `src/release/archive_policy.py`
 - `src/release/release_manifest_engine.py`
 - `src/release/update_resolver.py`
@@ -62,14 +62,14 @@ Replacement Target: XI-4b manual review resolution
 - `tools/perf/performance_envelope_common.py` disposition=`merge` rank=`14` total_score=`76.01` risk=`HIGH`
 - `src/archive/deterministic_bundle.py` disposition=`drop` rank=`15` total_score=`74.94` risk=`HIGH`
 - `tools/engine/concurrency_contract_common.py` disposition=`merge` rank=`16` total_score=`74.32` risk=`HIGH`
-- `src/governance/governance_profile.py` disposition=`drop` rank=`17` total_score=`73.87` risk=`HIGH`
-- `src/lib/install/install_discovery_engine.py` disposition=`merge` rank=`18` total_score=`73.09` risk=`HIGH`
+- `src/tools/governance/governance_profile.py` disposition=`drop` rank=`17` total_score=`73.87` risk=`HIGH`
+- `src/engine/install/install_discovery_engine.py` disposition=`merge` rank=`18` total_score=`73.09` risk=`HIGH`
 - `src/release/archive_policy.py` disposition=`drop` rank=`19` total_score=`72.38` risk=`HIGH`
-- `src/meta/identity/identity_validator.py` disposition=`drop` rank=`20` total_score=`69.64` risk=`HIGH`
+- `src/tools/validators/identity/identity_validator.py` disposition=`drop` rank=`20` total_score=`69.64` risk=`HIGH`
 - `tools/engine/numeric_discipline_common.py` disposition=`merge` rank=`21` total_score=`68.94` risk=`HIGH`
 - `tools/review/architecture_graph_bootstrap_common.py` disposition=`merge` rank=`22` total_score=`67.64` risk=`HIGH`
 - `src/release/release_manifest_engine.py` disposition=`drop` rank=`23` total_score=`62.56` risk=`HIGH`
-- `src/lib/store/reachability_engine.py` disposition=`drop` rank=`24` total_score=`54.29` risk=`HIGH`
+- `src/contracts/abi/store/reachability_engine.py` disposition=`drop` rank=`24` total_score=`54.29` risk=`HIGH`
 - `src/release/update_resolver.py` disposition=`drop` rank=`25` total_score=`54.29` risk=`HIGH`
 
 ## Usage Sites

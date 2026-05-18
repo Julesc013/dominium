@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/compile/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/compile/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/meta/__init__.py`
-- `src/meta/compile/__init__.py`
-- `src/meta/compile/compile_engine.py`
+- `src/tools/repo/meta/__init__.py`
+- `src/tools/repo/meta/compile/__init__.py`
+- `src/tools/repo/meta/compile/compile_engine.py`
 
 ## Scorecard
 
-- `src/meta/compile/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`
-- `src/meta/compile/compile_engine.py` disposition=`quarantine` rank=`2` total_score=`56.07` risk=`HIGH`
-- `src/meta/__init__.py` disposition=`drop` rank=`3` total_score=`53.81` risk=`HIGH`
+- `src/tools/repo/meta/compile/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`
+- `src/tools/repo/meta/compile/compile_engine.py` disposition=`quarantine` rank=`2` total_score=`56.07` risk=`HIGH`
+- `src/tools/repo/meta/__init__.py` disposition=`drop` rank=`3` total_score=`53.81` risk=`HIGH`
 
 ## Usage Sites
 

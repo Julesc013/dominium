@@ -16,7 +16,7 @@ DETERMINISM: Deterministic registry ordering and hashes.
 #include <string.h>
 
 #ifndef DOMINIUM_LAW_TARGETS_REGISTRY_PATH
-#define DOMINIUM_LAW_TARGETS_REGISTRY_PATH "data/registries/law_targets.registry"
+#define DOMINIUM_LAW_TARGETS_REGISTRY_PATH "contracts/registry/law_targets.registry"
 #endif
 
 #define DOMINIUM_LAW_TARGETS_EXPECT_COUNT 49u

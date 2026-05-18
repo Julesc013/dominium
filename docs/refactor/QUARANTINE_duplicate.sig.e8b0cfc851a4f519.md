@@ -22,14 +22,14 @@ Replacement Target: XI-4b manual review resolution
 - `engine/include/domino/pkg.h`
 - `engine/include/domino/sim.h`
 - `engine/modules/core/core_internal.h`
-- `libs/contracts/include/dom_contracts/tool_api.h`
+- `tools/libraries/contracts/include/dom_contracts/tool_api.h`
 
 ## Scorecard
 
 - `engine/include/domino/sim.h` disposition=`canonical` rank=`1` total_score=`90.18` risk=`HIGH`
 - `engine/include/domino/inst.h` disposition=`quarantine` rank=`2` total_score=`85.95` risk=`HIGH`
 - `engine/modules/core/core_internal.h` disposition=`quarantine` rank=`3` total_score=`84.64` risk=`HIGH`
-- `libs/contracts/include/dom_contracts/tool_api.h` disposition=`quarantine` rank=`4` total_score=`80.95` risk=`HIGH`
+- `tools/libraries/contracts/include/dom_contracts/tool_api.h` disposition=`quarantine` rank=`4` total_score=`80.95` risk=`HIGH`
 - `engine/include/domino/pkg.h` disposition=`drop` rank=`5` total_score=`77.26` risk=`HIGH`
 
 ## Usage Sites

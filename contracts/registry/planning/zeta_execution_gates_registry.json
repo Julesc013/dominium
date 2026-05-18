@@ -15,15 +15,15 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md",
-      "data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
+      "content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md",
-      "data/planning/next_execution_order_post_phib5.json"
+      "content/data/planning/next_execution_order_post_phib5.json"
     ],
     "gate_baseline_inputs": [
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
-      "data/planning/live_operations_prerequisite_matrix.json"
+      "contracts/planning/live_operations_prerequisite_matrix.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
@@ -314,11 +314,11 @@
   "canonical_vs_derived_distinctions": {
     "canonical": [
       "docs/planning/ZETA_EXECUTION_GATES.md",
-      "data/planning/zeta_execution_gates_registry.json",
+      "contracts/registry/planning/zeta_execution_gates_registry.json",
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
-      "data/planning/live_operations_prerequisite_matrix.json",
+      "contracts/planning/live_operations_prerequisite_matrix.json",
       "active checkpoint law"
     ],
     "derived": [

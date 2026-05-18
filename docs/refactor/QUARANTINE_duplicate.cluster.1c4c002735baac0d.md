@@ -20,12 +20,12 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/logic/network/logic_network_engine.py`
 - `src/logic/network/logic_network_validator.py`
-- `src/meta/reference/logic_small_reference.py`
+- `src/tools/repo/meta/reference/logic_small_reference.py`
 
 ## Scorecard
 
 - `src/logic/network/logic_network_validator.py` disposition=`canonical` rank=`1` total_score=`59.52` risk=`MED`
-- `src/meta/reference/logic_small_reference.py` disposition=`merge` rank=`2` total_score=`53.55` risk=`MED`
+- `src/tools/repo/meta/reference/logic_small_reference.py` disposition=`merge` rank=`2` total_score=`53.55` risk=`MED`
 - `src/logic/network/logic_network_engine.py` disposition=`quarantine` rank=`3` total_score=`49.76` risk=`HIGH`
 
 ## Usage Sites

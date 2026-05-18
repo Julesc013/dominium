@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: domain constitution run
 Replacement Target: later domain constitution checkpoints may refine field-level drafting practice without replacing this template floor
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `specs/reality/SPEC_CAPABILITY_SURFACES.md`, `specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`, `docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`, `docs/planning/UNIVERSAL_REALITY_FRAMEWORK_RECONCILIATION.md`
 
 # Universal Domain Constitution Template
 

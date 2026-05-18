@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Multiplayer Determinism Envelope
 
-Status: DERIVED BASELINE  
+Status: DERIVED BASELINE
 Last Updated: 2026-02-16
 
 ## Scope

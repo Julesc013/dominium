@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-from governance import governance_profile_hash, load_governance_profile, parse_release_tag
+from tools.governance import governance_profile_hash, load_governance_profile, parse_release_tag
 from release import DEFAULT_RELEASE_INDEX_REL, load_release_index
 from tools.governance.governance_model_common import REPORT_JSON_REL, build_governance_model_report, write_governance_outputs
 

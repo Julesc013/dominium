@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/compat/data_format_loader.py`
+- `src/tools/validators/compatibility/data_format_loader.py`
 - `tools/data/tool_spice_import.py`
 - `tools/data/tool_srtm_import.py`
 - `tools/xstack/packagingx/dist_build.py`
@@ -32,7 +32,7 @@ Replacement Target: XI-4b manual review resolution
 - `worldgen/core/constraint_commands.py` disposition=`quarantine` rank=`3` total_score=`63.71` risk=`HIGH`
 - `tools/xstack/packagingx/dist_build.py` disposition=`quarantine` rank=`4` total_score=`60.82` risk=`HIGH`
 - `tools/xstack/repox/check.py` disposition=`merge` rank=`5` total_score=`56.55` risk=`HIGH`
-- `src/compat/data_format_loader.py` disposition=`merge` rank=`6` total_score=`51.79` risk=`HIGH`
+- `src/tools/validators/compatibility/data_format_loader.py` disposition=`merge` rank=`6` total_score=`51.79` risk=`HIGH`
 
 ## Usage Sites
 

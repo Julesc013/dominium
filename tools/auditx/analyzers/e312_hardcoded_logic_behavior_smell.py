@@ -70,7 +70,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="INVALID",
                             recommended_action="MOVE_TO_REGISTRY",
                             related_invariants=["INV-NO-HARDCODED-GATES"],
-                            related_paths=[rel_path, "packs/core/pack.core.logic_base/data/logic_element_registry.json"],
+                            related_paths=[rel_path, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json"],
                         )
                     )
                     break

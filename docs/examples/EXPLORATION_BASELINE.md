@@ -21,7 +21,7 @@ and works with zero content packs.
 ## Template
 
 - Template ID: `world.template.exploration_baseline`
-- Source: `data/world/templates/exploration_baseline.worlddef.json`
+- Source: `tests/fixtures/world/templates/exploration_baseline.worlddef.json`
 - Structure: Universe → Milky Way → Sol → Earth (data-only, no assets required)
 - Spawn: deterministic per seed on the Earth surface
 

@@ -16,7 +16,7 @@ from tools.review.doc_inventory_common import contradictory_doc_header_issues, l
 
 
 ANALYZER_ID = "E470_CONTRADICTORY_DOC_WITHOUT_HEADER_SMELL"
-WATCH_PREFIXES = ("docs/", "tools/review/", "data/audit/doc_inventory.json")
+WATCH_PREFIXES = ("docs/", "tools/review/", "content/data/audit/doc_inventory.json")
 RULE_ID = "INV-SUPERSEDED-DOCS-MUST-LINK-REPLACEMENT"
 
 
@@ -31,12 +31,12 @@ def run(graph, repo_root, changed_files=None):
                 category="docs.contradictory_doc_without_header_smell",
                 severity="RISK",
                 confidence=0.94,
-                file_path="data/audit/doc_inventory.json",
+                file_path="content/data/audit/doc_inventory.json",
                 evidence=["documentation inventory report is missing or invalid"],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=[RULE_ID],
-                related_paths=["data/audit/doc_inventory.json"],
+                related_paths=["content/data/audit/doc_inventory.json"],
             )
         )
         return findings

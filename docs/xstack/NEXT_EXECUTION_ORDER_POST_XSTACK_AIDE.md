@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: post-baseline AIDE roadmapping and extraction-admission review
 Replacement Target: later post-baseline AIDE roadmap ordering artifact or explicit replacement checkpoint only
-Binding Sources: `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `data/xstack/codex_repo_operating_contract.json`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `data/xstack/xstack_to_aide_extraction_map.json`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`
+Binding Sources: `docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md`, `content/data/xstack/checkpoint_c_xstack_aide_closure.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md`, `content/data/xstack/xstack_to_aide_extraction_map.json`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md`, `docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`
 
 # Next Execution Order Post-XStack/AIDE
 

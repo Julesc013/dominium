@@ -48,7 +48,7 @@
     ],
     "functionally_part_of_live_xstack_control_layer": [
       "scripts/dev/gate.py",
-      "validation/validation_engine.py",
+      "tools/validators/validation/validation_engine.py",
       "tools/validation/tool_run_validation.py",
       "appshell/**",
       "server/server_boot.py",
@@ -75,7 +75,7 @@
       "tools/xstack/run.py is a live XStack entrypoint",
       "tools/xstack/controlx/orchestrator.py coordinates pack, bundle, compile, audit, test, session, and UI checks",
       "tools/xstack/sessionx/** is a live implementation surface for session lifecycle and process/session control",
-      "validation/validation_engine.py imports and maps XStack compatx surfaces directly",
+      "tools/validators/validation/validation_engine.py imports and maps XStack compatx surfaces directly",
       "appshell/**, server/server_boot.py, and client/local_server/local_server_controller.py import tools.xstack helpers",
       "repo search found live tools.xstack references under engine/, game/, client/, and server/",
       "repo search found no current repo-local AIDE implementation root"
@@ -240,7 +240,7 @@
       {
         "paths": [
           "tools/xstack/ci/",
-          "data/xstack/gate_definitions.json",
+          "content/data/xstack/gate_definitions.json",
           "docs/xstack/CI_GUARDRAILS.md",
           "docs/xstack/ARCH_DRIFT_POLICY.md"
         ],
@@ -254,7 +254,7 @@
       },
       {
         "paths": [
-          "validation/validation_engine.py",
+          "tools/validators/validation/validation_engine.py",
           "tools/validation/tool_run_validation.py"
         ],
         "rationale": "Unified validation surface that consumes XStack compatx contracts and emits audit or validation evidence."
@@ -306,9 +306,9 @@
       },
       {
         "paths": [
-          "profiles/bundles/bundle.mvp_default.json",
-          "locks/pack_lock.mvp_default.json",
-          "data/session_templates/session.mvp_default.json"
+          "content/profiles/bundles/bundle.mvp_default.json",
+          "contracts/package/locks/pack_lock.mvp_default.json",
+          "content/data/session_templates/session.mvp_default.json"
         ],
         "rationale": "Live baseline content and config pair plus session template called out by the audit as the near-term playable slice."
       }
@@ -324,7 +324,7 @@
         "paths": [
           "tools/compatx/"
         ],
-        "rationale": "Older compatibility CLI and core; validation/validation_engine.py maps it as a legacy or adapter surface rather than the current XStack canon."
+        "rationale": "Older compatibility CLI and core; tools/validators/validation/validation_engine.py maps it as a legacy or adapter surface rather than the current XStack canon."
       },
       {
         "paths": [
@@ -419,8 +419,8 @@
       },
       {
         "paths": [
-          "net/transport/tcp_stub.py",
-          "net/transport/udp_stub.py"
+          "tools/network/transport/tcp_stub.py",
+          "tools/network/transport/udp_stub.py"
         ],
         "rationale": "Audit evidence says non-loopback multiplayer transport is not part of the near-term playable baseline."
       },
@@ -527,9 +527,9 @@
     },
     {
       "paths": [
-        "profiles/bundles/bundle.mvp_default.json",
-        "locks/pack_lock.mvp_default.json",
-        "data/session_templates/session.mvp_default.json"
+        "content/profiles/bundles/bundle.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json"
       ],
       "why": "These artifacts define the current repo-local playable baseline slice."
     },
@@ -546,7 +546,7 @@
   "ambiguous_or_mixed": [
     {
       "paths": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/validation/tool_run_validation.py"
       ],
       "why": "These are operationally XStack-adjacent and consume XStack contracts, but they are also broader repo validation infrastructure rather than purely XStack-owned."

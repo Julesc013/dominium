@@ -32,8 +32,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    contribution_registry_rel = "data/registries/entropy_contribution_registry.json"
-    effect_registry_rel = "data/registries/entropy_effect_policy_registry.json"
+    contribution_registry_rel = "contracts/registry/entropy_contribution_registry.json"
+    effect_registry_rel = "contracts/registry/entropy_effect_policy_registry.json"
 
     runtime_text = _read_text(repo_root, runtime_rel)
     if not runtime_text:

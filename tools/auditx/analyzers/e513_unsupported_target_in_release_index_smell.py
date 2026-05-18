@@ -36,7 +36,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.unsupported_target_in_release_index_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/audit/arch_matrix_report.json",
+                file_path=rel_path or "contracts/audit/arch_matrix_report.json",
                 evidence=[
                     code or "unsupported_target_in_release_index",
                     str(item.get("message", "")).strip()
@@ -46,7 +46,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="REGENERATE_RELEASE_INDEX_FROM_TARGET_MATRIX",
                 related_invariants=sorted(_RULE_IDS),
                 related_paths=[
-                    rel_path or "data/audit/arch_matrix_report.json",
+                    rel_path or "contracts/audit/arch_matrix_report.json",
                     "tools/release/arch_matrix_common.py",
                     "docs/release/TARGET_MATRIX_v0_0_0_mock.md",
                 ],

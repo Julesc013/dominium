@@ -7,7 +7,7 @@ from typing import Dict, Iterable, List, Mapping, Set
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from game.domains.chemistry.process_run_engine import build_batch_quality_row
-from models.model_engine import (
+from tools.models.model_engine import (
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
     evaluate_model_bindings,

@@ -25,7 +25,7 @@ def _read_json(repo_root: str, rel_path: str) -> dict:
 
 
 def committed_gate_definitions(repo_root: str) -> dict:
-    return _read_json(repo_root, "data/xstack/gate_definitions.json")
+    return _read_json(repo_root, "content/data/xstack/gate_definitions.json")
 
 
 def committed_profile(repo_root: str, profile_id: str) -> dict:

@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "cap.allow_exception_profiles",
         "pack.capabilities.json",
     ),
-    "data/registries/capability_registry.json": (
+    "contracts/registry/capability_registry.json": (
         "cap.overlay_patch",
         "cap.add_templates",
         "cap.add_processes",
@@ -28,7 +28,7 @@ REQUIRED_TOKENS = {
         "cap.add_contracts",
         "cap.allow_exception_profiles",
     ),
-    "modding/mod_policy_engine.py": (
+    "contracts/package/modding/mod_policy_engine.py": (
         "PACK_CAPABILITIES_NAME",
         "infer_required_capabilities(",
         "REFUSAL_MOD_CAPABILITY_DENIED",

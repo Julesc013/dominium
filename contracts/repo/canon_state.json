@@ -7,7 +7,7 @@
     "schema": true
   },
   "evidence": {
-    "process_registry": "data/registries/process_registry.json",
+    "process_registry": "contracts/registry/process_registry.json",
     "schema_alignment": "docs/SCHEMA_CANON_ALIGNMENT.md",
     "testx_contract": "docs/ci/TESTX_GATE_CONTRACT.md"
   },

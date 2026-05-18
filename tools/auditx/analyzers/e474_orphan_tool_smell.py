@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=[rule for rule in RULE_IDS if rule == str(item.get("rule_id", "")).strip()] or list(RULE_IDS),
-                related_paths=[rel_path or "data/registries/command_registry.json"],
+                related_paths=[rel_path or "contracts/registry/command_registry.json"],
             )
         )
     return findings

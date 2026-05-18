@@ -7,7 +7,7 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from game.domains.chemistry.process_run_engine import build_batch_quality_row
-from meta.compile import compiled_model_execute, compiled_model_is_valid, compiled_model_rows_by_id
+from tools.repo.meta.compile import compiled_model_execute, compiled_model_is_valid, compiled_model_rows_by_id
 from game.domains.processes.capsules.capsule_builder import (
     REFUSAL_PROCESS_CAPSULE_INVALID,
     normalize_process_capsule_rows,

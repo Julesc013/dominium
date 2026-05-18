@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: `Φ-B5`, later checkpoint after `Φ-B5`, future `Ζ`
 Replacement Target: later post-`Φ-B5` checkpoint may refine readiness judgments without replacing the checkpoint law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `data/planning/readiness/prompt_status_registry.json`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_root_registry.json`, `data/registries/trust_policy_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_shard_lifecycle.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_runtime.h`, `server/net/dom_server_protocol.h`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB4.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `contracts/registry/planning/readiness/prompt_status_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/trust_policy_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_shard_lifecycle.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_runtime.h`, `server/net/dom_server_protocol.h`
 
 # C-PHIB5_ADMISSION_REVIEW
 
@@ -122,7 +122,7 @@ Rationale:
 - `Φ-B5` can now define distributed authority foundations as an extension of those live roots plus the completed doctrine packet, rather than inventing a speculative distributed model
 - `docs/blueprint/MANUAL_REVIEW_GATES.md` still requires `FULL` review for `distributed_authority_model_changes` and `trust_root_governance_changes`
 - `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` still marks `Distributed shard relocation` as `unrealistic_currently`, which remains correct for `Ζ` live operations even if `Φ-B5` is now ready to define foundations
-- `data/planning/readiness/prompt_status_registry.json` remains conservative and partly stale; it continues to warn about dangerous distributed live ops, but it no longer outranks the active doctrine chain for deciding whether the next doctrine prompt is admissible
+- `contracts/registry/planning/readiness/prompt_status_registry.json` remains conservative and partly stale; it continues to warn about dangerous distributed live ops, but it no longer outranks the active doctrine chain for deciding whether the next doctrine prompt is admissible
 
 The caution is therefore specific:
 
@@ -159,7 +159,7 @@ The current remaining `Ζ` blockers and prerequisites after `Υ-D` are:
 | Blocker | Status | Why It Still Matters |
 | --- | --- | --- |
 | `distributed_authority_handoff_and_quorum_semantics` | `open` | `Φ-B5` has not yet frozen lawful handoff, proof-anchor quorum, or authority convergence semantics. |
-| `deterministic_replication_and_state_partition_transfer_proof` | `open` | `data/registries/net_replication_policy_registry.json` and shard substrate remain precursor surfaces, not proof-backed replication or partition-transfer law. |
+| `deterministic_replication_and_state_partition_transfer_proof` | `open` | `contracts/registry/net_replication_policy_registry.json` and shard substrate remain precursor surfaces, not proof-backed replication or partition-transfer law. |
 | `distributed_replay_and_proof_anchor_continuity` | `open` | Replay, checkpoint, and cross-shard logging substrate exist, but distributed replay verification and proof-anchor continuity across handoff are not yet frozen. |
 | `runtime_cutover_proof_under_lawful_hotswap_boundaries` | `open_with_cautions` | Hotswap boundaries are explicit, but distributed runtime cutover proof remains unproven and must stay subordinate to those boundaries. |
 | `distributed_trust_and_authority_convergence` | `open` | `Υ-D0..Υ-D2` define admission and continuity law, but not the distributed convergence model itself. |
@@ -188,7 +188,7 @@ The current remaining `Ζ` blockers and prerequisites after `Υ-D` are:
 - `server/shard/dom_cross_shard_log.h`
 - `server/net/dom_server_runtime.h`
 - `server/net/dom_server_protocol.h`
-- `data/registries/net_replication_policy_registry.json`
+- `contracts/registry/net_replication_policy_registry.json`
 
 Any later final narrow follow-on work must extend rather than replace:
 

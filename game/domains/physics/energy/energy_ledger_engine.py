@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from meta.numeric import tolerance_abs_for_quantity
+from tools.repo.meta.numeric import tolerance_abs_for_quantity
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

@@ -45,7 +45,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REGENERATE_AND_FIX_CONVERGENCE_GATE",
                 related_invariants=[str(violation.get("rule_id", "")).strip() or "INV-CONVERGENCE-GATE-MUST-PASS-BEFORE-RELEASE"],
-                related_paths=[rel_path or "data/audit/convergence_final.json", "tools/convergence/tool_run_convergence_gate.py"],
+                related_paths=[rel_path or "content/data/audit/convergence_final.json", "tools/convergence/tool_run_convergence_gate.py"],
             )
         )
     return findings

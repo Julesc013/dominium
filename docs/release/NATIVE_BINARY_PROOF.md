@@ -54,7 +54,7 @@ Superseded By: none
 
 CTest remains blocked after build proof:
 
-- `invariant_units_present` is fixed: `unit.mass_energy.stub` is declared in `data/registries/unit_registry.json`, and `unit.schema` path fragments are no longer treated as unit IDs
+- `invariant_units_present` is fixed: `unit.mass_energy.stub` is declared in `contracts/registry/unit_registry.json`, and `unit.schema` path fragments are no longer treated as unit IDs
 - focused tuple `inv_repox_rules` still fails on broad RepoX/canonical-evidence drift
 - canonical `ctest --preset verify -N` currently discovers 0 tests, while the tuple verify build discovers 493 tests
 - canonical `ctest --preset verify --output-on-failure` previously exceeded a 40-minute shell timeout; full CTest was not rerun in POST-CONVERGE-10F because focused RepoX still fails
@@ -90,7 +90,7 @@ POST-CONVERGE-10H does not add product boot proof. It reduces focused RepoX to 1
 - Result: PARTIAL.
 - Focused RepoX actual local state improved from 59 failures / 5 warnings to 51 failures / 5 warnings.
 - The prior 10J-reported 60th failure was `INV-LOCKLIST-FROZEN`, which was absent at 10K start because `origin/main` equaled local HEAD.
-- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `contracts/registry/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
 

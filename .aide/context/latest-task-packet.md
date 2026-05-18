@@ -144,6 +144,21 @@ Next task after commit:
 
 `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
 
+## MOVE-ROUTER-02 CLOSEOUT
+
+Current closeout status: PARTIAL.
+
+- Bad-root tracked files after repair: 0.
+- Path replacements recorded: 33,316.
+- Import replacements recorded: 76.
+- Runtime shim packages created: 3.
+- CMake configure: PASS.
+- Build/TestX: PARTIAL.
+
+Next task:
+
+`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`
+
 ## TOKEN_ESTIMATE
 
 - method: approximate manual estimate

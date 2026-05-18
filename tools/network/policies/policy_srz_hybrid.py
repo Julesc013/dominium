@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from net.srz import (
+from tools.network.srz import (
     advance_hybrid_tick,
     build_client_intent_envelope,
     initialize_hybrid_runtime,

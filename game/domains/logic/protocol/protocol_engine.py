@@ -13,7 +13,7 @@ from game.domains.logic.protocol.rows import (
     normalize_protocol_frame_rows,
 )
 from game.domains.logic.signal import sig_receipt_to_signal_request
-from meta.explain import build_explain_artifact
+from tools.repo.meta.explain import build_explain_artifact
 from game.domains.signals import (
     build_signal_channel,
     normalize_knowledge_receipt_rows,

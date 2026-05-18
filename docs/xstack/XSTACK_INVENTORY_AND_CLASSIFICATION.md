@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-2, X-3, AIDE extraction review
 Replacement Target: later explicit XStack/AIDE inventory checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`
 
 # XStack Inventory And Classification
 
@@ -173,7 +173,7 @@ This ledger also uses a descriptive usage field:
 - Maturity: `implemented_and_used`
 - Extraction: `plausible_future_aide_extraction_candidate`
 - Current Usage Status: `wired_to_entrypoints`
-- Major Dependencies: `validation/validation_engine.py`, `release/*.py`, `security/trust/*.py`, `appshell/**`, `server/server_boot.py`, `client/local_server/local_server_controller.py`
+- Major Dependencies: `tools/validators/validation/validation_engine.py`, `release/*.py`, `security/trust/*.py`, `appshell/**`, `server/server_boot.py`, `client/local_server/local_server_controller.py`
 - Evidence Notes: direct imports appear in AppShell, release, security, server, runtime, and client surfaces; these helpers are the broadest reused XStack-adjacent substrate in the repo.
 - Recommended Treatment: Treat as the strongest portable-contract candidate, but preserve current repo ownership until later extraction review.
 
@@ -186,7 +186,7 @@ This ledger also uses a descriptive usage field:
 - Maturity: `partial_or_incomplete`
 - Extraction: `maybe_extractable_later`
 - Current Usage Status: `active_tool_entrypoint`
-- Major Dependencies: `tools/xstack/controlx/orchestrator.py`, `validation/validation_engine.py`, schema registry data
+- Major Dependencies: `tools/xstack/controlx/orchestrator.py`, `tools/validators/validation/validation_engine.py`, schema registry data
 - Evidence Notes: `run_compatx_check()` is used in ControlX and validation; `versioning.py` still routes migrations to `migration_stub()` with refusal code `refuse.compatx.migration_not_implemented`; README explicitly says migration execution is currently a stub.
 - Recommended Treatment: Reuse the check surface as evidence and keep the low-level primitives stable; defer any portability claim for migration behavior.
 
@@ -323,14 +323,14 @@ This ledger also uses a descriptive usage field:
 ### `xinv.ci_guardrail_surface`
 
 - Name: Xi-7/Xi-8 XStack CI guardrail surface
-- Repo Paths: `tools/xstack/ci/xstack_ci_entrypoint.py`, `tools/xstack/ci/ci_common.py`, `tools/xstack/ci/profiles/*.json`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`, `data/xstack/gate_definitions.json`
+- Repo Paths: `tools/xstack/ci/xstack_ci_entrypoint.py`, `tools/xstack/ci/ci_common.py`, `tools/xstack/ci/profiles/*.json`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`, `content/data/xstack/gate_definitions.json`
 - Purpose: Define CI guardrail entrypoints, rule catalogs, profiles, and support documentation for deterministic repo checks.
 - Role: `ops_concern`
 - Maturity: `implemented_and_used`
 - Extraction: `maybe_extractable_later`
 - Current Usage Status: `wired_to_entrypoints`
 - Major Dependencies: RepoX, AuditX, TestX, docs, CI workflow policy, review helpers
-- Evidence Notes: `xstack_ci_entrypoint.py` is a real runner; `data/xstack/gate_definitions.json` records required rules, profiles, and provisional allowances; docs and tests reference the entrypoint repeatedly.
+- Evidence Notes: `xstack_ci_entrypoint.py` is a real runner; `content/data/xstack/gate_definitions.json` records required rules, profiles, and provisional allowances; docs and tests reference the entrypoint repeatedly.
 - Recommended Treatment: Treat as live operator policy and CI wiring. It is reusable in shape, but still repo-specific in detail.
 
 ### `xinv.pack_registry_compile_pipeline`
@@ -362,7 +362,7 @@ This ledger also uses a descriptive usage field:
 ### `xinv.validation_unified_surface`
 
 - Name: Unified validation engine plus legacy adapters
-- Repo Paths: `validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/validation/validate_all_main.cpp`, `tools/validation/validator_common.*`, `tools/validation/validator_reports.*`, `tools/validation/validators_registry.*`
+- Repo Paths: `tools/validators/validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/validation/validate_all_main.cpp`, `tools/validation/validator_common.*`, `tools/validation/validator_reports.*`, `tools/validation/validators_registry.*`
 - Purpose: Provide a repo-wide validation entrypoint that aggregates XStack compat checks with broader legacy and product validation surfaces.
 - Role: `unclear_or_mixed`
 - Maturity: `implemented_and_used`
@@ -427,7 +427,7 @@ This ledger also uses a descriptive usage field:
 ### `xinv.release_and_trust_consumers`
 
 - Name: Release and offline trust surfaces that consume XStack contract helpers
-- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_capability.py`
+- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/security/trust/license_capability.py`
 - Purpose: Release manifesting, update resolution, archive policy, and trust verification for repo-local release/control-plane flows.
 - Role: `dominium_only`
 - Maturity: `implemented_and_used`
@@ -460,13 +460,13 @@ This ledger also uses a descriptive usage field:
 - Extraction: `defer_until_post_baseline`
 - Current Usage Status: `transitional_bridge`
 - Major Dependencies: `tools/compatx/core/**`, validation inventory, semantic contract helpers
-- Evidence Notes: `validation/validation_engine.py` still maps `tools/compatx/compatx.py` as `legacy.compatx_cli`; docs and audits show `tools/compatx/core/semantic_contract_validator.py` remains actively referenced as a bridge helper.
+- Evidence Notes: `tools/validators/validation/validation_engine.py` still maps `tools/compatx/compatx.py` as `legacy.compatx_cli`; docs and audits show `tools/compatx/core/semantic_contract_validator.py` remains actively referenced as a bridge helper.
 - Recommended Treatment: Keep as a live bridge and fact source until later convergence work explicitly resolves the split with `tools/xstack/compatx/`.
 
 ### `xinv.task_policy_and_catalog_docs`
 
 - Name: Current XStack task/policy fact-base docs
-- Repo Paths: `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`
+- Repo Paths: `docs/agents/XSTACK_TASK_CATALOG.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`
 - Purpose: Provide current governance/task taxonomy and X-0 scope boundaries for later prompts.
 - Role: `unclear_or_mixed`
 - Maturity: `doctrinal_or_planning_only`
@@ -522,7 +522,7 @@ The most reusable live surfaces now are:
   - Why it matters: this is already the strongest deterministic test harness family inside XStack
   - Current classification: `ops_concern`
   - Extraction posture: maybe later, but currently mixed with Dominium-specific test inventory
-- `tools/xstack/ci/**` plus `data/xstack/gate_definitions.json`
+- `tools/xstack/ci/**` plus `content/data/xstack/gate_definitions.json`
   - Why it matters: this is the cleanest current fact source for CI guardrail/profile metadata
   - Current classification: `ops_concern`
   - Extraction posture: maybe later, but still tightly tied to Dominium CI policy
@@ -546,7 +546,7 @@ Current Dominium retention is still strongest in session/runtime, launcher/setup
 
 - `scripts/dev/gate.py`
   - functionally part of the live control layer, but still repo-script bridge rather than standalone XStack platform code
-- `validation/validation_engine.py`
+- `tools/validators/validation/validation_engine.py`
   - active and important, but broader than XStack and explicitly wired to legacy adapters
 - `tools/xstack/testx_all.py`
   - live convenience wrapper over the stronger runner

@@ -73,7 +73,7 @@
     "LIFECYCLE_MANAGER"
   ],
   "required_release_inputs": [
-    "repo/release_policy.toml",
+    "contracts/repo/release_policy.toml",
     "docs/release/SIGNING_POLICY.md",
     "release_and_trust_surfaces"
   ],

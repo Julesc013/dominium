@@ -23,16 +23,16 @@ from tools.review.architecture_graph_bootstrap_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
-MODULE_DEP_GRAPH_REL = "data/architecture/module_dependency_graph.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
+MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
 
-ARCHITECTURE_GRAPH_V1_REL = "data/architecture/architecture_graph.v1.json"
-MODULE_REGISTRY_V1_REL = "data/architecture/module_registry.v1.json"
-MODULE_BOUNDARY_RULES_V1_REL = "data/architecture/module_boundary_rules.v1.json"
-SINGLE_ENGINE_REGISTRY_REL = "data/architecture/single_engine_registry.json"
+ARCHITECTURE_GRAPH_V1_REL = "content/data/architecture/architecture_graph.v1.json"
+MODULE_REGISTRY_V1_REL = "contracts/registry/architecture/module_registry.v1.json"
+MODULE_BOUNDARY_RULES_V1_REL = "content/data/architecture/module_boundary_rules.v1.json"
+SINGLE_ENGINE_REGISTRY_REL = "contracts/registry/architecture/single_engine_registry.json"
 
 ARCHITECTURE_GRAPH_SPEC_V1_REL = "docs/architecture/ARCHITECTURE_GRAPH_SPEC_v1.md"
 MODULE_BOUNDARIES_V1_REL = "docs/architecture/MODULE_BOUNDARIES_v1.md"
@@ -41,19 +41,19 @@ XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
 XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
 XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
 XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
-XI5X2_GATE_MODEL_REL = "data/restructure/xi5x2_xi6_gate_model.json"
+XI5X2_GATE_MODEL_REL = "content/data/restructure/xi5x2_xi6_gate_model.json"
 
 ARCH_GRAPH_UPDATE_TAG_REL = "data/architecture/arch_graph_update_request.json"
 
-VALIDATION_STRICT_REL = "data/audit/validation_report_STRICT.json"
-ARCH_AUDIT2_REL = "data/audit/arch_audit2_report.json"
-WORLDGEN_LOCK_VERIFY_REL = "data/audit/worldgen_lock_verify.json"
-BASELINE_UNIVERSE_VERIFY_REL = "data/audit/baseline_universe_verify.json"
-GAMEPLAY_VERIFY_REL = "data/audit/gameplay_verify.json"
-DISASTER_SUITE_RUN_REL = "data/audit/disaster_suite_run.json"
-ECOSYSTEM_VERIFY_RUN_REL = "data/audit/ecosystem_verify_run.json"
-UPDATE_SIM_RUN_REL = "data/audit/update_sim_run.json"
-TRUST_STRICT_RUN_REL = "data/audit/trust_strict_run.json"
+VALIDATION_STRICT_REL = "content/data/audit/validation_report_STRICT.json"
+ARCH_AUDIT2_REL = "content/data/audit/arch_audit2_report.json"
+WORLDGEN_LOCK_VERIFY_REL = "content/data/audit/worldgen_lock_verify.json"
+BASELINE_UNIVERSE_VERIFY_REL = "tests/fixtures/audit/baseline_universe_verify.json"
+GAMEPLAY_VERIFY_REL = "content/data/audit/gameplay_verify.json"
+DISASTER_SUITE_RUN_REL = "content/data/audit/disaster_suite_run.json"
+ECOSYSTEM_VERIFY_RUN_REL = "content/data/audit/ecosystem_verify_run.json"
+UPDATE_SIM_RUN_REL = "content/data/audit/update_sim_run.json"
+TRUST_STRICT_RUN_REL = "content/data/audit/trust_strict_run.json"
 
 XI6_TARGETED_TESTS = (
     "test_arch_graph_v1_hash_stable",
@@ -103,7 +103,7 @@ ENGINE_SPECS = (
         "semantic_area": "CAP-NEG",
         "canonical_module_id": "compat",
         "canonical_entrypoint_symbols": ("negotiate_endpoint_descriptors", "verify_negotiation_record"),
-        "canonical_file_paths": ("compat/capability_negotiation.py",),
+        "canonical_file_paths": ("tools/validators/compatibility/capability_negotiation.py",),
         "allowed_definition_modules": ("compat",),
         "description": "Compatibility negotiation must stay inside the canonical compatibility negotiation engine.",
     },
@@ -139,7 +139,7 @@ ENGINE_SPECS = (
         "semantic_area": "TRUST",
         "canonical_module_id": "security.trust",
         "canonical_entrypoint_symbols": ("verify_artifact_trust",),
-        "canonical_file_paths": ("security/trust/trust_verifier.py",),
+        "canonical_file_paths": ("tools/validators/security/trust/trust_verifier.py",),
         "allowed_definition_modules": ("security.trust",),
         "description": "Artifact trust verification must stay inside the canonical trust verifier.",
     },
@@ -148,7 +148,7 @@ ENGINE_SPECS = (
         "semantic_area": "PACK-COMPAT",
         "canonical_module_id": "packs.compat",
         "canonical_entrypoint_symbols": ("validate_pack_compat_manifest",),
-        "canonical_file_paths": ("packs/compat/pack_compat_validator.py",),
+        "canonical_file_paths": ("content/packs/compatibility_payload/pack_compat_validator.py",),
         "allowed_definition_modules": ("packs.compat",),
         "description": "Pack compatibility verification must stay inside the canonical pack compatibility validator.",
     },
@@ -963,7 +963,7 @@ def _render_module_boundaries_doc(boundary_rules: Mapping[str, object]) -> str:
         "",
         "# Module Boundaries v1",
         "",
-        "The canonical per-module rule matrix lives in `data/architecture/module_boundary_rules.v1.json`.",
+        "The canonical per-module rule matrix lives in `content/data/architecture/module_boundary_rules.v1.json`.",
         "",
         "## Constitutional Alignment",
         "",

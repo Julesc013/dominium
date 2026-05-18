@@ -30,8 +30,8 @@ def run(repo_root: str):
                 {
                     "approved_for_xi5": [
                         {
-                            "source_path": "compat/capability_negotiation.py",
-                            "target_path": "compat/capability_negotiation.py",
+                            "source_path": "tools/validators/compatibility/capability_negotiation.py",
+                            "target_path": "tools/validators/compatibility/capability_negotiation.py",
                         }
                     ]
                 },

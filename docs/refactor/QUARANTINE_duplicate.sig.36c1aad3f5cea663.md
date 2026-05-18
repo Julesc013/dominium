@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/governance/__init__.py`
-- `src/governance/governance_profile.py`
+- `src/tools/governance/governance_profile.py`
 
 ## Scorecard
 
 - `src/governance/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`
-- `src/governance/governance_profile.py` disposition=`quarantine` rank=`2` total_score=`59.58` risk=`HIGH`
+- `src/tools/governance/governance_profile.py` disposition=`quarantine` rank=`2` total_score=`59.58` risk=`HIGH`
 
 ## Usage Sites
 

@@ -18,13 +18,13 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat import build_product_descriptor, negotiate_product_endpoints, verify_recorded_negotiation  # noqa: E402
-from lib.artifact import validate_artifact_manifest  # noqa: E402
-from lib.instance import validate_instance_manifest  # noqa: E402
-from lib.install import default_install_registry_path, verify_install_registry, validate_install_manifest  # noqa: E402
-from lib.save import validate_save_manifest  # noqa: E402
-from meta.identity import validate_identity_repo  # noqa: E402
-from meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from tools.validators.compatibility import build_product_descriptor, negotiate_product_endpoints, verify_recorded_negotiation  # noqa: E402
+from tools.libraries.artifact import validate_artifact_manifest  # noqa: E402
+from tools.libraries.instance import validate_instance_manifest  # noqa: E402
+from tools.libraries.install import default_install_registry_path, verify_install_registry, validate_install_manifest  # noqa: E402
+from tools.libraries.save import validate_save_manifest  # noqa: E402
+from tools.validators.identity import validate_identity_repo  # noqa: E402
+from tools.validators.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.audit.arch_audit_common import run_arch_audit, scan_determinism  # noqa: E402
 from tools.compatx.core.semantic_contract_validator import (  # noqa: E402
     build_default_universe_contract_bundle,
@@ -84,7 +84,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.determinism",
         "adapter_mode": "coverage_adapter",
         "status": "deprecated",
-        "replacement_target": "validation/validation_engine.py::validate.determinism",
+        "replacement_target": "tools/validators/validation/validation_engine.py::validate.determinism",
     },
     {
         "surface_id": "legacy.validation_registry_cpp",
@@ -96,7 +96,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.determinism",
         "adapter_mode": "coverage_adapter",
         "status": "deprecated",
-        "replacement_target": "data/registries/validation_suite_registry.json",
+        "replacement_target": "contracts/registry/validation_suite_registry.json",
     },
     {
         "surface_id": "legacy.hygiene_validate_cli",
@@ -168,7 +168,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.contracts",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.compatx_check",
@@ -180,7 +180,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.schemas",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.domain_validate",
@@ -192,7 +192,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.registries",
         "adapter_mode": "coverage_adapter",
         "status": "deprecated",
-        "replacement_target": "meta/stability/stability_validator.py",
+        "replacement_target": "tools/validators/stability/stability_validator.py",
     },
     {
         "surface_id": "legacy.fab_validate",
@@ -204,7 +204,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.registries",
         "adapter_mode": "coverage_adapter",
         "status": "deprecated",
-        "replacement_target": "meta/stability/stability_validator.py",
+        "replacement_target": "tools/validators/stability/stability_validator.py",
     },
     {
         "surface_id": "legacy.worldgen_validation_checker",
@@ -232,7 +232,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
     },
     {
         "surface_id": "legacy.stability_validator",
-        "path": "meta/stability/stability_validator.py",
+        "path": "tools/validators/stability/stability_validator.py",
         "purpose": "META-STABILITY registry and pack.compat validation surface.",
         "inputs": ["registry JSON", "pack.compat manifests"],
         "outputs": ["structured validation report"],
@@ -240,11 +240,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.registries",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.pack_verification_pipeline",
-        "path": "packs/compat/pack_verification_pipeline.py",
+        "path": "content/packs/compatibility_payload/pack_verification_pipeline.py",
         "purpose": "PACK-COMPAT verification and pack lock generation surface.",
         "inputs": ["dist root", "bundle selection", "contract bundle"],
         "outputs": ["pack compatibility report", "pack lock"],
@@ -252,11 +252,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.packs",
         "adapter_mode": "coverage_adapter",
         "status": "deprecated",
-        "replacement_target": "validation/validation_engine.py::validate.packs_release_lock",
+        "replacement_target": "tools/validators/validation/validation_engine.py::validate.packs_release_lock",
     },
     {
         "surface_id": "legacy.capability_negotiation",
-        "path": "compat/capability_negotiation.py",
+        "path": "tools/validators/compatibility/capability_negotiation.py",
         "purpose": "Capability negotiation and record verification engine.",
         "inputs": ["endpoint descriptors", "contract bundle hash"],
         "outputs": ["negotiation record", "verification result"],
@@ -264,7 +264,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.negotiation",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.time_verify",
@@ -276,7 +276,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.time_anchor",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.time_compaction_check",
@@ -288,7 +288,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.time_anchor",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.arch_audit",
@@ -300,11 +300,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.arch_audit",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.install_validator",
-        "path": "lib/install/install_validator.py",
+        "path": "tools/libraries/install/install_validator.py",
         "purpose": "Install manifest and install registry validator.",
         "inputs": ["install.manifest.json", "install registry"],
         "outputs": ["structured validation report"],
@@ -312,11 +312,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.library",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.instance_validator",
-        "path": "lib/instance/instance_validator.py",
+        "path": "tools/libraries/instance/instance_validator.py",
         "purpose": "Instance manifest validator.",
         "inputs": ["instance.manifest.json"],
         "outputs": ["structured validation report"],
@@ -324,11 +324,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.library",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.save_validator",
-        "path": "lib/save/save_validator.py",
+        "path": "tools/libraries/save/save_validator.py",
         "purpose": "Save manifest validator.",
         "inputs": ["save.manifest.json", "contract bundle", "pack lock"],
         "outputs": ["structured validation report"],
@@ -336,11 +336,11 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.library",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
     {
         "surface_id": "legacy.artifact_validator",
-        "path": "lib/artifact/artifact_validator.py",
+        "path": "tools/libraries/artifact/artifact_validator.py",
         "purpose": "Artifact manifest validator.",
         "inputs": ["artifact.manifest.json"],
         "outputs": ["structured validation report"],
@@ -348,7 +348,7 @@ LEGACY_VALIDATION_SURFACE_SPECS: tuple[dict, ...] = (
         "mapped_suite_id": "validate.library",
         "adapter_mode": "direct_python",
         "status": "active_adapter",
-        "replacement_target": "validation/validation_engine.py",
+        "replacement_target": "tools/validators/validation/validation_engine.py",
     },
 )
 
@@ -844,7 +844,7 @@ def _adapt_contract_suite(repo_root: str, suite_row: Mapping[str, object], profi
         errors.append(
             _finding_row(
                 code="refusal.validation.contract_registry_load",
-                path="data/registries/semantic_contract_registry.json",
+                path="contracts/registry/semantic_contract_registry.json",
                 message=load_error,
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -854,7 +854,7 @@ def _adapt_contract_suite(repo_root: str, suite_row: Mapping[str, object], profi
         errors.append(
             _finding_row(
                 code=token,
-                path="data/registries/semantic_contract_registry.json",
+                path="contracts/registry/semantic_contract_registry.json",
                 message="semantic contract registry validation failed",
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -876,7 +876,7 @@ def _adapt_contract_suite(repo_root: str, suite_row: Mapping[str, object], profi
         suite_order=int(suite_row.get("suite_order", 0) or 0),
         adapter_id=_token(suite_row.get("adapter_id")),
         description=_token(suite_row.get("description")),
-        checked_paths=["data/registries/semantic_contract_registry.json", "schemas/universe_contract_bundle.schema.json"],
+        checked_paths=["contracts/registry/semantic_contract_registry.json", "schemas/universe_contract_bundle.schema.json"],
         result="complete" if not errors else "refused",
         message="contract validation {} (errors={})".format("passed" if not errors else "found_errors", len(errors)),
         errors=errors,
@@ -1045,7 +1045,7 @@ def _adapt_negotiation_suite(repo_root: str, suite_row: Mapping[str, object], pr
         errors.append(
             _finding_row(
                 code=_token(refusal.get("reason_code")) or "refusal.validation.negotiation",
-                path="data/registries/product_registry.json",
+                path="contracts/registry/product_registry.json",
                 message=_token(refusal.get("message")) or "negotiation refused",
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -1061,7 +1061,7 @@ def _adapt_negotiation_suite(repo_root: str, suite_row: Mapping[str, object], pr
         errors.append(
             _finding_row(
                 code=_token(verification.get("reason_code")) or "refusal.validation.negotiation_record",
-                path="data/registries/product_registry.json",
+                path="contracts/registry/product_registry.json",
                 message=_token(verification.get("message")) or "negotiation record verification failed",
                 suite_id=_token(suite_row.get("suite_id")),
             )
@@ -1073,7 +1073,7 @@ def _adapt_negotiation_suite(repo_root: str, suite_row: Mapping[str, object], pr
         suite_order=int(suite_row.get("suite_order", 0) or 0),
         adapter_id=_token(suite_row.get("adapter_id")),
         description=_token(suite_row.get("description")),
-        checked_paths=["data/registries/product_registry.json", "data/registries/compat_mode_registry.json"],
+        checked_paths=["contracts/registry/product_registry.json", "contracts/registry/compat_mode_registry.json"],
         result="complete" if not errors else "refused",
         message="negotiation validation {} (mode={})".format(
             "passed" if not errors else "found_errors",
@@ -1098,7 +1098,7 @@ def _adapt_library_suite(repo_root: str, suite_row: Mapping[str, object], profil
     warnings: list[dict] = []
     checked_paths: list[str] = []
 
-    install_registry_rel = "data/registries/install_registry.json"
+    install_registry_rel = "contracts/registry/install_registry.json"
     install_registry_path = default_install_registry_path(repo_root)
     registry_report = verify_install_registry(repo_root=repo_root, registry_path=install_registry_path)
     checked_paths.append(install_registry_rel)
@@ -1173,7 +1173,7 @@ def _adapt_library_suite(repo_root: str, suite_row: Mapping[str, object], profil
         warnings.append(
             _finding_row(
                 code="warn.validation.library_no_manifests",
-                path="data/registries/install_registry.json",
+                path="contracts/registry/install_registry.json",
                 message="no install/instance/save/artifact manifests were present beyond the install registry baseline",
                 suite_id=_token(suite_row.get("suite_id")),
                 severity="warn",
@@ -1239,7 +1239,7 @@ def _adapt_time_anchor_suite(repo_root: str, suite_row: Mapping[str, object], pr
         suite_order=int(suite_row.get("suite_order", 0) or 0),
         adapter_id=_token(suite_row.get("adapter_id")),
         description=_token(suite_row.get("description")),
-        checked_paths=["src/time", "meta/provenance/compaction_engine.py"],
+        checked_paths=["src/time", "tools/repo/meta/provenance/compaction_engine.py"],
         result="complete" if not errors else "refused",
         message="time anchor validation {} (errors={})".format("passed" if not errors else "found_errors", len(errors)),
         errors=errors,
@@ -1282,7 +1282,7 @@ def _adapt_arch_audit_suite(repo_root: str, suite_row: Mapping[str, object], pro
         suite_order=int(suite_row.get("suite_order", 0) or 0),
         adapter_id=_token(suite_row.get("adapter_id")),
         description=_token(suite_row.get("description")),
-        checked_paths=["docs/audit/ARCH_AUDIT_REPORT.md", "data/audit/arch_audit_report.json"],
+        checked_paths=["docs/audit/ARCH_AUDIT_REPORT.md", "content/data/audit/arch_audit_report.json"],
         result="complete" if not errors else "refused",
         message="arch audit {} (blocking={}, known={})".format(
             "passed" if not errors else "found_errors",

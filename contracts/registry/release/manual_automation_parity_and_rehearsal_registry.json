@@ -207,7 +207,7 @@
   "canonical_vs_derived_distinctions": {
     "canonical_surfaces": [
       "docs/release/MANUAL_AUTOMATION_PARITY_AND_REHEARSAL.md",
-      "data/release/manual_automation_parity_and_rehearsal_registry.json",
+      "contracts/registry/release/manual_automation_parity_and_rehearsal_registry.json",
       "upstream safety, runtime, release, and checkpoint doctrine",
       "typed operator and release-control records where later doctrine explicitly defines them"
     ],
@@ -249,8 +249,8 @@
     "docs/blueprint/FOUNDATION_PHASES.md",
     "docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md",
     "release/update_resolver.py",
-    "repo/release_policy.toml",
-    "updates/README.md"
+    "contracts/repo/release_policy.toml",
+    "docs/release/updates/README.md"
   ],
   "ambiguities_eliminated": [
     "automation exists does not mean parity achieved",

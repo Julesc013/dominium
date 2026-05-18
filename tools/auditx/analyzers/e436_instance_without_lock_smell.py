@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "profile_bundle_hash",
         "save_refs",
     ),
-    "lib/instance/instance_validator.py": (
+    "tools/libraries/instance/instance_validator.py": (
         "REFUSAL_INSTANCE_MISSING_LOCK",
         "REFUSAL_INSTANCE_MISSING_PROFILE_BUNDLE",
         "pack_lock_hash",

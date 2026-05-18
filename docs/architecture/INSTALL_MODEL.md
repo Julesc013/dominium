@@ -58,7 +58,7 @@ Descriptor sidecars may live adjacent to binaries under `bin/`.
 
 ## Registry Coexistence
 
-- Host registration is tracked in `data/registries/install_registry.json`.
+- Host registration is tracked in `contracts/registry/install_registry.json`.
 - Registry order is deterministic by `install_id`.
 - Registry membership is operational metadata only and does not change install identity.
 

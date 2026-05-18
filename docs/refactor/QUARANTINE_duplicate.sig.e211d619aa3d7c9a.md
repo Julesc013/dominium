@@ -32,7 +32,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/platform/platform_gfx.py`
 - `src/platform/platform_input.py`
 - `src/platform/platform_input_routing.py`
-- `src/validation/validation_engine.py`
+- `src/tools/validators/validation/validation_engine.py`
 - `src/worldgen/earth/sky/sky_view_engine.py`
 - `tools/earth/earth9_stress_common.py`
 
@@ -54,7 +54,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/astro/views/orbit_view_engine.py` disposition=`drop` rank=`14` total_score=`56.07` risk=`HIGH`
 - `src/geo/projection/view_adapters.py` disposition=`drop` rank=`15` total_score=`55.21` risk=`HIGH`
 - `src/worldgen/earth/sky/sky_view_engine.py` disposition=`drop` rank=`16` total_score=`53.75` risk=`HIGH`
-- `src/validation/validation_engine.py` disposition=`merge` rank=`17` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/validation/validation_engine.py` disposition=`merge` rank=`17` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 

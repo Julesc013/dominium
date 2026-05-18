@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: Codex repo operating contract, AIDE extraction review
 Replacement Target: later explicit portable adapter-contract checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `data/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `data/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `data/xstack/aide_capability_profile_shape.json`, `compat/data_format_loader.py`, `compat/handshake/handshake_engine.py`, `compat/shims/tool_shims.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `appshell/ipc/ipc_transport.py`, `appshell/ipc/ipc_client.py`, `tools/tool_surface_adapter.py`, `tools/setup/setup_cli.py`, `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, `client/render/render_model_adapter.py`, `geo/projection/view_adapters.py`, `validation/validation_engine.py`, `schemas/tool_adapter_output.schema.json`, `templates/adapter_template.md`, `data/reality/cross_domain_bridge_registry.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py`, `tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py`, `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py`, `tools/xstack/testx/tests/test_tool_incompatibility_refusal.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `tools/validators/compatibility/data_format_loader.py`, `tools/validators/compatibility/handshake/handshake_engine.py`, `tools/validators/compatibility/shims/tool_shims.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `appshell/ipc/ipc_transport.py`, `appshell/ipc/ipc_client.py`, `tools/tool_surface_adapter.py`, `tools/setup/setup_cli.py`, `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, `client/render/render_model_adapter.py`, `geo/projection/view_adapters.py`, `tools/validators/validation/validation_engine.py`, `schemas/tool_adapter_output.schema.json`, `docs/development/templates/adapter_template.md`, `contracts/registry/reality/cross_domain_bridge_registry.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py`, `tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py`, `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py`, `tools/xstack/testx/tests/test_tool_incompatibility_refusal.py`
 
 # AIDE Adapter Contract
 
@@ -84,14 +84,14 @@ It defines what the adapter means, not how a runtime chooses or executes it.
 ### Adapter Implementation
 
 An adapter implementation is the concrete code that realizes an adapter contract.
-Examples in the live repo include `compat/data_format_loader.py`, `appshell/pack_verifier_adapter.py`, `client/render/render_model_adapter.py`, and `geo/projection/view_adapters.py`.
+Examples in the live repo include `tools/validators/compatibility/data_format_loader.py`, `appshell/pack_verifier_adapter.py`, `client/render/render_model_adapter.py`, and `geo/projection/view_adapters.py`.
 Those implementations are evidence for the contract shape, but their existence does not by itself prove present extraction readiness.
 
 ### Wrapper, Shim, and Transitional Surface
 
 A wrapper may invoke or package deeper logic without being the canonical translation contract.
 `appshell/compat_adapter.py` is a thin wrapper over product descriptor surfaces, and `tools/tool_surface_adapter.py` emits stable wrapper rows around governed subprocess tools.
-`compat/shims/tool_shims.py` is explicitly a deprecation shim surface.
+`tools/validators/compatibility/shims/tool_shims.py` is explicitly a deprecation shim surface.
 These are real and useful surfaces, but wrapper or shim status must remain explicit instead of being promoted into portable adapter truth by naming convenience.
 
 ### Product-Shell Command Surface
@@ -103,7 +103,7 @@ That is a shell-facing bridge, not portable adapter law.
 ### Runtime Service Boundary
 
 Some live surfaces are adapter-shaped but belong to runtime service ownership, not portable adapter truth.
-`appshell/ipc/ipc_client.py`, `appshell/ipc/ipc_transport.py`, and `compat/handshake/handshake_engine.py` show negotiated attach, frame, and refusal behavior across local IPC boundaries.
+`appshell/ipc/ipc_client.py`, `appshell/ipc/ipc_transport.py`, and `tools/validators/compatibility/handshake/handshake_engine.py` show negotiated attach, frame, and refusal behavior across local IPC boundaries.
 Those files prove useful contract fields such as compatibility mode and refusal posture, but the service boundary itself remains Dominium-retained.
 
 ### Portable Adapters Now Versus Dominium-Retained Adapters
@@ -207,7 +207,7 @@ A wrapper may embody an adapter path, but wrapper identity is not enough to defi
 ### Adapter Versus Shim
 
 A shim preserves a legacy entrypoint or compatibility alias while steering callers elsewhere.
-`compat/shims/tool_shims.py` is explicit about deterministic deprecation notices and replacement targets.
+`tools/validators/compatibility/shims/tool_shims.py` is explicit about deterministic deprecation notices and replacement targets.
 That is transitional compatibility posture, not portable adapter truth.
 
 ### Adapter Versus Runtime Resolver
@@ -313,7 +313,7 @@ Deferred runtime work:
 
 The portable minimum frozen here is grounded in live repo evidence rather than future platform ambition.
 
-- `compat/data_format_loader.py` is a real contract-to-contract mediator.
+- `tools/validators/compatibility/data_format_loader.py` is a real contract-to-contract mediator.
   It loads artifacts, applies migration rules, validates output, and emits explicit refusal classes such as missing migration, contract mismatch, and read-only unavailability.
   That directly supports freezing source and target contract identity, compatibility, and refusal semantics.
 
@@ -327,10 +327,10 @@ The portable minimum frozen here is grounded in live repo evidence rather than f
 - `tools/tool_surface_adapter.py`, `schemas/tool_adapter_output.schema.json`, `tools/xstack/testx/tests/test_tool_adapter_offline.py`, and `tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py` prove that the repo already uses stable adapter-shaped rows and adapter output payloads.
   They also show why those rows are still local wrappers: they are offline-only, subprocess-bound, command-engine mediated, and virtual-path constrained.
 
-- `compat/shims/tool_shims.py` and `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py` prove that the repo distinguishes shims from real adapters.
+- `tools/validators/compatibility/shims/tool_shims.py` and `tools/xstack/testx/tests/test_shims_emit_deterministic_warnings.py` prove that the repo distinguishes shims from real adapters.
   Shims carry deprecation identity, replacement targets, and warnings; they should not be silently promoted into portable adapter truth.
 
-- `appshell/ipc/ipc_client.py`, `appshell/ipc/ipc_transport.py`, `compat/handshake/handshake_engine.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, and `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py` show negotiated runtime boundaries with explicit refusal when attach is attempted without negotiation.
+- `appshell/ipc/ipc_client.py`, `appshell/ipc/ipc_transport.py`, `tools/validators/compatibility/handshake/handshake_engine.py`, `tools/xstack/testx/tests/test_attach_requires_negotiation.py`, and `tools/xstack/testx/tests/test_unnegotiated_attach_refused.py` show negotiated runtime boundaries with explicit refusal when attach is attempted without negotiation.
   They justify portable blocked, incompatible, and refused classes while also proving that runtime transport ownership stays in Dominium.
 
 - `tools/xstack/testx/tests/test_tool_incompatibility_refusal.py` proves the repo already surfaces deterministic incompatibility reason codes such as `refusal.tool.incompatible`.
@@ -342,13 +342,13 @@ The portable minimum frozen here is grounded in live repo evidence rather than f
 - `tools/setup/setup_cli.py` uses `bridge_engine_payload` to re-express engine outputs as shell-facing results.
   That is evidence for adapter-shaped bridging behavior, but it is a product-shell bridge, not portable adapter law.
 
-- `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, and `data/reality/cross_domain_bridge_registry.json` prove that bridges are broader than portable adapters.
+- `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, and `contracts/registry/reality/cross_domain_bridge_registry.json` prove that bridges are broader than portable adapters.
   The bridge registry explicitly warns that a bridge is not equivalent to a runtime service boundary or shared code path, which reinforces the need for a narrow adapter contract.
 
-- `validation/validation_engine.py` inventories live validation surfaces by `adapter_mode`, `active_adapter`, and `coverage_adapter`.
+- `tools/validators/validation/validation_engine.py` inventories live validation surfaces by `adapter_mode`, `active_adapter`, and `coverage_adapter`.
   That proves the repo already distinguishes active adapters from deprecated or coverage-only ones, which is why X-6 freezes shape and boundary law rather than treating all adapter-labeled surfaces as portable or complete.
 
-- `templates/adapter_template.md` proves the repo already has a documented notion of adapter identity, legacy mapping, refusal behavior, determinism notes, and removal planning.
+- `docs/development/templates/adapter_template.md` proves the repo already has a documented notion of adapter identity, legacy mapping, refusal behavior, determinism notes, and removal planning.
   X-6 carries forward the portable minimum from that evidence without inheriting the template's transitional repo-local assumptions wholesale.
 
 ## G. What Is Portable Now vs Not Portable Now
@@ -379,8 +379,8 @@ The following remain Dominium-owned and must not be treated as portable adapter 
 - setup bridge payload translation in `tools/setup/setup_cli.py`
 - import alias bridges in `tools/import_bridge.py`
 - ControlX remediation bridges in `tools/controlx/core/remediation_bridge.py`
-- validation adapter inventories and coverage adapters in `validation/validation_engine.py`
-- deprecation shims in `compat/shims/tool_shims.py`
+- validation adapter inventories and coverage adapters in `tools/validators/validation/validation_engine.py`
+- deprecation shims in `tools/validators/compatibility/shims/tool_shims.py`
 
 ### Deferred Until After the Playable Baseline
 
@@ -404,7 +404,7 @@ Portable adapter contracts must make the following distinctions explicit.
 
 - `incompatible_adapter_path`
   A candidate adapter exists, but capability, source, target, or version constraints do not match.
-  `compat/data_format_loader.py` and `test_tool_incompatibility_refusal.py` show that the live repo already treats incompatibility as an explicit class.
+  `tools/validators/compatibility/data_format_loader.py` and `test_tool_incompatibility_refusal.py` show that the live repo already treats incompatibility as an explicit class.
 
 - `blocked_adapter_path`
   The adapter is known, but a required precondition is missing.

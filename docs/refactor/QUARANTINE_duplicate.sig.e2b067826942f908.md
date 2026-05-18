@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/validation/validation_engine.py`
+- `src/tools/validators/validation/validation_engine.py`
 - `tools/audit/arch_audit_common.py`
 - `tools/time/time_anchor_common.py`
 
@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/audit/arch_audit_common.py` disposition=`canonical` rank=`1` total_score=`66.07` risk=`HIGH`
 - `tools/time/time_anchor_common.py` disposition=`quarantine` rank=`2` total_score=`66.07` risk=`HIGH`
-- `src/validation/validation_engine.py` disposition=`merge` rank=`3` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/validation/validation_engine.py` disposition=`merge` rank=`3` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 

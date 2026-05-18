@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E114_ADAPTER_MISSING_SMELL"
-DEPRECATIONS_REL = "data/governance/deprecations.json"
+DEPRECATIONS_REL = "content/data/governance/deprecations.json"
 
 
 def _norm(path: str) -> str:

@@ -61,7 +61,7 @@ The framework is governance/tooling-only and does not change runtime simulation 
 5) Control pipeline isolation
 - Direct intent envelope construction is restricted to explicit ingress/control paths.
 - Allowed paths are declared in a deterministic whitelist registry:
-  - `data/registries/intent_dispatch_whitelist.json`
+  - `contracts/registry/intent_dispatch_whitelist.json`
 - Enforced by:
   - `INV-NO-DIRECT-INTENT-ENVELOPE-CONSTRUCTION`
   - legacy direct-dispatch invariant checks.

@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # System Interface & Invariant Baseline
 
-Status: BASELINE (SYS-1)  
-Date: 2026-03-05  
+Status: BASELINE (SYS-1)
+Date: 2026-03-05
 Scope: interface signature completeness enforcement, boundary invariant validation, spec/safety integration, macro model set compatibility checks, and SYS-1 enforcement/test coverage.
 
 ## 1) Interface Templates

@@ -14,7 +14,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat.descriptor import build_product_descriptor  # noqa: E402
+from tools.validators.compatibility.descriptor import build_product_descriptor  # noqa: E402
 from release import build_product_build_metadata, DEFAULT_PRODUCT_SEMVER  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
@@ -23,11 +23,11 @@ RELEASE0_RETRO_AUDIT_PATH = "docs/audit/RELEASE0_RETRO_AUDIT.md"
 RELEASE_IDENTITY_CONSTITUTION_PATH = "docs/release/RELEASE_IDENTITY_CONSTITUTION.md"
 ARTIFACT_NAMING_RULES_PATH = "docs/release/ARTIFACT_NAMING_RULES.md"
 RELEASE_IDENTITY_BASELINE_PATH = "docs/audit/RELEASE_IDENTITY_BASELINE.md"
-RELEASE_IDENTITY_REPORT_PATH = "data/audit/release_identity_report.json"
-RELEASE_CHANNEL_REGISTRY_PATH = "data/registries/release_channel_registry.json"
-ARTIFACT_KIND_REGISTRY_PATH = "data/registries/artifact_kind_registry.json"
+RELEASE_IDENTITY_REPORT_PATH = "content/data/audit/release_identity_report.json"
+RELEASE_CHANNEL_REGISTRY_PATH = "contracts/registry/release_channel_registry.json"
+ARTIFACT_KIND_REGISTRY_PATH = "contracts/registry/artifact_kind_registry.json"
 BUILD_ID_ENGINE_PATH = "release/build_id_engine.py"
-DESCRIPTOR_ENGINE_PATH = "compat/descriptor/descriptor_engine.py"
+DESCRIPTOR_ENGINE_PATH = "tools/validators/compatibility/descriptor/descriptor_engine.py"
 
 REQUIRED_RELEASE_CHANNELS = ("mock", "alpha", "beta", "rc", "stable")
 REQUIRED_RELEASE_ARTIFACT_KINDS = (

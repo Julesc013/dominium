@@ -20,7 +20,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Authoring Guidance
 - New content must use namespaced keys only.
-- New interpreted keys must be declared in `data/registries/extension_interpretation_registry.json`.
+- New interpreted keys must be declared in `contracts/registry/extension_interpretation_registry.json`.
 - New behavior semantics must also name the required semantic contract version.
 
 ## Compatibility Note

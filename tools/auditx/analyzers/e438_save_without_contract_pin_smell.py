@@ -19,7 +19,7 @@ REQUIRED_TOKENS = {
         "pack_lock_hash",
         "allow_read_only_open",
     ),
-    "lib/save/save_validator.py": (
+    "tools/libraries/save/save_validator.py": (
         "REFUSAL_SAVE_CONTRACT_MISMATCH",
         "load_save_contract_bundle(",
         "save_semantic_contract_registry_hash(",

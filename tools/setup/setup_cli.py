@@ -29,21 +29,21 @@ from runtime.appshell.paths import (
     vpath_candidate_roots,
     vpath_init,
 )
-from compat import (
+from tools.validators.compatibility import (
     build_product_build_metadata,
     build_product_descriptor,
     descriptor_json_text,
     emit_product_descriptor,
 )
-from governance import (
+from tools.governance import (
     governance_profile_hash,
     governance_profile_path,
     load_governance_mode_registry,
     load_governance_profile,
     select_governance_mode_row,
 )
-from meta.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
-from lib.install import (
+from tools.validators.identity import IDENTITY_KIND_INSTALL, attach_universal_identity_block
+from tools.libraries.install import (
     build_product_build_descriptor,
     default_install_registry_path,
     discover_install,
@@ -58,7 +58,7 @@ from lib.install import (
     validate_install_manifest,
     verify_install_registry,
 )
-from lib.export import (
+from tools.libraries.export import (
     export_instance_bundle,
     export_pack_bundle,
     export_save_bundle,
@@ -89,7 +89,7 @@ from release import (
     select_rollback_transaction,
     verify_release_manifest,
 )
-from security.trust import (
+from tools.validators.security.trust import (
     DEFAULT_LOCAL_TRUST_ROOT_REGISTRY_REL,
     DEFAULT_TRUST_POLICY_ID,
     DEFAULT_TRUST_POLICY_REGISTRY_REL,
@@ -99,8 +99,8 @@ from security.trust import (
     select_trust_policy,
     write_trust_root_registry,
 )
-from lib.save import resolve_save_manifest_path
-from lib.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
+from tools.libraries.save import resolve_save_manifest_path
+from tools.libraries.store import DEFAULT_GC_POLICY_ID, resolve_store_root_from_install, run_store_gc
 from tools.lib.content_store import initialize_store_root
 
 
@@ -1042,7 +1042,7 @@ def _write_verification_outputs(
     report_path: Optional[str],
     lock_path: Optional[str],
 ) -> dict:
-    from packs.compat import write_pack_compatibility_outputs
+    from content.packs.compatibility_payload import write_pack_compatibility_outputs
 
     report_target = normalize_path(report_path or os.path.join(root, DEFAULT_COMPAT_REPORT))
     lock_target = normalize_path(lock_path or os.path.join(root, "pack_lock.json"))
@@ -2517,7 +2517,7 @@ def handle_update(args: argparse.Namespace, deterministic: bool) -> int:
         for rel_path in (
             "manifests/release_manifest.json",
             "manifests/release_index.json",
-            "data/registries/semantic_contract_registry.json",
+            "contracts/registry/semantic_contract_registry.json",
         ):
             src_path = os.path.join(source_root, rel_path.replace("/", os.sep))
             if not os.path.isfile(src_path):

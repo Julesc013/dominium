@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `data/registries/extension_interpretation_registry.json`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/SEMANTIC_CONTRACT_MODEL.md`, and `contracts/registry/extension_interpretation_registry.json`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation
@@ -24,14 +24,14 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - Bare keys are not new authoring surface.
 
 ## Deterministic Behavior
-- `extensions` are inert metadata unless code interpretation is declared in `data/registries/extension_interpretation_registry.json`.
+- `extensions` are inert metadata unless code interpretation is declared in `contracts/registry/extension_interpretation_registry.json`.
 - Unknown keys have no authoritative effect in `extensions.default`.
 - `extensions.warn` may emit deterministic warnings for unknown or legacy keys.
 - `extensions.strict` may refuse unknown namespaced keys.
 - Legacy bare keys are treated as compatibility aliases for `mod.unknown.<key>` and remain non-authoritative unless a registry entry declares interpretation.
 
 ## Extension Interpretation Registry
-- Source of truth: `data/registries/extension_interpretation_registry.json`
+- Source of truth: `contracts/registry/extension_interpretation_registry.json`
 - Any interpreted key must declare:
   - `extension_key`
   - `allowed_owners`

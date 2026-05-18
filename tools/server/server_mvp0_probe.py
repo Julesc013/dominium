@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from apps.client.net import read_loopback_handshake_response, send_loopback_client_ack  # noqa: E402
-from net.transport.loopback import reset_loopback_state  # noqa: E402
+from tools.network.transport.loopback import reset_loopback_state  # noqa: E402
 from apps.server.net.loopback_transport import (  # noqa: E402
     accept_loopback_connection,
     create_loopback_listener,

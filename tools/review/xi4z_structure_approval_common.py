@@ -58,25 +58,25 @@ from tools.review.xi4b_src_domain_mapping_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_REL = "data/restructure/src_domain_mapping.json"
-SRC_DOMAIN_MAPPING_CANDIDATES_REL = "data/restructure/src_domain_mapping_candidates.json"
-SRC_DOMAIN_MAPPING_CONFLICTS_REL = "data/restructure/src_domain_mapping_conflicts.json"
-SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "data/restructure/src_domain_mapping_lock_proposal.json"
-SRC_RUNTIME_CRITICAL_SET_REL = "data/restructure/src_runtime_critical_set.json"
-SRC_TOOL_ONLY_SET_REL = "data/restructure/src_tool_only_set.json"
-SRC_GENERATED_SET_REL = "data/restructure/src_generated_set.json"
-SRC_TEST_ONLY_SET_REL = "data/restructure/src_test_only_set.json"
-SRC_LEGACY_SET_REL = "data/restructure/src_legacy_set.json"
+SRC_DOMAIN_MAPPING_REL = "content/data/restructure/src_domain_mapping.json"
+SRC_DOMAIN_MAPPING_CANDIDATES_REL = "content/data/restructure/src_domain_mapping_candidates.json"
+SRC_DOMAIN_MAPPING_CONFLICTS_REL = "content/data/restructure/src_domain_mapping_conflicts.json"
+SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "content/data/restructure/src_domain_mapping_lock_proposal.json"
+SRC_RUNTIME_CRITICAL_SET_REL = "content/data/restructure/src_runtime_critical_set.json"
+SRC_TOOL_ONLY_SET_REL = "content/data/restructure/src_tool_only_set.json"
+SRC_GENERATED_SET_REL = "content/data/restructure/src_generated_set.json"
+SRC_TEST_ONLY_SET_REL = "tests/fixtures/restructure/src_test_only_set.json"
+SRC_LEGACY_SET_REL = "content/data/restructure/src_legacy_set.json"
 SRC_CLUSTER_RESOLUTION_ORDER_REL = "data/restructure/src_cluster_resolution_order.json"
 SRC_QUARANTINE_RESOLUTION_PLAN_REL = "data/restructure/src_quarantine_resolution_plan.json"
-XI4B_REVIEW_MANIFEST_REL = "data/restructure/xi4b_review_manifest.json"
+XI4B_REVIEW_MANIFEST_REL = "contracts/restructure/xi4b_review_manifest.json"
 
-SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL = "data/restructure/src_domain_mapping_lock_approved.json"
-SRC_DOMAIN_MAPPING_DECISIONS_REL = "data/restructure/src_domain_mapping_decisions.json"
-SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "data/restructure/src_domain_mapping_attic_approved.json"
-SRC_DOMAIN_MAPPING_DEFERRED_REL = "data/restructure/src_domain_mapping_deferred.json"
-XI5_READINESS_CONTRACT_REL = "data/restructure/xi5_readiness_contract.json"
-XI4Z_DECISION_MANIFEST_REL = "data/restructure/xi4z_decision_manifest.json"
+SRC_DOMAIN_MAPPING_LOCK_APPROVED_REL = "content/data/restructure/src_domain_mapping_lock_approved.json"
+SRC_DOMAIN_MAPPING_DECISIONS_REL = "content/data/restructure/src_domain_mapping_decisions.json"
+SRC_DOMAIN_MAPPING_ATTIC_APPROVED_REL = "content/data/restructure/src_domain_mapping_attic_approved.json"
+SRC_DOMAIN_MAPPING_DEFERRED_REL = "content/data/restructure/src_domain_mapping_deferred.json"
+XI5_READINESS_CONTRACT_REL = "contracts/restructure/xi5_readiness_contract.json"
+XI4Z_DECISION_MANIFEST_REL = "contracts/restructure/xi4z_decision_manifest.json"
 
 XI_4Z_DECISION_REPORT_REL = "docs/restructure/XI_4Z_DECISION_REPORT.md"
 XI_4Z_XI5_READINESS_REL = "docs/restructure/XI_4Z_XI5_READINESS.md"
@@ -93,7 +93,7 @@ OPTION_C = "C"
 
 DEFERRED_PATHS = {
     "apps/client/interaction/__init__.py",
-    "lib/store/__init__.py",
+    "tools/libraries/store/__init__.py",
 }
 
 ESSENTIAL_UPSTREAM_RELS = (
@@ -129,12 +129,12 @@ CRITICAL_CORE_INPUTS = {
     "docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
     "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md",
     "docs/restructure/XI_4B_REVIEW_GUIDE.md",
-    "data/restructure/src_domain_mapping.json",
-    "data/restructure/src_domain_mapping_candidates.json",
-    "data/restructure/src_domain_mapping_conflicts.json",
-    "data/restructure/src_domain_mapping_lock_proposal.json",
-    "data/restructure/src_runtime_critical_set.json",
-    "data/restructure/xi4b_review_manifest.json",
+    "content/data/restructure/src_domain_mapping.json",
+    "content/data/restructure/src_domain_mapping_candidates.json",
+    "content/data/restructure/src_domain_mapping_conflicts.json",
+    "content/data/restructure/src_domain_mapping_lock_proposal.json",
+    "content/data/restructure/src_runtime_critical_set.json",
+    "contracts/restructure/xi4b_review_manifest.json",
 }
 
 REQUIRED_JSON_INPUTS = (
@@ -566,8 +566,8 @@ def _json_payloads(
 
     readiness_payload = {
         "allowed_actions": [
-            "move only rows listed in data/restructure/src_domain_mapping_lock_approved.json approved_for_xi5",
-            "route only rows listed in data/restructure/src_domain_mapping_lock_approved.json approved_to_attic",
+            "move only rows listed in content/data/restructure/src_domain_mapping_lock_approved.json approved_for_xi5",
+            "route only rows listed in content/data/restructure/src_domain_mapping_lock_approved.json approved_to_attic",
             "update include paths and build references only for moved approved rows",
             "refuse if additional unmapped runtime-critical source-like paths are encountered outside the approved or deferred sets",
         ],
@@ -703,7 +703,7 @@ def _render_readiness(decisions: Sequence[Mapping[str, object]], missing_inputs:
             "",
             "## Exact Constraints",
             "",
-            "- consume only `data/restructure/src_domain_mapping_lock_approved.json` as the structural authority",
+            "- consume only `content/data/restructure/src_domain_mapping_lock_approved.json` as the structural authority",
             f"- consume only `{XI5_READINESS_CONTRACT_REL}` as the readiness contract",
             "- move only `approved_for_xi5` rows",
             "- route only `approved_to_attic` rows",
@@ -778,8 +778,8 @@ def _review_first_text(selected_option: str, counts: Mapping[str, int]) -> str:
             "1. docs/restructure/XI_4Z_DECISION_REPORT.md",
             "2. docs/restructure/XI_4Z_XI5_READINESS.md",
             "3. docs/restructure/XI_4Z_CONFLICT_RESOLUTION.md",
-            "4. data/restructure/src_domain_mapping_lock_approved.json",
-            "5. data/restructure/xi5_readiness_contract.json",
+            "4. content/data/restructure/src_domain_mapping_lock_approved.json",
+            "5. contracts/restructure/xi5_readiness_contract.json",
             "",
             "XI-5 is now allowed to:",
             f"- move `{counts.get('approved_for_xi5', 0)}` approved rows",

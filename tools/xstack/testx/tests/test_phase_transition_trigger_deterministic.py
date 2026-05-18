@@ -69,7 +69,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from models.model_engine import evaluate_model_bindings
+    from tools.models.model_engine import evaluate_model_bindings
 
     model_type_rows = {
         "model_type.therm_phase_transition": {

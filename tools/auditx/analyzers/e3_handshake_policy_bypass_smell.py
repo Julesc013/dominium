@@ -12,9 +12,9 @@ ANALYZER_ID = "E3_HANDSHAKE_POLICY_BYPASS_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
     "tools/net/",
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/net_server_policy_registry.json",
-    "data/registries/anti_cheat_policy_registry.json",
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/net_server_policy_registry.json",
+    "contracts/registry/anti_cheat_policy_registry.json",
 )
 
 _POLICY_LITERAL_RE = re.compile(r"(policy\.net\.[a-z0-9_.-]+|policy\.ac\.[a-z0-9_.-]+)", re.IGNORECASE)
@@ -85,9 +85,9 @@ def run(graph, repo_root, changed_files=None):
                         related_invariants=["INV-NET-HANDSHAKE-USES-REGISTRIES"],
                         related_paths=[
                             rel_path,
-                            "data/registries/net_replication_policy_registry.json",
-                            "data/registries/net_server_policy_registry.json",
-                            "data/registries/anti_cheat_policy_registry.json",
+                            "contracts/registry/net_replication_policy_registry.json",
+                            "contracts/registry/net_server_policy_registry.json",
+                            "contracts/registry/anti_cheat_policy_registry.json",
                         ],
                     )
                 )

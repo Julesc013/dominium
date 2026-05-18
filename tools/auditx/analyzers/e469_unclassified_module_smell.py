@@ -31,12 +31,12 @@ def run(graph, repo_root, changed_files=None):
                 category="review.unclassified_module_smell",
                 severity="RISK",
                 confidence=0.94,
-                file_path="data/audit/repo_inventory.json",
+                file_path="content/data/audit/repo_inventory.json",
                 evidence=["repository inventory report is missing or invalid"],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=[RULE_ID],
-                related_paths=["data/audit/repo_inventory.json"],
+                related_paths=["content/data/audit/repo_inventory.json"],
             )
         )
         return findings

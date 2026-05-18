@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from compat.capability_negotiation import negotiate_endpoint_descriptors, verify_negotiation_record
+from tools.validators.compatibility.capability_negotiation import negotiate_endpoint_descriptors, verify_negotiation_record
 
 
 def negotiate_product_endpoints(

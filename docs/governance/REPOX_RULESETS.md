@@ -39,7 +39,7 @@ Each rule record defines:
 
 ## Exemptions
 
-- Sidecar exemptions: `repo/repox/repox_exemptions.json`.
+- Sidecar exemptions: `contracts/repo/repox/repox_exemptions.json`.
 - Inline exemptions: `@repox:allow(<rule_id>) reason="..." expires="YYYY-MM-DD"`.
 - Core rules use `exemption_policy=deny`.
 - Non-core exemptions must include reason and expiry; expired exemptions fail RepoX.
@@ -405,7 +405,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-MODE-BACKEND-SELECTION
 
 - Fails on hardcoded backend literals in runtime sources.
-- Backend availability and fallback order must come from `data/registries/mode_backend.json`.
+- Backend availability and fallback order must come from `contracts/registry/mode_backend.json`.
 
 ### INV-PORTABLE-RUN-CONTRACT
 
@@ -865,14 +865,14 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-MVP-PACKS-MINIMAL
 
-- Fails when `locks/pack_lock.mvp_default.json` does not resolve to exactly the three MVP install-visible pack IDs.
+- Fails when `contracts/package/locks/pack_lock.mvp_default.json` does not resolve to exactly the three MVP install-visible pack IDs.
 - Fails when `dist/packs/**/pack.alias.json` contains extra alias packs outside the canonical MVP default set.
 - Prevents v0.0.0 bundle drift from accreting non-minimal install-visible content.
 
 ### INV-PACK-LOCK-REQUIRED
 
 - Fails when the canonical MVP pack lock artifact is missing or omits `pack_lock_hash`.
-- Fails when `data/session_templates/session.mvp_default.json` does not record the canonical `pack_lock_hash`.
+- Fails when `content/data/session_templates/session.mvp_default.json` does not record the canonical `pack_lock_hash`.
 - Fails when the MVP runtime entry surface omits the explicit `--pack_lock` CLI contract.
 
 ### INV-PROFILE-BUNDLE-REQUIRED
@@ -1205,7 +1205,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-PRESENTATION-MATRIX-INTEGRITY
 
-- Fails when `data/registries/presentation_matrix.json` is missing or schema-mismatched.
+- Fails when `contracts/registry/presentation_matrix.json` is missing or schema-mismatched.
 - Fails when matrix rows reference unknown law profiles or lens IDs/prefixes.
 - Fails when survival rows expose nondiegetic lenses/panels.
 - Fails when console/debug overlay panels are exposed without required entitlements.
@@ -1245,7 +1245,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-REALISM-DETAIL-MUST-BE-MODEL
 
 - STRICT/FULL fail when inline realism response-curve logic is present outside constitutive model pathways.
-- Transitional exceptions require explicit `data/registries/deprecation_registry.json` mapping entries with source path + line.
+- Transitional exceptions require explicit `contracts/registry/deprecation_registry.json` mapping entries with source path + line.
 - Prevents bespoke domain response logic drift.
 
 ### INV-CROSS-DOMAIN-MUTATION-MUST-BE-MODEL
@@ -1261,7 +1261,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-UNREGISTERED-QUANTITY-FORBIDDEN
 
-- STRICT/FULL fail when runtime/sessionx/registry surfaces reference `quantity.*` identifiers not present in `data/registries/quantity_registry.json`.
+- STRICT/FULL fail when runtime/sessionx/registry surfaces reference `quantity.*` identifiers not present in `contracts/registry/quantity_registry.json`.
 - Prevents silent ad hoc quantity channels and enforces MAT-1/PHYS registration discipline.
 
 ### INV-LOSS-MAPPED-TO-HEAT
@@ -1277,30 +1277,30 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 ### INV-INFO-ARTIFACT-MUST-HAVE-FAMILY
 
 - STRICT/FULL fail when action-template produced artifacts are not mapped to canonical META-INFO families.
-- Mapping source: `data/registries/info_artifact_family_registry.json`.
+- Mapping source: `contracts/registry/info_artifact_family_registry.json`.
 
 ### INV-TIER-CONTRACT-REQUIRED
 
 - STRICT/FULL fail when mandatory tier contracts are missing for baseline governed domains.
-- Registry source: `data/registries/tier_contract_registry.json`.
+- Registry source: `contracts/registry/tier_contract_registry.json`.
 - Enforces explicit tier support, deterministic downgrade order, and shard-safety declarations.
 
 ### INV-COST-MODEL-REQUIRED
 
 - STRICT/FULL fail when tier contracts omit `cost_model_id`.
-- Registry source: `data/registries/tier_contract_registry.json`.
+- Registry source: `contracts/registry/tier_contract_registry.json`.
 - Enforces deterministic budget arbitration binding for each governed subsystem/process family.
 
 ### INV-COUPLING-CONTRACT-REQUIRED
 
 - STRICT/FULL fail when required baseline cross-domain coupling declarations are missing.
-- Registry source: `data/registries/coupling_contract_registry.json`.
+- Registry source: `contracts/registry/coupling_contract_registry.json`.
 - Couplings must declare class, from/to domains, and mechanism type/ID.
 
 ### INV-EXPLAIN-CONTRACT-REQUIRED
 
 - STRICT/FULL fail when hazard/failure explainability declarations are missing.
-- Registry source: `data/registries/explain_contract_registry.json`.
+- Registry source: `contracts/registry/explain_contract_registry.json`.
 - Explain contracts must declare event-kind mapping, artifact type, and required causal inputs.
 
 ### INV-NO-UNDECLARED-COUPLING
@@ -1316,7 +1316,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 ### INV-ENERGY-TRANSFORM-REGISTERED
 
-- STRICT/FULL fail when authoritative energy conversions do not reference `data/registries/energy_transformation_registry.json`.
+- STRICT/FULL fail when authoritative energy conversions do not reference `contracts/registry/energy_transformation_registry.json`.
 - Requires PHYS-3 runtime pathways to route conversion writes through deterministic ledger transformation helpers.
 - Missing required baseline transforms (`kinetic_to_thermal`, `electrical_to_thermal`, `chemical_to_thermal`, `potential_to_kinetic`, `external_irradiance`) is blocking.
 
@@ -1389,7 +1389,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - STRICT/FULL fail when FLUID containment failures are not represented through explicit relief/leak/burst artifacts and safety pattern events.
 - Requires proof/replay hash-chain surfaces for `fluid_flow`, `relief`, `leak`, and `burst`.
-- Requires a committed FLUID regression lock (`data/regression/fluid_full_baseline.json`) gated by `FLUID-REGRESSION-UPDATE`.
+- Requires a committed FLUID regression lock (`tests/fixtures/regression/fluid_full_baseline.json`) gated by `FLUID-REGRESSION-UPDATE`.
 
 ### INV-CHEM-BUDGETED
 
@@ -1407,7 +1407,7 @@ See `docs/dev/CLIP_DRIVEN_DEVELOPMENT.md` for the workflow.
 
 - STRICT/FULL fail when CHEM reaction mutations are not paired with explicit energy-ledger artifacts and proof hash-chain surfaces.
 - Requires canonical reaction/emission/degradation proof chains and replay-window verification coverage.
-- Requires a committed CHEM regression lock (`data/regression/chem_full_baseline.json`) gated by `CHEM-REGRESSION-UPDATE`.
+- Requires a committed CHEM regression lock (`tests/fixtures/regression/chem_full_baseline.json`) gated by `CHEM-REGRESSION-UPDATE`.
 
 ### INV-STATE-VECTOR-DECLARED-FOR-SYSTEM
 

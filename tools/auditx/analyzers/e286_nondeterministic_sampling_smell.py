@@ -96,7 +96,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "game/domains/processes/qc/qc_engine.py",
-                                "data/registries/sampling_strategy_registry.json",
+                                "contracts/registry/sampling_strategy_registry.json",
                             ],
                         )
                     )

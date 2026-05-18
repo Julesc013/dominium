@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E46_TRANSITION_THRASH_SMELL"
 TRANSITION_CONTROLLER_PATH = "game/domains/reality/transitions/transition_controller.py"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-TRANSITION_POLICY_REGISTRY_PATH = "data/registries/transition_policy_registry.json"
+TRANSITION_POLICY_REGISTRY_PATH = "contracts/registry/transition_policy_registry.json"
 
 
 def _norm(path: str) -> str:

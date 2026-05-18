@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Pollution Final Baseline
 
-Status: BASELINE (POLL-3)  
-Date: 2026-03-05  
+Status: BASELINE (POLL-3)
+Date: 2026-03-05
 Scope: stress scenario generation, deterministic degradation under RS-5-style budgets, mass-accounting verification under declared proxy bounds, proof/replay integration, and regression locking.
 
 ## 1) Stress Results Summary
@@ -92,29 +92,29 @@ Verified chains:
 
 Validation level executed: STRICT governance checks + POLL-3 target suite.
 
-- topology map updated:  
-  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`  
-  - result: `complete`  
+- topology map updated:
+  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
+  - result: `complete`
   - deterministic_fingerprint: `e3e9cc0877e4677ce5e5c7e892276e8d886e9a760dff83b5989489115e472d56`
 
-- RepoX STRICT:  
-  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`  
+- RepoX STRICT:
+  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - status in in-flight run: `refusal` (`INV-WORKTREE-HYGIENE` due uncommitted topology artifacts while phase-final artifacts were pending commit)
 
-- AuditX STRICT:  
-  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`  
+- AuditX STRICT:
+  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   - result: `pass` (`findings=1310`, `promoted_blockers=0`)
 
-- TestX PASS (POLL-3 required suite):  
-  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset test_poll3_stress_scenario_deterministic,test_poll3_degradation_order_deterministic,test_poll3_mass_balance_within_bounds,test_poll3_proof_hash_chain_stable,test_poll3_replay_window_hash_match`  
+- TestX PASS (POLL-3 required suite):
+  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --cache off --subset test_poll3_stress_scenario_deterministic,test_poll3_degradation_order_deterministic,test_poll3_mass_balance_within_bounds,test_poll3_proof_hash_chain_stable,test_poll3_replay_window_hash_match`
   - result: `pass` (`selected_tests=5`)
 
-- stress harness PASS:  
-  `py -3 tools/pollution/tool_run_poll_stress.py --seed 7301 --region-count 4 --cells-per-region 36 --subject-count 240 --tick-count 24 --emissions-per-tick 14 --measurements-per-tick 10 --compliance-interval-ticks 4 --include-wind-field --output build/pollution/poll3_final_stress_report.json`  
+- stress harness PASS:
+  `py -3 tools/pollution/tool_run_poll_stress.py --seed 7301 --region-count 4 --cells-per-region 36 --subject-count 240 --tick-count 24 --emissions-per-tick 14 --measurements-per-tick 10 --compliance-interval-ticks 4 --include-wind-field --output build/pollution/poll3_final_stress_report.json`
   - result: `complete`
 
-- strict build gate:  
-  `py -3 tools/xstack/run.py strict --repo-root . --cache on`  
+- strict build gate:
+  `py -3 tools/xstack/run.py strict --repo-root . --cache on`
   - result: `refusal` due existing repository-global strict-lane blockers outside POLL-3 scope (`compatx`, `registry_compile`, `session_boot`, full-lane `testx`, `packaging.verify`)
 
 ## 6) Regression Lock and Readiness

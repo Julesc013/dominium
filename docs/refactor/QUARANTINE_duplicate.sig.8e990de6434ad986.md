@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/provides/__init__.py`
+- Canonical Candidate: `src/tools/libraries/provides/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/lib/provides/__init__.py`
-- `src/lib/provides/provider_resolution.py`
+- `src/tools/libraries/provides/__init__.py`
+- `src/tools/libraries/provides/provider_resolution.py`
 
 ## Scorecard
 
-- `src/lib/provides/__init__.py` disposition=`canonical` rank=`1` total_score=`67.14` risk=`HIGH`
-- `src/lib/provides/provider_resolution.py` disposition=`quarantine` rank=`2` total_score=`59.62` risk=`HIGH`
+- `src/tools/libraries/provides/__init__.py` disposition=`canonical` rank=`1` total_score=`67.14` risk=`HIGH`
+- `src/tools/libraries/provides/provider_resolution.py` disposition=`quarantine` rank=`2` total_score=`59.62` risk=`HIGH`
 
 ## Usage Sites
 

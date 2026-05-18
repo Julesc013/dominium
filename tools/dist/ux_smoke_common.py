@@ -24,7 +24,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 UX_POLISH_CRITERIA_PATH = "docs/release/UX_POLISH_CRITERIA.md"
 CLI_REFERENCE_PATH = "docs/appshell/CLI_REFERENCE.md"
 DIST5_UX_SMOKE_DOC_PATH = "docs/audit/DIST5_UX_SMOKE.md"
-DIST5_UX_SMOKE_JSON_PATH = "data/audit/dist5_ux_smoke.json"
+DIST5_UX_SMOKE_JSON_PATH = "content/data/audit/dist5_ux_smoke.json"
 DIST5_FINAL_PATH = "docs/audit/DIST5_UX_POLISH_FINAL.md"
 DIST5_REPORT_ID = "dist5.ux_smoke.v1"
 RULE_REMEDIATION_ID = "INV-REFUSALS-MUST-HAVE-REMEDIATION"

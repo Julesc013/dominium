@@ -165,3 +165,20 @@ Current dry-run snapshot:
 - skipped/deferred files: 172.
 - target collisions: 0.
 - next recommended task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
+
+<!-- MOVE-ROUTER-02 -->
+
+## MOVE-ROUTER-02 Repair Rule
+
+MOVE-ROUTER-02 preserves the MOVE-ROUTER-01 physical cleanup and closes as a
+partial repair boundary.
+
+- tracked files under former bad roots: 0.
+- active path replacements recorded: 33,316.
+- import replacements recorded: 76.
+- temporary runtime shim packages created: 3.
+- CMake configure: PASS.
+- broader TestX: FAIL, 140 of 344 lanes failed.
+
+The next root-recycling action is not another broad move. It is
+`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.

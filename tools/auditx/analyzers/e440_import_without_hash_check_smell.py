@@ -14,12 +14,12 @@ REQUIRED_TOKENS = {
         "recompute `bundle_hash`",
         "refuse if any mismatch occurs",
     ),
-    "lib/import/import_engine.py": (
+    "engine/import/import_engine.py": (
         "verify_bundle_directory(",
         "_insert_bundle_store_artifacts(",
         "\"refusal.bundle.artifact_hash_mismatch\"",
     ),
-    "lib/bundle/bundle_manifest.py": (
+    "tools/libraries/bundle/bundle_manifest.py": (
         "\"bundle_content_hash_mismatch\"",
         "\"bundle_hash_mismatch\"",
         "\"bundle_hash_index_mismatch\"",

@@ -19,9 +19,9 @@
       "docs/planning/GATES_AND_PROOFS.md",
       "docs/planning/MERGED_PROGRAM_STATE.md",
       "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-      "data/planning/next_execution_order_post_zeta.json",
+      "content/data/planning/next_execution_order_post_zeta.json",
       "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
       "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
       "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
@@ -31,20 +31,20 @@
       "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
       "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
       "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
-      "data/audit/ultra_repo_audit_system_inventory.json",
-      "data/audit/ultra_repo_audit_entrypoints.json",
-      "data/audit/ultra_repo_audit_product_assembly_plan.json",
-      "data/audit/ultra_repo_audit_gap_ledger.json",
-      "data/audit/ultra_repo_audit_build_run_test_matrix.json",
-      "data/audit/ultra_repo_audit_wiring_map.json",
+      "content/data/audit/ultra_repo_audit_system_inventory.json",
+      "content/data/audit/ultra_repo_audit_entrypoints.json",
+      "content/data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "content/data/audit/ultra_repo_audit_gap_ledger.json",
+      "contracts/audit/ultra_repo_audit_build_run_test_matrix.json",
+      "content/data/audit/ultra_repo_audit_wiring_map.json",
       "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
-      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
       "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
-      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "content/data/xstack/next_execution_order_post_xstack_aide.json",
       "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
-      "data/xstack/codex_repo_operating_contract.json",
+      "contracts/xstack/codex_repo_operating_contract.json",
       "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
-      "data/xstack/xstack_to_aide_extraction_map.json",
+      "content/data/xstack/xstack_to_aide_extraction_map.json",
       "CMakePresets.json",
       "tools/launcher/launch.py",
       "tools/setup/setup_cli.py",
@@ -59,9 +59,9 @@
       "client/local_server/local_server_controller.py",
       "runtime/process_spawn.py",
       "server/net/loopback_transport.py",
-      "profiles/bundles/bundle.mvp_default.json",
-      "locks/pack_lock.mvp_default.json",
-      "data/session_templates/session.mvp_default.json"
+      "content/profiles/bundles/bundle.mvp_default.json",
+      "contracts/package/locks/pack_lock.mvp_default.json",
+      "content/data/session_templates/session.mvp_default.json"
     ]
   },
   "current_reality_summary": {
@@ -71,9 +71,9 @@
         "statement": "Post-Zeta doctrine and gating closure is complete, no further internal Zeta prompt is required, and the next broader mode is reconciliation and consolidation rather than more internal Zeta expansion.",
         "evidence_sources": [
           "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-          "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+          "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
           "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-          "data/planning/next_execution_order_post_zeta.json"
+          "content/data/planning/next_execution_order_post_zeta.json"
         ]
       },
       {
@@ -81,9 +81,9 @@
         "statement": "The XStack/AIDE narrowing-and-contract phase is complete, no further XStack/AIDE prompt is required before the playable baseline exists, and the existing X-series artifacts act as a constraint packet rather than a competing implementation track.",
         "evidence_sources": [
           "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
-          "data/xstack/checkpoint_c_xstack_aide_closure.json",
+          "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
           "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
-          "data/xstack/next_execution_order_post_xstack_aide.json"
+          "content/data/xstack/next_execution_order_post_xstack_aide.json"
         ]
       },
       {
@@ -133,9 +133,9 @@
         "id": "reality.verified.mvp_assets_exist",
         "statement": "The authored MVP baseline asset trio exists and is live: profile.bundle.mvp_default, pack_lock.mvp_default, and session.mvp_default.",
         "evidence_sources": [
-          "profiles/bundles/bundle.mvp_default.json",
-          "locks/pack_lock.mvp_default.json",
-          "data/session_templates/session.mvp_default.json",
+          "content/profiles/bundles/bundle.mvp_default.json",
+          "contracts/package/locks/pack_lock.mvp_default.json",
+          "content/data/session_templates/session.mvp_default.json",
           "tools/mvp/runtime_bundle.py"
         ]
       }
@@ -164,8 +164,8 @@
         "statement": "The compiled verify tree still carries broad CTest coverage, including playtest-adjacent suites, but that breadth was not fully re-executed in this prompt.",
         "evidence_sources": [
           "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
-          "data/audit/ultra_repo_audit_entrypoints.json",
-          "data/audit/ultra_repo_audit_system_inventory.json"
+          "content/data/audit/ultra_repo_audit_entrypoints.json",
+          "content/data/audit/ultra_repo_audit_system_inventory.json"
         ]
       },
       {
@@ -204,7 +204,7 @@
         "evidence_sources": [
           "tools/mvp/runtime_entry.py",
           "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
-          "data/audit/ultra_repo_audit_entrypoints.json"
+          "content/data/audit/ultra_repo_audit_entrypoints.json"
         ]
       },
       {
@@ -212,8 +212,8 @@
         "statement": "Launcher-supervised attach and restart behavior remains fragile enough that the audit treats supervision stability as a real blocker for repeatable internal sessions.",
         "evidence_sources": [
           "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
-          "data/audit/ultra_repo_audit_gap_ledger.json",
-          "data/audit/ultra_repo_audit_entrypoints.json"
+          "content/data/audit/ultra_repo_audit_gap_ledger.json",
+          "content/data/audit/ultra_repo_audit_entrypoints.json"
         ]
       },
       {
@@ -263,9 +263,9 @@
           "tools/xstack/registry_compile/constants.py",
           "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
           "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
-          "profiles/bundles/bundle.mvp_default.json",
-          "locks/pack_lock.mvp_default.json",
-          "data/session_templates/session.mvp_default.json"
+          "content/profiles/bundles/bundle.mvp_default.json",
+          "contracts/package/locks/pack_lock.mvp_default.json",
+          "content/data/session_templates/session.mvp_default.json"
         ]
       }
     ]
@@ -383,9 +383,9 @@
       "rationale": "Post-Zeta doctrine closure already states that the admissible Zeta program is complete and that the next broader mode is reconciliation and consolidation.",
       "evidence_sources": [
         "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-        "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+        "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
         "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-        "data/planning/next_execution_order_post_zeta.json"
+        "content/data/planning/next_execution_order_post_zeta.json"
       ],
       "must_preserve": [
         "no further internal Zeta prompt before post-Zeta reconciliation",
@@ -408,9 +408,9 @@
       "rationale": "The XStack/AIDE narrowing-and-contract phase is closed, and its own closure packet explicitly subordinates it to the playable-baseline priority.",
       "evidence_sources": [
         "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
-        "data/xstack/checkpoint_c_xstack_aide_closure.json",
+        "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
         "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
-        "data/xstack/next_execution_order_post_xstack_aide.json",
+        "content/data/xstack/next_execution_order_post_xstack_aide.json",
         "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
         "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md"
       ],
@@ -530,8 +530,8 @@
         "server/server_main.py",
         "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
         "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
-        "data/audit/ultra_repo_audit_entrypoints.json",
-        "data/audit/ultra_repo_audit_gap_ledger.json"
+        "content/data/audit/ultra_repo_audit_entrypoints.json",
+        "content/data/audit/ultra_repo_audit_gap_ledger.json"
       ],
       "must_preserve": [
         "the current reality that python server/server_main.py and python -m server.server_main are not safe baseline commands today"
@@ -584,9 +584,9 @@
       "category": "session_profile_save_constraints",
       "rationale": "The repo contains real authored MVP baseline assets, but the live session-create default still points at a different bundle id.",
       "evidence_sources": [
-        "profiles/bundles/bundle.mvp_default.json",
-        "locks/pack_lock.mvp_default.json",
-        "data/session_templates/session.mvp_default.json",
+        "content/profiles/bundles/bundle.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json",
         "tools/mvp/runtime_bundle.py",
         "tools/xstack/session_create.py",
         "tools/xstack/registry_compile/constants.py",
@@ -677,7 +677,7 @@
         "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
         "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
         "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
-        "data/audit/ultra_repo_audit_build_run_test_matrix.json"
+        "contracts/audit/ultra_repo_audit_build_run_test_matrix.json"
       ],
       "must_preserve": [
         "canon over mirrors",

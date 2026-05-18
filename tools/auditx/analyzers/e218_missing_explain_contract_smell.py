@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E218_MISSING_EXPLAIN_CONTRACT_SMELL"
-_EXPLAIN_REGISTRY_REL = "data/registries/explain_contract_registry.json"
+_EXPLAIN_REGISTRY_REL = "contracts/registry/explain_contract_registry.json"
 _REQUIRED_EVENT_KINDS = (
     "elec.trip",
     "elec.fault",

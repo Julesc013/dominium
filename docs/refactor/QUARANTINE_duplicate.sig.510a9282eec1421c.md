@@ -20,7 +20,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/release/release_manifest_engine.py`
 - `src/time/epoch_anchor_engine.py`
-- `src/validation/validation_engine.py`
+- `src/tools/validators/validation/validation_engine.py`
 - `tools/audit/arch_audit_common.py`
 - `tools/data/tool_spice_import.py`
 - `tools/data/tool_srtm_import.py`
@@ -68,7 +68,7 @@ Replacement Target: XI-4b manual review resolution
 - `tools/time/time_anchor_common.py` disposition=`merge` rank=`21` total_score=`66.07` risk=`HIGH`
 - `src/release/release_manifest_engine.py` disposition=`drop` rank=`22` total_score=`62.56` risk=`HIGH`
 - `src/time/epoch_anchor_engine.py` disposition=`drop` rank=`23` total_score=`52.71` risk=`HIGH`
-- `src/validation/validation_engine.py` disposition=`drop` rank=`24` total_score=`50.89` risk=`HIGH`
+- `src/tools/validators/validation/validation_engine.py` disposition=`drop` rank=`24` total_score=`50.89` risk=`HIGH`
 
 ## Usage Sites
 

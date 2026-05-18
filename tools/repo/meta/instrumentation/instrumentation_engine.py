@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from meta.explain import generate_explain_artifact, redact_explain_artifact
+from tools.repo.meta.explain import generate_explain_artifact, redact_explain_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

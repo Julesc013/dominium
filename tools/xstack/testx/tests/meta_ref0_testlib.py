@@ -10,7 +10,7 @@ from typing import Iterable, Mapping
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 
-_REGISTRY_REL = "data/registries/reference_evaluator_registry.json"
+_REGISTRY_REL = "contracts/registry/reference_evaluator_registry.json"
 
 
 def _as_map(value: object) -> dict:
@@ -40,7 +40,7 @@ def load_reference_registry(repo_root: str) -> dict:
 def active_evaluator_ids(repo_root: str) -> list[str]:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.reference import reference_evaluator_rows_by_id
+    from tools.repo.meta.reference import reference_evaluator_rows_by_id
 
     by_id = reference_evaluator_rows_by_id(load_reference_registry(repo_root))
     out = []
@@ -394,7 +394,7 @@ def run_reference_suite_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.reference import evaluate_reference_suite
+    from tools.repo.meta.reference import evaluate_reference_suite
 
     selected = _sorted_tokens(evaluator_ids or active_evaluator_ids(repo_root))
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
@@ -422,7 +422,7 @@ def run_reference_evaluator_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.reference import evaluate_reference_evaluator
+    from tools.repo.meta.reference import evaluate_reference_evaluator
 
     payload = dict(state_payload or fixture_state(seed=seed, tick_start=tick_start, tick_end=tick_end))
     if str(evaluator_id).strip() == "ref.logic_eval_small":

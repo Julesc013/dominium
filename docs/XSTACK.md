@@ -45,11 +45,11 @@ Primary implementation:
 
 Data-driven routing:
 
-- `data/registries/gate_policy.json`
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
-- `data/registries/xstack_components.json`
-- `data/registries/derived_artifacts.json`
+- `contracts/registry/gate_policy.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
+- `contracts/registry/xstack_components.json`
+- `contracts/registry/derived_artifacts.json`
 
 ## Gate Execution Profiles
 
@@ -68,7 +68,7 @@ python scripts/dev/gate.py strict --repo-root . --profile-report
 python scripts/dev/gate.py full --repo-root .
 ```
 
-Profile policy is defined by `data/registries/gate_policy.json` and described in `docs/governance/GATE_THROUGHPUT_POLICY.md`.
+Profile policy is defined by `contracts/registry/gate_policy.json` and described in `docs/governance/GATE_THROUGHPUT_POLICY.md`.
 
 ## RepoX
 
@@ -84,8 +84,8 @@ RepoX is typically first in gate plans to fail early on structural violations.
 
 TestX provides behavioral and determinism proof.
 
-- suite registry: `data/registries/testx_suites.json`
-- group mapping: `data/registries/testx_groups.json`
+- suite registry: `contracts/registry/testx_suites.json`
+- group mapping: `contracts/registry/testx_groups.json`
 - grouped runner helper: `scripts/dev/run_xstack_group_tests.py`
 - docs: `docs/governance/TESTX_ARCHITECTURE.md`, `docs/governance/TESTX_PROOF_MODEL.md`
 
@@ -97,7 +97,7 @@ AuditX provides semantic drift and smell detection.
 
 - tool entry: `tools/auditx/auditx.py`
 - analyzers: `tools/auditx/analyzers/`
-- group mapping: `data/registries/auditx_groups.json`
+- group mapping: `contracts/registry/auditx_groups.json`
 - docs: `docs/governance/AUDITX_MODEL.md`
 
 Artifacts are emitted under `docs/audit/auditx/`.
@@ -133,7 +133,7 @@ SecureX verifies pack integrity, trust policy, and security manifests.
 
 - tool entry: `tools/securex/securex.py`
 - tool docs: `tools/securex/README.md`
-- policy data: `data/registries/trust_policy.json`, `data/registries/security_roles.json`
+- policy data: `contracts/registry/trust_policy.json`, `contracts/registry/security_roles.json`
 - artifacts: `docs/audit/security/`
 
 ## Incremental Planning Model

@@ -21,7 +21,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Generate the DIST-0 distribution architecture report.")
     parser.add_argument("--repo-root", default=".", help="Repository root.")
     parser.add_argument("--dist-root", default="dist", help="Distribution staging root.")
-    parser.add_argument("--report-path", default="data/audit/distribution_architecture_report.json", help="Machine-readable output path.")
+    parser.add_argument("--report-path", default="content/data/audit/distribution_architecture_report.json", help="Machine-readable output path.")
     parser.add_argument("--doc-path", default="docs/audit/DISTRIBUTION_ARCHITECTURE_FREEZE.md", help="Markdown output path.")
     args = parser.parse_args(argv)
 

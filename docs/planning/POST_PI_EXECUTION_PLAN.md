@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `data/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `docs/planning/FOUNDATION_READINESS_REPORT.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `docs/planning/FOUNDATION_READINESS_REPORT.md`
 
 # Post-Π Execution Plan
 
@@ -85,7 +85,7 @@ The live repo already has strong release and identity substrate in:
 - `updates`
 - `data/architecture`
 - `data/registries`
-- `repo/release_policy.toml`
+- `contracts/repo/release_policy.toml`
 - `schema/release/build_id.schema`
 - `schema/identity/artifact_identity.schema`
 

@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PHYSICS CONSTITUTION BASELINE (PHYS-0)
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: PHYS-0 constitution freeze over quantities, invariants, profile/exception schemas, enforcement scaffolding, proof/replay hooks, RWAM + grammar alignment.
 
 ## 1. Canonical Quantity Baseline
@@ -175,5 +175,5 @@ Current map fingerprint:
 
 ## 8. Readiness Statement for PHYS-1
 
-PHYS-0 constitution artifacts are established (docs, schemas, registries, invariants, grammar/RWAM/proof hooks, targeted tests).  
+PHYS-0 constitution artifacts are established (docs, schemas, registries, invariants, grammar/RWAM/proof hooks, targeted tests).
 Global strict readiness remains blocked by pre-existing branch-level gate failures unrelated to PHYS-0 structural artifacts (AuditX promoted E179 set + compile/session boot refusals).

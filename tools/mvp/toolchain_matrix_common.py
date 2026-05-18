@@ -17,7 +17,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from compat.capability_negotiation import (  # noqa: E402
+from tools.validators.compatibility.capability_negotiation import (  # noqa: E402
     build_endpoint_descriptor,
     load_product_registry,
     negotiate_endpoint_descriptors,
@@ -25,7 +25,7 @@ from compat.capability_negotiation import (  # noqa: E402
     semantic_contract_rows_by_category,
     verify_negotiation_record,
 )
-from packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
 from engine.platform.platform_probe import (  # noqa: E402
     MODE_TO_CAPABILITY_ID,
     PLATFORM_CAPABILITY_KEYS,
@@ -775,8 +775,8 @@ def build_default_toolchain_matrix_registry() -> dict:
                 "environments": _default_env_rows(),
                 "extensions": {
                     "official.source": "OMEGA-9",
-                    "target_matrix_registry_rel": "data/registries/target_matrix_registry.json",
-                    "platform_capability_registry_rel": "data/registries/platform_capability_registry.json",
+                    "target_matrix_registry_rel": "contracts/registry/target_matrix_registry.json",
+                    "platform_capability_registry_rel": "contracts/registry/platform_capability_registry.json",
                     "run_id_rule": "hash(env_descriptor + profile_descriptor + git_revision_or_source_snapshot_hash)",
                 },
             },
@@ -858,20 +858,20 @@ def _source_snapshot_hash(repo_root: str) -> str:
         "tools/mvp/toolchain_matrix_common.py",
         "tools/mvp/tool_run_toolchain_matrix.py",
         "tools/mvp/tool_compare_toolchain_runs.py",
-        "data/registries/semantic_contract_registry.json",
-        "data/registries/platform_capability_registry.json",
-        "data/registries/product_capability_defaults.json",
-        "data/registries/product_registry.json",
-        "data/registries/worldgen_lock_registry.json",
-        "data/registries/toolchain_matrix_registry.json",
-        "data/registries/toolchain_test_profile_registry.json",
-        "data/baselines/worldgen/baseline_worldgen_snapshot.json",
-        "data/baselines/universe/baseline_universe_snapshot.json",
-        "data/baselines/gameplay/gameplay_loop_snapshot.json",
-        "data/regression/disaster_suite_baseline.json",
-        "data/regression/ecosystem_verify_baseline.json",
-        "data/regression/update_sim_baseline.json",
-        "data/regression/trust_strict_baseline.json",
+        "contracts/registry/semantic_contract_registry.json",
+        "contracts/registry/platform_capability_registry.json",
+        "contracts/registry/product_capability_defaults.json",
+        "contracts/registry/product_registry.json",
+        "contracts/registry/worldgen_lock_registry.json",
+        "contracts/registry/toolchain_matrix_registry.json",
+        "contracts/registry/toolchain_test_profile_registry.json",
+        "tests/fixtures/baselines/worldgen/baseline_worldgen_snapshot.json",
+        "tests/fixtures/baselines/universe/baseline_universe_snapshot.json",
+        "tests/fixtures/baselines/gameplay/gameplay_loop_snapshot.json",
+        "tests/fixtures/regression/disaster_suite_baseline.json",
+        "tests/fixtures/regression/ecosystem_verify_baseline.json",
+        "tests/fixtures/regression/update_sim_baseline.json",
+        "tests/fixtures/regression/trust_strict_baseline.json",
     ]
     rows = []
     for rel_path in snapshot_paths:
@@ -1927,16 +1927,16 @@ def compare_toolchain_runs(repo_root: str, left_run_dir: str, right_run_dir: str
 
 
 def render_toolchain_matrix_retro_audit(repo_root: str) -> str:
-    target_matrix_exists = os.path.isfile(_repo_abs(repo_root, "data/registries/target_matrix_registry.json"))
-    platform_registry_exists = os.path.isfile(_repo_abs(repo_root, "data/registries/platform_capability_registry.json"))
+    target_matrix_exists = os.path.isfile(_repo_abs(repo_root, "contracts/registry/target_matrix_registry.json"))
+    platform_registry_exists = os.path.isfile(_repo_abs(repo_root, "contracts/registry/platform_capability_registry.json"))
     dist_exists = os.path.isdir(_repo_abs(repo_root, "dist/v0.0.0-mock/win64/dominium"))
     lines = [
         "# TOOLCHAIN-MATRIX-0 Retro Audit",
         "",
         "## Scope",
         "",
-        "- ARCH-MATRIX-0 target matrix source: `data/registries/target_matrix_registry.json` (`exists={}`)".format(target_matrix_exists),
-        "- PLATFORM-FORMALIZE capability source: `data/registries/platform_capability_registry.json` + `engine/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
+        "- ARCH-MATRIX-0 target matrix source: `contracts/registry/target_matrix_registry.json` (`exists={}`)".format(target_matrix_exists),
+        "- PLATFORM-FORMALIZE capability source: `contracts/registry/platform_capability_registry.json` + `engine/platform/platform_probe.py` (`exists={}`)".format(platform_registry_exists),
         "- RELEASE build identity source: `release/build_id_engine.py` (`source_revision_id`, `build_product_build_metadata`, `build_id_identity_from_input_payload`)",
         "- Release manifest generation/verification source: `release/release_manifest_engine.py`",
         "",

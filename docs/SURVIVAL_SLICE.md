@@ -22,17 +22,17 @@ The slice is intentionally minimal and structural:
 
 Primary source:
 
-- `data/registries/survival_vertical_slice.json`
+- `contracts/registry/survival_vertical_slice.json`
 - `schema/survival/survival_vertical_slice.schema`
 
 ## Minimal Gameplay Survival Model
 
 Survival behavior is defined through profile + law + parameters, not hardcoded mode flags:
 
-- experience: `exp.survival` (`data/registries/experience_profiles.json`)
-- law (softcore): `law.survival.softcore` (`data/registries/law_profiles.json`)
+- experience: `exp.survival` (`contracts/registry/experience_profiles.json`)
+- law (softcore): `law.survival.softcore` (`contracts/registry/law_profiles.json`)
 - law (hardcore): `law.survival.hardcore`
-- parameter bundles: `survival.params.default`, `survival.params.harsh` (`data/registries/parameter_bundles.json`)
+- parameter bundles: `survival.params.default`, `survival.params.harsh` (`contracts/registry/parameter_bundles.json`)
 
 ## Needs Model
 
@@ -44,7 +44,7 @@ Agent fields tracked in the vertical slice:
 - `health.hp`
 - `status.alive`
 
-See: `data/registries/survival_vertical_slice.json` (`agent_fields`).
+See: `contracts/registry/survival_vertical_slice.json` (`agent_fields`).
 
 ## Hazard Model
 
@@ -60,16 +60,16 @@ Hazard/needs update processes:
 
 See:
 
-- `data/registries/survival_vertical_slice.json`
-- `data/registries/process_requirements.json`
+- `contracts/registry/survival_vertical_slice.json`
+- `contracts/registry/process_requirements.json`
 
 ## Resource Gathering
 
 Minimal gather contract:
 
 - process: `process.gather_resource`
-- material affordance requirements: declared in `data/registries/process_requirements.json`
-- baseline materials: `mat.wood`, `mat.stone`, `mat.water`, `mat.leaves` (`data/registries/materials.json`)
+- material affordance requirements: declared in `contracts/registry/process_requirements.json`
+- baseline materials: `mat.wood`, `mat.stone`, `mat.water`, `mat.leaves` (`contracts/registry/materials.json`)
 
 ## Crafting Basics
 
@@ -82,8 +82,8 @@ Minimal crafting contract:
 
 References:
 
-- `data/registries/tool_capabilities.json`
-- `data/registries/process_requirements.json`
+- `contracts/registry/tool_capabilities.json`
+- `contracts/registry/process_requirements.json`
 
 ## Shelter and Survival
 
@@ -127,7 +127,7 @@ Determinism is guaranteed by:
 
 Related enforcement/tests are tracked through:
 
-- `data/registries/testx_suites.json`
+- `contracts/registry/testx_suites.json`
 - `tests/invariant/`
 - `tests/integration/`
 
@@ -140,7 +140,7 @@ Survival law enforces diegetic lens constraints:
 
 Lens definitions:
 
-- `data/registries/lenses.json`
+- `contracts/registry/lenses.json`
 - `schema/lens/lens.schema`
 
 Survival profile implications:

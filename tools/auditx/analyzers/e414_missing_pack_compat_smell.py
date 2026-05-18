@@ -19,19 +19,19 @@ REQUIRED_FILES = {
         "\"required_contract_ranges\"",
         "\"degrade_mode_id\"",
     ),
-    "data/registries/pack_degrade_mode_registry.json": (
+    "contracts/registry/pack_degrade_mode_registry.json": (
         "\"pack.degrade.strict_refuse\"",
         "\"pack.degrade.best_effort\"",
         "\"pack.degrade.read_only_only\"",
     ),
-    "packs/compat/pack_compat_validator.py": (
+    "content/packs/compatibility_payload/pack_compat_validator.py": (
         "PACK_COMPAT_MANIFEST_NAME",
         "REFUSAL_PACK_COMPAT_MANIFEST_MISSING",
         "validate_pack_compat_manifest(",
     ),
 }
 REQUIRED_OFFICIAL_COMPAT = (
-    "packs/official/pack.sol.pin_minimal/pack.compat.json",
+    "content/packs/official/pack.sol.pin_minimal/pack.compat.json",
 )
 
 

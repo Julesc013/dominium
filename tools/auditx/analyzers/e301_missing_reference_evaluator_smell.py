@@ -12,7 +12,7 @@ from analyzers.base import make_finding
 ANALYZER_ID = "E301_MISSING_REFERENCE_EVALUATOR_SMELL"
 RULE_ID = "INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE"
 
-REGISTRY_REL = "data/registries/reference_evaluator_registry.json"
+REGISTRY_REL = "contracts/registry/reference_evaluator_registry.json"
 REQUIRED_EVALUATOR_IDS = (
     "ref.energy_ledger",
     "ref.coupling_scheduler",
@@ -20,7 +20,7 @@ REQUIRED_EVALUATOR_IDS = (
     "ref.compiled_model_verify",
 )
 REQUIRED_PATHS = (
-    "meta/reference/reference_engine.py",
+    "tools/repo/meta/reference/reference_engine.py",
     "tools/meta/tool_run_reference_suite.py",
 )
 

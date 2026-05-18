@@ -15,7 +15,7 @@ WATCH_PREFIXES = (
     "contracts/schemas/logic/debug_trace_request.schema",
     "contracts/schemas/logic/debug_trace_artifact.schema",
     "contracts/schemas/logic/debug_sampling_policy.schema",
-    "data/registries/debug_sampling_policy_registry.json",
+    "contracts/registry/debug_sampling_policy_registry.json",
     "game/domains/logic/debug/debug_engine.py",
     "tools/logic/tool_replay_trace_window.py",
 )
@@ -84,7 +84,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    registry_rel = "data/registries/debug_sampling_policy_registry.json"
+    registry_rel = "contracts/registry/debug_sampling_policy_registry.json"
     registry_text = _read_text(repo_root, registry_rel)
     for token in ("debug.sample.default", "max_points", "max_ticks", "max_samples", "throttle_strategy"):
         if token in registry_text:

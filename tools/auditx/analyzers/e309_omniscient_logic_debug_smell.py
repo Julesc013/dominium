@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e309_omniscient_logic_debug_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/",
-    "data/registries/instrument_type_registry.json",
+    "contracts/registry/instrument_type_registry.json",
     "game/domains/logic/",
     "tools/logic/",
 )
@@ -105,7 +105,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    instrument_rel = "data/registries/instrument_type_registry.json"
+    instrument_rel = "contracts/registry/instrument_type_registry.json"
     instrument_payload, instrument_err = _read_json(repo_root, instrument_rel)
     instrument_rows = list((dict(instrument_payload.get("record") or {})).get("instrument_types") or instrument_payload.get("instrument_types") or [])
     known_instrument_ids = {

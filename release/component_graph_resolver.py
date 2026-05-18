@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from lib.provides.provider_resolution import (
+from tools.libraries.provides.provider_resolution import (
     RESOLUTION_POLICY_DETERMINISTIC_HIGHEST_PRIORITY,
     resolve_providers,
 )

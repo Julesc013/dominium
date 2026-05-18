@@ -160,7 +160,7 @@
   "canonical_vs_derived_distinctions": {
     "canonical_surfaces": [
       "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
-      "data/release/operator_transaction_and_downgrade_registry.json",
+      "contracts/registry/release/operator_transaction_and_downgrade_registry.json",
       "canonical release-index and release-contract-profile references",
       "governed transaction records when later doctrine explicitly defines them"
     ],
@@ -191,17 +191,17 @@
     "docs/release/RELEASE_INDEX_MODEL.md",
     "docs/release/RELEASE_INDEX_RESOLUTION_POLICY.md",
     "docs/release/RELEASE_MANIFEST_MODEL.md",
-    "repo/release_policy.toml",
+    "contracts/repo/release_policy.toml",
     "release/update_resolver.py",
-    "updates/stable.json",
-    "updates/pinned.json",
-    "updates/nightly.json",
-    "data/registries/release_channel_registry.json",
-    "data/registries/install_profile_registry.json",
-    "data/registries/target_matrix_registry.json",
-    "data/registries/component_graph_registry.json",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/refusal_code_registry.json",
+    "release/updates/stable.json",
+    "release/updates/pinned.json",
+    "release/updates/nightly.json",
+    "contracts/registry/release_channel_registry.json",
+    "contracts/registry/install_profile_registry.json",
+    "contracts/registry/target_matrix_registry.json",
+    "contracts/registry/component_graph_registry.json",
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/refusal_code_registry.json",
     "tools/controlx/README.md"
   ],
   "ambiguities_eliminated": [

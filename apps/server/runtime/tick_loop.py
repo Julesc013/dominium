@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from net.policies.policy_server_authoritative import advance_authoritative_tick
+from tools.network.policies.policy_server_authoritative import advance_authoritative_tick
 from engine.time import ANCHOR_REASON_INTERVAL, emit_epoch_anchor
 from apps.server.net.loopback_transport import broadcast_tick_stream, service_loopback_control_channel, stream_server_log_event
 from tools.xstack.compatx.canonical_json import canonical_sha256

@@ -58,7 +58,7 @@ def default_descriptor(
     platform_probe: Mapping[str, object] | None = None,
 ) -> dict:
     ensure_repo_root(repo_root)
-    from compat import build_default_endpoint_descriptor
+    from tools.validators.compatibility import build_default_endpoint_descriptor
 
     return build_default_endpoint_descriptor(
         repo_root,

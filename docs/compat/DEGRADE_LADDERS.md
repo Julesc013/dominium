@@ -27,8 +27,8 @@ Each degrade rule binds:
 - `user_message_key`
 - deterministic metadata
 
-Rules are declared per product in `data/registries/degrade_ladder_registry.json`.
-Shared capability fallback chains are declared in `data/registries/capability_fallback_registry.json`.
+Rules are declared per product in `contracts/registry/degrade_ladder_registry.json`.
+Shared capability fallback chains are declared in `contracts/registry/capability_fallback_registry.json`.
 
 ## Deterministic Application
 Rules are applied in stable order:

@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "tools/xstack/sessionx/net_handshake.py",
     "tools/security/tool_securex_verify_pack.py",
     "tools/security/tool_securex_verify_lockfile.py",
-    "data/registries/securex_policy_registry.json",
+    "contracts/registry/securex_policy_registry.json",
 )
 
 
@@ -53,12 +53,12 @@ def run(graph, repo_root, changed_files=None):
                 category="net.signature_bypass_smell",
                 severity="RISK",
                 confidence=0.94,
-                file_path="data/registries/securex_policy_registry.json",
+                file_path="contracts/registry/securex_policy_registry.json",
                 evidence=["SecureX policy registry is missing or invalid JSON."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/securex_policy_registry.json"],
+                related_paths=["contracts/registry/securex_policy_registry.json"],
             )
         )
         return findings
@@ -78,12 +78,12 @@ def run(graph, repo_root, changed_files=None):
                 category="net.signature_bypass_smell",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/securex_policy_registry.json",
+                file_path="contracts/registry/securex_policy_registry.json",
                 evidence=["Missing canonical strict SecureX policy securex.policy.rank_strict."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/securex_policy_registry.json"],
+                related_paths=["contracts/registry/securex_policy_registry.json"],
             )
         )
         return findings
@@ -95,12 +95,12 @@ def run(graph, repo_root, changed_files=None):
                 category="net.signature_bypass_smell",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/securex_policy_registry.json",
+                file_path="contracts/registry/securex_policy_registry.json",
                 evidence=["securex.policy.rank_strict has allow_unsigned=true."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/securex_policy_registry.json"],
+                related_paths=["contracts/registry/securex_policy_registry.json"],
             )
         )
     if not bool(rank_row.get("signature_verification_required", False)):
@@ -110,12 +110,12 @@ def run(graph, repo_root, changed_files=None):
                 category="net.signature_bypass_smell",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/securex_policy_registry.json",
+                file_path="contracts/registry/securex_policy_registry.json",
                 evidence=["securex.policy.rank_strict has signature_verification_required=false."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/securex_policy_registry.json"],
+                related_paths=["contracts/registry/securex_policy_registry.json"],
             )
         )
 

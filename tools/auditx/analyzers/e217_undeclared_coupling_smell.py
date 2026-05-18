@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E217_UNDECLARED_COUPLING_SMELL"
-_COUPLING_REGISTRY_REL = "data/registries/coupling_contract_registry.json"
+_COUPLING_REGISTRY_REL = "contracts/registry/coupling_contract_registry.json"
 _REQUIRED_CONTRACTS = (
     ("energy_coupling", "ELEC", "THERM", "energy_transform"),
     ("energy_coupling", "FIELD", "THERM", "constitutive_model"),

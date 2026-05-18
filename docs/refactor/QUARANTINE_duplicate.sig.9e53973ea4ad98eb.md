@@ -12,25 +12,25 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/fidelity/__init__.py`
+- Canonical Candidate: `src/tools/governance/fidelity/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/fidelity/__init__.py`
-- `src/control/fidelity/fidelity_engine.py`
-- `src/control/negotiation/__init__.py`
-- `src/control/negotiation/negotiation_kernel.py`
+- `src/tools/governance/fidelity/__init__.py`
+- `src/tools/governance/fidelity/fidelity_engine.py`
+- `src/tools/governance/negotiation/__init__.py`
+- `src/tools/governance/negotiation/negotiation_kernel.py`
 
 ## Scorecard
 
-- `src/control/fidelity/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
+- `src/tools/governance/fidelity/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
 - `src/control/__init__.py` disposition=`quarantine` rank=`2` total_score=`71.79` risk=`HIGH`
-- `src/control/negotiation/__init__.py` disposition=`quarantine` rank=`3` total_score=`70.3` risk=`HIGH`
-- `src/control/fidelity/fidelity_engine.py` disposition=`merge` rank=`4` total_score=`59.58` risk=`HIGH`
-- `src/control/negotiation/negotiation_kernel.py` disposition=`merge` rank=`5` total_score=`51.87` risk=`HIGH`
+- `src/tools/governance/negotiation/__init__.py` disposition=`quarantine` rank=`3` total_score=`70.3` risk=`HIGH`
+- `src/tools/governance/fidelity/fidelity_engine.py` disposition=`merge` rank=`4` total_score=`59.58` risk=`HIGH`
+- `src/tools/governance/negotiation/negotiation_kernel.py` disposition=`merge` rank=`5` total_score=`51.87` risk=`HIGH`
 
 ## Usage Sites
 

@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/explain/explain_engine.py`
+- Canonical Candidate: `src/tools/repo/meta/explain/explain_engine.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/meta/explain/explain_engine.py`
+- `src/tools/repo/meta/explain/explain_engine.py`
 - `src/physics/energy/energy_ledger_engine.py`
 - `src/physics/entropy/entropy_engine.py`
 
 ## Scorecard
 
-- `src/meta/explain/explain_engine.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`HIGH`
+- `src/tools/repo/meta/explain/explain_engine.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`HIGH`
 - `src/physics/entropy/entropy_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
 - `src/physics/energy/energy_ledger_engine.py` disposition=`merge` rank=`3` total_score=`72.92` risk=`HIGH`
 

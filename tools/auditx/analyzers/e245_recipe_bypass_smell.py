@@ -93,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                             ],
                             related_paths=[
                                 rel_path,
-                                "data/registries/reaction_profile_registry.json",
+                                "contracts/registry/reaction_profile_registry.json",
                                 "tools/xstack/sessionx/process_runtime.py",
                             ],
                         )

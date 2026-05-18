@@ -22,10 +22,10 @@ _DEFAULT_METRIC_PROFILE_ID = "geo.metric.euclidean"
 _DEFAULT_PARTITION_PROFILE_ID = "geo.partition.grid_zd"
 _DEFAULT_PROJECTION_PROFILE_ID = "geo.projection.perspective_3d"
 _REGISTRY_PATHS = {
-    "topology": "data/registries/space_topology_profile_registry.json",
-    "metric": "data/registries/metric_profile_registry.json",
-    "partition": "data/registries/partition_profile_registry.json",
-    "projection": "data/registries/projection_profile_registry.json",
+    "topology": "contracts/registry/space_topology_profile_registry.json",
+    "metric": "contracts/registry/metric_profile_registry.json",
+    "partition": "contracts/registry/partition_profile_registry.json",
+    "projection": "contracts/registry/projection_profile_registry.json",
 }
 _QUERY_CACHE: Dict[str, dict] = {}
 

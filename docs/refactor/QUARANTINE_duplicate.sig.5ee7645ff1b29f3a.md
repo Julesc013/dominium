@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/net/policies/policy_server_authoritative.py`
+- Canonical Candidate: `src/tools/network/policies/policy_server_authoritative.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/net/policies/policy_server_authoritative.py`
-- `src/net/srz/shard_coordinator.py`
+- `src/tools/network/policies/policy_server_authoritative.py`
+- `src/tools/network/srz/shard_coordinator.py`
 - `src/server/server_boot.py`
 
 ## Scorecard
 
-- `src/net/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`66.07` risk=`HIGH`
+- `src/tools/network/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`66.07` risk=`HIGH`
 - `src/server/server_boot.py` disposition=`quarantine` rank=`2` total_score=`64.46` risk=`HIGH`
-- `src/net/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`51.83` risk=`HIGH`
+- `src/tools/network/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`51.83` risk=`HIGH`
 
 ## Usage Sites
 

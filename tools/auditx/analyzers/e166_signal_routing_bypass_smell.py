@@ -53,7 +53,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-SIGNALS-USE-ABS-ROUTING"],
-                related_paths=[transport_rel, "core/graph/routing_engine.py"],
+                related_paths=[transport_rel, "tools/core/graph/routing_engine.py"],
             )
         )
 
@@ -92,7 +92,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="TODO-BLOCKED",
                             recommended_action="REWRITE",
                             related_invariants=["INV-SIGNALS-USE-ABS-ROUTING"],
-                            related_paths=[rel_path, "core/graph/routing_engine.py"],
+                            related_paths=[rel_path, "tools/core/graph/routing_engine.py"],
                         )
                     )
                     break

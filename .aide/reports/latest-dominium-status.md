@@ -109,3 +109,15 @@ Next task: `MOVE-ROUTER-01 - Apply Deterministic Bad-Root Router Safe Subset`.
   bad roots.
 
 Next task: `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.
+
+## MOVE-ROUTER-02 Additions
+
+- Repaired first-wave active references/imports/build paths after the bad-root move.
+- Added MOVE-ROUTER-02 repair, validation, blocker, build, test, root-matrix, and readiness evidence under `.aide/reports/`.
+- Added `docs/repo/audits/MOVE_ROUTER_02_REPAIR_AFTER_ROUTING.md`.
+- Added `docs/repo/root-recycling/MOVE_ROUTER_02_REPAIR_RESULT.md`.
+- Current root summary: 0 tracked files under former bad roots.
+- Repair summary: 33,316 path replacements, 76 import replacements, 3 runtime shim packages.
+- Validation summary: bad-root absence PASS, strict repo/root validators PASS, CMake configure PASS, build/TestX PARTIAL.
+
+Next task: `MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.

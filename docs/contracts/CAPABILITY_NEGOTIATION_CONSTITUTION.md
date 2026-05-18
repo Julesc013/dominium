@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `data/registries/semantic_contract_registry.json`, `data/registries/capability_registry.json`, `data/registries/product_registry.json`, and `data/registries/compat_mode_registry.json`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `contracts/registry/semantic_contract_registry.json`, `contracts/registry/capability_registry.json`, `contracts/registry/product_registry.json`, and `contracts/registry/compat_mode_registry.json`.
 Stability: stable
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation
@@ -88,7 +88,7 @@ Given endpoints `A` and `B`:
    If no mutually supported version exists, negotiation refuses unless explicit read-only compatibility is allowed.
 
 3. Determine capability set.
-   Filter both endpoints to known capability ids from `data/registries/capability_registry.json`.
+   Filter both endpoints to known capability ids from `contracts/registry/capability_registry.json`.
    Enabled capabilities are the deterministic intersection of the filtered feature-capability sets.
    Required-capability mismatches refuse.
    Optional-capability mismatches generate degrade-plan entries.
@@ -181,6 +181,6 @@ If verification fails, replay refuses unless an explicit compatibility or migrat
 - `docs/meta/EXTENSION_DISCIPLINE.md`
 - `docs/geo/OVERLAY_CONFLICT_POLICIES.md`
 - `docs/modding/MOD_TRUST_AND_CAPABILITIES.md`
-- `data/registries/capability_registry.json`
-- `data/registries/product_registry.json`
-- `data/registries/compat_mode_registry.json`
+- `contracts/registry/capability_registry.json`
+- `contracts/registry/product_registry.json`
+- `contracts/registry/compat_mode_registry.json`

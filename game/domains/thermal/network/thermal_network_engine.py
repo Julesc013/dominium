@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from control.effects import get_effective_modifier
-from core.flow import normalize_flow_channel
-from core.graph.network_graph_engine import normalize_network_graph
+from runtime.control.effects import get_effective_modifier
+from tools.core.flow import normalize_flow_channel
+from tools.core.graph.network_graph_engine import normalize_network_graph
 from game.domains.fields.field_engine import build_field_cell
-from models.model_engine import (
+from tools.models.model_engine import (
     cache_policy_rows_by_id,
     evaluate_model_bindings,
     model_type_rows_by_id,
     normalize_constitutive_model_rows,
 )
-from safety.safety_engine import build_safety_event
+from tools.validators.safety.safety_engine import build_safety_event
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

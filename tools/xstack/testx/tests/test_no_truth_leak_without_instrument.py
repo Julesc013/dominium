@@ -30,9 +30,9 @@ def run(repo_root: str):
             "noise_policy_id": "noise.none",
         },
     }
-    surfaces = _load(repo_root, "data/registries/instrumentation_surface_registry.json")
-    access = _load(repo_root, "data/registries/access_policy_registry.json")
-    models = _load(repo_root, "data/registries/measurement_model_registry.json")
+    surfaces = _load(repo_root, "contracts/registry/instrumentation_surface_registry.json")
+    access = _load(repo_root, "contracts/registry/access_policy_registry.json")
+    models = _load(repo_root, "contracts/registry/measurement_model_registry.json")
     denied = observe_signal_row(
         signal_row=signal_row,
         current_tick=6,

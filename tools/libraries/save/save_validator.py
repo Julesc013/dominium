@@ -7,7 +7,7 @@ import os
 from typing import Dict, List, Mapping, Tuple
 
 from runtime.appshell.paths import VROOT_SAVES, get_current_virtual_paths, vpath_candidate_roots
-from compat.migration_lifecycle import (
+from tools.validators.compatibility.migration_lifecycle import (
     ARTIFACT_KIND_SAVE,
     DECISION_MIGRATE,
     DECISION_READ_ONLY,
@@ -15,7 +15,7 @@ from compat.migration_lifecycle import (
     REFUSAL_MIGRATION_NOT_ALLOWED,
     determine_migration_decision,
 )
-from meta.identity import UNIVERSAL_IDENTITY_FIELD
+from tools.validators.identity import UNIVERSAL_IDENTITY_FIELD
 from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

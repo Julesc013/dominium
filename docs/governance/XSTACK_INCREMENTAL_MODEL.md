@@ -52,9 +52,9 @@ Changed paths are mapped to:
 
 Inputs:
 
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
-- `data/registries/xstack_components.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
+- `contracts/registry/xstack_components.json`
 
 ### 2) Merkle hashing
 
@@ -97,7 +97,7 @@ Scheduler runs ready nodes in parallel with deterministic aggregation.
 
 ### 5) Artifact class handling
 
-Artifact classes from `data/registries/derived_artifacts.json`:
+Artifact classes from `contracts/registry/derived_artifacts.json`:
 
 - `CANONICAL`: deterministic and potentially gating
 - `DERIVED_VIEW`: human-facing, regenerable

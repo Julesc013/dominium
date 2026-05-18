@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/profile/appcore_profile.c
+FILE: runtime/shell/appcore/profile/appcore_profile.c
 MODULE: Dominium
 PURPOSE: Appcore profile module implementation (scaffold).
 NOTES: No filesystem probing beyond schema artifacts; deterministic order only.

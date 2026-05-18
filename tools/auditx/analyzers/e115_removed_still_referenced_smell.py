@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E115_REMOVED_STILL_REFERENCED_SMELL"
-DEPRECATIONS_REL = "data/governance/deprecations.json"
+DEPRECATIONS_REL = "content/data/governance/deprecations.json"
 TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
 
 

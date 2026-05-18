@@ -12,7 +12,7 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/proof/control_proof_bundle.py`
+- Canonical Candidate: `src/tools/governance/proof/control_proof_bundle.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
@@ -20,7 +20,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/client/render/renderers/hw_renderer_gl.py`
 - `src/client/render/snapshot_capture.py`
-- `src/control/proof/control_proof_bundle.py`
+- `src/tools/governance/proof/control_proof_bundle.py`
 - `src/embodiment/collision/macro_heightfield_provider.py`
 - `src/geo/edit/geometry_state_engine.py`
 - `src/geo/overlay/overlay_merge_engine.py`
@@ -30,7 +30,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Scorecard
 
-- `src/control/proof/control_proof_bundle.py` disposition=`canonical` rank=`1` total_score=`59.34` risk=`HIGH`
+- `src/tools/governance/proof/control_proof_bundle.py` disposition=`canonical` rank=`1` total_score=`59.34` risk=`HIGH`
 - `src/worldgen/earth/climate_field_engine.py` disposition=`quarantine` rank=`2` total_score=`55.56` risk=`HIGH`
 - `src/geo/worldgen/worldgen_engine.py` disposition=`quarantine` rank=`3` total_score=`53.43` risk=`HIGH`
 - `src/client/render/snapshot_capture.py` disposition=`quarantine` rank=`4` total_score=`50.84` risk=`HIGH`

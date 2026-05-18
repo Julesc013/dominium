@@ -23,71 +23,71 @@ def _rows(payload: dict, key: str) -> list[dict]:
 
 
 def load_eval_inputs(repo_root: str) -> dict:
-    state_vector_rows = _rows(_load_json(repo_root, "data/registries/state_vector_registry.json"), "state_vector_definitions")
+    state_vector_rows = _rows(_load_json(repo_root, "contracts/registry/state_vector_registry.json"), "state_vector_definitions")
     state_vector_rows.extend(
-        _rows(_load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_vectors.json"), "state_vector_definitions")
+        _rows(_load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_vectors.json"), "state_vector_definitions")
     )
     return {
-        "signal_type_registry_payload": _load_json(repo_root, "data/registries/signal_type_registry.json"),
-        "carrier_type_registry_payload": _load_json(repo_root, "data/registries/carrier_type_registry.json"),
-        "signal_delay_policy_registry_payload": _load_json(repo_root, "data/registries/signal_delay_policy_registry.json"),
-        "signal_noise_policy_registry_payload": _load_json(repo_root, "data/registries/signal_noise_policy_registry.json"),
-        "logic_noise_policy_registry_payload": _load_json(repo_root, "data/registries/logic_noise_policy_registry.json"),
-        "logic_security_policy_registry_payload": _load_json(repo_root, "data/registries/logic_security_policy_registry.json"),
-        "bus_encoding_registry_payload": _load_json(repo_root, "data/registries/bus_encoding_registry.json"),
-        "protocol_registry_payload": _load_json(repo_root, "data/registries/protocol_registry.json"),
-        "arbitration_policy_registry_payload": _load_json(repo_root, "data/registries/arbitration_policy_registry.json"),
-        "error_detection_policy_registry_payload": _load_json(repo_root, "data/registries/error_detection_policy_registry.json"),
-        "logic_policy_registry_payload": _load_json(repo_root, "data/registries/logic_policy_registry.json"),
-        "logic_network_policy_registry_payload": _load_json(repo_root, "data/registries/logic_network_policy_registry.json"),
+        "signal_type_registry_payload": _load_json(repo_root, "contracts/registry/signal_type_registry.json"),
+        "carrier_type_registry_payload": _load_json(repo_root, "contracts/registry/carrier_type_registry.json"),
+        "signal_delay_policy_registry_payload": _load_json(repo_root, "contracts/registry/signal_delay_policy_registry.json"),
+        "signal_noise_policy_registry_payload": _load_json(repo_root, "contracts/registry/signal_noise_policy_registry.json"),
+        "logic_noise_policy_registry_payload": _load_json(repo_root, "contracts/registry/logic_noise_policy_registry.json"),
+        "logic_security_policy_registry_payload": _load_json(repo_root, "contracts/registry/logic_security_policy_registry.json"),
+        "bus_encoding_registry_payload": _load_json(repo_root, "contracts/registry/bus_encoding_registry.json"),
+        "protocol_registry_payload": _load_json(repo_root, "contracts/registry/protocol_registry.json"),
+        "arbitration_policy_registry_payload": _load_json(repo_root, "contracts/registry/arbitration_policy_registry.json"),
+        "error_detection_policy_registry_payload": _load_json(repo_root, "contracts/registry/error_detection_policy_registry.json"),
+        "logic_policy_registry_payload": _load_json(repo_root, "contracts/registry/logic_policy_registry.json"),
+        "logic_network_policy_registry_payload": _load_json(repo_root, "contracts/registry/logic_network_policy_registry.json"),
         "logic_element_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json"),
             "logic_elements",
         ),
         "logic_behavior_model_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
             "logic_behavior_models",
         ),
         "logic_interface_signature_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
             "logic_interface_signatures",
         ),
         "logic_state_machine_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"),
             "state_machine_definitions",
         ),
         "watchdog_definition_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json"),
             "watchdog_definitions",
         ),
         "state_vector_definition_rows": state_vector_rows,
         "compute_budget_profile_registry_payload": _load_json(
-            repo_root, "data/registries/compute_budget_profile_registry.json"
+            repo_root, "contracts/registry/compute_budget_profile_registry.json"
         ),
         "compute_degrade_policy_registry_payload": _load_json(
-            repo_root, "data/registries/compute_degrade_policy_registry.json"
+            repo_root, "contracts/registry/compute_degrade_policy_registry.json"
         ),
-        "tolerance_policy_registry_payload": _load_json(repo_root, "data/registries/tolerance_policy_registry.json"),
-        "temporal_domain_registry_payload": _load_json(repo_root, "data/registries/temporal_domain_registry.json"),
-        "time_mapping_registry_payload": _load_json(repo_root, "data/registries/time_mapping_registry.json"),
-        "drift_policy_registry_payload": _load_json(repo_root, "data/registries/drift_policy_registry.json"),
-        "model_type_registry_payload": _load_json(repo_root, "data/registries/model_type_registry.json"),
-        "constitutive_model_registry_payload": _load_json(repo_root, "data/registries/constitutive_model_registry.json"),
-        "loss_policy_registry_payload": _load_json(repo_root, "data/registries/loss_policy_registry.json"),
-        "routing_policy_registry_payload": _load_json(repo_root, "data/registries/core_routing_policy_registry.json"),
-        "attenuation_policy_registry_payload": _load_json(repo_root, "data/registries/attenuation_policy_registry.json"),
-        "belief_policy_registry_payload": _load_json(repo_root, "data/registries/belief_policy_registry.json"),
+        "tolerance_policy_registry_payload": _load_json(repo_root, "contracts/registry/tolerance_policy_registry.json"),
+        "temporal_domain_registry_payload": _load_json(repo_root, "contracts/registry/temporal_domain_registry.json"),
+        "time_mapping_registry_payload": _load_json(repo_root, "contracts/registry/time_mapping_registry.json"),
+        "drift_policy_registry_payload": _load_json(repo_root, "contracts/registry/drift_policy_registry.json"),
+        "model_type_registry_payload": _load_json(repo_root, "contracts/registry/model_type_registry.json"),
+        "constitutive_model_registry_payload": _load_json(repo_root, "contracts/registry/constitutive_model_registry.json"),
+        "loss_policy_registry_payload": _load_json(repo_root, "contracts/registry/loss_policy_registry.json"),
+        "routing_policy_registry_payload": _load_json(repo_root, "contracts/registry/core_routing_policy_registry.json"),
+        "attenuation_policy_registry_payload": _load_json(repo_root, "contracts/registry/attenuation_policy_registry.json"),
+        "belief_policy_registry_payload": _load_json(repo_root, "contracts/registry/belief_policy_registry.json"),
     }
 
 
 def load_compile_inputs(repo_root: str) -> dict:
     return {
-        "compiled_type_registry_payload": _load_json(repo_root, "data/registries/compiled_type_registry.json"),
+        "compiled_type_registry_payload": _load_json(repo_root, "contracts/registry/compiled_type_registry.json"),
         "verification_procedure_registry_payload": _load_json(
-            repo_root, "data/registries/verification_procedure_registry.json"
+            repo_root, "contracts/registry/verification_procedure_registry.json"
         ),
         "logic_compile_policy_registry_payload": _load_json(
-            repo_root, "data/registries/logic_compile_policy_registry.json"
+            repo_root, "contracts/registry/logic_compile_policy_registry.json"
         ),
     }
 

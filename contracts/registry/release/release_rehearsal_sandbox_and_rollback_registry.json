@@ -202,11 +202,11 @@
     "tools/controlx/README.md",
     "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
     "release/update_resolver.py",
-    "updates/README.md",
-    "updates/stable.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/remediation_playbooks.json",
-    "data/registries/trust_root_registry.json",
+    "docs/release/updates/README.md",
+    "release/updates/stable.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/remediation_playbooks.json",
+    "contracts/registry/trust_root_registry.json",
     "docs/blueprint/FOUNDATION_READINESS_MATRIX.md"
   ],
   "ambiguities_eliminated": [

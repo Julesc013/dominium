@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from core.graph.routing_engine import RoutingError, query_route_result
+from tools.core.graph.routing_engine import RoutingError, query_route_result
 from game.domains.mobility.network.mobility_network_engine import (
     REFUSAL_MOBILITY_NETWORK_INVALID,
     REFUSAL_MOBILITY_NO_ROUTE,

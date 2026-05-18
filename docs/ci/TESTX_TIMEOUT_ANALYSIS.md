@@ -18,7 +18,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 ## TestX target behavior
 
-`testx_all` is currently manifest-driven through `scripts/dev/testx_proof_engine.py`. It selects CTest tests from `data/registries/testx_suites.json` and invokes CTest for the selected suite.
+`testx_all` is currently manifest-driven through `scripts/dev/testx_proof_engine.py`. It selects CTest tests from `contracts/registry/testx_suites.json` and invokes CTest for the selected suite.
 
 ## Determinism implications
 

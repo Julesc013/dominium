@@ -8,8 +8,8 @@ Replacement Target: release CLI reference regenerated from AppShell registry and
 
 # CLI Reference
 
-This reference is generated from `data/registries/command_registry.json`,
-`data/registries/refusal_to_exit_registry.json`, and the stable tool umbrella surface.
+This reference is generated from `contracts/registry/command_registry.json`,
+`contracts/registry/refusal_to_exit_registry.json`, and the stable tool umbrella surface.
 
 ## Getting Started
 

@@ -112,35 +112,35 @@
   "omega_inputs": [
     {
       "artifact_id": "omega1.worldgen_snapshot",
-      "path": "data/baselines/worldgen/baseline_worldgen_snapshot.json"
+      "path": "tests/fixtures/baselines/worldgen/baseline_worldgen_snapshot.json"
     },
     {
       "artifact_id": "omega2.baseline_universe_snapshot",
-      "path": "data/baselines/universe/baseline_universe_snapshot.json"
+      "path": "tests/fixtures/baselines/universe/baseline_universe_snapshot.json"
     },
     {
       "artifact_id": "omega3.gameplay_snapshot",
-      "path": "data/baselines/gameplay/gameplay_loop_snapshot.json"
+      "path": "tests/fixtures/baselines/gameplay/gameplay_loop_snapshot.json"
     },
     {
       "artifact_id": "omega4.disaster_baseline",
-      "path": "data/regression/disaster_suite_baseline.json"
+      "path": "tests/fixtures/regression/disaster_suite_baseline.json"
     },
     {
       "artifact_id": "omega5.ecosystem_baseline",
-      "path": "data/regression/ecosystem_verify_baseline.json"
+      "path": "tests/fixtures/regression/ecosystem_verify_baseline.json"
     },
     {
       "artifact_id": "omega6.update_sim_baseline",
-      "path": "data/regression/update_sim_baseline.json"
+      "path": "tests/fixtures/regression/update_sim_baseline.json"
     },
     {
       "artifact_id": "omega7.trust_baseline",
-      "path": "data/regression/trust_strict_baseline.json"
+      "path": "tests/fixtures/regression/trust_strict_baseline.json"
     },
     {
       "artifact_id": "omega8.archive_baseline",
-      "path": "data/regression/archive_baseline.json"
+      "path": "tests/fixtures/regression/archive_baseline.json"
     },
     {
       "artifact_id": "omega9.toolchain_run_manifest",

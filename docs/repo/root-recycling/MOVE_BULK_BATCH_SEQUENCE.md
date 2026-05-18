@@ -164,3 +164,20 @@ The active sequence now continues with:
 ```text
 MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing
 ```
+
+## MOVE-ROUTER-02 Partial Result
+
+MOVE-ROUTER-02 completed a first repair pass but did not reach final proof:
+
+- Former bad-root tracked files: 0.
+- Active path replacements recorded: 33,316.
+- Import replacements recorded: 76.
+- CMake configure: PASS.
+- Integrated fast/smoke build tests: PASS.
+- Broader TestX: FAIL.
+
+The active sequence now requires:
+
+```text
+MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing
+```

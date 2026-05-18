@@ -1372,7 +1372,7 @@ typedef enum server_mode {
 
 int server_main(int argc, char** argv)
 {
-    const char* control_registry_path = "data/registries/control_capabilities.registry";
+    const char* control_registry_path = "contracts/registry/control_capabilities.registry";
     const char* control_enable = 0;
     const char* data_root_override = 0;
     const char* log_root_override = 0;

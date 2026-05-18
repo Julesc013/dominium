@@ -210,7 +210,7 @@
   "canonical_vs_derived_distinctions": {
     "canonical_surfaces": [
       "docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md",
-      "data/release/release_ops_execution_envelope_registry.json",
+      "contracts/registry/release/release_ops_execution_envelope_registry.json",
       "upstream safety, operator, receipt, release, runtime, and checkpoint doctrine",
       "governed execution decisions where later doctrine explicitly defines them"
     ],
@@ -246,13 +246,13 @@
     "tools/xstack/sessionx/stage_parity.py",
     "tools/xstack/testx/tests/test_dryrun_tool_runs.py",
     "release/update_resolver.py",
-    "repo/release_policy.toml",
-    "updates/README.md",
-    "data/registries/release_resolution_policy_registry.json",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/trust_root_registry.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/remediation_playbooks.json"
+    "contracts/repo/release_policy.toml",
+    "docs/release/updates/README.md",
+    "contracts/registry/release_resolution_policy_registry.json",
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/trust_root_registry.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/remediation_playbooks.json"
   ],
   "ambiguities_eliminated": [
     "task or exposure does not equal execution authorization",

@@ -16,12 +16,12 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from tools.validators.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.audit.arch_audit_common import scan_duplicate_semantics  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-INVENTORY_JSON_REL = "data/audit/repo_inventory.json"
+INVENTORY_JSON_REL = "content/data/audit/repo_inventory.json"
 TREE_INDEX_MD_REL = "docs/audit/REPO_TREE_INDEX.md"
 MODULE_DUPLICATION_REPORT_REL = "docs/audit/MODULE_DUPLICATION_REPORT.md"
 ENTRYPOINT_MAP_REL = "docs/audit/ENTRYPOINT_MAP.md"
@@ -279,7 +279,7 @@ def _detect_entrypoints(text: str) -> list[str]:
 
 
 def _product_registry_rows(repo_root: str) -> dict[str, dict]:
-    payload = _read_json(_repo_abs(repo_root, "data/registries/product_registry.json"))
+    payload = _read_json(_repo_abs(repo_root, "contracts/registry/product_registry.json"))
     record = _json_map(payload.get("record"))
     rows = {}
     for row in _json_list(record.get("products")):

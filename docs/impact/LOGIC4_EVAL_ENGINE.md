@@ -8,8 +8,8 @@ Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
-- data/registries/process_registry.json
-- control/proof/control_proof_bundle.py
+- contracts/registry/process_registry.json
+- tools/governance/proof/control_proof_bundle.py
 - logic/__init__.py
 - logic/eval/__init__.py
 - logic/eval/common.py

@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `data/registries/semantic_contract_registry.json`, and `schema/universe/universe_contract_bundle.schema`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `contracts/registry/semantic_contract_registry.json`, and `schema/universe/universe_contract_bundle.schema`.
 Stability: stable
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation
@@ -31,7 +31,7 @@ Schemas version structure.
 Semantic contracts version meaning.
 
 ## Registry
-- Source of truth: `data/registries/semantic_contract_registry.json`
+- Source of truth: `contracts/registry/semantic_contract_registry.json`
 - Initial baseline is the `v1` family:
   - `contract.worldgen.refinement.v1`
   - `contract.overlay.merge.v1`
@@ -103,5 +103,5 @@ Breaking semantic changes require all of:
 - `docs/architecture/SEMANTIC_STABILITY_POLICY.md`
 - `docs/governance/COMPATX_MODEL.md`
 - `docs/universe/UNIVERSE_IDENTITY_STATE.md`
-- `data/registries/semantic_contract_registry.json`
+- `contracts/registry/semantic_contract_registry.json`
 - `schema/universe/universe_contract_bundle.schema`

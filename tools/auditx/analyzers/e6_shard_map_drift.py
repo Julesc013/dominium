@@ -11,9 +11,9 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E6_SHARD_MAP_DRIFT"
 WATCH_PREFIXES = (
-    "data/registries/shard_map_registry.json",
-    "data/registries/perception_interest_policy_registry.json",
-    "data/registries/net_server_policy_registry.json",
+    "contracts/registry/shard_map_registry.json",
+    "contracts/registry/perception_interest_policy_registry.json",
+    "contracts/registry/net_server_policy_registry.json",
     "src/net/srz/",
 )
 
@@ -47,13 +47,13 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    shard_rows, shard_err = _record_rows(repo_root, "data/registries/shard_map_registry.json", "shard_maps")
+    shard_rows, shard_err = _record_rows(repo_root, "contracts/registry/shard_map_registry.json", "shard_maps")
     perception_rows, perception_err = _record_rows(
         repo_root,
-        "data/registries/perception_interest_policy_registry.json",
+        "contracts/registry/perception_interest_policy_registry.json",
         "policies",
     )
-    server_rows, server_err = _record_rows(repo_root, "data/registries/net_server_policy_registry.json", "policies")
+    server_rows, server_err = _record_rows(repo_root, "contracts/registry/net_server_policy_registry.json", "policies")
     if shard_err or perception_err or server_err:
         findings.append(
             make_finding(
@@ -61,7 +61,7 @@ def run(graph, repo_root, changed_files=None):
                 category="net.shard_map_drift",
                 severity="RISK",
                 confidence=0.94,
-                file_path="data/registries/shard_map_registry.json",
+                file_path="contracts/registry/shard_map_registry.json",
                 evidence=["One or more SRZ hybrid registry files are missing or invalid JSON."],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
@@ -70,9 +70,9 @@ def run(graph, repo_root, changed_files=None):
                     "INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP",
                 ],
                 related_paths=[
-                    "data/registries/shard_map_registry.json",
-                    "data/registries/perception_interest_policy_registry.json",
-                    "data/registries/net_server_policy_registry.json",
+                    "contracts/registry/shard_map_registry.json",
+                    "contracts/registry/perception_interest_policy_registry.json",
+                    "contracts/registry/net_server_policy_registry.json",
                 ],
             )
         )
@@ -106,7 +106,7 @@ def run(graph, repo_root, changed_files=None):
                     category="net.shard_map_drift",
                     severity="RISK",
                     confidence=0.9,
-                    file_path="data/registries/net_server_policy_registry.json",
+                    file_path="contracts/registry/net_server_policy_registry.json",
                     evidence=[
                         "server policy {} allows policy.net.srz_hybrid but has invalid extensions.default_shard_map_id={}".format(
                             server_policy_id,
@@ -117,8 +117,8 @@ def run(graph, repo_root, changed_files=None):
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP"],
                     related_paths=[
-                        "data/registries/net_server_policy_registry.json",
-                        "data/registries/shard_map_registry.json",
+                        "contracts/registry/net_server_policy_registry.json",
+                        "contracts/registry/shard_map_registry.json",
                     ],
                 )
             )
@@ -130,7 +130,7 @@ def run(graph, repo_root, changed_files=None):
                     category="net.shard_map_drift",
                     severity="RISK",
                     confidence=0.9,
-                    file_path="data/registries/net_server_policy_registry.json",
+                    file_path="contracts/registry/net_server_policy_registry.json",
                     evidence=[
                         "server policy {} allows policy.net.srz_hybrid but has invalid extensions.perception_interest_policy_id={}".format(
                             server_policy_id,
@@ -141,8 +141,8 @@ def run(graph, repo_root, changed_files=None):
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-SRZ-HYBRID-ROUTING-USES-SHARD-MAP"],
                     related_paths=[
-                        "data/registries/net_server_policy_registry.json",
-                        "data/registries/perception_interest_policy_registry.json",
+                        "contracts/registry/net_server_policy_registry.json",
+                        "contracts/registry/perception_interest_policy_registry.json",
                     ],
                 )
             )

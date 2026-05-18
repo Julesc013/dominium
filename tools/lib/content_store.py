@@ -8,13 +8,13 @@ import os
 import shutil
 from typing import Dict, Iterable, List, Optional, Tuple
 
-from lib.artifact import (
+from tools.libraries.artifact import (
     ARTIFACT_DEGRADE_STRICT_REFUSE,
     ARTIFACT_KIND_PROFILE_BUNDLE,
     artifact_kind_from_store_category,
     canonicalize_artifact_manifest,
 )
-from lib.provides import (
+from tools.libraries.provides import (
     infer_resolution_policy_id,
     normalize_provides_declarations,
     normalize_provides_resolutions,

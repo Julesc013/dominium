@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: post-`Ζ` frontier planning, post-`Ζ` admission checkpoints
 Replacement Target: later post-`Ζ` frontier planning artifacts may refine sequence without replacing the ordering law frozen here
-Binding Sources: `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md`, `docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md`, `docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md`, `docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`
+Binding Sources: `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/ZETA_REMAINING_FRONTIER_AND_CLOSURE_BASELINE.md`, `docs/planning/ZETA_FINAL_ADMISSIBLE_SCOPE.md`, `docs/planning/TRUST_AWARE_REFUSAL_AND_CONTAINMENT_RECONCILIATION.md`, `docs/release/LIVE_CUTOVER_RECEIPT_PIPELINE_ANCHORIZATION.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`
 
 # Next Execution Order Post-Ζeta
 

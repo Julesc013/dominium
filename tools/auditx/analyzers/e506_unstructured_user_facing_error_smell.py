@@ -38,7 +38,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.unstructured_user_facing_error_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/audit/dist5_ux_smoke.json",
+                file_path=rel_path or "content/data/audit/dist5_ux_smoke.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "user-facing UX output is missing the structured public contract",
@@ -46,7 +46,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="NORMALIZE_USER_FACING_OUTPUT_STRUCTURE",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-REFUSALS-MUST-HAVE-REMEDIATION"],
-                related_paths=[rel_path or "data/audit/dist5_ux_smoke.json", "tools/dist/ux_smoke_common.py"],
+                related_paths=[rel_path or "content/data/audit/dist5_ux_smoke.json", "tools/dist/ux_smoke_common.py"],
             )
         )
     return findings

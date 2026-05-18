@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `data/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `data/planning/reconciliation/subsystem_classification.json`, `data/planning/reconciliation/assumption_invalidations.json`, `data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `content/data/planning/reconciliation/subsystem_classification.json`, `content/data/planning/reconciliation/assumption_invalidations.json`, `content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`
 
 # Foundation Readiness Report
 
@@ -56,7 +56,7 @@ What is still missing are the exact explicit foundations the blueprint warned ab
 
 ### 3.4 Build, Release, and Control-Plane Readiness
 
-This axis is the strongest after semantic readiness. The repo already has `release`, `repo`, `updates`, `data/architecture`, `data/registries`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/securex`, `repo/release_policy.toml`, `schema/release/build_id.schema`, and `schema/identity/artifact_identity.schema`.
+This axis is the strongest after semantic readiness. The repo already has `release`, `repo`, `updates`, `data/architecture`, `data/registries`, `tools/xstack`, `tools/release`, `tools/distribution`, `tools/compatx`, `tools/securex`, `contracts/repo/release_policy.toml`, `schema/release/build_id.schema`, and `schema/identity/artifact_identity.schema`.
 
 The important conclusion is that Υ is mostly consolidation, constitution-writing, and identity cleanup, not greenfield control-plane invention.
 
@@ -230,7 +230,7 @@ The exact artifacts named in the latest planning direction, such as `VERSIONING_
 
 Equivalent live support already exists in:
 
-- `repo/release_policy.toml`
+- `contracts/repo/release_policy.toml`
 - `schema/release/build_id.schema`
 - `schema/identity/artifact_identity.schema`
 - `schema/release/release_channel.schema`
@@ -303,7 +303,7 @@ Later prompts should not reinvent:
 - the live semantic/domain roots already present across reality, worldgen, geo, materials, logic, signals, system, universe, and pack surfaces
 - existing rollback, yanked-release, transaction-log, checkpoint, and replay primitives
 
-P-4 should also avoid consuming `docs/blueprint/FINAL_PROMPT_INVENTORY.md` or `data/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
+P-4 should also avoid consuming `docs/blueprint/FINAL_PROMPT_INVENTORY.md` or `content/data/blueprint/final_prompt_inventory.json` as if they were still self-sufficient. Those are now advisory inputs that must be filtered through P-2 and P-3.
 
 ## 7. What Later Prompts Should Extend Instead of Replace
 

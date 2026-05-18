@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from meta.numeric import deterministic_divide
+from tools.repo.meta.numeric import deterministic_divide
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

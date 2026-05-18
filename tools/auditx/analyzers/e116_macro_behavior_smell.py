@@ -11,7 +11,7 @@ ANALYZER_ID = "E116_MACRO_BEHAVIOR_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/process_runtime.py",
     "game/domains/materials/construction/construction_engine.py",
-    "control/ir/control_ir_programs.py",
+    "tools/governance/ir/control_ir_programs.py",
 )
 
 
@@ -73,7 +73,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="REWRITE",
                 related_invariants=["INV-NO-MACRO-BEHAVIOR-WITHOUT-IR"],
-                related_paths=[runtime_rel, "control/ir/control_ir_programs.py"],
+                related_paths=[runtime_rel, "tools/governance/ir/control_ir_programs.py"],
             )
         )
 

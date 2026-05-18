@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.mode_fallback_not_logged_smell",
                 severity="RISK",
                 confidence=0.98,
-                file_path=rel_path or "data/audit/dist_platform_matrix.json",
+                file_path=rel_path or "contracts/audit/dist_platform_matrix.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "forced fallback mode drifted or failed to emit the required degrade event",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ENSURE_APPSHELL_MODE_DEGRADED_EVENT_IS_EMITTED_FOR_FORCED_FALLBACKS",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-DIST-PLATFORM-MATRIX-MUST-EXIST"],
-                related_paths=[rel_path or "data/audit/dist_platform_matrix.json", "tools/dist/dist_platform_matrix_common.py"],
+                related_paths=[rel_path or "contracts/audit/dist_platform_matrix.json", "tools/dist/dist_platform_matrix_common.py"],
             )
         )
     return findings

@@ -18,17 +18,17 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/compat/capability_negotiation.py`
-- `src/compat/migration_lifecycle.py`
-- `src/lib/install/install_validator.py`
+- `src/tools/validators/compatibility/capability_negotiation.py`
+- `src/tools/validators/compatibility/migration_lifecycle.py`
+- `src/tools/libraries/install/install_validator.py`
 - `tools/governance/tool_migration_report.py`
 
 ## Scorecard
 
 - `tools/governance/tool_migration_report.py` disposition=`canonical` rank=`1` total_score=`68.51` risk=`HIGH`
-- `src/compat/migration_lifecycle.py` disposition=`quarantine` rank=`2` total_score=`61.18` risk=`HIGH`
-- `src/compat/capability_negotiation.py` disposition=`quarantine` rank=`3` total_score=`59.29` risk=`HIGH`
-- `src/lib/install/install_validator.py` disposition=`merge` rank=`4` total_score=`49.06` risk=`HIGH`
+- `src/tools/validators/compatibility/migration_lifecycle.py` disposition=`quarantine` rank=`2` total_score=`61.18` risk=`HIGH`
+- `src/tools/validators/compatibility/capability_negotiation.py` disposition=`quarantine` rank=`3` total_score=`59.29` risk=`HIGH`
+- `src/tools/libraries/install/install_validator.py` disposition=`merge` rank=`4` total_score=`49.06` risk=`HIGH`
 
 ## Usage Sites
 

@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E57_DIMENSION_DRIFT_SMELL"
-DIMENSION_REGISTRY_PATH = "data/registries/dimension_registry.json"
-UNIT_REGISTRY_PATH = "data/registries/unit_registry.json"
-QUANTITY_TYPE_REGISTRY_PATH = "data/registries/quantity_type_registry.json"
+DIMENSION_REGISTRY_PATH = "contracts/registry/dimension_registry.json"
+UNIT_REGISTRY_PATH = "contracts/registry/unit_registry.json"
+QUANTITY_TYPE_REGISTRY_PATH = "contracts/registry/quantity_type_registry.json"
 LEDGER_ENGINE_PATH = "game/domains/reality/ledger/ledger_engine.py"
 
 

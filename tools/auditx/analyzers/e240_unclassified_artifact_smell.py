@@ -17,12 +17,12 @@ class UnclassifiedArtifactSmell:
 
 
 WATCH_PREFIXES = (
-    "data/registries/info_artifact_family_registry.json",
-    "data/registries/provenance_classification_registry.json",
+    "contracts/registry/info_artifact_family_registry.json",
+    "contracts/registry/provenance_classification_registry.json",
 )
 
-_INFO_REGISTRY_REL = "data/registries/info_artifact_family_registry.json"
-_CLASSIFICATION_REGISTRY_REL = "data/registries/provenance_classification_registry.json"
+_INFO_REGISTRY_REL = "contracts/registry/info_artifact_family_registry.json"
+_CLASSIFICATION_REGISTRY_REL = "contracts/registry/provenance_classification_registry.json"
 
 
 def _read_json(repo_root: str, rel_path: str) -> dict:

@@ -17,14 +17,14 @@ REQUIRED_TOKENS = {
         "refusal.mod.trust_denied",
         "refusal.mod.nondeterminism_forbidden",
     ),
-    "data/registries/mod_policy_registry.json": (
+    "contracts/registry/mod_policy_registry.json": (
         "mod_policy.anarchy",
         "mod_policy.strict",
         "mod_policy.lab",
         "overlay.conflict.refuse",
         "overlay.conflict.last_wins",
     ),
-    "modding/mod_policy_engine.py": (
+    "contracts/package/modding/mod_policy_engine.py": (
         "REFUSAL_MOD_TRUST_DENIED",
         "REFUSAL_MOD_NONDETERMINISM_FORBIDDEN",
         "allowed_trust_levels",

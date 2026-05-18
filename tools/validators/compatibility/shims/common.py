@@ -7,7 +7,7 @@ import sys
 from typing import Iterable, Mapping
 
 from runtime.appshell.logging import get_current_log_engine, log_emit
-from meta.stability import build_stability_marker
+from tools.validators.stability import build_stability_marker
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

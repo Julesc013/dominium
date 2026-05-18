@@ -51,7 +51,7 @@ python scripts/dev/gate.py strict --repo-root .
 python scripts/dev/gate.py full --repo-root .
 ```
 
-Profile behavior is defined in `data/registries/gate_policy.json` and documented in `docs/governance/GATE_THROUGHPUT_POLICY.md`.
+Profile behavior is defined in `contracts/registry/gate_policy.json` and documented in `docs/governance/GATE_THROUGHPUT_POLICY.md`.
 
 ## FAST / STRICT / FULL Expectations
 
@@ -63,8 +63,8 @@ XStack planning and impact analysis:
 
 - `tools/xstack/core/impact_graph.py`
 - `tools/xstack/core/plan.py`
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
 
 ## Determinism Requirements
 
@@ -121,7 +121,7 @@ Typical flow:
 
 1. Create/update pack content under `data/packs/<pack_id>/`.
 2. Provide/update `pack_manifest.json` and `pack.manifest`.
-3. Register new process/material/scenario/worldgen entries in relevant registries (for example `data/registries/process_registry.json` or `data/registries/worldgen_module_registry.json`).
+3. Register new process/material/scenario/worldgen entries in relevant registries (for example `contracts/registry/process_registry.json` or `contracts/registry/worldgen_module_registry.json`).
 4. Ensure capabilities and law constraints are explicit in profile/law registries.
 5. Add TestX coverage for new refusal/selection behavior.
 
@@ -135,8 +135,8 @@ Use existing suites:
 
 If your change affects XStack routing, update:
 
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
 
 and corresponding tests:
 

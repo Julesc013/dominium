@@ -53,7 +53,7 @@ _ALLOWED_FILES = {
     "tools/xstack/sessionx/process_runtime.py",
     "tools/xstack/repox/check.py",
 }
-_COUPLING_REGISTRY_REL = "data/registries/coupling_contract_registry.json"
+_COUPLING_REGISTRY_REL = "contracts/registry/coupling_contract_registry.json"
 
 
 def _norm(path: str) -> str:

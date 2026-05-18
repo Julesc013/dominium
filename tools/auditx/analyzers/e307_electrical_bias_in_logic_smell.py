@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/",
     "contracts/schemas/logic/",
-    "data/registries/signal_type_registry.json",
+    "contracts/registry/signal_type_registry.json",
     "game/domains/logic/",
     "tools/logic/",
 )
@@ -52,7 +52,7 @@ def _logic_scan_paths(repo_root: str):
     fixed_paths = (
         "contracts/schemas/logic/signal_type.schema",
         "contracts/schemas/logic/logic_policy.schema",
-        "data/registries/signal_type_registry.json",
+        "contracts/registry/signal_type_registry.json",
     )
     for rel_path in fixed_paths:
         yield rel_path

@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-9 closure audit, post-baseline extraction checkpoints
 Replacement Target: later explicit XStack/AIDE extraction-review checkpoint or approved spinout checkpoint only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `data/audit/ultra_repo_audit_system_inventory.json`, `data/audit/ultra_repo_audit_reuse_plan.json`, `data/audit/ultra_repo_audit_product_assembly_plan.json`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `data/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `data/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `data/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `data/xstack/aide_adapter_contract.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `data/xstack/codex_repo_operating_contract.json`, `tools/xstack/compatx/README.md`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/testx/README.md`, `tools/xstack/compatx/versioning.py`, `tools/xstack/compatx/profile_checks.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx/runner.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/tool_surface_adapter.py`, `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, `validation/validation_engine.py`, `tools/compatx/compatx.py`, `tools/controlx/controlx.py`, `tools/xstack/auditx/check.py`, `tools/xstack/repox/check.py`, `tools/xstack/performx/check.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `content/data/planning/next_execution_order_post_zeta.json`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md`, `content/data/audit/ultra_repo_audit_system_inventory.json`, `content/data/audit/ultra_repo_audit_reuse_plan.json`, `content/data/audit/ultra_repo_audit_product_assembly_plan.json`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`, `tools/xstack/compatx/README.md`, `tools/xstack/controlx/README.md`, `tools/xstack/sessionx/README.md`, `tools/xstack/testx/README.md`, `tools/xstack/compatx/versioning.py`, `tools/xstack/compatx/profile_checks.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/sessionx/runner.py`, `tools/xstack/testx/runner.py`, `appshell/compat_adapter.py`, `appshell/pack_verifier_adapter.py`, `tools/tool_surface_adapter.py`, `tools/import_bridge.py`, `tools/controlx/core/remediation_bridge.py`, `tools/validators/validation/validation_engine.py`, `tools/compatx/compatx.py`, `tools/controlx/controlx.py`, `tools/xstack/auditx/check.py`, `tools/xstack/repox/check.py`, `tools/xstack/performx/check.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
 
 # XStack To AIDE Extraction Map
 
@@ -77,7 +77,7 @@ It is a staged boundary judgment.
 ### `xmap.portable_contract_freezes`
 
 - Name: Frozen portable AIDE contract artifacts
-- Repo Paths: `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `data/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `data/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `data/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `data/xstack/aide_adapter_contract.json`
+- Repo Paths: `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md`, `contracts/xstack/aide_capability_profile_shape.json`, `docs/xstack/AIDE_ADAPTER_CONTRACT.md`, `contracts/xstack/aide_adapter_contract.json`
 - Current role / maturity summary: portable-contract freezes; implemented as canonical docs and machine-readable mirrors only
 - Extraction decision: `extract_later_as_portable_core`
 - Rationale: these artifacts already freeze the portable task, evidence/review, policy/permission, capability-profile, and adapter shapes without embedding runtime machinery
@@ -106,7 +106,7 @@ It is a staged boundary judgment.
 - Repo Paths: `tools/xstack/compatx/canonical_json.py`, `tools/xstack/compatx/validator.py`, `tools/xstack/compatx/schema_registry.py`
 - Current role / maturity summary: `portable_core / implemented_and_used / wired_to_entrypoints`
 - Extraction decision: `extract_later_as_portable_core`
-- Rationale: these helpers are the broadest reused XStack-adjacent substrate, with direct imports in `runtime/process_spawn.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `release/*.py`, `security/trust/*.py`, `validation/validation_engine.py`, and AppShell surfaces
+- Rationale: these helpers are the broadest reused XStack-adjacent substrate, with direct imports in `runtime/process_spawn.py`, `client/local_server/local_server_controller.py`, `server/net/loopback_transport.py`, `release/*.py`, `security/trust/*.py`, `tools/validators/validation/validation_engine.py`, and AppShell surfaces
 - What would be extracted later: canonical JSON text/hash helpers, strict instance validation, and schema discovery/loading helpers
 - What would remain behind: Dominium schema trees, specific schema registries, repo-relative defaults, and product-specific refusal vocabulary
 - Shim or bridge required: schema-root adapter for `schema/` versus `schemas/`; registry source adapter; refusal-code mapping layer where needed
@@ -246,7 +246,7 @@ It is a staged boundary judgment.
 ### `xmap.ci_guardrail_surface`
 
 - Name: Xi-7 and Xi-8 CI guardrail surface
-- Repo Paths: `tools/xstack/ci/`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`, `data/xstack/gate_definitions.json`
+- Repo Paths: `tools/xstack/ci/`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`, `content/data/xstack/gate_definitions.json`
 - Current role / maturity summary: `ops_concern / implemented_and_used / wired_to_entrypoints`
 - Extraction decision: `mixed_needs_later_review`
 - Rationale: the rule metadata is useful, but `tools/xstack/ci/ci_common.py` is deeply tied to Xi-series repo policy, GitHub workflow shape, audit report paths, and repo-local refusal categories
@@ -259,7 +259,7 @@ It is a staged boundary judgment.
 ### `xmap.validation_unified_surface`
 
 - Name: Unified validation engine plus legacy adapters
-- Repo Paths: `validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/validation/validate_all_main.cpp`, `tools/validation/validator_common.*`, `tools/validation/validator_reports.*`, `tools/validation/validators_registry.*`
+- Repo Paths: `tools/validators/validation/validation_engine.py`, `tools/validation/tool_run_validation.py`, `tools/validation/validate_all_main.cpp`, `tools/validation/validator_common.*`, `tools/validation/validator_reports.*`, `tools/validation/validators_registry.*`
 - Current role / maturity summary: `mixed / implemented_and_used / active_adapter`
 - Extraction decision: `mixed_needs_later_review`
 - Rationale: the validation engine is real and valuable, but it writes repo-local audit outputs, consumes many Dominium validators, and explicitly embeds a long `LEGACY_VALIDATION_SURFACE_SPECS` bridge table
@@ -324,7 +324,7 @@ It is a staged boundary judgment.
 ### `xmap.release_and_trust_consumers`
 
 - Name: Release, update, and offline trust surfaces that consume XStack helpers
-- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `security/trust/license_capability.py`
+- Repo Paths: `release/archive_policy.py`, `release/build_id_engine.py`, `release/component_graph_resolver.py`, `release/release_manifest_engine.py`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/validators/security/trust/license_capability.py`
 - Current role / maturity summary: `dominium_only / implemented_and_used / wired_to_entrypoints`
 - Extraction decision: `retain_in_dominium`
 - Rationale: these surfaces import CompatX helpers, but they are still Dominium release/trust control-plane implementations tied to repo policy, install, dist, and publication semantics
@@ -350,7 +350,7 @@ It is a staged boundary judgment.
 ### `xmap.legacy_reference_docs_and_repo_contract`
 
 - Name: Older XStack reference docs and repo-specific operating contract surfaces
-- Repo Paths: `docs/XSTACK.md`, `docs/governance/XSTACK_PORTABILITY.md`, `docs/governance/XSTACK_INCREMENTAL_MODEL.md`, `docs/governance/XSTACK_EXTENSION_MODEL.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `data/xstack/codex_repo_operating_contract.json`
+- Repo Paths: `docs/XSTACK.md`, `docs/governance/XSTACK_PORTABILITY.md`, `docs/governance/XSTACK_INCREMENTAL_MODEL.md`, `docs/governance/XSTACK_EXTENSION_MODEL.md`, `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md`, `contracts/xstack/codex_repo_operating_contract.json`
 - Current role / maturity summary: older docs are `legacy`; the repo operating contract is `repo-specific governance`
 - Extraction decision: `retain_in_dominium`
 - Rationale: the older docs are historical context only, and the Codex repo operating contract is intentionally specific to this repo’s build, validation, playtest, and directory-authority rules
@@ -376,7 +376,7 @@ The following surfaces should remain in Dominium for now:
   - Dominium pack, bundle, registry, lockfile, dist, and release semantics
 - `release/**` and `security/trust/**` consumers of XStack helpers
   - protected release/trust/control-plane meaning
-- `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md` and `data/xstack/codex_repo_operating_contract.json`
+- `docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md` and `contracts/xstack/codex_repo_operating_contract.json`
   - repo-local operating law, not portable AIDE truth
 
 ## F. Likely Later AIDE Candidates
@@ -406,9 +406,9 @@ The following surfaces are intentionally not clean targets yet:
   - mixed portable and repo-specific schema/doc/version behavior, plus migration stubs
 - `tools/xstack/ui_bind.py` plus `tools/xstack/sessionx/ui_host.py`
   - portable descriptor rules mixed with Dominium runtime/session host behavior
-- `validation/validation_engine.py` and `tools/validation/**`
+- `tools/validators/validation/validation_engine.py` and `tools/validation/**`
   - valuable infrastructure, but deeply tied to repo suites, legacy adapters, and report outputs
-- `tools/xstack/ci/**` plus `data/xstack/gate_definitions.json`
+- `tools/xstack/ci/**` plus `content/data/xstack/gate_definitions.json`
   - portable-looking rule metadata mixed with Xi-specific repo CI policy
 - gate/review bridges such as `scripts/dev/gate.py`
   - repo bridge, not platform core
@@ -433,7 +433,7 @@ Later extraction will require explicit retained bridge layers rather than direct
 
 ### H3. Validation and test adapters
 
-- suite-registry adapter for `validation/validation_engine.py`
+- suite-registry adapter for `tools/validators/validation/validation_engine.py`
 - changed-files and impact-graph provider bridge for `tools/xstack/testx/runner.py`
 - report sink/path adapters so extracted cores do not write directly into `docs/audit/**` and `data/audit/**`
 

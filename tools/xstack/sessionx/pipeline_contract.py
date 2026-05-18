@@ -180,7 +180,7 @@ def load_session_pipeline_contract(repo_root: str, pipeline_id: str = "") -> Dic
         return refusal(
             "REFUSE_SESSION_PIPELINE_UNKNOWN",
             "pipeline_id '{}' is not defined in session pipeline registry".format(selected_pipeline_id),
-            "Use a declared pipeline_id from data/registries/session_pipeline_registry.json.",
+            "Use a declared pipeline_id from contracts/registry/session_pipeline_registry.json.",
             {"pipeline_id": selected_pipeline_id},
             "$.pipeline_id",
         )

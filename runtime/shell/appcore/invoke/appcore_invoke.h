@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/invoke/appcore_invoke.h
+FILE: runtime/shell/appcore/invoke/appcore_invoke.h
 MODULE: Dominium
 PURPOSE: Appcore invoke module (scaffold; data-only interfaces).
 NOTES: Stub surface; deterministic iteration required; no side effects.

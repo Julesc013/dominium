@@ -26,8 +26,8 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 ## Enforcement Map
 
-- Trust policy data: `data/registries/trust_policy.json`
-- Privilege role data: `data/registries/security_roles.json`
+- Trust policy data: `contracts/registry/trust_policy.json`
+- Privilege role data: `contracts/registry/security_roles.json`
 - SecureX validator: `tools/securex/securex.py`
 - RepoX checks: secure trust-policy, privilege, and supply-chain invariants
 - TestX checks: signature, boundary, privilege, and reproducible-build tests

@@ -3,7 +3,7 @@ Last Reviewed: 2026-03-10
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `data/registries/capability_registry.json`, `data/registries/product_registry.json`, `data/registries/product_capability_defaults.json`, and `data/registries/semantic_contract_registry.json`.
+Compatibility: Bound to `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/contracts/CAPABILITY_NEGOTIATION_CONSTITUTION.md`, `contracts/registry/capability_registry.json`, `contracts/registry/product_registry.json`, `contracts/registry/product_capability_defaults.json`, and `contracts/registry/semantic_contract_registry.json`.
 Stability: provisional
 Future Series: DOC-CONVERGENCE
 Replacement Target: canon-aligned documentation set for convergence and release preparation
@@ -90,7 +90,7 @@ Descriptor emission must not:
 - v0.0.0 baseline explicitly ships `tool.attach_console_stub`.
 
 ## Degrade Ladders
-Baseline degrade ladders are data-driven through `data/registries/product_capability_defaults.json`.
+Baseline degrade ladders are data-driven through `contracts/registry/product_capability_defaults.json`.
 
 Examples:
 - client:

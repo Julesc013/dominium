@@ -11,7 +11,7 @@ TEST_ID = "test_no_direct_intent_dispatch"
 TEST_TAGS = ["fast", "architecture", "control"]
 
 
-WHITELIST_REGISTRY = "data/registries/intent_dispatch_whitelist.json"
+WHITELIST_REGISTRY = "contracts/registry/intent_dispatch_whitelist.json"
 DEFAULT_PATTERNS = (
     "src/net/**",
     "src/control/**",

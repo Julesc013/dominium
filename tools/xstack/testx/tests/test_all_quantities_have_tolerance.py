@@ -17,8 +17,8 @@ def _read_json(repo_root: str, rel_path: str):
 
 def run(repo_root: str):
     try:
-        quantity_payload = _read_json(repo_root, "data/registries/quantity_registry.json")
-        tolerance_payload = _read_json(repo_root, "data/registries/quantity_tolerance_registry.json")
+        quantity_payload = _read_json(repo_root, "contracts/registry/quantity_registry.json")
+        tolerance_payload = _read_json(repo_root, "contracts/registry/quantity_tolerance_registry.json")
     except (OSError, ValueError):
         return {"status": "fail", "message": "quantity/tolerance registry payloads missing or invalid"}
 

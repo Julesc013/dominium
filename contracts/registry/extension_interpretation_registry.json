@@ -128,7 +128,7 @@
           "observed_paths": [
             "client/interaction/affordance_generator.py",
             "client/interaction/interaction_dispatch.py",
-            "control/control_plane_engine.py"
+            "tools/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -246,7 +246,7 @@
           "legacy_alias_for": "allow_cross_shard_collision",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -274,7 +274,7 @@
           "legacy_alias_for": "allow_cross_shard_follow",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -302,7 +302,7 @@
           "legacy_alias_for": "allow_cross_shard_possession",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -386,7 +386,7 @@
           "legacy_alias_for": "allow_retrigger",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "core/hazards/hazard_engine.py"
+            "tools/core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -442,7 +442,7 @@
           "legacy_alias_for": "allow_signed_bridge_trust_levels",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "security/trust/trust_verifier.py"
+            "tools/validators/security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'allow_signed_bridge_trust_levels' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -471,7 +471,7 @@
           "legacy_alias_for": "allow_srz_transfer",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -614,7 +614,7 @@
           "legacy_alias_for": "allowed_view_modes",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1129,7 +1129,7 @@
           "legacy_alias_for": "bundle_quantity_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "core/flow/flow_engine.py"
+            "tools/core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1693,7 +1693,7 @@
           "legacy_alias_for": "component_weights",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "core/flow/flow_engine.py"
+            "tools/core/flow/flow_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -1947,7 +1947,7 @@
           "legacy_alias_for": "cosmetic_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py"
+            "tools/network/policies/policy_server_authoritative.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2144,8 +2144,8 @@
           "legacy_alias_for": "default_transition_policy_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py",
-            "net/srz/shard_coordinator.py",
+            "tools/network/policies/policy_server_authoritative.py",
+            "tools/network/srz/shard_coordinator.py",
             "tools/xstack/registry_compile/compiler.py",
             "tools/xstack/sessionx/runner.py"
           ],
@@ -2884,7 +2884,7 @@
           "legacy_alias_for": "escalation_rules",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/anti_cheat/anti_cheat_engine.py"
+            "tools/network/anti_cheat/anti_cheat_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -2969,7 +2969,7 @@
           "legacy_alias_for": "exception_event_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "meta/stability/stability_validator.py"
+            "tools/validators/stability/stability_validator.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'exception_event_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -3057,7 +3057,7 @@
           "legacy_alias_for": "fallback_capability_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "compat/capability_negotiation.py"
+            "tools/validators/compatibility/capability_negotiation.py"
           ],
           "official.description": "Ordered substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
           "official.source": "CAP-NEG-3"
@@ -4084,7 +4084,7 @@
           "legacy_alias_for": "law_profile_id_override",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "compat/capability_negotiation.py"
+            "tools/validators/compatibility/capability_negotiation.py"
           ],
           "official.description": "LawProfile override applied when CAP-NEG negotiation forces read-only mode.",
           "official.source": "CAP-NEG-3"
@@ -4113,7 +4113,7 @@
           "legacy_alias_for": "legacy_alias_for",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "meta/extensions/extensions_engine.py"
+            "tools/repo/meta/extensions/extensions_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -4462,7 +4462,7 @@
           "legacy_alias_for": "max_control_fidelity",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "control/control_plane_engine.py"
+            "tools/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5461,7 +5461,7 @@
           "legacy_alias_for": "profile_gate_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "meta/stability/stability_validator.py"
+            "tools/validators/stability/stability_validator.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'profile_gate_id' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -5885,7 +5885,7 @@
           "legacy_alias_for": "replay_hash_after",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "meta/provenance/compaction_engine.py"
+            "tools/repo/meta/provenance/compaction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5913,7 +5913,7 @@
           "legacy_alias_for": "replay_hash_before",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "meta/provenance/compaction_engine.py"
+            "tools/repo/meta/provenance/compaction_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5941,7 +5941,7 @@
           "legacy_alias_for": "replay_only",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "control/control_plane_engine.py"
+            "tools/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5969,8 +5969,8 @@
           "legacy_alias_for": "require_attestation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "net/policies/policy_server_authoritative.py",
-            "net/srz/shard_coordinator.py"
+            "tools/network/policies/policy_server_authoritative.py",
+            "tools/network/srz/shard_coordinator.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -5998,7 +5998,7 @@
           "legacy_alias_for": "required_capabilities",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "lib/provides/provider_resolution.py"
+            "tools/libraries/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_capabilities' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -6027,7 +6027,7 @@
           "legacy_alias_for": "required_contract_ranges",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "lib/provides/provider_resolution.py"
+            "tools/libraries/provides/provider_resolution.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'required_contract_ranges' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -6929,7 +6929,7 @@
           "legacy_alias_for": "substitute_capability_id",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "compat/capability_negotiation.py"
+            "tools/validators/compatibility/capability_negotiation.py"
           ],
           "official.description": "Explicit substitute capability id chosen by a CAP-NEG degrade rule.",
           "official.source": "CAP-NEG-3"
@@ -6959,7 +6959,7 @@
           "legacy_alias_for": "substitute_capability_ids",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "compat/capability_negotiation.py"
+            "tools/validators/compatibility/capability_negotiation.py"
           ],
           "official.description": "Alternative substitute capability candidates for CAP-NEG degrade rules and fallback maps.",
           "official.source": "CAP-NEG-3"
@@ -7050,7 +7050,7 @@
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
             "client/interaction/interaction_dispatch.py",
-            "control/control_plane_engine.py"
+            "tools/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7388,7 +7388,7 @@
           "legacy_alias_for": "threshold_crossed",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "core/hazards/hazard_engine.py"
+            "tools/core/hazards/hazard_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -7951,7 +7951,7 @@
           "legacy_alias_for": "untrusted_root_behavior",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "security/trust/trust_verifier.py"
+            "tools/validators/security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'untrusted_root_behavior' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8009,7 +8009,7 @@
           "legacy_alias_for": "user_message_key",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "compat/capability_negotiation.py"
+            "tools/validators/compatibility/capability_negotiation.py"
           ],
           "official.description": "Explain-key identifier surfaced when a capability is degraded or disabled.",
           "official.source": "CAP-NEG-3"
@@ -8038,7 +8038,7 @@
           "legacy_alias_for": "validation",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "control/control_plane_engine.py"
+            "tools/governance/control_plane_engine.py"
           ],
           "source": "COMPAT-SEM-2"
         },
@@ -8094,7 +8094,7 @@
           "legacy_alias_for": "warn_unsigned_for",
           "legacy_status": "legacy_bare_key",
           "observed_paths": [
-            "security/trust/trust_verifier.py"
+            "tools/validators/security/trust/trust_verifier.py"
           ],
           "official.description": "Deterministic interpretation contract for extension key 'warn_unsigned_for' surfaced during Omega prep registry hardening.",
           "official.source": "OMEGA-PREP"
@@ -8258,7 +8258,7 @@
         "extension_key": "official.binary_ref",
         "extensions": {
           "observed_paths": [
-            "lib/install/install_validator.py",
+            "tools/libraries/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic binary-relative path recorded in install and product build descriptors.",
@@ -8634,7 +8634,7 @@
         "extension_key": "official.descriptor_command",
         "extensions": {
           "observed_paths": [
-            "lib/install/install_validator.py"
+            "tools/libraries/install/install_validator.py"
           ],
           "official.description": "Descriptor emission command surfaced for deterministic install verification.",
           "official.source": "OMEGA-PREP"
@@ -8661,7 +8661,7 @@
         "extension_key": "official.descriptor_ref",
         "extensions": {
           "observed_paths": [
-            "lib/install/install_validator.py",
+            "tools/libraries/install/install_validator.py",
             "tools/lib/lib_stress_common.py"
           ],
           "official.description": "Deterministic descriptor-relative path recorded in install and product build descriptors.",
@@ -9006,7 +9006,7 @@
         "extension_key": "official.legacy_ref_hash",
         "extensions": {
           "observed_paths": [
-            "lib/save/save_validator.py"
+            "tools/libraries/save/save_validator.py"
           ],
           "official.description": "Legacy reference hash recorded when compat validators bridge older payload shapes.",
           "official.source": "OMEGA-PREP"
@@ -9216,7 +9216,7 @@
         "extension_key": "official.product_version",
         "extensions": {
           "observed_paths": [
-            "lib/install/install_validator.py",
+            "tools/libraries/install/install_validator.py",
             "release/update_resolver.py"
           ],
           "official.description": "Product version recorded in deterministic product build descriptors.",
@@ -9244,7 +9244,7 @@
         "extension_key": "official.rel_path",
         "extensions": {
           "observed_paths": [
-            "meta/identity/identity_validator.py",
+            "tools/validators/identity/identity_validator.py",
             "release/release_manifest_engine.py",
             "tools/dist/dist_tree_common.py",
             "tools/mvp/runtime_bundle.py",
@@ -9479,7 +9479,7 @@
         "extension_key": "official.selected_component_descriptors",
         "extensions": {
           "observed_paths": [
-            "lib/store/reachability_engine.py",
+            "contracts/abi/store/reachability_engine.py",
             "release/update_resolver.py",
             "tools/dist/dist_tree_common.py",
             "tools/lib/store_gc_common.py",
@@ -9563,7 +9563,7 @@
         "extension_key": "official.semantic_contract_registry_ref",
         "extensions": {
           "observed_paths": [
-            "lib/install/install_validator.py",
+            "tools/libraries/install/install_validator.py",
             "tools/dist/dist_tree_common.py",
             "tools/lib/lib_stress_common.py",
             "tools/lib/store_gc_common.py",
@@ -9799,7 +9799,7 @@
         "extension_key": "official.trust_policy_id",
         "extensions": {
           "observed_paths": [
-            "security/trust/trust_verifier.py",
+            "tools/validators/security/trust/trust_verifier.py",
             "tools/release/update_model_common.py",
             "tools/security/trust_model_common.py",
             "tools/setup/setup_cli.py"

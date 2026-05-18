@@ -107,8 +107,8 @@ Future physical convergence is still plausible, but no additional human review i
 
 - `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
 - `docs/planning/REALITY_EXTRACTION_REPORT.md`
-- `data/planning/reality/schema_registry_inventory.json`
-- `data/planning/reality/module_map.json`
+- `contracts/schema/planning/reality/schema_registry_inventory.json`
+- `content/data/planning/reality/module_map.json`
 
 **Final classification**
 
@@ -128,7 +128,7 @@ No root-level human review is required for present semantic binding. Future per-
 
 **Observed roles**
 
-- `packs/README.md` and `docs/architecture/pack_system.md` define a canonical on-disk runtime pack substrate under `packs/<category>/<pack_id>/pack.json`.
+- `content/packs/README.md` and `docs/architecture/pack_system.md` define a canonical on-disk runtime pack substrate under `packs/<category>/<pack_id>/pack.json`.
 - `data/packs/` contains authored content and declaration families with `pack_manifest.json`, `pack.toml`, `pack.manifest`, content folders, and supporting data/docs.
 - P-1 extraction marks `packs/` as canonical and authoritative for runtime pack manifests.
 - P-1 extraction marks `data/packs/` as authoritative within scope but transitional in canonicality assessment.
@@ -137,8 +137,8 @@ No root-level human review is required for present semantic binding. Future per-
 **Authority signals**
 
 - `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`
-- `data/planning/reality/schema_registry_inventory.json`
-- `packs/README.md`
+- `contracts/schema/planning/reality/schema_registry_inventory.json`
+- `content/packs/README.md`
 - `docs/architecture/pack_system.md`
 - observed live file-shape differences between `packs/**/pack*.json` and `data/packs/**`
 

@@ -75,7 +75,7 @@ To add a new body via a mod pack:
    - `entry_type: astronomy_catalog_collection`
    - `entry_type: reference_frame_collection`
 4. Validate with:
-   - `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`
+   - `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
    - `tools/xstack/registry_compile --bundle bundle.base.lab`
 5. Verify index content:
    - `build/registries/astronomy.catalog.index.json`

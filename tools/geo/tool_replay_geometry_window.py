@@ -21,7 +21,7 @@ from game.domains.geology import (  # noqa: E402
     geometry_edit_policy_registry_hash,
     geometry_state_hash_surface,
 )
-from meta.provenance import normalize_compaction_marker_rows  # noqa: E402
+from tools.repo.meta.provenance import normalize_compaction_marker_rows  # noqa: E402
 from game.domains.materials import create_material_batch  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 from tools.xstack.sessionx.process_runtime import _geometry_edit_policy_registry_payload, execute_intent  # noqa: E402

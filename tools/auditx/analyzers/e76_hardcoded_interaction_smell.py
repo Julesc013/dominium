@@ -11,9 +11,9 @@ ANALYZER_ID = "E76_HARDCODED_INTERACTION_SMELL"
 ACTION_SURFACE_ENGINE_PATH = "game/domains/interaction/action_surface_engine.py"
 AFFORDANCE_PATH = "apps/client/interaction/affordance_generator.py"
 REGISTRY_PATHS = (
-    "data/registries/surface_type_registry.json",
-    "data/registries/tool_tag_registry.json",
-    "data/registries/surface_visibility_policy_registry.json",
+    "contracts/registry/surface_type_registry.json",
+    "contracts/registry/tool_tag_registry.json",
+    "contracts/registry/surface_visibility_policy_registry.json",
 )
 FORBIDDEN_LITERAL_TOKENS = (
     'surface_type_id == "surface.',

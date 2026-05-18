@@ -16,8 +16,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat.shims import legacy_flag_rows, path_shim_rows, tool_shim_rows, validation_shim_rows  # noqa: E402
-from compat.shims.common import SHIM_SUNSET_TARGET  # noqa: E402
+from tools.validators.compatibility.shims import legacy_flag_rows, path_shim_rows, tool_shim_rows, validation_shim_rows  # noqa: E402
+from tools.validators.compatibility.shims.common import SHIM_SUNSET_TARGET  # noqa: E402
 from tools.review.xi6_common import (  # noqa: E402
     ARCHITECTURE_GRAPH_V1_REL,
     MODULE_BOUNDARY_RULES_V1_REL,
@@ -34,10 +34,10 @@ XI_5X2_FINAL_REL = "docs/audit/XI_5X2_FINAL.md"
 XI_6_FINAL_REL = "docs/audit/XI_6_FINAL.md"
 XI_7_FINAL_REL = "docs/audit/XI_7_FINAL.md"
 
-XI5X2_SOURCE_POLICY_REL = "data/restructure/xi5x2_source_pocket_policy.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
-GATE_DEFINITIONS_REL = "data/xstack/gate_definitions.json"
+XI5X2_SOURCE_POLICY_REL = "contracts/restructure/xi5x2_source_pocket_policy.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
+GATE_DEFINITIONS_REL = "content/data/xstack/gate_definitions.json"
 
 PROFILE_FAST_REL = "tools/xstack/ci/profiles/FAST.json"
 PROFILE_STRICT_REL = "tools/xstack/ci/profiles/STRICT.json"
@@ -49,14 +49,14 @@ ENTRYPOINT_PS1_REL = "tools/xstack/ci/xstack_ci_entrypoint.ps1"
 CI_GUARDRAILS_DOC_REL = "docs/xstack/CI_GUARDRAILS.md"
 ARCH_DRIFT_POLICY_DOC_REL = "docs/xstack/ARCH_DRIFT_POLICY.md"
 
-REPOSITORY_STRUCTURE_LOCK_REL = "data/architecture/repository_structure_lock.json"
+REPOSITORY_STRUCTURE_LOCK_REL = "content/data/architecture/repository_structure_lock.json"
 REPOSITORY_STRUCTURE_DOC_REL = "docs/architecture/REPOSITORY_STRUCTURE_v1.md"
 MODULE_INDEX_DOC_REL = "docs/architecture/MODULE_INDEX_v1.md"
 SHIM_SUNSET_PLAN_REL = "docs/architecture/SHIM_SUNSET_PLAN.md"
 REPO_FREEZE_VERIFICATION_REL = "docs/audit/REPO_FREEZE_VERIFICATION.md"
 XI_8_FINAL_REL = "docs/audit/XI_8_FINAL.md"
 
-CI_REPORT_JSON_REL = "data/audit/ci_run_report.json"
+CI_REPORT_JSON_REL = "content/data/audit/ci_run_report.json"
 CI_REPORT_MD_REL = "docs/audit/CI_RUN_REPORT.md"
 
 DIST_ASSEMBLE_TOOL_REL = "tools/dist/tool_assemble_dist_tree.py"
@@ -539,8 +539,8 @@ def _gate_definitions_payload(lock_payload: Mapping[str, object]) -> dict[str, o
             {"group_id": "full_suite", "profile": "FULL", "selection": "full_profile_runner"},
         ],
         "validation_gates": [
-            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "data/audit/validation_report_STRICT.json", "report_doc_rel": "docs/audit/VALIDATION_REPORT_STRICT.md"},
-            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "data/audit/arch_audit2_report.json", "report_doc_rel": "docs/audit/ARCH_AUDIT2_REPORT.md"},
+            {"gate_id": "validate_strict", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/ci/validate_all.py", "--repo-root", ".", "--strict"], "prefer_report_file": True, "report_json_rel": "content/data/audit/validation_report_STRICT.json", "report_doc_rel": "docs/audit/VALIDATION_REPORT_STRICT.md"},
+            {"gate_id": "arch_audit_2", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/audit/tool_run_arch_audit.py", "--repo-root", "."], "prefer_report_file": True, "report_json_rel": "content/data/audit/arch_audit2_report.json", "report_doc_rel": "docs/audit/ARCH_AUDIT2_REPORT.md"},
             {"gate_id": "omega_1_worldgen_lock", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/worldgen/tool_verify_worldgen_lock.py", "--repo-root", "."]},
             {"gate_id": "omega_2_baseline_universe", "profiles": ["FAST", "STRICT", "FULL"], "command": ["python", "-B", "tools/mvp/tool_verify_baseline_universe.py", "--repo-root", "."]},
             {"gate_id": "omega_3_gameplay_loop", "profiles": ["STRICT", "FULL"], "command": ["python", "-B", "tools/mvp/tool_verify_gameplay_loop.py", "--repo-root", "."]},
@@ -677,7 +677,7 @@ def build_repository_structure_violations(repo_root: str) -> list[dict[str, obje
                 "code": "missing_repository_structure_lock",
                 "file_path": REPOSITORY_STRUCTURE_LOCK_REL,
                 "message": "Xi-8 repository structure lock is missing",
-                "remediation": "restore data/architecture/repository_structure_lock.json before continuing CI",
+                "remediation": "restore content/data/architecture/repository_structure_lock.json before continuing CI",
             }
         ]
     snapshot = build_repository_structure_snapshot(root)
@@ -882,10 +882,10 @@ def _shim_reference_rows(repo_root: str) -> dict[str, dict[str, bool]]:
     build_text = canonical_json_text(_read_json(repo_root, BUILD_GRAPH_REL))
     symbol_text = canonical_json_text(_read_json(repo_root, SYMBOL_INDEX_REL))
     return {
-        "path": {"build_graph": "compat/shims/path_shims.py" in build_text or "shim.path." in build_text, "symbol_index": "compat/shims/path_shims.py" in symbol_text or "shim.path." in symbol_text},
-        "flag": {"build_graph": "compat/shims/flag_shims.py" in build_text or "shim.flag." in build_text, "symbol_index": "compat/shims/flag_shims.py" in symbol_text or "shim.flag." in symbol_text},
-        "tool": {"build_graph": "compat/shims/tool_shims.py" in build_text or "shim.tool." in build_text, "symbol_index": "compat/shims/tool_shims.py" in symbol_text or "shim.tool." in symbol_text},
-        "validation": {"build_graph": "compat/shims/validation_shims.py" in build_text or "shim.validation." in build_text, "symbol_index": "compat/shims/validation_shims.py" in symbol_text or "shim.validation." in symbol_text},
+        "path": {"build_graph": "tools/validators/compatibility/shims/path_shims.py" in build_text or "shim.path." in build_text, "symbol_index": "tools/validators/compatibility/shims/path_shims.py" in symbol_text or "shim.path." in symbol_text},
+        "flag": {"build_graph": "tools/validators/compatibility/shims/flag_shims.py" in build_text or "shim.flag." in build_text, "symbol_index": "tools/validators/compatibility/shims/flag_shims.py" in symbol_text or "shim.flag." in symbol_text},
+        "tool": {"build_graph": "tools/validators/compatibility/shims/tool_shims.py" in build_text or "shim.tool." in build_text, "symbol_index": "tools/validators/compatibility/shims/tool_shims.py" in symbol_text or "shim.tool." in symbol_text},
+        "validation": {"build_graph": "tools/validators/compatibility/shims/validation_shims.py" in build_text or "shim.validation." in build_text, "symbol_index": "tools/validators/compatibility/shims/validation_shims.py" in symbol_text or "shim.validation." in symbol_text},
     }
 
 
@@ -1014,14 +1014,14 @@ def _render_arch_drift_policy_doc(lock_payload: Mapping[str, object]) -> str:
         "",
         "## New Modules",
         "",
-        "1. update `data/architecture/module_registry.v1.json`",
-        "2. update `data/architecture/architecture_graph.v1.json`",
-        "3. update `data/architecture/repository_structure_lock.json` if a new top-level root is involved",
+        "1. update `contracts/registry/architecture/module_registry.v1.json`",
+        "2. update `content/data/architecture/architecture_graph.v1.json`",
+        "3. update `content/data/architecture/repository_structure_lock.json` if a new top-level root is involved",
         "4. pass `STRICT` and `FULL`",
         "",
         "## New Dependencies",
         "",
-        "1. update `data/architecture/module_boundary_rules.v1.json`",
+        "1. update `content/data/architecture/module_boundary_rules.v1.json`",
         "2. preserve constitutional architecture",
         "3. pass `STRICT` and `FULL`",
         "",
@@ -1105,7 +1105,7 @@ def _render_xi8_final(snapshot: Mapping[str, object], lock_payload: Mapping[str,
         "",
         "Xi-8 outputs:",
         "",
-        "- `data/architecture/repository_structure_lock.json`",
+        "- `content/data/architecture/repository_structure_lock.json`",
         "- `docs/architecture/REPOSITORY_STRUCTURE_v1.md`",
         "- `docs/architecture/MODULE_INDEX_v1.md`",
         "- `docs/architecture/SHIM_SUNSET_PLAN.md`",

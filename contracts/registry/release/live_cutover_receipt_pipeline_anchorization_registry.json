@@ -26,8 +26,8 @@
       "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
       "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
       "docs/planning/LATER_WAVE_EXECUTION_GATES.md",
-      "data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
-      "data/planning/later_wave_execution_gates_registry.json"
+      "content/data/planning/checkpoints/checkpoint_c_later_wave_zeta_admission_review.json",
+      "contracts/registry/planning/later_wave_execution_gates_registry.json"
     ],
     "runtime_doctrine": [
       "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
@@ -269,11 +269,11 @@
     "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
     "server/net/dom_server_protocol.h",
     "server/net/dom_server_runtime.h",
-    "security/trust/trust_verifier.py",
-    "data/registries/provenance_classification_registry.json",
-    "data/registries/provenance_event_type_registry.json",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/trust_root_registry.json"
+    "tools/validators/security/trust/trust_verifier.py",
+    "contracts/registry/provenance_classification_registry.json",
+    "contracts/registry/provenance_event_type_registry.json",
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/trust_root_registry.json"
   ],
   "ambiguities_eliminated": [
     "anchorization_is_not_live_receipt_pipeline_realization",

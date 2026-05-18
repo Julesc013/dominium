@@ -30,7 +30,7 @@ def run(repo_root: str):
     )
 
     lifecycle_registry = _load_json(
-        repo_root, "data/registries/process_lifecycle_policy_registry.json"
+        repo_root, "contracts/registry/process_lifecycle_policy_registry.json"
     )
     lifecycle_rows = process_lifecycle_policy_rows_by_id(lifecycle_registry)
     default_policy = dict(lifecycle_rows.get("proc.lifecycle.default") or {})

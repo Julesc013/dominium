@@ -17,7 +17,7 @@ class OrphanFeatureSmell:
     analyzer_id = ANALYZER_ID
 
 
-PLAYER_DEMAND_MATRIX_REL = "data/meta/player_demand_matrix.json"
+PLAYER_DEMAND_MATRIX_REL = "contracts/meta/player_demand_matrix.json"
 IMPACT_DIR_REL = "docs/impact/"
 FEATURE_PATH_PREFIXES = (
     "src/",

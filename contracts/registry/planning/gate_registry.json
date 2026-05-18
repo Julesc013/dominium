@@ -9,7 +9,7 @@
       "type": "prompt",
       "prerequisites": ["Ω", "Ξ", "Π", "P-0", "P-1", "P-2", "P-3", "P-4"],
       "forbidden_assumptions": ["continuity can live in chat memory alone", "future prompts can infer gates ad hoc", "transcript summaries outrank repo artifacts"],
-      "required_outputs": ["docs/planning/MERGED_PROGRAM_STATE.md", "data/planning/merged_series_state.json", "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md", "data/planning/extend_not_replace_registry.json", "docs/planning/GATES_AND_PROOFS.md", "data/planning/gate_registry.json", "docs/planning/CHAT_HANDOFF_POLICY.md"],
+      "required_outputs": ["docs/planning/MERGED_PROGRAM_STATE.md", "content/data/planning/merged_series_state.json", "docs/planning/EXTEND_NOT_REPLACE_LEDGER.md", "contracts/registry/planning/extend_not_replace_registry.json", "docs/planning/GATES_AND_PROOFS.md", "contracts/registry/planning/gate_registry.json", "docs/planning/CHAT_HANDOFF_POLICY.md"],
       "exit_proofs": ["all hardening artifacts exist", "markdown and JSON align", "Λ-0 remains the next executable prompt", "RG-SEM-0 remains the next review checkpoint"],
       "downstream_enables": ["Λ-0", "Λ-1", "Λ-2", "Λ-3", "Λ-4", "Λ-5"],
       "remaining_blockers": ["RG-SEM-0", "Λ-6", "CHK-ΛΣΦ-0", "Σ-A", "Σ-B", "CHK-ΣΦ-0"],

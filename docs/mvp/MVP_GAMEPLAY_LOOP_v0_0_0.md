@@ -48,7 +48,7 @@ Superseded By: none
 ### STEP 1 - Launch
 
 - Command:
-  - `python tools/mvp/runtime_entry.py client --repo-root . --seed "DOMINIUM_MVP_BASELINE_SEED_0" --profile_bundle data/baselines/universe/baseline_profile_bundle.json --pack_lock data/baselines/universe/baseline_pack_lock.json --ui cli`
+  - `python tools/mvp/runtime_entry.py client --repo-root . --seed "DOMINIUM_MVP_BASELINE_SEED_0" --profile_bundle tests/fixtures/baselines/universe/baseline_profile_bundle.json --pack_lock tests/fixtures/baselines/universe/baseline_pack_lock.json --ui cli`
 - Expected result:
   - deterministic CLI bootstrap opens the baseline universe context
 - Expected proof anchor:
@@ -140,7 +140,7 @@ Superseded By: none
 ### STEP 8 - Replay
 
 - Command:
-  - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root . --seed-text "DOMINIUM_MVP_BASELINE_SEED_0" --snapshot-path data/baselines/gameplay/gameplay_loop_snapshot.json`
+  - `python tools/mvp/tool_verify_gameplay_loop.py --repo-root . --seed-text "DOMINIUM_MVP_BASELINE_SEED_0" --snapshot-path tests/fixtures/baselines/gameplay/gameplay_loop_snapshot.json`
 - Expected result:
   - replay from seed reproduces the same final anchor as reload and the frozen baseline universe
 - Expected proof anchor:

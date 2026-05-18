@@ -18,7 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from lib.install import registry_add_install, validate_install_manifest  # noqa: E402
+from tools.libraries.install import registry_add_install, validate_install_manifest  # noqa: E402
 from tools.appshell.appshell4_probe import run_ipc_attach_probe  # noqa: E402
 from tools.release.ui_mode_resolution_common import build_test_probe, selection_for_product  # noqa: E402
 from tools.setup.setup_cli import install_manifest_payload  # noqa: E402
@@ -27,7 +27,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
 PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
-PRODUCT_BOOT_MATRIX_JSON_PATH = "data/audit/product_boot_matrix.json"
+PRODUCT_BOOT_MATRIX_JSON_PATH = "contracts/audit/product_boot_matrix.json"
 PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
 PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/mvp/tool_run_product_boot_matrix.py"
 PRODUCT_BOOT_MATRIX_REPORT_ID = "mvp.product_boot_matrix.v1"
@@ -415,8 +415,8 @@ def _patched_probe_payload(probe_payload: Mapping[str, object] | None):
         yield
         return
     import runtime.appshell.ui_mode_selector as ui_mode_selector
-    import compat.capability_negotiation as capability_negotiation
-    import compat.descriptor.descriptor_engine as descriptor_engine
+    import tools.validators.compatibility.capability_negotiation as capability_negotiation
+    import tools.validators.compatibility.descriptor.descriptor_engine as descriptor_engine
     import engine.platform.platform_probe as platform_probe
 
     replacements = {

@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "Engine",
         "tool.attach_console_stub",
     ),
-    "data/registries/product_registry.json": (
+    "contracts/registry/product_registry.json": (
         '"product_id": "engine"',
         '"product_id": "game"',
         '"product_id": "client"',
@@ -25,13 +25,13 @@ REQUIRED_TOKENS = {
         '"product_id": "tool.attach_console_stub"',
         '"official.dist_bin_names"',
     ),
-    "data/registries/product_capability_defaults.json": (
+    "contracts/registry/product_capability_defaults.json": (
         '"product_id": "engine"',
         '"product_id": "game"',
         '"feature_capabilities"',
         '"degrade_ladders"',
     ),
-    "compat/descriptor/descriptor_engine.py": (
+    "tools/validators/compatibility/descriptor/descriptor_engine.py": (
         "build_product_descriptor(",
         "build_product_build_metadata(",
         "product_descriptor_bin_names(",

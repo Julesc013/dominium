@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping
 
-from meta.explain import build_explain_artifact
-from safety.safety_engine import build_safety_event
+from tools.repo.meta.explain import build_explain_artifact
+from tools.validators.safety.safety_engine import build_safety_event
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

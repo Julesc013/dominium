@@ -19,7 +19,7 @@ DOM_PRODUCT_ID = "tool.attach_console_stub"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
 TOOL_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
-REPO_INVENTORY_PATH = "data/audit/repo_inventory.json"
+REPO_INVENTORY_PATH = "content/data/audit/repo_inventory.json"
 TOOL_ADAPTER_OUTPUT_SCHEMA_ID = "dominium.schema.appshell.output.tool_adapter_result"
 TOOL_PASSTHROUGH_ARGS_SCHEMA_ID = "dominium.schema.appshell.args.tool_passthrough"
 TOOL_SURFACE_COMMAND_PREFIX = "command.dom_"
@@ -718,7 +718,7 @@ def _render_tool_surface_map(report: Mapping[str, object]) -> str:
         "",
         "# Tool Surface Map",
         "",
-        "Source: `data/audit/repo_inventory.json` + `tools/tool_surface_adapter.py`",
+        "Source: `content/data/audit/repo_inventory.json` + `tools/tool_surface_adapter.py`",
         "",
         "- Wrapped commands: `{}`".format(int(report.get("wrapped_tool_count", 0) or 0)),
         "- Alias commands: `{}`".format(int(report.get("alias_count", 0) or 0)),

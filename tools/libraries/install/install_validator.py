@@ -9,13 +9,13 @@ import sys
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from runtime.appshell.paths import VROOT_INSTALL, get_current_virtual_paths, vpath_resolve_existing
-from compat.migration_lifecycle import (
+from tools.validators.compatibility.migration_lifecycle import (
     ARTIFACT_KIND_INSTALL_MANIFEST,
     DECISION_READ_ONLY,
     DECISION_REFUSE,
     determine_migration_decision,
 )
-from meta.identity import UNIVERSAL_IDENTITY_FIELD
+from tools.validators.identity import UNIVERSAL_IDENTITY_FIELD
 from meta_extensions_engine import normalize_extensions_map, normalize_extensions_tree
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
@@ -620,7 +620,7 @@ def evaluate_install_manifest_load(
 def default_install_registry_path(repo_root: str) -> str:
     context = get_current_virtual_paths()
     if context is not None and str(context.get("result", "")).strip() == "complete":
-        candidate = vpath_resolve_existing(VROOT_INSTALL, "data/registries/install_registry.json", context)
+        candidate = vpath_resolve_existing(VROOT_INSTALL, "contracts/registry/install_registry.json", context)
         if candidate:
             return candidate
     repo_candidate = os.path.join(os.path.abspath(repo_root), DEFAULT_INSTALL_REGISTRY_REL)

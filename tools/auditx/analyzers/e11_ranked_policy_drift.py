@@ -11,9 +11,9 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E11_RANKED_POLICY_DRIFT"
 WATCH_PREFIXES = (
-    "data/registries/server_profile_registry.json",
-    "data/registries/securex_policy_registry.json",
-    "data/registries/anti_cheat_policy_registry.json",
+    "contracts/registry/server_profile_registry.json",
+    "contracts/registry/securex_policy_registry.json",
+    "contracts/registry/anti_cheat_policy_registry.json",
     "docs/net/RANKED_SERVER_GOVERNANCE.md",
 )
 
@@ -58,15 +58,15 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="RISK",
                 confidence=0.95,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=["Ranked-governance registries are missing or invalid JSON."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
                 related_paths=[
-                    "data/registries/server_profile_registry.json",
-                    "data/registries/securex_policy_registry.json",
-                    "data/registries/anti_cheat_policy_registry.json",
+                    "contracts/registry/server_profile_registry.json",
+                    "contracts/registry/securex_policy_registry.json",
+                    "contracts/registry/anti_cheat_policy_registry.json",
                 ],
             )
         )
@@ -90,12 +90,12 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=["Missing canonical ranked server profile 'server.profile.rank_strict'."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/server_profile_registry.json"],
+                related_paths=["contracts/registry/server_profile_registry.json"],
             )
         )
         return findings
@@ -110,7 +110,7 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=[
                     "Ranked profile references securex_policy_id='{}'.".format(ranked_securex_policy_id or "<empty>"),
                     "Expected securex_policy_id='securex.policy.rank_strict'.",
@@ -118,7 +118,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/server_profile_registry.json"],
+                related_paths=["contracts/registry/server_profile_registry.json"],
             )
         )
     elif ranked_securex_policy_id not in securex_ids:
@@ -128,14 +128,14 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="RISK",
                 confidence=0.93,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=["Ranked profile securex policy id is missing from securex policy registry."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
                 related_paths=[
-                    "data/registries/server_profile_registry.json",
-                    "data/registries/securex_policy_registry.json",
+                    "contracts/registry/server_profile_registry.json",
+                    "contracts/registry/securex_policy_registry.json",
                 ],
             )
         )
@@ -147,7 +147,7 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="VIOLATION",
                 confidence=0.98,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=[
                     "Ranked profile references anti_cheat_policy_id='{}'.".format(ranked_anti_cheat_policy_id or "<empty>"),
                     "Expected anti_cheat_policy_id='policy.ac.rank_strict'.",
@@ -155,7 +155,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
-                related_paths=["data/registries/server_profile_registry.json"],
+                related_paths=["contracts/registry/server_profile_registry.json"],
             )
         )
     elif ranked_anti_cheat_policy_id not in anti_cheat_ids:
@@ -165,14 +165,14 @@ def run(graph, repo_root, changed_files=None):
                 category="net.ranked_policy_drift",
                 severity="RISK",
                 confidence=0.93,
-                file_path="data/registries/server_profile_registry.json",
+                file_path="contracts/registry/server_profile_registry.json",
                 evidence=["Ranked profile anti-cheat policy id is missing from anti-cheat policy registry."],
                 suggested_classification="INVALID",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-RANKED-REQUIRES-SECUREX-STRICT"],
                 related_paths=[
-                    "data/registries/server_profile_registry.json",
-                    "data/registries/anti_cheat_policy_registry.json",
+                    "contracts/registry/server_profile_registry.json",
+                    "contracts/registry/anti_cheat_policy_registry.json",
                 ],
             )
         )

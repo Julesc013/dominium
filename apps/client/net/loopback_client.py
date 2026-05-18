@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from net.transport.loopback import LoopbackTransport
+from tools.network.transport.loopback import LoopbackTransport
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.net_protocol import build_proto_message, decode_proto_message, encode_proto_message
 

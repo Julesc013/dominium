@@ -18,16 +18,16 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/control/capability/capability_engine.py`
-- `src/control/control_plane_engine.py`
-- `src/control/effects/effect_engine.py`
-- `src/control/fidelity/fidelity_engine.py`
-- `src/control/ir/control_ir_compiler.py`
-- `src/control/ir/control_ir_programs.py`
-- `src/control/ir/control_ir_verifier.py`
-- `src/control/negotiation/negotiation_kernel.py`
-- `src/control/planning/plan_engine.py`
-- `src/control/view/view_engine.py`
+- `src/contracts/capability/capability/capability_engine.py`
+- `src/tools/governance/control_plane_engine.py`
+- `src/tools/governance/effects/effect_engine.py`
+- `src/tools/governance/fidelity/fidelity_engine.py`
+- `src/tools/governance/ir/control_ir_compiler.py`
+- `src/tools/governance/ir/control_ir_programs.py`
+- `src/tools/governance/ir/control_ir_verifier.py`
+- `src/tools/governance/negotiation/negotiation_kernel.py`
+- `src/tools/governance/planning/plan_engine.py`
+- `src/tools/governance/view/view_engine.py`
 - `src/fields/field_engine.py`
 - `src/infrastructure/formalization/inference_engine.py`
 - `src/inspection/inspection_engine.py`
@@ -47,11 +47,11 @@ Replacement Target: XI-4b manual review resolution
 ## Scorecard
 
 - `tools/control/tool_run_control_stress.py` disposition=`canonical` rank=`1` total_score=`62.58` risk=`HIGH`
-- `src/control/capability/capability_engine.py` disposition=`quarantine` rank=`2` total_score=`61.96` risk=`HIGH`
+- `src/contracts/capability/capability/capability_engine.py` disposition=`quarantine` rank=`2` total_score=`61.96` risk=`HIGH`
 - `src/specs/spec_engine.py` disposition=`quarantine` rank=`3` total_score=`59.58` risk=`HIGH`
 - `tools/control/tool_global_control_stress.py` disposition=`quarantine` rank=`4` total_score=`59.09` risk=`HIGH`
-- `src/control/view/view_engine.py` disposition=`quarantine` rank=`5` total_score=`58.63` risk=`HIGH`
-- `src/control/fidelity/fidelity_engine.py` disposition=`quarantine` rank=`6` total_score=`58.62` risk=`HIGH`
+- `src/tools/governance/view/view_engine.py` disposition=`quarantine` rank=`5` total_score=`58.63` risk=`HIGH`
+- `src/tools/governance/fidelity/fidelity_engine.py` disposition=`quarantine` rank=`6` total_score=`58.62` risk=`HIGH`
 - `src/inspection/inspection_engine.py` disposition=`quarantine` rank=`7` total_score=`57.68` risk=`HIGH`
 - `src/materials/commitments/commitment_engine.py` disposition=`quarantine` rank=`8` total_score=`57.32` risk=`HIGH`
 - `src/fields/field_engine.py` disposition=`quarantine` rank=`9` total_score=`56.61` risk=`HIGH`
@@ -60,17 +60,17 @@ Replacement Target: XI-4b manual review resolution
 - `src/materials/provenance/event_stream_index.py` disposition=`quarantine` rank=`12` total_score=`54.95` risk=`HIGH`
 - `src/interaction/mount/mount_engine.py` disposition=`quarantine` rank=`13` total_score=`54.63` risk=`HIGH`
 - `src/interaction/task/task_engine.py` disposition=`quarantine` rank=`14` total_score=`54.12` risk=`HIGH`
-- `src/control/ir/control_ir_verifier.py` disposition=`quarantine` rank=`15` total_score=`53.99` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_verifier.py` disposition=`quarantine` rank=`15` total_score=`53.99` risk=`HIGH`
 - `src/machines/port_engine.py` disposition=`quarantine` rank=`16` total_score=`53.01` risk=`HIGH`
-- `src/control/ir/control_ir_programs.py` disposition=`drop` rank=`17` total_score=`51.89` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_programs.py` disposition=`drop` rank=`17` total_score=`51.89` risk=`HIGH`
 - `src/infrastructure/formalization/inference_engine.py` disposition=`drop` rank=`18` total_score=`51.42` risk=`HIGH`
-- `src/control/ir/control_ir_compiler.py` disposition=`merge` rank=`19` total_score=`51.26` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_compiler.py` disposition=`merge` rank=`19` total_score=`51.26` risk=`HIGH`
 - `src/interaction/action_surface_engine.py` disposition=`drop` rank=`20` total_score=`50.36` risk=`HIGH`
-- `src/control/negotiation/negotiation_kernel.py` disposition=`drop` rank=`21` total_score=`49.49` risk=`HIGH`
-- `src/control/effects/effect_engine.py` disposition=`drop` rank=`22` total_score=`46.67` risk=`HIGH`
+- `src/tools/governance/negotiation/negotiation_kernel.py` disposition=`drop` rank=`21` total_score=`49.49` risk=`HIGH`
+- `src/tools/governance/effects/effect_engine.py` disposition=`drop` rank=`22` total_score=`46.67` risk=`HIGH`
 - `src/mechanics/structural_graph_engine.py` disposition=`drop` rank=`23` total_score=`46.4` risk=`HIGH`
-- `src/control/control_plane_engine.py` disposition=`merge` rank=`24` total_score=`46.01` risk=`HIGH`
-- `src/control/planning/plan_engine.py` disposition=`merge` rank=`25` total_score=`42.73` risk=`HIGH`
+- `src/tools/governance/control_plane_engine.py` disposition=`merge` rank=`24` total_score=`46.01` risk=`HIGH`
+- `src/tools/governance/planning/plan_engine.py` disposition=`merge` rank=`25` total_score=`42.73` risk=`HIGH`
 
 ## Usage Sites
 

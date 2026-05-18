@@ -785,7 +785,7 @@ static int setup_find_upward(char* out, size_t cap, const char* rel)
 
 static void setup_resolve_control_registry(char* out, size_t cap, const char* requested)
 {
-    const char* fallback = "data/registries/control_capabilities.registry";
+    const char* fallback = "contracts/registry/control_capabilities.registry";
     const char* path = (requested && requested[0]) ? requested : fallback;
     if (!out || cap == 0u) {
         return;
@@ -1119,7 +1119,7 @@ static int setup_run_gui(int argc, char** argv)
 
 int setup_main(int argc, char** argv)
 {
-    const char* control_registry_path = "data/registries/control_capabilities.registry";
+    const char* control_registry_path = "contracts/registry/control_capabilities.registry";
     char control_registry_buf[512];
     const char* control_enable = 0;
     const char* prepare_root = ".";

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict
 
-from net.anti_cheat import (
+from tools.network.anti_cheat import (
     check_authority_integrity,
     check_behavioral_detection,
     check_input_integrity,

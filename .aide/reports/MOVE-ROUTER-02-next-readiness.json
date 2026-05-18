@@ -1,0 +1,15 @@
+{
+  "schema_version": "dominium.move_router_02.next_readiness.v1",
+  "task": "MOVE-ROUTER-02",
+  "ready_for_post_restructure_02": false,
+  "ready_for_feature_work": false,
+  "ready_for_followup_repair": true,
+  "next_task": "MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing",
+  "reasons": [
+    "RepoX ruleset discovery still references old root path",
+    "Broader TestX failed 140 of 344 lanes",
+    "Registry and pack consumers still reference old data/packs roots",
+    "Frozen hashes and generated evidence require reviewed refresh",
+    "Projection, release, product boot, and internal pilot proof were not rerun"
+  ]
+}

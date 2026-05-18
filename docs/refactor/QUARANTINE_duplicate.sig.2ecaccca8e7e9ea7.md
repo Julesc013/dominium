@@ -12,20 +12,20 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/fidelity/__init__.py`
+- Canonical Candidate: `src/tools/governance/fidelity/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/fidelity/__init__.py`
-- `src/control/fidelity/fidelity_engine.py`
+- `src/tools/governance/fidelity/__init__.py`
+- `src/tools/governance/fidelity/fidelity_engine.py`
 
 ## Scorecard
 
-- `src/control/fidelity/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
-- `src/control/fidelity/fidelity_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
+- `src/tools/governance/fidelity/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
+- `src/tools/governance/fidelity/fidelity_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
 - `src/control/__init__.py` disposition=`quarantine` rank=`3` total_score=`71.79` risk=`HIGH`
 
 ## Usage Sites

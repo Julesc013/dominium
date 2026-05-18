@@ -12,23 +12,23 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/instance/instance_validator.py`
+- Canonical Candidate: `src/tools/libraries/instance/instance_validator.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/lib/artifact/artifact_validator.py`
-- `src/lib/install/install_validator.py`
-- `src/lib/instance/instance_validator.py`
-- `src/lib/save/save_validator.py`
+- `src/tools/libraries/artifact/artifact_validator.py`
+- `src/tools/libraries/install/install_validator.py`
+- `src/tools/libraries/instance/instance_validator.py`
+- `src/tools/libraries/save/save_validator.py`
 
 ## Scorecard
 
-- `src/lib/instance/instance_validator.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
-- `src/lib/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
-- `src/lib/save/save_validator.py` disposition=`quarantine` rank=`3` total_score=`69.7` risk=`HIGH`
-- `src/lib/install/install_validator.py` disposition=`merge` rank=`4` total_score=`58.27` risk=`HIGH`
+- `src/tools/libraries/instance/instance_validator.py` disposition=`canonical` rank=`1` total_score=`70.77` risk=`HIGH`
+- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
+- `src/tools/libraries/save/save_validator.py` disposition=`quarantine` rank=`3` total_score=`69.7` risk=`HIGH`
+- `src/tools/libraries/install/install_validator.py` disposition=`merge` rank=`4` total_score=`58.27` risk=`HIGH`
 
 ## Usage Sites
 

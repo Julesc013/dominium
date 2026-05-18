@@ -19,7 +19,7 @@ _EXPECTED = {
 
 
 def run(repo_root: str):
-    rel_path = "data/registries/action_template_registry.json"
+    rel_path = "contracts/registry/action_template_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         return {"status": "fail", "message": "{} missing".format(rel_path)}

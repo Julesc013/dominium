@@ -113,8 +113,8 @@ This keeps old loaders working while still ensuring every semantic item carries 
 
 Two registries remain line-oriented text files for compatibility with existing native loaders:
 
-- `data/registries/control_capabilities.registry`
-- `data/registries/law_targets.registry`
+- `contracts/registry/control_capabilities.registry`
+- `contracts/registry/law_targets.registry`
 
 For these files:
 

@@ -26,8 +26,8 @@ def run(repo_root: str):
 
     from game.domains.processes.process_run_engine import process_run_start, process_run_tick
 
-    action_registry = _load_json(repo_root, "data/registries/action_template_registry.json")
-    temporal_registry = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
+    action_registry = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    temporal_registry = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
     process_definition = {
         "process_id": "proc.test.wait",
         "version": "1.0.0",

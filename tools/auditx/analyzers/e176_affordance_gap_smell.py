@@ -48,8 +48,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    matrix_rel = "data/meta/real_world_affordance_matrix.json"
-    template_rel = "data/registries/action_template_registry.json"
+    matrix_rel = "contracts/meta/real_world_affordance_matrix.json"
+    template_rel = "contracts/registry/action_template_registry.json"
 
     matrix_payload = _load_json(repo_root, matrix_rel)
     if not matrix_payload:

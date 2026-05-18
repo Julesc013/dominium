@@ -22,7 +22,7 @@ Replacement Target: XI-4b manual review resolution
 - `setup/packages/scripts/packaging/tests/packaging_validation_test.py`
 - `setup/packages/scripts/repro/verify_reproducible_builds.py`
 - `src/archive/deterministic_bundle.py`
-- `src/lib/store/reachability_engine.py`
+- `src/contracts/abi/store/reachability_engine.py`
 - `src/release/release_manifest_engine.py`
 - `tools/dist/dist_verify_common.py`
 - `tools/mvp/toolchain_matrix_common.py`
@@ -57,7 +57,7 @@ Replacement Target: XI-4b manual review resolution
 - `setup/packages/scripts/repro/verify_reproducible_builds.py` disposition=`drop` rank=`15` total_score=`58.11` risk=`HIGH`
 - `tools/xstack/packagingx/dist_build.py` disposition=`merge` rank=`16` total_score=`56.29` risk=`HIGH`
 - `src/release/release_manifest_engine.py` disposition=`merge` rank=`17` total_score=`55.42` risk=`HIGH`
-- `src/lib/store/reachability_engine.py` disposition=`drop` rank=`18` total_score=`47.23` risk=`HIGH`
+- `src/contracts/abi/store/reachability_engine.py` disposition=`drop` rank=`18` total_score=`47.23` risk=`HIGH`
 - `tools/system/anb_omega.py` disposition=`drop` rank=`19` total_score=`45.71` risk=`HIGH`
 
 ## Usage Sites

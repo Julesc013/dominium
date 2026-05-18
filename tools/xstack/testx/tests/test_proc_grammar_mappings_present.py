@@ -19,8 +19,8 @@ def _load(repo_root: str, rel_path: str):
 
 
 def run(repo_root: str):
-    rwam_payload, rwam_err = _load(repo_root, "data/meta/real_world_affordance_matrix.json")
-    info_payload, info_err = _load(repo_root, "data/registries/info_artifact_family_registry.json")
+    rwam_payload, rwam_err = _load(repo_root, "contracts/meta/real_world_affordance_matrix.json")
+    info_payload, info_err = _load(repo_root, "contracts/registry/info_artifact_family_registry.json")
     if rwam_err or info_err:
         return {"status": "fail", "message": "RWAM or info artifact family registry missing/invalid"}
 

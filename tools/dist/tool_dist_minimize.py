@@ -48,7 +48,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-root", default=DEFAULT_OUTPUT_ROOT)
     parser.add_argument("--platform-tag", default=DEFAULT_PLATFORM_TAG)
     parser.add_argument("--channel", default=DEFAULT_RELEASE_CHANNEL)
-    parser.add_argument("--report-path", default="data/audit/dist_content_audit.json")
+    parser.add_argument("--report-path", default="content/data/audit/dist_content_audit.json")
     parser.add_argument("--doc-path", default="docs/audit/DIST_CONTENT_AUDIT.md")
     args = parser.parse_args(argv)
 

@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/validate/appcore_validate.c
+FILE: runtime/shell/appcore/validate/appcore_validate.c
 MODULE: Dominium
 PURPOSE: Appcore validate module implementation (scaffold).
 NOTES: No filesystem probing beyond schema artifacts; deterministic order only.

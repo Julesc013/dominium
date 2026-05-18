@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    fidelity_core_rel = "control/fidelity/fidelity_engine.py"
+    fidelity_core_rel = "tools/governance/fidelity/fidelity_engine.py"
     fidelity_core_text = _read_text(repo_root, fidelity_core_rel)
     if not fidelity_core_text:
         findings.append(

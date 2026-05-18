@@ -31,7 +31,7 @@ This policy defines which XStack outputs are tracked in git, which outputs are i
 - `SNAPSHOT_ONLY`: tracked but only updated by `gate.py snapshot`.
 - `NEVER`: never tracked; must be emitted under cache/workspace roots.
 
-The authoritative mapping is `data/registries/derived_artifacts.json`.
+The authoritative mapping is `contracts/registry/derived_artifacts.json`.
 
 ## Write Roots
 

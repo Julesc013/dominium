@@ -101,12 +101,12 @@ def authority_context(
 
 def policy_context(repo_root: str) -> dict:
     payload = construction_policy_context()
-    payload["control_action_registry"] = _read_json(repo_root, "data/registries/control_action_registry.json")
-    payload["control_policy_registry"] = _read_json(repo_root, "data/registries/control_policy_registry.json")
-    payload["blueprint_registry"] = _read_json(repo_root, "data/registries/blueprint_registry.json")
-    payload["part_class_registry"] = _read_json(repo_root, "data/registries/part_class_registry.json")
-    payload["connection_type_registry"] = _read_json(repo_root, "data/registries/connection_type_registry.json")
-    payload["material_class_registry"] = _read_json(repo_root, "data/registries/material_class_registry.json")
+    payload["control_action_registry"] = _read_json(repo_root, "contracts/registry/control_action_registry.json")
+    payload["control_policy_registry"] = _read_json(repo_root, "contracts/registry/control_policy_registry.json")
+    payload["blueprint_registry"] = _read_json(repo_root, "contracts/registry/blueprint_registry.json")
+    payload["part_class_registry"] = _read_json(repo_root, "contracts/registry/part_class_registry.json")
+    payload["connection_type_registry"] = _read_json(repo_root, "contracts/registry/connection_type_registry.json")
+    payload["material_class_registry"] = _read_json(repo_root, "contracts/registry/material_class_registry.json")
     payload["control_policy_id"] = "ctrl.policy.scheduler"
     payload["plan_compile_budget_units"] = 4096
     payload["control_ir_rs5_budget_units"] = 4096

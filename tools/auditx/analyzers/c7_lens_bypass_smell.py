@@ -22,8 +22,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    law_rel = "data/registries/law_profiles.json"
-    lens_rel = "data/registries/lenses.json"
+    law_rel = "contracts/registry/law_profiles.json"
+    lens_rel = "contracts/registry/lenses.json"
     law_payload = _load_json(os.path.join(repo_root, law_rel.replace("/", os.sep)))
     lens_payload = _load_json(os.path.join(repo_root, lens_rel.replace("/", os.sep)))
 

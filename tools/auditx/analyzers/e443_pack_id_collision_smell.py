@@ -18,7 +18,7 @@ REQUIRED_TOKENS = {
         "fork.<origin_pack_id>.<fork_author>.<fork_name>",
         "Legacy reverse-DNS pack ids remain loadable for compatibility.",
     ),
-    "lib/provides/provider_resolution.py": (
+    "tools/libraries/provides/provider_resolution.py": (
         "classify_pack_namespace(",
         "REFUSAL_PACK_NAMESPACE_INVALID",
     ),

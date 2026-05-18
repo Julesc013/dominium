@@ -8,8 +8,8 @@ Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
-- meta/compute/compute_budget_engine.py
-- meta/compile/compile_engine.py
+- tools/repo/meta/compute/compute_budget_engine.py
+- tools/repo/meta/compile/compile_engine.py
 - system/macro/macro_capsule_engine.py
 - process/software/pipeline_engine.py
 - tools/xstack/repox/check.py

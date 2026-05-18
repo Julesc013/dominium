@@ -25,7 +25,7 @@ static void print_version_banner(void)
 
 int main(int argc, char** argv)
 {
-    const char* registry_path = "data/registries/law_targets.registry";
+    const char* registry_path = "contracts/registry/law_targets.registry";
     int i;
     dom_registry reg;
     dom_registry_result res;

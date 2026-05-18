@@ -12,10 +12,10 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E1_NET_POLICY_DRIFT"
 WATCH_PREFIXES = (
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/net_resync_strategy_registry.json",
-    "data/registries/anti_cheat_policy_registry.json",
-    "data/registries/anti_cheat_module_registry.json",
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/net_resync_strategy_registry.json",
+    "contracts/registry/anti_cheat_policy_registry.json",
+    "contracts/registry/anti_cheat_module_registry.json",
     "tools/xstack/sessionx/",
     "tools/xstack/serverx/",
     "tools/xstack/controlx/",
@@ -84,22 +84,22 @@ def run(graph, repo_root, changed_files=None):
 
     replication_rows, replication_err = _registry_rows(
         repo_root=repo_root,
-        rel_path="data/registries/net_replication_policy_registry.json",
+        rel_path="contracts/registry/net_replication_policy_registry.json",
         key="policies",
     )
     resync_rows, resync_err = _registry_rows(
         repo_root=repo_root,
-        rel_path="data/registries/net_resync_strategy_registry.json",
+        rel_path="contracts/registry/net_resync_strategy_registry.json",
         key="strategies",
     )
     anti_cheat_rows, anti_cheat_err = _registry_rows(
         repo_root=repo_root,
-        rel_path="data/registries/anti_cheat_policy_registry.json",
+        rel_path="contracts/registry/anti_cheat_policy_registry.json",
         key="policies",
     )
     anti_cheat_module_rows, anti_cheat_module_err = _registry_rows(
         repo_root=repo_root,
-        rel_path="data/registries/anti_cheat_module_registry.json",
+        rel_path="contracts/registry/anti_cheat_module_registry.json",
         key="modules",
     )
     if replication_err or resync_err or anti_cheat_err or anti_cheat_module_err:
@@ -109,16 +109,16 @@ def run(graph, repo_root, changed_files=None):
                 category="net.policy_drift",
                 severity="RISK",
                 confidence=0.95,
-                file_path="data/registries/net_replication_policy_registry.json",
+                file_path="contracts/registry/net_replication_policy_registry.json",
                 evidence=["One or more multiplayer policy registries are missing or invalid JSON."],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_RULE",
                 related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                 related_paths=[
-                    "data/registries/net_replication_policy_registry.json",
-                    "data/registries/net_resync_strategy_registry.json",
-                    "data/registries/anti_cheat_policy_registry.json",
-                    "data/registries/anti_cheat_module_registry.json",
+                    "contracts/registry/net_replication_policy_registry.json",
+                    "contracts/registry/net_resync_strategy_registry.json",
+                    "contracts/registry/anti_cheat_policy_registry.json",
+                    "contracts/registry/anti_cheat_module_registry.json",
                 ],
             )
         )
@@ -155,14 +155,14 @@ def run(graph, repo_root, changed_files=None):
                     category="net.policy_drift",
                     severity="RISK",
                     confidence=0.9,
-                    file_path="data/registries/net_replication_policy_registry.json",
+                    file_path="contracts/registry/net_replication_policy_registry.json",
                     evidence=["policy_id={} references missing resync_strategy_id={}".format(policy_id, strategy_id)],
                     suggested_classification="INVALID",
                     recommended_action="ADD_RULE",
                     related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                     related_paths=[
-                        "data/registries/net_replication_policy_registry.json",
-                        "data/registries/net_resync_strategy_registry.json",
+                        "contracts/registry/net_replication_policy_registry.json",
+                        "contracts/registry/net_resync_strategy_registry.json",
                     ],
                 )
             )
@@ -177,14 +177,14 @@ def run(graph, repo_root, changed_files=None):
                         category="net.policy_drift",
                         severity="RISK",
                         confidence=0.89,
-                        file_path="data/registries/net_resync_strategy_registry.json",
+                        file_path="contracts/registry/net_resync_strategy_registry.json",
                         evidence=["strategy_id={} references missing policy_id={}".format(strategy_id, policy_id)],
                         suggested_classification="INVALID",
                         recommended_action="ADD_RULE",
                         related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                         related_paths=[
-                            "data/registries/net_resync_strategy_registry.json",
-                            "data/registries/net_replication_policy_registry.json",
+                            "contracts/registry/net_resync_strategy_registry.json",
+                            "contracts/registry/net_replication_policy_registry.json",
                         ],
                     )
                 )
@@ -199,14 +199,14 @@ def run(graph, repo_root, changed_files=None):
                         category="net.policy_drift",
                         severity="RISK",
                         confidence=0.9,
-                        file_path="data/registries/anti_cheat_policy_registry.json",
+                        file_path="contracts/registry/anti_cheat_policy_registry.json",
                         evidence=["policy_id={} references missing module_id={}".format(policy_id, module_id)],
                         suggested_classification="INVALID",
                         recommended_action="ADD_RULE",
                         related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                         related_paths=[
-                            "data/registries/anti_cheat_policy_registry.json",
-                            "data/registries/anti_cheat_module_registry.json",
+                            "contracts/registry/anti_cheat_policy_registry.json",
+                            "contracts/registry/anti_cheat_module_registry.json",
                         ],
                     )
                 )
@@ -226,7 +226,7 @@ def run(graph, repo_root, changed_files=None):
                     recommended_action="DOC_FIX",
                     related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                     related_paths=[
-                        "data/registries/net_replication_policy_registry.json",
+                        "contracts/registry/net_replication_policy_registry.json",
                     ],
                 )
             )
@@ -244,7 +244,7 @@ def run(graph, repo_root, changed_files=None):
                     recommended_action="DOC_FIX",
                     related_invariants=["INV-NET-POLICY-REGISTRIES-VALID"],
                     related_paths=[
-                        "data/registries/anti_cheat_policy_registry.json",
+                        "contracts/registry/anti_cheat_policy_registry.json",
                     ],
                 )
             )

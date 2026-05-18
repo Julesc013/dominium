@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/extensions/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/extensions/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/meta/extensions/__init__.py`
-- `src/meta/extensions/extensions_engine.py`
+- `src/tools/repo/meta/extensions/__init__.py`
+- `src/tools/repo/meta/extensions/extensions_engine.py`
 - `src/meta_extensions_engine.py`
 
 ## Scorecard
 
-- `src/meta/extensions/__init__.py` disposition=`canonical` rank=`1` total_score=`73.33` risk=`HIGH`
+- `src/tools/repo/meta/extensions/__init__.py` disposition=`canonical` rank=`1` total_score=`73.33` risk=`HIGH`
 - `src/meta_extensions_engine.py` disposition=`quarantine` rank=`2` total_score=`72.5` risk=`HIGH`
-- `src/meta/extensions/extensions_engine.py` disposition=`quarantine` rank=`3` total_score=`69.11` risk=`HIGH`
+- `src/tools/repo/meta/extensions/extensions_engine.py` disposition=`quarantine` rank=`3` total_score=`69.11` risk=`HIGH`
 
 ## Usage Sites
 

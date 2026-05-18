@@ -93,7 +93,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "tools/xstack/sessionx/process_runtime.py",
-                                "data/registries/yield_model_registry.json",
+                                "contracts/registry/yield_model_registry.json",
                             ],
                         )
                     )

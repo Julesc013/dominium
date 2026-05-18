@@ -45,7 +45,7 @@ Branch creation must emit deterministic proof data:
 
 ## 5) Policy Registry
 
-`data/registries/branch_policy_registry.json` defines baseline policy IDs:
+`contracts/registry/branch_policy_registry.json` defines baseline policy IDs:
 - `branch.disabled`
 - `branch.allowed_private`
 - `branch.allowed_lab`

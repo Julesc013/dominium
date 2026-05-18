@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.portable_root_not_detected_smell",
                 severity="RISK",
                 confidence=0.98,
-                file_path=rel_path or "data/audit/clean_room_win64.json",
+                file_path=rel_path or "content/data/audit/clean_room_win64.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "clean-room portable root detection failed",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REGENERATE_AND_RERUN_CLEAN_ROOM",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-CLEAN-ROOM-MUST-PASS-BEFORE-ARCHIVE"],
-                related_paths=[rel_path or "data/audit/clean_room_win64.json", "docs/release/CLEAN_ROOM_TEST_MODEL.md"],
+                related_paths=[rel_path or "content/data/audit/clean_room_win64.json", "docs/release/CLEAN_ROOM_TEST_MODEL.md"],
             )
         )
     return findings

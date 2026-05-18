@@ -97,37 +97,37 @@ def run_proc3_qc_case(
 
     from game.domains.processes.process_run_engine import process_run_end, process_run_start, process_run_tick
 
-    action_registry = _load_json(repo_root, "data/registries/action_template_registry.json")
-    temporal_registry = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
-    yield_registry = _load_json(repo_root, "data/registries/yield_model_registry.json")
-    defect_registry = _load_json(repo_root, "data/registries/defect_model_registry.json")
-    model_registry = _load_json(repo_root, "data/registries/constitutive_model_registry.json")
-    model_type_registry = _load_json(repo_root, "data/registries/model_type_registry.json")
-    cache_policy_registry = _load_json(repo_root, "data/registries/model_cache_policy_registry.json")
+    action_registry = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    temporal_registry = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
+    yield_registry = _load_json(repo_root, "contracts/registry/yield_model_registry.json")
+    defect_registry = _load_json(repo_root, "contracts/registry/defect_model_registry.json")
+    model_registry = _load_json(repo_root, "contracts/registry/constitutive_model_registry.json")
+    model_type_registry = _load_json(repo_root, "contracts/registry/model_type_registry.json")
+    cache_policy_registry = _load_json(repo_root, "contracts/registry/model_cache_policy_registry.json")
     qc_registry = (
         dict(qc_policy_registry_payload)
         if isinstance(qc_policy_registry_payload, Mapping)
-        else _load_json(repo_root, "data/registries/qc_policy_registry.json")
+        else _load_json(repo_root, "contracts/registry/qc_policy_registry.json")
     )
     sampling_registry = (
         dict(sampling_strategy_registry_payload)
         if isinstance(sampling_strategy_registry_payload, Mapping)
-        else _load_json(repo_root, "data/registries/sampling_strategy_registry.json")
+        else _load_json(repo_root, "contracts/registry/sampling_strategy_registry.json")
     )
     test_registry = (
         dict(test_procedure_registry_payload)
         if isinstance(test_procedure_registry_payload, Mapping)
-        else _load_json(repo_root, "data/registries/test_procedure_registry.json")
+        else _load_json(repo_root, "contracts/registry/test_procedure_registry.json")
     )
     tolerance_registry = (
         dict(tolerance_policy_registry_payload)
         if isinstance(tolerance_policy_registry_payload, Mapping)
-        else _load_json(repo_root, "data/registries/tolerance_policy_registry.json")
+        else _load_json(repo_root, "contracts/registry/tolerance_policy_registry.json")
     )
     drift_registry = (
         dict(drift_policy_registry_payload)
         if isinstance(drift_policy_registry_payload, Mapping)
-        else _load_json(repo_root, "data/registries/process_drift_policy_registry.json")
+        else _load_json(repo_root, "contracts/registry/process_drift_policy_registry.json")
     )
 
     process_definition = _process_definition(

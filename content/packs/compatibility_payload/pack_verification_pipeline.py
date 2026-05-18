@@ -6,8 +6,8 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from compat.data_format_loader import stamp_artifact_metadata
-from lib.provides import (
+from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
+from tools.libraries.provides import (
     REFUSAL_PROVIDES_AMBIGUOUS,
     REFUSAL_PROVIDES_MISSING_PROVIDER,
     infer_resolution_policy_id,
@@ -15,9 +15,9 @@ from lib.provides import (
     normalize_provides_resolutions,
     resolve_providers,
 )
-from compat.descriptor.descriptor_engine import build_product_descriptor
+from tools.validators.compatibility.descriptor.descriptor_engine import build_product_descriptor
 from game.domains.geology import build_overlay_manifest, merge_overlay_view
-from modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
 from tools.compatx.core.semantic_contract_validator import (
     CONTRACT_FIELD_ORDER,
     build_default_universe_contract_bundle,

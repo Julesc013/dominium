@@ -31,14 +31,14 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 
 XI_5A_FINAL_REL = "docs/audit/XI_5A_FINAL.md"
-XI5A_EXECUTION_LOG_REL = "data/restructure/xi5a_execution_log.json"
-XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "data/restructure/xi5a_postmove_residual_src_report.json"
+XI5A_EXECUTION_LOG_REL = "content/data/restructure/xi5a_execution_log.json"
+XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL = "content/data/restructure/xi5a_postmove_residual_src_report.json"
 
-XI5X1_CLASSIFICATION_LOCK_REL = "data/restructure/xi5x1_residual_classification_lock.json"
-XI5X1_BATCH_PLAN_REL = "data/restructure/xi5x1_batch_plan.json"
-XI5X1_EXECUTION_LOG_REL = "data/restructure/xi5x1_execution_log.json"
-XI5X1_POSTMOVE_RESIDUAL_REPORT_REL = "data/restructure/xi5x1_postmove_residual_src_report.json"
-XI5X1_XI6_GATE_MODEL_REL = "data/restructure/xi5x1_xi6_gate_model.json"
+XI5X1_CLASSIFICATION_LOCK_REL = "content/data/restructure/xi5x1_residual_classification_lock.json"
+XI5X1_BATCH_PLAN_REL = "content/data/restructure/xi5x1_batch_plan.json"
+XI5X1_EXECUTION_LOG_REL = "content/data/restructure/xi5x1_execution_log.json"
+XI5X1_POSTMOVE_RESIDUAL_REPORT_REL = "content/data/restructure/xi5x1_postmove_residual_src_report.json"
+XI5X1_XI6_GATE_MODEL_REL = "content/data/restructure/xi5x1_xi6_gate_model.json"
 
 XI_5D_RESIDUAL_LOCK_REPORT_REL = "docs/audit/XI_5D_RESIDUAL_LOCK_REPORT.md"
 XI_5B_SAFE_BATCH_REPORT_REL = "docs/audit/XI_5B_SAFE_BATCH_REPORT.md"
@@ -46,9 +46,9 @@ XI_5C_MERGE_AND_MANUAL_REVIEW_REPORT_REL = "docs/audit/XI_5C_MERGE_AND_MANUAL_RE
 XI_5E_COMPLETION_REPORT_REL = "docs/audit/XI_5E_COMPLETION_REPORT.md"
 XI_5X1_FINAL_REL = "docs/audit/XI_5X1_FINAL.md"
 
-VALIDATION_FAST_REL = "data/audit/validation_report_FAST.json"
-VALIDATION_STRICT_REL = "data/audit/validation_report_STRICT.json"
-ARCH_AUDIT2_REL = "data/audit/arch_audit2_report.json"
+VALIDATION_FAST_REL = "content/data/audit/validation_report_FAST.json"
+VALIDATION_STRICT_REL = "content/data/audit/validation_report_STRICT.json"
+ARCH_AUDIT2_REL = "content/data/audit/arch_audit2_report.json"
 
 SOURCE_ROOTS = (
     "src",
@@ -238,7 +238,7 @@ def _classification_for_row(repo_root: str, row: Mapping[str, object]) -> dict[s
                 "rationale": "Component-local source file with a collision-free target and narrowly scoped local build rewires.",
                 "evidence_refs": [
                     XI5A_POSTMOVE_RESIDUAL_SRC_REPORT_REL,
-                    "libs/build_identity/CMakeLists.txt" if source_path.startswith("libs/build_identity/src/") else "libs/ui_backends/win32/CMakeLists.txt",
+                    "runtime/build_identity/CMakeLists.txt" if source_path.startswith("libs/build_identity/src/") else "runtime/shell/ui_backends/win32/CMakeLists.txt",
                 ],
             }
         )
@@ -762,8 +762,8 @@ def build_execution_log(
     rows = [dict(item or {}) for item in list(classification_lock.get("rows") or [])]
     safe_reference_updates = {
         BATCH_SAFE_1: [
-            "libs/build_identity/CMakeLists.txt",
-            "libs/ui_backends/win32/CMakeLists.txt",
+            "runtime/build_identity/CMakeLists.txt",
+            "runtime/shell/ui_backends/win32/CMakeLists.txt",
         ],
         BATCH_SAFE_2: [
             "CMakeLists.txt",

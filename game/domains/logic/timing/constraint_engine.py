@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Mapping
 
 from game.domains.logic.eval.common import as_int, as_map, canon, token
-from meta.explain import build_explain_artifact
+from tools.repo.meta.explain import build_explain_artifact
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

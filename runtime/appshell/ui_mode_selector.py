@@ -6,7 +6,7 @@ import json
 import os
 from typing import Iterable, Mapping, Sequence
 
-from compat.capability_negotiation import fallback_map_rows_by_capability_id
+from tools.validators.compatibility.capability_negotiation import fallback_map_rows_by_capability_id
 from engine.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

@@ -23,14 +23,14 @@ def _run_eval(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from models import model_type_rows_by_id
+    from tools.models import model_type_rows_by_id
     from engine.time import evaluate_time_mappings, normalize_drift_policy_rows
 
-    temporal_payload, temporal_error = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
-    mapping_payload, mapping_error = _load_json(repo_root, "data/registries/time_mapping_registry.json")
-    model_payload, model_error = _load_json(repo_root, "data/registries/constitutive_model_registry.json")
-    model_type_payload, model_type_error = _load_json(repo_root, "data/registries/model_type_registry.json")
-    drift_payload, drift_error = _load_json(repo_root, "data/registries/drift_policy_registry.json")
+    temporal_payload, temporal_error = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
+    mapping_payload, mapping_error = _load_json(repo_root, "contracts/registry/time_mapping_registry.json")
+    model_payload, model_error = _load_json(repo_root, "contracts/registry/constitutive_model_registry.json")
+    model_type_payload, model_type_error = _load_json(repo_root, "contracts/registry/model_type_registry.json")
+    drift_payload, drift_error = _load_json(repo_root, "contracts/registry/drift_policy_registry.json")
     if temporal_error or mapping_error or model_error or model_type_error or drift_error:
         return {}
 

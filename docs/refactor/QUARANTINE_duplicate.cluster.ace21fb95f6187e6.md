@@ -19,14 +19,14 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/appshell/paths/virtual_paths.py`
-- `src/compat/shims/common.py`
-- `src/lib/install/install_discovery_engine.py`
+- `src/tools/validators/compatibility/shims/common.py`
+- `src/engine/install/install_discovery_engine.py`
 
 ## Scorecard
 
 - `src/appshell/paths/virtual_paths.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`HIGH`
-- `src/lib/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`73.09` risk=`HIGH`
-- `src/compat/shims/common.py` disposition=`quarantine` rank=`3` total_score=`68.81` risk=`HIGH`
+- `src/engine/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`73.09` risk=`HIGH`
+- `src/tools/validators/compatibility/shims/common.py` disposition=`quarantine` rank=`3` total_score=`68.81` risk=`HIGH`
 
 ## Usage Sites
 

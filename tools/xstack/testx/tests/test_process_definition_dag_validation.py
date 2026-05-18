@@ -26,8 +26,8 @@ def run(repo_root: str):
 
     from game.domains.processes.process_definition_validator import build_process_definition_row, validate_process_definition
 
-    action_registry = _load_json(repo_root, "data/registries/action_template_registry.json")
-    temporal_registry = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
+    action_registry = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    temporal_registry = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
 
     valid_definition = build_process_definition_row(
         process_id="proc.test.dag_valid",

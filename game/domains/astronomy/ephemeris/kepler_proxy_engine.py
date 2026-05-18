@@ -13,7 +13,7 @@ from game.domains.astronomy.illumination.illumination_geometry_engine import (
     sin_permille_from_angle_mdeg,
 )
 from game.domains.geology import build_position_ref
-from lib.provides.provider_resolution import resolve_providers
+from tools.libraries.provides.provider_resolution import resolve_providers
 from numeric_discipline import debug_assert_no_float_payload
 from game.domains.worldgen.mw import (
     normalize_planet_basic_artifact_rows,

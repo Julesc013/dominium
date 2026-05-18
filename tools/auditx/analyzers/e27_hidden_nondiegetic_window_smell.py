@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E27_HIDDEN_NONDIEGETIC_WINDOW_SMELL"
-PLAYER_WORKSPACE_PACK_PATH = "packs/tool/workspace.player.diegetic_default/pack.json"
+PLAYER_WORKSPACE_PACK_PATH = "content/packs/tool/workspace.player.diegetic_default/pack.json"
 PLAYER_WORKSPACE_ROOT = "packs/tool/workspace.player.diegetic_default"
 UI_HOST_PATH = "tools/xstack/sessionx/ui_host.py"
 FORBIDDEN_WINDOW_PREFIXES = (

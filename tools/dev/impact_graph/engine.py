@@ -485,18 +485,18 @@ def build_graph(repo_root: str, changed_files: Optional[List[str]] = None) -> Di
                 edges.append(_edge("depends_on", _test_node_id(test_id), _registry_node_id(registry_name)))
 
     # Domain + solver nodes and edges
-    domain_rows = _load_registry_rows(repo_root, "data/registries/domain_registry.json", "records")
+    domain_rows = _load_registry_rows(repo_root, "contracts/registry/domain_registry.json", "records")
     for row in sorted(domain_rows, key=lambda item: str(item.get("domain_id", ""))):
         domain_id = str(row.get("domain_id", "")).strip()
         if not domain_id:
             continue
-        nodes.append(_node(_domain_node_id(domain_id), "domain", domain_id, "data/registries/domain_registry.json"))
-    solver_rows = _load_registry_rows(repo_root, "data/registries/solver_registry.json", "records")
+        nodes.append(_node(_domain_node_id(domain_id), "domain", domain_id, "contracts/registry/domain_registry.json"))
+    solver_rows = _load_registry_rows(repo_root, "contracts/registry/solver_registry.json", "records")
     for row in sorted(solver_rows, key=lambda item: str(item.get("solver_id", ""))):
         solver_id = str(row.get("solver_id", "")).strip()
         if not solver_id:
             continue
-        nodes.append(_node(_solver_node_id(solver_id), "solver", solver_id, "data/registries/solver_registry.json"))
+        nodes.append(_node(_solver_node_id(solver_id), "solver", solver_id, "contracts/registry/solver_registry.json"))
         for domain_id in sorted(set(str(item).strip() for item in (row.get("domain_ids") or []) if str(item).strip())):
             edges.append(_edge("depends_on", _solver_node_id(solver_id), _domain_node_id(domain_id)))
 

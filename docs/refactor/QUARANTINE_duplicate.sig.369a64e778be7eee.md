@@ -12,20 +12,20 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/capability/__init__.py`
+- Canonical Candidate: `src/contracts/capability/capability/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/capability/__init__.py`
-- `src/control/capability/capability_engine.py`
+- `src/contracts/capability/capability/__init__.py`
+- `src/contracts/capability/capability/capability_engine.py`
 
 ## Scorecard
 
-- `src/control/capability/__init__.py` disposition=`canonical` rank=`1` total_score=`77.98` risk=`HIGH`
-- `src/control/capability/capability_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
+- `src/contracts/capability/capability/__init__.py` disposition=`canonical` rank=`1` total_score=`77.98` risk=`HIGH`
+- `src/contracts/capability/capability/capability_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
 - `src/control/__init__.py` disposition=`merge` rank=`3` total_score=`71.79` risk=`HIGH`
 
 ## Usage Sites

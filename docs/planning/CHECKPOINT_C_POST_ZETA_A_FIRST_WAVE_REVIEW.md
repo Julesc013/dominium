@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: bounded later-wave `Ζ`, immediate post-`Ζ-B` checkpoint, broader `Ζ`
 Replacement Target: later post-`Ζ-B` checkpoint may refine readiness judgments without replacing the checkpoint law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `data/planning/zeta_blocker_reconciliation_registry.json`, `data/planning/live_operations_prerequisite_matrix.json`, `data/planning/zeta_execution_gates_registry.json`, `data/runtime/rollback_bearing_staged_transition_validation_registry.json`, `data/runtime/distributed_replay_and_proof_anchor_verification_registry.json`, `data/runtime/bounded_runtime_cutover_proof_rehearsal_registry.json`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, `data/registries/provenance_classification_registry.json`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md`, `docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md`, `docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `contracts/registry/planning/zeta_blocker_reconciliation_registry.json`, `contracts/planning/live_operations_prerequisite_matrix.json`, `contracts/registry/planning/zeta_execution_gates_registry.json`, `contracts/registry/runtime/rollback_bearing_staged_transition_validation_registry.json`, `contracts/registry/runtime/distributed_replay_and_proof_anchor_verification_registry.json`, `contracts/registry/runtime/bounded_runtime_cutover_proof_rehearsal_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `tools/validators/security/trust/trust_verifier.py`
 
 # C-POST_ZETA_A_FIRST_WAVE_REVIEW
 
@@ -71,10 +71,10 @@ Completed `Ζ-A0..Ζ-A2` is not sufficient to open later-wave bounded `Ζ` direc
 Why:
 
 - the three first-wave prompts were doctrine-and-registry prompts, not realization prompts, so they strengthened perimeter law rather than narrowing the central later-wave blocker stack
-- `data/registries/trust_root_registry.json` still carries an empty `trust_roots` set, which keeps live trust-bearing later-wave claims outside honest admission
-- `data/registries/trust_policy_registry.json` and `data/registries/net_replication_policy_registry.json` still mark trust and replication posture as provisional substrate rather than closed realization proof
+- `contracts/registry/trust_root_registry.json` still carries an empty `trust_roots` set, which keeps live trust-bearing later-wave claims outside honest admission
+- `contracts/registry/trust_policy_registry.json` and `contracts/registry/net_replication_policy_registry.json` still mark trust and replication posture as provisional substrate rather than closed realization proof
 - `server/net/dom_server_runtime.h`, `server/net/dom_server_protocol.h`, and `server/shard/dom_cross_shard_log.h` still expose meaningful checkpoint, lifecycle, version, recovery, and cross-shard log substrate, but they do not by themselves close authority handoff, receipt-pipeline, or convergence law
-- `data/registries/provenance_classification_registry.json` still gives artifact-class vocabulary rather than a realized live cutover receipt pipeline
+- `contracts/registry/provenance_classification_registry.json` still gives artifact-class vocabulary rather than a realized live cutover receipt pipeline
 
 The first-wave block is therefore sufficient to preserve the bounded perimeter and clarify what later-wave work must not overclaim.
 It is not sufficient to admit later-wave families directly.
@@ -260,11 +260,11 @@ Any later-wave bounded `Ζ` or follow-on planning work must extend and preserve:
 - `server/shard/dom_cross_shard_log.h`
 - `server/net/dom_server_protocol.h`
 - `server/net/dom_server_runtime.h`
-- `security/trust/trust_verifier.py`
-- `data/registries/net_replication_policy_registry.json`
-- `data/registries/trust_policy_registry.json`
-- `data/registries/trust_root_registry.json`
-- `data/registries/provenance_classification_registry.json`
+- `tools/validators/security/trust/trust_verifier.py`
+- `contracts/registry/net_replication_policy_registry.json`
+- `contracts/registry/trust_policy_registry.json`
+- `contracts/registry/trust_root_registry.json`
+- `contracts/registry/provenance_classification_registry.json`
 
 Must avoid replacing:
 

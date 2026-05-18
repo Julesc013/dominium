@@ -19,11 +19,11 @@
       "docs/planning/GATES_AND_PROOFS.md",
       "docs/planning/MERGED_PROGRAM_STATE.md",
       "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
-      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "content/data/repo/repo_non_negotiables_and_current_reality.json",
       "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-      "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+      "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-      "data/planning/next_execution_order_post_zeta.json",
+      "content/data/planning/next_execution_order_post_zeta.json",
       "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
       "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
       "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
@@ -33,22 +33,22 @@
       "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
       "docs/audit/ULTRA_REPO_AUDIT_BUILD_RUN_TEST_MATRIX.md",
       "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md",
-      "data/audit/ultra_repo_audit_system_inventory.json",
-      "data/audit/ultra_repo_audit_entrypoints.json",
-      "data/audit/ultra_repo_audit_product_assembly_plan.json",
-      "data/audit/ultra_repo_audit_gap_ledger.json",
-      "data/audit/ultra_repo_audit_build_run_test_matrix.json",
-      "data/audit/ultra_repo_audit_wiring_map.json",
+      "content/data/audit/ultra_repo_audit_system_inventory.json",
+      "content/data/audit/ultra_repo_audit_entrypoints.json",
+      "content/data/audit/ultra_repo_audit_product_assembly_plan.json",
+      "content/data/audit/ultra_repo_audit_gap_ledger.json",
+      "contracts/audit/ultra_repo_audit_build_run_test_matrix.json",
+      "content/data/audit/ultra_repo_audit_wiring_map.json",
       "docs/xstack/CHECKPOINT_C_XSTACK_AIDE_CLOSURE.md",
-      "data/xstack/checkpoint_c_xstack_aide_closure.json",
+      "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
       "docs/xstack/NEXT_EXECUTION_ORDER_POST_XSTACK_AIDE.md",
-      "data/xstack/next_execution_order_post_xstack_aide.json",
+      "content/data/xstack/next_execution_order_post_xstack_aide.json",
       "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
       "docs/xstack/XSTACK_TO_AIDE_EXTRACTION_MAP.md",
       "CMakePresets.json",
       "appshell/command_registry.py",
       "appshell/paths/virtual_paths.py",
-      "data/registries/virtual_root_registry.json",
+      "contracts/registry/virtual_root_registry.json",
       "tools/launcher/launch.py",
       "tools/setup/setup_cli.py",
       "tools/validation/tool_run_validation.py",
@@ -64,20 +64,20 @@
       "runtime/process_spawn.py",
       "server/server_main.py",
       "server/net/loopback_transport.py",
-      "net/policies/policy_server_authoritative.py",
+      "tools/network/policies/policy_server_authoritative.py",
       "release/release_manifest_engine.py",
       "release/component_graph_resolver.py",
       "release/update_resolver.py",
-      "security/trust/trust_verifier.py",
-      "profiles/bundles/bundle.mvp_default.json",
-      "locks/pack_lock.mvp_default.json",
-      "data/session_templates/session.mvp_default.json",
-      "data/registries/bundle_profiles.json",
-      "data/registries/session_defaults.json",
+      "tools/validators/security/trust/trust_verifier.py",
+      "content/profiles/bundles/bundle.mvp_default.json",
+      "contracts/package/locks/pack_lock.mvp_default.json",
+      "content/data/session_templates/session.mvp_default.json",
+      "contracts/registry/bundle_profiles.json",
+      "contracts/registry/session_defaults.json",
       "schema/README.md",
       "schemas/README.md",
-      "packs/README.md",
-      "repo/release_policy.toml"
+      "content/packs/README.md",
+      "contracts/repo/release_policy.toml"
     ]
   },
   "topology_reality_summary": {
@@ -230,9 +230,9 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "data/registries/command_registry.json",
-        "data/registries/tui_panel_registry.json",
-        "data/registries/virtual_root_registry.json",
+        "contracts/registry/command_registry.json",
+        "contracts/registry/tui_panel_registry.json",
+        "contracts/registry/virtual_root_registry.json",
         "dist/",
         "packs/",
         "profiles/",
@@ -243,7 +243,7 @@
       "evidence_notes": [
         "appshell/command_registry.py",
         "appshell/paths/virtual_paths.py",
-        "data/registries/virtual_root_registry.json"
+        "contracts/registry/virtual_root_registry.json"
       ]
     },
     {
@@ -411,8 +411,8 @@
       "dependencies_or_path_couplings": [
         "manifests/release_manifest.json",
         "manifests/release_index.json",
-        "data/registries/component_graph_registry.json",
-        "data/registries/install_profile_registry.json",
+        "contracts/registry/component_graph_registry.json",
+        "contracts/registry/install_profile_registry.json",
         "store/profiles/",
         "store/locks/",
         "dist/"
@@ -441,12 +441,12 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
         "manifests/trust_root_registry.local.json"
       ],
       "evidence_notes": [
-        "security/trust/trust_verifier.py"
+        "tools/validators/security/trust/trust_verifier.py"
       ]
     },
     {
@@ -496,7 +496,7 @@
         "Runtime wiring"
       ],
       "evidence_notes": [
-        "net/policies/policy_server_authoritative.py",
+        "tools/network/policies/policy_server_authoritative.py",
         "docs/audit/ULTRA_REPO_AUDIT_WIRING_MAP.md"
       ]
     },
@@ -518,14 +518,14 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "data/registries/validation_suite_registry.json",
+        "contracts/registry/validation_suite_registry.json",
         "docs/audit/VALIDATION_INVENTORY.md",
         "docs/audit/VALIDATION_REPORT_<PROFILE>.md",
         "data/audit/validation_report_<PROFILE>.json",
         "docs/audit/VALIDATION_UNIFY_FINAL.md"
       ],
       "evidence_notes": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/validation/tool_run_validation.py"
       ]
     },
@@ -626,7 +626,7 @@
         "Dist and store pack resolution"
       ],
       "evidence_notes": [
-        "packs/README.md",
+        "content/packs/README.md",
         "appshell/paths/virtual_paths.py",
         "AGENTS.md"
       ]
@@ -674,12 +674,12 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "profiles/bundles/bundle.mvp_default.json",
+        "content/profiles/bundles/bundle.mvp_default.json",
         "AppShell virtual roots",
         "Release and install store projections"
       ],
       "evidence_notes": [
-        "profiles/bundles/bundle.mvp_default.json",
+        "content/profiles/bundles/bundle.mvp_default.json",
         "appshell/paths/virtual_paths.py",
         "tools/mvp/runtime_bundle.py"
       ]
@@ -700,13 +700,13 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "locks/pack_lock.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
         "AppShell virtual roots",
         "Release and install store projections",
         "SessionX create and boot flows"
       ],
       "evidence_notes": [
-        "locks/pack_lock.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
         "tools/mvp/runtime_bundle.py",
         "release/update_resolver.py"
       ]
@@ -727,13 +727,13 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "data/session_templates/session.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json",
         "Session materialization flows",
         "SessionX tooling",
         "Baseline recipe docs"
       ],
       "evidence_notes": [
-        "data/session_templates/session.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json",
         "tools/mvp/runtime_bundle.py"
       ]
     },
@@ -757,13 +757,13 @@
         "appshell/command_registry.py",
         "appshell/paths/virtual_paths.py",
         "release/component_graph_resolver.py",
-        "security/trust/trust_verifier.py",
-        "validation/validation_engine.py"
+        "tools/validators/security/trust/trust_verifier.py",
+        "tools/validators/validation/validation_engine.py"
       ],
       "evidence_notes": [
-        "data/registries/virtual_root_registry.json",
-        "data/registries/bundle_profiles.json",
-        "data/registries/session_defaults.json"
+        "contracts/registry/virtual_root_registry.json",
+        "contracts/registry/bundle_profiles.json",
+        "contracts/registry/session_defaults.json"
       ]
     },
     {
@@ -816,7 +816,7 @@
       "evidence_notes": [
         "schemas/README.md",
         "AGENTS.md",
-        "validation/validation_engine.py"
+        "tools/validators/validation/validation_engine.py"
       ]
     },
     {
@@ -897,12 +897,12 @@
       "baseline_critical_now": true,
       "safe_to_treat_as_canonical": true,
       "dependencies_or_path_couplings": [
-        "repo/release_policy.toml",
-        "repo/canon_state.json",
+        "contracts/repo/release_policy.toml",
+        "contracts/repo/canon_state.json",
         "CMakePresets.json"
       ],
       "evidence_notes": [
-        "repo/release_policy.toml",
+        "contracts/repo/release_policy.toml",
         "CMakePresets.json",
         "AGENTS.md"
       ]
@@ -1087,21 +1087,21 @@
     "profile_bundle_lock_template_location_assumptions": [
       {
         "id": "PATH-009",
-        "statement": "The authored baseline asset trio is physically located at profiles/bundles/bundle.mvp_default.json, locks/pack_lock.mvp_default.json, and data/session_templates/session.mvp_default.json.",
+        "statement": "The authored baseline asset trio is physically located at content/profiles/bundles/bundle.mvp_default.json, contracts/package/locks/pack_lock.mvp_default.json, and content/data/session_templates/session.mvp_default.json.",
         "baseline_critical": true,
         "evidence_sources": [
-          "profiles/bundles/bundle.mvp_default.json",
-          "locks/pack_lock.mvp_default.json",
-          "data/session_templates/session.mvp_default.json",
+          "content/profiles/bundles/bundle.mvp_default.json",
+          "contracts/package/locks/pack_lock.mvp_default.json",
+          "content/data/session_templates/session.mvp_default.json",
           "tools/mvp/runtime_bundle.py"
         ]
       },
       {
         "id": "PATH-010",
-        "statement": "The authored baseline asset trio coexists with registry-driven defaults in data/registries/bundle_profiles.json and a SessionX default bundle id of bundle.base.lab from tools/xstack/registry_compile/constants.py.",
+        "statement": "The authored baseline asset trio coexists with registry-driven defaults in contracts/registry/bundle_profiles.json and a SessionX default bundle id of bundle.base.lab from tools/xstack/registry_compile/constants.py.",
         "baseline_critical": true,
         "evidence_sources": [
-          "data/registries/bundle_profiles.json",
+          "contracts/registry/bundle_profiles.json",
           "tools/xstack/registry_compile/constants.py",
           "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md"
         ]
@@ -1117,11 +1117,11 @@
       },
       {
         "id": "PATH-012",
-        "statement": "appshell/paths/virtual_paths.py and data/registries/virtual_root_registry.json encode default search locations for packs, profiles, locks, saves, runtime, and store/install-style fallbacks.",
+        "statement": "appshell/paths/virtual_paths.py and contracts/registry/virtual_root_registry.json encode default search locations for packs, profiles, locks, saves, runtime, and store/install-style fallbacks.",
         "baseline_critical": true,
         "evidence_sources": [
           "appshell/paths/virtual_paths.py",
-          "data/registries/virtual_root_registry.json"
+          "contracts/registry/virtual_root_registry.json"
         ]
       }
     ],
@@ -1138,7 +1138,7 @@
       },
       {
         "id": "PATH-014",
-        "statement": "Release/update logic also expects installed or projected payloads such as store/profiles/bundles/bundle.mvp_default.json and store/locks/pack_lock.mvp_default.json.",
+        "statement": "Release/update logic also expects installed or projected payloads such as store/content/profiles/bundles/bundle.mvp_default.json and store/contracts/package/locks/pack_lock.mvp_default.json.",
         "baseline_critical": false,
         "evidence_sources": [
           "release/update_resolver.py"
@@ -1162,7 +1162,7 @@
         "baseline_critical": true,
         "evidence_sources": [
           "AGENTS.md",
-          "packs/README.md"
+          "content/packs/README.md"
         ]
       }
     ],
@@ -1227,7 +1227,7 @@
       "notes": "Minimum honest validation lane.",
       "evidence_sources": [
         "tools/validation/tool_run_validation.py",
-        "validation/validation_engine.py"
+        "tools/validators/validation/validation_engine.py"
       ]
     },
     {
@@ -1294,7 +1294,7 @@
       "notes": "Strongest repo-local setup shell now.",
       "evidence_sources": [
         "tools/setup/setup_cli.py",
-        "security/trust/trust_verifier.py",
+        "tools/validators/security/trust/trust_verifier.py",
         "release/update_resolver.py"
       ]
     },
@@ -1405,7 +1405,7 @@
       "why": "Governance and pack docs treat it as canonical for runtime packaging scope.",
       "evidence_sources": [
         "AGENTS.md",
-        "packs/README.md"
+        "content/packs/README.md"
       ]
     },
     {
@@ -1423,7 +1423,7 @@
       "classification": "canonical_source_of_truth",
       "why": "Current baseline assets live here and AppShell resolves profiles here.",
       "evidence_sources": [
-        "profiles/bundles/bundle.mvp_default.json",
+        "content/profiles/bundles/bundle.mvp_default.json",
         "appshell/paths/virtual_paths.py"
       ]
     },
@@ -1433,7 +1433,7 @@
       "classification": "canonical_source_of_truth",
       "why": "Baseline lock lives here; generated and store copies exist elsewhere.",
       "evidence_sources": [
-        "locks/pack_lock.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
         "tools/mvp/runtime_bundle.py"
       ]
     },
@@ -1443,7 +1443,7 @@
       "classification": "canonical_support_data_location",
       "why": "Current baseline template lives here and tooling references it directly.",
       "evidence_sources": [
-        "data/session_templates/session.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json",
         "tools/mvp/runtime_bundle.py"
       ]
     },
@@ -1455,7 +1455,7 @@
       "evidence_sources": [
         "appshell/paths/virtual_paths.py",
         "release/component_graph_resolver.py",
-        "validation/validation_engine.py"
+        "tools/validators/validation/validation_engine.py"
       ]
     },
     {
@@ -1551,8 +1551,8 @@
       "classification": "derived_mirror_with_intact_provenance",
       "why": "Machine-readable consumption only.",
       "evidence_sources": [
-        "data/xstack/checkpoint_c_xstack_aide_closure.json",
-        "data/xstack/next_execution_order_post_xstack_aide.json"
+        "content/data/xstack/checkpoint_c_xstack_aide_closure.json",
+        "content/data/xstack/next_execution_order_post_xstack_aide.json"
       ]
     },
     {

@@ -23,12 +23,12 @@
         "docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md",
         "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
         "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
-        "data/registries/provenance_classification_registry.json",
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json",
+        "contracts/registry/provenance_classification_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
         "server/net/dom_server_protocol.h",
         "server/net/dom_server_runtime.h",
-        "security/trust/trust_verifier.py"
+        "tools/validators/security/trust/trust_verifier.py"
       ],
       "human_review_requirements": [
         "receipt_and_provenance_reclassification FULL review if shadow evidence is promoted toward canonical receipt truth",

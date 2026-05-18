@@ -13,8 +13,8 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat.shims import legacy_flag_rows, path_shim_rows, tool_shim_rows, validation_shim_rows  # noqa: E402
-from validation import validation_surface_rows  # noqa: E402
+from tools.validators.compatibility.shims import legacy_flag_rows, path_shim_rows, tool_shim_rows, validation_shim_rows  # noqa: E402
+from tools.validators.validation import validation_surface_rows  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
@@ -22,10 +22,10 @@ SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 FLAG_MIGRATION_DOC_PATH = "docs/appshell/FLAG_MIGRATION.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
-PATH_SHIMS_PATH = "compat/shims/path_shims.py"
-FLAG_SHIMS_PATH = "compat/shims/flag_shims.py"
-TOOL_SHIMS_PATH = "compat/shims/tool_shims.py"
-VALIDATION_SHIMS_PATH = "compat/shims/validation_shims.py"
+PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
+FLAG_SHIMS_PATH = "tools/validators/compatibility/shims/flag_shims.py"
+TOOL_SHIMS_PATH = "tools/validators/compatibility/shims/tool_shims.py"
+VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.py"
 
 _INTEGRATION_TARGETS = (
     {

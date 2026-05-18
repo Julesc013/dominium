@@ -31,7 +31,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    compute_engine_rel = "meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "tools/repo/meta/compute/compute_budget_engine.py"
     compute_engine_text = _read_text(repo_root, compute_engine_rel)
     required_compute_tokens = (
         "explain.compute_throttle",
@@ -59,7 +59,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     explain_registry_text = _read_text(repo_root, explain_registry_rel)
     for token in ("explain.compute_throttle", "explain.compute_refusal", "explain.compute_shutdown"):
         if token in explain_registry_text:
@@ -86,7 +86,7 @@ def run(graph, repo_root, changed_files=None):
             ("compute_request.get(\"decision_log_row\")", "compute_request.get(\"explain_artifact_row\")"),
         ),
         (
-            "meta/compile/compile_engine.py",
+            "tools/repo/meta/compile/compile_engine.py",
             ("compute_decision_log_row", "compute_explain_artifact_row"),
         ),
         (

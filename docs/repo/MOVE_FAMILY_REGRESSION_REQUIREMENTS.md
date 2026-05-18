@@ -248,7 +248,7 @@ MOVE-BULK-00-PLAN replaces the remaining MOVE-FAMILY micro-plan queue with one g
 - Remaining tracked bad-root files: 1,790.
 - Initial gate-ready subset: 309 files in Batch A docs/evidence/archive-only.
 - Deferred until batch gates: 1,481 files.
-- Explicit blocked action: `libs/CMakeLists.txt` until a CMake/build-focused ABI gate approves target rewiring.
+- Explicit blocked action: `docs/development/libraries/CMakeLists.txt` until a CMake/build-focused ABI gate approves target rewiring.
 - `ide/` remains retired and excluded from remaining tracked bad-root planning.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, map applications, or exception retirements occurred.
 

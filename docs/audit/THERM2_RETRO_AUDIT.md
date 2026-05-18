@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # THERM2 Retro-Consistency Audit
 
-Date: 2026-03-03  
+Date: 2026-03-03
 Scope: THERM-2 phase change, curing, insulation, and exchanger interface prep
 
 ## Findings

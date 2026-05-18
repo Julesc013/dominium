@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # TEMP0 Retro Audit
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: temporal semantics constitution baseline (`TEMP-0`)
 
 ## Invariants / Contracts Audited

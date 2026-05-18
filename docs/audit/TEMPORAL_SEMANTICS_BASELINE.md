@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # TEMP-0 Temporal Semantics Baseline
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: `TEMP-0` constitution baseline for temporal domains, mappings, causality governance, deterministic warp/substep policy, and branching policy.
 
 ## Canonical Domains and Mappings

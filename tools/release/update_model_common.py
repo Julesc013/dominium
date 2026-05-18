@@ -6,16 +6,16 @@ import json
 import os
 from typing import Mapping
 
-from meta.identity import (
+from tools.validators.identity import (
     IDENTITY_KIND_SUITE_RELEASE,
     attach_universal_identity_block,
 )
-from governance import (
+from tools.governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
 )
-from lib.install import normalize_install_manifest
+from tools.libraries.install import normalize_install_manifest
 from engine.platform.target_matrix import select_target_matrix_row, target_matrix_registry_hash
 from release import (
     DEFAULT_COMPONENT_GRAPH_ID,
@@ -31,7 +31,7 @@ from release import (
     write_release_index,
 )
 from release.component_graph_resolver import canonicalize_component_descriptor, canonicalize_component_graph
-from security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
+from tools.validators.security.trust import load_trust_policy_registry, load_trust_root_registry, select_trust_policy
 from tools.import_bridge import resolve_repo_path_equivalent
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 
@@ -205,7 +205,7 @@ def _actualize_graph_components(
                 )
                 break
         elif component_id == "profile.bundle.mvp_default":
-            rel_path = "store/profiles/bundles/bundle.mvp_default.json"
+            rel_path = "store/content/profiles/bundles/bundle.mvp_default.json"
             abs_path = os.path.join(_norm(dist_root), rel_path.replace("/", os.sep))
             if os.path.isfile(abs_path):
                 extensions["managed_paths"] = [rel_path]
@@ -217,7 +217,7 @@ def _actualize_graph_components(
                     }
                 )
         elif component_id == "lock.pack_lock.mvp_default":
-            rel_path = "store/locks/pack_lock.mvp_default.json"
+            rel_path = "store/contracts/package/locks/pack_lock.mvp_default.json"
             abs_path = os.path.join(_norm(dist_root), rel_path.replace("/", os.sep))
             if os.path.isfile(abs_path):
                 extensions["managed_paths"] = [rel_path]

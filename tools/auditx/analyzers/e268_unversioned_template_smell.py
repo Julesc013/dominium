@@ -44,8 +44,8 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     schema_rel = "contracts/schemas/system/system_template.schema"
-    pack_registry_rel = "packs/system_templates/base/data/system_template_registry.json"
-    core_registry_rel = "data/registries/system_template_registry.json"
+    pack_registry_rel = "content/packs/system_templates/base/data/system_template_registry.json"
+    core_registry_rel = "contracts/registry/system_template_registry.json"
     docs_rel = "docs/system/SYSTEM_TEMPLATES.md"
 
     for rel in (schema_rel, pack_registry_rel, core_registry_rel, docs_rel):

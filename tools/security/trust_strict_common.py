@@ -17,10 +17,10 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from meta.stability import build_stability_marker  # noqa: E402
+from tools.validators.stability import build_stability_marker  # noqa: E402
 from release import canonicalize_release_index, load_release_index, release_index_signed_hash  # noqa: E402
 from release.release_manifest_engine import build_mock_signature_block  # noqa: E402
-from security.trust import (  # noqa: E402
+from tools.validators.security.trust import (  # noqa: E402
     ARTIFACT_KIND_LICENSE_CAPABILITY,
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_RELEASE_INDEX,

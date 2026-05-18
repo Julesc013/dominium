@@ -11,10 +11,10 @@ TEST_TAGS = ["fast", "elec", "registry"]
 
 
 _REQUIRED_REGISTRIES = (
-    "data/registries/elec_node_kind_registry.json",
-    "data/registries/elec_edge_kind_registry.json",
-    "data/registries/elec_model_registry.json",
-    "data/registries/elec_spec_templates.json",
+    "contracts/registry/elec_node_kind_registry.json",
+    "contracts/registry/elec_edge_kind_registry.json",
+    "contracts/registry/elec_model_registry.json",
+    "contracts/registry/elec_spec_templates.json",
 )
 
 

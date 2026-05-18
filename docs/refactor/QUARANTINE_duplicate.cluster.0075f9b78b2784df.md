@@ -18,15 +18,15 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/meta/extensions/__init__.py`
-- `src/meta/extensions/extensions_engine.py`
+- `src/tools/repo/meta/extensions/__init__.py`
+- `src/tools/repo/meta/extensions/extensions_engine.py`
 - `src/meta_extensions_engine.py`
 
 ## Scorecard
 
 - `src/meta_extensions_engine.py` disposition=`canonical` rank=`1` total_score=`79.64` risk=`HIGH`
-- `src/meta/extensions/extensions_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
-- `src/meta/extensions/__init__.py` disposition=`quarantine` rank=`3` total_score=`73.33` risk=`HIGH`
+- `src/tools/repo/meta/extensions/extensions_engine.py` disposition=`quarantine` rank=`2` total_score=`73.87` risk=`HIGH`
+- `src/tools/repo/meta/extensions/__init__.py` disposition=`quarantine` rank=`3` total_score=`73.33` risk=`HIGH`
 
 ## Usage Sites
 

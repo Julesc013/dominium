@@ -10,8 +10,8 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E7_EPISTEMIC_LEAK_SMELL"
 TARGET_NET_FILES = (
-    "net/policies/policy_server_authoritative.py",
-    "net/srz/shard_coordinator.py",
+    "tools/network/policies/policy_server_authoritative.py",
+    "tools/network/srz/shard_coordinator.py",
 )
 REQUIRED_NET_TOKENS = (
     "schema_name=\"net_perceived_delta\"",
@@ -100,7 +100,7 @@ def run(graph, repo_root, changed_files=None):
                     )
                 )
 
-    registry_path = "data/registries/epistemic_policy_registry.json"
+    registry_path = "contracts/registry/epistemic_policy_registry.json"
     payload, err = _read_json_object(repo_root, registry_path)
     if err:
         findings.append(

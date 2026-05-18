@@ -15,7 +15,7 @@ REQUIRED_FILES = {
         "traversal_policy_id",
         "geo_distance(",
     ),
-    "data/registries/traversal_policy_registry.json": (
+    "contracts/registry/traversal_policy_registry.json": (
         "traverse.default_walk",
         "\"heuristic_policy\"",
         "\"partial_result_policy\"",

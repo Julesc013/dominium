@@ -31,9 +31,9 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     explain_registry_text = _read_text(repo_root, explain_registry_rel)
     runtime_text = _read_text(repo_root, runtime_rel)
     process_registry_text = _read_text(repo_root, process_registry_rel)

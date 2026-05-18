@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # WORLDGEN CONSTRAINT SOLVER REPORT
 
-Version: 1.0.0  
-Date: 2026-02-15  
+Version: 1.0.0
+Date: 2026-02-15
 Status: DERIVED AUDIT
 
 ## Scope
@@ -90,7 +90,7 @@ Future expansion remains pack/registry-driven:
 
 ## Primitive and Semantic Safety
 
-No new simulation primitives were introduced.  
+No new simulation primitives were introduced.
 No solver physics/math semantics were changed outside deterministic structural search selection.
 
 ## Domain/Contract Interaction

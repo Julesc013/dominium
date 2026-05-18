@@ -35,7 +35,7 @@ def _iter_candidate_docs(graph):
 
 
 def _derived_registry_artifacts(repo_root):
-    rel = "data/registries/derived_artifacts.json"
+    rel = "contracts/registry/derived_artifacts.json"
     abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         return []

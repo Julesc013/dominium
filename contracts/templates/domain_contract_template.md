@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Template Version: 1.0.0
-Compatibility: Must inherit `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0 and conform to `schema/reality/domain_contract.schema.json`.
+Compatibility: Must inherit `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0 and conform to `schema/reality/domain_contract.schema.json`.
 Stability: template
 Future Series: Λ, Σ, Φ
 Replacement Target: instantiate into concrete domain constitutions rather than edit the template ad hoc

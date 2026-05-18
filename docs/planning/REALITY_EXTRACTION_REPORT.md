@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: Ρ, Λ
 Replacement Target: revised only after Ρ-2 and Ρ-3 reconcile current reality against blueprint intent
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `data/planning/snapshot_intake_policy.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`
 
 # Reality Extraction Report
 
@@ -117,7 +117,7 @@ The repo contains a dense declaration layer with several coexisting surfaces:
 - `data/architecture/**` is a smaller but high-signal graph and module-registry surface.
 - `packs/**` contains pack descriptors such as `pack.json`, `pack.compat.json`, `pack.capabilities.json`, and `pack.trust.json`.
 - `data/packs/**` contains another pack declaration family with `pack.toml`, `pack.manifest`, and `pack_manifest.json`.
-- `updates/*.json` and `repo/release_policy.toml` are machine-readable control artifacts for release/update behavior.
+- `updates/*.json` and `contracts/repo/release_policy.toml` are machine-readable control artifacts for release/update behavior.
 
 The most important coexistence risk here is not hypothetical:
 

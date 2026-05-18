@@ -9,7 +9,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 # Collapse Expand Solvers
 
 ## Solver Registry
-- Solver metadata is defined in `data/registries/solver_registry.json`.
+- Solver metadata is defined in `contracts/registry/solver_registry.json`.
 - Each solver record declares:
   - `solver_id`
   - `cost_class`

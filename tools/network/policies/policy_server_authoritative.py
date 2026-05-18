@@ -6,7 +6,7 @@ import copy
 import os
 from typing import Dict, List, Tuple
 
-from net.anti_cheat import (
+from tools.network.anti_cheat import (
     action_blocks_submission,
     action_drops_without_refusal,
     check_authority_integrity,
@@ -23,7 +23,7 @@ from net.anti_cheat import (
     module_enabled as anti_cheat_module_enabled,
     refusal_reason_from_action,
 )
-from control.proof import (
+from tools.governance.proof import (
     build_control_proof_bundle_from_markers,
     collect_control_decision_markers,
 )

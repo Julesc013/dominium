@@ -25,7 +25,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 SUPERVISOR_SURFACE_MAP_PATH = "docs/audit/SUPERVISOR_SURFACE_MAP.md"
 LOG_MERGE_RULES_PATH = "docs/appshell/LOG_MERGE_RULES.md"
 SUPERVISOR_HARDENING_FINAL_PATH = "docs/audit/SUPERVISOR_HARDENING_FINAL.md"
-SUPERVISOR_HARDENING_REPORT_PATH = "data/audit/supervisor_hardening_report.json"
+SUPERVISOR_HARDENING_REPORT_PATH = "content/data/audit/supervisor_hardening_report.json"
 SUPERVISOR_HARDENING_TOOL_PATH = "tools/appshell/tool_run_supervisor_hardening.py"
 SUPERVISOR_HARDENING_REPORT_ID = "appshell.supervisor_harden.v1"
 LAST_REVIEWED = "2026-03-13"

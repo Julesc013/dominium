@@ -14,8 +14,8 @@ Authoritative contracts:
 - `schema/session/session_stage.schema`
 - `schema/session/session_pipeline.schema`
 - `schema/session/session_artifacts.schema`
-- `data/registries/session_stage_registry.json`
-- `data/registries/session_pipeline_registry.json`
+- `contracts/registry/session_stage_registry.json`
+- `contracts/registry/session_pipeline_registry.json`
 
 ## Canonical Stage Order
 

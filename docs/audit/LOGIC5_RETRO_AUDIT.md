@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## LOGIC5 Retro Audit
 
-Status: complete  
+Status: complete
 Scope: LOGIC-1 delay policies, LOGIC-4 evaluation timing, TEMP mapping seams, pack-defined timing assumptions
 
 ### Existing timing surfaces reviewed

@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: selected `Υ-D`, later checkpoint before `Φ-B5`, `Φ-B5`, future `Ζ`
 Replacement Target: later post-`Υ-D` checkpoint may refine readiness judgments without replacing the checkpoint law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md`, `docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `data/planning/readiness/prompt_status_registry.json`, `data/registries/trust_root_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/net_replication_policy_registry.json`, `data/registries/provenance_classification_registry.json`, `release/update_resolver.py`, `security/trust/trust_verifier.py`, `repo/release_policy.toml`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB3_YB_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB3_YB.md`, `docs/planning/CHECKPOINT_C_YC_SAFE_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_YC.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/RELEASE_OPS_EXECUTION_ENVELOPE.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `contracts/registry/planning/readiness/prompt_status_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/provenance_classification_registry.json`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `contracts/repo/release_policy.toml`
 
 # C-PRE_DISTRIBUTED_AUTHORITY_REVIEW
 
@@ -80,9 +80,9 @@ The repo still benefits from one final narrow `Υ-D` band before `Φ-B5`.
 
 Why:
 
-- `data/registries/trust_root_registry.json` remains empty
-- `data/registries/trust_policy_registry.json` still marks current trust policies as provisional
-- `security/trust/trust_verifier.py` proves strong local or offline trust verification, but not live trust-root rotation or revocation choreography
+- `contracts/registry/trust_root_registry.json` remains empty
+- `contracts/registry/trust_policy_registry.json` still marks current trust policies as provisional
+- `tools/validators/security/trust/trust_verifier.py` proves strong local or offline trust verification, but not live trust-root rotation or revocation choreography
 - `release/update_resolver.py` proves deterministic release selection, downgrade, and transaction logging, but not live-cutover receipt generalization across runtime-affecting handoff
 - `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` still classifies `Live trust-root rotation` as `foundation_ready_but_not_implemented` and `Distributed shard relocation` as `unrealistic_currently`
 
@@ -113,9 +113,9 @@ Rationale:
 - `docs/runtime/HOTSWAP_BOUNDARIES.md` explicitly keeps trust- and distributed-authority-sensitive subjects as `future-only or prohibited`
 - `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` still marks `Distributed shard relocation` as `unrealistic_currently`
 - `docs/blueprint/MANUAL_REVIEW_GATES.md` still requires `FULL` review for `distributed_authority_model_changes` and `trust_root_governance_changes`
-- `data/planning/readiness/prompt_status_registry.json` still describes distributed authority as dangerous and live trust-root changes as blocked
-- `data/registries/net_replication_policy_registry.json` proves there is precursor replication policy substrate, but not lawful authority handoff, proof-anchor quorum semantics, or distributed replay verification
-- `data/registries/trust_root_registry.json` is still empty and the current trust policies are still provisional, so live trust convergence is not mature enough for distributed authority claims
+- `contracts/registry/planning/readiness/prompt_status_registry.json` still describes distributed authority as dangerous and live trust-root changes as blocked
+- `contracts/registry/net_replication_policy_registry.json` proves there is precursor replication policy substrate, but not lawful authority handoff, proof-anchor quorum semantics, or distributed replay verification
+- `contracts/registry/trust_root_registry.json` is still empty and the current trust policies are still provisional, so live trust convergence is not mature enough for distributed authority claims
 
 This is a stronger judgment than the earlier `premature` state.
 The repo now has enough law to state exactly why distributed authority is blocked, and what still needs to land before it can be reconsidered again.
@@ -210,9 +210,9 @@ Any final `Υ-D` work must extend rather than replace:
 - the current release-ops execution envelope
 - the current rehearsal sandbox and rollback-alignment model
 - the current canary and deterministic downgrade model
-- `security/trust/trust_verifier.py`
+- `tools/validators/security/trust/trust_verifier.py`
 - `release/update_resolver.py`
-- `repo/release_policy.toml`
+- `contracts/repo/release_policy.toml`
 
 Must avoid replacing:
 

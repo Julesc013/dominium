@@ -18,7 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-DEFAULT_DEPRECATIONS_REL = "data/governance/deprecations.json"
+DEFAULT_DEPRECATIONS_REL = "content/data/governance/deprecations.json"
 DEFAULT_TOPOLOGY_MAP_REL = "docs/audit/TOPOLOGY_MAP.json"
 ALLOWED_STATUS = ("active", "deprecated", "quarantined", "removed")
 

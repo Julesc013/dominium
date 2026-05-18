@@ -11,7 +11,7 @@ import sys
 import time
 from typing import Mapping, Sequence
 
-from lib.install import (
+from tools.libraries.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
     merge_contract_ranges,
@@ -21,13 +21,13 @@ from lib.install import (
     stable_install_id,
     validate_install_manifest,
 )
-from lib.instance import (
+from tools.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from meta.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
-from governance import (
+from tools.validators.identity import IDENTITY_KIND_INSTALL, IDENTITY_KIND_INSTANCE, attach_universal_identity_block
+from tools.governance import (
     DEFAULT_GOVERNANCE_PROFILE_REL,
     governance_profile_hash,
     load_governance_profile,
@@ -69,9 +69,9 @@ DEFAULT_INSTANCE_ID = "instance.default"
 DEFAULT_INSTANCE_KIND = "instance.client"
 DEFAULT_SESSION_TEMPLATE_ID = "session.mvp_default"
 PREFERRED_RUNTIME_LOCKS = (
-    "data/restructure/src_domain_mapping_lock_approved_v4.json",
-    "data/restructure/src_domain_mapping_lock_approved_v3.json",
-    "data/restructure/src_domain_mapping_lock_approved_v2.json",
+    "content/data/restructure/src_domain_mapping_lock_approved_v4.json",
+    "content/data/restructure/src_domain_mapping_lock_approved_v3.json",
+    "content/data/restructure/src_domain_mapping_lock_approved_v2.json",
 )
 
 PRODUCT_SPECS = (
@@ -345,8 +345,8 @@ def _copy_runtime_data(repo_root: str, bundle_root: str) -> dict:
     copied: list[str] = []
     for source_rel_path, dest_rel_path in (
         ("data/registries", "data/registries"),
-        ("data/governance/governance_profile.json", "data/governance/governance_profile.json"),
-        ("data/session_templates/session.mvp_default.json", "data/session_templates/session.mvp_default.json"),
+        ("content/data/governance/governance_profile.json", "content/data/governance/governance_profile.json"),
+        ("content/data/session_templates/session.mvp_default.json", "content/data/session_templates/session.mvp_default.json"),
         ("contracts/schemas", "schema"),
         ("contracts/schemas", "schemas"),
         ("tools/xstack/compatx/version_registry.json", "tools/xstack/compatx/version_registry.json"),
@@ -776,7 +776,7 @@ def _build_install_manifest(bundle_root: str, repo_root: str, platform_tag: str,
             (key, product_build_descriptors[key]) for key in sorted(product_build_descriptors.keys())
         ),
         "extensions": {
-            "official.semantic_contract_registry_ref": "data/registries/semantic_contract_registry.json",
+            "official.semantic_contract_registry_ref": "contracts/registry/semantic_contract_registry.json",
         },
         "deterministic_fingerprint": "",
     }

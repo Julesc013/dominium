@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from governance import governance_profile_hash, load_governance_profile
+from tools.governance import governance_profile_hash, load_governance_profile
 from release import (
     DEFAULT_RELEASE_INDEX_REL,
     DEFAULT_RELEASE_MANIFEST_REL,

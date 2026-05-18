@@ -19,14 +19,14 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/planning/__init__.py`
-- `src/control/planning/plan_engine.py`
+- `src/tools/governance/planning/__init__.py`
+- `src/tools/governance/planning/plan_engine.py`
 
 ## Scorecard
 
 - `src/control/__init__.py` disposition=`canonical` rank=`1` total_score=`62.26` risk=`HIGH`
-- `src/control/planning/__init__.py` disposition=`quarantine` rank=`2` total_score=`61.01` risk=`HIGH`
-- `src/control/planning/plan_engine.py` disposition=`drop` rank=`3` total_score=`48.74` risk=`HIGH`
+- `src/tools/governance/planning/__init__.py` disposition=`quarantine` rank=`2` total_score=`61.01` risk=`HIGH`
+- `src/tools/governance/planning/plan_engine.py` disposition=`drop` rank=`3` total_score=`48.74` risk=`HIGH`
 
 ## Usage Sites
 

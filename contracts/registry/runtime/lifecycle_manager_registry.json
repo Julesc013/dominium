@@ -446,8 +446,8 @@
       "id": "planning_order_drift",
       "paths": [
         "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
-        "data/planning/final_prompt_inventory.json",
-        "data/planning/dependency_graph_post_pi.json"
+        "content/data/planning/final_prompt_inventory.json",
+        "content/data/planning/dependency_graph_post_pi.json"
       ],
       "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
     }

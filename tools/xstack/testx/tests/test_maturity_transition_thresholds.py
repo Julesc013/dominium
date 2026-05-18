@@ -33,9 +33,9 @@ def run(repo_root: str):
         process_lifecycle_policy_rows_by_id,
     )
 
-    stabilization_registry = _load_json(repo_root, "data/registries/stabilization_policy_registry.json")
+    stabilization_registry = _load_json(repo_root, "contracts/registry/stabilization_policy_registry.json")
     lifecycle_registry = _load_json(
-        repo_root, "data/registries/process_lifecycle_policy_registry.json"
+        repo_root, "contracts/registry/process_lifecycle_policy_registry.json"
     )
     policy = dict(stabilization_policy_rows_by_id(stabilization_registry).get("stab.default") or {})
     lifecycle = dict(

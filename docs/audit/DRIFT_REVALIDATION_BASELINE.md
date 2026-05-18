@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Drift Revalidation Baseline
 
-Status: BASELINE  
-Last Updated: 2026-03-06  
+Status: BASELINE
+Last Updated: 2026-03-06
 Scope: PROC-6 deterministic drift scoring, QC escalation, capsule invalidation, certification revocation hooks, revalidation workflow, proof/replay, enforcement, and TestX coverage.
 
 ## 1) Drift Scoring Function

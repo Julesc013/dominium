@@ -132,9 +132,9 @@
       "docs/release/OPERATOR_TRANSACTION_AND_DOWNGRADE_DOCTRINE.md",
       "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
       "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
-      "security/trust/trust_verifier.py",
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json"
+      "tools/validators/security/trust/trust_verifier.py",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json"
     ],
     "further_upsilon_must_extend": [
       "release/update_resolver.py",

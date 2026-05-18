@@ -95,7 +95,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "game/domains/processes/process_run_engine.py",
-                                "data/registries/yield_model_registry.json",
+                                "contracts/registry/yield_model_registry.json",
                             ],
                         )
                     )

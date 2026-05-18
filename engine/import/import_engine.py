@@ -13,26 +13,26 @@ from runtime.appshell.paths import (
     vpath_init,
     vpath_resolve,
 )
-from lib.bundle import BUNDLE_CONTENT_DIR, load_json as load_bundle_json, verify_bundle_directory, write_json
-from lib.export import (
+from tools.libraries.bundle import BUNDLE_CONTENT_DIR, load_json as load_bundle_json, verify_bundle_directory, write_json
+from tools.libraries.export import (
     BUNDLE_KIND_INSTANCE_LINKED,
     BUNDLE_KIND_INSTANCE_PORTABLE,
     BUNDLE_KIND_PACK,
     BUNDLE_KIND_SAVE,
 )
-from modding import DEFAULT_MOD_POLICY_ID
-from lib.instance import (
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID
+from tools.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from lib.save import (
+from tools.libraries.save import (
     SAVE_MANIFEST_NAME,
     deterministic_fingerprint as save_deterministic_fingerprint,
     normalize_save_manifest,
     validate_save_manifest,
 )
-from packs.compat import verify_pack_set
+from content.packs.compatibility_payload import verify_pack_set
 from tools.lib.content_store import (
     ARTIFACT_MANIFEST,
     JSON_PAYLOAD,

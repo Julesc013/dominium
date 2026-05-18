@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # ELECTRICAL FINAL BASELINE
 
-Status: COMPLETE (ELEC-5 scope)  
-Series: ELEC-5  
+Status: COMPLETE (ELEC-5 scope)
+Series: ELEC-5
 Date: 2026-03-03
 
 ## Scope Summary
@@ -115,24 +115,24 @@ All degradation decisions are logged with deterministic decision IDs.
 
 Run date: 2026-03-03
 
-- RepoX: `PASS`  
-  Command: `python tools/xstack/repox/check.py --profile FAST`  
+- RepoX: `PASS`
+  Command: `python tools/xstack/repox/check.py --profile FAST`
   Notes: warnings remain in unrelated/global areas; no failing findings.
 
-- AuditX: `RUN COMPLETE`  
+- AuditX: `RUN COMPLETE`
   Command: `python tools/auditx/auditx.py scan --repo-root . --format both`
 
-- ELEC-5 TestX subset: `PASS`  
-  Command:  
+- ELEC-5 TestX subset: `PASS`
+  Command:
   `python tools/xstack/testx/runner.py --profile FAST --cache off --subset test_stress_scenario_deterministic,test_cascade_bounded,test_degradation_logged,test_shard_boundary_rules,test_proof_hash_chain_stable,test_replay_window_hash_match`
 
-- strict build: `REFUSAL` (global/pre-existing)  
-  Command: `python tools/xstack/run.py strict --repo-root . --cache on`  
-  Report: `tools/xstack/out/strict/latest/report.json`  
+- strict build: `REFUSAL` (global/pre-existing)
+  Command: `python tools/xstack/run.py strict --repo-root . --cache on`
+  Report: `tools/xstack/out/strict/latest/report.json`
   Blocking causes were outside ELEC-5 scope (global CompatX/TestX/packaging findings).
 
-- topology map: `UPDATED`  
-  Command: `python tools/governance/tool_topology_generate.py --repo-root .`  
+- topology map: `UPDATED`
+  Command: `python tools/governance/tool_topology_generate.py --repo-root .`
   Fingerprint: `800f22ffd74730ff6774397fab93f5cb5c520336023a966cd2ea068ce44fb439`
 
 ## Readiness

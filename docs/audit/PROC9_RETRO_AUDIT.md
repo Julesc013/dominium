@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PROC9 Retro-Consistency Audit
 
-Status: AUDIT  
-Last Updated: 2026-03-07  
+Status: AUDIT
+Last Updated: 2026-03-07
 Scope: PROC stress/proof/regression envelope hardening for scale workloads.
 
 ## Audit Findings

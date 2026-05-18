@@ -12693,7 +12693,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-4ea91fcd | OPEN | C | game/tests/civ5_war3_occupation_tests.cpp:411 | Magic number literal '5'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-4ea97c17 | OPEN | D | libs/contracts/include/dom_contracts/tool_api.h:46 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
+| HYG-4ea97c17 | OPEN | D | tools/libraries/contracts/include/dom_contracts/tool_api.h:46 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
 | HYG-4eb06a59 | OPEN | C | tools/ui_shared/src/ui_ir/ui_ir_tlv.cpp:739 | Magic number literal '0xFFFFFFFF'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
@@ -28533,7 +28533,7 @@ Do not edit by hand; use the scan tool to update.
 | HYG-afd941a9 | OPEN | C | game/tests/agent1_goal_planning_tests.cpp:223 | Magic number literal '8'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |
 
 
-| HYG-afda5226 | OPEN | D | libs/contracts/include/dom_contracts/tool_api.h:119 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
+| HYG-afda5226 | OPEN | D | tools/libraries/contracts/include/dom_contracts/tool_api.h:119 | Missing function doc block in public header. | Add Purpose/DOC/INVARIANT doc block. | S | INVARIANT_REGISTRY | comment density scan |
 
 
 | HYG-afde41fa | OPEN | C | game/tests/civ5_war2_engagement_tests.cpp:457 | Magic number literal '11'. | Replace with named constant or data-driven parameter. | S | CODEHYGIENE_RULES | unit/regression coverage |

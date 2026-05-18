@@ -17,7 +17,7 @@ Replacement Target: Release-pinned engine numeric policy and compiler matrix doc
   - process outputs
   - law evaluation results
   - proof/replay hashes
-- Deterministic rounding must route through the governed helpers in `meta/numeric.py`.
+- Deterministic rounding must route through the governed helpers in `tools/repo/meta/numeric.py`.
 - Reviewed approximation bridges are allowed only when they quantize back to canonical integer outputs and are explicitly inventoried by the numeric scans.
 
 ## Render Numeric Rules
@@ -28,7 +28,7 @@ Replacement Target: Release-pinned engine numeric policy and compiler matrix doc
 
 ## Tolerance Model
 
-- Engine-level tolerances live in `data/registries/tolerance_registry.json`.
+- Engine-level tolerances live in `contracts/registry/tolerance_registry.json`.
 - Each tolerance row declares:
   - `tol_id`
   - `domain_id`

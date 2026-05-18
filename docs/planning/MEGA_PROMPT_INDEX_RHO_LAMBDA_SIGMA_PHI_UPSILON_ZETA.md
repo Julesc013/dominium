@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `data/planning/readiness/series_readiness_matrix.json`, `data/planning/readiness/prompt_status_registry.json`
+Binding Sources: `docs/planning/POST_PI_EXECUTION_PLAN.md`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `contracts/planning/readiness/series_readiness_matrix.json`, `contracts/registry/planning/readiness/prompt_status_registry.json`
 
 # Mega Prompt Index: Ρ / Λ / Σ / Φ / Υ / Ζ
 
@@ -160,11 +160,11 @@ Architecture/specification. Normalize the preset and toolchain matrix already pr
 
 ### Υ-2 `VERSIONING_CONSTITUTION-0`
 
-Architecture/specification. Write the explicit versioning constitution that separates human-facing labels from machine-facing identity, compatibility, schema, protocol, format, build, and release truths. Inputs: `schema/release/build_id.schema`, `schema/identity/artifact_identity.schema`, `repo/release_policy.toml`, Φ-0, Υ-0. Outputs: `VERSIONING_CONSTITUTION.md` and identity model notes. Dependencies: `Φ-0`, `Υ-0`. Human review: mandatory after if constitutional wording changes. Suggested order: `24`.
+Architecture/specification. Write the explicit versioning constitution that separates human-facing labels from machine-facing identity, compatibility, schema, protocol, format, build, and release truths. Inputs: `schema/release/build_id.schema`, `schema/identity/artifact_identity.schema`, `contracts/repo/release_policy.toml`, Φ-0, Υ-0. Outputs: `VERSIONING_CONSTITUTION.md` and identity model notes. Dependencies: `Φ-0`, `Υ-0`. Human review: mandatory after if constitutional wording changes. Suggested order: `24`.
 
 ### Υ-3 `RELEASE_INDEX_POLICY-0`
 
-Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: Υ-2, `release/update_resolver.py`, `updates/*.json`, `repo/release_policy.toml`. Outputs: release index policy and authority mapping for channel resolution. Dependencies: `Υ-2`. Human review: recommended after. Suggested order: `25`.
+Architecture/specification. Consolidate live release-index, update-channel, trust, yanked, and resolver behavior into one explicit release-index policy. Inputs: Υ-2, `release/update_resolver.py`, `updates/*.json`, `contracts/repo/release_policy.toml`. Outputs: release index policy and authority mapping for channel resolution. Dependencies: `Υ-2`. Human review: recommended after. Suggested order: `25`.
 
 ### Υ-4 `MANUAL_AUTOMATION_PARITY-0`
 
@@ -212,7 +212,7 @@ Architecture/specification. Freeze artifact naming rules as a refinement of vers
 
 ### Υ-15 `CHANGELOG_POLICY-0`
 
-Planning-only. Convert the already-existing changelog-like update surfaces into one governed changelog policy that matches release identity and publication doctrine. Inputs: Υ-2, Υ-3, `updates/changelog.json`. Outputs: `CHANGELOG_POLICY.md`. Dependencies: `Υ-2`, `Υ-3`. Human review: recommended before publication. Suggested order: `37`.
+Planning-only. Convert the already-existing changelog-like update surfaces into one governed changelog policy that matches release identity and publication doctrine. Inputs: Υ-2, Υ-3, `release/updates/changelog.json`. Outputs: `CHANGELOG_POLICY.md`. Dependencies: `Υ-2`, `Υ-3`. Human review: recommended before publication. Suggested order: `37`.
 
 ### Υ-16 `TARGET_NAMING_POLICY-0`
 

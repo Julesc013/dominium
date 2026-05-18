@@ -72,7 +72,7 @@ Domains must not introduce direct custom compiled execution bypasses.
 
 Reference implementation location:
 
-- `meta/compile/compile_engine.py` (framework-owned hook surface only; no domain-specific wiring in COMPILE-0)
+- `tools/repo/meta/compile/compile_engine.py` (framework-owned hook surface only; no domain-specific wiring in COMPILE-0)
 
 ## 6) Forced Expand / Fallback Triggers
 

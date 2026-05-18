@@ -17,7 +17,7 @@
     "docs/canon/glossary_v1.md",
     "AGENTS.md",
     "scope-specific canonical planning, semantic, runtime, schema, contract, release, and policy artifacts",
-    "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md and data/agents/task_intent_map.json",
+    "docs/agents/NATURAL_LANGUAGE_TASK_BRIDGE.md and content/data/agents/task_intent_map.json",
     "derived mirrors and generated operational artifacts",
     "chat summaries and uncommitted notes"
   ],

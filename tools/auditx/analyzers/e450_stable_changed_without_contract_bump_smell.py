@@ -14,14 +14,14 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E450_STABLE_CHANGED_WITHOUT_CONTRACT_BUMP_SMELL"
 RULE_ID = "INV-STABLE-REQUIRES-CONTRACT-ID"
-SEMANTIC_CONTRACT_REGISTRY_REL = "data/registries/semantic_contract_registry.json"
+SEMANTIC_CONTRACT_REGISTRY_REL = "contracts/registry/semantic_contract_registry.json"
 STABLE_WATCH_RELS = (
-    "data/registries/capability_fallback_registry.json",
-    "data/registries/compat_mode_registry.json",
-    "data/registries/degrade_ladder_registry.json",
-    "data/registries/domain_contract_registry.json",
-    "data/registries/pack_degrade_mode_registry.json",
-    "data/registries/time_anchor_policy_registry.json",
+    "contracts/registry/capability_fallback_registry.json",
+    "contracts/registry/compat_mode_registry.json",
+    "contracts/registry/degrade_ladder_registry.json",
+    "contracts/registry/domain_contract_registry.json",
+    "contracts/registry/pack_degrade_mode_registry.json",
+    "contracts/registry/time_anchor_policy_registry.json",
 )
 WATCH_PREFIXES = STABLE_WATCH_RELS + (SEMANTIC_CONTRACT_REGISTRY_REL,)
 

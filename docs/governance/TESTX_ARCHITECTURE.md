@@ -23,7 +23,7 @@ TestX is the behavioral proof layer for Dominium. It validates invariant complia
 
 XStack runs TestX through sharded group registries, not monolithic test targets:
 
-- Group registry: `data/registries/testx_groups.json`
+- Group registry: `contracts/registry/testx_groups.json`
 - Group runner: `scripts/dev/run_xstack_group_tests.py`
 - Planner mapping: `tools/xstack/core/impact_graph.py` -> `tools/xstack/core/plan.py`
 

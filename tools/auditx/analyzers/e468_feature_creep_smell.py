@@ -10,14 +10,14 @@ if REPO_ROOT_HINT not in os.sys.path:
     os.sys.path.insert(0, REPO_ROOT_HINT)
 
 from analyzers.base import make_finding
-from meta.stability import ALL_REGISTRY_PATHS
+from tools.validators.stability import ALL_REGISTRY_PATHS
 from tools.release.scope_freeze_common import REQUIRED_SCOPE_FREEZE_DOCS, scope_freeze_violations
 
 
 ANALYZER_ID = "E468_FEATURE_CREEP_SMELL"
 WATCH_PREFIXES = tuple(
     list(REQUIRED_SCOPE_FREEZE_DOCS)
-    + ["data/registries/semantic_contract_registry.json", "tools/release/scope_freeze_common.py"]
+    + ["contracts/registry/semantic_contract_registry.json", "tools/release/scope_freeze_common.py"]
     + list(ALL_REGISTRY_PATHS)
 )
 RULE_IDS = (

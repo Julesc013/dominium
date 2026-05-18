@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E226_COST_MODEL_MISSING_SMELL"
-_TIER_REGISTRY_REL = "data/registries/tier_contract_registry.json"
+_TIER_REGISTRY_REL = "contracts/registry/tier_contract_registry.json"
 
 
 def _norm(path: str) -> str:

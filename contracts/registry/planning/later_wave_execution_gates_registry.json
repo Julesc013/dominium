@@ -16,21 +16,21 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
-      "data/planning/next_execution_order_post_za_first_wave.json"
+      "content/data/planning/next_execution_order_post_za_first_wave.json"
     ],
     "later_wave_inputs": [
       "docs/planning/LATER_WAVE_BOUNDARY_RECONCILIATION.md",
-      "data/planning/later_wave_boundary_reconciliation_registry.json",
+      "contracts/registry/planning/later_wave_boundary_reconciliation_registry.json",
       "docs/planning/LATER_WAVE_PREREQUISITE_MATRIX.md",
-      "data/planning/later_wave_prerequisite_matrix.json"
+      "contracts/planning/later_wave_prerequisite_matrix.json"
     ],
     "earlier_gate_and_blocker_inputs": [
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "docs/planning/ZETA_EXECUTION_GATES.md",
-      "data/planning/zeta_execution_gates_registry.json"
+      "contracts/registry/planning/zeta_execution_gates_registry.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",

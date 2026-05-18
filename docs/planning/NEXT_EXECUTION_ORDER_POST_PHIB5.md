@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: `Ζ-P0`, `Ζ-P1`, `Ζ-P2`, later post-`Ζ-P` checkpoint, bounded later `Ζ`
 Replacement Target: later post-`Ζ-P` next-order artifact may refine sequence without replacing the ordering law frozen here
-Binding Sources: `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`
+Binding Sources: `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `content/data/planning/checkpoints/checkpoint_c_pre_zeta_admission.json`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`
 
 # Next Execution Order Post-ΦB5
 
@@ -51,7 +51,7 @@ This is better than the alternatives because:
 - trust execution and revocation continuity
 - operator transaction receipt and provenance continuity
 - shard placement, lifecycle, cross-shard logging, and runtime protocol substrate under `server/shard/**` and `server/net/**`
-- replication, trust, and provenance precursor substrate under `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, and `data/registries/provenance_classification_registry.json`
+- replication, trust, and provenance precursor substrate under `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, and `contracts/registry/provenance_classification_registry.json`
 
 `Ζ-P1` must consume and preserve:
 

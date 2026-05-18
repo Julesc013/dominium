@@ -28,8 +28,8 @@ def run(repo_root: str):
 
     from tools.xstack.compatx.validator import validate_instance
 
-    families = _load_record(repo_root, "data/registries/action_family_registry.json")
-    templates = _load_record(repo_root, "data/registries/action_template_registry.json")
+    families = _load_record(repo_root, "contracts/registry/action_family_registry.json")
+    templates = _load_record(repo_root, "contracts/registry/action_template_registry.json")
 
     for index, row in enumerate(list(families.get("families") or [])):
         if not isinstance(row, dict):

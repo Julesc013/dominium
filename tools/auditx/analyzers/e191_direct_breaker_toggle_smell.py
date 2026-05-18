@@ -51,7 +51,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):
@@ -90,7 +90,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "tools/xstack/sessionx/process_runtime.py",
-                                "data/registries/control_action_registry.json",
+                                "contracts/registry/control_action_registry.json",
                             ],
                         )
                     )

@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-NO-ADHOC-PRESSURE-LOGIC",
                                 "INV-FLUID-SAFETY-THROUGH-PATTERNS",
                             ],
-                            related_paths=[rel_path, "tools/xstack/sessionx/process_runtime.py", "data/registries/safety_pattern_registry.json"],
+                            related_paths=[rel_path, "tools/xstack/sessionx/process_runtime.py", "contracts/registry/safety_pattern_registry.json"],
                         )
                     )
                     break

@@ -23,7 +23,7 @@ TOLERANCE_REGISTRY_REL = os.path.join("data", "registries", "tolerance_registry.
 LAST_REVIEWED = "2026-03-14"
 
 TRUTH_PATH_NUMERIC = (
-    "meta/numeric.py",
+    "tools/repo/meta/numeric.py",
     "engine/time/time_mapping_engine.py",
     "game/domains/physics/momentum_engine.py",
     "game/domains/physics/energy/energy_ledger_engine.py",
@@ -37,7 +37,7 @@ REVIEWED_NUMERIC_BRIDGES = {
     "game/domains/processes/qc/qc_engine.py": "qc/reporting quantization bridge",
     "game/domains/mobility/micro/constrained_motion_solver.py": "heading derivation bridge with integer output",
     "game/domains/mobility/geometry/geometry_engine.py": "grid snap bridge with integer output",
-    "meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
+    "tools/repo/meta/instrumentation/instrumentation_engine.py": "measurement quantization bridge",
 }
 RENDER_ONLY_NUMERIC = (
     "apps/client/render/renderers/software_renderer.py",

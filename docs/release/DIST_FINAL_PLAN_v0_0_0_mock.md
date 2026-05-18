@@ -26,13 +26,13 @@ It documents the exact inputs, commands, outputs, gates, inclusion rules, archiv
   - `docs/release/ARCHIVE_AND_RETENTION_POLICY.md`
   - `docs/release/OFFLINE_ARCHIVE_MODEL_v0_0_0.md`
 - Governing registries:
-  - `data/registries/component_graph_registry.json`
-  - `data/registries/install_profile_registry.json`
-  - `data/registries/release_resolution_policy_registry.json`
-  - `data/registries/archive_policy_registry.json`
-  - `data/registries/trust_root_registry.json`
-  - `data/registries/migration_policy_registry.json`
-  - `data/governance/governance_profile.json`
+  - `contracts/registry/component_graph_registry.json`
+  - `contracts/registry/install_profile_registry.json`
+  - `contracts/registry/release_resolution_policy_registry.json`
+  - `contracts/registry/archive_policy_registry.json`
+  - `contracts/registry/trust_root_registry.json`
+  - `contracts/registry/migration_policy_registry.json`
+  - `content/data/governance/governance_profile.json`
 - Ω baselines and reports:
   - worldgen lock
   - baseline universe

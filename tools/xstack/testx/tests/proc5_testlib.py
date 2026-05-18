@@ -77,17 +77,17 @@ def run_proc5_capsule_case(
     from game.domains.systems.statevec import build_state_vector_definition_row
     from tools.process.tool_replay_capsule_window import verify_capsule_replay_window
 
-    tolerance_registry = _load_json(repo_root, "data/registries/tolerance_policy_registry.json")
-    compiled_type_registry = _load_json(repo_root, "data/registries/compiled_type_registry.json")
+    tolerance_registry = _load_json(repo_root, "contracts/registry/tolerance_policy_registry.json")
+    compiled_type_registry = _load_json(repo_root, "contracts/registry/compiled_type_registry.json")
     verification_procedure_registry = _load_json(
-        repo_root, "data/registries/verification_procedure_registry.json"
+        repo_root, "contracts/registry/verification_procedure_registry.json"
     )
-    compile_policy_registry = _load_json(repo_root, "data/registries/compile_policy_registry.json")
-    qc_policy_registry = _load_json(repo_root, "data/registries/qc_policy_registry.json")
+    compile_policy_registry = _load_json(repo_root, "contracts/registry/compile_policy_registry.json")
+    qc_policy_registry = _load_json(repo_root, "contracts/registry/qc_policy_registry.json")
     sampling_strategy_registry = _load_json(
-        repo_root, "data/registries/sampling_strategy_registry.json"
+        repo_root, "contracts/registry/sampling_strategy_registry.json"
     )
-    test_procedure_registry = _load_json(repo_root, "data/registries/test_procedure_registry.json")
+    test_procedure_registry = _load_json(repo_root, "contracts/registry/test_procedure_registry.json")
 
     maturity_row = build_process_maturity_record_row(
         record_id="maturity.proc5.fixture",

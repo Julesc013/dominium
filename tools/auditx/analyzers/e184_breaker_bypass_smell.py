@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
     for root in scan_roots:
@@ -89,7 +89,7 @@ def run(graph, repo_root, changed_files=None):
                             related_invariants=["INV-ELEC-SAFETY-THROUGH-PATTERNS"],
                             related_paths=[
                                 rel_path,
-                                "safety/safety_engine.py",
+                                "tools/validators/safety/safety_engine.py",
                                 "docs/electric/ELECTRICAL_CONSTITUTION.md",
                             ],
                         )

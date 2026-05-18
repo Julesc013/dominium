@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E364_IDENTITY_OVERRIDE_SMELL"
-PATCH_DOC_REL = "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json"
+PATCH_DOC_REL = "content/packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json"
 DOC_REL = "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md"
 OVERLAY_ENGINE_REL = "game/domains/geology/overlay/overlay_merge_engine.py"
 IMMUTABLE_PATHS = (

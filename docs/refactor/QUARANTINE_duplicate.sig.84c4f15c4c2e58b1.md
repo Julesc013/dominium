@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/fidelity/fidelity_engine.py`
+- Canonical Candidate: `src/tools/governance/fidelity/fidelity_engine.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/control/fidelity/fidelity_engine.py`
-- `src/control/negotiation/negotiation_kernel.py`
+- `src/tools/governance/fidelity/fidelity_engine.py`
+- `src/tools/governance/negotiation/negotiation_kernel.py`
 
 ## Scorecard
 
-- `src/control/fidelity/fidelity_engine.py` disposition=`canonical` rank=`1` total_score=`43.76` risk=`HIGH`
-- `src/control/negotiation/negotiation_kernel.py` disposition=`quarantine` rank=`2` total_score=`43.76` risk=`HIGH`
+- `src/tools/governance/fidelity/fidelity_engine.py` disposition=`canonical` rank=`1` total_score=`43.76` risk=`HIGH`
+- `src/tools/governance/negotiation/negotiation_kernel.py` disposition=`quarantine` rank=`2` total_score=`43.76` risk=`HIGH`
 
 ## Usage Sites
 

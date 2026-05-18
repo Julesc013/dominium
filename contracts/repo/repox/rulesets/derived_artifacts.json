@@ -5,14 +5,14 @@
     {
       "rule_id": "INV-DERIVED-ARTIFACT-CONTRACT",
       "severity": "FAIL",
-      "scope_paths": ["schema/governance/derived_artifact_contract.schema", "data/registries/derived_artifacts.json", "scripts/ci/check_repox_rules.py"],
+      "scope_paths": ["schema/governance/derived_artifact_contract.schema", "contracts/registry/derived_artifacts.json", "scripts/ci/check_repox_rules.py"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-derived-artifact-contract",
       "exemption_policy": "deny"
     },
     {
       "rule_id": "INV-SOLVER-CONTRACTS",
       "severity": "FAIL",
-      "scope_paths": ["data/registries/solver_registry.json"],
+      "scope_paths": ["contracts/registry/solver_registry.json"],
       "documentation": "docs/governance/REPOX_RULESETS.md#inv-solver-contracts",
       "exemption_policy": "allow_with_expiry"
     },

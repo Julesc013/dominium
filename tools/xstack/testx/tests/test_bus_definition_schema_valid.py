@@ -14,7 +14,7 @@ def run(repo_root: str):
     from game.domains.logic.signal import build_bus_definition_row
 
     schema_path = os.path.join(repo_root, "contracts/schemas/logic/bus_definition.schema".replace("/", os.sep))
-    registry_path = os.path.join(repo_root, "data/registries/bus_encoding_registry.json".replace("/", os.sep))
+    registry_path = os.path.join(repo_root, "contracts/registry/bus_encoding_registry.json".replace("/", os.sep))
     if not os.path.isfile(schema_path):
         return {"status": "fail", "message": "bus definition schema missing"}
     if not os.path.isfile(registry_path):

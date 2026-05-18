@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-5, AIDE extraction review
 Replacement Target: later explicit portable policy and permission checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `data/xstack/aide_evidence_and_review_contract.json`, `data/xstack/gate_definitions.json`, `data/registries/control_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/securex_policy_registry.json`, `data/registries/access_policy_registry.json`, `data/registries/tool_capability_registry.json`, `data/registries/role_registry.json`, `data/registries/security_roles.json`, `data/registries/law_profiles.json`, `data/registries/controlx_policy.json`, `data/registries/refusal_code_registry.json`, `data/registries/refusal_to_exit_registry.json`, `tools/xstack/registry_compile/compiler.py`, `tools/xstack/securex/check.py`, `security/trust/trust_verifier.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `appshell/pack_verifier_adapter.py`, `tools/xstack/sessionx/pipeline_contract.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `content/data/xstack/gate_definitions.json`, `contracts/registry/control_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/securex_policy_registry.json`, `contracts/registry/access_policy_registry.json`, `contracts/registry/tool_capability_registry.json`, `contracts/registry/role_registry.json`, `contracts/registry/security_roles.json`, `contracts/registry/law_profiles.json`, `contracts/registry/controlx_policy.json`, `contracts/registry/refusal_code_registry.json`, `contracts/registry/refusal_to_exit_registry.json`, `tools/xstack/registry_compile/compiler.py`, `tools/xstack/securex/check.py`, `tools/validators/security/trust/trust_verifier.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `appshell/pack_verifier_adapter.py`, `tools/xstack/sessionx/pipeline_contract.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`
 
 # AIDE Policy and Permission Shape
 
@@ -73,13 +73,13 @@ Canonical policy is the authoritative declarative rule surface a governed consum
 
 In the live repo, canonical policy is already implied by registry-backed policy rows and other contract-bearing declarative surfaces such as:
 
-- `data/registries/control_policy_registry.json`
-- `data/registries/trust_policy_registry.json`
-- `data/registries/securex_policy_registry.json`
-- `data/registries/access_policy_registry.json`
-- `data/xstack/gate_definitions.json`
-- `data/registries/controlx_policy.json`
-- `data/registries/law_profiles.json`
+- `contracts/registry/control_policy_registry.json`
+- `contracts/registry/trust_policy_registry.json`
+- `contracts/registry/securex_policy_registry.json`
+- `contracts/registry/access_policy_registry.json`
+- `content/data/xstack/gate_definitions.json`
+- `contracts/registry/controlx_policy.json`
+- `contracts/registry/law_profiles.json`
 
 Canonical policy is not defined by where a command prints it or whether a UI makes it visible.
 It is defined by the governing contract attached to the policy row or profile.
@@ -114,9 +114,9 @@ Policy bundles or profiles are named selections that package several rule decisi
 
 The live repo already shows this shape through:
 
-- `FAST`, `STRICT`, and `FULL` gate profiles in `data/xstack/gate_definitions.json`
+- `FAST`, `STRICT`, and `FULL` gate profiles in `content/data/xstack/gate_definitions.json`
 - `law_profiles.json`, which bundles grants, revocations, allowed and forbidden intents, audit requirements, and refusal codes
-- trust policy selection in `security/trust/trust_verifier.py`
+- trust policy selection in `tools/validators/security/trust/trust_verifier.py`
 
 Portable now:
 
@@ -163,9 +163,9 @@ A permission requirement is the set of gates that must already hold before a gra
 
 The live repo already uses this shape through:
 
-- required entitlements and privilege levels in `data/registries/access_policy_registry.json`
-- `required_entitlement_id` and `access_policy_id` in `data/registries/tool_capability_registry.json`
-- granted and revoked capabilities, allowed and forbidden intent families, and `audit_required` in `data/registries/law_profiles.json`
+- required entitlements and privilege levels in `contracts/registry/access_policy_registry.json`
+- `required_entitlement_id` and `access_policy_id` in `contracts/registry/tool_capability_registry.json`
+- granted and revoked capabilities, allowed and forbidden intent families, and `audit_required` in `contracts/registry/law_profiles.json`
 - missing entitlements and missing lens channels in `client/interaction/affordance_generator.py`
 
 ### Permission Grant Posture
@@ -175,8 +175,8 @@ Grant posture records whether a request is allowed and whether it is unrestricte
 The live repo shows this through:
 
 - enabled affordance rows in `client/interaction/affordance_generator.py`
-- trust results that complete with warnings or bridge allowances in `security/trust/trust_verifier.py`
-- declared allowances in `data/xstack/gate_definitions.json`
+- trust results that complete with warnings or bridge allowances in `tools/validators/security/trust/trust_verifier.py`
+- declared allowances in `content/data/xstack/gate_definitions.json`
 
 ### Permission Denial and Refusal Posture
 
@@ -192,10 +192,10 @@ Override posture means the repo has an explicit and narrow exception path rather
 
 The live repo already shows explicit exception or override-like shapes through:
 
-- `meta_allowed` in `data/registries/control_policy_registry.json`
-- signed-bridge handling in `security/trust/trust_verifier.py`
+- `meta_allowed` in `contracts/registry/control_policy_registry.json`
+- signed-bridge handling in `tools/validators/security/trust/trust_verifier.py`
 - `allow_read_only` and `law_profile_id_override` in loopback and server boot paths
-- semantic escalation keywords in `data/registries/controlx_policy.json`
+- semantic escalation keywords in `contracts/registry/controlx_policy.json`
 
 Portable now:
 
@@ -329,26 +329,26 @@ These fields and distinctions are the portable minimum because the live repo alr
 
 ### Policy Registries and Gate Catalogs
 
-- `data/registries/control_policy_registry.json` already declares policy ids, allowed actions, allowed abstraction levels, view policies, fidelity ranges, strictness, and explicit meta-law allowances
-- `data/xstack/gate_definitions.json` already declares required profiles, provisional allowances, required invariants, rule ids, and validation gates
-- `data/registries/controlx_policy.json` already declares forbidden patterns, allowed operation categories, mutation locality rules, and semantic escalation keywords
+- `contracts/registry/control_policy_registry.json` already declares policy ids, allowed actions, allowed abstraction levels, view policies, fidelity ranges, strictness, and explicit meta-law allowances
+- `content/data/xstack/gate_definitions.json` already declares required profiles, provisional allowances, required invariants, rule ids, and validation gates
+- `contracts/registry/controlx_policy.json` already declares forbidden patterns, allowed operation categories, mutation locality rules, and semantic escalation keywords
 
 These surfaces justify freezing policy identity, scope, action classes, gate classes, decision classes, and escalation classes now.
 
 ### Trust, SecureX, and Verification Surfaces
 
-- `data/registries/trust_policy_registry.json` and `security/trust/trust_verifier.py` already model policy ids, required signature conditions, allowed unsigned behavior, untrusted-root behavior, warning posture, refusal posture, and signed-bridge exceptions
-- `data/registries/securex_policy_registry.json` and `tools/xstack/registry_compile/compiler.py` already model required signature status, unsigned allowances, allowed publishers, refusal codes, and cross-policy references from server policy rows
+- `contracts/registry/trust_policy_registry.json` and `tools/validators/security/trust/trust_verifier.py` already model policy ids, required signature conditions, allowed unsigned behavior, untrusted-root behavior, warning posture, refusal posture, and signed-bridge exceptions
+- `contracts/registry/securex_policy_registry.json` and `tools/xstack/registry_compile/compiler.py` already model required signature status, unsigned allowances, allowed publishers, refusal codes, and cross-policy references from server policy rows
 - `tools/xstack/securex/check.py` already emits warn-versus-refusal posture based on governed signature status
 
 These surfaces justify freezing condition classes, decision classes, evidence links, and override or exception notation now.
 
 ### Access, Roles, Law Profiles, and Capability Surfaces
 
-- `data/registries/access_policy_registry.json` already models required entitlements, privilege levels, and physical-access requirements
-- `data/registries/tool_capability_registry.json` already links tool capabilities to required entitlements and `access_policy_id`
-- `data/registries/role_registry.json` and `data/registries/security_roles.json` already model granted entitlements, restrictions, and law-profile linkage
-- `data/registries/law_profiles.json` already models granted and revoked capabilities, allowed and forbidden intent families, audit requirements, and refusal codes
+- `contracts/registry/access_policy_registry.json` already models required entitlements, privilege levels, and physical-access requirements
+- `contracts/registry/tool_capability_registry.json` already links tool capabilities to required entitlements and `access_policy_id`
+- `contracts/registry/role_registry.json` and `contracts/registry/security_roles.json` already model granted entitlements, restrictions, and law-profile linkage
+- `contracts/registry/law_profiles.json` already models granted and revoked capabilities, allowed and forbidden intent families, audit requirements, and refusal codes
 - `client/interaction/affordance_generator.py` already emits permission-bearing rows with required entitlements, missing entitlements, required lens channels, enabled posture, and disabled reason codes
 
 These surfaces justify freezing permission subject, target, policy basis, gate conditions, grant posture, refusal posture, denial posture, and review or audit linkage now.
@@ -357,7 +357,7 @@ These surfaces justify freezing permission subject, target, policy basis, gate c
 
 - `appshell/command_registry.py` already records refusal code families, supported modes, product ids, and stability data for command surfaces
 - `appshell/commands/command_engine.py` already packages refusal code, reason, remediation hint, nested refusal detail, and exit-code dispatch
-- `data/registries/refusal_code_registry.json` and `data/registries/refusal_to_exit_registry.json` already classify refusal families and map them into shell-specific exit behavior
+- `contracts/registry/refusal_code_registry.json` and `contracts/registry/refusal_to_exit_registry.json` already classify refusal families and map them into shell-specific exit behavior
 - `appshell/pack_verifier_adapter.py` applies trust policy to pack verification and upgrades shell posture to refused when policy is not met
 
 These surfaces justify freezing refusal and denial semantics while also proving that shell-specific packaging must remain outside the portable contract.

@@ -19,17 +19,17 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
-MODULE_DEP_GRAPH_REL = "data/architecture/module_dependency_graph.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
-INCLUDE_GRAPH_REL = "data/audit/include_graph.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
+MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
+INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
 
-DUPLICATE_IMPLS_REL = "data/audit/duplicate_impls.json"
-SHADOW_MODULES_REL = "data/audit/shadow_modules.json"
-DUPLICATE_CLUSTERS_REL = "data/audit/duplicate_clusters.json"
-SRC_DIRECTORY_REPORT_REL = "data/audit/src_directory_report.json"
+DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
+SHADOW_MODULES_REL = "content/data/audit/shadow_modules.json"
+DUPLICATE_CLUSTERS_REL = "content/data/audit/duplicate_clusters.json"
+SRC_DIRECTORY_REPORT_REL = "content/data/audit/src_directory_report.json"
 
 DUPLICATE_IMPLS_REPORT_REL = "docs/audit/DUPLICATE_IMPLEMENTATIONS_REPORT.md"
 SRC_SHADOW_REPORT_REL = "docs/audit/SRC_SHADOW_REPORT.md"

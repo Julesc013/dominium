@@ -141,7 +141,7 @@
       "blockers": "No external multiplayer transport beyond loopback is implemented.",
       "build_status": "verified",
       "evidence": "Both transport modules exist as explicit not_implemented stubs.",
-      "path": "net/transport/tcp_stub.py and net/transport/udp_stub.py",
+      "path": "tools/network/transport/tcp_stub.py and tools/network/transport/udp_stub.py",
       "run_status": "blocked",
       "subject": "TCP/UDP transport",
       "test_status": "unknown"

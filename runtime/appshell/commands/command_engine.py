@@ -10,7 +10,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from compat import build_compat_status_payload, build_product_descriptor, negotiate_product_endpoints
+from tools.validators.compatibility import build_compat_status_payload, build_product_descriptor, negotiate_product_endpoints
 from runtime.appshell.command_registry import build_root_command_descriptors, find_command_descriptor, format_help_text
 from runtime.appshell.compat_adapter import build_version_payload, emit_descriptor_payload
 from runtime.appshell.config_loader import list_pack_manifests, list_profile_bundles
@@ -58,7 +58,7 @@ from tools import (
     format_tool_surface_root_help,
     tool_surface_row_from_command,
 )
-from validation import build_validation_report, write_validation_outputs
+from tools.validators.validation import build_validation_report, write_validation_outputs
 
 
 REFUSAL_TO_EXIT_REGISTRY_REL = os.path.join("data", "registries", "refusal_to_exit_registry.json")

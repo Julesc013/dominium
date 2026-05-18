@@ -31,13 +31,13 @@ from tools.lib.content_store import (
     store_add_artifact,
     store_add_tree_artifact,
 )
-from lib.artifact import (
+from tools.libraries.artifact import (
     ARTIFACT_KIND_BLUEPRINT,
     canonicalize_artifact_manifest,
     deterministic_fingerprint as artifact_deterministic_fingerprint,
     evaluate_artifact_load,
 )
-from lib.instance import (
+from tools.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,

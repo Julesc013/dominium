@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`
+Binding Sources: `docs/planning/BLUEPRINT_RECONCILIATION_REPORT.md`, `content/data/planning/reconciliation/keep_extend_merge_replace_quarantine.json`, `docs/planning/FOUNDATION_READINESS_REPORT.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`
 
 # Extend-Not-Replace Ledger
 
@@ -43,7 +43,7 @@ It operationalizes P-2 for later prompt generation.
 | --- | --- | --- | --- | --- |
 | core reality and world roots | `worldgen`, `geo`, `reality`, `materials`, `logic`, `signals`, `system`, `universe`, `game/content/core` | `extend` | Λ is formalization over live semantic embodiment, not discovery from zero | `Λ`, `Φ`, `Ζ` |
 | specialist domain roots | `epistemics`, `diegetics`, `infrastructure`, `machines`, `embodiment`, `physics`, `chem`, `astro`, `electric`, `pollution`, `packs/domain`, `packs/experience`, `packs/law` | `extend` | these already represent candidate first-class semantic families and should be formalized rather than reinvented | `Λ`, `Σ`, `Φ`, `Υ` |
-| pack and registry backbone | `schema`, `packs`, `data/architecture`, `data/registries`, `repo/release_policy.toml` | `preserve` | pack-driven integration, compatibility, and policy meaning already live here and should stay the primary authority backbone | `Λ`, `Φ`, `Υ`, `Ζ` |
+| pack and registry backbone | `schema`, `packs`, `data/architecture`, `data/registries`, `contracts/repo/release_policy.toml` | `preserve` | pack-driven integration, compatibility, and policy meaning already live here and should stay the primary authority backbone | `Λ`, `Φ`, `Υ`, `Ζ` |
 
 ## 5. Governance And Instruction Surfaces
 

@@ -51,7 +51,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ## Profile Binding
 - Conflict policy is profile-driven.
-- Existing overlay profiles declare a default conflict policy through `data/registries/overlay_policy_registry.json`.
+- Existing overlay profiles declare a default conflict policy through `contracts/registry/overlay_policy_registry.json`.
 - Current v0.0.0 defaults are:
   - `overlay.default -> overlay.conflict.last_wins`
   - `overlay.rank_strict -> overlay.conflict.refuse`

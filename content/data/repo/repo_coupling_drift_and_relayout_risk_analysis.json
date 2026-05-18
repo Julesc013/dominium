@@ -19,9 +19,9 @@
       "docs/planning/GATES_AND_PROOFS.md",
       "docs/planning/MERGED_PROGRAM_STATE.md",
       "docs/repo/REPO_NON_NEGOTIABLES_AND_CURRENT_REALITY.md",
-      "data/repo/repo_non_negotiables_and_current_reality.json",
+      "content/data/repo/repo_non_negotiables_and_current_reality.json",
       "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md",
-      "data/repo/repo_topology_paths_and_ownership_reality_map.json",
+      "content/data/repo/repo_topology_paths_and_ownership_reality_map.json",
       "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
       "docs/audit/ULTRA_REPO_AUDIT_GAPS_AND_TODOS.md",
       "docs/audit/ULTRA_REPO_AUDIT_PLAYTEST_READINESS.md",
@@ -49,13 +49,13 @@
       "release/release_manifest_engine.py",
       "release/component_graph_resolver.py",
       "release/update_resolver.py",
-      "security/trust/trust_verifier.py",
-      "validation/validation_engine.py",
+      "tools/validators/security/trust/trust_verifier.py",
+      "tools/validators/validation/validation_engine.py",
       "tools/validation/tool_run_validation.py",
       "tools/import_bridge.py",
-      "data/registries/virtual_root_registry.json",
-      "data/audit/install_discovery_report.json",
-      "data/audit/ui_surface_report.json"
+      "contracts/registry/virtual_root_registry.json",
+      "content/data/audit/install_discovery_report.json",
+      "content/data/audit/ui_surface_report.json"
     ]
   },
   "coupling_method_notes": {
@@ -111,7 +111,7 @@
         "tools/setup/",
         "server/server_main.py",
         "appshell/supervisor/",
-        "data/registries/virtual_root_registry.json",
+        "contracts/registry/virtual_root_registry.json",
         "dist/",
         "profiles/",
         "locks/",
@@ -134,7 +134,7 @@
       "do_not_move_yet": true,
       "evidence_notes": [
         "appshell/paths/virtual_paths.py",
-        "data/registries/virtual_root_registry.json",
+        "contracts/registry/virtual_root_registry.json",
         "tools/launcher/launch.py",
         "tools/setup/setup_cli.py",
         "server/server_main.py"
@@ -149,9 +149,9 @@
         "tools/appshell/supervisor_service.py",
         "tools/appshell/supervised_product_host.py",
         "VROOT_IPC",
-        "profiles/bundles/bundle.mvp_default.json",
-        "locks/pack_lock.mvp_default.json",
-        "data/session_templates/session.mvp_default.json"
+        "content/profiles/bundles/bundle.mvp_default.json",
+        "contracts/package/locks/pack_lock.mvp_default.json",
+        "content/data/session_templates/session.mvp_default.json"
       ],
       "coupling_type": [
         "runtime",
@@ -334,10 +334,10 @@
       "coupled_to": [
         "tools/setup/setup_cli.py",
         "tools/launcher/launch.py",
-        "data/registries/component_graph_registry.json",
-        "data/registries/install_profile_registry.json",
-        "data/registries/trust_policy_registry.json",
-        "data/registries/trust_root_registry.json",
+        "contracts/registry/component_graph_registry.json",
+        "contracts/registry/install_profile_registry.json",
+        "contracts/registry/trust_policy_registry.json",
+        "contracts/registry/trust_root_registry.json",
         "dist/",
         "store/",
         "manifests/"
@@ -358,7 +358,7 @@
         "release/release_manifest_engine.py",
         "release/component_graph_resolver.py",
         "release/update_resolver.py",
-        "security/trust/trust_verifier.py",
+        "tools/validators/security/trust/trust_verifier.py",
         "tools/setup/setup_cli.py"
       ]
     },
@@ -367,7 +367,7 @@
       "path_or_subsystem": "validation/, tools/validation/, tools/xstack/testx_all.py, tests/, docs/audit/, and data/audit/",
       "coupling_class": "high_coupling_likely_needs_shim",
       "coupled_to": [
-        "data/registries/validation_suite_registry.json",
+        "contracts/registry/validation_suite_registry.json",
         "tools/import_bridge.py",
         "validation reports under docs/audit/ and data/audit/",
         "verify build/test lane"
@@ -386,7 +386,7 @@
       "likely_needs_shim": true,
       "do_not_move_yet": true,
       "evidence_notes": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/validation/tool_run_validation.py",
         "tools/xstack/testx_all.py",
         "CMakePresets.json"
@@ -446,7 +446,7 @@
       "evidence_notes": [
         "AGENTS.md",
         ".agentignore",
-        "packs/README.md",
+        "content/packs/README.md",
         "inspection of data/packs/"
       ]
     },
@@ -476,7 +476,7 @@
         "tools/xstack/registry_compile/constants.py",
         "tools/xstack/session_create.py",
         "tools/mvp/runtime_bundle.py",
-        "data/registries/bundle_profiles.json"
+        "contracts/registry/bundle_profiles.json"
       ]
     },
     {
@@ -516,8 +516,8 @@
       "coupling_class": "high_coupling_likely_needs_shim",
       "coupled_to": [
         "tools/validation/tool_run_validation.py",
-        "older report paths in data/audit/install_discovery_report.json",
-        "data/audit/ui_surface_report.json",
+        "older report paths in content/data/audit/install_discovery_report.json",
+        "content/data/audit/ui_surface_report.json",
         "path-equivalence lookups from older restructure locks"
       ],
       "coupling_type": [
@@ -534,8 +534,8 @@
       "evidence_notes": [
         "tools/import_bridge.py",
         "tools/validation/tool_run_validation.py",
-        "data/audit/install_discovery_report.json",
-        "data/audit/ui_surface_report.json"
+        "content/data/audit/install_discovery_report.json",
+        "content/data/audit/ui_surface_report.json"
       ]
     }
   ],
@@ -559,8 +559,8 @@
       "why_it_matters": "This drift can make a candidate relayout look cheaper than it is because the packet appears already abstracted from the old-to-new root transition.",
       "evidence_notes": [
         "docs/audit/ULTRA_REPO_AUDIT_DOC_VS_CODE_MISMATCHES.md",
-        "data/audit/install_discovery_report.json",
-        "data/audit/ui_surface_report.json"
+        "content/data/audit/install_discovery_report.json",
+        "content/data/audit/ui_surface_report.json"
       ]
     },
     {
@@ -605,12 +605,12 @@
       "id": "DRIFT-006",
       "drift_type": "compatibility-scaffolding drift",
       "narrative": "Some older path consumers continue working well enough that the remaining src drift is easy to underestimate.",
-      "implementation_reality": "tools/validation/tool_run_validation.py installs src aliases through tools/import_bridge.py, and validation/validation_engine.py still emits checked paths such as src/time.",
+      "implementation_reality": "tools/validation/tool_run_validation.py installs src aliases through tools/import_bridge.py, and tools/validators/validation/validation_engine.py still emits checked paths such as src/time.",
       "why_it_matters": "Later relayout work must treat the bridge as an active shim that preserves stale consumers, not as evidence that current ownership is already normalized.",
       "evidence_notes": [
         "tools/import_bridge.py",
         "tools/validation/tool_run_validation.py",
-        "validation/validation_engine.py"
+        "tools/validators/validation/validation_engine.py"
       ]
     },
     {
@@ -623,7 +623,7 @@
         "tools/launcher/launch.py",
         "tools/setup/setup_cli.py",
         "runtime/process_spawn.py",
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/import_bridge.py"
       ]
     },
@@ -634,8 +634,8 @@
       "implementation_reality": "The top-level-root restructure is already real, and the current authoritative topology is what Omega1 recorded.",
       "why_it_matters": "This understates how much current tooling already depends on the new root family and can obscure which compatibility layers must survive a future relayout.",
       "evidence_notes": [
-        "data/audit/install_discovery_report.json",
-        "data/audit/ui_surface_report.json",
+        "content/data/audit/install_discovery_report.json",
+        "content/data/audit/ui_surface_report.json",
         "docs/repo/REPO_TOPOLOGY_PATHS_AND_OWNERSHIP_REALITY_MAP.md"
       ]
     }

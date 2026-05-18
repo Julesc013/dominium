@@ -6,7 +6,7 @@ import math
 from typing import Dict, List, Mapping
 
 from game.domains.geology import geo_distance
-from models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
+from tools.models.model_engine import compute_derailment_threshold_units, compute_lateral_accel_units
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

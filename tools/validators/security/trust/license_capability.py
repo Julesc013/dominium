@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping, Sequence
 
-from meta.identity import (
+from tools.validators.identity import (
     UNIVERSAL_IDENTITY_FIELD,
     build_universal_identity_block,
     canonicalize_universal_identity_block,

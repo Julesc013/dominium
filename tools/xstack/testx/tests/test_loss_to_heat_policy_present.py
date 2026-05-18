@@ -18,7 +18,7 @@ _REQUIRED_POLICIES = {
 
 
 def run(repo_root: str):
-    rel_path = "data/registries/loss_to_heat_policy_registry.json"
+    rel_path = "contracts/registry/loss_to_heat_policy_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))

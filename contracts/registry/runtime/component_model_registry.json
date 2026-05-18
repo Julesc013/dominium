@@ -208,10 +208,10 @@
       "libs"
     ],
     "architecture_evidence_surfaces": [
-      "data/architecture/module_registry.v1.json",
-      "data/architecture/module_boundary_rules.v1.json",
-      "data/registries/component_graph_registry.json",
-      "data/registries/xstack_components.json"
+      "contracts/registry/architecture/module_registry.v1.json",
+      "content/data/architecture/module_boundary_rules.v1.json",
+      "contracts/registry/component_graph_registry.json",
+      "contracts/registry/xstack_components.json"
     ],
     "do_not_infer_canonicality_from": [
       "runtime_root_name_alone",
@@ -266,8 +266,8 @@
       "id": "planning_order_drift",
       "paths": [
         "docs/planning/MEGA_PROMPT_INDEX_RHO_LAMBDA_SIGMA_PHI_UPSILON_ZETA.md",
-        "data/planning/final_prompt_inventory.json",
-        "data/planning/dependency_graph_post_pi.json"
+        "content/data/planning/final_prompt_inventory.json",
+        "content/data/planning/dependency_graph_post_pi.json"
       ],
       "rule": "current_checkpoint_law_outranks_stale_prompt_numbering_or_ordering_text"
     }

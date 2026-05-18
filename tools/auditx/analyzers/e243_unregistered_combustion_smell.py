@@ -77,8 +77,8 @@ def run(graph, repo_root, changed_files=None):
 
     reaction_ids = _reaction_ids(repo_root)
     transform_ids = _transform_ids(repo_root)
-    registry_rel = "data/registries/reaction_profile_registry.json"
-    transform_rel = "data/registries/energy_transformation_registry.json"
+    registry_rel = "contracts/registry/reaction_profile_registry.json"
+    transform_rel = "contracts/registry/energy_transformation_registry.json"
     required_reactions = {
         "reaction.combustion_fuel_basic",
         "reaction.combustion_rich_mixture_stub",

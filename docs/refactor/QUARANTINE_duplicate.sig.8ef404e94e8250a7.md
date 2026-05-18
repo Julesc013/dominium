@@ -19,14 +19,14 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/ir/__init__.py`
-- `src/control/ir/control_ir_programs.py`
+- `src/tools/governance/ir/__init__.py`
+- `src/tools/governance/ir/control_ir_programs.py`
 
 ## Scorecard
 
 - `src/control/__init__.py` disposition=`canonical` rank=`1` total_score=`59.88` risk=`MED`
-- `src/control/ir/__init__.py` disposition=`quarantine` rank=`2` total_score=`59.68` risk=`HIGH`
-- `src/control/ir/control_ir_programs.py` disposition=`merge` rank=`3` total_score=`55.24` risk=`MED`
+- `src/tools/governance/ir/__init__.py` disposition=`quarantine` rank=`2` total_score=`59.68` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_programs.py` disposition=`merge` rank=`3` total_score=`55.24` risk=`MED`
 
 ## Usage Sites
 

@@ -159,7 +159,7 @@ def run_plan_exists(repo_root):
         _require("## Stable vs Provisional Boundaries" in text, "missing stability boundary section"),
         _require("## Manual Polish Window" in text, "missing manual polish window section"),
         _require("docs/omega/OMEGA_GATES.md" in text, "omega plan missing gate map reference"),
-        _require("data/registries/omega_artifact_registry.json" in text, "omega plan missing artifact registry reference"),
+        _require("contracts/registry/omega_artifact_registry.json" in text, "omega plan missing artifact registry reference"),
     ]
 
     stage_lines = _normalize_stage_lines(text)

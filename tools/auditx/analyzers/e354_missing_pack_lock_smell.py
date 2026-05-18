@@ -12,8 +12,8 @@ WATCH_PREFIXES = ("tools/mvp/", "data/session_templates/", "profiles/bundles/", 
 REQUIRED_FILES = {
     "tools/mvp/runtime_entry.py": ("--pack_lock", "pack_lock_path="),
     "tools/mvp/runtime_bundle.py": ("build_pack_lock_payload(", "pack_lock_hash", "MVP_PACK_LOCK_REL"),
-    "data/session_templates/session.mvp_default.json": ("pack_lock_hash", "profile.bundle.mvp_default"),
-    "profiles/bundles/bundle.mvp_default.json": ("pack_lock.mvp_default", "profile.bundle.mvp_default"),
+    "content/data/session_templates/session.mvp_default.json": ("pack_lock_hash", "profile.bundle.mvp_default"),
+    "content/profiles/bundles/bundle.mvp_default.json": ("pack_lock.mvp_default", "profile.bundle.mvp_default"),
 }
 
 
@@ -67,7 +67,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="RESTORE",
                     related_invariants=["INV-PACK-LOCK-REQUIRED", "INV-PROFILE-BUNDLE-REQUIRED"],
-                    related_paths=[rel_path, "locks/pack_lock.mvp_default.json"],
+                    related_paths=[rel_path, "contracts/package/locks/pack_lock.mvp_default.json"],
                 )
             )
             continue
@@ -86,7 +86,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PACK-LOCK-REQUIRED", "INV-PROFILE-BUNDLE-REQUIRED"],
-                related_paths=[rel_path, "locks/pack_lock.mvp_default.json", "profiles/bundles/bundle.mvp_default.json"],
+                related_paths=[rel_path, "contracts/package/locks/pack_lock.mvp_default.json", "content/profiles/bundles/bundle.mvp_default.json"],
             )
         )
 
@@ -118,7 +118,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-PACK-LOCK-REQUIRED"],
-                related_paths=[rel_path, "locks/pack_lock.mvp_default.json"],
+                related_paths=[rel_path, "contracts/package/locks/pack_lock.mvp_default.json"],
             )
         )
     return findings

@@ -19,16 +19,16 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DUPLICATE_IMPLS_REL = "data/audit/duplicate_impls.json"
-DUPLICATE_CLUSTERS_REL = "data/audit/duplicate_clusters.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
-INCLUDE_GRAPH_REL = "data/audit/include_graph.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
+DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
+DUPLICATE_CLUSTERS_REL = "content/data/audit/duplicate_clusters.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
+INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
 
-IMPLEMENTATION_SCORES_REL = "data/analysis/implementation_scores.json"
-DUPLICATE_CLUSTER_RANKINGS_REL = "data/analysis/duplicate_cluster_rankings.json"
+IMPLEMENTATION_SCORES_REL = "content/data/analysis/implementation_scores.json"
+DUPLICATE_CLUSTER_RANKINGS_REL = "content/data/analysis/duplicate_cluster_rankings.json"
 IMPLEMENTATION_SCORECARD_REL = "docs/audit/IMPLEMENTATION_SCORECARD.md"
 XI_2_FINAL_REL = "docs/audit/XI_2_FINAL.md"
 

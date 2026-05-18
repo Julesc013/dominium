@@ -34,7 +34,7 @@ from runtime.appshell.logging import (  # noqa: E402
     log_emit,
     set_current_log_engine,
 )
-from compat import build_handshake_message  # noqa: E402
+from tools.validators.compatibility import build_handshake_message  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 

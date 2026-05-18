@@ -82,5 +82,5 @@ The gate writes deterministic artifacts to:
 
 - `build/mvp/mvp_cross_platform_matrix.json`
 - `build/mvp/mvp_cross_platform_hashes.json`
-- `data/regression/mvp_cross_platform_baseline.json`
+- `tests/fixtures/regression/mvp_cross_platform_baseline.json`
 - `docs/audit/MVP_CROSS_PLATFORM_FINAL.md`

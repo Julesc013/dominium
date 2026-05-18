@@ -76,7 +76,7 @@ def _load_module_registry(repo_root: str) -> Tuple[dict, Dict[str, object]]:
         return {}, _refusal(
             "REFUSE_WORLDGEN_MODULE_REGISTRY_MISSING",
             "worldgen module registry is missing or invalid",
-            "Provide data/registries/worldgen_module_registry.json.",
+            "Provide contracts/registry/worldgen_module_registry.json.",
             {"registry_path": _norm(path)},
             "$.module_registry",
         )

@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    mapping_registry_rel = "data/registries/cohort_mapping_policy_registry.json"
+    mapping_registry_rel = "contracts/registry/cohort_mapping_policy_registry.json"
     mapping_registry_text = _read_text(repo_root, mapping_registry_rel)
     required_policy_tokens = (
         "cohort.map.default",

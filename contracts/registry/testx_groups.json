@@ -115,9 +115,9 @@
           "tests/invariant/**",
           "tools/xstack/**",
           "scripts/dev/gate.py",
-          "data/registries/testx_groups.json",
-          "data/registries/auditx_groups.json",
-          "data/registries/gate_policy.json"
+          "contracts/registry/testx_groups.json",
+          "contracts/registry/auditx_groups.json",
+          "contracts/registry/gate_policy.json"
         ],
         "tags": [
           "verify",

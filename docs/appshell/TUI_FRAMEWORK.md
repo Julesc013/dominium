@@ -46,8 +46,8 @@ lens, law, or epistemic gating.
 
 Layout composition is registry-driven through:
 
-- `data/registries/tui_panel_registry.json`
-- `data/registries/tui_layout_registry.json`
+- `contracts/registry/tui_panel_registry.json`
+- `contracts/registry/tui_layout_registry.json`
 
 Panel render order is deterministic:
 

@@ -67,7 +67,7 @@ def run(repo_root: str):
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from core.graph.routing_engine import route_query_edges
+    from tools.core.graph.routing_engine import route_query_edges
     from game.domains.logistics.logistics_engine import _core_graph_payload, _core_routing_policy, build_inventory_index
 
     graph = _graph_payload()

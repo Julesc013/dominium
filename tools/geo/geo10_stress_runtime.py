@@ -55,42 +55,42 @@ def _registry_hash(rel_path: str) -> str:
 
 
 def _field_type_registry() -> dict:
-    return _read_json("data/registries/field_type_registry.json")
+    return _read_json("contracts/registry/field_type_registry.json")
 
 
 def _field_binding_registry() -> dict:
-    return _read_json("data/registries/field_binding_registry.json")
+    return _read_json("contracts/registry/field_binding_registry.json")
 
 
 def _interpolation_policy_registry() -> dict:
-    return _read_json("data/registries/interpolation_policy_registry.json")
+    return _read_json("contracts/registry/interpolation_policy_registry.json")
 
 
 def _metric_policy_registry() -> dict:
-    return _read_json("data/registries/metric_policy_registry.json")
+    return _read_json("contracts/registry/metric_policy_registry.json")
 
 
 def _geodesic_policy_registry() -> dict:
-    return _read_json("data/registries/geodesic_approx_policy_registry.json")
+    return _read_json("contracts/registry/geodesic_approx_policy_registry.json")
 
 
 def _geo_profile_registry_hashes() -> dict:
     return {
-        "space_topology_profile_registry_hash": _registry_hash("data/registries/space_topology_profile_registry.json"),
-        "metric_profile_registry_hash": _registry_hash("data/registries/metric_profile_registry.json"),
-        "partition_profile_registry_hash": _registry_hash("data/registries/partition_profile_registry.json"),
-        "projection_profile_registry_hash": _registry_hash("data/registries/projection_profile_registry.json"),
+        "space_topology_profile_registry_hash": _registry_hash("contracts/registry/space_topology_profile_registry.json"),
+        "metric_profile_registry_hash": _registry_hash("contracts/registry/metric_profile_registry.json"),
+        "partition_profile_registry_hash": _registry_hash("contracts/registry/partition_profile_registry.json"),
+        "projection_profile_registry_hash": _registry_hash("contracts/registry/projection_profile_registry.json"),
         "field_binding_registry_hash": canonical_sha256(_field_binding_registry()),
         "interpolation_policy_registry_hash": canonical_sha256(_interpolation_policy_registry()),
         "metric_policy_registry_hash": canonical_sha256(_metric_policy_registry()),
         "geodesic_approx_policy_registry_hash": canonical_sha256(_geodesic_policy_registry()),
-        "lens_layer_registry_hash": _registry_hash("data/registries/lens_layer_registry.json"),
-        "view_type_registry_hash": _registry_hash("data/registries/view_type_registry.json"),
-        "traversal_policy_registry_hash": _registry_hash("data/registries/traversal_policy_registry.json"),
-        "geometry_edit_policy_registry_hash": _registry_hash("data/registries/geometry_edit_policy_registry.json"),
-        "generator_version_registry_hash": _registry_hash("data/registries/generator_version_registry.json"),
-        "realism_profile_registry_hash": _registry_hash("data/registries/realism_profile_registry.json"),
-        "overlay_policy_registry_hash": _registry_hash("data/registries/overlay_policy_registry.json"),
+        "lens_layer_registry_hash": _registry_hash("contracts/registry/lens_layer_registry.json"),
+        "view_type_registry_hash": _registry_hash("contracts/registry/view_type_registry.json"),
+        "traversal_policy_registry_hash": _registry_hash("contracts/registry/traversal_policy_registry.json"),
+        "geometry_edit_policy_registry_hash": _registry_hash("contracts/registry/geometry_edit_policy_registry.json"),
+        "generator_version_registry_hash": _registry_hash("contracts/registry/generator_version_registry.json"),
+        "realism_profile_registry_hash": _registry_hash("contracts/registry/realism_profile_registry.json"),
+        "overlay_policy_registry_hash": _registry_hash("contracts/registry/overlay_policy_registry.json"),
     }
 
 
@@ -505,7 +505,7 @@ def _suite_geometry_and_compaction(
         geometry_replace_material,
         geometry_state_hash_surface,
     )
-    from meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
+    from tools.repo.meta.provenance import compact_provenance_window, verify_replay_from_compaction_anchor
 
     fixture = _as_map(scenario.get("geometry_edit_fixture"))
     target_cell_keys = [dict(row) for row in list(fixture.get("target_cell_keys") or [])]

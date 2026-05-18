@@ -12,7 +12,7 @@ ANALYZER_ID = "E60_HARDCODED_BLUEPRINT_SMELL"
 BLUEPRINT_TOKEN_RE = re.compile(r"blueprint\.[a-zA-Z0-9_.]+")
 ALLOWED_PREFIXES = (
     "packs/blueprints/",
-    "data/registries/blueprint_registry.json",
+    "contracts/registry/blueprint_registry.json",
     "docs/",
     "contracts/schemas/",
     "contracts/schemas/",

@@ -19,8 +19,8 @@ WATCH_PREFIXES = (
     "tools/xstack/repox/",
     "scripts/verify_build_target_boundaries.py",
     "CMakeLists.txt",
-    "data/registries/intent_dispatch_whitelist.json",
-    "data/governance/deprecations.json",
+    "contracts/registry/intent_dispatch_whitelist.json",
+    "content/data/governance/deprecations.json",
     "legacy/",
     "quarantine/",
 )

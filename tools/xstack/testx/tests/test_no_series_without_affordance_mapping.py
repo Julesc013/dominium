@@ -19,7 +19,7 @@ def _load_json(path: str):
 
 
 def run(repo_root: str):
-    matrix_rel = "data/meta/real_world_affordance_matrix.json"
+    matrix_rel = "contracts/meta/real_world_affordance_matrix.json"
     matrix_path = os.path.join(repo_root, matrix_rel.replace("/", os.sep))
     if not os.path.isfile(matrix_path):
         return {"status": "fail", "message": "{} missing".format(matrix_rel)}

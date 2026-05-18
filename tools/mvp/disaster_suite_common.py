@@ -21,16 +21,16 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from compat.data_format_loader import load_versioned_artifact  # noqa: E402
+from tools.validators.compatibility.data_format_loader import load_versioned_artifact  # noqa: E402
 from game.domains.geology import build_overlay_layer, build_property_patch  # noqa: E402
-from lib.install.install_validator import validate_install_manifest  # noqa: E402
-from lib.provides.provider_resolution import (  # noqa: E402
+from tools.libraries.install.install_validator import validate_install_manifest  # noqa: E402
+from tools.libraries.provides.provider_resolution import (  # noqa: E402
     RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS,
     resolve_providers,
 )
-from meta.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
-from packs.compat.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
-from packs.compat.pack_verification_pipeline import verify_pack_set  # noqa: E402
+from tools.validators.identity import IDENTITY_KIND_PACK, attach_universal_identity_block  # noqa: E402
+from content.packs.compatibility_payload.pack_compat_validator import pack_compat_manifest_fingerprint  # noqa: E402
+from content.packs.compatibility_payload.pack_verification_pipeline import verify_pack_set  # noqa: E402
 from release.release_manifest_engine import build_mock_signature_block, verify_release_manifest  # noqa: E402
 from release.update_resolver import (  # noqa: E402
     RESOLUTION_POLICY_LATEST_COMPATIBLE,
@@ -38,7 +38,7 @@ from release.update_resolver import (  # noqa: E402
     resolve_update_plan,
     select_rollback_transaction,
 )
-from security.trust.trust_verifier import (  # noqa: E402
+from tools.validators.security.trust.trust_verifier import (  # noqa: E402
     ARTIFACT_KIND_RELEASE_MANIFEST,
     TRUST_POLICY_STRICT,
     verify_artifact_trust,

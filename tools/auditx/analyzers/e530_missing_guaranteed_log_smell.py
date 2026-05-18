@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="observability.missing_guaranteed_log_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/registries/observability_guarantee_registry.json",
+                file_path=rel_path or "contracts/registry/observability_guarantee_registry.json",
                 evidence=[
                     str(item.get("code", "")).strip() or "missing_guaranteed_log",
                     str(item.get("message", "")).strip() or "guaranteed observability category drift detected",
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="DECLARE_AND_EMIT_THE_GUARANTEED_CATEGORY_THROUGH_THE_STRUCTURED_LOG_ENGINE",
                 related_invariants=[RULE_GUARANTEES],
-                related_paths=[rel_path or "data/registries/observability_guarantee_registry.json", "tools/meta/observability_common.py"],
+                related_paths=[rel_path or "contracts/registry/observability_guarantee_registry.json", "tools/meta/observability_common.py"],
             )
         )
     return findings

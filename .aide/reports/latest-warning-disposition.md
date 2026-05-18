@@ -83,3 +83,12 @@ Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
   `MOVE-ROUTER-02`.
 - Validation may report missing import/build/reference paths until repair runs.
 - Feature work and DOE-00 remain blocked.
+
+## MOVE-ROUTER-02 Warning Disposition
+
+- MOVE-ROUTER-02 is PARTIAL, not final proof.
+- Former bad-root tracked files remain at 0; root presence is not the current blocker.
+- Runtime control shim packages are temporary repair surfaces only and must be retired or narrowed by MOVE-ROUTER-02R.
+- Broader TestX remains red with stale registry, pack, import, old source path, and frozen-hash failures.
+- RepoX ruleset discovery still needs canonical path repair.
+- Feature work and DOE-00 remain blocked.

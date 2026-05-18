@@ -23,7 +23,7 @@ Define process-driven lab camera navigation and deterministic time control witho
 - `lens_id`
 
 Camera seed definition is pack-provided:
-- `packs/core/pack.core.camera/data/camera_assembly.main.json`
+- `content/packs/core/pack.core.camera/data/camera_assembly.main.json`
 - contribution id: `registry.camera.assembly.main`
 
 ## Process Definitions
@@ -66,7 +66,7 @@ Privilege floors:
 - `time_control_*`: `operator`
 
 Law profile source:
-- `packs/law/law.lab.unrestricted/data/law_profile.unrestricted.json`
+- `content/packs/law/law.lab.unrestricted/data/law_profile.unrestricted.json`
 
 ## Intent Pipeline (Headless)
 `Input -> Intent -> Process -> TruthModel -> Observation Kernel -> PerceivedModel`

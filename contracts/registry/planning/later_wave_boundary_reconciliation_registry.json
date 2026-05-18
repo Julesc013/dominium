@@ -17,27 +17,27 @@
   "source_of_truth_inputs": {
     "latest_checkpoints": [
       "docs/planning/CHECKPOINT_C_ZETA_A_ADMISSION_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_zeta_a_admission_review.json",
       "docs/planning/CHECKPOINT_C_POST_ZETA_A_FIRST_WAVE_REVIEW.md",
-      "data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
+      "content/data/planning/checkpoints/checkpoint_c_post_zeta_a_first_wave_review.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZP.md",
-      "data/planning/next_execution_order_post_zp.json",
+      "content/data/planning/next_execution_order_post_zp.json",
       "docs/planning/NEXT_EXECUTION_ORDER_POST_ZA_FIRST_WAVE.md",
-      "data/planning/next_execution_order_post_za_first_wave.json"
+      "content/data/planning/next_execution_order_post_za_first_wave.json"
     ],
     "zeta_p_and_first_wave_doctrine": [
       "docs/planning/ZETA_BLOCKER_RECONCILIATION.md",
-      "data/planning/zeta_blocker_reconciliation_registry.json",
+      "contracts/registry/planning/zeta_blocker_reconciliation_registry.json",
       "docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md",
-      "data/planning/live_operations_prerequisite_matrix.json",
+      "contracts/planning/live_operations_prerequisite_matrix.json",
       "docs/planning/ZETA_EXECUTION_GATES.md",
-      "data/planning/zeta_execution_gates_registry.json",
+      "contracts/registry/planning/zeta_execution_gates_registry.json",
       "docs/runtime/ROLLBACK_BEARING_STAGED_TRANSITION_VALIDATION.md",
-      "data/runtime/rollback_bearing_staged_transition_validation_registry.json",
+      "contracts/registry/runtime/rollback_bearing_staged_transition_validation_registry.json",
       "docs/runtime/DISTRIBUTED_REPLAY_AND_PROOF_ANCHOR_VERIFICATION.md",
-      "data/runtime/distributed_replay_and_proof_anchor_verification_registry.json",
+      "contracts/registry/runtime/distributed_replay_and_proof_anchor_verification_registry.json",
       "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md",
-      "data/runtime/bounded_runtime_cutover_proof_rehearsal_registry.json"
+      "contracts/registry/runtime/bounded_runtime_cutover_proof_rehearsal_registry.json"
     ],
     "runtime_and_release_doctrine": [
       "docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md",
@@ -52,14 +52,14 @@
       "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md"
     ],
     "evidence_roots": [
-      "data/registries/net_replication_policy_registry.json",
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json",
-      "data/registries/provenance_classification_registry.json",
+      "contracts/registry/net_replication_policy_registry.json",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json",
+      "contracts/registry/provenance_classification_registry.json",
       "server/shard/dom_cross_shard_log.h",
       "server/net/dom_server_protocol.h",
       "server/net/dom_server_runtime.h",
-      "security/trust/trust_verifier.py"
+      "tools/validators/security/trust/trust_verifier.py"
     ]
   },
   "later_wave_category_identifiers": [

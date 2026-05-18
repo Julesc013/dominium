@@ -22,9 +22,9 @@ def run(repo_root: str):
             "--seed",
             "42",
             "--profile_bundle",
-            "profiles/bundles/bundle.mvp_default.json",
+            "content/profiles/bundles/bundle.mvp_default.json",
             "--pack_lock",
-            "locks/pack_lock.mvp_default.json",
+            "contracts/package/locks/pack_lock.mvp_default.json",
             "--teleport",
             "sol/earth",
         ]
@@ -33,9 +33,9 @@ def run(repo_root: str):
         return {"status": "fail", "message": "entrypoint parse mismatch"}
     if str(args.seed) != "42":
         return {"status": "fail", "message": "seed parse mismatch"}
-    if str(args.profile_bundle) != "profiles/bundles/bundle.mvp_default.json":
+    if str(args.profile_bundle) != "content/profiles/bundles/bundle.mvp_default.json":
         return {"status": "fail", "message": "profile_bundle parse mismatch"}
-    if str(args.pack_lock) != "locks/pack_lock.mvp_default.json":
+    if str(args.pack_lock) != "contracts/package/locks/pack_lock.mvp_default.json":
         return {"status": "fail", "message": "pack_lock parse mismatch"}
     if str(args.teleport) != "sol/earth":
         return {"status": "fail", "message": "teleport parse mismatch"}

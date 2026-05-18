@@ -18,9 +18,9 @@ def _load_rows(repo_root: str, rel_path: str, key: str):
 
 def run(repo_root: str):
     try:
-        tier_rows = _load_rows(repo_root, "data/registries/tier_contract_registry.json", "tier_contracts")
-        coupling_rows = _load_rows(repo_root, "data/registries/coupling_contract_registry.json", "coupling_contracts")
-        explain_rows = _load_rows(repo_root, "data/registries/explain_contract_registry.json", "explain_contracts")
+        tier_rows = _load_rows(repo_root, "contracts/registry/tier_contract_registry.json", "tier_contracts")
+        coupling_rows = _load_rows(repo_root, "contracts/registry/coupling_contract_registry.json", "coupling_contracts")
+        explain_rows = _load_rows(repo_root, "contracts/registry/explain_contract_registry.json", "explain_contracts")
     except (OSError, ValueError):
         return {"status": "fail", "message": "LOGIC contract registries missing or invalid"}
 

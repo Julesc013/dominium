@@ -90,7 +90,7 @@ POST-CONVERGE-10E fixed the targeted AuditX/CTest path blockers:
 POST-CONVERGE-10F remediated and classified the remaining unit/RepoX blockers:
 
 - `invariant_units_present` now passes in the tuple verify CTest lane
-- `unit.mass_energy.stub` is declared in `data/registries/unit_registry.json`
+- `unit.mass_energy.stub` is declared in `contracts/registry/unit_registry.json`
 - the unit validator no longer treats path fragments such as `materials/unit.schema` as unit identifiers
 - `inv_repox_rules` still fails with broad RepoX/canonical-evidence drift
 - the RepoX CTest wrapper now writes generated proof/profile output to ignored `.dominium.local/ctest/repox/`
@@ -314,7 +314,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Result: PARTIAL.
 - Focused RepoX actual local state improved from 59 failures / 5 warnings to 51 failures / 5 warnings.
 - The prior 10J-reported 60th failure was `INV-LOCKLIST-FROZEN`, which was absent at 10K start because `origin/main` equaled local HEAD.
-- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `data/registries/semantic_contract_registry.json`.
+- `INV-NEW-CONTRACT-REQUIRES-ENTRY` reduced from 9 to 0 by adding four accepted current architecture contract rows to `contracts/registry/semantic_contract_registry.json`.
 - POST-CONVERGE-11 remains blocked because focused tuple `inv_repox_rules` still fails on distribution/product proof, retired-domain path policy, tool hash/audit staleness, ruleset mapping, and related families.
 - Next recommended task: `POST-CONVERGE-10L - Distribution Descriptor and Product Proof Blocker Classification`.
 
@@ -496,7 +496,7 @@ POST-CONVERGE-11 remains blocked. The next recommended task is `POST-CONVERGE-10
 - Tracked files under remaining bad roots: 1,790.
 - Initial gate-ready subset: 309 docs/evidence/archive files in Batch A.
 - Deferred until batch gates: 1,481 files.
-- Explicit blocked file action: `libs/CMakeLists.txt` until CMake/build-focused ABI gate approval.
+- Explicit blocked file action: `docs/development/libraries/CMakeLists.txt` until CMake/build-focused ABI gate approval.
 - `ide/` remains retired and excluded from remaining bad-root planning.
 - No moves, deletes, renames, shims, import rewrites, reference rewrites, move-map applications, salvage-map applications, or exception retirements occurred.
 - Feature work remains blocked.
@@ -590,6 +590,24 @@ MOVE-ROUTER-01 applied the deterministic bad-root route table.
 
 Next recommended task:
 `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.
+
+<!-- MOVE-ROUTER-02 -->
+
+## MOVE-ROUTER-02 Next-Step Update
+
+MOVE-ROUTER-02 repaired a large first wave of active references and imports but
+did not reach final proof.
+
+- Bad-root tracked files: 0.
+- Path replacements recorded: 33,316.
+- Import replacements recorded: 76.
+- Runtime shim packages created: 3.
+- CMake configure: PASS.
+- Build/TestX: PARTIAL; broader TestX remains red.
+- Feature work authorized: no.
+
+Next recommended task:
+`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.
 
 <!-- RESTRUCTURE-REPAIR-00 -->
 

@@ -51,7 +51,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/fab/fab_validate.py --input data/packs/org.dominium.core.parts.basic/data/fab_pack.json --pack-root data/packs/org.dominium.core.parts.basic --format json`
+    - `python tools/fab/fab_validate.py --input content/packs/org.dominium.core.parts.basic/data/fab_pack.json --pack-root data/packs/org.dominium.core.parts.basic --format json`
 
 
 
@@ -105,7 +105,7 @@ All tools are CLI-first. TUI/GUI shells must invoke these tools with identical a
   - Example:
 
 
-    - `python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data data/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json`
+    - `python tools/inspect/refusal_explain.py --input tmp/fab_validate.json --data content/packs/org.dominium.core.parts.basic/data/fab_pack.json --format json`
 
 
 

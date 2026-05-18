@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Pollution Constitution Baseline
 
-Status: BASELINE (POLL-0)  
-Date: 2026-03-05  
+Status: BASELINE (POLL-0)
+Date: 2026-03-05
 Scope: POLL-0 constitutional substrate (pollutant quantities, source-event canon, P0 totals engine, explain hooks, enforcement, and TestX coverage).
 
 ## 1) Pollutant Taxonomy
@@ -87,7 +87,7 @@ Validation level executed for this phase: `FAST` minimum + requested strict gove
   - result: `pass` (`findings=17`, warnings only)
 - AuditX STRICT: `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   - result: `pass` (`promoted_blockers=0`)
-- TestX PASS (POLL suite):  
+- TestX PASS (POLL suite):
   `py -3 tools/xstack/testx/runner.py --repo-root . --profile FAST --subset test_pollutant_registry_valid,test_pollution_emit_deterministic,test_pollution_totals_conserved,test_explain_spike_deterministic,test_null_boot_pollution_none_ok`
   - result: `pass` (`selected_tests=5`)
 - strict build gate: `py -3 tools/xstack/run.py strict --repo-root . --cache on`

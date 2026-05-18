@@ -74,7 +74,7 @@ def run(graph, repo_root, changed_files=None):
                         "INV-DETERMINISTIC-ROUND-ONLY",
                         "INV-NO-IMPLICIT-FLOAT",
                     ],
-                    related_paths=[rel_path, "meta/numeric.py"],
+                    related_paths=[rel_path, "tools/repo/meta/numeric.py"],
                 )
             )
             break

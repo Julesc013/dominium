@@ -37,7 +37,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.external_store_access_smell",
                 severity="RISK",
                 confidence=0.98,
-                file_path=rel_path or "data/audit/clean_room_win64.json",
+                file_path=rel_path or "content/data/audit/clean_room_win64.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "clean-room run escaped the portable bundle",
@@ -45,7 +45,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="KEEP_RUNTIME_OUTPUTS_INSIDE_BUNDLE",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-CLEAN-ROOM-MUST-PASS-BEFORE-ARCHIVE"],
-                related_paths=[rel_path or "data/audit/clean_room_win64.json", "tools/dist/clean_room_common.py"],
+                related_paths=[rel_path or "content/data/audit/clean_room_win64.json", "tools/dist/clean_room_common.py"],
             )
         )
     return findings

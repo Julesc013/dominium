@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Pollution Dispersion Baseline
 
-Status: BASELINE (POLL-1)  
-Date: 2026-03-05  
+Status: BASELINE (POLL-1)
+Date: 2026-03-05
 Scope: POLL-1 deterministic P1 dispersion, decay/deposition transforms, exposure accumulation stub, explain/inspection integration, proof replay hooks, and enforcement.
 
 ## 1) Dispersion Rule
@@ -75,29 +75,29 @@ Contract/schema impact:
 
 Validation level executed: STRICT governance checks + POLL targeted strict tests.
 
-- topology map updated:  
-  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`  
-  - result: `complete`  
+- topology map updated:
+  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
+  - result: `complete`
   - deterministic_fingerprint: `41b8a40363d78b2bce65060f223530712621078693db9404b19a7899557763e1`
 
-- RepoX STRICT:  
-  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`  
+- RepoX STRICT:
+  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - result: `pass` (`findings=17`, warnings only)
 
-- AuditX STRICT:  
-  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`  
+- AuditX STRICT:
+  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   - result: `pass` (`findings=1313`, `promoted_blockers=0`)
 
-- TestX PASS (POLL-1 required suite):  
-  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset test_dispersion_deterministic,test_decay_applied,test_deposition_logged,test_exposure_accumulation_deterministic,test_pollution_cross_platform_hash_match`  
+- TestX PASS (POLL-1 required suite):
+  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset test_dispersion_deterministic,test_decay_applied,test_deposition_logged,test_exposure_accumulation_deterministic,test_pollution_cross_platform_hash_match`
   - result: `pass` (`selected_tests=5`)
 
-- stress harness PASS (POLL replay-window verification):  
-  `py -3 tools/pollution/tool_replay_dispersion_window.py --state-path build/pollution/pollution_dispersion_replay_state.json --expected-state-path build/pollution/pollution_dispersion_replay_state.json`  
+- stress harness PASS (POLL replay-window verification):
+  `py -3 tools/pollution/tool_replay_dispersion_window.py --state-path build/pollution/pollution_dispersion_replay_state.json --expected-state-path build/pollution/pollution_dispersion_replay_state.json`
   - result: `complete`
 
-- strict build gate:  
-  `py -3 tools/xstack/run.py strict --repo-root . --cache on`  
+- strict build gate:
+  `py -3 tools/xstack/run.py strict --repo-root . --cache on`
   - result: `refusal` due pre-existing global baseline blockers outside POLL-1 scope (CompatX/registry compile/session boot/full TestX/packaging strict aggregate failures).
 
 ## 6) Readiness

@@ -462,7 +462,7 @@
           "Generated command binding table.",
           "Must be deterministic for identical UI index and command graph."
         ],
-        "path": "libs/appcore/ui_bind/ui_command_binding_table.c",
+        "path": "runtime/shell/appcore/ui_bind/ui_command_binding_table.c",
         "producer": "tool_ui_bind --write",
         "regenerable": true,
         "regeneration_tool": "tool_ui_bind --write",

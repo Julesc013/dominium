@@ -19,13 +19,13 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/appshell/ui_mode_selector.py`
-- `src/compat/capability_negotiation.py`
+- `src/tools/validators/compatibility/capability_negotiation.py`
 - `src/platform/platform_probe.py`
 
 ## Scorecard
 
 - `src/platform/platform_probe.py` disposition=`canonical` rank=`1` total_score=`61.19` risk=`HIGH`
-- `src/compat/capability_negotiation.py` disposition=`quarantine` rank=`2` total_score=`59.29` risk=`HIGH`
+- `src/tools/validators/compatibility/capability_negotiation.py` disposition=`quarantine` rank=`2` total_score=`59.29` risk=`HIGH`
 - `src/appshell/ui_mode_selector.py` disposition=`quarantine` rank=`3` total_score=`52.14` risk=`HIGH`
 
 ## Usage Sites

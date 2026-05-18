@@ -172,7 +172,7 @@
   "canonical_vs_derived_distinctions": {
     "canonical_surfaces": [
       "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
-      "data/release/operator_transaction_receipts_and_provenance_registry.json",
+      "contracts/registry/release/operator_transaction_receipts_and_provenance_registry.json",
       "governed operator transaction records where later doctrine explicitly defines them",
       "canonical release identity, release contract profile, release index, and archive-history linkage where referenced by a governed receipt"
     ],
@@ -183,7 +183,7 @@
       "cli summaries",
       "filenames",
       "mirror layout",
-      "updates/changelog.json",
+      "release/updates/changelog.json",
       "checkpoint bundles",
       "convenience reports"
     ],
@@ -204,17 +204,17 @@
   "repo_evidence_surfaces": [
     "release/update_resolver.py",
     "release/archive_policy.py",
-    "repo/release_policy.toml",
-    "updates/README.md",
-    "updates/changelog.json",
+    "contracts/repo/release_policy.toml",
+    "docs/release/updates/README.md",
+    "release/updates/changelog.json",
     "docs/release/ARCHIVE_AND_RETENTION_POLICY.md",
     "docs/release/ARCHIVE_AND_MIRROR_CONSTITUTION.md",
-    "data/registries/provenance_classification_registry.json",
-    "data/registries/provenance_event_type_registry.json",
-    "data/registries/deprecation_registry.json",
-    "data/registries/remediation_playbooks.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/refusal_to_exit_registry.json"
+    "contracts/registry/provenance_classification_registry.json",
+    "contracts/registry/provenance_event_type_registry.json",
+    "contracts/registry/deprecation_registry.json",
+    "contracts/registry/remediation_playbooks.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/refusal_to_exit_registry.json"
   ],
   "ambiguities_eliminated": [
     "logs do not equal receipts",

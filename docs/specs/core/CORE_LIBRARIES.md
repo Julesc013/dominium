@@ -35,6 +35,6 @@ This document lists the shared contract modules under
 
 - Add new core headers under `libs/contracts/include/dom_contracts/`.
 - Register new schemas through `core_tlv_schema` with deterministic validators.
-- Update `libs/contracts/CMakeLists.txt` and link the new contract header into
+- Update `docs/development/libraries/contracts/CMakeLists.txt` and link the new contract header into
   launcher/setup/tool targets as needed.
 - Keep error IDs append-only; never renumber msg_id or schema IDs.

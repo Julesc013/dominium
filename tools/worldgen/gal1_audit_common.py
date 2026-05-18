@@ -12,7 +12,7 @@ GAL1_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md",
     "contracts/schemas/worldgen/galaxy_object_stub.schema",
     "contracts/schemas/galaxy_object_stub.schema.json",
-    "data/registries/object_kind_registry.json",
+    "contracts/registry/object_kind_registry.json",
     "game/domains/worldgen/galaxy",
     "tools/worldgen/gal1_audit_common.py",
     "tools/worldgen/gal1_probe.py",
@@ -43,7 +43,7 @@ def _registry_rows(payload: Mapping[str, object], row_key: str) -> List[dict]:
 
 def scan_gal1_untagged_stubs(repo_root: str) -> List[Dict[str, object]]:
     findings: List[Dict[str, object]] = []
-    payload = _load_json(repo_root, "data/registries/object_kind_registry.json")
+    payload = _load_json(repo_root, "contracts/registry/object_kind_registry.json")
     rows = _registry_rows(payload, "object_kinds")
     row_by_id = dict(
         (str(row.get("object_kind_id", "")).strip(), dict(row))
@@ -59,7 +59,7 @@ def scan_gal1_untagged_stubs(repo_root: str) -> List[Dict[str, object]]:
         if not row:
             findings.append(
                 {
-                    "path": "data/registries/object_kind_registry.json",
+                    "path": "contracts/registry/object_kind_registry.json",
                     "line": 1,
                     "token": object_kind_id,
                     "message": "required GAL-1 provisional object kind is missing",
@@ -74,7 +74,7 @@ def scan_gal1_untagged_stubs(repo_root: str) -> List[Dict[str, object]]:
             continue
         findings.append(
             {
-                "path": "data/registries/object_kind_registry.json",
+                "path": "contracts/registry/object_kind_registry.json",
                 "line": 1,
                 "token": object_kind_id,
                 "message": "GAL-1 stub object kinds must be provisional and carry an ASTRO-DOMAIN replacement plan",

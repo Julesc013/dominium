@@ -75,7 +75,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    templates = _load_registry(repo_root, "data/registries/action_template_registry.json")
+    templates = _load_registry(repo_root, "contracts/registry/action_template_registry.json")
     for row in sorted(
         (item for item in list(templates.get("templates") or []) if isinstance(item, dict)),
         key=lambda item: str(item.get("action_template_id", "")),
@@ -93,13 +93,13 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.substrate_bypass_smell",
                     severity="RISK",
                     confidence=0.8,
-                    file_path="data/registries/action_template_registry.json",
+                    file_path="contracts/registry/action_template_registry.json",
                     line=1,
                     evidence=["process-backed action_template has no affected_substrates declaration", template_id, process_id],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-ACTION-MUST-HAVE-FAMILY"],
-                    related_paths=["data/registries/action_template_registry.json"],
+                    related_paths=["contracts/registry/action_template_registry.json"],
                 )
             )
             continue
@@ -110,7 +110,7 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.substrate_bypass_smell",
                     severity="RISK",
                     confidence=0.75,
-                    file_path="data/registries/action_template_registry.json",
+                    file_path="contracts/registry/action_template_registry.json",
                     line=1,
                     evidence=[
                         "template likely touches substrate(s) not declared",
@@ -121,7 +121,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-ACTION-MUST-HAVE-FAMILY"],
-                    related_paths=["data/registries/action_template_registry.json"],
+                    related_paths=["contracts/registry/action_template_registry.json"],
                 )
             )
 

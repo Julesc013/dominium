@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0, `specs/reality/SPEC_FORMALIZATION_CHAIN.md` v1.0.0, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md` v1.0.0, and `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md` v1.0.0, `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md` v1.0.0, and `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md` v1.0.0.
 Stability: stable
 Future Series: Σ, Φ, Υ, Ζ
 Replacement Target: later domain bridge specifications, governance/task constitutions, and runtime/service boundary extractions must instantiate this framework rather than replace it
@@ -588,11 +588,11 @@ Future bridge families may be added lawfully if they:
 
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
-- `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
-- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
-- `specs/reality/SPEC_CAPABILITY_SURFACES.md`
-- `specs/reality/SPEC_REPRESENTATION_LADDERS.md`
-- `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`
-- `specs/reality/SPEC_FORMALIZATION_CHAIN.md`
+- `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+- `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
+- `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`
+- `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`
+- `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`
+- `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`
 - `docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md`
 - `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`

@@ -21,7 +21,7 @@ _ALLOWED_INVARIANTS = {"mass", "energy", "momentum", "charge", "custom"}
 
 
 def run(repo_root: str):
-    rel_path = "data/registries/physics_profile_registry.json"
+    rel_path = "contracts/registry/physics_profile_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))

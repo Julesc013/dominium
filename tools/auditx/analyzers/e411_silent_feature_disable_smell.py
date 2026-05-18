@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "compat status",
         "explain.feature_disabled",
     ),
-    "compat/negotiation/degrade_enforcer.py": (
+    "tools/validators/compatibility/negotiation/degrade_enforcer.py": (
         "REFUSAL_COMPAT_FEATURE_DISABLED",
         "def build_compat_status_payload(",
         '"effective_ui_mode"',

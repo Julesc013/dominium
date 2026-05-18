@@ -20,7 +20,7 @@ def _as_int(value: object, default_value: int = 0) -> int:
 
 
 def _boundary_allowed_transform_ids(repo_root: str) -> set[str]:
-    rel_path = "data/registries/energy_transformation_registry.json"
+    rel_path = "contracts/registry/energy_transformation_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))

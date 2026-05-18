@@ -12,7 +12,7 @@ from game.domains.materials.blueprint_engine import (
     build_blueprint_ghost_overlay,
     compile_blueprint_artifacts,
 )
-from control.capability import capability_binding_rows, has_capability
+from contracts.capability.capability import capability_binding_rows, has_capability
 
 from ..control_plane_engine import build_control_intent, build_control_resolution
 from ..ir.control_ir_programs import build_blueprint_execution_ir

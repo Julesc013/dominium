@@ -358,7 +358,7 @@ def _canonical_context(payload: Mapping[str, object]) -> dict:
 
 
 def vpath_init(context: Mapping[str, object]) -> dict:
-    from lib.install.install_discovery_engine import discover_install
+    from engine.install.install_discovery_engine import discover_install
 
     payload = dict(context or {})
     repo_root = _norm(payload.get("repo_root") or ".")

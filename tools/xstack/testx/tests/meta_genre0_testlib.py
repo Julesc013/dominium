@@ -7,7 +7,7 @@ import os
 from typing import Iterable
 
 
-MATRIX_REL = "data/meta/player_demand_matrix.json"
+MATRIX_REL = "contracts/meta/player_demand_matrix.json"
 
 
 def _load_json(repo_root: str, rel_path: str):
@@ -37,12 +37,12 @@ def _ids(rows: Iterable[dict], key: str) -> set[str]:
 
 
 def known_reference_ids(repo_root: str) -> dict[str, set[str]]:
-    action_family_payload, _ = _load_json(repo_root, "data/registries/action_family_registry.json")
-    action_template_payload, _ = _load_json(repo_root, "data/registries/action_template_registry.json")
-    explain_payload, _ = _load_json(repo_root, "data/registries/explain_contract_registry.json")
-    law_payload, _ = _load_json(repo_root, "data/registries/law_profiles.json")
-    phys_payload, _ = _load_json(repo_root, "data/registries/physics_profile_registry.json")
-    rwam_payload, _ = _load_json(repo_root, "data/meta/real_world_affordance_matrix.json")
+    action_family_payload, _ = _load_json(repo_root, "contracts/registry/action_family_registry.json")
+    action_template_payload, _ = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    explain_payload, _ = _load_json(repo_root, "contracts/registry/explain_contract_registry.json")
+    law_payload, _ = _load_json(repo_root, "contracts/registry/law_profiles.json")
+    phys_payload, _ = _load_json(repo_root, "contracts/registry/physics_profile_registry.json")
+    rwam_payload, _ = _load_json(repo_root, "contracts/meta/real_world_affordance_matrix.json")
 
     family_rows = list((dict(action_family_payload.get("record") or {})).get("families") or [])
     template_rows = list((dict(action_template_payload.get("record") or {})).get("templates") or [])

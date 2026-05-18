@@ -6,7 +6,7 @@ import os
 import subprocess
 from typing import Mapping
 
-from compat import build_compat_status_payload, build_degrade_runtime_state
+from tools.validators.compatibility import build_compat_status_payload, build_degrade_runtime_state
 from apps.client.net import read_loopback_handshake_response, send_loopback_client_ack
 from runtime.process_spawn import build_server_process_spec, collect_process_output, poll_process, spawn_process
 from apps.server import boot_server_runtime, load_server_config, materialize_server_session

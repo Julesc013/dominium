@@ -27,7 +27,7 @@ def run(repo_root: str):
     from game.domains.logic import normalize_state_machine_definition_rows
     from tools.xstack.compatx.canonical_json import canonical_sha256
 
-    payload = _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_machine_registry.json")
+    payload = _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json")
     rows = list(payload.get("state_machine_definitions") or [])
     if not rows:
         return {"status": "fail", "message": "logic state machine registry missing rows"}

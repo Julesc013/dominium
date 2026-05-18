@@ -5,21 +5,21 @@ from __future__ import annotations
 import os
 from typing import Dict, List, Tuple
 
-from net.policies.policy_server_authoritative import (
+from tools.network.policies.policy_server_authoritative import (
     POLICY_ID_SERVER_AUTHORITATIVE,
     initialize_authoritative_runtime,
     join_client_midstream,
     prepare_server_authoritative_baseline,
 )
-from net.policies.policy_srz_hybrid import (
+from tools.network.policies.policy_srz_hybrid import (
     POLICY_ID_SRZ_HYBRID,
     initialize_hybrid_runtime,
     join_client_hybrid,
     prepare_hybrid_baseline,
 )
-from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from game.domains.universe import enforce_session_contract_bundle
-from compat.data_format_loader import load_versioned_artifact
+from tools.validators.compatibility.data_format_loader import load_versioned_artifact
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
@@ -896,7 +896,7 @@ def _simulate_boot_stage_log(
         return [], "", refusal(
             "REFUSE_SESSION_PIPELINE_REGISTRY_INVALID",
             "pipeline stage order does not contain entry/ready stage IDs",
-            "Fix pipeline stage ordering in data/registries/session_pipeline_registry.json.",
+            "Fix pipeline stage ordering in contracts/registry/session_pipeline_registry.json.",
             {
                 "entry_stage_id": entry_stage_id,
                 "ready_stage_id": ready_stage_id,

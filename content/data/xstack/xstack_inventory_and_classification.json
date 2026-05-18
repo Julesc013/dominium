@@ -27,7 +27,7 @@
     "docs/audit/ULTRA_REPO_AUDIT_ENTRYPOINTS_AND_RUNPATHS.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "data/xstack/xstack_scope_freeze.json"
+    "content/data/xstack/xstack_scope_freeze.json"
   ],
   "current_program_context": {
     "admissible_zeta_doctrine_program_complete": true,
@@ -36,7 +36,7 @@
   },
   "x0_dependency": {
     "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json"
+    "required_scope_freeze_json": "content/data/xstack/xstack_scope_freeze.json"
   },
   "current_aide_implementation_presence": false,
   "classification_method": {
@@ -130,7 +130,7 @@
       "extraction_status": "plausible_future_aide_extraction_candidate",
       "current_usage_status": "wired_to_entrypoints",
       "major_dependencies": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "release/*.py",
         "security/trust/*.py",
         "appshell/**",
@@ -159,7 +159,7 @@
       "current_usage_status": "active_tool_entrypoint",
       "major_dependencies": [
         "tools/xstack/controlx/orchestrator.py",
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "schema registry data"
       ],
       "evidence_notes": [
@@ -435,7 +435,7 @@
         "tools/xstack/ci/",
         "docs/xstack/CI_GUARDRAILS.md",
         "docs/xstack/ARCH_DRIFT_POLICY.md",
-        "data/xstack/gate_definitions.json"
+        "content/data/xstack/gate_definitions.json"
       ],
       "purpose": "Define CI guardrail entrypoints, rule catalogs, profiles, and support documentation for deterministic repo checks.",
       "role": "ops_concern",
@@ -451,7 +451,7 @@
       ],
       "evidence_notes": [
         "xstack_ci_entrypoint.py is a real runner",
-        "data/xstack/gate_definitions.json records required rules, profiles, and provisional allowances",
+        "content/data/xstack/gate_definitions.json records required rules, profiles, and provisional allowances",
         "docs and tests repeatedly reference the entrypoint"
       ],
       "recommended_treatment": "treat_as_live_operator_policy_and_ci_wiring"
@@ -513,7 +513,7 @@
       "id": "xinv.validation_unified_surface",
       "name": "Unified validation engine plus legacy adapters",
       "repo_paths": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/validation/tool_run_validation.py",
         "tools/validation/validate_all_main.cpp",
         "tools/validation/validator_common.*",
@@ -656,8 +656,8 @@
         "release/component_graph_resolver.py",
         "release/release_manifest_engine.py",
         "release/update_resolver.py",
-        "security/trust/trust_verifier.py",
-        "security/trust/license_capability.py"
+        "tools/validators/security/trust/trust_verifier.py",
+        "tools/validators/security/trust/license_capability.py"
       ],
       "purpose": "Release manifesting, update resolution, archive policy, and trust verification for repo-local release or control-plane flows.",
       "role": "dominium_only",
@@ -715,7 +715,7 @@
         "semantic contract helpers"
       ],
       "evidence_notes": [
-        "validation/validation_engine.py still maps tools/compatx/compatx.py as legacy.compatx_cli",
+        "tools/validators/validation/validation_engine.py still maps tools/compatx/compatx.py as legacy.compatx_cli",
         "audit and docs show tools/compatx/core/semantic_contract_validator.py remains an active bridge helper"
       ],
       "recommended_treatment": "keep_as_bridge_until_later_convergence_work_explicitly_resolves_the_split"
@@ -726,7 +726,7 @@
       "repo_paths": [
         "docs/agents/XSTACK_TASK_CATALOG.md",
         "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-        "data/xstack/xstack_scope_freeze.json"
+        "content/data/xstack/xstack_scope_freeze.json"
       ],
       "purpose": "Provide current governance/task taxonomy and X-0 scope boundaries for later prompts.",
       "role": "unclear_or_mixed",

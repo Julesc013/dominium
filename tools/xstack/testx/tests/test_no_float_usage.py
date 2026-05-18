@@ -15,7 +15,7 @@ _TARGET_FILES = (
     "game/domains/physics/momentum_engine.py",
     "game/domains/physics/energy/energy_ledger_engine.py",
     "game/domains/mobility/micro/free_motion_solver.py",
-    "meta/numeric.py",
+    "tools/repo/meta/numeric.py",
 )
 
 

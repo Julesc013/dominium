@@ -19,7 +19,7 @@ Superseding references:
 - Deprecations are declared canonically via:
   - `schema/governance/deprecation_entry.schema`
   - `schema/governance/deprecation_registry.schema`
-  - `data/governance/deprecations.json`
+  - `content/data/governance/deprecations.json`
 - Runtime or schema identifiers being phased out must be registered with:
   - `deprecated_id`
   - `replacement_id`
@@ -30,7 +30,7 @@ Superseding references:
 ## Quarantine Directory Policy
 - `legacy/` and `quarantine/` are temporary quarantine areas only.
 - Quarantine content must not be referenced by production/runtime code paths.
-- Adapter-only access is allowed when adapter paths are explicitly declared in `data/governance/deprecations.json`.
+- Adapter-only access is allowed when adapter paths are explicitly declared in `content/data/governance/deprecations.json`.
 - AuditX and RepoX enforce non-reference policy.
 
 ## Migration Requirements

@@ -24,10 +24,10 @@ def run(repo_root: str):
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, seed_signal_requests
 
     inputs = load_eval_inputs(repo_root)
-    surfaces = _load(repo_root, "data/registries/instrumentation_surface_registry.json")
-    access = _load(repo_root, "data/registries/access_policy_registry.json")
-    models = _load(repo_root, "data/registries/measurement_model_registry.json")
-    policies = _load(repo_root, "data/registries/debug_sampling_policy_registry.json")
+    surfaces = _load(repo_root, "contracts/registry/instrumentation_surface_registry.json")
+    access = _load(repo_root, "contracts/registry/access_policy_registry.json")
+    models = _load(repo_root, "contracts/registry/measurement_model_registry.json")
+    policies = _load(repo_root, "contracts/registry/debug_sampling_policy_registry.json")
     signal_store_state = seed_signal_requests(
         signal_store_state=None,
         signal_requests=[

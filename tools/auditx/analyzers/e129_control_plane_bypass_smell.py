@@ -17,7 +17,7 @@ WATCH_PREFIXES = (
 )
 
 TOPOLOGY_REL = "docs/audit/TOPOLOGY_MAP.json"
-CONTROL_PLANE_NODE_ID = "module:control/control_plane_engine.py"
+CONTROL_PLANE_NODE_ID = "module:tools/governance/control_plane_engine.py"
 
 DIRECT_PROCESS_CALL_RE = re.compile(r"\b(?:run_process|execute_process|runtime_execute_intent|execute_intent)\s*\(")
 PROCESS_LITERAL_RE = re.compile(r"[\"']process\.[A-Za-z0-9_.-]+[\"']")
@@ -30,8 +30,8 @@ CONTROL_USAGE_TOKENS = (
 )
 ALLOWED_DIRECT_DISPATCH_PATHS = {
     "apps/client/interaction/interaction_dispatch.py",
-    "net/policies/policy_server_authoritative.py",
-    "net/srz/shard_coordinator.py",
+    "tools/network/policies/policy_server_authoritative.py",
+    "tools/network/srz/shard_coordinator.py",
 }
 
 
@@ -187,7 +187,7 @@ def run(graph, repo_root, changed_files=None):
                         suggested_classification="INVALID",
                         recommended_action="REWRITE",
                         related_invariants=["INV-CONTROL-PLANE-ONLY-DISPATCH", "INV-CONTROL-INTENT-REQUIRED"],
-                        related_paths=[rel_path, "control/control_plane_engine.py"],
+                        related_paths=[rel_path, "tools/governance/control_plane_engine.py"],
                     )
                 )
                 break

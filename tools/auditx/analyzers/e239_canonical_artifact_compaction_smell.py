@@ -17,10 +17,10 @@ class CanonicalArtifactCompactionSmell:
 
 
 WATCH_PREFIXES = (
-    "data/registries/provenance_classification_registry.json",
+    "contracts/registry/provenance_classification_registry.json",
 )
 
-_REGISTRY_REL = "data/registries/provenance_classification_registry.json"
+_REGISTRY_REL = "contracts/registry/provenance_classification_registry.json"
 
 
 def _read_registry(repo_root: str) -> dict:

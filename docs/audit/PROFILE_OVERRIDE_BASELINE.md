@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,9 +8,9 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PROFILE_OVERRIDE_BASELINE
 
-Status: BASELINE (`META-PROFILE-0`)  
-Last Reviewed: 2026-03-07  
-Version: 1.0.0  
+Status: BASELINE (`META-PROFILE-0`)
+Last Reviewed: 2026-03-07
+Version: 1.0.0
 Scope: unified profile override architecture with deterministic profile resolution and canonical exception ledger events.
 
 ## Profile Types

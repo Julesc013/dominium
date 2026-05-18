@@ -6,8 +6,8 @@ from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from core.graph.network_graph_engine import normalize_network_graph
-from core.graph.routing_engine import build_cross_shard_route_plan, normalize_graph_partition_row
+from tools.core.graph.network_graph_engine import normalize_network_graph
+from tools.core.graph.routing_engine import build_cross_shard_route_plan, normalize_graph_partition_row
 
 
 REFUSAL_CORE_FLOW_INVALID = "refusal.core.flow.invalid"

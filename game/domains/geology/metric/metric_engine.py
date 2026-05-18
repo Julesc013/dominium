@@ -37,10 +37,10 @@ from numeric_discipline import allowed_error_bound_for_tolerance, tolerance_rows
 
 REFUSAL_GEO_METRIC_INVALID = "refusal.geo.metric_invalid"
 
-_TOLERANCE_POLICY_REGISTRY_REL = "data/registries/tolerance_policy_registry.json"
-_ENGINE_TOLERANCE_REGISTRY_REL = "data/registries/tolerance_registry.json"
-_METRIC_POLICY_REGISTRY_REL = "data/registries/metric_policy_registry.json"
-_GEODESIC_POLICY_REGISTRY_REL = "data/registries/geodesic_approx_policy_registry.json"
+_TOLERANCE_POLICY_REGISTRY_REL = "contracts/registry/tolerance_policy_registry.json"
+_ENGINE_TOLERANCE_REGISTRY_REL = "contracts/registry/tolerance_registry.json"
+_METRIC_POLICY_REGISTRY_REL = "contracts/registry/metric_policy_registry.json"
+_GEODESIC_POLICY_REGISTRY_REL = "contracts/registry/geodesic_approx_policy_registry.json"
 _METRIC_ENGINE_VERSION = "GEO3-3"
 _METRIC_CACHE_VERSION = "GEO3-5"
 

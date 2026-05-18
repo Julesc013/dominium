@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Pollution Exposure Baseline
 
-Status: BASELINE (POLL-2)  
-Date: 2026-03-05  
+Status: BASELINE (POLL-2)
+Date: 2026-03-05
 Scope: deterministic exposure accumulation, health-risk stub thresholds, diegetic measurement artifacts, institutional compliance reporting via SIG, explain integration, and proof/replay hooks.
 
 ## 1) Exposure Model and Thresholds
@@ -92,30 +92,30 @@ Replay verifier:
 
 Validation level executed: STRICT governance checks + POLL-2 targeted TestX.
 
-- topology map updated:  
-  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`  
-  - result: `complete`  
+- topology map updated:
+  `py -3 tools/governance/tool_topology_generate.py --repo-root . --out-json docs/audit/TOPOLOGY_MAP.json --out-md docs/audit/TOPOLOGY_MAP.md`
+  - result: `complete`
   - deterministic_fingerprint: `906cd81dd787b51e245563e5dde1482746e997a6ccfef686fccfcfa9c2958bd8`
 
-- RepoX STRICT:  
-  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`  
+- RepoX STRICT:
+  `py -3 tools/xstack/repox/check.py --repo-root . --profile STRICT`
   - result: `pass` (`findings=17`, warnings only)
 
-- AuditX STRICT:  
-  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`  
+- AuditX STRICT:
+  `py -3 tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   - result: `pass` (`findings=1310`, `promoted_blockers=0`)
 
-- TestX PASS (POLL-2 required suite):  
-  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset test_exposure_accumulation_deterministic,test_threshold_crossing_event,test_measurement_artifact_created,test_compliance_report_deterministic,test_replay_window_hash_match`  
+- TestX PASS (POLL-2 required suite):
+  `py -3 tools/xstack/testx/runner.py --repo-root . --profile STRICT --subset test_exposure_accumulation_deterministic,test_threshold_crossing_event,test_measurement_artifact_created,test_compliance_report_deterministic,test_replay_window_hash_match`
   - result: `pass` (`selected_tests=7`; `test_replay_window_hash_match` expands to existing cross-domain tests sharing the same ID)
 
-- stress harness PASS (POLL-2 replay window):  
-  `py -3 tools/pollution/tool_replay_exposure_window.py --state-path build/pollution/pollution_exposure_replay_state.json --expected-state-path build/pollution/pollution_exposure_replay_state.json`  
-  - result: `complete`  
+- stress harness PASS (POLL-2 replay window):
+  `py -3 tools/pollution/tool_replay_exposure_window.py --state-path build/pollution/pollution_exposure_replay_state.json --expected-state-path build/pollution/pollution_exposure_replay_state.json`
+  - result: `complete`
   - deterministic_fingerprint: `aab6e7d74d7e1d96d30bf60debf197db3ec99dff7960c042702718c6be2004c0`
 
-- strict build gate:  
-  `py -3 tools/xstack/run.py strict --repo-root . --cache on`  
+- strict build gate:
+  `py -3 tools/xstack/run.py strict --repo-root . --cache on`
   - result: `refusal` due pre-existing global strict-lane blockers outside POLL-2 scope (`compatx`, `registry_compile`, `session_boot`, global strict `testx`, `packaging.verify`).
 
 ## 7) Contract Impact and Readiness

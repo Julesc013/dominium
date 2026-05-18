@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping
 
-from core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
-from meta.compute import request_compute
+from tools.core.graph.network_graph_engine import NetworkGraphError, normalize_network_graph
+from tools.repo.meta.compute import request_compute
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

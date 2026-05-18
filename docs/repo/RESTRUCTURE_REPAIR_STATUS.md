@@ -123,3 +123,23 @@ Current blockers shift from root presence to repair proof:
 
 Next task:
 `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`
+
+## MOVE-ROUTER-02 Update
+
+MOVE-ROUTER-02 is PARTIAL.
+
+- Former bad roots remain empty in tracked source.
+- Bad-root absence, strict repo layout, and strict root allowlist validators pass.
+- CMake configure passes.
+- Integrated fast/smoke tests reached by the build pass: 57/57 passing.
+- Broader TestX remains red: 140 of 344 lanes failed.
+
+Remaining blocker classes:
+
+- RepoX ruleset discovery still points at old `repo/repox/rulesets`.
+- Registry and pack consumers still expect old `data/` and `packs/` paths.
+- Some old import package shapes and source path expectations remain.
+- Frozen hashes and generated evidence need reviewed disposition.
+
+Next task:
+`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`

@@ -16,7 +16,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 - Prevent silent semantic drift across long-lived universes.
 
 ## Creation Rule
-- Universe creation must load `data/registries/semantic_contract_registry.json`.
+- Universe creation must load `contracts/registry/semantic_contract_registry.json`.
 - Default v0.0.0 behavior pins the full `*.v1` semantic contract family.
 - Overrides are allowed only through an explicit creation-time profile or migration tool.
 - If the semantic contract registry is missing or invalid, universe creation must refuse.

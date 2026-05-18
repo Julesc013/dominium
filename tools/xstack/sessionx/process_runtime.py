@@ -16,12 +16,12 @@ from game.domains.reality.ledger import (
     last_ledger_hash,
     record_unaccounted_delta,
 )
-from performance.cost_engine import (
+from tools.performance.cost_engine import (
     compute_cost_snapshot,
     evaluate_envelope,
     normalize_budget_envelope,
 )
-from performance.inspection_cache import (
+from tools.performance.inspection_cache import (
     build_cache_key as inspection_build_cache_key,
     cache_lookup_or_store as inspection_cache_lookup_or_store,
 )
@@ -30,32 +30,32 @@ from game.domains.inspection.inspection_engine import (
     build_inspection_snapshot_artifact,
     normalize_inspection_request_row,
 )
-from core.graph.network_graph_engine import (
+from tools.core.graph.network_graph_engine import (
     NetworkGraphError,
     REFUSAL_CORE_GRAPH_INVALID,
     normalize_network_graph,
 )
-from core.graph.routing_engine import (
+from tools.core.graph.routing_engine import (
     RoutingError,
     query_route_result,
 )
-from core.schedule.schedule_engine import (
+from tools.core.schedule.schedule_engine import (
     REFUSAL_CORE_SCHEDULE_INVALID,
     ScheduleError,
     normalize_schedule,
     normalize_schedule_time_binding_rows,
     tick_schedules,
 )
-from core.state.state_machine_engine import (
+from engine.state.state.state_machine_engine import (
     StateMachineError,
     apply_transition,
     normalize_state_machine,
 )
-from core.constraints.constraint_engine import (
+from tools.core.constraints.constraint_engine import (
     build_constraint_enforcement_hooks,
     constraint_type_rows_by_id,
 )
-from core.flow import normalize_flow_channel as normalize_core_flow_channel
+from tools.core.flow import normalize_flow_channel as normalize_core_flow_channel
 from game.domains.logistics.logistics_engine import (
     LogisticsError,
     build_inventory_index,
@@ -211,29 +211,29 @@ from engine.time import (
     normalize_time_mapping_cache_rows,
     normalize_time_stamp_artifact_rows,
 )
-from control.ir.control_ir_programs import (
+from tools.governance.ir.control_ir_programs import (
     build_ai_controller_stub_ir,
     build_autopilot_stub_ir,
     build_blueprint_execution_ir,
     compile_ir_program,
 )
-from control.ir.control_ir_multiplayer import validate_control_ir_multiplayer
-from control.ir.control_ir_verifier import (
+from tools.governance.ir.control_ir_multiplayer import validate_control_ir_multiplayer
+from tools.governance.ir.control_ir_verifier import (
     REFUSAL_CTRL_IR_INVALID,
     verify_control_ir,
 )
-from control.control_plane_engine import (
+from tools.governance.control_plane_engine import (
     build_control_intent,
     build_control_resolution,
 )
-from control.fidelity import (
+from tools.governance.fidelity import (
     DEFAULT_FIDELITY_POLICY_ID,
     RANK_FAIR_POLICY_ID,
     REFUSAL_CTRL_FIDELITY_DENIED,
     arbitrate_fidelity_requests,
     build_fidelity_request,
 )
-from control.planning.plan_engine import (
+from tools.governance.planning.plan_engine import (
     REFUSAL_PLAN_INVALID,
     REFUSAL_PLAN_NOT_FOUND,
     REFUSAL_PLAN_POLICY_REFUSED,
@@ -243,12 +243,12 @@ from control.planning.plan_engine import (
     create_plan_artifact,
     update_plan_artifact_incremental,
 )
-from control.capability import (
+from contracts.capability.capability import (
     capability_binding_rows,
     has_capability,
     normalize_capability_binding_rows,
 )
-from control.view import (
+from tools.governance.view import (
     REFUSAL_VIEW_ENTITLEMENT_MISSING as REFUSAL_VIEW_POLICY_ENTITLEMENT_MISSING,
     REFUSAL_VIEW_POLICY_FORBIDDEN as REFUSAL_VIEW_POLICY_FORBIDDEN,
     REFUSAL_VIEW_REQUIRES_EMBODIMENT as REFUSAL_VIEW_POLICY_REQUIRES_EMBODIMENT,
@@ -281,7 +281,7 @@ from game.domains.embodiment.movement import (
     resolve_horizontal_damping_state,
     resolve_jump_params_row,
 )
-from control.effects import (
+from tools.governance.effects import (
     REFUSAL_EFFECT_FORBIDDEN,
     REFUSAL_EFFECT_INVALID_TARGET,
     active_effect_rows_by_target,
@@ -291,7 +291,7 @@ from control.effects import (
     normalize_effect_rows,
     prune_expired_effect_rows,
 )
-from specs import (
+from tools.specs import (
     REFUSAL_SPEC_NONCOMPLIANT,
     build_spec_binding,
     compliance_check_rows_by_id,
@@ -540,7 +540,7 @@ from game.domains.logic.network.logic_network_engine import (
     process_logic_network_remove_edge,
     process_logic_network_validate,
 )
-from safety import (
+from tools.validators.safety import (
     REFUSAL_SAFETY_INSTANCE_INVALID,
     REFUSAL_SAFETY_PATTERN_INVALID,
     SafetyEngineError,
@@ -550,7 +550,7 @@ from safety import (
     normalize_safety_instance_rows,
     safety_pattern_rows_by_id,
 )
-from models import (
+from tools.models import (
     ModelEngineError,
     cache_policy_rows_by_id,
     constitutive_model_rows_by_id,
@@ -690,7 +690,7 @@ from game.domains.systems import (
     deserialize_state,
     serialize_state,
 )
-from meta.explain import (
+from tools.repo.meta.explain import (
     generate_explain_artifact,
     normalize_explain_artifact_rows,
 )
@@ -793,7 +793,7 @@ from game.domains.worldgen.earth import (
     wind_params_rows,
     wind_window_hash,
 )
-from meta.compile import (
+from tools.repo.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
     REFUSAL_COMPILE_SOURCE_MISSING,
@@ -845,8 +845,8 @@ from game.domains.processes.software import (
     normalize_software_artifact_rows,
     normalize_software_pipeline_profile_rows,
 )
-from meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
-from meta.provenance import build_compaction_marker, normalize_compaction_marker_rows
+from tools.repo.meta.numeric import apply_overflow_policy, deterministic_round, overflow_policy_for_quantity
+from tools.repo.meta.provenance import build_compaction_marker, normalize_compaction_marker_rows
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import refusal
@@ -1329,7 +1329,7 @@ PRIVILEGE_RANK = {
     "system": 2,
 }
 REPO_ROOT_HINT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
-SOLVER_REGISTRY_REL = "data/registries/solver_registry.json"
+SOLVER_REGISTRY_REL = "contracts/registry/solver_registry.json"
 DEFAULT_SOLVER_BINDINGS = {
     "collapse_solver_id": "solver.collapse.macro_capsule",
     "expand_solver_id": "solver.expand.local_high_fidelity",
@@ -3496,7 +3496,7 @@ def _physics_profile_rows(policy_context: dict | None) -> List[dict]:
     if not registry:
         registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/physics_profile_registry.json",
+            registry_rel_path="contracts/registry/physics_profile_registry.json",
             default_payload={"record": {"physics_profiles": []}},
         )
     rows = list(registry.get("physics_profiles") or [])
@@ -3539,7 +3539,7 @@ def _energy_transformation_registry_rows(policy_context: dict | None) -> List[di
     if not payload:
         payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/energy_transformation_registry.json",
+            registry_rel_path="contracts/registry/energy_transformation_registry.json",
             default_payload={"energy_transformations": []},
         )
     rows = list(payload.get("energy_transformations") or [])
@@ -3553,7 +3553,7 @@ def _quantity_tolerance_registry_payload(policy_context: dict | None) -> dict:
     if not payload:
         payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/quantity_tolerance_registry.json",
+            registry_rel_path="contracts/registry/quantity_tolerance_registry.json",
             default_payload={"record": {"quantity_tolerances": []}},
         )
     return dict(payload)
@@ -3564,7 +3564,7 @@ def _entropy_contribution_registry_rows(policy_context: dict | None) -> List[dic
     if not payload:
         payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/entropy_contribution_registry.json",
+            registry_rel_path="contracts/registry/entropy_contribution_registry.json",
             default_payload={"record": {"entropy_contributions": []}},
         )
     rows = list(payload.get("entropy_contributions") or [])
@@ -3578,7 +3578,7 @@ def _entropy_effect_policy_registry_rows(policy_context: dict | None) -> List[di
     if not payload:
         payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/entropy_effect_policy_registry.json",
+            registry_rel_path="contracts/registry/entropy_effect_policy_registry.json",
             default_payload={"record": {"entropy_effect_policies": []}},
         )
     rows = list(payload.get("entropy_effect_policies") or [])
@@ -4967,7 +4967,7 @@ def _hydrology_params_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="hydrology_params_registry",
-        registry_rel_path="data/registries/hydrology_params_registry.json",
+        registry_rel_path="contracts/registry/hydrology_params_registry.json",
         entry_key="hydrology_params",
     )
 
@@ -4976,7 +4976,7 @@ def _earth_climate_params_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="earth_climate_params_registry",
-        registry_rel_path="data/registries/earth_climate_params_registry.json",
+        registry_rel_path="contracts/registry/earth_climate_params_registry.json",
         entry_key="earth_climate_params",
     )
 
@@ -4985,7 +4985,7 @@ def _tide_params_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="tide_params_registry",
-        registry_rel_path="data/registries/tide_params_registry.json",
+        registry_rel_path="contracts/registry/tide_params_registry.json",
         entry_key="tide_params",
     )
 
@@ -4994,7 +4994,7 @@ def _wind_params_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="wind_params_registry",
-        registry_rel_path="data/registries/wind_params_registry.json",
+        registry_rel_path="contracts/registry/wind_params_registry.json",
         entry_key="wind_params",
     )
 
@@ -5295,14 +5295,14 @@ def _recompute_earth_climate_fields(
     field_type_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_type_registry",
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         entry_key="field_types",
     )
     field_binding_registry = _field_binding_registry_payload(policy_context)
     field_update_policy_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_update_policy_registry",
-        registry_rel_path="data/registries/field_update_policy_registry.json",
+        registry_rel_path="contracts/registry/field_update_policy_registry.json",
         entry_key="policies",
     )
     normalized_layers = normalize_field_layer_rows(field_layers)
@@ -5467,14 +5467,14 @@ def _recompute_earth_material_proxy_fields(
     field_type_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_type_registry",
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         entry_key="field_types",
     )
     field_binding_registry = _field_binding_registry_payload(policy_context)
     field_update_policy_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_update_policy_registry",
-        registry_rel_path="data/registries/field_update_policy_registry.json",
+        registry_rel_path="contracts/registry/field_update_policy_registry.json",
         entry_key="policies",
     )
     normalized_layers = normalize_field_layer_rows(field_layers)
@@ -5661,14 +5661,14 @@ def _recompute_earth_tide_fields(
     field_type_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_type_registry",
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         entry_key="field_types",
     )
     field_binding_registry = _field_binding_registry_payload(policy_context)
     field_update_policy_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_update_policy_registry",
-        registry_rel_path="data/registries/field_update_policy_registry.json",
+        registry_rel_path="contracts/registry/field_update_policy_registry.json",
         entry_key="policies",
     )
     normalized_layers = normalize_field_layer_rows(field_layers)
@@ -5859,14 +5859,14 @@ def _recompute_earth_wind_fields(
     field_type_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_type_registry",
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         entry_key="field_types",
     )
     field_binding_registry = _field_binding_registry_payload(policy_context)
     field_update_policy_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_update_policy_registry",
-        registry_rel_path="data/registries/field_update_policy_registry.json",
+        registry_rel_path="contracts/registry/field_update_policy_registry.json",
         entry_key="policies",
     )
     normalized_layers = normalize_field_layer_rows(field_layers)
@@ -7748,21 +7748,21 @@ def _load_mobility_network_registries(*, policy_context: dict | None) -> Tuple[d
     if not node_kind_registry:
         node_kind_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/mobility_node_kind_registry.json",
+            registry_rel_path="contracts/registry/mobility_node_kind_registry.json",
             default_payload={"node_kinds": []},
         )
     edge_kind_registry = dict(_policy_payload(policy_context, "mobility_edge_kind_registry") or {})
     if not edge_kind_registry:
         edge_kind_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/mobility_edge_kind_registry.json",
+            registry_rel_path="contracts/registry/mobility_edge_kind_registry.json",
             default_payload={"edge_kinds": []},
         )
     max_speed_policy_registry = dict(_policy_payload(policy_context, "mobility_max_speed_policy_registry") or {})
     if not max_speed_policy_registry:
         max_speed_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/mobility_max_speed_policy_registry.json",
+            registry_rel_path="contracts/registry/mobility_max_speed_policy_registry.json",
             default_payload={"max_speed_policies": []},
         )
     return dict(node_kind_registry), dict(edge_kind_registry), dict(max_speed_policy_registry)
@@ -7775,20 +7775,20 @@ def _load_signal_registries(*, policy_context: dict | None) -> Tuple[dict, dict]
     if not signal_type_registry:
         signal_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/signal_type_registry.json",
+            registry_rel_path="contracts/registry/signal_type_registry.json",
             default_payload={"record": {"signal_types": []}},
         )
     if not signal_type_registry:
         signal_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/mobility_signal_type_registry.json",
+            registry_rel_path="contracts/registry/mobility_signal_type_registry.json",
             default_payload={"record": {"signal_types": []}},
         )
     signal_rule_policy_registry = dict(_policy_payload(policy_context, "signal_rule_policy_registry") or {})
     if not signal_rule_policy_registry:
         signal_rule_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/signal_rule_policy_registry.json",
+            registry_rel_path="contracts/registry/signal_rule_policy_registry.json",
             default_payload={"record": {"signal_rule_policies": []}},
         )
     return dict(signal_type_registry), dict(signal_rule_policy_registry)
@@ -7799,35 +7799,35 @@ def _load_logic_signal_registries(*, policy_context: dict | None) -> Tuple[dict,
     if not carrier_type_registry:
         carrier_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/carrier_type_registry.json",
+            registry_rel_path="contracts/registry/carrier_type_registry.json",
             default_payload={"record": {"carrier_types": []}},
         )
     bus_encoding_registry = dict(_policy_payload(policy_context, "bus_encoding_registry") or {})
     if not bus_encoding_registry:
         bus_encoding_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/bus_encoding_registry.json",
+            registry_rel_path="contracts/registry/bus_encoding_registry.json",
             default_payload={"record": {"bus_encodings": []}},
         )
     protocol_registry = dict(_policy_payload(policy_context, "protocol_registry") or {})
     if not protocol_registry:
         protocol_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/protocol_registry.json",
+            registry_rel_path="contracts/registry/protocol_registry.json",
             default_payload={"record": {"protocols": []}},
         )
     signal_noise_policy_registry = dict(_policy_payload(policy_context, "signal_noise_policy_registry") or {})
     if not signal_noise_policy_registry:
         signal_noise_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/signal_noise_policy_registry.json",
+            registry_rel_path="contracts/registry/signal_noise_policy_registry.json",
             default_payload={"record": {"signal_noise_policies": []}},
         )
     signal_delay_policy_registry = dict(_policy_payload(policy_context, "signal_delay_policy_registry") or {})
     if not signal_delay_policy_registry:
         signal_delay_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/signal_delay_policy_registry.json",
+            registry_rel_path="contracts/registry/signal_delay_policy_registry.json",
             default_payload={"record": {"signal_delay_policies": []}},
         )
     return (
@@ -7844,14 +7844,14 @@ def _load_logic_protocol_registries(*, policy_context: dict | None) -> Tuple[dic
     if not arbitration_policy_registry:
         arbitration_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/arbitration_policy_registry.json",
+            registry_rel_path="contracts/registry/arbitration_policy_registry.json",
             default_payload={"record": {"arbitration_policies": []}},
         )
     error_detection_policy_registry = dict(_policy_payload(policy_context, "error_detection_policy_registry") or {})
     if not error_detection_policy_registry:
         error_detection_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/error_detection_policy_registry.json",
+            registry_rel_path="contracts/registry/error_detection_policy_registry.json",
             default_payload={"record": {"error_detection_policies": []}},
         )
     return dict(arbitration_policy_registry), dict(error_detection_policy_registry)
@@ -7862,28 +7862,28 @@ def _load_signal_transport_runtime_registries(*, policy_context: dict | None) ->
     if not loss_policy_registry:
         loss_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/loss_policy_registry.json",
+            registry_rel_path="contracts/registry/loss_policy_registry.json",
             default_payload={"record": {"loss_policies": []}},
         )
     routing_policy_registry = dict(_policy_payload(policy_context, "core_routing_policy_registry") or {})
     if not routing_policy_registry:
         routing_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/core_routing_policy_registry.json",
+            registry_rel_path="contracts/registry/core_routing_policy_registry.json",
             default_payload={"record": {"routing_policies": []}},
         )
     attenuation_policy_registry = dict(_policy_payload(policy_context, "attenuation_policy_registry") or {})
     if not attenuation_policy_registry:
         attenuation_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/attenuation_policy_registry.json",
+            registry_rel_path="contracts/registry/attenuation_policy_registry.json",
             default_payload={"record": {"attenuation_policies": []}},
         )
     belief_policy_registry = dict(_policy_payload(policy_context, "belief_policy_registry") or {})
     if not belief_policy_registry:
         belief_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/belief_policy_registry.json",
+            registry_rel_path="contracts/registry/belief_policy_registry.json",
             default_payload={"record": {"belief_policies": []}},
         )
     return (
@@ -7899,21 +7899,21 @@ def _load_logic_fault_noise_security_registries(*, policy_context: dict | None) 
     if not logic_fault_kind_registry:
         logic_fault_kind_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_fault_kind_registry.json",
+            registry_rel_path="contracts/registry/logic_fault_kind_registry.json",
             default_payload={"record": {"logic_fault_kinds": []}},
         )
     logic_noise_policy_registry = dict(_policy_payload(policy_context, "logic_noise_policy_registry") or {})
     if not logic_noise_policy_registry:
         logic_noise_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_noise_policy_registry.json",
+            registry_rel_path="contracts/registry/logic_noise_policy_registry.json",
             default_payload={"record": {"logic_noise_policies": []}},
         )
     logic_security_policy_registry = dict(_policy_payload(policy_context, "logic_security_policy_registry") or {})
     if not logic_security_policy_registry:
         logic_security_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_security_policy_registry.json",
+            registry_rel_path="contracts/registry/logic_security_policy_registry.json",
             default_payload={"record": {"logic_security_policies": []}},
         )
     return (
@@ -7928,21 +7928,21 @@ def _load_logic_signal_budget_registries(*, policy_context: dict | None) -> Tupl
     if not compute_budget_profile_registry:
         compute_budget_profile_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/compute_budget_profile_registry.json",
+            registry_rel_path="contracts/registry/compute_budget_profile_registry.json",
             default_payload={"record": {"compute_budget_profiles": []}},
         )
     compute_degrade_policy_registry = dict(_policy_payload(policy_context, "compute_degrade_policy_registry") or {})
     if not compute_degrade_policy_registry:
         compute_degrade_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/compute_degrade_policy_registry.json",
+            registry_rel_path="contracts/registry/compute_degrade_policy_registry.json",
             default_payload={"record": {"compute_degrade_policies": []}},
         )
     tolerance_policy_registry = dict(_policy_payload(policy_context, "tolerance_policy_registry") or {})
     if not tolerance_policy_registry:
         tolerance_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             default_payload={"record": {"tolerance_policies": []}},
         )
     return dict(compute_budget_profile_registry), dict(compute_degrade_policy_registry), dict(tolerance_policy_registry)
@@ -7953,21 +7953,21 @@ def _load_logic_network_registries(*, policy_context: dict | None) -> Tuple[dict
     if not node_kind_registry:
         node_kind_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_node_kind_registry.json",
+            registry_rel_path="contracts/registry/logic_node_kind_registry.json",
             default_payload={"record": {"node_kinds": []}},
         )
     edge_kind_registry = dict(_policy_payload(policy_context, "logic_edge_kind_registry") or {})
     if not edge_kind_registry:
         edge_kind_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_edge_kind_registry.json",
+            registry_rel_path="contracts/registry/logic_edge_kind_registry.json",
             default_payload={"record": {"edge_kinds": []}},
         )
     network_policy_registry = dict(_policy_payload(policy_context, "logic_network_policy_registry") or {})
     if not network_policy_registry:
         network_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/logic_network_policy_registry.json",
+            registry_rel_path="contracts/registry/logic_network_policy_registry.json",
             default_payload={"record": {"logic_network_policies": []}},
         )
     return dict(node_kind_registry), dict(edge_kind_registry), dict(network_policy_registry)
@@ -7978,21 +7978,21 @@ def _load_logic_element_validation_rows(*, policy_context: dict | None) -> Tuple
     if not _registry_rows(element_payload, "logic_elements"):
         element_payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+            registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_element_registry.json",
             default_payload={"logic_elements": []},
         )
     behavior_payload = dict(_policy_payload(policy_context, "logic_behavior_model_registry") or {})
     if not _registry_rows(behavior_payload, "logic_behavior_models"):
         behavior_payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json",
+            registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json",
             default_payload={"logic_behavior_models": []},
         )
     interface_payload = dict(_policy_payload(policy_context, "logic_interface_signature_registry") or {})
     if not _registry_rows(interface_payload, "logic_interface_signatures"):
         interface_payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="packs/core/pack.core.logic_base/data/logic_interface_signatures.json",
+            registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_interface_signatures.json",
             default_payload={"logic_interface_signatures": []},
         )
     return (
@@ -8008,7 +8008,7 @@ def _load_logic_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/logic_policy_registry.json",
+        registry_rel_path="contracts/registry/logic_policy_registry.json",
         default_payload={"record": {"logic_policies": []}},
     )
 
@@ -8024,17 +8024,17 @@ def _load_logic_eval_rows(
     if not _registry_rows(state_machine_payload, "state_machine_definitions"):
         state_machine_payload = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="packs/core/pack.core.logic_base/data/logic_state_machine_registry.json",
+            registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json",
             default_payload={"state_machine_definitions": []},
         )
     logic_state_vector_payload = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+        registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_state_vectors.json",
         default_payload={"state_vector_definitions": []},
     )
     watchdog_payload = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json",
+        registry_rel_path="content/packs/core/pack.core.logic_base/data/logic_watchdog_definitions.json",
         default_payload={"watchdog_definitions": []},
     )
     state_vector_registry_payload = _load_state_vector_registry(policy_context=policy_context)
@@ -8605,7 +8605,7 @@ def _load_vehicle_class_registry(*, policy_context: dict | None) -> dict:
         return dict(mobility_registry)
     fallback_registry = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/vehicle_class_registry.json",
+        registry_rel_path="contracts/registry/vehicle_class_registry.json",
         default_payload={"record": {"vehicle_classes": []}},
     )
     return dict(fallback_registry)
@@ -8616,14 +8616,14 @@ def _load_mobility_wear_registries(*, policy_context: dict | None) -> Tuple[dict
     if not wear_type_registry:
         wear_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/wear_type_registry.json",
+            registry_rel_path="contracts/registry/wear_type_registry.json",
             default_payload={"record": {"wear_types": []}},
         )
     accumulation_policy_registry = dict(_policy_payload(policy_context, "wear_accumulation_policy_registry") or {})
     if not accumulation_policy_registry:
         accumulation_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/wear_accumulation_policy_registry.json",
+            registry_rel_path="contracts/registry/wear_accumulation_policy_registry.json",
             default_payload={"record": {"accumulation_policies": []}},
         )
     return dict(wear_type_registry), dict(accumulation_policy_registry)
@@ -8635,7 +8635,7 @@ def _load_safety_pattern_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/safety_pattern_registry.json",
+        registry_rel_path="contracts/registry/safety_pattern_registry.json",
         default_payload={"record": {"safety_patterns": []}},
     )
 
@@ -8645,21 +8645,21 @@ def _load_model_registries(*, policy_context: dict | None) -> Tuple[dict, dict, 
     if not model_type_registry:
         model_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/model_type_registry.json",
+            registry_rel_path="contracts/registry/model_type_registry.json",
             default_payload={"record": {"model_types": []}},
         )
     model_cache_policy_registry = dict(_policy_payload(policy_context, "model_cache_policy_registry") or {})
     if not model_cache_policy_registry:
         model_cache_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/model_cache_policy_registry.json",
+            registry_rel_path="contracts/registry/model_cache_policy_registry.json",
             default_payload={"record": {"cache_policies": []}},
         )
     constitutive_model_registry = dict(_policy_payload(policy_context, "constitutive_model_registry") or {})
     if not constitutive_model_registry:
         constitutive_model_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/constitutive_model_registry.json",
+            registry_rel_path="contracts/registry/constitutive_model_registry.json",
             default_payload={"record": {"models": []}},
         )
     return dict(model_type_registry), dict(model_cache_policy_registry), dict(constitutive_model_registry)
@@ -8670,28 +8670,28 @@ def _load_temporal_registries(*, policy_context: dict | None) -> Tuple[dict, dic
     if not temporal_domain_registry:
         temporal_domain_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/temporal_domain_registry.json",
+            registry_rel_path="contracts/registry/temporal_domain_registry.json",
             default_payload={"record": {"temporal_domains": []}},
         )
     time_mapping_registry = dict(_policy_payload(policy_context, "time_mapping_registry") or {})
     if not time_mapping_registry:
         time_mapping_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/time_mapping_registry.json",
+            registry_rel_path="contracts/registry/time_mapping_registry.json",
             default_payload={"record": {"time_mappings": []}},
         )
     drift_policy_registry = dict(_policy_payload(policy_context, "drift_policy_registry") or {})
     if not drift_policy_registry:
         drift_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/drift_policy_registry.json",
+            registry_rel_path="contracts/registry/drift_policy_registry.json",
             default_payload={"record": {"drift_policies": []}},
         )
     sync_policy_registry = dict(_policy_payload(policy_context, "sync_policy_registry") or {})
     if not sync_policy_registry:
         sync_policy_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/sync_policy_registry.json",
+            registry_rel_path="contracts/registry/sync_policy_registry.json",
             default_payload={"record": {"sync_policies": []}},
         )
     return (
@@ -8770,7 +8770,7 @@ def _evaluate_time_mappings_for_tick(
     field_type_registry = _field_registry_payload(
         policy_context=policy_context,
         key="field_type_registry",
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         entry_key="field_types",
     )
     _record_geo_field_registry_hashes(state, policy_context)
@@ -8901,7 +8901,7 @@ def _load_maintenance_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/maintenance_policy_registry.json",
+        registry_rel_path="contracts/registry/maintenance_policy_registry.json",
         default_payload={"record": {"policies": []}},
     )
 
@@ -8912,7 +8912,7 @@ def _load_material_phase_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/material_phase_registry.json",
+        registry_rel_path="contracts/registry/material_phase_registry.json",
         default_payload={"record": {"material_phase_profiles": []}},
     )
 
@@ -8923,7 +8923,7 @@ def _load_combustion_profile_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/combustion_profile_registry.json",
+        registry_rel_path="contracts/registry/combustion_profile_registry.json",
         default_payload={"record": {"combustion_profiles": []}},
     )
 
@@ -8958,7 +8958,7 @@ def _load_reaction_profile_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/reaction_profile_registry.json",
+        registry_rel_path="contracts/registry/reaction_profile_registry.json",
         default_payload={"record": {"reaction_profiles": []}},
     )
 
@@ -8994,7 +8994,7 @@ def _load_reaction_rate_model_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/reaction_rate_model_registry.json",
+        registry_rel_path="contracts/registry/reaction_rate_model_registry.json",
         default_payload={"record": {"reaction_rate_models": []}},
     )
 
@@ -9021,7 +9021,7 @@ def _load_yield_model_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/yield_model_registry.json",
+        registry_rel_path="contracts/registry/yield_model_registry.json",
         default_payload={"record": {"yield_models": []}},
     )
 
@@ -9048,7 +9048,7 @@ def _load_degradation_profile_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/degradation_profile_registry.json",
+        registry_rel_path="contracts/registry/degradation_profile_registry.json",
         default_payload={"record": {"degradation_profiles": []}},
     )
 
@@ -9059,7 +9059,7 @@ def _load_pollutant_type_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/pollutant_type_registry.json",
+        registry_rel_path="contracts/registry/pollutant_type_registry.json",
         default_payload={"record": {"pollutant_types": []}},
     )
 
@@ -9095,7 +9095,7 @@ def _load_pollution_field_policy_registry(*, policy_context: dict | None) -> dic
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/pollution_field_policy_registry.json",
+        registry_rel_path="contracts/registry/pollution_field_policy_registry.json",
         default_payload={"record": {"pollution_field_policies": []}},
     )
 
@@ -9130,7 +9130,7 @@ def _load_pollution_decay_model_registry(*, policy_context: dict | None) -> dict
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/pollution_decay_model_registry.json",
+        registry_rel_path="contracts/registry/pollution_decay_model_registry.json",
         default_payload={"record": {"decay_model_ids": []}},
     )
 
@@ -9141,7 +9141,7 @@ def _load_exposure_threshold_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/exposure_threshold_registry.json",
+        registry_rel_path="contracts/registry/exposure_threshold_registry.json",
         default_payload={"record": {"exposure_thresholds": []}},
     )
 
@@ -9152,7 +9152,7 @@ def _load_pollution_sensor_type_registry(*, policy_context: dict | None) -> dict
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/pollution_sensor_type_registry.json",
+        registry_rel_path="contracts/registry/pollution_sensor_type_registry.json",
         default_payload={"record": {"sensor_types": []}},
     )
 
@@ -9163,7 +9163,7 @@ def _load_compiled_type_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/compiled_type_registry.json",
+        registry_rel_path="contracts/registry/compiled_type_registry.json",
         default_payload={"record": {"compiled_types": []}},
     )
 
@@ -9174,7 +9174,7 @@ def _load_verification_procedure_registry(*, policy_context: dict | None) -> dic
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/verification_procedure_registry.json",
+        registry_rel_path="contracts/registry/verification_procedure_registry.json",
         default_payload={"record": {"verification_procedures": []}},
     )
 
@@ -9185,7 +9185,7 @@ def _load_compile_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/compile_policy_registry.json",
+        registry_rel_path="contracts/registry/compile_policy_registry.json",
         default_payload={"record": {"compile_policies": []}},
     )
 
@@ -9196,7 +9196,7 @@ def _load_logic_compile_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/logic_compile_policy_registry.json",
+        registry_rel_path="contracts/registry/logic_compile_policy_registry.json",
         default_payload={"record": {"logic_compile_policies": []}},
     )
 
@@ -9207,7 +9207,7 @@ def _load_instrumentation_surface_registry(*, policy_context: dict | None) -> di
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/instrumentation_surface_registry.json",
+        registry_rel_path="contracts/registry/instrumentation_surface_registry.json",
         default_payload={"record": {"instrumentation_surfaces": []}},
     )
 
@@ -9218,7 +9218,7 @@ def _load_access_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/access_policy_registry.json",
+        registry_rel_path="contracts/registry/access_policy_registry.json",
         default_payload={"record": {"access_policies": []}},
     )
 
@@ -9229,7 +9229,7 @@ def _load_measurement_model_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/measurement_model_registry.json",
+        registry_rel_path="contracts/registry/measurement_model_registry.json",
         default_payload={"record": {"measurement_models": []}},
     )
 
@@ -9240,7 +9240,7 @@ def _load_debug_sampling_policy_registry(*, policy_context: dict | None) -> dict
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/debug_sampling_policy_registry.json",
+        registry_rel_path="contracts/registry/debug_sampling_policy_registry.json",
         default_payload={"record": {"debug_sampling_policies": []}},
     )
 
@@ -9251,7 +9251,7 @@ def _load_state_vector_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/state_vector_registry.json",
+        registry_rel_path="contracts/registry/state_vector_registry.json",
         default_payload={"record": {"state_vector_definitions": []}},
     )
 
@@ -9262,7 +9262,7 @@ def _load_research_policy_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/research_policy_registry.json",
+        registry_rel_path="contracts/registry/research_policy_registry.json",
         default_payload={"record": {"research_policies": []}},
     )
 
@@ -9273,7 +9273,7 @@ def _load_software_toolchain_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/software_toolchain_registry.json",
+        registry_rel_path="contracts/registry/software_toolchain_registry.json",
         default_payload={"record": {"toolchains": []}},
     )
 
@@ -9286,7 +9286,7 @@ def _load_software_pipeline_template_registry(*, policy_context: dict | None) ->
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/software_pipeline_template_registry.json",
+        registry_rel_path="contracts/registry/software_pipeline_template_registry.json",
         default_payload={"record": {"pipeline_templates": []}},
     )
 
@@ -9560,7 +9560,7 @@ def _load_explain_contract_registry(*, policy_context: dict | None) -> dict:
         return dict(registry)
     return _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/explain_contract_registry.json",
+        registry_rel_path="contracts/registry/explain_contract_registry.json",
         default_payload={"record": {"explain_contracts": []}},
     )
 
@@ -11716,7 +11716,7 @@ def _formalization_policy_row(
     registry = _formalization_registry_payload(
         policy_context=policy_context,
         key="formalization_policy_registry",
-        registry_rel_path="data/registries/formalization_policy_registry.json",
+        registry_rel_path="contracts/registry/formalization_policy_registry.json",
         entry_key="policies",
     )
     policy_id = str(inputs.get("formalization_policy_id", "")).strip() or str(
@@ -12572,7 +12572,7 @@ def _pose_control_binding_registry_payload(policy_context: dict | None) -> dict:
         return payload
     fallback = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/control_binding_registry.json",
+        registry_rel_path="contracts/registry/control_binding_registry.json",
         default_payload={},
     )
     return dict(fallback)
@@ -17750,7 +17750,7 @@ def _governance_type_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/governance_type_registry.json",
+        registry_rel="contracts/registry/governance_type_registry.json",
         entry_key="governance_types",
         id_key="governance_type_id",
     )
@@ -17762,7 +17762,7 @@ def _diplomatic_state_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/diplomatic_state_registry.json",
+        registry_rel="contracts/registry/diplomatic_state_registry.json",
         entry_key="states",
         id_key="relation_state",
     )
@@ -17774,7 +17774,7 @@ def _cohort_mapping_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/cohort_mapping_policy_registry.json",
+        registry_rel="contracts/registry/cohort_mapping_policy_registry.json",
         entry_key="policies",
         id_key="mapping_policy_id",
     )
@@ -17786,7 +17786,7 @@ def _order_type_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/order_type_registry.json",
+        registry_rel="contracts/registry/order_type_registry.json",
         entry_key="order_types",
         id_key="order_type_id",
     )
@@ -17798,7 +17798,7 @@ def _role_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/role_registry.json",
+        registry_rel="contracts/registry/role_registry.json",
         entry_key="roles",
         id_key="role_id",
     )
@@ -17810,7 +17810,7 @@ def _institution_type_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/institution_type_registry.json",
+        registry_rel="contracts/registry/institution_type_registry.json",
         entry_key="institution_types",
         id_key="institution_type_id",
     )
@@ -17822,7 +17822,7 @@ def _demography_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/demography_policy_registry.json",
+        registry_rel="contracts/registry/demography_policy_registry.json",
         entry_key="policies",
         id_key="demography_policy_id",
     )
@@ -17834,7 +17834,7 @@ def _death_model_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/death_model_registry.json",
+        registry_rel="contracts/registry/death_model_registry.json",
         entry_key="death_models",
         id_key="death_model_id",
     )
@@ -17846,7 +17846,7 @@ def _birth_model_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/birth_model_registry.json",
+        registry_rel="contracts/registry/birth_model_registry.json",
         entry_key="birth_models",
         id_key="birth_model_id",
     )
@@ -17858,7 +17858,7 @@ def _migration_model_rows(policy_context: dict | None) -> Dict[str, dict]:
     if rows:
         return rows
     return _source_registry_rows(
-        registry_rel="data/registries/migration_model_registry.json",
+        registry_rel="contracts/registry/migration_model_registry.json",
         entry_key="migration_models",
         id_key="migration_model_id",
     )
@@ -18755,7 +18755,7 @@ def _body_template_registry_payload(policy_context: dict | None) -> dict:
         return {"body_templates": list((dict(payload).get("body_templates") or []))}
     fallback = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/body_template_registry.json",
+        registry_rel_path="contracts/registry/body_template_registry.json",
         default_payload={"body_templates": []},
     )
     return {"body_templates": list(dict(fallback).get("body_templates") or [])}
@@ -18767,7 +18767,7 @@ def _collision_provider_registry_payload(policy_context: dict | None) -> dict:
         return {"collision_providers": list((dict(payload).get("collision_providers") or []))}
     fallback = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/collision_provider_registry.json",
+        registry_rel_path="contracts/registry/collision_provider_registry.json",
         default_payload={"collision_providers": []},
     )
     record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
@@ -18780,7 +18780,7 @@ def _movement_slope_params_registry_payload(policy_context: dict | None) -> dict
         return {"movement_slope_params": list((dict(payload).get("movement_slope_params") or []))}
     fallback = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/movement_slope_params_registry.json",
+        registry_rel_path="contracts/registry/movement_slope_params_registry.json",
         default_payload={"movement_slope_params": []},
     )
     record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
@@ -18799,7 +18799,7 @@ def _jump_params_registry_payload(policy_context: dict | None) -> dict:
         return {"jump_params": list((dict(payload).get("jump_params") or []))}
     fallback = _read_registry_fallback(
         repo_root=REPO_ROOT_HINT,
-        registry_rel_path="data/registries/jump_params_registry.json",
+        registry_rel_path="contracts/registry/jump_params_registry.json",
         default_payload={"jump_params": []},
     )
     record = dict(fallback.get("record") or {}) if isinstance(fallback, Mapping) else {}
@@ -19816,13 +19816,13 @@ def _apply_body_move_attempt(
     effect_type_registry = _effect_registry_payload(
         policy_context=policy_context,
         key="effect_type_registry",
-        registry_rel_path="data/registries/effect_type_registry.json",
+        registry_rel_path="contracts/registry/effect_type_registry.json",
         entry_key="effect_types",
     )
     stacking_policy_registry = _effect_registry_payload(
         policy_context=policy_context,
         key="stacking_policy_registry",
-        registry_rel_path="data/registries/stacking_policy_registry.json",
+        registry_rel_path="contracts/registry/stacking_policy_registry.json",
         entry_key="stacking_policies",
     )
     current_tick = int((_ensure_simulation_time(state)).get("tick", 0))
@@ -20694,7 +20694,7 @@ def _system_template_registry_payload(
     core_payload = _spec_registry_payload(
         policy_context=policy_context,
         key="system_template_registry",
-        registry_rel_path="data/registries/system_template_registry.json",
+        registry_rel_path="contracts/registry/system_template_registry.json",
         entry_key="system_templates",
     )
     rows: List[dict] = []
@@ -20825,7 +20825,7 @@ def _certification_profile_registry_payload(*, policy_context: dict | None) -> d
     return _spec_registry_payload(
         policy_context=policy_context,
         key="certification_profile_registry",
-        registry_rel_path="data/registries/certification_profile_registry.json",
+        registry_rel_path="contracts/registry/certification_profile_registry.json",
         entry_key="certification_profiles",
     )
 
@@ -20945,7 +20945,7 @@ def _reliability_profile_registry_payload(*, policy_context: dict | None) -> dic
     return _spec_registry_payload(
         policy_context=policy_context,
         key="reliability_profile_registry",
-        registry_rel_path="data/registries/reliability_profile_registry.json",
+        registry_rel_path="contracts/registry/reliability_profile_registry.json",
         entry_key="reliability_profiles",
     )
 
@@ -21699,7 +21699,7 @@ def _field_binding_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="field_binding_registry",
-        registry_rel_path="data/registries/field_binding_registry.json",
+        registry_rel_path="contracts/registry/field_binding_registry.json",
         entry_key="field_bindings",
     )
 
@@ -21708,7 +21708,7 @@ def _interpolation_policy_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="interpolation_policy_registry",
-        registry_rel_path="data/registries/interpolation_policy_registry.json",
+        registry_rel_path="contracts/registry/interpolation_policy_registry.json",
         entry_key="interpolation_policies",
     )
 
@@ -21717,7 +21717,7 @@ def _geometry_edit_policy_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="geometry_edit_policy_registry",
-        registry_rel_path="data/registries/geometry_edit_policy_registry.json",
+        registry_rel_path="contracts/registry/geometry_edit_policy_registry.json",
         entry_key="geometry_edit_policies",
     )
 
@@ -21726,7 +21726,7 @@ def _material_class_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="material_class_registry",
-        registry_rel_path="data/registries/material_class_registry.json",
+        registry_rel_path="contracts/registry/material_class_registry.json",
         entry_key="materials",
     )
 
@@ -21735,7 +21735,7 @@ def _projection_profile_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="projection_profile_registry",
-        registry_rel_path="data/registries/projection_profile_registry.json",
+        registry_rel_path="contracts/registry/projection_profile_registry.json",
         entry_key="projection_profiles",
     )
 
@@ -21744,7 +21744,7 @@ def _lens_layer_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="lens_layer_registry",
-        registry_rel_path="data/registries/lens_layer_registry.json",
+        registry_rel_path="contracts/registry/lens_layer_registry.json",
         entry_key="lens_layers",
     )
 
@@ -21753,7 +21753,7 @@ def _view_type_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="view_type_registry",
-        registry_rel_path="data/registries/view_type_registry.json",
+        registry_rel_path="contracts/registry/view_type_registry.json",
         entry_key="view_types",
     )
 
@@ -21762,7 +21762,7 @@ def _realism_profile_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="realism_profile_registry",
-        registry_rel_path="data/registries/realism_profile_registry.json",
+        registry_rel_path="contracts/registry/realism_profile_registry.json",
         entry_key="realism_profiles",
     )
 
@@ -21771,7 +21771,7 @@ def _generator_version_registry_payload(policy_context: dict | None) -> dict:
     return _field_registry_payload(
         policy_context=policy_context,
         key="generator_version_registry",
-        registry_rel_path="data/registries/generator_version_registry.json",
+        registry_rel_path="contracts/registry/generator_version_registry.json",
         entry_key="generator_versions",
     )
 
@@ -21782,7 +21782,7 @@ def _record_geo_field_registry_hashes(state: dict, policy_context: dict | None) 
             _field_registry_payload(
                 policy_context=policy_context,
                 key="traversal_policy_registry",
-                registry_rel_path="data/registries/traversal_policy_registry.json",
+                registry_rel_path="contracts/registry/traversal_policy_registry.json",
                 entry_key="traversal_policies",
             )
         )
@@ -21809,7 +21809,7 @@ def _spec_pack_payload_rows(policy_context: dict | None) -> List[dict]:
         inline = policy_context.get("spec_sheet_payloads")
         if isinstance(inline, list):
             rows.extend(dict(item) for item in inline if isinstance(item, dict))
-    default_pack_rel = "packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
+    default_pack_rel = "content/packs/specs/specs.default.realistic.m1/data/spec_sheets.json"
     default_pack_abs = os.path.join(REPO_ROOT_HINT, default_pack_rel.replace("/", os.sep))
     if os.path.isfile(default_pack_abs):
         try:
@@ -21910,25 +21910,25 @@ def _compile_control_ir_stub_program(
     control_action_registry = _control_ir_registry_payload(
         policy_context=policy_context,
         key="control_action_registry",
-        registry_rel_path="data/registries/control_action_registry.json",
+        registry_rel_path="contracts/registry/control_action_registry.json",
         default_payload={"actions": []},
     )
     control_policy_registry = _control_ir_registry_payload(
         policy_context=policy_context,
         key="control_policy_registry",
-        registry_rel_path="data/registries/control_policy_registry.json",
+        registry_rel_path="contracts/registry/control_policy_registry.json",
         default_payload={"policies": []},
     )
     action_template_registry = _control_ir_registry_payload(
         policy_context=policy_context,
         key="action_template_registry",
-        registry_rel_path="data/registries/action_template_registry.json",
+        registry_rel_path="contracts/registry/action_template_registry.json",
         default_payload={"templates": []},
     )
     capability_registry = _control_ir_registry_payload(
         policy_context=policy_context,
         key="capability_registry",
-        registry_rel_path="data/registries/capability_registry.json",
+        registry_rel_path="contracts/registry/capability_registry.json",
         default_payload={"capabilities": []},
     )
 
@@ -22062,7 +22062,7 @@ def _epistemic_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
     registry_payload = _control_ir_registry_payload(
         policy_context=policy_context,
         key="epistemic_policy_registry",
-        registry_rel_path="data/registries/epistemic_policy_registry.json",
+        registry_rel_path="contracts/registry/epistemic_policy_registry.json",
         default_payload={"policies": []},
     )
     rows = registry_payload.get("policies")
@@ -22082,7 +22082,7 @@ def _view_policy_rows(policy_context: dict | None) -> Dict[str, dict]:
     registry_payload = _control_ir_registry_payload(
         policy_context=policy_context,
         key="view_policy_registry",
-        registry_rel_path="data/registries/view_policy_registry.json",
+        registry_rel_path="contracts/registry/view_policy_registry.json",
         default_payload={"view_policies": []},
     )
     return view_policy_rows_by_id(registry_payload if isinstance(registry_payload, dict) else {})
@@ -23449,7 +23449,7 @@ def _augment_inspection_target_payload_for_mobility_wear(
     if not wear_type_registry:
         wear_type_registry = _read_registry_fallback(
             repo_root=REPO_ROOT_HINT,
-            registry_rel_path="data/registries/wear_type_registry.json",
+            registry_rel_path="contracts/registry/wear_type_registry.json",
             default_payload={"record": {"wear_types": []}},
         )
     wear_type_rows = wear_type_rows_by_id(wear_type_registry)
@@ -24232,7 +24232,7 @@ def _load_solver_registry(policy_context: dict | None) -> Dict[str, object]:
         return refusal(
             "refusal.solver_unbound",
             "solver registry is unavailable for structural transition checks",
-            "Provide policy_context.solver_registry or restore data/registries/solver_registry.json.",
+            "Provide policy_context.solver_registry or restore contracts/registry/solver_registry.json.",
             {"registry_path": SOLVER_REGISTRY_REL},
             "$.solver_registry",
         )
@@ -27030,7 +27030,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -32772,13 +32772,13 @@ def execute_intent(
         control_action_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_action_registry",
-            registry_rel_path="data/registries/control_action_registry.json",
+            registry_rel_path="contracts/registry/control_action_registry.json",
             default_payload={"actions": []},
         )
         control_policy_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_policy_registry",
-            registry_rel_path="data/registries/control_policy_registry.json",
+            registry_rel_path="contracts/registry/control_policy_registry.json",
             default_payload={"policies": []},
         )
         selected_control_policy = _resolve_control_policy_row_for_ir(
@@ -32805,25 +32805,25 @@ def execute_intent(
         if not blueprint_registry:
             blueprint_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/blueprint_registry.json",
+                registry_rel_path="contracts/registry/blueprint_registry.json",
                 default_payload={"blueprints": []},
             )
         if not part_class_registry:
             part_class_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/part_class_registry.json",
+                registry_rel_path="contracts/registry/part_class_registry.json",
                 default_payload={"part_classes": []},
             )
         if not connection_type_registry:
             connection_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/connection_type_registry.json",
+                registry_rel_path="contracts/registry/connection_type_registry.json",
                 default_payload={"connection_types": []},
             )
         if not material_class_registry:
             material_class_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/material_class_registry.json",
+                registry_rel_path="contracts/registry/material_class_registry.json",
                 default_payload={"materials": []},
             )
         plan_policy_context = dict(policy_context or {})
@@ -32966,31 +32966,31 @@ def execute_intent(
         control_action_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_action_registry",
-            registry_rel_path="data/registries/control_action_registry.json",
+            registry_rel_path="contracts/registry/control_action_registry.json",
             default_payload={"actions": []},
         )
         control_policy_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_policy_registry",
-            registry_rel_path="data/registries/control_policy_registry.json",
+            registry_rel_path="contracts/registry/control_policy_registry.json",
             default_payload={"policies": []},
         )
         action_template_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="action_template_registry",
-            registry_rel_path="data/registries/action_template_registry.json",
+            registry_rel_path="contracts/registry/action_template_registry.json",
             default_payload={"templates": []},
         )
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         execution_policy_context = dict(policy_context or {})
@@ -35446,13 +35446,13 @@ def execute_intent(
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
-                registry_rel_path="data/registries/field_type_registry.json",
+                registry_rel_path="contracts/registry/field_type_registry.json",
                 entry_key="field_types",
             )
             field_update_policy_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_update_policy_registry",
-                registry_rel_path="data/registries/field_update_policy_registry.json",
+                registry_rel_path="contracts/registry/field_update_policy_registry.json",
                 entry_key="policies",
             )
             field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -36954,7 +36954,7 @@ def execute_intent(
         tier_contract_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tier_contract_registry",
-            registry_rel_path="data/registries/tier_contract_registry.json",
+            registry_rel_path="contracts/registry/tier_contract_registry.json",
             entry_key="tier_contracts",
         )
         roi_eval = evaluate_system_roi_tick(
@@ -36975,37 +36975,37 @@ def execute_intent(
         quantity_bundle_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="quantity_bundle_registry",
-            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            registry_rel_path="contracts/registry/quantity_bundle_registry.json",
             entry_key="quantity_bundles",
         )
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         signal_channel_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="signal_channel_type_registry",
-            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            registry_rel_path="contracts/registry/signal_channel_type_registry.json",
             entry_key="signal_channel_types",
         )
         boundary_invariant_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="boundary_invariant_template_registry",
-            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            registry_rel_path="contracts/registry/boundary_invariant_template_registry.json",
             entry_key="boundary_invariant_templates",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         safety_pattern_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="safety_pattern_registry",
-            registry_rel_path="data/registries/safety_pattern_registry.json",
+            registry_rel_path="contracts/registry/safety_pattern_registry.json",
             entry_key="safety_patterns",
         )
 
@@ -37627,37 +37627,37 @@ def execute_intent(
         quantity_bundle_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="quantity_bundle_registry",
-            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            registry_rel_path="contracts/registry/quantity_bundle_registry.json",
             entry_key="quantity_bundles",
         )
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         signal_channel_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="signal_channel_type_registry",
-            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            registry_rel_path="contracts/registry/signal_channel_type_registry.json",
             entry_key="signal_channel_types",
         )
         boundary_invariant_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="boundary_invariant_template_registry",
-            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            registry_rel_path="contracts/registry/boundary_invariant_template_registry.json",
             entry_key="boundary_invariant_templates",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         safety_pattern_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="safety_pattern_registry",
-            registry_rel_path="data/registries/safety_pattern_registry.json",
+            registry_rel_path="contracts/registry/safety_pattern_registry.json",
             entry_key="safety_patterns",
         )
         try:
@@ -37735,37 +37735,37 @@ def execute_intent(
         quantity_bundle_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="quantity_bundle_registry",
-            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            registry_rel_path="contracts/registry/quantity_bundle_registry.json",
             entry_key="quantity_bundles",
         )
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         signal_channel_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="signal_channel_type_registry",
-            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            registry_rel_path="contracts/registry/signal_channel_type_registry.json",
             entry_key="signal_channel_types",
         )
         boundary_invariant_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="boundary_invariant_template_registry",
-            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            registry_rel_path="contracts/registry/boundary_invariant_template_registry.json",
             entry_key="boundary_invariant_templates",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         safety_pattern_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="safety_pattern_registry",
-            registry_rel_path="data/registries/safety_pattern_registry.json",
+            registry_rel_path="contracts/registry/safety_pattern_registry.json",
             entry_key="safety_patterns",
         )
         try:
@@ -37843,37 +37843,37 @@ def execute_intent(
         quantity_bundle_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="quantity_bundle_registry",
-            registry_rel_path="data/registries/quantity_bundle_registry.json",
+            registry_rel_path="contracts/registry/quantity_bundle_registry.json",
             entry_key="quantity_bundles",
         )
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         signal_channel_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="signal_channel_type_registry",
-            registry_rel_path="data/registries/signal_channel_type_registry.json",
+            registry_rel_path="contracts/registry/signal_channel_type_registry.json",
             entry_key="signal_channel_types",
         )
         boundary_invariant_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="boundary_invariant_template_registry",
-            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            registry_rel_path="contracts/registry/boundary_invariant_template_registry.json",
             entry_key="boundary_invariant_templates",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         safety_pattern_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="safety_pattern_registry",
-            registry_rel_path="data/registries/safety_pattern_registry.json",
+            registry_rel_path="contracts/registry/safety_pattern_registry.json",
             entry_key="safety_patterns",
         )
         certification_profile_registry = _certification_profile_registry_payload(
@@ -37882,19 +37882,19 @@ def execute_intent(
         spec_type_registry_for_sheets = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry_for_sheets = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry_for_sheets = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -38137,7 +38137,7 @@ def execute_intent(
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compile_with_compiled_model = bool(inputs.get("compile_with_compiled_model", False))
@@ -38311,25 +38311,25 @@ def execute_intent(
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         qc_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="qc_policy_registry",
-            registry_rel_path="data/registries/qc_policy_registry.json",
+            registry_rel_path="contracts/registry/qc_policy_registry.json",
             entry_key="qc_policies",
         )
         sampling_strategy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="sampling_strategy_registry",
-            registry_rel_path="data/registries/sampling_strategy_registry.json",
+            registry_rel_path="contracts/registry/sampling_strategy_registry.json",
             entry_key="sampling_strategies",
         )
         test_procedure_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="test_procedure_registry",
-            registry_rel_path="data/registries/test_procedure_registry.json",
+            registry_rel_path="contracts/registry/test_procedure_registry.json",
             entry_key="test_procedures",
         )
 
@@ -38652,25 +38652,25 @@ def execute_intent(
         qc_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="qc_policy_registry",
-            registry_rel_path="data/registries/qc_policy_registry.json",
+            registry_rel_path="contracts/registry/qc_policy_registry.json",
             entry_key="qc_policies",
         )
         sampling_strategy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="sampling_strategy_registry",
-            registry_rel_path="data/registries/sampling_strategy_registry.json",
+            registry_rel_path="contracts/registry/sampling_strategy_registry.json",
             entry_key="sampling_strategies",
         )
         test_procedure_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="test_procedure_registry",
-            registry_rel_path="data/registries/test_procedure_registry.json",
+            registry_rel_path="contracts/registry/test_procedure_registry.json",
             entry_key="test_procedures",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
 
@@ -39468,37 +39468,37 @@ def execute_intent(
         interface_signature_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="interface_signature_template_registry",
-            registry_rel_path="data/registries/interface_signature_template_registry.json",
+            registry_rel_path="contracts/registry/interface_signature_template_registry.json",
             entry_key="interface_signature_templates",
         )
         boundary_invariant_template_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="boundary_invariant_template_registry",
-            registry_rel_path="data/registries/boundary_invariant_template_registry.json",
+            registry_rel_path="contracts/registry/boundary_invariant_template_registry.json",
             entry_key="boundary_invariant_templates",
         )
         macro_model_set_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="macro_model_set_registry",
-            registry_rel_path="data/registries/macro_model_set_registry.json",
+            registry_rel_path="contracts/registry/macro_model_set_registry.json",
             entry_key="macro_model_sets",
         )
         tier_contract_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tier_contract_registry",
-            registry_rel_path="data/registries/tier_contract_registry.json",
+            registry_rel_path="contracts/registry/tier_contract_registry.json",
             entry_key="tier_contracts",
         )
         domain_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="domain_registry",
-            registry_rel_path="data/registries/domain_registry.json",
+            registry_rel_path="contracts/registry/domain_registry.json",
             entry_key="records",
         )
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
 
@@ -39578,13 +39578,13 @@ def execute_intent(
         control_action_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_action_registry",
-            registry_rel_path="data/registries/control_action_registry.json",
+            registry_rel_path="contracts/registry/control_action_registry.json",
             default_payload={"actions": []},
         )
         control_policy_registry = _control_ir_registry_payload(
             policy_context=policy_context,
             key="control_policy_registry",
-            registry_rel_path="data/registries/control_policy_registry.json",
+            registry_rel_path="contracts/registry/control_policy_registry.json",
             default_payload={"policies": []},
         )
         selected_control_policy = _resolve_control_policy_row_for_ir(
@@ -40074,37 +40074,37 @@ def execute_intent(
         macro_model_set_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="macro_model_set_registry",
-            registry_rel_path="data/registries/macro_model_set_registry.json",
+            registry_rel_path="contracts/registry/macro_model_set_registry.json",
             entry_key="macro_model_sets",
         )
         constitutive_model_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="constitutive_model_registry",
-            registry_rel_path="data/registries/constitutive_model_registry.json",
+            registry_rel_path="contracts/registry/constitutive_model_registry.json",
             entry_key="models",
         )
         model_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="model_type_registry",
-            registry_rel_path="data/registries/model_type_registry.json",
+            registry_rel_path="contracts/registry/model_type_registry.json",
             entry_key="model_types",
         )
         model_cache_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="model_cache_policy_registry",
-            registry_rel_path="data/registries/model_cache_policy_registry.json",
+            registry_rel_path="contracts/registry/model_cache_policy_registry.json",
             entry_key="cache_policies",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         model_residual_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="model_residual_policy_registry",
-            registry_rel_path="data/registries/model_residual_policy_registry.json",
+            registry_rel_path="contracts/registry/model_residual_policy_registry.json",
             entry_key="model_residual_policies",
         )
 
@@ -44684,19 +44684,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -45449,7 +45449,7 @@ def execute_intent(
         if not grounding_registry_payload:
             grounding_registry_payload = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/grounding_policy_registry.json",
+                registry_rel_path="contracts/registry/grounding_policy_registry.json",
                 default_payload={"grounding_policies": []},
             )
         grounding_policy_rows = grounding_policy_rows_by_id(grounding_registry_payload)
@@ -45619,7 +45619,7 @@ def execute_intent(
         if not coordination_registry_payload:
             coordination_registry_payload = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/coordination_policy_registry.json",
+                registry_rel_path="contracts/registry/coordination_policy_registry.json",
                 default_payload={"coordination_policies": []},
             )
         coordination_rows = coordination_policy_rows_by_id(coordination_registry_payload)
@@ -46611,13 +46611,13 @@ def execute_intent(
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         effect_type_rows = effect_type_rows_by_id(effect_type_registry)
@@ -47001,7 +47001,7 @@ def execute_intent(
         if not geometry_type_registry:
             geometry_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_type_registry.json",
+                registry_rel_path="contracts/registry/geometry_type_registry.json",
                 default_payload={"geometry_types": []},
             )
         geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
@@ -47009,7 +47009,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "candidate geometry_type_id '{}' is not declared".format(geometry_type_id),
-                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                "Use geometry_type_id from contracts/registry/geometry_type_registry.json.",
                 {"geometry_type_id": geometry_type_id},
                 "$.intent.inputs.geometry_type_id",
             )
@@ -47017,7 +47017,7 @@ def execute_intent(
         if not snap_policy_registry:
             snap_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                registry_rel_path="contracts/registry/geometry_snap_policy_registry.json",
                 default_payload={"snap_policies": []},
             )
         snap_policy_rows = geometry_snap_policy_rows_by_id(snap_policy_registry)
@@ -47026,7 +47026,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "snap_policy_id '{}' is not declared".format(snap_policy_id),
-                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                "Use snap_policy_id from contracts/registry/geometry_snap_policy_registry.json.",
                 {"snap_policy_id": snap_policy_id},
                 "$.intent.inputs.snap_policy_id",
             )
@@ -47410,7 +47410,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         realism_profile_registry = _realism_profile_registry_payload(policy_context)
@@ -47790,7 +47790,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "geometry_edit_policy_id '{}' is not declared".format(geometry_edit_policy_id),
-                "Use geometry_edit_policy_id from data/registries/geometry_edit_policy_registry.json.",
+                "Use geometry_edit_policy_id from contracts/registry/geometry_edit_policy_registry.json.",
                 {"geometry_edit_policy_id": geometry_edit_policy_id},
                 "$.intent.inputs.geometry_edit_policy_id",
             )
@@ -50382,7 +50382,7 @@ def execute_intent(
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
-                registry_rel_path="data/registries/field_type_registry.json",
+                registry_rel_path="contracts/registry/field_type_registry.json",
                 entry_key="field_types",
             )
             field_snapshot = field_modifier_snapshot(
@@ -51426,7 +51426,7 @@ def execute_intent(
         if not speed_policy_registry:
             speed_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/mobility_speed_policy_registry.json",
+                registry_rel_path="contracts/registry/mobility_speed_policy_registry.json",
                 default_payload={"record": {"speed_policies": []}},
             )
         speed_policy_rows = speed_policy_rows_by_id(speed_policy_registry)
@@ -51442,19 +51442,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -52563,7 +52563,7 @@ def execute_intent(
         if not congestion_policy_registry:
             congestion_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/congestion_policy_registry.json",
+                registry_rel_path="contracts/registry/congestion_policy_registry.json",
                 default_payload={"record": {"congestion_policies": []}},
             )
         congestion_policy_rows = congestion_policy_rows_by_id(congestion_policy_registry)
@@ -52634,7 +52634,7 @@ def execute_intent(
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
-                registry_rel_path="data/registries/field_type_registry.json",
+                registry_rel_path="contracts/registry/field_type_registry.json",
                 entry_key="field_types",
             )
             field_snapshot = field_modifier_snapshot(
@@ -54181,7 +54181,7 @@ def execute_intent(
         if not coupling_type_registry:
             coupling_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/coupling_type_registry.json",
+                registry_rel_path="contracts/registry/coupling_type_registry.json",
                 default_payload={"record": {"coupling_types": []}},
             )
         declared_coupling_type_ids = _sorted_tokens(
@@ -54529,19 +54529,19 @@ def execute_intent(
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -54570,7 +54570,7 @@ def execute_intent(
         if not derailment_policy_registry:
             derailment_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/derailment_policy_registry.json",
+                registry_rel_path="contracts/registry/derailment_policy_registry.json",
                 default_payload={"record": {"derailment_policies": []}},
             )
         derail_policy = resolve_derailment_policy(
@@ -55724,28 +55724,28 @@ def execute_intent(
         if not free_motion_policy_registry:
             free_motion_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/free_motion_policy_registry.json",
+                registry_rel_path="contracts/registry/free_motion_policy_registry.json",
                 default_payload={"record": {"free_motion_policies": []}},
             )
         traction_model_registry = dict(_policy_payload(policy_context, "traction_model_registry") or {})
         if not traction_model_registry:
             traction_model_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/traction_model_registry.json",
+                registry_rel_path="contracts/registry/traction_model_registry.json",
                 default_payload={"record": {"traction_models": []}},
             )
         wind_model_registry = dict(_policy_payload(policy_context, "wind_model_registry") or {})
         if not wind_model_registry:
             wind_model_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/wind_model_registry.json",
+                registry_rel_path="contracts/registry/wind_model_registry.json",
                 default_payload={"record": {"wind_models": []}},
             )
         mobility_constraint_type_registry = dict(_policy_payload(policy_context, "mobility_constraint_type_registry") or {})
         if not mobility_constraint_type_registry:
             mobility_constraint_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/mobility_constraint_type_registry.json",
+                registry_rel_path="contracts/registry/mobility_constraint_type_registry.json",
                 default_payload={"record": {"constraint_types": []}},
             )
 
@@ -55757,13 +55757,13 @@ def execute_intent(
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         effect_rows = prune_expired_effect_rows(effect_rows=effect_rows, current_tick=int(current_tick))
@@ -55772,7 +55772,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_modifier_snapshot_rows = field_modifier_snapshot(
@@ -55839,19 +55839,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, _spec_load_errors = _spec_sheet_rows(
@@ -56671,7 +56671,7 @@ def execute_intent(
             return refusal(
                 REFUSAL_MOBILITY_NETWORK_INVALID,
                 "vehicle_class_id '{}' is not declared".format(vehicle_class_id),
-                "Use vehicle_class_id from data/registries/vehicle_class_registry.json or mobility registry payload.",
+                "Use vehicle_class_id from contracts/registry/vehicle_class_registry.json or mobility registry payload.",
                 {"vehicle_class_id": vehicle_class_id},
                 "$.intent.inputs.vehicle_class_id",
             )
@@ -56992,19 +56992,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -57143,13 +57143,13 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_update_policy_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_update_policy_registry",
-            registry_rel_path="data/registries/field_update_policy_registry.json",
+            registry_rel_path="contracts/registry/field_update_policy_registry.json",
             entry_key="policies",
         )
         field_type_rows = field_type_rows_by_id(field_type_registry)
@@ -57512,21 +57512,21 @@ def execute_intent(
         if not geometry_type_registry:
             geometry_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_type_registry.json",
+                registry_rel_path="contracts/registry/geometry_type_registry.json",
                 default_payload={"geometry_types": []},
             )
         junction_type_registry = dict(_policy_payload(policy_context, "junction_type_registry") or {})
         if not junction_type_registry:
             junction_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/junction_type_registry.json",
+                registry_rel_path="contracts/registry/junction_type_registry.json",
                 default_payload={"junction_types": []},
             )
         snap_policy_registry = dict(_policy_payload(policy_context, "geometry_snap_policy_registry") or {})
         if not snap_policy_registry:
             snap_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                registry_rel_path="contracts/registry/geometry_snap_policy_registry.json",
                 default_payload={"snap_policies": []},
             )
         geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
@@ -57547,7 +57547,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "geometry_type_id '{}' is not declared in geometry_type_registry".format(geometry_type_id),
-                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                "Use geometry_type_id from contracts/registry/geometry_type_registry.json.",
                 {"geometry_type_id": geometry_type_id},
                 "$.intent.inputs.geometry_type_id",
             )
@@ -57556,7 +57556,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "snap_policy_id '{}' is not declared".format(snap_policy_id),
-                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                "Use snap_policy_id from contracts/registry/geometry_snap_policy_registry.json.",
                 {"snap_policy_id": snap_policy_id},
                 "$.intent.inputs.snap_policy_id",
             )
@@ -57605,19 +57605,19 @@ def execute_intent(
             spec_type_registry = _spec_registry_payload(
                 policy_context=policy_context,
                 key="spec_type_registry",
-                registry_rel_path="data/registries/spec_type_registry.json",
+                registry_rel_path="contracts/registry/spec_type_registry.json",
                 entry_key="spec_types",
             )
             tolerance_policy_registry = _spec_registry_payload(
                 policy_context=policy_context,
                 key="tolerance_policy_registry",
-                registry_rel_path="data/registries/tolerance_policy_registry.json",
+                registry_rel_path="contracts/registry/tolerance_policy_registry.json",
                 entry_key="tolerance_policies",
             )
             compliance_check_registry = _spec_registry_payload(
                 policy_context=policy_context,
                 key="compliance_check_registry",
-                registry_rel_path="data/registries/compliance_check_registry.json",
+                registry_rel_path="contracts/registry/compliance_check_registry.json",
                 entry_key="compliance_checks",
             )
             spec_rows, _spec_load_errors = _spec_sheet_rows(
@@ -57681,7 +57681,7 @@ def execute_intent(
                 return refusal(
                     "PROCESS_INPUT_INVALID",
                     "junction_type_id '{}' is not declared".format(junction_type_id),
-                    "Use junction_type_id from data/registries/junction_type_registry.json.",
+                    "Use junction_type_id from contracts/registry/junction_type_registry.json.",
                     {"junction_type_id": junction_type_id},
                     "$.intent.inputs.junction_rows",
                 )
@@ -57866,14 +57866,14 @@ def execute_intent(
         if not geometry_type_registry:
             geometry_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_type_registry.json",
+                registry_rel_path="contracts/registry/geometry_type_registry.json",
                 default_payload={"geometry_types": []},
             )
         snap_policy_registry = dict(_policy_payload(policy_context, "geometry_snap_policy_registry") or {})
         if not snap_policy_registry:
             snap_policy_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+                registry_rel_path="contracts/registry/geometry_snap_policy_registry.json",
                 default_payload={"snap_policies": []},
             )
         geometry_type_rows = geometry_type_rows_by_id(geometry_type_registry)
@@ -57904,7 +57904,7 @@ def execute_intent(
             return refusal(
                 "PROCESS_INPUT_INVALID",
                 "snap_policy_id '{}' is not declared".format(snap_policy_id),
-                "Use snap_policy_id from data/registries/geometry_snap_policy_registry.json.",
+                "Use snap_policy_id from contracts/registry/geometry_snap_policy_registry.json.",
                 {"snap_policy_id": snap_policy_id},
                 "$.intent.inputs.snap_policy_id",
             )
@@ -57950,7 +57950,7 @@ def execute_intent(
                 "geometry_type_id '{}' is not declared in registry".format(
                     str(updated_row.get("geometry_type_id", "")).strip()
                 ),
-                "Use geometry_type_id from data/registries/geometry_type_registry.json.",
+                "Use geometry_type_id from contracts/registry/geometry_type_registry.json.",
                 {"geometry_type_id": str(updated_row.get("geometry_type_id", "")).strip()},
                 "$.intent.inputs.geometry_type_id",
             )
@@ -58269,19 +58269,19 @@ def execute_intent(
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         connection_type_registry = _mechanics_registry_payload(
             policy_context=policy_context,
             key="connection_type_registry",
-            registry_rel_path="data/registries/connection_type_registry.json",
+            registry_rel_path="contracts/registry/connection_type_registry.json",
             entry_key="connection_types",
         )
         mechanics_eval = evaluate_structural_graphs(
@@ -59062,19 +59062,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -59185,19 +59185,19 @@ def execute_intent(
         spec_type_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="spec_type_registry",
-            registry_rel_path="data/registries/spec_type_registry.json",
+            registry_rel_path="contracts/registry/spec_type_registry.json",
             entry_key="spec_types",
         )
         tolerance_policy_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="tolerance_policy_registry",
-            registry_rel_path="data/registries/tolerance_policy_registry.json",
+            registry_rel_path="contracts/registry/tolerance_policy_registry.json",
             entry_key="tolerance_policies",
         )
         compliance_check_registry = _spec_registry_payload(
             policy_context=policy_context,
             key="compliance_check_registry",
-            registry_rel_path="data/registries/compliance_check_registry.json",
+            registry_rel_path="contracts/registry/compliance_check_registry.json",
             entry_key="compliance_checks",
         )
         spec_rows, spec_load_errors = _spec_sheet_rows(
@@ -59744,25 +59744,25 @@ def execute_intent(
         if not blueprint_registry:
             blueprint_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/blueprint_registry.json",
+                registry_rel_path="contracts/registry/blueprint_registry.json",
                 default_payload={"blueprints": []},
             )
         if not part_class_registry:
             part_class_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/part_class_registry.json",
+                registry_rel_path="contracts/registry/part_class_registry.json",
                 default_payload={"part_classes": []},
             )
         if not connection_type_registry:
             connection_type_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/connection_type_registry.json",
+                registry_rel_path="contracts/registry/connection_type_registry.json",
                 default_payload={"connection_types": []},
             )
         if not material_class_registry:
             material_class_registry = _read_registry_fallback(
                 repo_root=REPO_ROOT_HINT,
-                registry_rel_path="data/registries/material_class_registry.json",
+                registry_rel_path="contracts/registry/material_class_registry.json",
                 default_payload={"materials": []},
             )
         try:
@@ -61104,13 +61104,13 @@ def execute_intent(
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
-                registry_rel_path="data/registries/field_type_registry.json",
+                registry_rel_path="contracts/registry/field_type_registry.json",
                 entry_key="field_types",
             )
             field_update_policy_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_update_policy_registry",
-                registry_rel_path="data/registries/field_update_policy_registry.json",
+                registry_rel_path="contracts/registry/field_update_policy_registry.json",
                 entry_key="policies",
             )
             field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -61979,14 +61979,14 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
         field_update_policy_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_update_policy_registry",
-            registry_rel_path="data/registries/field_update_policy_registry.json",
+            registry_rel_path="contracts/registry/field_update_policy_registry.json",
             entry_key="policies",
         )
         incoming_layers = inputs.get("field_layers")
@@ -62076,7 +62076,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -62143,7 +62143,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -62208,7 +62208,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -62274,7 +62274,7 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -62338,13 +62338,13 @@ def execute_intent(
         field_type_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_type_registry",
-            registry_rel_path="data/registries/field_type_registry.json",
+            registry_rel_path="contracts/registry/field_type_registry.json",
             entry_key="field_types",
         )
         field_update_policy_registry = _field_registry_payload(
             policy_context=policy_context,
             key="field_update_policy_registry",
-            registry_rel_path="data/registries/field_update_policy_registry.json",
+            registry_rel_path="contracts/registry/field_update_policy_registry.json",
             entry_key="policies",
         )
         field_type_rows = field_type_rows_by_id(field_type_registry)
@@ -62767,7 +62767,7 @@ def execute_intent(
             field_type_registry = _field_registry_payload(
                 policy_context=policy_context,
                 key="field_type_registry",
-                registry_rel_path="data/registries/field_type_registry.json",
+                registry_rel_path="contracts/registry/field_type_registry.json",
                 entry_key="field_types",
             )
             field_binding_registry = _field_binding_registry_payload(policy_context)
@@ -65398,13 +65398,13 @@ def execute_intent(
         effect_type_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="effect_type_registry",
-            registry_rel_path="data/registries/effect_type_registry.json",
+            registry_rel_path="contracts/registry/effect_type_registry.json",
             entry_key="effect_types",
         )
         stacking_policy_registry = _effect_registry_payload(
             policy_context=policy_context,
             key="stacking_policy_registry",
-            registry_rel_path="data/registries/stacking_policy_registry.json",
+            registry_rel_path="contracts/registry/stacking_policy_registry.json",
             entry_key="stacking_policies",
         )
         effect_rows = prune_expired_effect_rows(

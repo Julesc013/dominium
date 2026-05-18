@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E379_UNBOUNDED_SHADOW_SAMPLING_SMELL"
 HORIZON_SHADOW_REL = "game/domains/worldgen/earth/lighting/horizon_shadow_engine.py"
-SHADOW_REGISTRY_REL = "data/registries/shadow_model_registry.json"
+SHADOW_REGISTRY_REL = "contracts/registry/shadow_model_registry.json"
 LIGHTING_VIEW_REL = "game/domains/worldgen/earth/lighting/lighting_view_engine.py"
 PROBE_REL = "tools/worldgen/earth5_probe.py"
 REPLAY_REL = "tools/worldgen/tool_replay_illumination_view.py"

@@ -55,7 +55,7 @@ Behavior:
 
 - self-canonicalizes `PATH`
 - derives workspace-scoped build/dist/remediation roots
-- runs dependency-aware gate classes from `data/registries/gate_policy.json`
+- runs dependency-aware gate classes from `contracts/registry/gate_policy.json`
 - supports minimal preflight (`PRECHECK_MIN`) and strict completion (`EXIT_STRICT`)
 - supports dependency-only evaluation (`TASK_DEPENDENCY`) through `gate taskcheck`
 - evaluates dependency gates (`TASK_DEPENDENCY`) such as `ui_bind_check`

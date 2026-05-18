@@ -12,20 +12,20 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/ir/control_ir_multiplayer.py`
+- Canonical Candidate: `src/tools/governance/ir/control_ir_multiplayer.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/ir/__init__.py`
-- `src/control/ir/control_ir_multiplayer.py`
+- `src/tools/governance/ir/__init__.py`
+- `src/tools/governance/ir/control_ir_multiplayer.py`
 
 ## Scorecard
 
-- `src/control/ir/control_ir_multiplayer.py` disposition=`canonical` rank=`1` total_score=`63.93` risk=`HIGH`
-- `src/control/ir/__init__.py` disposition=`quarantine` rank=`2` total_score=`61.61` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_multiplayer.py` disposition=`canonical` rank=`1` total_score=`63.93` risk=`HIGH`
+- `src/tools/governance/ir/__init__.py` disposition=`quarantine` rank=`2` total_score=`61.61` risk=`HIGH`
 - `src/control/__init__.py` disposition=`quarantine` rank=`3` total_score=`59.88` risk=`HIGH`
 
 ## Usage Sites

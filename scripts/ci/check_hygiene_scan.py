@@ -55,7 +55,7 @@ ALLOW_TOKENS = [
 PUBLIC_HEADER_ROOTS = [
     "engine/include",
     "game/include",
-    "libs/contracts/include",
+    "contracts/abi/dom_contracts/include",
 ]
 
 FUNC_DECL_RE = re.compile(r"^\s*[A-Za-z_][\w\s\*]*\b[A-Za-z_]\w*\s*\([^;]*\)\s*;")

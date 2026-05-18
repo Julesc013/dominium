@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E124_CAMERA_BYPASS_SMELL"
 PROCESS_RUNTIME_PATH = "tools/xstack/sessionx/process_runtime.py"
-CONTROL_ACTION_REGISTRY_PATH = "data/registries/control_action_registry.json"
+CONTROL_ACTION_REGISTRY_PATH = "contracts/registry/control_action_registry.json"
 SCAN_ROOTS = ("src", "tools/xstack/sessionx")
 SCAN_EXTENSIONS = (".py",)
 LEGACY_CAMERA_PATTERN = re.compile(

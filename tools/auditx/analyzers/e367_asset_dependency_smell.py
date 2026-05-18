@@ -11,8 +11,8 @@ ANALYZER_ID = "E367_ASSET_DEPENDENCY_SMELL"
 WATCH_PREFIXES = ("game/domains/embodiment/", "data/registries/", "docs/embodiment/")
 BODY_SYSTEM_REL = "game/domains/embodiment/body/body_system.py"
 LENS_ENGINE_REL = "game/domains/embodiment/lens/lens_engine.py"
-BODY_TEMPLATE_REGISTRY_REL = "data/registries/body_template_registry.json"
-SYSTEM_TEMPLATE_REGISTRY_REL = "data/registries/system_template_registry.json"
+BODY_TEMPLATE_REGISTRY_REL = "contracts/registry/body_template_registry.json"
+SYSTEM_TEMPLATE_REGISTRY_REL = "contracts/registry/system_template_registry.json"
 DOC_REL = "docs/embodiment/EMBODIMENT_BASELINE.md"
 REQUIRED_TOKENS = {
     BODY_SYSTEM_REL: (

@@ -61,9 +61,9 @@ def run(repo_root: str):
         ],
         inputs=inputs,
     )
-    surfaces = _load(repo_root, "data/registries/instrumentation_surface_registry.json")
-    access = _load(repo_root, "data/registries/access_policy_registry.json")
-    models = _load(repo_root, "data/registries/measurement_model_registry.json")
+    surfaces = _load(repo_root, "contracts/registry/instrumentation_surface_registry.json")
+    access = _load(repo_root, "contracts/registry/access_policy_registry.json")
+    models = _load(repo_root, "contracts/registry/measurement_model_registry.json")
     probe_request = dict(wrapper_allowed.get("probe_request") or {})
     denied = process_logic_probe(
         current_tick=1,

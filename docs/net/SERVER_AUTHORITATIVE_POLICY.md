@@ -45,7 +45,7 @@ Per authoritative tick:
 
 ## Snapshot and Delta
 
-1. Snapshot cadence is policy-driven from `data/registries/net_replication_policy_registry.json`:
+1. Snapshot cadence is policy-driven from `contracts/registry/net_replication_policy_registry.json`:
    - `policy.net.server_authoritative` extension `snapshot_cadence_ticks`.
 2. `snapshot` artifact contains truth hash + payload reference, not inline truth payload.
 3. `perceived_delta` contains peer-scoped payload reference and `perceived_hash`.
@@ -109,5 +109,5 @@ Actions are policy-driven (`audit|refuse|terminate|throttle`) and deterministic.
 - `docs/net/HANDSHAKE_AND_COMPATIBILITY.md`
 - `docs/net/EPISTEMICS_OVER_NETWORK.md`
 - `docs/contracts/refusal_contract.md`
-- `data/registries/net_replication_policy_registry.json`
-- `data/registries/net_resync_strategy_registry.json`
+- `contracts/registry/net_replication_policy_registry.json`
+- `contracts/registry/net_resync_strategy_registry.json`

@@ -6,8 +6,8 @@
   "x-stability": "stable",
   "description": "Canonical Dominium domain contract structure. Domain contracts inherit the universal reality framework and define lawful domain shape without redefining core reality semantics locally.",
   "x-doc-ref": [
-    "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md"
+    "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+    "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md"
   ],
   "type": "object",
   "required": [

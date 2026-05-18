@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ
-Binding Sources: `docs/planning/POST_PI_EXECUTION_PLAN.md`, `data/planning/final_prompt_inventory.json`, `data/planning/dependency_graph_post_pi.json`, `docs/planning/MERGED_PROGRAM_STATE.md`
+Binding Sources: `docs/planning/POST_PI_EXECUTION_PLAN.md`, `content/data/planning/final_prompt_inventory.json`, `content/data/planning/dependency_graph_post_pi.json`, `docs/planning/MERGED_PROGRAM_STATE.md`
 
 # Gates And Proofs
 

@@ -14,8 +14,8 @@
         "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
         "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
         "docs/runtime/HOTSWAP_BOUNDARIES.md",
-        "data/registries/trust_root_registry.json",
-        "data/registries/trust_policy_registry.json"
+        "contracts/registry/trust_root_registry.json",
+        "contracts/registry/trust_policy_registry.json"
       ],
       "human_review_requirements": [
         "doctrine-only scope",
@@ -65,7 +65,7 @@
         "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
         "docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md",
         "release/update_resolver.py",
-        "repo/release_policy.toml"
+        "contracts/repo/release_policy.toml"
       ],
       "human_review_requirements": [
         "doctrine-only scope",

@@ -8,7 +8,7 @@ Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
-- data/meta/player_demand_matrix.json
+- contracts/meta/player_demand_matrix.json
 - docs/meta/PLAYER_DEMAND_COVERAGE_MATRIX.md
 - tools/xstack/repox/check.py
 - tools/auditx/analyzers/e300_orphan_feature_smell.py

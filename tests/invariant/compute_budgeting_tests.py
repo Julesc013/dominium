@@ -9,8 +9,8 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from meta.compile import build_compiled_model_row, build_validity_domain_row, compiled_model_execute
-from meta.compute import evaluate_compute_budget_tick
+from tools.repo.meta.compile import build_compiled_model_row, build_validity_domain_row, compiled_model_execute
+from tools.repo.meta.compute import evaluate_compute_budget_tick
 
 
 def _canonical_hash(payload) -> str:

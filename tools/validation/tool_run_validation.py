@@ -20,7 +20,7 @@ from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
 
-from validation import (  # noqa: E402
+from tools.validators.validation import (  # noqa: E402
     VALIDATION_FINAL_DOC_TEMPLATE,
     VALIDATION_INVENTORY_DOC_PATH,
     VALIDATION_REPORT_DOC_TEMPLATE,

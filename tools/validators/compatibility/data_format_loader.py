@@ -7,9 +7,9 @@ import json
 import os
 from typing import Dict, List, Mapping, Sequence, Tuple
 
-from compat.capability_negotiation import READ_ONLY_LAW_PROFILE_ID
-from compat.descriptor.descriptor_engine import build_product_descriptor
-from compat.migration_lifecycle import (
+from tools.validators.compatibility.capability_negotiation import READ_ONLY_LAW_PROFILE_ID
+from tools.validators.compatibility.descriptor.descriptor_engine import build_product_descriptor
+from tools.validators.compatibility.migration_lifecycle import (
     ARTIFACT_KIND_BLUEPRINT,
     ARTIFACT_KIND_PACK_LOCK,
     ARTIFACT_KIND_PROFILE_BUNDLE,
@@ -304,7 +304,7 @@ def _migration_rows_for_artifact(repo_root: str, artifact_kind: str) -> Tuple[Li
         return [], _refusal(
             REFUSAL_FORMAT_MIGRATION_MISSING,
             "migration registry is missing or invalid",
-            "Restore data/registries/migration_registry.json before loading versioned artifacts.",
+            "Restore contracts/registry/migration_registry.json before loading versioned artifacts.",
             path="$.migration_registry",
             relevant_ids={"artifact_kind": artifact_kind},
         )

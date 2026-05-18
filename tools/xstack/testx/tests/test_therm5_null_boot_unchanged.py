@@ -12,7 +12,7 @@ TEST_TAGS = ["fast", "thermal", "therm5", "null_boot", "policy"]
 
 
 def run(repo_root: str):
-    registry_rel = "data/registries/thermal_policy_registry.json"
+    registry_rel = "contracts/registry/thermal_policy_registry.json"
     registry_abs = os.path.join(repo_root, registry_rel)
     if not os.path.isfile(registry_abs):
         return {"status": "fail", "message": "missing thermal policy registry"}

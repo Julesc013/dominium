@@ -6,15 +6,15 @@ from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from meta.compile import (
+from tools.repo.meta.compile import (
     evaluate_compile_request,
 )
-from meta.compile.compile_engine import (
+from tools.repo.meta.compile.compile_engine import (
     build_validity_domain_row,
 )
 from game.domains.processes.maturity import normalize_process_maturity_record_rows
 from game.domains.processes.maturity.metrics_engine import normalize_process_metrics_state_rows
-from specs import tolerance_policy_rows_by_id
+from tools.specs import tolerance_policy_rows_by_id
 from game.domains.systems.statevec import (
     state_vector_definition_for_owner,
 )

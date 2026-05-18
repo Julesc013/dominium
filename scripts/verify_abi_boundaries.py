@@ -43,7 +43,7 @@ def main():
     public_roots = [
         "engine/include",
         "game/include",
-        "libs/contracts/include",
+        "contracts/abi/dom_contracts/include",
         "apps/launcher/include",
         "apps/setup/include",
         "tools/ui_shared/include",

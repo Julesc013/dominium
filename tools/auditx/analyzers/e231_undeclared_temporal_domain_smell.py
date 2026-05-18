@@ -16,7 +16,7 @@ _REQUIRED_TOKENS = {
     "contracts/schemas/core/schedule.schema": (
         "temporal_domain_id",
     ),
-    "core/schedule/schedule_engine.py": (
+    "tools/core/schedule/schedule_engine.py": (
         "_normalize_temporal_domain_id(",
         "\"temporal_domain_id\": temporal_domain_id",
     ),

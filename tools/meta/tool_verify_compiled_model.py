@@ -15,7 +15,7 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from meta.compile import evaluate_compile_request  # noqa: E402
+from tools.repo.meta.compile import evaluate_compile_request  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
@@ -93,17 +93,17 @@ def verify_compiled_model(
         },
         compiled_type_registry_payload=_load_registry(
             repo_root,
-            "data/registries/compiled_type_registry.json",
+            "contracts/registry/compiled_type_registry.json",
             {"record": {"compiled_types": []}},
         ),
         verification_procedure_registry_payload=_load_registry(
             repo_root,
-            "data/registries/verification_procedure_registry.json",
+            "contracts/registry/verification_procedure_registry.json",
             {"record": {"verification_procedures": []}},
         ),
         compile_policy_registry_payload=_load_registry(
             repo_root,
-            "data/registries/compile_policy_registry.json",
+            "contracts/registry/compile_policy_registry.json",
             {"record": {"compile_policies": []}},
         ),
         compile_policy_id=str(model_ext.get("compile_policy_id", "")).strip() or "compile.default",

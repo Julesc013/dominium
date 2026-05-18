@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # META-PROFILE-0 Retro-Consistency Audit
 
-Status: DERIVED  
-Date: 2026-03-07  
+Status: DERIVED
+Date: 2026-03-07
 Series: META-PROFILE-0
 
 ## Scope

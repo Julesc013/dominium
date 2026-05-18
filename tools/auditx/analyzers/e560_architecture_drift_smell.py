@@ -29,7 +29,7 @@ def run(graph, repo_root, changed_files=None):
             category="architecture.architecture_drift_smell",
             severity="RISK",
             confidence=0.99,
-            file_path="data/architecture/architecture_graph.v1.json",
+            file_path="content/data/architecture/architecture_graph.v1.json",
             line=1,
             evidence=[
                 str(report.get("reason", "")).strip() or "architecture drift detected without ARCH-GRAPH-UPDATE",
@@ -38,6 +38,6 @@ def run(graph, repo_root, changed_files=None):
             suggested_classification="INVALID",
             recommended_action="ADD_RULE",
             related_invariants=["INV-ARCH-GRAPH-V1-PRESENT"],
-            related_paths=["data/architecture/architecture_graph.v1.json"],
+            related_paths=["content/data/architecture/architecture_graph.v1.json"],
         )
     ]

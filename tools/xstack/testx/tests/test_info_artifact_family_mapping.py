@@ -22,8 +22,8 @@ def _load_record(repo_root: str, rel_path: str) -> dict:
 
 
 def run(repo_root: str):
-    templates = _load_record(repo_root, "data/registries/action_template_registry.json")
-    mapping = _load_record(repo_root, "data/registries/info_artifact_family_registry.json")
+    templates = _load_record(repo_root, "contracts/registry/action_template_registry.json")
+    mapping = _load_record(repo_root, "contracts/registry/info_artifact_family_registry.json")
     if not mapping:
         return {"status": "fail", "message": "info_artifact_family_registry missing or invalid"}
 

@@ -56,11 +56,11 @@
     "server/net/dom_server_protocol.h",
     "server/net/dom_server_runtime.h",
     "release/update_resolver.py",
-    "security/trust/trust_verifier.py",
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/trust_root_registry.json",
-    "data/registries/provenance_classification_registry.json"
+    "tools/validators/security/trust/trust_verifier.py",
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/trust_root_registry.json",
+    "contracts/registry/provenance_classification_registry.json"
   ],
   "transition_class_identifiers": [
     {

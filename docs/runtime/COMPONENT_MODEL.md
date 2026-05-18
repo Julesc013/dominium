@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Φ, Σ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `specs/reality/SPEC_CAPABILITY_SURFACES.md`, `specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_SIGMA0_PHIA1_REVIEW.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`, `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`, `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md`, `docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md`
 
 # Dominium Component Model
 

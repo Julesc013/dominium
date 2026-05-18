@@ -28,9 +28,9 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    compile_engine_rel = "meta/compile/compile_engine.py"
+    compile_engine_rel = "tools/repo/meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
 
     for rel in (compile_engine_rel, runtime_rel, process_registry_rel):
         if os.path.isfile(os.path.join(repo_root, rel.replace("/", os.sep))):

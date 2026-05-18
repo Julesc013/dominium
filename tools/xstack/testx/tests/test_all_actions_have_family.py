@@ -22,12 +22,12 @@ def _load_record(repo_root: str, rel_path: str) -> dict:
 
 
 def run(repo_root: str):
-    control = _load_record(repo_root, "data/registries/control_action_registry.json")
-    interaction = _load_record(repo_root, "data/registries/interaction_action_registry.json")
-    task_types = _load_record(repo_root, "data/registries/task_type_registry.json")
-    processes = _load_record(repo_root, "data/registries/process_registry.json")
-    templates = _load_record(repo_root, "data/registries/action_template_registry.json")
-    families = _load_record(repo_root, "data/registries/action_family_registry.json")
+    control = _load_record(repo_root, "contracts/registry/control_action_registry.json")
+    interaction = _load_record(repo_root, "contracts/registry/interaction_action_registry.json")
+    task_types = _load_record(repo_root, "contracts/registry/task_type_registry.json")
+    processes = _load_record(repo_root, "contracts/registry/process_registry.json")
+    templates = _load_record(repo_root, "contracts/registry/action_template_registry.json")
+    families = _load_record(repo_root, "contracts/registry/action_family_registry.json")
 
     family_ids = set()
     for row in list(families.get("families") or []):

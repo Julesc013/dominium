@@ -227,34 +227,34 @@ def validation_registry_payloads(*, repo_root: str) -> dict:
     return {
         "quantity_bundle_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/quantity_bundle_registry.json",
+            rel_path="contracts/registry/quantity_bundle_registry.json",
         ),
         "spec_type_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/spec_type_registry.json",
+            rel_path="contracts/registry/spec_type_registry.json",
         ),
         "signal_channel_type_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/signal_channel_type_registry.json",
+            rel_path="contracts/registry/signal_channel_type_registry.json",
         ),
         "boundary_invariant_template_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/boundary_invariant_template_registry.json",
+            rel_path="contracts/registry/boundary_invariant_template_registry.json",
         ),
         "tolerance_policy_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/tolerance_policy_registry.json",
+            rel_path="contracts/registry/tolerance_policy_registry.json",
         ),
         "safety_pattern_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/safety_pattern_registry.json",
+            rel_path="contracts/registry/safety_pattern_registry.json",
         ),
         "macro_model_set_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/macro_model_set_registry.json",
+            rel_path="contracts/registry/macro_model_set_registry.json",
         ),
         "constitutive_model_registry_payload": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/constitutive_model_registry.json",
+            rel_path="contracts/registry/constitutive_model_registry.json",
         ),
     }

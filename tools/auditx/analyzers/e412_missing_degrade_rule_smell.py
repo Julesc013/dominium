@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E412_MISSING_DEGRADE_RULE_SMELL"
 REQUIRED_TOKENS = {
-    "data/registries/degrade_ladder_registry.json": (
+    "contracts/registry/degrade_ladder_registry.json": (
         '"ladder.client.mvp"',
         '"ladder.server.mvp"',
         '"ladder.engine.mvp"',
@@ -18,7 +18,7 @@ REQUIRED_TOKENS = {
         '"ladder.launcher.mvp"',
         '"ladder.tool.mvp"',
     ),
-    "data/registries/capability_fallback_registry.json": (
+    "contracts/registry/capability_fallback_registry.json": (
         '"cap.ui.rendered"',
         '"cap.logic.compiled_automaton"',
         '"cap.geo.atlas_unwrap"',

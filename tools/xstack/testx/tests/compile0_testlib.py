@@ -89,15 +89,15 @@ def policy_context(repo_root: str) -> dict:
     return {
         "compiled_type_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/compiled_type_registry.json",
+            rel_path="contracts/registry/compiled_type_registry.json",
         ),
         "verification_procedure_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/verification_procedure_registry.json",
+            rel_path="contracts/registry/verification_procedure_registry.json",
         ),
         "compile_policy_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/compile_policy_registry.json",
+            rel_path="contracts/registry/compile_policy_registry.json",
         ),
     }
 

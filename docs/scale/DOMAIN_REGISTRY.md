@@ -18,7 +18,7 @@ Replacement Target: patched document aligned to current canon ownership and rele
 
 
 ## Purpose
-Define the authoritative shape and governance of `data/registries/domain_registry.json`.
+Define the authoritative shape and governance of `contracts/registry/domain_registry.json`.
 
 ## Format
 Top-level record:

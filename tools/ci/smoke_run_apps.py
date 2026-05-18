@@ -102,7 +102,7 @@ def main() -> int:
         build_root = os.path.abspath(args.build_root)
     else:
         build_root = os.path.join(repo_root, "out", "build", "vs2026", "verify")
-    control_registry = os.path.join(repo_root, "data", "registries", "control_capabilities.registry")
+    control_registry = os.path.join(repo_root, "contracts", "registry", "control_capabilities.registry")
     run_env = _tool_env(repo_root)
 
     probe_cwd = tempfile.mkdtemp(prefix="dominium_smoke_cwd_")

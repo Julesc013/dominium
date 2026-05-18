@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # STRUCTURAL TOPOLOGY SCAN
 
-Status: Draft  
-Last Reviewed: 2026-03-04  
+Status: Draft
+Last Reviewed: 2026-03-04
 Source Run: `tools/governance/tool_topology_generate.py`
 
 ## 1. Topology Snapshot

@@ -19,18 +19,18 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DUPLICATE_CLUSTER_RANKINGS_REL = "data/analysis/duplicate_cluster_rankings.json"
-IMPLEMENTATION_SCORES_REL = "data/analysis/implementation_scores.json"
-DUPLICATE_IMPLS_REL = "data/audit/duplicate_impls.json"
-SHADOW_MODULES_REL = "data/audit/shadow_modules.json"
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_DEP_GRAPH_REL = "data/architecture/module_dependency_graph.json"
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
+DUPLICATE_CLUSTER_RANKINGS_REL = "content/data/analysis/duplicate_cluster_rankings.json"
+IMPLEMENTATION_SCORES_REL = "content/data/analysis/implementation_scores.json"
+DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
+SHADOW_MODULES_REL = "content/data/audit/shadow_modules.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
 DOC_SYMBOL_LINKS_REL = "data/audit/doc_symbol_links.json"
 
-CONVERGENCE_PLAN_REL = "data/refactor/convergence_plan.json"
-CONVERGENCE_ACTIONS_REL = "data/refactor/convergence_actions.json"
-CONVERGENCE_RISK_MAP_REL = "data/refactor/convergence_risk_map.json"
+CONVERGENCE_PLAN_REL = "content/data/refactor/convergence_plan.json"
+CONVERGENCE_ACTIONS_REL = "content/data/refactor/convergence_actions.json"
+CONVERGENCE_RISK_MAP_REL = "content/data/refactor/convergence_risk_map.json"
 
 CONVERGENCE_PLAN_DOC_REL = "docs/refactor/CONVERGENCE_PLAN.md"
 CONVERGENCE_RISK_REPORT_REL = "docs/refactor/CONVERGENCE_RISK_REPORT.md"

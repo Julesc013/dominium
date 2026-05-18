@@ -25,20 +25,20 @@
     "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "data/xstack/xstack_scope_freeze.json",
+    "content/data/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "data/xstack/xstack_inventory_and_classification.json",
+    "content/data/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-    "data/xstack/aide_portable_task_contract.json",
+    "contracts/xstack/aide_portable_task_contract.json",
     "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-    "data/xstack/aide_evidence_and_review_contract.json",
+    "contracts/xstack/aide_evidence_and_review_contract.json",
     "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
-    "data/xstack/aide_policy_and_permission_shape.json",
+    "contracts/xstack/aide_policy_and_permission_shape.json",
     "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
-    "data/xstack/aide_capability_profile_shape.json",
-    "compat/data_format_loader.py",
-    "compat/handshake/handshake_engine.py",
-    "compat/shims/tool_shims.py",
+    "contracts/xstack/aide_capability_profile_shape.json",
+    "tools/validators/compatibility/data_format_loader.py",
+    "tools/validators/compatibility/handshake/handshake_engine.py",
+    "tools/validators/compatibility/shims/tool_shims.py",
     "appshell/compat_adapter.py",
     "appshell/pack_verifier_adapter.py",
     "appshell/ipc/ipc_transport.py",
@@ -49,10 +49,10 @@
     "tools/controlx/core/remediation_bridge.py",
     "client/render/render_model_adapter.py",
     "geo/projection/view_adapters.py",
-    "validation/validation_engine.py",
+    "tools/validators/validation/validation_engine.py",
     "schemas/tool_adapter_output.schema.json",
-    "templates/adapter_template.md",
-    "data/reality/cross_domain_bridge_registry.json",
+    "docs/development/templates/adapter_template.md",
+    "contracts/registry/reality/cross_domain_bridge_registry.json",
     "tools/xstack/testx/tests/test_tool_adapter_offline.py",
     "tools/xstack/testx/tests/test_tool_adapter_uses_virtual_paths.py",
     "tools/xstack/testx/tests/test_native_adapter_only_calls_command_engine.py",
@@ -69,17 +69,17 @@
   },
   "dependencies": {
     "required_scope_freeze_doc": "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "required_scope_freeze_json": "data/xstack/xstack_scope_freeze.json",
+    "required_scope_freeze_json": "content/data/xstack/xstack_scope_freeze.json",
     "required_inventory_doc": "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "required_inventory_json": "data/xstack/xstack_inventory_and_classification.json",
+    "required_inventory_json": "content/data/xstack/xstack_inventory_and_classification.json",
     "required_task_contract_doc": "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-    "required_task_contract_json": "data/xstack/aide_portable_task_contract.json",
+    "required_task_contract_json": "contracts/xstack/aide_portable_task_contract.json",
     "required_evidence_review_doc": "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-    "required_evidence_review_json": "data/xstack/aide_evidence_and_review_contract.json",
+    "required_evidence_review_json": "contracts/xstack/aide_evidence_and_review_contract.json",
     "required_policy_permission_doc": "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
-    "required_policy_permission_json": "data/xstack/aide_policy_and_permission_shape.json",
+    "required_policy_permission_json": "contracts/xstack/aide_policy_and_permission_shape.json",
     "required_capability_profile_doc": "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
-    "required_capability_profile_json": "data/xstack/aide_capability_profile_shape.json"
+    "required_capability_profile_json": "contracts/xstack/aide_capability_profile_shape.json"
   },
   "portable_adapter_definition": {
     "summary": "A portable adapter is a canonical declarative contract for a bounded translation or mediation path between one source interface or contract and one target interface or contract, including the adapter's identity, purpose, declared capability requirements and exclusions, linked task or evidence or policy surfaces when applicable, compatibility and stability constraints, explicit refusal and incompatibility semantics, and portability limits, without embedding runtime adapter discovery, runtime selection, execution orchestration, transport ownership, or product-shell command dispatch.",
@@ -270,7 +270,7 @@
   },
   "repo_grounded_evidence": [
     {
-      "path": "compat/data_format_loader.py",
+      "path": "tools/validators/compatibility/data_format_loader.py",
       "why_it_matters": "Shows real contract mediation with migration, validation, and explicit refusal classes."
     },
     {
@@ -290,7 +290,7 @@
       "why_it_matters": "Shows stable adapter output obligations for local subprocess wrappers without proving runtime portability."
     },
     {
-      "path": "compat/shims/tool_shims.py",
+      "path": "tools/validators/compatibility/shims/tool_shims.py",
       "why_it_matters": "Shows explicit deprecation shims and replacement targets, proving shim and adapter are not interchangeable."
     },
     {
@@ -314,7 +314,7 @@
       "why_it_matters": "Shows shell bridge payload translation and refusal mapping that remain local to setup surfaces."
     },
     {
-      "path": "validation/validation_engine.py",
+      "path": "tools/validators/validation/validation_engine.py",
       "why_it_matters": "Shows adapter inventories with active and coverage adapters, proving that adapter naming alone does not imply portability or completeness."
     },
     {
@@ -350,8 +350,8 @@
     "setup bridge payload translation in tools/setup/setup_cli.py",
     "import alias bridges in tools/import_bridge.py",
     "ControlX remediation bridges in tools/controlx/core/remediation_bridge.py",
-    "validation adapter inventories and coverage adapters in validation/validation_engine.py",
-    "deprecation shims in compat/shims/tool_shims.py"
+    "validation adapter inventories and coverage adapters in tools/validators/validation/validation_engine.py",
+    "deprecation shims in tools/validators/compatibility/shims/tool_shims.py"
   ],
   "deferred_until_post_baseline": [
     "runtime adapter discovery and selection",

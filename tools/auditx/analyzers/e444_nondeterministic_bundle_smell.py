@@ -30,7 +30,7 @@ REQUIRED_TOKENS = {
         "--slash-mode",
         "--baseline-out",
     ),
-    "data/regression/lib_full_baseline.json": (
+    "tests/fixtures/regression/lib_full_baseline.json": (
         "\"bundle_hashes\"",
         "\"decision_log_fingerprints\"",
         "\"required_commit_tag\": \"LIB-REGRESSION-UPDATE\"",

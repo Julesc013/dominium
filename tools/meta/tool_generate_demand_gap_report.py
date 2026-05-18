@@ -19,7 +19,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-MATRIX_REL = "data/meta/player_demand_matrix.json"
+MATRIX_REL = "contracts/meta/player_demand_matrix.json"
 OUTPUT_REL = "docs/audit/PLAYER_DEMAND_GAPS.md"
 
 
@@ -44,12 +44,12 @@ def _ids(rows: Iterable[dict], key: str) -> set[str]:
 
 
 def _known_refs(repo_root: str) -> Dict[str, set[str]]:
-    action_family_payload, _ = _load_json(repo_root, "data/registries/action_family_registry.json")
-    action_template_payload, _ = _load_json(repo_root, "data/registries/action_template_registry.json")
-    explain_payload, _ = _load_json(repo_root, "data/registries/explain_contract_registry.json")
-    law_payload, _ = _load_json(repo_root, "data/registries/law_profiles.json")
-    phys_payload, _ = _load_json(repo_root, "data/registries/physics_profile_registry.json")
-    rwam_payload, _ = _load_json(repo_root, "data/meta/real_world_affordance_matrix.json")
+    action_family_payload, _ = _load_json(repo_root, "contracts/registry/action_family_registry.json")
+    action_template_payload, _ = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    explain_payload, _ = _load_json(repo_root, "contracts/registry/explain_contract_registry.json")
+    law_payload, _ = _load_json(repo_root, "contracts/registry/law_profiles.json")
+    phys_payload, _ = _load_json(repo_root, "contracts/registry/physics_profile_registry.json")
+    rwam_payload, _ = _load_json(repo_root, "contracts/meta/real_world_affordance_matrix.json")
 
     return {
         "action_families": _ids(list((dict(action_family_payload.get("record") or {})).get("families") or []), "action_family_id"),

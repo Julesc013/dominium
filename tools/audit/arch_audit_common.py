@@ -15,7 +15,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from meta.stability import validate_all_registries, validate_pack_compat  # noqa: E402
+from tools.validators.stability import validate_all_registries, validate_pack_compat  # noqa: E402
 from tools.import_bridge import resolve_repo_path_equivalent  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 

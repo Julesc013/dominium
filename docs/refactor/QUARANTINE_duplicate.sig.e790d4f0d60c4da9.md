@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/artifact/__init__.py`
+- Canonical Candidate: `src/tools/libraries/artifact/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/compat/migration_lifecycle.py`
-- `src/lib/artifact/__init__.py`
-- `src/lib/artifact/artifact_validator.py`
+- `src/tools/validators/compatibility/migration_lifecycle.py`
+- `src/tools/libraries/artifact/__init__.py`
+- `src/tools/libraries/artifact/artifact_validator.py`
 
 ## Scorecard
 
-- `src/lib/artifact/__init__.py` disposition=`canonical` rank=`1` total_score=`77.44` risk=`HIGH`
-- `src/lib/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
-- `src/compat/migration_lifecycle.py` disposition=`quarantine` rank=`3` total_score=`68.09` risk=`HIGH`
+- `src/tools/libraries/artifact/__init__.py` disposition=`canonical` rank=`1` total_score=`77.44` risk=`HIGH`
+- `src/tools/libraries/artifact/artifact_validator.py` disposition=`quarantine` rank=`2` total_score=`69.82` risk=`HIGH`
+- `src/tools/validators/compatibility/migration_lifecycle.py` disposition=`quarantine` rank=`3` total_score=`68.09` risk=`HIGH`
 
 ## Usage Sites
 

@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-05
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PROV0 Retro Consistency Audit
 
-Task: PROV-0  
+Task: PROV-0
 Scope: provenance/event-sourcing and compaction discipline baseline audit
 
 ## Inputs Audited

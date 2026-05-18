@@ -12,7 +12,7 @@ STRESS_COMMON_REL = "tools/earth/earth9_stress_common.py"
 STRESS_TOOL_REL = "tools/earth/tool_run_earth_mvp_stress.py"
 VIEW_REPLAY_REL = "tools/earth/tool_replay_earth_view_window.py"
 PHYSICS_REPLAY_REL = "tools/earth/tool_replay_earth_physics_window.py"
-BASELINE_REL = "data/regression/earth_mvp_baseline.json"
+BASELINE_REL = "tests/fixtures/regression/earth_mvp_baseline.json"
 FINAL_AUDIT_REL = "docs/audit/EARTH_MVP_FINAL_BASELINE.md"
 REQUIRED_TOKENS = {
     STRESS_COMMON_REL: (

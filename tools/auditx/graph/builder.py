@@ -274,9 +274,9 @@ def _add_pack_nodes(graph: AnalysisGraph, repo_root: str, changed_only: bool, se
 
 
 def _add_domain_solver_nodes(graph: AnalysisGraph, repo_root: str, changed_only: bool, selected_set: Set[str]) -> None:
-    domain_rel = "data/registries/domain_registry.json"
-    solver_rel = "data/registries/solver_registry.json"
-    contract_rel = "data/registries/domain_contract_registry.json"
+    domain_rel = "contracts/registry/domain_registry.json"
+    solver_rel = "contracts/registry/solver_registry.json"
+    contract_rel = "contracts/registry/domain_contract_registry.json"
 
     domain_map: Dict[str, str] = {}
     if _include_file(domain_rel, changed_only, selected_set):
@@ -338,7 +338,7 @@ def _add_domain_solver_nodes(graph: AnalysisGraph, repo_root: str, changed_only:
 
 
 def _add_product_nodes(graph: AnalysisGraph, repo_root: str, changed_only: bool, selected_set: Set[str]) -> None:
-    rel = "data/registries/product_graph.json"
+    rel = "contracts/registry/product_graph.json"
     if not _include_file(rel, changed_only, selected_set):
         return
     payload, err = _read_json(os.path.join(repo_root, rel.replace("/", os.sep)))

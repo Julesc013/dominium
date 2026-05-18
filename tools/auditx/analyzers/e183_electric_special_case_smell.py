@@ -50,7 +50,7 @@ def run(graph, repo_root, changed_files=None):
         "tools/xstack/testx/tests/",
     )
     allowed_files = {
-        "core/flow/flow_engine.py",
+        "tools/core/flow/flow_engine.py",
         "models/model_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }

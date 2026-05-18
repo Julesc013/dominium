@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, and `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, and `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0.
 Stability: stable
 Future Series: Λ-5, Λ-6, Σ, Φ, Υ
 Replacement Target: later domain constitutions, governance/task constitutions, and provenance/versioning constitutions must instantiate this framework rather than replace it
@@ -606,11 +606,11 @@ Any future change to the meaning of the formalization chain requires:
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `AGENTS.md`
-- `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
-- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
-- `specs/reality/SPEC_CAPABILITY_SURFACES.md`
-- `specs/reality/SPEC_REPRESENTATION_LADDERS.md`
-- `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`
+- `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+- `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
+- `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`
+- `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`
+- `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`
 - `docs/planning/MERGED_PROGRAM_STATE.md`
 - `docs/planning/GATES_AND_PROOFS.md`

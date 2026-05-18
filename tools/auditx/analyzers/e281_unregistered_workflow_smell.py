@@ -49,7 +49,7 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     process_payload = _load_json(repo_root, process_registry_rel)
     rows = list(process_payload.get("records") or [])
     process_ids = set(

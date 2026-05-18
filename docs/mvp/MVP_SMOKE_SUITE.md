@@ -93,7 +93,7 @@ The smoke suite writes these canonical outputs:
 - `build/mvp/mvp_smoke_scenario.json`
 - `build/mvp/mvp_smoke_hashes.json`
 - `build/mvp/mvp_smoke_report.json`
-- `data/regression/mvp_smoke_baseline.json`
+- `tests/fixtures/regression/mvp_smoke_baseline.json`
 - `docs/audit/MVP_SMOKE_FINAL.md`
 
 The smoke harness also writes deterministic working artifacts under `build/mvp/`:

@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `data/planning/final_prompt_inventory.json`, `data/planning/dependency_graph_post_pi.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/POST_PI_EXECUTION_PLAN.md`, `content/data/planning/final_prompt_inventory.json`, `content/data/planning/dependency_graph_post_pi.json`
 
 # Merged Program State
 
@@ -152,7 +152,7 @@ P-0 through P-4 converted doctrine and repo evidence into the current execution 
 
 If a future chat needs one-page orientation, it should use this document plus:
 
-- `data/planning/merged_series_state.json`
+- `content/data/planning/merged_series_state.json`
 - `docs/planning/GATES_AND_PROOFS.md`
 - `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`

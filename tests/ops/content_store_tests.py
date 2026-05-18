@@ -16,8 +16,8 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 from tools.lib.content_store import canonical_sha256, initialize_store_root, store_add_artifact, store_verify
-from compat import build_product_build_metadata, build_product_descriptor
-from lib.install import (
+from tools.validators.compatibility import build_product_build_metadata, build_product_descriptor
+from tools.libraries.install import (
     build_product_build_descriptor,
     deterministic_fingerprint as install_deterministic_fingerprint,
 )

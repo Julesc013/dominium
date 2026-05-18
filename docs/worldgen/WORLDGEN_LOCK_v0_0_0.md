@@ -29,7 +29,7 @@ The frozen authoritative chain is:
 
 - Canonical seed type: UTF-8 string
 - Current authoritative field: `universe_identity.global_seed`
-- MVP lock seed baseline file: `data/baselines/worldgen/baseline_seed.txt`
+- MVP lock seed baseline file: `tests/fixtures/baselines/worldgen/baseline_seed.txt`
 - Canonical seed hash for lock artifacts:
   - `canonical_sha256({"seed_text": <seed_string>})`
 
@@ -178,9 +178,9 @@ worldgen_lock_id = worldgen_lock.v0_0_0
 
 The lock is enforced by:
 
-- `data/registries/worldgen_lock_registry.json`
-- `data/baselines/worldgen/baseline_seed.txt`
-- `data/baselines/worldgen/baseline_worldgen_snapshot.json`
+- `contracts/registry/worldgen_lock_registry.json`
+- `tests/fixtures/baselines/worldgen/baseline_seed.txt`
+- `tests/fixtures/baselines/worldgen/baseline_worldgen_snapshot.json`
 - `tools/worldgen/tool_generate_worldgen_baseline`
 - `tools/worldgen/tool_verify_worldgen_lock`
 - `docs/audit/WORLDGEN_LOCK_VERIFY.md`

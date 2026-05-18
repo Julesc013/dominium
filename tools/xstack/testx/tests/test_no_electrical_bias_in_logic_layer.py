@@ -35,7 +35,7 @@ def _logic_paths(repo_root: str):
     for rel_path in (
         "contracts/schemas/logic/signal_type.schema",
         "contracts/schemas/logic/logic_policy.schema",
-        "data/registries/signal_type_registry.json",
+        "contracts/registry/signal_type_registry.json",
     ):
         yield rel_path
     for root_rel in ("src/logic", "tools/logic"):

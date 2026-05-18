@@ -12,7 +12,7 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `MED`
-- Canonical Candidate: `src/meta/instrumentation/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/instrumentation/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_medium_risk_batch_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
@@ -20,14 +20,14 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/embodiment/tools/__init__.py`
 - `src/embodiment/tools/toolbelt_engine.py`
-- `src/meta/instrumentation/__init__.py`
-- `src/meta/instrumentation/instrumentation_engine.py`
+- `src/tools/repo/meta/instrumentation/__init__.py`
+- `src/tools/repo/meta/instrumentation/instrumentation_engine.py`
 
 ## Scorecard
 
-- `src/meta/instrumentation/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`MED`
+- `src/tools/repo/meta/instrumentation/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`MED`
 - `src/embodiment/tools/__init__.py` disposition=`quarantine` rank=`2` total_score=`72.38` risk=`HIGH`
-- `src/meta/instrumentation/instrumentation_engine.py` disposition=`merge` rank=`3` total_score=`58.46` risk=`MED`
+- `src/tools/repo/meta/instrumentation/instrumentation_engine.py` disposition=`merge` rank=`3` total_score=`58.46` risk=`MED`
 - `src/embodiment/tools/toolbelt_engine.py` disposition=`drop` rank=`4` total_score=`57.87` risk=`MED`
 
 ## Usage Sites

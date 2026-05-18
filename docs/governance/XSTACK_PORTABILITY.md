@@ -30,11 +30,11 @@ This guide documents how to transplant the XStack governance and gate execution 
   - `scheduler.py`
   - `runners.py`
   - `runners_base.py`
-- `data/registries/gate_policy.json`
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
-- `data/registries/xstack_components.json`
-- `data/registries/derived_artifacts.json`
+- `contracts/registry/gate_policy.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
+- `contracts/registry/xstack_components.json`
+- `contracts/registry/derived_artifacts.json`
 
 ## Required Schemas and Registries
 
@@ -45,11 +45,11 @@ Required schema surfaces:
 
 Required registry surfaces:
 
-- `data/registries/gate_policy.json`
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
-- `data/registries/xstack_components.json`
-- `data/registries/derived_artifacts.json`
+- `contracts/registry/gate_policy.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
+- `contracts/registry/xstack_components.json`
+- `contracts/registry/derived_artifacts.json`
 
 ## Integration Entry Points
 
@@ -75,7 +75,7 @@ Required registry surfaces:
   - build/workspace temporary roots
 - Authoritative contract:
   - `docs/governance/XSTACK_TRACK_IGNORE_POLICY.md`
-  - `data/registries/derived_artifacts.json`
+  - `contracts/registry/derived_artifacts.json`
 
 ## Runtime Decoupling Contract
 

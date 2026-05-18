@@ -32,7 +32,7 @@ from game.domains.geology.worldgen import build_worldgen_requests_for_projection
 
 REFUSAL_GEO_PROJECTION_REQUEST_INVALID = "refusal.geo.projection_request_invalid"
 _REQUEST_VERSION = "GEO5-3"
-_VIEW_TYPE_REGISTRY_REL = "data/registries/view_type_registry.json"
+_VIEW_TYPE_REGISTRY_REL = "contracts/registry/view_type_registry.json"
 
 
 def _repo_root() -> str:

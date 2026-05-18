@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E387_SILENT_SEMANTIC_CHANGE_SMELL"
 WATCH_PREFIXES = ("docs/", "src/", "tools/", "data/", "contracts/schemas/", "contracts/schemas/")
-REGISTRY_REL = "data/registries/semantic_contract_registry.json"
+REGISTRY_REL = "contracts/registry/semantic_contract_registry.json"
 TOKEN_RE = re.compile(r"\b(contract\.[a-z0-9_.]+\.v[0-9]+)\b")
 SCAN_EXTS = (".md", ".txt", ".py", ".json", ".schema", ".schema.json")
 

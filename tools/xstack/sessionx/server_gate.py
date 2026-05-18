@@ -108,7 +108,7 @@ def server_validate_transition(
         return refusal(
             "refusal.server_stage_mismatch",
             "server pipeline registry resolved an empty stage map",
-            "Repair data/registries/session_stage_registry.json and retry.",
+            "Repair contracts/registry/session_stage_registry.json and retry.",
             {"pipeline_id": str(pipeline_contract.get("pipeline_id", DEFAULT_PIPELINE_ID))},
             "$.pipeline",
         )

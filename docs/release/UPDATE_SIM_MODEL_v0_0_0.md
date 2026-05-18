@@ -21,7 +21,7 @@ Replacement Target: Frozen offline update-channel simulation contract for v0.0.0
 ## Scenario A: Baseline Install
 
 - Install policy: `policy.exact_suite`
-- Release index fixture: `data/baselines/update_sim/release_index_baseline.json`
+- Release index fixture: `tests/fixtures/baselines/update_sim/release_index_baseline.json`
 - Entrypoint: `setup update plan` semantics via the authoritative resolver
 - Expected outcome:
   - deterministic plan generation
@@ -32,7 +32,7 @@ Replacement Target: Frozen offline update-channel simulation contract for v0.0.0
 ## Scenario B: Latest-Compatible Upgrade
 
 - Install policy: `policy.latest_compatible`
-- Release index fixture: `data/baselines/update_sim/release_index_upgrade.json`
+- Release index fixture: `tests/fixtures/baselines/update_sim/release_index_upgrade.json`
 - Expected outcome:
   - a newer compatible component candidate is selected deterministically
   - plan hash is stable across repeated runs
@@ -41,7 +41,7 @@ Replacement Target: Frozen offline update-channel simulation contract for v0.0.0
 ## Scenario C: Yanked Candidate Exclusion
 
 - Install policy: `policy.latest_compatible`
-- Release index fixture: `data/baselines/update_sim/release_index_yanked.json`
+- Release index fixture: `tests/fixtures/baselines/update_sim/release_index_yanked.json`
 - Expected outcome:
   - yanked candidate is excluded from selection
   - `selected_yanked_component_ids` remains empty
@@ -51,7 +51,7 @@ Replacement Target: Frozen offline update-channel simulation contract for v0.0.0
 
 - Install policy: `policy.latest_compatible`
 - Trust policy: `trust.strict_ranked`
-- Release index fixture: `data/baselines/update_sim/release_index_strict.json`
+- Release index fixture: `tests/fixtures/baselines/update_sim/release_index_strict.json`
 - Expected outcome:
   - unsigned governed artifact is refused deterministically
   - refusal code and warnings are stable

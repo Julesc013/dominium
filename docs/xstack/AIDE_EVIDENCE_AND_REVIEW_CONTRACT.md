@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-4, AIDE extraction review
 Replacement Target: later explicit portable evidence/review checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `data/registries/derived_artifacts.json`, `validation/validation_engine.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/auditx/check.py`, `tools/xstack/testx/runner.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `security/trust/trust_verifier.py`, `tools/review/xi4z_structure_approval_common.py`, `tools/review/xi5x2_common.py`, `data/restructure/xi4b_review_manifest.json`, `data/restructure/xi4z_decision_manifest.json`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `contracts/registry/derived_artifacts.json`, `tools/validators/validation/validation_engine.py`, `tools/xstack/controlx/orchestrator.py`, `tools/xstack/securex/check.py`, `tools/xstack/auditx/check.py`, `tools/xstack/testx/runner.py`, `appshell/command_registry.py`, `appshell/commands/command_engine.py`, `tools/validators/security/trust/trust_verifier.py`, `tools/review/xi4z_structure_approval_common.py`, `tools/review/xi5x2_common.py`, `contracts/restructure/xi4b_review_manifest.json`, `contracts/restructure/xi4z_decision_manifest.json`, `docs/agents/AGENT_MIRROR_POLICY.md`, `docs/xstack/CI_GUARDRAILS.md`, `docs/xstack/ARCH_DRIFT_POLICY.md`
 
 # AIDE Evidence and Review Contract
 
@@ -69,7 +69,7 @@ The portable evidence model must distinguish the following.
 ### Canonical Evidence
 
 Canonical evidence is the evidence truth that a governed consumer may rely on directly.
-In the live repo this is already implied by sources such as `data/registries/derived_artifacts.json`, which classifies artifacts as `CANONICAL`, `DERIVED_VIEW`, or `RUN_META`, marks whether canonical hashing is required, and records whether the artifact is used for gating.
+In the live repo this is already implied by sources such as `contracts/registry/derived_artifacts.json`, which classifies artifacts as `CANONICAL`, `DERIVED_VIEW`, or `RUN_META`, marks whether canonical hashing is required, and records whether the artifact is used for gating.
 
 Canonical evidence is not defined by file extension or by whether it is convenient to read.
 It is defined by the governing contract attached to the evidence object.
@@ -212,7 +212,7 @@ Every portable evidence object must specify the following fields.
 
 Operational notes:
 
-- `evidence_class` is required because the live repo already distinguishes canonical, derived, and run metadata artifacts in `data/registries/derived_artifacts.json`
+- `evidence_class` is required because the live repo already distinguishes canonical, derived, and run metadata artifacts in `contracts/registry/derived_artifacts.json`
 - `integrity_status` is required because canonical hashes, trust verification, and deterministic fingerprints are already part of live evidence surfaces
 - `evidence_scope` is required so a summary or bundle does not get misread as proof of more than it actually establishes
 - `evidence_refs` is conditional rather than universal because some evidence objects embed their own result payload while others act as manifests that point to hashed members
@@ -292,7 +292,7 @@ These fields and distinctions are the portable minimum because the live repo alr
 
 ### Validation and Orchestration Surfaces
 
-- `validation/validation_engine.py` builds deterministic validation reports with identifiers, categories, messages, warnings, errors, metrics, fingerprints, and separate rendered outputs
+- `tools/validators/validation/validation_engine.py` builds deterministic validation reports with identifiers, categories, messages, warnings, errors, metrics, fingerprints, and separate rendered outputs
 - `tools/xstack/controlx/orchestrator.py` emits structured findings and artifact rows with severity, code, message, file and line references, artifact paths, and `sha256`
 - `tools/xstack/testx/runner.py` ties execution results to deterministic fingerprints, changed files, impact scope, and emitted report objects
 
@@ -304,7 +304,7 @@ They are already part of how the repo judges governed outputs.
 - `tools/xstack/securex/check.py` emits structured findings and refusal-bearing security outcomes
 - `tools/xstack/auditx/check.py` reads canonical findings and maps them into pass, fail, or refusal posture
 - `tools/xstack/core/failure.py` already classifies failure classes that matter to evaluation and review
-- `data/registries/derived_artifacts.json` explicitly distinguishes canonical, derived, and run metadata artifacts and records whether they are used for gating
+- `contracts/registry/derived_artifacts.json` explicitly distinguishes canonical, derived, and run metadata artifacts and records whether they are used for gating
 
 These surfaces justify freezing portable evidence class, integrity state, validation status, review relevance, and refusal boundaries now.
 
@@ -318,10 +318,10 @@ They support the portable distinction between review and refusal, but they do no
 
 ### Trust, Review, Classification, and Governance Patterns
 
-- `security/trust/trust_verifier.py` already records trust level, signature status, refusal posture, and validation class for governed artifacts
+- `tools/validators/security/trust/trust_verifier.py` already records trust level, signature status, refusal posture, and validation class for governed artifacts
 - `tools/review/xi4z_structure_approval_common.py` defines decision classes, approved and deferred outputs, and readiness-contract relationships
 - `tools/review/xi5x2_common.py` already carries `manual_review_required`, `resolution_status`, `semantic_risk_level`, `missing_precondition_type`, `xi6_blocker`, and `evidence_refs`
-- `data/restructure/xi4b_review_manifest.json` and `data/restructure/xi4z_decision_manifest.json` bundle source evidence hashes, validation states, missing inputs, decision outcomes, and readiness status
+- `contracts/restructure/xi4b_review_manifest.json` and `contracts/restructure/xi4z_decision_manifest.json` bundle source evidence hashes, validation states, missing inputs, decision outcomes, and readiness status
 - `docs/agents/AGENT_MIRROR_POLICY.md` reinforces canonical versus derived truth
 - `docs/xstack/CI_GUARDRAILS.md` reinforces that prompts are not authoritative and gate-bearing outputs remain authoritative
 - `docs/xstack/ARCH_DRIFT_POLICY.md` shows that architecture drift updates require stronger review and validation posture

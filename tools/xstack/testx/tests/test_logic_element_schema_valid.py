@@ -80,9 +80,9 @@ def run(repo_root: str):
             if token not in text:
                 return {"status": "fail", "message": "{} missing token '{}'".format(rel_path, token)}
 
-    element_payload = _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json")
-    behavior_payload = _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json")
-    state_machine_payload = _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_machine_registry.json")
+    element_payload = _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json")
+    behavior_payload = _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json")
+    state_machine_payload = _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json")
     element_rows = list(element_payload.get("logic_elements") or [])
     behavior_rows = list(behavior_payload.get("logic_behavior_models") or [])
     state_machine_rows = list(state_machine_payload.get("state_machine_definitions") or [])

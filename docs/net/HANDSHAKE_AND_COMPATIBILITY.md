@@ -156,11 +156,11 @@ Remediation: set `extensions.perception_interest_policy_id` in server policy and
 
 - `schemas/net_handshake.schema.json`
 - `schemas/net_proto_message.schema.json`
-- `data/registries/session_stage_registry.json`
-- `data/registries/session_pipeline_registry.json`
-- `data/registries/net_server_policy_registry.json`
-- `data/registries/securex_policy_registry.json`
-- `data/registries/server_profile_registry.json`
+- `contracts/registry/session_stage_registry.json`
+- `contracts/registry/session_pipeline_registry.json`
+- `contracts/registry/net_server_policy_registry.json`
+- `contracts/registry/securex_policy_registry.json`
+- `contracts/registry/server_profile_registry.json`
 - `docs/contracts/refusal_contract.md`
 - `docs/net/TRANSPORT_ABSTRACTION.md`
 

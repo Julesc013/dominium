@@ -35,7 +35,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, make_chain_network
 
     inputs = load_eval_inputs(repo_root)
-    fault_registry = _load(repo_root, "data/registries/logic_fault_kind_registry.json")
+    fault_registry = _load(repo_root, "contracts/registry/logic_fault_kind_registry.json")
     _, logic_network_state = make_chain_network(network_id="net.logic.fault.stuck")
 
     signal_store_state = None

@@ -18,7 +18,7 @@ def _rows(payload: dict):
 
 
 def run(repo_root: str):
-    rel_path = "data/registries/energy_transformation_registry.json"
+    rel_path = "contracts/registry/energy_transformation_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))

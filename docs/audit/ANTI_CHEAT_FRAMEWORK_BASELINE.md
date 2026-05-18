@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Anti-Cheat Framework Baseline
 
-Status: DERIVED  
+Status: DERIVED
 Scope: MP-7/9 anti-cheat module framework
 
 ## Implemented Modules

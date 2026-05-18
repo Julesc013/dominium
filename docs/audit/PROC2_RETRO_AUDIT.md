@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PROC2 Retro Consistency Audit
 
-Date: 2026-03-06  
+Date: 2026-03-06
 Scope: Yield/defect quality outcomes for ProcessDefinition and ProcessRun paths.
 
 ## Existing quality/yield behavior

@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/safety/__init__.py`
+- Canonical Candidate: `src/tools/validators/safety/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/safety/__init__.py`
-- `src/safety/safety_engine.py`
+- `src/tools/validators/safety/__init__.py`
+- `src/tools/validators/safety/safety_engine.py`
 
 ## Scorecard
 
-- `src/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`
-- `src/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`
+- `src/tools/validators/safety/__init__.py` disposition=`canonical` rank=`1` total_score=`75.3` risk=`HIGH`
+- `src/tools/validators/safety/safety_engine.py` disposition=`quarantine` rank=`2` total_score=`67.98` risk=`HIGH`
 
 ## Usage Sites
 

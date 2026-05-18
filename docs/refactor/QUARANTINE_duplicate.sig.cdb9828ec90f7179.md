@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `merge`
 - Risk Level: `MED`
-- Canonical Candidate: `src/net/policies/policy_server_authoritative.py`
+- Canonical Candidate: `src/tools/network/policies/policy_server_authoritative.py`
 - Quarantine Reasons: `cross_domain_helper_collision, file_scope_ambiguity, phase_boundary_deferred, requires_medium_risk_batch_gate, source_like_surface, test_runtime_split`
 - Planned Action Kinds: `merge, rewire, deprecate`
 
 ## Competing Files
 
-- `src/net/policies/policy_server_authoritative.py`
-- `src/net/srz/shard_coordinator.py`
+- `src/tools/network/policies/policy_server_authoritative.py`
+- `src/tools/network/srz/shard_coordinator.py`
 - `tools/xstack/testx/tests/net_mp9_testlib.py`
 
 ## Scorecard
 
-- `src/net/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`58.93` risk=`MED`
+- `src/tools/network/policies/policy_server_authoritative.py` disposition=`canonical` rank=`1` total_score=`58.93` risk=`MED`
 - `tools/xstack/testx/tests/net_mp9_testlib.py` disposition=`merge` rank=`2` total_score=`54.33` risk=`LOW`
-- `src/net/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`40.32` risk=`MED`
+- `src/tools/network/srz/shard_coordinator.py` disposition=`merge` rank=`3` total_score=`40.32` risk=`MED`
 
 ## Usage Sites
 

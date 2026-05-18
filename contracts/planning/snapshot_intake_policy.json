@@ -116,7 +116,7 @@
       "roots": [
         "release",
         "docs/release",
-        "repo/release_policy.toml",
+        "contracts/repo/release_policy.toml",
         "data/release",
         "updates"
       ],
@@ -203,7 +203,7 @@
         "sources": [
           "docs/architecture/**",
           "docs/release/**",
-          "repo/release_policy.toml"
+          "contracts/repo/release_policy.toml"
         ]
       },
       {
@@ -351,7 +351,7 @@
         "tier_id": "REL-1",
         "authority_level": "absolute_within_release_scope",
         "sources": [
-          "repo/release_policy.toml",
+          "contracts/repo/release_policy.toml",
           "release/update schemas",
           "release manifests and indexes",
           "component graph doctrine",
@@ -398,7 +398,7 @@
         "sources": [
           "docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md",
           "docs/planning/AUTHORITY_ORDER.md",
-          "data/planning/snapshot_intake_policy.json"
+          "contracts/planning/snapshot_intake_policy.json"
         ]
       },
       {

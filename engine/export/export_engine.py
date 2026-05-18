@@ -8,7 +8,7 @@ import tempfile
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
 from runtime.appshell.paths import VROOT_STORE, vpath_candidate_roots, vpath_init
-from lib.bundle import (
+from tools.libraries.bundle import (
     ZERO_SHA256,
     collect_directory_entries,
     collect_file_entry,
@@ -16,13 +16,13 @@ from lib.bundle import (
     write_bundle_directory,
     write_json,
 )
-from lib.instance import (
+from tools.libraries.instance import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from lib.install import normalize_install_manifest, validate_install_manifest
-from lib.save import (
+from tools.libraries.install import normalize_install_manifest, validate_install_manifest
+from tools.libraries.save import (
     SAVE_MANIFEST_NAME,
     deterministic_fingerprint as save_deterministic_fingerprint,
     save_semantic_contract_registry_hash,

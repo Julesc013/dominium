@@ -45,7 +45,7 @@ If any conflict exists, the authoritative sources are:
 - MAJOR changes require an explicit migration plan in
   `schema/SCHEMA_MIGRATION.md`.
 - Migration routes require explicit process IDs in
-  `data/registries/process_registry.json`.
+  `contracts/registry/process_registry.json`.
 - Migration invocation is explicit only; no automatic background migration.
 - Refuse when migration is missing, lossy, or nondeterministic.
 - Unknown fields must round-trip unchanged.

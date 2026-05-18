@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.graph.routing_engine import RoutingError, query_route_result
+from tools.core.graph.routing_engine import RoutingError, query_route_result
 from game.domains.signals.addressing import address_from_recipient_address, resolve_address_recipients
 from game.domains.signals.trust import (
     belief_policy_rows_by_id,

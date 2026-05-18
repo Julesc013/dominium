@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/discover/appcore_discover.h
+FILE: runtime/shell/appcore/discover/appcore_discover.h
 MODULE: Dominium
 PURPOSE: Appcore discover module (scaffold; data-only interfaces).
 NOTES: Stub surface; deterministic iteration required; no side effects.

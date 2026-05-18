@@ -43,7 +43,7 @@ def run(graph, repo_root, changed_files=None):
             "runtime must expose process.safety_tick and fail-safe pattern hook usage",
         ),
         (
-            "safety/safety_engine.py",
+            "tools/validators/safety/safety_engine.py",
             ("def evaluate_safety_instances(", "status=\"triggered\""),
             "safety engine must evaluate deterministic trigger outcomes for fail-safe activation",
         ),

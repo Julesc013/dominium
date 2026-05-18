@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     schema_rel = "contracts/schemas/system/boundary_invariant.schema"
-    registry_rel = "data/registries/boundary_invariant_template_registry.json"
+    registry_rel = "contracts/registry/boundary_invariant_template_registry.json"
     validation_rel = "game/domains/systems/system_validation_engine.py"
 
     schema_text = _read_text(repo_root, schema_rel)

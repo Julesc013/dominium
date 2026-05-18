@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/explain/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/explain/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/meta/explain/__init__.py`
-- `src/meta/explain/explain_engine.py`
+- `src/tools/repo/meta/explain/__init__.py`
+- `src/tools/repo/meta/explain/explain_engine.py`
 
 ## Scorecard
 
-- `src/meta/explain/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
-- `src/meta/explain/explain_engine.py` disposition=`quarantine` rank=`2` total_score=`71.49` risk=`HIGH`
+- `src/tools/repo/meta/explain/__init__.py` disposition=`canonical` rank=`1` total_score=`79.05` risk=`HIGH`
+- `src/tools/repo/meta/explain/explain_engine.py` disposition=`quarantine` rank=`2` total_score=`71.49` risk=`HIGH`
 
 ## Usage Sites
 

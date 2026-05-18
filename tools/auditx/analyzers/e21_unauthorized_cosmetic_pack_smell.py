@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E21_UNAUTHORIZED_COSMETIC_PACK_SMELL"
-COSMETIC_POLICY_REGISTRY = "data/registries/cosmetic_policy_registry.json"
-SERVER_PROFILE_REGISTRY = "data/registries/server_profile_registry.json"
-REPRESENTATION_PACK_MANIFEST = "packs/representation/pack.representation.base/pack.json"
+COSMETIC_POLICY_REGISTRY = "contracts/registry/cosmetic_policy_registry.json"
+SERVER_PROFILE_REGISTRY = "contracts/registry/server_profile_registry.json"
+REPRESENTATION_PACK_MANIFEST = "content/packs/representation/pack.representation.base/pack.json"
 FORBIDDEN_EXECUTABLE_EXTENSIONS = (
     ".py",
     ".pyw",

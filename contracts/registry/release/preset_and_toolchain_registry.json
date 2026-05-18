@@ -29,7 +29,7 @@
     ],
     "upstream_build_graph_lock_surfaces": [
       "docs/release/BUILD_GRAPH_LOCK.md",
-      "data/release/build_graph_lock_registry.json"
+      "contracts/registry/release/build_graph_lock_registry.json"
     ],
     "upstream_runtime_vocabulary_surfaces": [
       "docs/runtime/RUNTIME_KERNEL_MODEL.md",
@@ -357,7 +357,7 @@
         "release-linux-x86_64",
         "release-macos-arm64",
         "release-check",
-        "repo/release_policy.toml",
+        "contracts/repo/release_policy.toml",
         "scripts/repox/repox_release.py"
       ],
       "notes": "These surfaces are real and authored, but their full release and publication meaning belongs to later Υ prompts."

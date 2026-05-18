@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Tuple
 
-from meta.numeric import quantity_tolerance_rows_by_id
+from tools.repo.meta.numeric import quantity_tolerance_rows_by_id
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

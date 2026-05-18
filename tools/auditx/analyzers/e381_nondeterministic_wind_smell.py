@@ -13,7 +13,7 @@ PROCESS_RUNTIME_REL = "tools/xstack/sessionx/process_runtime.py"
 WIND_PROBE_REL = "tools/worldgen/earth7_probe.py"
 WIND_REPLAY_REL = "tools/worldgen/tool_replay_wind_window.py"
 WIND_DOC_REL = "docs/worldgen/EARTH_WIND_PROXY_MODEL.md"
-WIND_PARAMS_REGISTRY_REL = "data/registries/wind_params_registry.json"
+WIND_PARAMS_REGISTRY_REL = "contracts/registry/wind_params_registry.json"
 REQUIRED_TOKENS = {
     WIND_ENGINE_REL: (
         "evaluate_earth_tile_wind(",

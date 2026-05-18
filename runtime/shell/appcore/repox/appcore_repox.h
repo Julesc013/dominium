@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/repox/appcore_repox.h
+FILE: runtime/shell/appcore/repox/appcore_repox.h
 MODULE: Dominium
 PURPOSE: Appcore repox module (scaffold; data-only interfaces).
 NOTES: Stub surface; deterministic iteration required; no side effects.

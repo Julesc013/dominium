@@ -15,7 +15,7 @@ SOFTWARE_RENDERER_REL = "apps/client/render/renderers/software_renderer.py"
 WATER_PROBE_REL = "tools/worldgen/earth8_probe.py"
 WATER_REPLAY_REL = "tools/worldgen/tool_replay_water_view.py"
 WATER_DOC_REL = "docs/worldgen/EARTH_WATER_VISUAL_MODEL.md"
-WATER_POLICY_REL = "data/registries/water_visual_policy_registry.json"
+WATER_POLICY_REL = "contracts/registry/water_visual_policy_registry.json"
 REQUIRED_TOKENS = {
     WATER_ENGINE_REL: (
         "build_water_view_surface(",

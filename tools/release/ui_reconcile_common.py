@@ -23,7 +23,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
 UI_SURFACE_MAP_PATH = "docs/audit/UI_SURFACE_MAP.md"
 UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
-UI_SURFACE_REPORT_PATH = "data/audit/ui_surface_report.json"
+UI_SURFACE_REPORT_PATH = "content/data/audit/ui_surface_report.json"
 
 _GOVERNED_SURFACES = (
     {

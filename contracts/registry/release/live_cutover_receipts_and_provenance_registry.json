@@ -221,15 +221,15 @@
   ],
   "repo_evidence_surfaces": [
     "release/update_resolver.py",
-    "security/trust/trust_verifier.py",
+    "tools/validators/security/trust/trust_verifier.py",
     "docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md",
     "docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md",
     "docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md",
     "docs/runtime/HOTSWAP_BOUNDARIES.md",
-    "data/registries/provenance_classification_registry.json",
-    "data/registries/provenance_event_type_registry.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/remediation_playbooks.json"
+    "contracts/registry/provenance_classification_registry.json",
+    "contracts/registry/provenance_event_type_registry.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/remediation_playbooks.json"
   ],
   "ambiguities_eliminated": [
     "logs_are_not_live_cutover_receipts",

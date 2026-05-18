@@ -12,8 +12,8 @@ ANALYZER_ID = "E313_MISSING_STATE_VECTOR_SMELL"
 WATCH_PREFIXES = (
     "tools/auditx/analyzers/e313_missing_state_vector_smell.py",
     "tools/auditx/analyzers/__init__.py",
-    "packs/core/pack.core.logic_base/data/logic_element_registry.json",
-    "packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+    "content/packs/core/pack.core.logic_base/data/logic_element_registry.json",
+    "content/packs/core/pack.core.logic_base/data/logic_state_vectors.json",
 )
 
 
@@ -39,8 +39,8 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    element_rel = "packs/core/pack.core.logic_base/data/logic_element_registry.json"
-    statevec_rel = "packs/core/pack.core.logic_base/data/logic_state_vectors.json"
+    element_rel = "content/packs/core/pack.core.logic_base/data/logic_element_registry.json"
+    statevec_rel = "content/packs/core/pack.core.logic_base/data/logic_state_vectors.json"
     element_payload = _load_json(repo_root, element_rel)
     statevec_payload = _load_json(repo_root, statevec_rel)
     element_rows = list(element_payload.get("logic_elements") or [])

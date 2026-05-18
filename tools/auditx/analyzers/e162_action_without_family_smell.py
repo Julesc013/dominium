@@ -35,12 +35,12 @@ def run(graph, repo_root, changed_files=None):
     del changed_files
     findings = []
 
-    control = _load_registry(repo_root, "data/registries/control_action_registry.json")
-    interaction = _load_registry(repo_root, "data/registries/interaction_action_registry.json")
-    task_types = _load_registry(repo_root, "data/registries/task_type_registry.json")
-    processes = _load_registry(repo_root, "data/registries/process_registry.json")
-    templates = _load_registry(repo_root, "data/registries/action_template_registry.json")
-    families = _load_registry(repo_root, "data/registries/action_family_registry.json")
+    control = _load_registry(repo_root, "contracts/registry/control_action_registry.json")
+    interaction = _load_registry(repo_root, "contracts/registry/interaction_action_registry.json")
+    task_types = _load_registry(repo_root, "contracts/registry/task_type_registry.json")
+    processes = _load_registry(repo_root, "contracts/registry/process_registry.json")
+    templates = _load_registry(repo_root, "contracts/registry/action_template_registry.json")
+    families = _load_registry(repo_root, "contracts/registry/action_family_registry.json")
 
     family_ids = set()
     for row in list(families.get("families") or []):
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.action_without_family_smell",
                     severity="RISK",
                     confidence=0.95,
-                    file_path="data/registries/action_template_registry.json",
+                    file_path="contracts/registry/action_template_registry.json",
                     line=1,
                     evidence=["missing action_template mapping", source_id],
                     suggested_classification="TODO-BLOCKED",
@@ -104,8 +104,8 @@ def run(graph, repo_root, changed_files=None):
                         "INV-NO-UNREGISTERED-ACTION",
                     ],
                     related_paths=[
-                        "data/registries/action_template_registry.json",
-                        "data/registries/action_family_registry.json",
+                        "contracts/registry/action_template_registry.json",
+                        "contracts/registry/action_family_registry.json",
                     ],
                 )
             )
@@ -118,14 +118,14 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.action_without_family_smell",
                     severity="RISK",
                     confidence=0.95,
-                    file_path="data/registries/action_template_registry.json",
+                    file_path="contracts/registry/action_template_registry.json",
                     line=1,
                     evidence=["action_template missing action_family_id", source_id],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-ACTION-MUST-HAVE-FAMILY"],
                     related_paths=[
-                        "data/registries/action_template_registry.json",
+                        "contracts/registry/action_template_registry.json",
                         "docs/meta/ACTION_GRAMMAR_CONSTITUTION.md",
                     ],
                 )
@@ -138,15 +138,15 @@ def run(graph, repo_root, changed_files=None):
                     category="architecture.action_without_family_smell",
                     severity="RISK",
                     confidence=0.95,
-                    file_path="data/registries/action_template_registry.json",
+                    file_path="contracts/registry/action_template_registry.json",
                     line=1,
                     evidence=["action_template references unknown family", source_id, family_id],
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-ACTION-MUST-HAVE-FAMILY"],
                     related_paths=[
-                        "data/registries/action_template_registry.json",
-                        "data/registries/action_family_registry.json",
+                        "contracts/registry/action_template_registry.json",
+                        "contracts/registry/action_family_registry.json",
                     ],
                 )
             )

@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/ir/__init__.py`
+- Canonical Candidate: `src/tools/governance/ir/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/ir/__init__.py`
-- `src/control/ir/control_ir_verifier.py`
+- `src/tools/governance/ir/__init__.py`
+- `src/tools/governance/ir/control_ir_verifier.py`
 
 ## Scorecard
 
-- `src/control/ir/__init__.py` disposition=`canonical` rank=`1` total_score=`73.51` risk=`HIGH`
+- `src/tools/governance/ir/__init__.py` disposition=`canonical` rank=`1` total_score=`73.51` risk=`HIGH`
 - `src/control/__init__.py` disposition=`quarantine` rank=`2` total_score=`71.79` risk=`HIGH`
-- `src/control/ir/control_ir_verifier.py` disposition=`merge` rank=`3` total_score=`55.18` risk=`HIGH`
+- `src/tools/governance/ir/control_ir_verifier.py` disposition=`merge` rank=`3` total_score=`55.18` risk=`HIGH`
 
 ## Usage Sites
 

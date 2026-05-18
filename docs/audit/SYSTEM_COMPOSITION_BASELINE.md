@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # System Composition Baseline
 
-Status: BASELINE (SYS-0)  
-Date: 2026-03-05  
+Status: BASELINE (SYS-0)
+Date: 2026-03-05
 Scope: System composition constitution, collapse/expand process skeletons, boundary invariant declarations, and SYS-0 enforcement/test coverage.
 
 ## 1) System Definition Summary

@@ -43,9 +43,9 @@ def _collect_drift_ids(rows):
 
 
 def run(repo_root: str):
-    lifecycle_payload, lifecycle_err = _load(repo_root, "data/registries/process_lifecycle_policy_registry.json")
-    stabilization_payload, stabilization_err = _load(repo_root, "data/registries/process_stabilization_policy_registry.json")
-    drift_payload, drift_err = _load(repo_root, "data/registries/process_drift_policy_registry.json")
+    lifecycle_payload, lifecycle_err = _load(repo_root, "contracts/registry/process_lifecycle_policy_registry.json")
+    stabilization_payload, stabilization_err = _load(repo_root, "contracts/registry/process_stabilization_policy_registry.json")
+    drift_payload, drift_err = _load(repo_root, "contracts/registry/process_drift_policy_registry.json")
 
     if lifecycle_err:
         return {"status": "fail", "message": "process_lifecycle_policy_registry missing or invalid"}

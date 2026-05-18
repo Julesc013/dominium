@@ -15,7 +15,7 @@ selection contract used by packaging, setup, launcher, RepoX, and TestX.
 
 ## Product Graph Contract
 
-- Product graph source of truth: `data/registries/product_graph.json`.
+- Product graph source of truth: `contracts/registry/product_graph.json`.
 - Schema contract: `schema/distribution/product_graph.schema`.
 - Nodes declare provided exports and capabilities.
 - Node requirements must be explicit and resolved before run/install.
@@ -33,7 +33,7 @@ selection contract used by packaging, setup, launcher, RepoX, and TestX.
 
 ## One Binary Three Modes
 
-- Runtime mode selection source of truth: `data/registries/mode_backend.json`.
+- Runtime mode selection source of truth: `contracts/registry/mode_backend.json`.
 - Schema contract: `schema/ui/mode_backend.schema`.
 - Modes are `cli`, `tui`, `gui`.
 - A single executable may expose all modes if backend and entitlement checks pass.

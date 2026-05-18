@@ -133,3 +133,20 @@ bad roots.
 
 This is not full recovery proof. Reference/import/build repair remains assigned
 to `MOVE-ROUTER-02`, and feature work plus DOE-00 remain blocked.
+
+## MOVE-ROUTER-02 Repair Proof Note
+
+MOVE-ROUTER-02 closed as PARTIAL. It repaired the first active path/import/build
+layer after MOVE-ROUTER-01 while preserving the routed root cleanup.
+
+- Bad-root tracked files after repair: 0.
+- Exact path replacements recorded: 33,316.
+- Import replacements recorded: 76.
+- Runtime control shim packages created: 3.
+- CMake configure: PASS.
+- Build: PARTIAL; 57/57 integrated fast/smoke tests passed before broader TestX failed.
+- Broader TestX: FAIL, 140 of 344 lanes failed.
+- Strict repo/root layout validators: PASS at this boundary.
+
+This is not final proof. Remaining blockers are assigned to
+`MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing`.

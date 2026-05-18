@@ -1,0 +1,32 @@
+{
+  "schema_version": "dominium.move_router_02.summary.v1",
+  "task": "MOVE-ROUTER-02",
+  "status": "PARTIAL",
+  "generated_date": "2026-05-18",
+  "starting_head": "2f722d626a316e3e1f827fd06a131b2a74e5f3d7",
+  "starting_origin_main": "2f722d626a316e3e1f827fd06a131b2a74e5f3d7",
+  "bad_root_tracked_files_after": 0,
+  "path_reference_replacements": 33316,
+  "path_reference_files_changed": 1171,
+  "import_replacements": 76,
+  "import_files_changed": 74,
+  "runtime_shim_packages_created": 3,
+  "cmake_configure": "PASS",
+  "cmake_build": "PARTIAL",
+  "fast_smoke_ctest_from_build": {
+    "status": "PASS",
+    "passed": 57,
+    "failed": 0
+  },
+  "broader_testx_from_build": {
+    "status": "FAIL",
+    "passed_percent": 59,
+    "failed": 140,
+    "total": 344
+  },
+  "bad_root_absence_validator": "PASS",
+  "repo_layout_validator": "PASS",
+  "root_allowlist_validator": "PASS",
+  "git_diff_check": "PASS",
+  "next_task": "MOVE-ROUTER-02R - Finish Registry, Ruleset, Import, and Test Path Repair After Routing"
+}

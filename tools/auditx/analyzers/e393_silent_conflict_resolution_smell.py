@@ -22,7 +22,7 @@ REQUIRED_TOKENS = {
         "overlay.conflict.prompt_stub",
         "explain.overlay_conflict",
     ),
-    "data/registries/overlay_conflict_policy_registry.json": (
+    "contracts/registry/overlay_conflict_policy_registry.json": (
         "overlay.conflict.last_wins",
         "overlay.conflict.refuse",
         "overlay.conflict.prompt_stub",

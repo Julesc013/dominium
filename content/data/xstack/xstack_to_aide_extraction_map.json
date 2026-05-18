@@ -20,32 +20,32 @@
     "docs/planning/GATES_AND_PROOFS.md",
     "docs/planning/MERGED_PROGRAM_STATE.md",
     "docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md",
-    "data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
+    "content/data/planning/checkpoints/checkpoint_c_zeta_mega_validation_and_closure.json",
     "docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md",
-    "data/planning/next_execution_order_post_zeta.json",
+    "content/data/planning/next_execution_order_post_zeta.json",
     "docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md",
     "docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md",
     "docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md",
     "docs/audit/ULTRA_REPO_AUDIT_PRODUCT_ASSEMBLY_PLAN.md",
-    "data/audit/ultra_repo_audit_system_inventory.json",
-    "data/audit/ultra_repo_audit_reuse_plan.json",
-    "data/audit/ultra_repo_audit_product_assembly_plan.json",
+    "content/data/audit/ultra_repo_audit_system_inventory.json",
+    "content/data/audit/ultra_repo_audit_reuse_plan.json",
+    "content/data/audit/ultra_repo_audit_product_assembly_plan.json",
     "docs/xstack/XSTACK_SCOPE_FREEZE.md",
-    "data/xstack/xstack_scope_freeze.json",
+    "content/data/xstack/xstack_scope_freeze.json",
     "docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md",
-    "data/xstack/xstack_inventory_and_classification.json",
+    "content/data/xstack/xstack_inventory_and_classification.json",
     "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-    "data/xstack/aide_portable_task_contract.json",
+    "contracts/xstack/aide_portable_task_contract.json",
     "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-    "data/xstack/aide_evidence_and_review_contract.json",
+    "contracts/xstack/aide_evidence_and_review_contract.json",
     "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
-    "data/xstack/aide_policy_and_permission_shape.json",
+    "contracts/xstack/aide_policy_and_permission_shape.json",
     "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
-    "data/xstack/aide_capability_profile_shape.json",
+    "contracts/xstack/aide_capability_profile_shape.json",
     "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
-    "data/xstack/aide_adapter_contract.json",
+    "contracts/xstack/aide_adapter_contract.json",
     "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
-    "data/xstack/codex_repo_operating_contract.json",
+    "contracts/xstack/codex_repo_operating_contract.json",
     "tools/xstack/compatx/README.md",
     "tools/xstack/controlx/README.md",
     "tools/xstack/sessionx/README.md",
@@ -61,7 +61,7 @@
     "tools/tool_surface_adapter.py",
     "tools/import_bridge.py",
     "tools/controlx/core/remediation_bridge.py",
-    "validation/validation_engine.py",
+    "tools/validators/validation/validation_engine.py",
     "tools/compatx/compatx.py",
     "tools/controlx/controlx.py",
     "tools/xstack/auditx/check.py",
@@ -71,7 +71,7 @@
     "tools/setup/setup_cli.py",
     "release/release_manifest_engine.py",
     "release/update_resolver.py",
-    "security/trust/trust_verifier.py"
+    "tools/validators/security/trust/trust_verifier.py"
   ],
   "current_program_context": {
     "admissible_zeta_doctrine_program_complete": true,
@@ -102,15 +102,15 @@
       "name": "Frozen portable AIDE contract artifacts",
       "repo_paths": [
         "docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md",
-        "data/xstack/aide_portable_task_contract.json",
+        "contracts/xstack/aide_portable_task_contract.json",
         "docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md",
-        "data/xstack/aide_evidence_and_review_contract.json",
+        "contracts/xstack/aide_evidence_and_review_contract.json",
         "docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md",
-        "data/xstack/aide_policy_and_permission_shape.json",
+        "contracts/xstack/aide_policy_and_permission_shape.json",
         "docs/xstack/AIDE_CAPABILITY_PROFILE_SHAPE.md",
-        "data/xstack/aide_capability_profile_shape.json",
+        "contracts/xstack/aide_capability_profile_shape.json",
         "docs/xstack/AIDE_ADAPTER_CONTRACT.md",
-        "data/xstack/aide_adapter_contract.json"
+        "contracts/xstack/aide_adapter_contract.json"
       ],
       "source_inventory_ids": [],
       "current_role_summary": "portable_contract_freeze",
@@ -631,7 +631,7 @@
         "tools/xstack/ci/",
         "docs/xstack/CI_GUARDRAILS.md",
         "docs/xstack/ARCH_DRIFT_POLICY.md",
-        "data/xstack/gate_definitions.json"
+        "content/data/xstack/gate_definitions.json"
       ],
       "source_inventory_ids": [
         "xinv.ci_guardrail_surface"
@@ -668,7 +668,7 @@
       "id": "xmap.validation_unified_surface",
       "name": "Unified validation engine plus legacy adapters",
       "repo_paths": [
-        "validation/validation_engine.py",
+        "tools/validators/validation/validation_engine.py",
         "tools/validation/tool_run_validation.py",
         "tools/validation/validate_all_main.cpp",
         "tools/validation/validator_common.cpp",
@@ -879,8 +879,8 @@
         "release/component_graph_resolver.py",
         "release/release_manifest_engine.py",
         "release/update_resolver.py",
-        "security/trust/trust_verifier.py",
-        "security/trust/license_capability.py"
+        "tools/validators/security/trust/trust_verifier.py",
+        "tools/validators/security/trust/license_capability.py"
       ],
       "source_inventory_ids": [
         "xinv.release_and_trust_consumers"
@@ -953,7 +953,7 @@
         "docs/governance/XSTACK_INCREMENTAL_MODEL.md",
         "docs/governance/XSTACK_EXTENSION_MODEL.md",
         "docs/xstack/CODEX_REPO_OPERATING_CONTRACT.md",
-        "data/xstack/codex_repo_operating_contract.json"
+        "contracts/xstack/codex_repo_operating_contract.json"
       ],
       "source_inventory_ids": [
         "xinv.legacy_xstack_reference_docs"

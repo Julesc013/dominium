@@ -18,7 +18,7 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-DOC_INVENTORY_JSON_REL = "data/audit/doc_inventory.json"
+DOC_INVENTORY_JSON_REL = "content/data/audit/doc_inventory.json"
 DOC_INDEX_MD_REL = "docs/audit/DOC_INDEX.md"
 CANON_MAP_MD_REL = "docs/audit/CANON_MAP.md"
 DOC_DRIFT_MATRIX_MD_REL = "docs/audit/DOC_DRIFT_MATRIX.md"
@@ -55,8 +55,8 @@ ROOT_DOC_PATHS = {
     "MODDING.md",
     "README.md",
     "SECURITY.md",
-    "data/CONTENT_AUDIT.md",
-    "bundles/README.md",
+    "docs/content/CONTENT_AUDIT.md",
+    "content/bundles/README.md",
 }
 CURRENT_SCOPE_KEYWORDS = {
     "appshell",

@@ -10,7 +10,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E409_NONDETERMINISTIC_DESCRIPTOR_SMELL"
 SCANNED_FILES = (
-    "compat/descriptor/descriptor_engine.py",
+    "tools/validators/compatibility/descriptor/descriptor_engine.py",
     "tools/compat/tool_emit_descriptor.py",
     "tools/compat/tool_generate_descriptor_manifest.py",
 )

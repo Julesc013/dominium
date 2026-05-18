@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: selected `Υ-D`, later checkpoint before `Φ-B5`, `Φ-B5`, future `Ζ`
 Replacement Target: later post-`Υ-D` checkpoint and next-order artifact may refine the sequence without replacing the ordering law frozen here
-Binding Sources: `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `data/planning/readiness/prompt_status_registry.json`
+Binding Sources: `docs/planning/CHECKPOINT_C_PRE_DISTRIBUTED_AUTHORITY_REVIEW.md`, `content/data/planning/checkpoints/checkpoint_c_pre_distributed_authority_review.json`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `contracts/registry/planning/readiness/prompt_status_registry.json`
 
 # Next Execution Order Post-ΦB4
 

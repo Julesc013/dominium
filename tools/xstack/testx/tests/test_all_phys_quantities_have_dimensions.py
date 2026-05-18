@@ -35,8 +35,8 @@ def _load_json(repo_root: str, rel_path: str):
 
 def run(repo_root: str):
     try:
-        quantity_payload = _load_json(repo_root, "data/registries/quantity_registry.json")
-        quantity_type_payload = _load_json(repo_root, "data/registries/quantity_type_registry.json")
+        quantity_payload = _load_json(repo_root, "contracts/registry/quantity_registry.json")
+        quantity_type_payload = _load_json(repo_root, "contracts/registry/quantity_type_registry.json")
     except (OSError, ValueError):
         return {"status": "fail", "message": "quantity registries missing or invalid"}
 

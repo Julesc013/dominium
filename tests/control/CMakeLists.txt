@@ -9,7 +9,7 @@ target_include_directories(control_disabled_determinism_tests PRIVATE
 target_link_libraries(control_disabled_determinism_tests PRIVATE dominium_game)
 target_link_libraries(control_disabled_determinism_tests PRIVATE libs::contracts)
 target_compile_definitions(control_disabled_determinism_tests PRIVATE
-    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/control_capabilities.registry"
+    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_disabled_determinism_tests PROPERTIES
     CXX_STANDARD 98
@@ -29,7 +29,7 @@ target_include_directories(control_non_interference_tests PRIVATE
 target_link_libraries(control_non_interference_tests PRIVATE dominium_game)
 target_link_libraries(control_non_interference_tests PRIVATE libs::contracts)
 target_compile_definitions(control_non_interference_tests PRIVATE
-    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/control_capabilities.registry"
+    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_non_interference_tests PROPERTIES
     CXX_STANDARD 98
@@ -49,7 +49,7 @@ target_include_directories(control_capability_registry_tests PRIVATE
 target_link_libraries(control_capability_registry_tests PRIVATE dominium_game)
 target_link_libraries(control_capability_registry_tests PRIVATE libs::contracts)
 target_compile_definitions(control_capability_registry_tests PRIVATE
-    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/control_capabilities.registry"
+    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_capability_registry_tests PROPERTIES
     CXX_STANDARD 98
@@ -69,7 +69,7 @@ target_include_directories(control_refusal_tests PRIVATE
 target_link_libraries(control_refusal_tests PRIVATE dominium_game)
 target_link_libraries(control_refusal_tests PRIVATE libs::contracts)
 target_compile_definitions(control_refusal_tests PRIVATE
-    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/control_capabilities.registry"
+    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_refusal_tests PROPERTIES
     CXX_STANDARD 98
@@ -89,7 +89,7 @@ target_include_directories(control_audit_disclosure_tests PRIVATE
 target_link_libraries(control_audit_disclosure_tests PRIVATE dominium_game)
 target_link_libraries(control_audit_disclosure_tests PRIVATE libs::contracts)
 target_compile_definitions(control_audit_disclosure_tests PRIVATE
-    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/data/registries/control_capabilities.registry"
+    DOMINIUM_CONTROL_REGISTRY_PATH="${CMAKE_SOURCE_DIR}/contracts/registry/control_capabilities.registry"
 )
 set_target_properties(control_audit_disclosure_tests PROPERTIES
     CXX_STANDARD 98

@@ -11,9 +11,9 @@ from typing import Dict, Iterable, List, Mapping, Tuple
 GAL0_SCOPE_PATHS: Tuple[str, ...] = (
     "docs/audit/GAL0_RETRO_AUDIT.md",
     "docs/worldgen/GALAXY_METADATA_PROXIES.md",
-    "data/registries/field_type_registry.json",
-    "data/registries/field_binding_registry.json",
-    "data/registries/galactic_region_registry.json",
+    "contracts/registry/field_type_registry.json",
+    "contracts/registry/field_binding_registry.json",
+    "contracts/registry/galactic_region_registry.json",
     "game/domains/worldgen/galaxy",
     "game/domains/worldgen/earth/sky/starfield_generator.py",
     "tools/worldgen/gal0_probe.py",
@@ -130,19 +130,19 @@ def scan_gal0_catalog_dependencies(repo_root: str) -> List[Dict[str, object]]:
 def scan_gal0_untagged_stubs(repo_root: str) -> List[Dict[str, object]]:
     findings: List[Dict[str, object]] = []
     expected_registry_rows = (
-        ("data/registries/field_type_registry.json", "field_types", "field_type_id", [
+        ("contracts/registry/field_type_registry.json", "field_types", "field_type_id", [
             "field.stellar_density_proxy",
             "field.metallicity_proxy",
             "field.radiation_background_proxy",
             "field.galactic_region_id",
         ]),
-        ("data/registries/field_binding_registry.json", "field_bindings", "field_id", [
+        ("contracts/registry/field_binding_registry.json", "field_bindings", "field_id", [
             "field.stellar_density_proxy",
             "field.metallicity_proxy",
             "field.radiation_background_proxy",
             "field.galactic_region_id",
         ]),
-        ("data/registries/galactic_region_registry.json", "galactic_regions", "region_id", [
+        ("contracts/registry/galactic_region_registry.json", "galactic_regions", "region_id", [
             "region.bulge",
             "region.inner_disk",
             "region.outer_disk",

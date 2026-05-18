@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # PATCH-A2 Retro Consistency Audit
 
-Status: COMPLETE  
-Date: 2026-03-04  
+Status: COMPLETE
+Date: 2026-03-04
 Scope: Energy/momentum consistency sweep across PHYS/ELEC/THERM/FLUID/MOB/MECH/runtime glue.
 
 ## 1) Scan Method

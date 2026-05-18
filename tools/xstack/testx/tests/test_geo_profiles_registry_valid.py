@@ -11,7 +11,7 @@ TEST_TAGS = ["fast", "geo", "registry"]
 
 
 _REQUIRED = {
-    "data/registries/space_topology_profile_registry.json": (
+    "contracts/registry/space_topology_profile_registry.json": (
         "topology_profiles",
         "topology_profile_id",
         {
@@ -25,7 +25,7 @@ _REQUIRED = {
             "geo.topology.r4_stub",
         },
     ),
-    "data/registries/metric_profile_registry.json": (
+    "contracts/registry/metric_profile_registry.json": (
         "metric_profiles",
         "metric_profile_id",
         {
@@ -35,7 +35,7 @@ _REQUIRED = {
             "geo.metric.hyperbolic_stub",
         },
     ),
-    "data/registries/partition_profile_registry.json": (
+    "contracts/registry/partition_profile_registry.json": (
         "partition_profiles",
         "partition_profile_id",
         {
@@ -45,7 +45,7 @@ _REQUIRED = {
             "geo.partition.atlas_tiles",
         },
     ),
-    "data/registries/projection_profile_registry.json": (
+    "contracts/registry/projection_profile_registry.json": (
         "projection_profiles",
         "projection_profile_id",
         {

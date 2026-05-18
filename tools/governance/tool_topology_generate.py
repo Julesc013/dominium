@@ -27,14 +27,14 @@ REGISTRY_ROOTS = ("data/registries", "data/governance")
 TOOL_ROOT = "tools"
 PROCESS_RE = re.compile(r"\bprocess\.[A-Za-z0-9_.]+\b")
 TEXT_EXTENSIONS = (".py", ".c", ".cc", ".cpp", ".h", ".hh", ".hpp", ".json", ".md", ".schema", ".schema.json")
-CONTROL_PLANE_MODULE_ID = "module:control/control_plane_engine.py"
+CONTROL_PLANE_MODULE_ID = "module:tools/governance/control_plane_engine.py"
 CONTROL_SUBSYSTEM_MODULES = (
-    ("control_plane_engine", "control/control_plane_engine.py"),
-    ("negotiation_kernel", "control/negotiation/negotiation_kernel.py"),
-    ("control_ir_engine", "control/ir/control_ir_compiler.py"),
-    ("view_engine", "control/view/view_engine.py"),
-    ("fidelity_engine", "control/fidelity/fidelity_engine.py"),
-    ("effect_engine", "control/effects/effect_engine.py"),
+    ("control_plane_engine", "tools/governance/control_plane_engine.py"),
+    ("negotiation_kernel", "tools/governance/negotiation/negotiation_kernel.py"),
+    ("control_ir_engine", "tools/governance/ir/control_ir_compiler.py"),
+    ("view_engine", "tools/governance/view/view_engine.py"),
+    ("fidelity_engine", "tools/governance/fidelity/fidelity_engine.py"),
+    ("effect_engine", "tools/governance/effects/effect_engine.py"),
 )
 CONTROL_DEPENDENCY_TOKENS = (
     "from control",

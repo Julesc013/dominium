@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/profile/appcore_profile.h
+FILE: runtime/shell/appcore/profile/appcore_profile.h
 MODULE: Dominium
 PURPOSE: Appcore profile module (scaffold; data-only interfaces).
 NOTES: Stub surface; deterministic iteration required; no side effects.

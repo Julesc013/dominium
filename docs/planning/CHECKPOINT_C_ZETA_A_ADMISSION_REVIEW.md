@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: bounded `Ζ-A` first wave, immediate post-`Ζ-A` checkpoint, later-wave `Ζ`
 Replacement Target: later post-`Ζ-A` checkpoint may refine readiness judgments without replacing the checkpoint law frozen here
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/RELEASE_CONTRACT_PROFILE.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `data/planning/zeta_blocker_reconciliation_registry.json`, `data/planning/live_operations_prerequisite_matrix.json`, `data/planning/zeta_execution_gates_registry.json`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, `data/registries/provenance_classification_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `release/update_resolver.py`, `security/trust/trust_verifier.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PRE_ZETA_ADMISSION.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB5.md`, `docs/planning/ZETA_BLOCKER_RECONCILIATION.md`, `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md`, `docs/planning/ZETA_EXECUTION_GATES.md`, `docs/runtime/DISTRIBUTED_AUTHORITY_FOUNDATIONS.md`, `docs/runtime/HOTSWAP_BOUNDARIES.md`, `docs/runtime/MULTI_VERSION_COEXISTENCE.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/LIVE_TRUST_ROTATION_AND_REVOCATION_PROPAGATION_PREREQUISITES.md`, `docs/release/LIVE_CUTOVER_RECEIPTS_AND_PROVENANCE_GENERALIZATION.md`, `docs/release/PUBLICATION_AND_TRUST_EXECUTION_OPERATIONALIZATION_GATES.md`, `docs/release/TRUST_EXECUTION_AND_REVOCATION_CONTINUITY.md`, `docs/release/OPERATOR_TRANSACTION_RECEIPTS_AND_PROVENANCE_CONTINUITY.md`, `docs/release/RELEASE_REHEARSAL_SANDBOX_AND_PROOF_BACKED_ROLLBACK_ALIGNMENT.md`, `docs/release/CANARY_AND_DETERMINISTIC_DOWNGRADE_EXECUTION.md`, `docs/release/RELEASE_INDEX_AND_RESOLUTION_ALIGNMENT.md`, `docs/release/RELEASE_CONTRACT_PROFILE.md`, `docs/blueprint/FOUNDATION_READINESS_MATRIX.md`, `docs/blueprint/CAPABILITY_LADDER.md`, `docs/blueprint/MANUAL_REVIEW_GATES.md`, `docs/blueprint/STOP_CONDITIONS_AND_ESCALATION.md`, `contracts/registry/planning/zeta_blocker_reconciliation_registry.json`, `contracts/planning/live_operations_prerequisite_matrix.json`, `contracts/registry/planning/zeta_execution_gates_registry.json`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, `contracts/registry/provenance_classification_registry.json`, `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, `server/net/dom_server_runtime.h`, `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`
 
 # C-ZETA_A_ADMISSION_REVIEW
 
@@ -74,7 +74,7 @@ Why:
 - the family matrix in `docs/planning/LIVE_OPERATIONS_PREREQUISITE_MATRIX.md` now separates doctrinal availability, admission posture, realization posture, and bounded-entry suitability
 - the execution-gate freeze in `docs/planning/ZETA_EXECUTION_GATES.md` already narrows the admissible perimeter to one admitted family and two admitted-with-cautions families
 - `server/shard/shard_api.h`, `server/shard/dom_cross_shard_log.h`, `server/net/dom_server_protocol.h`, and `server/net/dom_server_runtime.h` show real deterministic shard, cross-shard log, checkpoint, and replay-shaped substrate, but not live authority transfer or proof-anchor quorum realization
-- `release/update_resolver.py`, `security/trust/trust_verifier.py`, `data/registries/net_replication_policy_registry.json`, `data/registries/trust_policy_registry.json`, `data/registries/trust_root_registry.json`, and `data/registries/provenance_classification_registry.json` confirm that release, trust, replication, and provenance substrate exist as governed precursor evidence while still remaining provisional or unrealized in the exact places that the open blockers name
+- `release/update_resolver.py`, `tools/validators/security/trust/trust_verifier.py`, `contracts/registry/net_replication_policy_registry.json`, `contracts/registry/trust_policy_registry.json`, `contracts/registry/trust_root_registry.json`, and `contracts/registry/provenance_classification_registry.json` confirm that release, trust, replication, and provenance substrate exist as governed precursor evidence while still remaining provisional or unrealized in the exact places that the open blockers name
 
 This means bounded `Ζ-A` can begin if it stays proof-bearing, rehearsal-oriented, rollback-aware, and explicitly non-live in the ways the gate freeze already requires.
 
@@ -114,7 +114,7 @@ Rationale:
 - the repo now has explicit blocker, matrix, and gate surfaces for bounded `Ζ-A`, which it did not have before `Ζ-P`
 - `Ζ-P2` already froze a narrow admissible first-wave perimeter instead of giving blanket permission
 - the live shard and runtime substrate supports proof-bearing rehearsal and verification work more honestly than it supports live authority transfer or convergence claims
-- `data/registries/net_replication_policy_registry.json` and `data/registries/trust_policy_registry.json` remain provisional and `data/registries/trust_root_registry.json` remains empty, which reinforces that admission can be bounded while realization remains absent
+- `contracts/registry/net_replication_policy_registry.json` and `contracts/registry/trust_policy_registry.json` remain provisional and `contracts/registry/trust_root_registry.json` remains empty, which reinforces that admission can be bounded while realization remains absent
 - `docs/blueprint/FOUNDATION_READINESS_MATRIX.md` and `docs/blueprint/CAPABILITY_LADDER.md` still warn that relocation and stronger live operations remain unrealistic or unrealized, which remains correct for broader `Ζ`
 
 The caution is therefore specific:
@@ -245,11 +245,11 @@ Bounded `Ζ-A` and any later follow-on work must extend and preserve:
 - `server/net/dom_server_protocol.h`
 - `server/net/dom_server_runtime.h`
 - `release/update_resolver.py`
-- `security/trust/trust_verifier.py`
-- `data/registries/net_replication_policy_registry.json`
-- `data/registries/trust_policy_registry.json`
-- `data/registries/trust_root_registry.json`
-- `data/registries/provenance_classification_registry.json`
+- `tools/validators/security/trust/trust_verifier.py`
+- `contracts/registry/net_replication_policy_registry.json`
+- `contracts/registry/trust_policy_registry.json`
+- `contracts/registry/trust_root_registry.json`
+- `contracts/registry/provenance_classification_registry.json`
 
 Must avoid replacing:
 

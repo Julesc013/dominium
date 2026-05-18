@@ -17,21 +17,21 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases
 install_src_aliases(REPO_ROOT_HINT)
 
-from compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
+from tools.validators.compatibility.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
 from game.domains.geology import (
     build_default_overlay_manifest,
     build_worldgen_request,
     overlay_proof_surface,
     validate_overlay_manifest_trust,
 )
-from lib.instance.instance_validator import (
+from tools.libraries.instance.instance_validator import (
     deterministic_fingerprint as instance_deterministic_fingerprint,
     normalize_instance_manifest,
     validate_instance_manifest,
 )
-from meta.identity import IDENTITY_KIND_INSTANCE, attach_universal_identity_block
+from tools.validators.identity import IDENTITY_KIND_INSTANCE, attach_universal_identity_block
 from release.component_graph_resolver import DEFAULT_INSTALL_PROFILE_ID, load_install_profile_registry, select_install_profile
-from security.trust import DEFAULT_TRUST_POLICY_ID
+from tools.validators.security.trust import DEFAULT_TRUST_POLICY_ID
 from engine.time.epoch_anchor_engine import (
     ANCHOR_REASON_INTERVAL,
     ANCHOR_REASON_SAVE,

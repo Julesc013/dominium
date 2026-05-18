@@ -23,27 +23,27 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-ARCHITECTURE_GRAPH_REL = "data/architecture/architecture_graph.json"
-MODULE_DEP_GRAPH_REL = "data/architecture/module_dependency_graph.json"
-MODULE_REGISTRY_REL = "data/architecture/module_registry.json"
+ARCHITECTURE_GRAPH_REL = "content/data/architecture/architecture_graph.json"
+MODULE_DEP_GRAPH_REL = "content/data/architecture/module_dependency_graph.json"
+MODULE_REGISTRY_REL = "contracts/registry/architecture/module_registry.json"
 
-BUILD_GRAPH_REL = "data/audit/build_graph.json"
-INCLUDE_GRAPH_REL = "data/audit/include_graph.json"
-SYMBOL_INDEX_REL = "data/audit/symbol_index.json"
-DUPLICATE_IMPLS_REL = "data/audit/duplicate_impls.json"
-DUPLICATE_CLUSTERS_REL = "data/audit/duplicate_clusters.json"
-SHADOW_MODULES_REL = "data/audit/shadow_modules.json"
-SRC_DIRECTORY_REPORT_REL = "data/audit/src_directory_report.json"
-ARCHITECTURE_SCAN_REPORT_REL = "data/audit/architecture_scan_report.json"
-ARCH_AUDIT_REPORT_REL = "data/audit/arch_audit_report.json"
-ARCH_AUDIT2_REPORT_REL = "data/audit/arch_audit2_report.json"
-VALIDATION_FAST_REL = "data/audit/validation_report_FAST.json"
-VALIDATION_STRICT_REL = "data/audit/validation_report_STRICT.json"
+BUILD_GRAPH_REL = "content/data/audit/build_graph.json"
+INCLUDE_GRAPH_REL = "content/data/audit/include_graph.json"
+SYMBOL_INDEX_REL = "content/data/audit/symbol_index.json"
+DUPLICATE_IMPLS_REL = "content/data/audit/duplicate_impls.json"
+DUPLICATE_CLUSTERS_REL = "content/data/audit/duplicate_clusters.json"
+SHADOW_MODULES_REL = "content/data/audit/shadow_modules.json"
+SRC_DIRECTORY_REPORT_REL = "content/data/audit/src_directory_report.json"
+ARCHITECTURE_SCAN_REPORT_REL = "content/data/audit/architecture_scan_report.json"
+ARCH_AUDIT_REPORT_REL = "content/data/audit/arch_audit_report.json"
+ARCH_AUDIT2_REPORT_REL = "content/data/audit/arch_audit2_report.json"
+VALIDATION_FAST_REL = "content/data/audit/validation_report_FAST.json"
+VALIDATION_STRICT_REL = "content/data/audit/validation_report_STRICT.json"
 
-CONVERGENCE_PLAN_REL = "data/refactor/convergence_plan.json"
-CONVERGENCE_ACTIONS_REL = "data/refactor/convergence_actions.json"
-CONVERGENCE_RISK_MAP_REL = "data/refactor/convergence_risk_map.json"
-CONVERGENCE_EXECUTION_LOG_REL = "data/refactor/convergence_execution_log.json"
+CONVERGENCE_PLAN_REL = "content/data/refactor/convergence_plan.json"
+CONVERGENCE_ACTIONS_REL = "content/data/refactor/convergence_actions.json"
+CONVERGENCE_RISK_MAP_REL = "content/data/refactor/convergence_risk_map.json"
+CONVERGENCE_EXECUTION_LOG_REL = "content/data/refactor/convergence_execution_log.json"
 
 XI_1_FINAL_REL = "docs/audit/XI_1_FINAL.md"
 XI_2_FINAL_REL = "docs/audit/XI_2_FINAL.md"
@@ -61,16 +61,16 @@ PROMPT_DEPENDENCY_TREE_REL = "docs/blueprint/PROMPT_DEPENDENCY_TREE.md"
 PROMPT_RISK_MATRIX_REL = "docs/blueprint/PROMPT_RISK_MATRIX.md"
 REPO_REALITY_RECONCILIATION_GUIDE_REL = "docs/blueprint/REPO_REALITY_RECONCILIATION_GUIDE.md"
 
-SRC_DOMAIN_MAPPING_REL = "data/restructure/src_domain_mapping.json"
-SRC_DOMAIN_MAPPING_CANDIDATES_REL = "data/restructure/src_domain_mapping_candidates.json"
-SRC_DOMAIN_MAPPING_CONFLICTS_REL = "data/restructure/src_domain_mapping_conflicts.json"
-SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "data/restructure/src_domain_mapping_lock_proposal.json"
-SRC_RUNTIME_CRITICAL_SET_REL = "data/restructure/src_runtime_critical_set.json"
-SRC_TOOL_ONLY_SET_REL = "data/restructure/src_tool_only_set.json"
-SRC_GENERATED_SET_REL = "data/restructure/src_generated_set.json"
-SRC_TEST_ONLY_SET_REL = "data/restructure/src_test_only_set.json"
-SRC_LEGACY_SET_REL = "data/restructure/src_legacy_set.json"
-XI4B_REVIEW_MANIFEST_REL = "data/restructure/xi4b_review_manifest.json"
+SRC_DOMAIN_MAPPING_REL = "content/data/restructure/src_domain_mapping.json"
+SRC_DOMAIN_MAPPING_CANDIDATES_REL = "content/data/restructure/src_domain_mapping_candidates.json"
+SRC_DOMAIN_MAPPING_CONFLICTS_REL = "content/data/restructure/src_domain_mapping_conflicts.json"
+SRC_DOMAIN_MAPPING_LOCK_PROPOSAL_REL = "content/data/restructure/src_domain_mapping_lock_proposal.json"
+SRC_RUNTIME_CRITICAL_SET_REL = "content/data/restructure/src_runtime_critical_set.json"
+SRC_TOOL_ONLY_SET_REL = "content/data/restructure/src_tool_only_set.json"
+SRC_GENERATED_SET_REL = "content/data/restructure/src_generated_set.json"
+SRC_TEST_ONLY_SET_REL = "tests/fixtures/restructure/src_test_only_set.json"
+SRC_LEGACY_SET_REL = "content/data/restructure/src_legacy_set.json"
+XI4B_REVIEW_MANIFEST_REL = "contracts/restructure/xi4b_review_manifest.json"
 
 SRC_DOMAIN_MAPPING_REPORT_REL = "docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md"
 STRUCTURE_OPTIONS_REPORT_REL = "docs/restructure/STRUCTURE_OPTIONS_REPORT.md"
@@ -1663,7 +1663,7 @@ def _render_review_guide(preferred_option: str, conflicts: Sequence[Mapping[str,
             "1. `docs/restructure/XI_4B_UNBLOCK_REPORT.md`",
             "2. `docs/restructure/STRUCTURE_OPTIONS_REPORT.md`",
             "3. `docs/restructure/SRC_DOMAIN_MAPPING_REPORT.md`",
-            "4. `data/restructure/src_domain_mapping_lock_proposal.json`",
+            "4. `content/data/restructure/src_domain_mapping_lock_proposal.json`",
             "",
             "## Decisions Required",
             "",
@@ -1737,8 +1737,8 @@ def _render_xi_4b_final(
             "## Recommended Next Step",
             "",
             "- review `docs/restructure/XI_4B_UNBLOCK_REPORT.md` and approve the provisional mapping lock",
-            "- resolve conflicts listed in `data/restructure/src_domain_mapping_conflicts.json`",
-            "- execute bounded XI-5 against `data/restructure/src_domain_mapping_lock_proposal.json` after approval",
+            "- resolve conflicts listed in `content/data/restructure/src_domain_mapping_conflicts.json`",
+            "- execute bounded XI-5 against `content/data/restructure/src_domain_mapping_lock_proposal.json` after approval",
             "",
         ]
     )
@@ -1755,7 +1755,7 @@ def _review_first_text(preferred_option: str, conflicts: Sequence[Mapping[str, o
             "1. docs/restructure/XI_4B_REVIEW_GUIDE.md",
             "2. docs/restructure/XI_4B_UNBLOCK_REPORT.md",
             "3. docs/restructure/STRUCTURE_OPTIONS_REPORT.md",
-            "4. data/restructure/src_domain_mapping_lock_proposal.json",
+            "4. content/data/restructure/src_domain_mapping_lock_proposal.json",
             "",
             "Human decisions required:",
             f"- approve or reject preferred option `{preferred_option}`",

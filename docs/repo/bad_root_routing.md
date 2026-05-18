@@ -129,3 +129,16 @@ MOVE-ROUTER-01 applied the route table with `git mv`.
 
 Broad reference/import/build repair is assigned to
 `MOVE-ROUTER-02 - Repair References, Imports, Build, Projection, and Exceptions After Routing`.
+
+## MOVE-ROUTER-02 Repair Status
+
+MOVE-ROUTER-02 kept the routed structure intact and repaired a first active
+reference/import/build layer.
+
+- Bad-root tracked files after repair: 0.
+- CMake configure: PASS.
+- Integrated fast/smoke tests in the build pass: PASS.
+- Broader TestX: FAIL.
+
+Remaining work is assigned to `MOVE-ROUTER-02R`; no task may restore former bad
+roots as active owners to avoid that repair work.

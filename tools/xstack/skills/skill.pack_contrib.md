@@ -18,7 +18,7 @@ Contribute or modify packs while preserving pack-driven integration and determin
 1. Confirm target pack identity (`pack_id`, version, format version).
 2. Validate manifest required fields and dependency declarations.
    - `tools/xstack/pack_list`
-   - `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`
+   - `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
 3. Confirm provided capabilities are registry-consistent.
    - `tools/xstack/registry_compile`
    - `tools/xstack/lockfile_validate build/lockfile.json`

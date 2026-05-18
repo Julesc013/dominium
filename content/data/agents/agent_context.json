@@ -18,17 +18,17 @@
       "docs/planning/POST_PI_EXECUTION_PLAN.md",
       "docs/planning/PLAYER_DESIRE_ACCEPTANCE_MAP.md",
       "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
-      "data/planning/final_prompt_inventory.json",
-      "data/planning/dependency_graph_post_pi.json"
+      "content/data/planning/final_prompt_inventory.json",
+      "content/data/planning/dependency_graph_post_pi.json"
     ],
     "semantic_constitution_inputs": [
-      "specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
-      "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
-      "specs/reality/SPEC_CAPABILITY_SURFACES.md",
-      "specs/reality/SPEC_REPRESENTATION_LADDERS.md",
-      "specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
-      "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
-      "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md"
+      "docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md",
+      "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+      "contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md",
+      "docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md",
+      "docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md",
+      "docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+      "docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md"
     ],
     "repo_artifact_primacy": true,
     "mirrors_are_canonical": false,

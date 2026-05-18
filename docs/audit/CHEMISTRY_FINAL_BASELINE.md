@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # CHEM-4 Chemistry Final Baseline
 
-Date: 2026-03-05  
+Date: 2026-03-05
 Scope: CHEM-4 phases 0-9 completion (stress envelope, deterministic degradation, conservation verification, proof/replay, regression lock, enforcement, TestX, final baseline).
 
 ## Invariants and Contracts Upheld

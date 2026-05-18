@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E59_MATERIAL_MASS_DRIFT_SMELL"
-CONSERVATION_CONTRACT_SET_PATH = "data/registries/conservation_contract_set_registry.json"
+CONSERVATION_CONTRACT_SET_PATH = "contracts/registry/conservation_contract_set_registry.json"
 LEDGER_ENGINE_PATH = "game/domains/reality/ledger/ledger_engine.py"
 
 

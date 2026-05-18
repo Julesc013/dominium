@@ -27,7 +27,7 @@ def run(repo_root: str):
     from tools.xstack.testx.tests._logic_eval_test_utils import load_eval_inputs, make_chain_network, make_scalar_comparator_network
 
     inputs = load_eval_inputs(repo_root)
-    fault_registry = _load(repo_root, "data/registries/logic_fault_kind_registry.json")
+    fault_registry = _load(repo_root, "contracts/registry/logic_fault_kind_registry.json")
 
     _, chain_state = make_chain_network(network_id="net.logic.replay.fault")
     chain_graph = dict(chain_state["logic_network_graph_rows"][0])

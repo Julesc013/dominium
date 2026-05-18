@@ -49,7 +49,7 @@ XStack FAST/STRICT/FULL profiles invoke registry compile through:
 
 Direct command equivalents:
 - `tools/xstack/bundle_list`
-- `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`
+- `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
 - `tools/xstack/registry_compile.cmd`
 - `tools/xstack/lockfile_build.cmd --bundle bundle.base.lab --out build/lockfile.json`
 - `tools/setup/build --bundle bundle.base.lab --out dist` (consumes compiled lockfile/registries for packaging)

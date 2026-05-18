@@ -53,10 +53,10 @@ UI code MUST NOT:
 ## Generated artifacts
 
 The following files are generated and immutable:
-- `libs/appcore/ui_bind/ui_command_binding_table.h`
-- `libs/appcore/ui_bind/ui_command_binding_table.c`
-- `libs/appcore/ui_bind/ui_accessibility_map.h`
-- `libs/appcore/ui_bind/ui_accessibility_map.c`
-- `libs/appcore/ui_bind/ui_localisation_usage_report.json`
+- `runtime/shell/appcore/ui_bind/ui_command_binding_table.h`
+- `runtime/shell/appcore/ui_bind/ui_command_binding_table.c`
+- `runtime/shell/appcore/ui_bind/ui_accessibility_map.h`
+- `runtime/shell/appcore/ui_bind/ui_accessibility_map.c`
+- `runtime/shell/appcore/ui_bind/ui_localisation_usage_report.json`
 
 Edits to these files must be made by regenerating via `tool_ui_bind --write`.

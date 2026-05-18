@@ -15,11 +15,11 @@ REPO_ROOT_HINT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
 if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
-from meta.reference import evaluate_reference_suite, reference_evaluator_rows_by_id  # noqa: E402
+from tools.repo.meta.reference import evaluate_reference_suite, reference_evaluator_rows_by_id  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-REGISTRY_REL = "data/registries/reference_evaluator_registry.json"
+REGISTRY_REL = "contracts/registry/reference_evaluator_registry.json"
 MISMATCH_REL_TEMPLATE = "docs/audit/REFERENCE_MISMATCH_{seed}.md"
 
 

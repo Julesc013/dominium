@@ -19,9 +19,9 @@ def _load(repo_root: str, rel_path: str):
 
 
 def run(repo_root: str):
-    tier_payload, tier_err = _load(repo_root, "data/registries/tier_contract_registry.json")
-    coupling_payload, coupling_err = _load(repo_root, "data/registries/coupling_contract_registry.json")
-    explain_payload, explain_err = _load(repo_root, "data/registries/explain_contract_registry.json")
+    tier_payload, tier_err = _load(repo_root, "contracts/registry/tier_contract_registry.json")
+    coupling_payload, coupling_err = _load(repo_root, "contracts/registry/coupling_contract_registry.json")
+    explain_payload, explain_err = _load(repo_root, "contracts/registry/explain_contract_registry.json")
     if tier_err or coupling_err or explain_err:
         return {"status": "fail", "message": "one or more contract registries are missing or invalid"}
 

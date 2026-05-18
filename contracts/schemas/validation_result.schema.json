@@ -326,7 +326,7 @@
       "adapter_id": "validation_engine",
       "description": "Unified validation aggregate for validate --all.",
       "checked_paths": [
-        "data/registries/validation_suite_registry.json"
+        "contracts/registry/validation_suite_registry.json"
       ],
       "errors": [],
       "warnings": [],

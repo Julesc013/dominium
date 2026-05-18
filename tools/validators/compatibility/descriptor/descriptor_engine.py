@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, Iterable, List, Mapping, Tuple
 
-from compat.capability_negotiation import (
+from tools.validators.compatibility.capability_negotiation import (
     build_endpoint_descriptor,
     load_product_registry,
     product_default_degrade_ladders,

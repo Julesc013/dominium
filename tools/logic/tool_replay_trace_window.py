@@ -51,10 +51,10 @@ def _load_debug_inputs(repo_root: str) -> dict:
     inputs = _load_eval_inputs(repo_root)
     inputs.update(
         {
-            "debug_sampling_policy_registry_payload": read("data/registries/debug_sampling_policy_registry.json"),
-            "instrumentation_surface_registry_payload": read("data/registries/instrumentation_surface_registry.json"),
-            "access_policy_registry_payload": read("data/registries/access_policy_registry.json"),
-            "measurement_model_registry_payload": read("data/registries/measurement_model_registry.json"),
+            "debug_sampling_policy_registry_payload": read("contracts/registry/debug_sampling_policy_registry.json"),
+            "instrumentation_surface_registry_payload": read("contracts/registry/instrumentation_surface_registry.json"),
+            "access_policy_registry_payload": read("contracts/registry/access_policy_registry.json"),
+            "measurement_model_registry_payload": read("contracts/registry/measurement_model_registry.json"),
         }
     )
     return inputs

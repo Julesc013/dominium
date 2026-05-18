@@ -7,7 +7,7 @@ from typing import Dict, List, Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from models import constitutive_model_rows_by_id, model_type_rows_by_id
+from tools.models import constitutive_model_rows_by_id, model_type_rows_by_id
 from engine.time import evaluate_time_mappings
 from game.domains.logic.protocol import build_protocol_frame_from_delivery, normalize_protocol_frame_rows
 

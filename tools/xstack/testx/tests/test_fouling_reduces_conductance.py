@@ -55,8 +55,8 @@ def run(repo_root: str):
     if not effect_rows:
         return {"status": "fail", "message": "missing effect.conductance_reduction rows for target edge.therm.main"}
 
-    effect_type_registry = load_registry_payload(repo_root, "data/registries/effect_type_registry.json")
-    stacking_policy_registry = load_registry_payload(repo_root, "data/registries/stacking_policy_registry.json")
+    effect_type_registry = load_registry_payload(repo_root, "contracts/registry/effect_type_registry.json")
+    stacking_policy_registry = load_registry_payload(repo_root, "contracts/registry/stacking_policy_registry.json")
     graph = build_thermal_graph(source_energy=5000, sink_energy=100, source_capacity=100, sink_capacity=100, conductance_value=140)
 
     # Degradation effects are one-tick; evaluate at the same tick they are applied.

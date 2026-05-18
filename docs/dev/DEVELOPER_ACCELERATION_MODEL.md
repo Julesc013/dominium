@@ -84,7 +84,7 @@ See `docs/dev/IMPACT_GRAPH.md` for node/edge contract.
 
 - Observer MVP behavior is protected by explicit baseline locks.
 - Baseline file:
-  - `data/regression/observer_baseline.json`
+  - `tests/fixtures/regression/observer_baseline.json`
 - Baselines are stable by default; updates must be explicit and traceable.
 - Baseline updates require commit intent marker `REGRESSION-UPDATE`.
 

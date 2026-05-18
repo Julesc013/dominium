@@ -15,7 +15,7 @@ Superseded By: none
 
 | Cluster | Symbol | Canonical | Secondary | Resolution | Reasons |
 | --- | --- | --- | --- | --- | --- |
-| `duplicate.cluster.0075f9b78b2784df` | `normalize_extensions_map` | `src/meta_extensions_engine.py` | `src/meta/extensions/extensions_engine.py` | `quarantine` | `protocol_negotiation, semantic_contracts` |
+| `duplicate.cluster.0075f9b78b2784df` | `normalize_extensions_map` | `src/meta_extensions_engine.py` | `src/tools/repo/meta/extensions/extensions_engine.py` | `quarantine` | `protocol_negotiation, semantic_contracts` |
 | `duplicate.cluster.0253285ae8918910` | `_rel` | `tools/xstack/registry_compile/bundle_profile.py` | `tools/xstack/pack_loader/loader.py` | `quarantine` | `pack_compat_install_resolver` |
 | `duplicate.cluster.0260b746b91f764a` | `REFUSAL_SIGNAL_ROUTE_UNAVAILABLE` | `src/signals/transport/__init__.py` | `src/signals/__init__.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.0284e66e92fa82a8` | `system_id` | `game/include/dominium/rules/governance/governance_system.h` | `game/include/dominium/rules/war/war_system.h` | `quarantine` | `semantic_contracts` |
@@ -23,15 +23,15 @@ Superseded By: none
 | `duplicate.cluster.03a31072d7ac07a9` | `REFUSAL_TEMPLATE_INVALID` | `src/system/templates/__init__.py` | `src/system/templates/template_compiler.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.03ab149d795288bb` | `normalize_list` | `tools/distribution/profile_inspect.py` | `tools/fab/fab_validate.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.03d1718b6abbb996` | `load_fixture_lockfile` | `tools/xstack/testx/tests/pack_compat0_testlib.py` | `tools/xstack/testx/tests/mod_policy0_testlib.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
-| `duplicate.cluster.0631a59ef2fe2be3` | `validate_extensions_map` | `src/meta/extensions/__init__.py` | `src/meta_extensions_engine.py` | `quarantine` | `semantic_contracts` |
+| `duplicate.cluster.0631a59ef2fe2be3` | `validate_extensions_map` | `src/tools/repo/meta/extensions/__init__.py` | `src/meta_extensions_engine.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.065d7d23b936c46c` | `property_patch_hash_chain` | `src/geo/overlay/__init__.py` | `src/geo/overlay/overlay_merge_engine.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
 | `duplicate.cluster.06f2c33736385885` | `_write_canonical_json` | `tools/worldgen/worldgen_lock_common.py` | `tools/mvp/update_sim_common.py` | `quarantine` | `trust_enforcement, worldgen_lock_or_overlay` |
 | `duplicate.cluster.07162c47dda2a254` | `build_water_view_surface` | `src/worldgen/earth/water/__init__.py` | `src/worldgen/earth/water/water_view_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |
-| `duplicate.cluster.07c7e7b9365cb9dc` | `RESOLUTION_POLICY_EXPLICIT_REQUIRED` | `src/lib/provides/__init__.py` | `src/lib/provides/provider_resolution.py` | `quarantine` | `semantic_contracts` |
+| `duplicate.cluster.07c7e7b9365cb9dc` | `RESOLUTION_POLICY_EXPLICIT_REQUIRED` | `src/tools/libraries/provides/__init__.py` | `src/tools/libraries/provides/provider_resolution.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.0873f4be504cdfe1` | `_refusal_reason` | `tools/xstack/testx/tests/test_promotion_requires_replication.py` | `tools/xstack/testx/tests/test_proc9_candidate_promotion_requires_replication.py` | `quarantine` | `semantic_contracts` |
 | `duplicate.cluster.0954e6658a2eb4fa` | `_material_or_surface_class` | `src/worldgen/earth/climate_field_engine.py` | `src/worldgen/earth/tide_field_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |
 | `duplicate.cluster.0a8e71d06f3c5f95` | `_runtime` | `src/server/runtime/tick_loop.py` | `src/server/net/loopback_transport.py` | `quarantine` | `protocol_negotiation, time_anchor` |
-| `duplicate.cluster.0b7c5e4a1d1e1287` | `canonical_sha256` | `src/lib/bundle/__init__.py` | `src/lib/bundle/bundle_manifest.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
+| `duplicate.cluster.0b7c5e4a1d1e1287` | `canonical_sha256` | `src/tools/libraries/bundle/__init__.py` | `src/tools/libraries/bundle/bundle_manifest.py` | `quarantine` | `pack_compat_install_resolver, worldgen_lock_or_overlay` |
 | `duplicate.cluster.0bb6cc4d90e796fb` | `run_ops` | `tests/ops/ops_manifest_tests.py` | `tests/ops/compatibility_tests.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.0bbdf1ddf2183c6a` | `tlv_u32` | `setup/packages/scripts/gen_launcher_ui_schema_v1.py` | `game/tests/tests/vectors/gen_tlv_vectors.py` | `quarantine` | `pack_compat_install_resolver, semantic_contracts` |
 | `duplicate.cluster.0c2a75870f52b0dd` | `_hash_int` | `src/worldgen/mw/mw_cell_generator.py` | `src/geo/worldgen/worldgen_engine.py` | `quarantine` | `worldgen_lock_or_overlay` |

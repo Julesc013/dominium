@@ -195,7 +195,7 @@ def main() -> int:
                 except ValueError:
                     existing_feed = None
         if existing_feed != feed_payload:
-            sys.stderr.write("updates/changelog.json is out of date.\n")
+            sys.stderr.write("release/updates/changelog.json is out of date.\n")
             return 1
         return 0
 

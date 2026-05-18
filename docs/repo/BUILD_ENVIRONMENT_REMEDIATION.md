@@ -123,11 +123,11 @@ Generated local presets expose the canonical VS2022 tuple. POST-CONVERGE-10C rem
 
 Resolved UI bind blocker:
 
-- `libs/appcore/ui_bind/ui_command_binding_table.h`
-- `libs/appcore/ui_bind/ui_command_binding_table.c`
-- `libs/appcore/ui_bind/ui_accessibility_map.h`
-- `libs/appcore/ui_bind/ui_accessibility_map.c`
-- `libs/appcore/ui_bind/ui_localisation_usage_report.json`
+- `runtime/shell/appcore/ui_bind/ui_command_binding_table.h`
+- `runtime/shell/appcore/ui_bind/ui_command_binding_table.c`
+- `runtime/shell/appcore/ui_bind/ui_accessibility_map.h`
+- `runtime/shell/appcore/ui_bind/ui_accessibility_map.c`
+- `runtime/shell/appcore/ui_bind/ui_localisation_usage_report.json`
 
 These tracked generated outputs are now protected by `.gitattributes`:
 

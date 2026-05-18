@@ -1,45 +1,45 @@
 {
   "artifact_class": "CANONICAL",
   "record": {
-    "active_pack_set_sha256": "27793d574d8e22084a448ece2d34daa13d5fe2c5232da603113016ac67037d85",
+    "active_pack_set_sha256": "",
     "baseline_id": "anb-omega.baseline",
     "extensions": {},
-    "gate_policy_sha256": "63a1c8d8c1f5e479b80b04ee68d4e91b9d3eb20c158eb68c6477821bc316bded",
-    "head_hash": "61ca164066f4973dff9149751225581fa70b9e6f",
-    "identity_fingerprint_sha256": "e37390f3a36688206bc85ef8f23413ecf81ae799410413159bdc37bf34471855",
-    "schema_registry_sha256": "051f935e5da5b19a6b26fdb3b53d4125632b89da844d91574598fdba6c56b2b8",
+    "gate_policy_sha256": "",
+    "head_hash": "2f722d626a316e3e1f827fd06a131b2a74e5f3d7",
+    "identity_fingerprint_sha256": "228a0a53caf4f55c6a6cd674a0a608c66e379d53ad4f4fcc2945fbb6aab80aa6",
+    "schema_registry_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
     "tool_hashes": [
       {
         "path": "tool_ui_bind.cmd",
-        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+        "sha256": "d17f9aae6204e993f6a2c306252e17506d3bf393604ef6d5173d169baa2e99f8"
       },
       {
         "path": "tool_ui_doc_annotate.cmd",
-        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+        "sha256": "d17f9aae6204e993f6a2c306252e17506d3bf393604ef6d5173d169baa2e99f8"
       },
       {
         "path": "tool_ui_validate.cmd",
-        "sha256": "0127c250fdd33f3235d1af9f90af923619733eff9a7a1253155b2191a97a8fcf"
+        "sha256": "d17f9aae6204e993f6a2c306252e17506d3bf393604ef6d5173d169baa2e99f8"
       },
       {
         "path": "tools/auditx/auditx.py",
-        "sha256": "6371771e53d5dbfa47559ad8d5c224dc67700ef93155872a0ab5cd9ecfcea5c0"
+        "sha256": "144b6dc8f67d81350e2cf88020af5341a623aa3cda17471dfa3afd2ef474930b"
       },
       {
         "path": "tools/compatx/compatx.py",
-        "sha256": "cca70485fda23d7d7392d1033a2bd56eb6ea633462742d1ac25ebd870af3e3cf"
+        "sha256": "684fce553b870fea424c8a49f85f41958a61f5512ee0965186e50c210b934b6c"
       },
       {
         "path": "tools/controlx/controlx.py",
-        "sha256": "97e4890766339d131cfee5694b5429f368d9402a783c1c5621e6339d59a6aeb7"
+        "sha256": "665d5d8f7359cd325e2dffe000945ba055af5816f6acc97c61d44341b67fe325"
       },
       {
         "path": "tools/performx/performx.py",
-        "sha256": "ccc33a57ce0b943c599c43b6c3ab9844674a62ab988133cf8dd2cba9ef86d727"
+        "sha256": "7d2adb6e2d5187f876b9173fc1d13e7b87203fb8b614b321700c847402d9e044"
       },
       {
         "path": "tools/securex/securex.py",
-        "sha256": "80228ecc0860ea4ed868747662a993a809cac083a4916313d4895085c5f70a32"
+        "sha256": "b23a921afad67e018007a734ad88745d5b7e950b53bab0621d77857ea2f32f46"
       }
     ]
   },

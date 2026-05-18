@@ -152,7 +152,7 @@
     "upsilon_must_consolidate": [
       "CMakePresets.json",
       "tools/xstack/ci/xstack_ci_entrypoint.py",
-      "repo/release_policy.toml",
+      "contracts/repo/release_policy.toml",
       "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
       "docs/release/RELEASE_INDEX_MODEL.md",
       "docs/release/ARTIFACT_NAMING_RULES.md",
@@ -160,7 +160,7 @@
       "release/archive_policy.py",
       "release/release_manifest_engine.py",
       "release/component_graph_resolver.py",
-      "updates/changelog.json"
+      "release/updates/changelog.json"
     ]
   },
   "ownership_projection_cautions": [

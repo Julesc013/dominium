@@ -55,7 +55,7 @@ def run(graph, repo_root, changed_files=None):
     )
     allowed_files = {
         "tools/xstack/sessionx/process_runtime.py",
-        "core/flow/flow_engine.py",
+        "tools/core/flow/flow_engine.py",
         "game/domains/electricity/power_network_engine.py",
     }
     for root in scan_roots:
@@ -95,7 +95,7 @@ def run(graph, repo_root, changed_files=None):
                             related_paths=[
                                 rel_path,
                                 "tools/xstack/sessionx/process_runtime.py",
-                                "core/flow/flow_engine.py",
+                                "tools/core/flow/flow_engine.py",
                             ],
                         )
                     )

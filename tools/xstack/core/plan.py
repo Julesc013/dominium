@@ -14,10 +14,10 @@ from .runners import default_full_runner_ids, runner_metadata, runner_registry_d
 from .time_estimator import estimate_plan
 
 
-GATE_POLICY_REL = os.path.join("data", "registries", "gate_policy.json")
-TESTX_GROUPS_REL = os.path.join("data", "registries", "testx_groups.json")
-AUDITX_GROUPS_REL = os.path.join("data", "registries", "auditx_groups.json")
-XSTACK_COMPONENTS_REL = os.path.join("data", "registries", "xstack_components.json")
+GATE_POLICY_REL = os.path.join("contracts", "registry", "gate_policy.json")
+TESTX_GROUPS_REL = os.path.join("contracts", "registry", "testx_groups.json")
+AUDITX_GROUPS_REL = os.path.join("contracts", "registry", "auditx_groups.json")
+XSTACK_COMPONENTS_REL = os.path.join("contracts", "registry", "xstack_components.json")
 
 
 def _norm(path: str) -> str:
@@ -60,7 +60,7 @@ def _profile_defaults(gate_command: str, gate_policy_payload: dict) -> str:
 
 
 def _detect_strict_depth(changed_paths: List[str], gate_policy_payload: dict) -> str:
-    deep_prefixes = ("contracts/schemas/", "data/registries/", "repo/repox/", "scripts/ci/")
+    deep_prefixes = ("contracts/schema/", "contracts/registry/", "contracts/repo/repox/", "scripts/ci/")
     triggers = ((((gate_policy_payload.get("record") or {}).get("extensions") or {}).get("strict_split_triggers") or {}).get("STRICT_DEEP") or [])
     if isinstance(triggers, list):
         normalized = tuple(_norm(str(item)).rstrip("*") for item in triggers if str(item).strip() and str(item).strip() != "**")

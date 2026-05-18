@@ -16,7 +16,7 @@ from .geo_index_engine import _coerce_cell_key, _semantic_cell_key
 
 REFUSAL_GEO_OBJECT_KIND_MISSING = "refusal.geo.object_kind_missing"
 
-_OBJECT_KIND_REGISTRY_REL = "data/registries/object_kind_registry.json"
+_OBJECT_KIND_REGISTRY_REL = "contracts/registry/object_kind_registry.json"
 
 
 def _repo_root() -> str:

@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, and `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0.
 Stability: stable
 Future Series: Λ-2, Λ-3, Λ-4, Λ-5, Λ-6, Σ, Φ
 Replacement Target: future domain constitutions must instantiate this template rather than replace it
@@ -42,7 +42,7 @@ Every domain contract is subordinate to:
 1. `docs/canon/constitution_v1.md`
 2. `docs/canon/glossary_v1.md`
 3. `AGENTS.md`
-4. `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+4. `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
 
 This template inherits the following from the Constitutional Architecture and `Λ-0`:
 
@@ -447,9 +447,9 @@ If any of those are missing, the domain contract is under-specified and later pr
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `AGENTS.md`
-- `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+- `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
 - `schema/reality/domain_contract.schema.json`
-- `templates/domain_contract_template.md`
+- `contracts/templates/domain_contract_template.md`
 - `docs/planning/POST_PI_EXECUTION_PLAN.md`
 - `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`
 - `docs/planning/GATES_AND_PROOFS.md`

@@ -23,7 +23,7 @@ The following order applies before any domain-specific refinement:
 2. `docs/canon/glossary_v1.md`
 3. `AGENTS.md`
 4. explicit schema law and contract docs under `schema/**` and `docs/contracts/**`
-5. scope-specific constitutions and policy docs under `docs/architecture/**`, `docs/release/**`, and repo policy files such as `repo/release_policy.toml`
+5. scope-specific constitutions and policy docs under `docs/architecture/**`, `docs/release/**`, and repo policy files such as `contracts/repo/release_policy.toml`
 6. versioned machine-readable source artifacts such as registries, manifests, pack descriptors, and declared architecture data
 7. live repo code and build configuration for structural and implementation reality
 8. current in-repo planning artifacts, including this P-0 layer and current blueprint artifacts
@@ -73,7 +73,7 @@ Every disagreement must be classified into an authority domain first.
 
 | Tier | Source Family | Authority Level | Rule |
 | --- | --- | --- | --- |
-| `REL-1` | `repo/release_policy.toml`, release/update schemas, release manifests and indexes, component graph doctrine, `docs/release/**` constitutions | absolute within release scope | Governs channel, archive, install, update, distribution, and component-resolution meaning. |
+| `REL-1` | `contracts/repo/release_policy.toml`, release/update schemas, release manifests and indexes, component graph doctrine, `docs/release/**` constitutions | absolute within release scope | Governs channel, archive, install, update, distribution, and component-resolution meaning. |
 | `REL-2` | release/update manifests, component graph data, release policy registries | conditional | Strong when current and not contradicted by `REL-1`. |
 | `REL-3` | release tooling code | conditional | Shows mechanism and integration points, not policy supremacy. |
 | `REL-4` | planning docs | contextual | Can sequence release work, not rewrite release law. |
@@ -83,7 +83,7 @@ Every disagreement must be classified into an authority domain first.
 
 | Tier | Source Family | Authority Level | Rule |
 | --- | --- | --- | --- |
-| `PLN-1` | `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `data/planning/snapshot_intake_policy.json` | absolute within post-Π intake planning | Governs how later Ρ and Λ planning must classify and rank sources. |
+| `PLN-1` | `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json` | absolute within post-Π intake planning | Governs how later Ρ and Λ planning must classify and rank sources. |
 | `PLN-2` | current blueprint and freeze-era planning artifacts under `docs/blueprint/**`, `data/blueprint/**`, `docs/omega/**`, `docs/restructure/**`, `data/restructure/**` | conditional | Governs current planning intent only where it does not conflict with stronger semantic, structural, compatibility, or release truth. |
 | `PLN-3` | old series outputs, inventories, reports, and archaeology notes | contextual | Useful for history and traceability only when still aligned to the live snapshot. |
 | `PLN-4` | stale planning notes, attic notes, chat history | insufficient on their own | Never authoritative for new planning decisions. |

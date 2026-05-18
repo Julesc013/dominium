@@ -124,9 +124,9 @@ def _schema_errors(repo_root: str, schema_name: str, payload: dict, path_prefix:
 
 def validate_domain_foundation(
     repo_root: str,
-    domain_registry_rel: str = "data/registries/domain_registry.json",
-    domain_contract_registry_rel: str = "data/registries/domain_contract_registry.json",
-    solver_registry_rel: str = "data/registries/solver_registry.json",
+    domain_registry_rel: str = "contracts/registry/domain_registry.json",
+    domain_contract_registry_rel: str = "contracts/registry/domain_contract_registry.json",
+    solver_registry_rel: str = "contracts/registry/solver_registry.json",
 ) -> Dict[str, object]:
     domain_registry_path = os.path.join(repo_root, domain_registry_rel.replace("/", os.sep))
     contract_registry_path = os.path.join(repo_root, domain_contract_registry_rel.replace("/", os.sep))
@@ -236,9 +236,9 @@ def validate_domain_foundation(
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate domain/contract/solver foundation registries.")
     parser.add_argument("--repo-root", default="")
-    parser.add_argument("--domain-registry", default="data/registries/domain_registry.json")
-    parser.add_argument("--contract-registry", default="data/registries/domain_contract_registry.json")
-    parser.add_argument("--solver-registry", default="data/registries/solver_registry.json")
+    parser.add_argument("--domain-registry", default="contracts/registry/domain_registry.json")
+    parser.add_argument("--contract-registry", default="contracts/registry/domain_contract_registry.json")
+    parser.add_argument("--solver-registry", default="contracts/registry/solver_registry.json")
     args = parser.parse_args()
 
     repo_root = os.path.normpath(os.path.abspath(args.repo_root)) if str(args.repo_root).strip() else REPO_ROOT_HINT

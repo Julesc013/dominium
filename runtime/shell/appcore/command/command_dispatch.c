@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/command/command_dispatch.c
+FILE: runtime/shell/appcore/command/command_dispatch.c
 MODULE: Dominium
 PURPOSE: Command dispatch stub (no behavior; UI must call this path).
 NOTES: Implementations must be deterministic and use explicit command registry.

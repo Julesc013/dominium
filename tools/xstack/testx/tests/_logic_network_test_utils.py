@@ -26,21 +26,21 @@ def _rows(payload: dict, key: str) -> list[dict]:
 
 def validation_inputs(repo_root: str) -> dict:
     return {
-        "logic_network_policy_registry_payload": _load_json(repo_root, "data/registries/logic_network_policy_registry.json"),
-        "logic_node_kind_registry_payload": _load_json(repo_root, "data/registries/logic_node_kind_registry.json"),
-        "logic_edge_kind_registry_payload": _load_json(repo_root, "data/registries/logic_edge_kind_registry.json"),
-        "signal_type_registry_payload": _load_json(repo_root, "data/registries/signal_type_registry.json"),
-        "carrier_type_registry_payload": _load_json(repo_root, "data/registries/carrier_type_registry.json"),
-        "signal_delay_policy_registry_payload": _load_json(repo_root, "data/registries/signal_delay_policy_registry.json"),
-        "signal_noise_policy_registry_payload": _load_json(repo_root, "data/registries/signal_noise_policy_registry.json"),
-        "protocol_registry_payload": _load_json(repo_root, "data/registries/protocol_registry.json"),
-        "logic_element_rows": _rows(_load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json"), "logic_elements"),
+        "logic_network_policy_registry_payload": _load_json(repo_root, "contracts/registry/logic_network_policy_registry.json"),
+        "logic_node_kind_registry_payload": _load_json(repo_root, "contracts/registry/logic_node_kind_registry.json"),
+        "logic_edge_kind_registry_payload": _load_json(repo_root, "contracts/registry/logic_edge_kind_registry.json"),
+        "signal_type_registry_payload": _load_json(repo_root, "contracts/registry/signal_type_registry.json"),
+        "carrier_type_registry_payload": _load_json(repo_root, "contracts/registry/carrier_type_registry.json"),
+        "signal_delay_policy_registry_payload": _load_json(repo_root, "contracts/registry/signal_delay_policy_registry.json"),
+        "signal_noise_policy_registry_payload": _load_json(repo_root, "contracts/registry/signal_noise_policy_registry.json"),
+        "protocol_registry_payload": _load_json(repo_root, "contracts/registry/protocol_registry.json"),
+        "logic_element_rows": _rows(_load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json"), "logic_elements"),
         "logic_behavior_model_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
             "logic_behavior_models",
         ),
         "interface_signature_rows": _rows(
-            _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
+            _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
             "logic_interface_signatures",
         ),
         "bus_definition_rows": [],

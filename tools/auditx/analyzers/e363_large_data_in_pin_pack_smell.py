@@ -9,8 +9,8 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E363_LARGE_DATA_IN_PIN_PACK_SMELL"
-PACK_MANIFEST_REL = "packs/official/pack.sol.pin_minimal/pack.json"
-PATCH_DOC_REL = "packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json"
+PACK_MANIFEST_REL = "content/packs/official/pack.sol.pin_minimal/pack.json"
+PATCH_DOC_REL = "content/packs/official/pack.sol.pin_minimal/data/overlay/sol_pin_patches.json"
 DOC_REL = "docs/packs/sol/PACK_SOL_PIN_MINIMAL.md"
 VERIFY_TOOL_REL = "tools/geo/tool_verify_sol_pin_overlay.py"
 MAX_PATCH_COUNT = 96

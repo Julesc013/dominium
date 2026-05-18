@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from meta.compute import request_compute
+from tools.repo.meta.compute import request_compute
 
 
 LOGIC_TIMING_COMPUTE_OWNER_KIND = "process"

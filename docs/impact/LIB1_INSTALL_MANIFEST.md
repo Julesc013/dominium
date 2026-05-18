@@ -12,7 +12,7 @@ LIB-1 deterministic install manifests, build selection, and multi-install regist
 Touched Paths:
 - appshell/bootstrap.py
 - appshell/config_loader.py
-- lib/install/install_validator.py
+- tools/libraries/install/install_validator.py
 - tools/launcher/launcher_cli.py
 - tools/ops/ops_cli.py
 - tools/setup/setup_cli.py

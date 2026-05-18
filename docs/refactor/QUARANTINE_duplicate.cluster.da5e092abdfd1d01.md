@@ -18,9 +18,9 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/compat/migration_lifecycle.py`
-- `src/governance/governance_profile.py`
-- `src/meta/identity/identity_validator.py`
+- `src/tools/validators/compatibility/migration_lifecycle.py`
+- `src/tools/governance/governance_profile.py`
+- `src/tools/validators/identity/identity_validator.py`
 - `src/platform/target_matrix.py`
 - `src/release/archive_policy.py`
 - `src/release/component_graph_resolver.py`
@@ -32,11 +32,11 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/meta/observability_common.py` disposition=`canonical` rank=`1` total_score=`84.29` risk=`HIGH`
 - `tools/mvp/toolchain_matrix_common.py` disposition=`quarantine` rank=`2` total_score=`77.85` risk=`HIGH`
-- `src/compat/migration_lifecycle.py` disposition=`quarantine` rank=`3` total_score=`77.62` risk=`HIGH`
+- `src/tools/validators/compatibility/migration_lifecycle.py` disposition=`quarantine` rank=`3` total_score=`77.62` risk=`HIGH`
 - `src/platform/target_matrix.py` disposition=`quarantine` rank=`4` total_score=`75.0` risk=`HIGH`
-- `src/governance/governance_profile.py` disposition=`drop` rank=`5` total_score=`73.87` risk=`HIGH`
+- `src/tools/governance/governance_profile.py` disposition=`drop` rank=`5` total_score=`73.87` risk=`HIGH`
 - `src/release/archive_policy.py` disposition=`drop` rank=`6` total_score=`72.38` risk=`HIGH`
-- `src/meta/identity/identity_validator.py` disposition=`drop` rank=`7` total_score=`69.64` risk=`HIGH`
+- `src/tools/validators/identity/identity_validator.py` disposition=`drop` rank=`7` total_score=`69.64` risk=`HIGH`
 - `src/release/component_graph_resolver.py` disposition=`drop` rank=`8` total_score=`66.43` risk=`HIGH`
 - `src/release/update_resolver.py` disposition=`drop` rank=`9` total_score=`54.29` risk=`HIGH`
 

@@ -55,7 +55,7 @@ def _registry_payload(repo_root: str, rel_path: str) -> dict:
 
 
 def _combined_template_registry(repo_root: str) -> dict:
-    core = _registry_payload(repo_root, "data/registries/system_template_registry.json")
+    core = _registry_payload(repo_root, "contracts/registry/system_template_registry.json")
     out_rows = _registry_rows(core, "system_templates")
     optional_paths = _sorted_tokens(list(_as_map(_as_map(core.get("record")).get("extensions")).get("optional_pack_paths") or []))
     for rel in optional_paths:
@@ -97,11 +97,11 @@ def _compile_preview(*, repo_root: str, template_id: str, instantiation_mode: st
         template_id=template_id,
         instantiation_mode=instantiation_mode,
         system_template_registry_payload=template_registry,
-        interface_signature_template_registry_payload=_registry_payload(repo_root, "data/registries/interface_signature_template_registry.json"),
-        boundary_invariant_template_registry_payload=_registry_payload(repo_root, "data/registries/boundary_invariant_template_registry.json"),
-        macro_model_set_registry_payload=_registry_payload(repo_root, "data/registries/macro_model_set_registry.json"),
-        tier_contract_registry_payload=_registry_payload(repo_root, "data/registries/tier_contract_registry.json"),
-        domain_registry_payload=_registry_payload(repo_root, "data/registries/domain_registry.json"),
+        interface_signature_template_registry_payload=_registry_payload(repo_root, "contracts/registry/interface_signature_template_registry.json"),
+        boundary_invariant_template_registry_payload=_registry_payload(repo_root, "contracts/registry/boundary_invariant_template_registry.json"),
+        macro_model_set_registry_payload=_registry_payload(repo_root, "contracts/registry/macro_model_set_registry.json"),
+        tier_contract_registry_payload=_registry_payload(repo_root, "contracts/registry/tier_contract_registry.json"),
+        domain_registry_payload=_registry_payload(repo_root, "contracts/registry/domain_registry.json"),
     )
     macro = _as_map(compiled.get("compiled_macro_capsule"))
     return {

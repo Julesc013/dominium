@@ -49,8 +49,8 @@ def run(graph, repo_root, changed_files=None):
         "docs/",
     )
     allowed_files = {
-        "core/graph/network_graph_engine.py",
-        "core/graph/routing_engine.py",
+        "tools/core/graph/network_graph_engine.py",
+        "tools/core/graph/routing_engine.py",
         "game/domains/mobility/network/mobility_network_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
     }
@@ -91,7 +91,7 @@ def run(graph, repo_root, changed_files=None):
                                 "INV-MOB-NETWORK-USES-NETWORKGRAPH",
                                 "INV-NO-ADHOC-ROUTING",
                             ],
-                            related_paths=[rel_path, "core/graph/network_graph_engine.py"],
+                            related_paths=[rel_path, "tools/core/graph/network_graph_engine.py"],
                         )
                     )
                     break

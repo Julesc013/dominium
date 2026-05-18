@@ -38,10 +38,10 @@ Because the current field engine is integer-only for scalar values, the canonica
 
 - `field.material_proxy`
   - scalar integer code
-  - code-to-id mapping comes from `data/registries/material_proxy_registry.json`
+  - code-to-id mapping comes from `contracts/registry/material_proxy_registry.json`
 - `field.surface_flags`
   - scalar integer bitmask
-  - bit assignments come from `data/registries/surface_flag_registry.json`
+  - bit assignments come from `contracts/registry/surface_flag_registry.json`
 - `field.albedo_proxy`
   - scalar integer permille in the canonical range `0..1000`
   - semantic meaning is normalized albedo `0.0..1.0`

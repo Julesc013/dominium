@@ -5,7 +5,7 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from compat import (
+from tools.validators.compatibility import (
     READ_ONLY_LAW_PROFILE_ID,
     REFUSAL_CONNECTION_NEGOTIATION_MISMATCH,
     build_compat_refusal,
@@ -15,8 +15,8 @@ from compat import (
     negotiate_product_endpoints,
 )
 from runtime.appshell.logging import build_log_event, get_current_log_engine
-from net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
-from net.transport.loopback import LoopbackTransport
+from tools.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE, join_client_midstream
+from tools.network.transport.loopback import LoopbackTransport
 from apps.server.server_boot import REFUSAL_CLIENT_UNAUTHORIZED, build_connection_authority_context
 from apps.server.server_console import dispatch_server_console_command
 from tools.xstack.compatx.canonical_json import canonical_sha256

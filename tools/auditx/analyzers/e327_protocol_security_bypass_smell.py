@@ -48,7 +48,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    registry_rel = "data/registries/protocol_registry.json"
+    registry_rel = "contracts/registry/protocol_registry.json"
     registry_text = _read_text(repo_root, registry_rel)
     for token in ("security_policy_id", "protocol.simple_frame_stub", "protocol.bus_arbitration_stub"):
         if token in registry_text:

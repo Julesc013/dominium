@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Process Final Baseline
 
-Status: BASELINE (PROC-9)  
-Date: 2026-03-07  
+Status: BASELINE (PROC-9)
+Date: 2026-03-07
 Scope: stress, deterministic degradation, proof/replay, compaction safety, and regression lock for the PROC subsystem.
 
 ## 1) Stress Results Summary
@@ -97,26 +97,26 @@ Included baseline fingerprints:
 
 ## 6) Gate Snapshot
 
-- RepoX STRICT: `refusal`  
-  command: `python tools/xstack/repox/check.py --repo-root . --profile STRICT`  
+- RepoX STRICT: `refusal`
+  command: `python tools/xstack/repox/check.py --repo-root . --profile STRICT`
   note: blockers are repository-global refusals outside PROC-9 scope (RWAM/action-template/worktree hygiene and existing SYS/runtime governance checks).
 
-- AuditX STRICT: `pass`  
-  command: `python tools/xstack/auditx/check.py --repo-root . --profile STRICT`  
+- AuditX STRICT: `pass`
+  command: `python tools/xstack/auditx/check.py --repo-root . --profile STRICT`
   summary: `findings=2209`, `promoted_blockers=0`.
 
-- TestX PASS (PROC-9 required subset): `pass`  
+- TestX PASS (PROC-9 required subset): `pass`
   command: `python tools/xstack/testx/runner.py --repo-root . --profile FAST --cache off --subset test_stress_scenario_deterministic_proc9,test_degradation_order_deterministic_proc9,test_compaction_replay_hash_match_proc9,test_capsule_exec_logged_proc9,test_drift_actions_logged_proc9,test_candidate_promotion_requires_replication_proc9,test_cross_platform_hash_match_proc9`
 
-- stress harness PASS: `pass`  
+- stress harness PASS: `pass`
   command: `python tools/process/tool_run_proc_stress.py --scenario-path build/process/proc9_final/scenario.json --tick-count 96 --max-micro-steps-per-tick 96 --max-total-tasks-per-tick 320 --max-research-inference-per-tick 24 --max-qc-checks-per-tick 96 --out build/process/proc9_final/stress_report.json`
 
-- strict build: `refusal`  
-  command: `python tools/xstack/run.py strict --repo-root . --cache on`  
+- strict build: `refusal`
+  command: `python tools/xstack/run.py strict --repo-root . --cache on`
   summary: strict lane blocked by repository-wide pre-existing non-PROC issues (`compatx`, `repox`, full-lane `testx`, `packaging.verify`).
 
-- topology map updated: `pass`  
-  command: `python tools/governance/tool_topology_generate.py --repo-root .`  
+- topology map updated: `pass`
+  command: `python tools/governance/tool_topology_generate.py --repo-root .`
   fingerprint: `fa27670699899709510d41bfb9989c575109db727e9595dc12243cffb5ea1e0d`
 
 ## 7) Readiness Checklist for LOGIC-0

@@ -32,10 +32,10 @@ def _load_json(repo_root: str, rel_path: str):
 
 
 def run(repo_root: str):
-    domain_payload, domain_error = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
+    domain_payload, domain_error = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
     if domain_error:
         return {"status": "fail", "message": "temporal domain registry missing/invalid"}
-    mapping_payload, mapping_error = _load_json(repo_root, "data/registries/time_mapping_registry.json")
+    mapping_payload, mapping_error = _load_json(repo_root, "contracts/registry/time_mapping_registry.json")
     if mapping_error:
         return {"status": "fail", "message": "time mapping registry missing/invalid"}
 

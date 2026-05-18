@@ -15,16 +15,16 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from lib.install import discover_install, load_runtime_install_registry  # noqa: E402
+from tools.libraries.install import discover_install, load_runtime_install_registry  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
-INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
+INSTALL_DISCOVERY_ENGINE_PATH = "engine/install/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
-INSTALL_DISCOVERY_REPORT_PATH = "data/audit/install_discovery_report.json"
+INSTALL_DISCOVERY_REPORT_PATH = "content/data/audit/install_discovery_report.json"
 
 DISCOVERY_ORDER = (
     "1. explicit CLI: --install-root or --install-id",
@@ -36,7 +36,7 @@ DISCOVERY_ORDER = (
 
 INTEGRATION_TARGETS = (
     {
-        "file_path": "lib/install/install_discovery_engine.py",
+        "file_path": "engine/install/install_discovery_engine.py",
         "surface": "install_discovery_engine",
         "markers": ("discover_install(", "REFUSAL_INSTALL_NOT_FOUND", "portable_manifest"),
     },
@@ -137,7 +137,7 @@ def _manifest_absolute_path_violations(repo_root: str) -> list[dict]:
             violations.append(
                 {
                     "code": "absolute_install_registry_path",
-                    "file_path": "data/registries/install_registry.json",
+                    "file_path": "contracts/registry/install_registry.json",
                     "message": "install registry entry path must remain relative or logical",
                     "rule_id": "INV-NO-ABSOLUTE-PATHS-IN-MANIFESTS",
                 }

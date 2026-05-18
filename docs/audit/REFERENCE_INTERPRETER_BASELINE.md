@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,9 +8,9 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Reference Interpreter Baseline
 
-Status: BASELINE (META-REF-0)  
-Last Reviewed: 2026-03-07  
-Version: 1.0.0  
+Status: BASELINE (META-REF-0)
+Last Reviewed: 2026-03-07
+Version: 1.0.0
 Scope: deterministic runtime-vs-reference equivalence checks for critical subsystems under STRICT/FULL validation profiles.
 
 ## 1) Implemented Evaluators
@@ -87,18 +87,18 @@ Derived run records are normalized and fingerprinted via `reference_run_record` 
 
 ## 4) Gate Snapshot
 
-- RepoX STRICT: `refusal` (`findings=36`)  
-  command: `python tools/xstack/repox/check.py --profile STRICT`  
+- RepoX STRICT: `refusal` (`findings=36`)
+  command: `python tools/xstack/repox/check.py --profile STRICT`
   note: repository-global pre-existing blockers remain; no `INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE` findings were reported.
 
-- AuditX STRICT: `pass` (`findings=2212`, promoted blockers not raised)  
+- AuditX STRICT: `pass` (`findings=2212`, promoted blockers not raised)
   command: `python tools/xstack/auditx/check.py --profile STRICT`
 
-- TestX (META-REF-0 subset): `pass` (`selected_tests=5`)  
-  command:  
+- TestX (META-REF-0 subset): `pass` (`selected_tests=5`)
+  command:
   `python tools/xstack/testx/runner.py --profile FAST --subset test_reference_suite_deterministic,test_energy_ledger_ref_matches_runtime,test_coupling_scheduler_ref_matches_runtime,test_invariant_ref_matches_runtime,test_compile_verify_ref_matches_runtime`
 
-- FULL-profile reference suite (curated seeds): `pass` for executed seeds  
+- FULL-profile reference suite (curated seeds): `pass` for executed seeds
   command: `python tools/meta/tool_run_reference_suite.py ...`
 
 - strict build (`tools/xstack/run.py strict`): timed out in this run window, no completion status captured.

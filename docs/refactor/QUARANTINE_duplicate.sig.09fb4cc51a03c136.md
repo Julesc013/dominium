@@ -19,12 +19,12 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/appshell/product_bootstrap.py`
-- `src/compat/shims/flag_shims.py`
+- `src/tools/validators/compatibility/shims/flag_shims.py`
 
 ## Scorecard
 
 - `src/appshell/product_bootstrap.py` disposition=`canonical` rank=`1` total_score=`47.54` risk=`HIGH`
-- `src/compat/shims/flag_shims.py` disposition=`quarantine` rank=`2` total_score=`45.82` risk=`HIGH`
+- `src/tools/validators/compatibility/shims/flag_shims.py` disposition=`quarantine` rank=`2` total_score=`45.82` risk=`HIGH`
 
 ## Usage Sites
 

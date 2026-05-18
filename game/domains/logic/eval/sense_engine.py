@@ -6,7 +6,7 @@ from typing import Dict, List, Mapping
 
 from game.domains.logic.fault import apply_faults_to_signal_value, select_active_logic_fault_rows
 from game.domains.logic.noise import apply_noise_policy_to_value, logic_noise_policy_rows_by_id
-from meta.explain import build_explain_artifact
+from tools.repo.meta.explain import build_explain_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .common import (

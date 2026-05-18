@@ -32,7 +32,7 @@ def _read_text(repo_root: str, rel_path: str) -> str:
 
 
 def _registered_field_ids(repo_root: str) -> set[str]:
-    rel_path = "data/registries/field_type_registry.json"
+    rel_path = "contracts/registry/field_type_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     try:
         payload = json.load(open(abs_path, "r", encoding="utf-8"))
@@ -65,13 +65,13 @@ def run(graph, repo_root, changed_files=None):
                 category="architecture.unregistered_field_smell",
                 severity="RISK",
                 confidence=0.9,
-                file_path="data/registries/field_type_registry.json",
+                file_path="contracts/registry/field_type_registry.json",
                 line=1,
                 evidence=["field_type_registry missing/invalid; field registration cannot be enforced"],
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=["INV-FIELD-TYPE-REGISTERED"],
-                related_paths=["data/registries/field_type_registry.json"],
+                related_paths=["contracts/registry/field_type_registry.json"],
             )
         )
         return findings
@@ -160,7 +160,7 @@ def run(graph, repo_root, changed_files=None):
                             suggested_classification="NEEDS_REVIEW",
                             recommended_action="REWRITE",
                             related_invariants=["INV-FIELD-TYPE-REGISTERED"],
-                            related_paths=[rel_path, "data/registries/field_type_registry.json"],
+                            related_paths=[rel_path, "contracts/registry/field_type_registry.json"],
                         )
                     )
                     break

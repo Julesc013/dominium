@@ -38,7 +38,7 @@ def _read_json(path: str) -> Tuple[dict, str]:
 def _mass_tolerance_abs(*, repo_root: str, override: int = 0) -> int:
     if int(override) > 0:
         return int(max(0, _as_int(override, 0)))
-    registry_rel = "data/registries/quantity_tolerance_registry.json"
+    registry_rel = "contracts/registry/quantity_tolerance_registry.json"
     registry_abs = os.path.join(repo_root, registry_rel.replace("/", os.sep))
     payload, err = _read_json(registry_abs)
     if err:

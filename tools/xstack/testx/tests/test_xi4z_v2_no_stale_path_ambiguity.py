@@ -26,7 +26,7 @@ def run(repo_root: str):
         return {"status": "fail", "message": "XI-4z-fix1 target-path index must expose exact approved targets"}
 
     readiness = committed_readiness_contract_v2(repo_root)
-    if str(readiness.get("approved_lock_path", "")).strip() != "data/restructure/src_domain_mapping_lock_approved_v2.json":
+    if str(readiness.get("approved_lock_path", "")).strip() != "content/data/restructure/src_domain_mapping_lock_approved_v2.json":
         return {"status": "fail", "message": "XI-4z-fix1 readiness contract must point at the v2 lock"}
     if str(readiness.get("path_derivation_policy", "")).strip() != "forbidden":
         return {"status": "fail", "message": "XI-4z-fix1 readiness contract must forbid target-path derivation"}

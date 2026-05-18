@@ -9,4 +9,4 @@ Concrete lock artifacts belong in install/runtime projections such as `store/loc
 
 ## POST-CONVERGE-04 Note
 
-`locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity metadata and distribution copy behavior. Move only lockfile schemas or contract definitions here after protected lock ownership review.
+`contracts/package/locks/pack_lock.mvp_default.json` remains a concrete source lock artifact with embedded identity metadata and distribution copy behavior. Move only lockfile schemas or contract definitions here after protected lock ownership review.

@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from compat.capability_negotiation import (
+from tools.validators.compatibility.capability_negotiation import (
     COMPAT_MODE_FULL,
     COMPAT_MODE_READ_ONLY,
     COMPAT_MODE_REFUSE,
@@ -24,8 +24,8 @@ from compat.capability_negotiation import (
     negotiate_endpoint_descriptors,
     verify_negotiation_record,
 )
-from compat.negotiation.degrade_enforcer import build_degrade_runtime_state
-from lib.save import (
+from tools.validators.compatibility.negotiation.degrade_enforcer import build_degrade_runtime_state
+from tools.libraries.save import (
     deterministic_fingerprint as save_deterministic_fingerprint,
     evaluate_save_open,
     normalize_save_manifest,
@@ -558,8 +558,8 @@ def _base_context(bundle_a: Mapping[str, object], bundle_b: Mapping[str, object]
         "install_manifest_b": _load_bundle_json(bundle_root_b, "install.manifest.json"),
         "instance_manifest_a": _load_bundle_json(bundle_root_a, "instances/default/instance.manifest.json"),
         "instance_manifest_b": _load_bundle_json(bundle_root_b, "instances/default/instance.manifest.json"),
-        "pack_lock_a": _load_bundle_json(bundle_root_a, "store/locks/pack_lock.mvp_default.json"),
-        "pack_lock_b": _load_bundle_json(bundle_root_b, "store/locks/pack_lock.mvp_default.json"),
+        "pack_lock_a": _load_bundle_json(bundle_root_a, "store/contracts/package/locks/pack_lock.mvp_default.json"),
+        "pack_lock_b": _load_bundle_json(bundle_root_b, "store/contracts/package/locks/pack_lock.mvp_default.json"),
         "client_a": _descriptor_from_bundle(bundle_root_a, "client"),
         "server_a": _descriptor_from_bundle(bundle_root_a, "server"),
         "client_b": _descriptor_from_bundle(bundle_root_b, "client"),

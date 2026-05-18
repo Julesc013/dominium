@@ -53,9 +53,9 @@ def _assert_render_truth_isolation_contract() -> None:
 
 
 def _assert_component_engine_contracts() -> None:
-    from core.hazards import hazard_engine
-    from core.schedule import schedule_engine
-    from core.state import state_machine_engine
+    from tools.core.hazards import hazard_engine
+    from tools.core.schedule import schedule_engine
+    from engine.state.state import state_machine_engine
 
     required = (
         (schedule_engine, "tick_schedules"),

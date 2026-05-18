@@ -76,7 +76,7 @@ def _sorted_tokens(values: object) -> List[str]:
 
 
 def _reaction_rows(repo_root: str) -> List[dict]:
-    rel = "data/registries/reaction_profile_registry.json"
+    rel = "contracts/registry/reaction_profile_registry.json"
     abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
     payload = _read_json(abs_path)
     rows = list((dict(payload.get("record") or {})).get("reaction_profiles") or [])

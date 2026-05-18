@@ -41,7 +41,7 @@ The anchor payload must also carry the replay and proof context needed to valida
 
 ## Anchor Policy
 
-The anchor cadence is governed by `data/registries/time_anchor_policy_registry.json`.
+The anchor cadence is governed by `contracts/registry/time_anchor_policy_registry.json`.
 
 The canonical MVP policy requires:
 

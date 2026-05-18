@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence, Tuple
 
-from meta.compile import (
+from tools.repo.meta.compile import (
     REFUSAL_COMPILE_MISSING_PROOF,
     build_compile_request_row,
     build_compile_result_row,
@@ -14,8 +14,8 @@ from meta.compile import (
     equivalence_proof_rows_by_id,
     validity_domain_rows_by_id,
 )
-from meta.compute import request_compute
-from meta.explain import build_explain_artifact
+from tools.repo.meta.compute import request_compute
+from tools.repo.meta.explain import build_explain_artifact
 from game.domains.systems import (
     build_interface_signature_row,
     build_system_macro_capsule_row,

@@ -103,8 +103,8 @@ legacy surfaces, but the APPSHELL-1 top-level refusal fields are normative.
 
 ## Exit Codes
 
-Refusals map to stable exit-code ranges through `data/registries/exit_code_registry.json`
-and `data/registries/refusal_to_exit_registry.json`.
+Refusals map to stable exit-code ranges through `contracts/registry/exit_code_registry.json`
+and `contracts/registry/refusal_to_exit_registry.json`.
 
 Stable ranges:
 

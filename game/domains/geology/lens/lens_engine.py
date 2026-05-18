@@ -16,9 +16,9 @@ from game.domains.geology.projection.projection_engine import normalize_projecti
 
 
 REFUSAL_GEO_LENS_REQUEST_INVALID = "refusal.geo.lens_request_invalid"
-_LENS_LAYER_REGISTRY_REL = "data/registries/lens_layer_registry.json"
-_VIEW_TYPE_REGISTRY_REL = "data/registries/view_type_registry.json"
-_PROJECTION_PROFILE_REGISTRY_REL = "data/registries/projection_profile_registry.json"
+_LENS_LAYER_REGISTRY_REL = "contracts/registry/lens_layer_registry.json"
+_VIEW_TYPE_REGISTRY_REL = "contracts/registry/view_type_registry.json"
+_PROJECTION_PROFILE_REGISTRY_REL = "contracts/registry/projection_profile_registry.json"
 _VIEW_CACHE: Dict[str, dict] = {}
 
 

@@ -38,7 +38,7 @@ def _load_json(path: str) -> dict:
 
 def build_logic_fault_stress_scenario(*, repo_root: str, tick_count: int) -> dict:
     inputs = load_eval_inputs(repo_root)
-    fault_registry = _load_json(os.path.join(repo_root, "data/registries/logic_fault_kind_registry.json"))
+    fault_registry = _load_json(os.path.join(repo_root, "contracts/registry/logic_fault_kind_registry.json"))
 
     _, chain_state = make_chain_network(network_id="net.logic.stress.fault")
     chain_graph = dict(chain_state["logic_network_graph_rows"][0])

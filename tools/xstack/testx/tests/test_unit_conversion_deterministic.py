@@ -23,8 +23,8 @@ def run(repo_root: str):
 
     from game.domains.materials.dimension_engine import quantity_convert
 
-    unit_registry = _read_registry(repo_root, "data/registries/unit_registry.json")
-    dimension_registry = _read_registry(repo_root, "data/registries/dimension_registry.json")
+    unit_registry = _read_registry(repo_root, "contracts/registry/unit_registry.json")
+    dimension_registry = _read_registry(repo_root, "contracts/registry/dimension_registry.json")
 
     quantity = {
         "quantity_id": "quantity.energy",

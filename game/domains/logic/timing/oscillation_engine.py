@@ -8,7 +8,7 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from game.domains.logic.eval.common import as_int, as_list, as_map, canon, token
 from game.domains.logic.signal.signal_store import canonical_signal_snapshot
-from meta.explain import build_explain_artifact
+from tools.repo.meta.explain import build_explain_artifact
 
 
 def _graph_element_ids(graph_row: Mapping[str, object]) -> list[str]:

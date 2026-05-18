@@ -196,20 +196,20 @@
     "signer or verifier posture changes recorded with no continuity-bearing receipt"
   ],
   "repo_evidence_surfaces": [
-    "security/trust/trust_verifier.py",
-    "security/trust/license_capability.py",
+    "tools/validators/security/trust/trust_verifier.py",
+    "tools/validators/security/trust/license_capability.py",
     "release/update_resolver.py",
     "docs/release/PUBLICATION_TRUST_AND_LICENSING_GATES.md",
     "docs/release/SIGNING_POLICY.md",
     "docs/blueprint/FOUNDATION_READINESS_MATRIX.md",
     "docs/blueprint/MANUAL_REVIEW_GATES.md",
-    "data/registries/trust_policy_registry.json",
-    "data/registries/trust_root_registry.json",
-    "data/registries/entitlement_registry.json",
-    "data/registries/provenance_classification_registry.json",
-    "data/registries/explain_contract_registry.json",
-    "data/registries/refusal_code_registry.json",
-    "data/registries/remediation_playbooks.json"
+    "contracts/registry/trust_policy_registry.json",
+    "contracts/registry/trust_root_registry.json",
+    "contracts/registry/entitlement_registry.json",
+    "contracts/registry/provenance_classification_registry.json",
+    "contracts/registry/explain_contract_registry.json",
+    "contracts/registry/refusal_code_registry.json",
+    "contracts/registry/remediation_playbooks.json"
   ],
   "ambiguities_eliminated": [
     "trust_execution_is_not_publication_visibility",

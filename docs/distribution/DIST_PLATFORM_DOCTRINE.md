@@ -31,7 +31,7 @@ This document defines platform directory doctrine for `dist/*`.
 
 Platform directory segments under `dist/pkg`, `dist/meta`, `dist/sym`, and
 `dist/sys` must use canonical IDs from
-`data/registries/platform_registry.json`.
+`contracts/registry/platform_registry.json`.
 
 Forbidden aliases (`win`, `windows`, `mac`, `osx`) are not allowed in those
 paths.

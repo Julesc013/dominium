@@ -12,14 +12,14 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `MED`
-- Canonical Candidate: `src/meta/profile/profile_engine.py`
+- Canonical Candidate: `src/tools/repo/meta/profile/profile_engine.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_medium_risk_batch_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/meta/instrumentation/instrumentation_engine.py`
-- `src/meta/profile/profile_engine.py`
+- `src/tools/repo/meta/instrumentation/instrumentation_engine.py`
+- `src/tools/repo/meta/profile/profile_engine.py`
 - `src/process/capsules/capsule_builder.py`
 - `src/process/capsules/capsule_executor.py`
 - `src/process/process_run_engine.py`
@@ -27,11 +27,11 @@ Replacement Target: XI-4b manual review resolution
 
 ## Scorecard
 
-- `src/meta/profile/profile_engine.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`MED`
+- `src/tools/repo/meta/profile/profile_engine.py` disposition=`canonical` rank=`1` total_score=`73.87` risk=`MED`
 - `src/process/process_run_engine.py` disposition=`merge` rank=`2` total_score=`71.25` risk=`MED`
 - `src/process/qc/qc_engine.py` disposition=`merge` rank=`3` total_score=`69.76` risk=`MED`
 - `src/process/capsules/capsule_builder.py` disposition=`quarantine` rank=`4` total_score=`68.57` risk=`HIGH`
-- `src/meta/instrumentation/instrumentation_engine.py` disposition=`merge` rank=`5` total_score=`62.32` risk=`MED`
+- `src/tools/repo/meta/instrumentation/instrumentation_engine.py` disposition=`merge` rank=`5` total_score=`62.32` risk=`MED`
 - `src/process/capsules/capsule_executor.py` disposition=`drop` rank=`6` total_score=`53.75` risk=`MED`
 
 ## Usage Sites

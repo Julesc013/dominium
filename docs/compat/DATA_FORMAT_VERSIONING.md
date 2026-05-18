@@ -42,7 +42,7 @@ Artifacts may additionally declare:
 - If artifact `format_version` equals current:
   - load normally after schema and metadata validation
 - If artifact `format_version` is older than current:
-  - attempt deterministic migration path by resolving an explicit migration chain from `data/registries/migration_registry.json`
+  - attempt deterministic migration path by resolving an explicit migration chain from `contracts/registry/migration_registry.json`
   - apply each deterministic transform in order
   - log migration events
   - recompute deterministic fingerprint after migration

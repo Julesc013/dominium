@@ -9,7 +9,7 @@ add_executable(tool_ui_bind
 target_include_directories(tool_ui_bind PRIVATE
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/include
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/ui_ir
-    ${CMAKE_SOURCE_DIR}/libs/appcore
+    ${CMAKE_SOURCE_DIR}/runtime/shell/appcore
 )
 
 target_link_libraries(tool_ui_bind PRIVATE
@@ -34,7 +34,7 @@ add_executable(tool_ui_doc_annotate
 target_include_directories(tool_ui_doc_annotate PRIVATE
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/include
     ${CMAKE_SOURCE_DIR}/tools/ui_shared/ui_ir
-    ${CMAKE_SOURCE_DIR}/libs/appcore
+    ${CMAKE_SOURCE_DIR}/runtime/shell/appcore
 )
 
 target_link_libraries(tool_ui_doc_annotate PRIVATE
@@ -58,7 +58,7 @@ add_custom_target(ui_bind_phase
         tool_ui_bind
         --repo-root ${CMAKE_SOURCE_DIR}
         --ui-index ${CMAKE_SOURCE_DIR}/tools/ui_index/ui_index.json
-        --out-dir ${CMAKE_SOURCE_DIR}/libs/appcore/ui_bind
+        --out-dir ${CMAKE_SOURCE_DIR}/runtime/shell/appcore/ui_bind
         --check
     DEPENDS tool_ui_bind
 )

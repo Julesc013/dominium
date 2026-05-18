@@ -896,22 +896,22 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | CONTENT0-SPEC-008 | World schema index is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT0-SPEC-008 | Add/update `schema/world/README.md`. | Ensures world schema index and versioning. |
 
 
-| CONTENT1-DATA-001 | Sol system data files are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-001 | Add `data/world/sol/sol.system.json` and related files. | Establishes canonical Sol content baseline. |
+| CONTENT1-DATA-001 | Sol system data files are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-001 | Add `content/data/world/sol/sol.system.json` and related files. | Establishes canonical Sol content baseline. |
 
 
-| CONTENT1-DATA-002 | Sol orbital rails data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-002 | Add `data/world/sol/sol.orbits.json`. | Defines deterministic orbital rails for Sol. |
+| CONTENT1-DATA-002 | Sol orbital rails data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-002 | Add `content/data/world/sol/sol.orbits.json`. | Defines deterministic orbital rails for Sol. |
 
 
 | CONTENT1-DATA-003 | Sol bodies, moons, and belts data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-003 | Add `data/world/sol/sol.bodies/`, `sol.moons/`, `sol.belts/`. | Provides canonical celestial body records. |
 
 
-| CONTENT1-DATA-004 | Sol surfaces and regions data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-004 | Add `data/world/sol/sol.surfaces.json`. | Defines surfaces and regions for gameplay. |
+| CONTENT1-DATA-004 | Sol surfaces and regions data are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT1-DATA-004 | Add `content/data/world/sol/sol.surfaces.json`. | Defines surfaces and regions for gameplay. |
 
 
 | CONTENT1-TEST-001 | Sol data validation must pass. | CTest `dominium_content1_sol_data` | Test | CI fail: CONTENT1-TEST-001 | Fix data structure or references in `data/world/sol`. | Enforces schema-aligned Sol content. |
 
 
-| CONTENT2-DATA-001 | Earth body data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-001 | Add `data/world/sol/earth/earth.body.json`. | Defines Earth body baseline. |
+| CONTENT2-DATA-001 | Earth body data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-001 | Add `content/data/world/sol/earth/earth.body.json`. | Defines Earth body baseline. |
 
 
 | CONTENT2-DATA-002 | Earth surface and volume data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-002 | Add `data/world/sol/earth/earth.surfaces/`. | Defines layered Earth surfaces and volumes. |
@@ -923,22 +923,22 @@ Scope: canonical enforcement IDs for architecture, execution, reality, life, and
 | CONTENT2-DATA-004 | Earth climate and biome tags are required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-004 | Add `data/world/sol/earth/earth.climate/`. | Defines climate zones and biome tags. |
 
 
-| CONTENT2-DATA-005 | Earth import hooks documentation is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-005 | Add `data/world/sol/earth/earth.imports/README.md`. | Documents import overlay rules. |
+| CONTENT2-DATA-005 | Earth import hooks documentation is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT2-DATA-005 | Add `docs/content/world/sol/earth/earth.imports/README.md`. | Documents import overlay rules. |
 
 
 | CONTENT2-TEST-001 | Earth data validation must pass. | CTest `dominium_content2_earth_data` | Test | CI fail: CONTENT2-TEST-001 | Fix Earth data structure or references. | Enforces schema-aligned Earth content. |
 
 
-| CONTENT3-DATA-001 | Milky Way galaxy data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-001 | Add `data/world/milky_way/milky_way.galaxy.json`. | Defines Milky Way galaxy metadata. |
+| CONTENT3-DATA-001 | Milky Way galaxy data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-001 | Add `content/data/world/milky_way/milky_way.galaxy.json`. | Defines Milky Way galaxy metadata. |
 
 
-| CONTENT3-DATA-002 | Milky Way arms and regions data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-002 | Add `data/world/milky_way/milky_way.arms.json` and `milky_way.regions.json`. | Defines arms and galactic regions. |
+| CONTENT3-DATA-002 | Milky Way arms and regions data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-002 | Add `content/data/world/milky_way/milky_way.arms.json` and `milky_way.regions.json`. | Defines arms and galactic regions. |
 
 
-| CONTENT3-DATA-003 | Milky Way anchors data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-003 | Add `data/world/milky_way/milky_way.anchors.json`. | Defines canonical anchor systems. |
+| CONTENT3-DATA-003 | Milky Way anchors data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-003 | Add `content/data/world/milky_way/milky_way.anchors.json`. | Defines canonical anchor systems. |
 
 
-| CONTENT3-DATA-004 | Milky Way procedural rules data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-004 | Add `data/world/milky_way/milky_way.procedural_rules.json`. | Defines deterministic fill rules. |
+| CONTENT3-DATA-004 | Milky Way procedural rules data is required. | Documentation gate (manual audit) | Docs | Audit fail: CONTENT3-DATA-004 | Add `content/data/world/milky_way/milky_way.procedural_rules.json`. | Defines deterministic fill rules. |
 
 
 | CONTENT3-TEST-001 | Milky Way data validation must pass. | CTest `dominium_content3_milky_way_data` | Test | CI fail: CONTENT3-TEST-001 | Fix Milky Way data structure or references. | Enforces schema-aligned Milky Way content. |

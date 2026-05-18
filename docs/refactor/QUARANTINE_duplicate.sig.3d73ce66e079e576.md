@@ -19,9 +19,9 @@ Replacement Target: XI-4b manual review resolution
 ## Competing Files
 
 - `src/chem/degradation/degradation_engine.py`
-- `src/control/effects/effect_engine.py`
-- `src/control/planning/plan_engine.py`
-- `src/control/view/view_engine.py`
+- `src/tools/governance/effects/effect_engine.py`
+- `src/tools/governance/planning/plan_engine.py`
+- `src/tools/governance/view/view_engine.py`
 - `src/electric/fault/fault_engine.py`
 - `src/electric/power_network_engine.py`
 - `src/electric/protection/protection_engine.py`
@@ -41,7 +41,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/logic/signal/carrier_adapters.py`
 - `src/logic/signal/signal_store.py`
 - `src/mechanics/structural_graph_engine.py`
-- `src/meta/explain/explain_engine.py`
+- `src/tools/repo/meta/explain/explain_engine.py`
 - `src/mobility/geometry/geometry_engine.py`
 - `src/mobility/maintenance/wear_engine.py`
 - `src/mobility/micro/constrained_motion_solver.py`
@@ -57,7 +57,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/physics/energy/energy_ledger_engine.py`
 - `src/physics/entropy/entropy_engine.py`
 - `src/physics/momentum_engine.py`
-- `src/safety/safety_engine.py`
+- `src/tools/validators/safety/safety_engine.py`
 - `src/specs/spec_engine.py`
 - `src/thermal/network/thermal_network_engine.py`
 - `src/time/time_mapping_engine.py`
@@ -67,7 +67,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/mobility/vehicle/vehicle_engine.py` disposition=`canonical` rank=`1` total_score=`63.33` risk=`HIGH`
 - `src/models/model_engine.py` disposition=`quarantine` rank=`2` total_score=`63.33` risk=`HIGH`
 - `src/specs/spec_engine.py` disposition=`quarantine` rank=`3` total_score=`59.58` risk=`HIGH`
-- `src/meta/explain/explain_engine.py` disposition=`quarantine` rank=`4` total_score=`58.62` risk=`HIGH`
+- `src/tools/repo/meta/explain/explain_engine.py` disposition=`quarantine` rank=`4` total_score=`58.62` risk=`HIGH`
 - `src/thermal/network/thermal_network_engine.py` disposition=`quarantine` rank=`5` total_score=`57.5` risk=`HIGH`
 - `src/electric/fault/fault_engine.py` disposition=`quarantine` rank=`6` total_score=`56.17` risk=`HIGH`
 - `src/physics/energy/energy_ledger_engine.py` disposition=`quarantine` rank=`7` total_score=`55.74` risk=`HIGH`
@@ -77,17 +77,17 @@ Replacement Target: XI-4b manual review resolution
 - `src/logic/debug/runtime_state.py` disposition=`quarantine` rank=`11` total_score=`55.58` risk=`HIGH`
 - `src/logic/noise/noise_engine.py` disposition=`quarantine` rank=`12` total_score=`54.8` risk=`HIGH`
 - `src/logic/protocol/rows.py` disposition=`quarantine` rank=`13` total_score=`54.4` risk=`HIGH`
-- `src/control/view/view_engine.py` disposition=`quarantine` rank=`14` total_score=`53.87` risk=`HIGH`
+- `src/tools/governance/view/view_engine.py` disposition=`quarantine` rank=`14` total_score=`53.87` risk=`HIGH`
 - `src/logic/signal/signal_store.py` disposition=`quarantine` rank=`15` total_score=`53.45` risk=`HIGH`
 - `src/electric/protection/protection_engine.py` disposition=`drop` rank=`16` total_score=`53.27` risk=`HIGH`
 - `src/mobility/network/mobility_network_engine.py` disposition=`merge` rank=`17` total_score=`53.18` risk=`HIGH`
 - `src/mobility/maintenance/wear_engine.py` disposition=`merge` rank=`18` total_score=`52.74` risk=`HIGH`
-- `src/safety/safety_engine.py` disposition=`drop` rank=`19` total_score=`52.73` risk=`HIGH`
+- `src/tools/validators/safety/safety_engine.py` disposition=`drop` rank=`19` total_score=`52.73` risk=`HIGH`
 - `src/electric/power_network_engine.py` disposition=`drop` rank=`20` total_score=`52.1` risk=`HIGH`
 - `src/infrastructure/formalization/inference_engine.py` disposition=`drop` rank=`21` total_score=`51.87` risk=`HIGH`
 - `src/mobility/geometry/geometry_engine.py` disposition=`merge` rank=`22` total_score=`51.85` risk=`HIGH`
 - `src/physics/momentum_engine.py` disposition=`drop` rank=`23` total_score=`51.77` risk=`HIGH`
-- `src/control/effects/effect_engine.py` disposition=`drop` rank=`24` total_score=`50.98` risk=`HIGH`
+- `src/tools/governance/effects/effect_engine.py` disposition=`drop` rank=`24` total_score=`50.98` risk=`HIGH`
 - `src/mobility/micro/free_motion_solver.py` disposition=`merge` rank=`25` total_score=`50.81` risk=`HIGH`
 - `src/chem/degradation/degradation_engine.py` disposition=`drop` rank=`26` total_score=`50.71` risk=`HIGH`
 - `src/mobility/traffic/traffic_engine.py` disposition=`merge` rank=`27` total_score=`50.29` risk=`HIGH`
@@ -101,7 +101,7 @@ Replacement Target: XI-4b manual review resolution
 - `src/mechanics/structural_graph_engine.py` disposition=`drop` rank=`35` total_score=`47.82` risk=`HIGH`
 - `src/logic/compile/logic_proof_engine.py` disposition=`drop` rank=`36` total_score=`47.56` risk=`HIGH`
 - `src/logic/fault/fault_engine.py` disposition=`drop` rank=`37` total_score=`46.93` risk=`HIGH`
-- `src/control/planning/plan_engine.py` disposition=`drop` rank=`38` total_score=`46.81` risk=`HIGH`
+- `src/tools/governance/planning/plan_engine.py` disposition=`drop` rank=`38` total_score=`46.81` risk=`HIGH`
 - `src/mobility/signals/signal_engine.py` disposition=`merge` rank=`39` total_score=`46.6` risk=`HIGH`
 - `src/logic/signal/carrier_adapters.py` disposition=`drop` rank=`40` total_score=`46.15` risk=`HIGH`
 - `src/logic/network/logic_network_validator.py` disposition=`drop` rank=`41` total_score=`45.63` risk=`HIGH`

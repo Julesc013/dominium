@@ -8,7 +8,7 @@ Replacement Target: superseded by a later explicit ARCH-GRAPH-UPDATE freeze only
 
 # Module Boundaries v1
 
-The canonical per-module rule matrix lives in `data/architecture/module_boundary_rules.v1.json`.
+The canonical per-module rule matrix lives in `content/data/architecture/module_boundary_rules.v1.json`.
 
 ## Constitutional Alignment
 

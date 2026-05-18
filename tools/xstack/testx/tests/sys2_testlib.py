@@ -177,31 +177,31 @@ def policy_context_for_macro(
         "macro_model_set_registry": dict(macro_model_set_registry or macro_model_set_stub_registry()),
         "constitutive_model_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/constitutive_model_registry.json",
+            rel_path="contracts/registry/constitutive_model_registry.json",
         ),
         "model_type_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/model_type_registry.json",
+            rel_path="contracts/registry/model_type_registry.json",
         ),
         "model_cache_policy_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/model_cache_policy_registry.json",
+            rel_path="contracts/registry/model_cache_policy_registry.json",
         ),
         "tolerance_policy_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/tolerance_policy_registry.json",
+            rel_path="contracts/registry/tolerance_policy_registry.json",
         ),
         "model_residual_policy_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/model_residual_policy_registry.json",
+            rel_path="contracts/registry/model_residual_policy_registry.json",
         ),
         "pollutant_type_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/pollutant_type_registry.json",
+            rel_path="contracts/registry/pollutant_type_registry.json",
         ),
         "explain_contract_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/explain_contract_registry.json",
+            rel_path="contracts/registry/explain_contract_registry.json",
         ),
         "system_macro_max_capsules_per_tick": 16,
         "system_macro_tick_bucket_stride": 1,

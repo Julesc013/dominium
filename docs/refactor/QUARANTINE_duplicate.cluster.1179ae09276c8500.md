@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/compile/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/compile/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/meta/compile/__init__.py`
-- `src/meta/compile/compile_engine.py`
+- `src/tools/repo/meta/compile/__init__.py`
+- `src/tools/repo/meta/compile/compile_engine.py`
 
 ## Scorecard
 
-- `src/meta/compile/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`
-- `src/meta/compile/compile_engine.py` disposition=`quarantine` rank=`2` total_score=`56.07` risk=`HIGH`
+- `src/tools/repo/meta/compile/__init__.py` disposition=`canonical` rank=`1` total_score=`64.76` risk=`HIGH`
+- `src/tools/repo/meta/compile/compile_engine.py` disposition=`quarantine` rank=`2` total_score=`56.07` risk=`HIGH`
 
 ## Usage Sites
 

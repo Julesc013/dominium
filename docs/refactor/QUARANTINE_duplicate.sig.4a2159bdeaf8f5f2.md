@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/meta/reference/__init__.py`
+- Canonical Candidate: `src/tools/repo/meta/reference/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/meta/reference/__init__.py`
-- `src/meta/reference/geo_small_reference.py`
-- `src/meta/reference/reference_engine.py`
+- `src/tools/repo/meta/reference/__init__.py`
+- `src/tools/repo/meta/reference/geo_small_reference.py`
+- `src/tools/repo/meta/reference/reference_engine.py`
 
 ## Scorecard
 
-- `src/meta/reference/__init__.py` disposition=`canonical` rank=`1` total_score=`61.51` risk=`HIGH`
-- `src/meta/reference/geo_small_reference.py` disposition=`quarantine` rank=`2` total_score=`51.63` risk=`HIGH`
-- `src/meta/reference/reference_engine.py` disposition=`merge` rank=`3` total_score=`45.44` risk=`HIGH`
+- `src/tools/repo/meta/reference/__init__.py` disposition=`canonical` rank=`1` total_score=`61.51` risk=`HIGH`
+- `src/tools/repo/meta/reference/geo_small_reference.py` disposition=`quarantine` rank=`2` total_score=`51.63` risk=`HIGH`
+- `src/tools/repo/meta/reference/reference_engine.py` disposition=`merge` rank=`3` total_score=`45.44` risk=`HIGH`
 
 ## Usage Sites
 

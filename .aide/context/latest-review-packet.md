@@ -61,3 +61,10 @@ No file deletion, moved-file content edit, broad reference rewrite, import repai
 ## Reviewer Instructions
 
 Confirm that every tracked bad-root file moved, remaining bad-root tracked count is zero, quarantine routes are recorded, exception retirement is limited to empty roots, and stale-reference repair is assigned to MOVE-ROUTER-02.
+
+## MOVE-ROUTER-02 Review Note
+
+MOVE-ROUTER-02 closes as PARTIAL. Review should verify that the routed structure
+was preserved, no former bad-root ownership was restored, no generated/local
+outputs were staged, and the remaining TestX/RepoX/import blockers are assigned
+to MOVE-ROUTER-02R.

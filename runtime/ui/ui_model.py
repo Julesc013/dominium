@@ -17,8 +17,8 @@ from runtime.appshell.paths import (
     vpath_candidate_roots,
 )
 from runtime.appshell.ui_mode_selector import policy_row_for_product
-from lib.instance import instance_ui_mode_default, validate_instance_manifest
-from lib.save import validate_save_manifest
+from tools.libraries.instance import instance_ui_mode_default, validate_instance_manifest
+from tools.libraries.save import validate_save_manifest
 
 
 MENU_STATE_MAIN = "menu.main"

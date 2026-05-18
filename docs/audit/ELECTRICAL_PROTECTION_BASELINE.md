@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Electrical Protection Baseline
 
-Status: BASELINE  
-Series: ELEC-2  
+Status: BASELINE
+Series: ELEC-2
 Date: 2026-03-03
 
 ## Scope

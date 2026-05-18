@@ -9,13 +9,13 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E408_SILENT_DEGRADE_SMELL"
 REQUIRED_TOKENS = {
-    "compat/capability_negotiation.py": (
+    "tools/validators/compatibility/capability_negotiation.py": (
         "def _degrade_plan(",
         '"degrade.optional_capability_unavailable"',
         '"ignored.unknown_capability"',
         '"compatibility_mode_id"',
     ),
-    "data/registries/product_registry.json": (
+    "contracts/registry/product_registry.json": (
         '"default_degrade_ladders"',
         '"degrade.client.rendered_to_tui"',
         '"degrade.client.contract_read_only"',

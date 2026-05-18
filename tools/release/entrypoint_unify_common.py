@@ -11,7 +11,7 @@ from runtime.appshell.paths import clear_current_virtual_paths, set_current_virt
 from runtime.appshell.product_bootstrap import build_product_bootstrap_context, resolve_mode_request
 from runtime.appshell.product_bootstrap import flag_migration_rows
 from runtime.appshell.ui_mode_selector import select_ui_mode
-from compat.shims import apply_flag_shims
+from tools.validators.compatibility.shims import apply_flag_shims
 from engine.platform.platform_probe import probe_platform_descriptor
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

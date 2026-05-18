@@ -18,7 +18,7 @@ def run(repo_root: str):
         lock_payload = json.load(handle)
 
     needed = {
-        "compat/capability_negotiation.py",
+        "tools/validators/compatibility/capability_negotiation.py",
         "game/domains/universe/universe_contract_enforcer.py",
         "release/component_graph_resolver.py",
     }

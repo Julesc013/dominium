@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E47_NONDETERMINISTIC_ARBITRATION_SMELL"
 TRANSITION_CONTROLLER_PATH = "game/domains/reality/transitions/transition_controller.py"
-ARBITRATION_REGISTRY_PATH = "data/registries/arbitration_rule_registry.json"
+ARBITRATION_REGISTRY_PATH = "contracts/registry/arbitration_rule_registry.json"
 REQUIRED_ARBITRATION_RULE_IDS = (
     "arb.equal_share",
     "arb.priority_by_distance",

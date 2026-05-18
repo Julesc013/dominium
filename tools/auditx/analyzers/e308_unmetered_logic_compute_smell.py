@@ -13,8 +13,8 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/e308_unmetered_logic_compute_smell.py",
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/",
-    "data/registries/logic_policy_registry.json",
-    "data/registries/compute_budget_profile_registry.json",
+    "contracts/registry/logic_policy_registry.json",
+    "contracts/registry/compute_budget_profile_registry.json",
     "game/domains/logic/",
     "tools/logic/",
 )
@@ -86,8 +86,8 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    logic_policy_rel = "data/registries/logic_policy_registry.json"
-    compute_rel = "data/registries/compute_budget_profile_registry.json"
+    logic_policy_rel = "contracts/registry/logic_policy_registry.json"
+    compute_rel = "contracts/registry/compute_budget_profile_registry.json"
     logic_payload, logic_err = _read_json(repo_root, logic_policy_rel)
     compute_payload, compute_err = _read_json(repo_root, compute_rel)
     logic_rows = list((dict(logic_payload.get("record") or {})).get("logic_policies") or logic_payload.get("logic_policies") or [])

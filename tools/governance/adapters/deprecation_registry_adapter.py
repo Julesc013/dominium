@@ -7,8 +7,8 @@ import os
 from typing import Dict, List
 
 
-LEGACY_REGISTRY_REL = "data/registries/deprecation_registry.json"
-GOVERNANCE_REGISTRY_REL = "data/governance/deprecations.json"
+LEGACY_REGISTRY_REL = "contracts/registry/deprecation_registry.json"
+GOVERNANCE_REGISTRY_REL = "content/data/governance/deprecations.json"
 
 
 def _norm(path: str) -> str:

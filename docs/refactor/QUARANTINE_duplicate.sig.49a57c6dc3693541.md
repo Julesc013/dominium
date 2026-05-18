@@ -12,23 +12,23 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/install/__init__.py`
+- Canonical Candidate: `src/tools/libraries/install/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
-- `src/lib/bundle/__init__.py`
-- `src/lib/bundle/bundle_manifest.py`
-- `src/lib/install/__init__.py`
-- `src/lib/install/install_validator.py`
+- `src/tools/libraries/bundle/__init__.py`
+- `src/tools/libraries/bundle/bundle_manifest.py`
+- `src/tools/libraries/install/__init__.py`
+- `src/tools/libraries/install/install_validator.py`
 
 ## Scorecard
 
-- `src/lib/install/__init__.py` disposition=`canonical` rank=`1` total_score=`78.45` risk=`HIGH`
-- `src/lib/bundle/__init__.py` disposition=`quarantine` rank=`2` total_score=`76.37` risk=`HIGH`
-- `src/lib/bundle/bundle_manifest.py` disposition=`quarantine` rank=`3` total_score=`74.94` risk=`HIGH`
-- `src/lib/install/install_validator.py` disposition=`merge` rank=`4` total_score=`51.13` risk=`HIGH`
+- `src/tools/libraries/install/__init__.py` disposition=`canonical` rank=`1` total_score=`78.45` risk=`HIGH`
+- `src/tools/libraries/bundle/__init__.py` disposition=`quarantine` rank=`2` total_score=`76.37` risk=`HIGH`
+- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`quarantine` rank=`3` total_score=`74.94` risk=`HIGH`
+- `src/tools/libraries/install/install_validator.py` disposition=`merge` rank=`4` total_score=`51.13` risk=`HIGH`
 
 ## Usage Sites
 

@@ -14,7 +14,7 @@ Scope: deterministic tick batching/substepping under TEMP-0.
 
 ## 1) Allowed Policies
 
-Deterministic policies are declared in `data/registries/substep_policy_registry.json`.
+Deterministic policies are declared in `contracts/registry/substep_policy_registry.json`.
 
 Baseline policy IDs:
 - `substep.none`

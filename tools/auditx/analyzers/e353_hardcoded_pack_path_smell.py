@@ -92,7 +92,7 @@ def run(graph, repo_root, changed_files=None):
                     suggested_classification="TODO-BLOCKED",
                     recommended_action="REWRITE",
                     related_invariants=["INV-MVP-PACKS-MINIMAL", "INV-PACK-LOCK-REQUIRED"],
-                    related_paths=[rel_path, "tools/mvp/runtime_bundle.py", "locks/pack_lock.mvp_default.json"],
+                    related_paths=[rel_path, "tools/mvp/runtime_bundle.py", "contracts/package/locks/pack_lock.mvp_default.json"],
                 )
             )
             break

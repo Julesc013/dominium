@@ -17,10 +17,10 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.import_bridge import install_src_aliases  # noqa: E402
 install_src_aliases(REPO_ROOT_HINT)
 
-from compat.migration_lifecycle import ARTIFACT_KIND_IDS, DECISION_READ_ONLY  # noqa: E402
-from lib.save import deterministic_fingerprint as save_manifest_fingerprint  # noqa: E402
-from lib.save import normalize_save_manifest, write_json as write_save_json  # noqa: E402
-from meta.identity import (  # noqa: E402
+from tools.validators.compatibility.migration_lifecycle import ARTIFACT_KIND_IDS, DECISION_READ_ONLY  # noqa: E402
+from tools.libraries.save import deterministic_fingerprint as save_manifest_fingerprint  # noqa: E402
+from tools.libraries.save import normalize_save_manifest, write_json as write_save_json  # noqa: E402
+from tools.validators.identity import (  # noqa: E402
     IDENTITY_KIND_SAVE,
     attach_universal_identity_block,
     identity_content_hash_for_payload,

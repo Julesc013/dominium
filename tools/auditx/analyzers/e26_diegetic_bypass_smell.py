@@ -9,9 +9,9 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E26_DIEGETIC_BYPASS_SMELL"
-PLAYER_LAW_PATH = "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json"
-PLAYER_EXPERIENCE_PATH = "packs/experience/profile.player.default/data/experience_profile.player.default.json"
-SERVER_PROFILE_PATH = "data/registries/server_profile_registry.json"
+PLAYER_LAW_PATH = "content/packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json"
+PLAYER_EXPERIENCE_PATH = "content/packs/experience/profile.player.default/data/experience_profile.player.default.json"
+SERVER_PROFILE_PATH = "contracts/registry/server_profile_registry.json"
 FORBIDDEN_PLAYER_PROCESSES = (
     "process.camera_teleport",
     "process.control_set_view_lens",

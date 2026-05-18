@@ -18,9 +18,9 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/net/srz/shard_coordinator.py`
+- `src/tools/network/srz/shard_coordinator.py`
 - `src/process/qc/qc_engine.py`
-- `src/safety/safety_engine.py`
+- `src/tools/validators/safety/safety_engine.py`
 - `src/signals/trust/trust_engine.py`
 - `tools/xstack/sessionx/process_runtime.py`
 
@@ -28,9 +28,9 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/process/qc/qc_engine.py` disposition=`canonical` rank=`1` total_score=`65.0` risk=`HIGH`
 - `tools/xstack/sessionx/process_runtime.py` disposition=`quarantine` rank=`2` total_score=`64.17` risk=`HIGH`
-- `src/safety/safety_engine.py` disposition=`merge` rank=`3` total_score=`53.69` risk=`HIGH`
+- `src/tools/validators/safety/safety_engine.py` disposition=`merge` rank=`3` total_score=`53.69` risk=`HIGH`
 - `src/signals/trust/trust_engine.py` disposition=`drop` rank=`4` total_score=`51.85` risk=`HIGH`
-- `src/net/srz/shard_coordinator.py` disposition=`merge` rank=`5` total_score=`41.29` risk=`HIGH`
+- `src/tools/network/srz/shard_coordinator.py` disposition=`merge` rank=`5` total_score=`41.29` risk=`HIGH`
 
 ## Usage Sites
 

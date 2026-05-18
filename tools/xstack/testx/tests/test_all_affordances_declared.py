@@ -24,7 +24,7 @@ _REQUIRED_AFFORDANCE_IDS = {
 
 
 def run(repo_root: str):
-    rel_path = "data/meta/real_world_affordance_matrix.json"
+    rel_path = "contracts/meta/real_world_affordance_matrix.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     if not os.path.isfile(abs_path):
         return {"status": "fail", "message": "{} missing".format(rel_path)}

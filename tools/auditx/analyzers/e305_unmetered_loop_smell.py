@@ -32,9 +32,9 @@ def run(graph, repo_root, changed_files=None):
     findings = []
 
     required_files = (
-        "meta/compute/compute_budget_engine.py",
+        "tools/repo/meta/compute/compute_budget_engine.py",
         "game/domains/systems/macro/macro_capsule_engine.py",
-        "meta/compile/compile_engine.py",
+        "tools/repo/meta/compile/compile_engine.py",
         "game/domains/processes/software/pipeline_engine.py",
     )
     for rel_path in required_files:
@@ -63,7 +63,7 @@ def run(graph, repo_root, changed_files=None):
             ("evaluate_model_bindings(", "request_compute(", "compute_consumption_record_rows"),
         ),
         (
-            "meta/compile/compile_engine.py",
+            "tools/repo/meta/compile/compile_engine.py",
             ("compiled_model_execute(", "request_compute(", "compute_consumption_record_row"),
         ),
         (
@@ -94,7 +94,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             )
 
-    compute_engine_rel = "meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "tools/repo/meta/compute/compute_budget_engine.py"
     compute_engine_text = _read_text(repo_root, compute_engine_rel)
     for token in (
         "build_compute_consumption_record_row(",

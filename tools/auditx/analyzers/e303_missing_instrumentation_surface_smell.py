@@ -11,7 +11,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E303_MISSING_INSTRUMENTATION_SURFACE_SMELL"
 RULE_ID = "INV-SYSTEM-MUST-DECLARE-INSTRUMENTATION"
-REGISTRY_REL = "data/registries/instrumentation_surface_registry.json"
+REGISTRY_REL = "contracts/registry/instrumentation_surface_registry.json"
 REQUIRED_OWNERS = (
     ("domain", "domain.elec"),
     ("domain", "domain.therm"),

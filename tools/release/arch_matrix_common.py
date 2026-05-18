@@ -7,7 +7,7 @@ import json
 import os
 from typing import Mapping
 
-from compat.descriptor.descriptor_engine import build_product_descriptor
+from tools.validators.compatibility.descriptor.descriptor_engine import build_product_descriptor
 from engine.platform.target_matrix import (
     TARGET_MATRIX_REGISTRY_REL,
     canonicalize_target_matrix_row,
@@ -728,9 +728,9 @@ def render_arch_matrix_retro_audit(report: Mapping[str, object]) -> str:
         "",
         "## Existing Inputs",
         "",
-        "- `data/registries/platform_capability_registry.json` already declares platform-family capability envelopes.",
+        "- `contracts/registry/platform_capability_registry.json` already declares platform-family capability envelopes.",
         "- `contracts/schemas/release/release_index.schema` already exposes `platform_matrix` rows with `{os, arch, abi, artifact_url_or_path}`.",
-        "- `data/registries/install_profile_registry.json` already defines deterministic install profiles for full/client/server/tools/sdk.",
+        "- `contracts/registry/install_profile_registry.json` already defines deterministic install profiles for full/client/server/tools/sdk.",
         "- CAP-NEG endpoint descriptors now expose `official.target_id`, `official.os_id`, `official.arch_id`, `official.abi_id`, and `official.target_tier`.",
         "",
         "## Currently Built Targets",
@@ -1066,7 +1066,7 @@ def arch_matrix_violations(repo_root: str, *, report_override: Mapping[str, obje
             {
                 "code": "descriptor_missing_target_fields",
                 "message": "Endpoint descriptors must include target ids and tier fields",
-                "file_path": "compat/descriptor/descriptor_engine.py",
+                "file_path": "tools/validators/compatibility/descriptor/descriptor_engine.py",
                 "rule_id": RULE_TARGET_MATRIX,
             }
         )

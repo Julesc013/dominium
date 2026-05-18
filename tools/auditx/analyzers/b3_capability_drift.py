@@ -57,7 +57,7 @@ def run(graph, repo_root, changed_files=None):
                 category="semantic.capability_drift",
                 severity="WARN",
                 confidence=0.74,
-                file_path="libs/appcore/command/command_registry.c",
+                file_path="runtime/shell/appcore/command/command_registry.c",
                 evidence=[
                     "Capability referenced by command metadata without TestX matrix coverage.",
                     "Capability token: {}".format(cap),
@@ -66,7 +66,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="ADD_TEST",
                 related_invariants=["INV-CAPABILITY-SCOPE"],
                 related_paths=[
-                    "libs/appcore/command/command_registry.c",
+                    "runtime/shell/appcore/command/command_registry.c",
                     "tests/testx/CAPABILITY_MATRIX.yaml",
                 ],
             )

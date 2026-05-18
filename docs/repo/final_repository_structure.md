@@ -141,3 +141,12 @@ git ls-files core control data packs profiles bundles compat lib libs locks repo
 
 The command should return no paths after MOVE-ROUTER-01. Quarantined files are
 under `archive/quarantine/` and remain inactive until reviewed.
+
+## MOVE-ROUTER-02 Status
+
+The final root model remains active after the first repair pass.
+
+- Former bad roots contain zero tracked files.
+- Quarantine remains under `archive/quarantine/**`.
+- Runtime control shims are temporary repair surfaces and are not new canonical roots.
+- Final proof remains blocked by stale registry/ruleset/import/test expectations.

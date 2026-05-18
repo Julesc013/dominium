@@ -23,11 +23,11 @@ def run(repo_root: str):
 
     from game.domains.fields import build_field_cell, build_field_layer, get_field_value
 
-    topology_registry = _read_json(repo_root, "data/registries/space_topology_profile_registry.json")
-    partition_registry = _read_json(repo_root, "data/registries/partition_profile_registry.json")
-    field_binding_registry = _read_json(repo_root, "data/registries/field_binding_registry.json")
-    interpolation_policy_registry = _read_json(repo_root, "data/registries/interpolation_policy_registry.json")
-    field_type_registry = _read_json(repo_root, "data/registries/field_type_registry.json")
+    topology_registry = _read_json(repo_root, "contracts/registry/space_topology_profile_registry.json")
+    partition_registry = _read_json(repo_root, "contracts/registry/partition_profile_registry.json")
+    field_binding_registry = _read_json(repo_root, "contracts/registry/field_binding_registry.json")
+    interpolation_policy_registry = _read_json(repo_root, "contracts/registry/interpolation_policy_registry.json")
+    field_type_registry = _read_json(repo_root, "contracts/registry/field_type_registry.json")
 
     layer = build_field_layer(
         field_id="field.temperature.surface",

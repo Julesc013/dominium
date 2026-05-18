@@ -1,6 +1,6 @@
 """COMPILE-0 exports."""
 
-from meta.compile.compile_engine import (
+from tools.repo.meta.compile.compile_engine import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
     REFUSAL_COMPILE_SOURCE_MISSING,

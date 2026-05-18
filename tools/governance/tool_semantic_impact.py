@@ -34,7 +34,7 @@ CONTROL_PLANE_PREFIXES = (
 CTRL_MODULE_PREFIXES = (
     "src/control/",
 )
-CONTROL_PLANE_MODULE_NODE_ID = "module:control/control_plane_engine.py"
+CONTROL_PLANE_MODULE_NODE_ID = "module:tools/governance/control_plane_engine.py"
 CONTROL_DEPENDENCY_SCAN_TOKENS = (
     "from control",
     "import control",
@@ -318,7 +318,7 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
     payload = _read_json(abs_path)
     record = dict(payload.get("record") or {}) if isinstance(payload, dict) else {}
 
-    if rel == "data/registries/tier_contract_registry.json":
+    if rel == "contracts/registry/tier_contract_registry.json":
         out.add("suite.contract.registry_hard_gate")
         out.add("suite.contract.tier_envelope")
         rows = list(record.get("tier_contracts") or payload.get("tier_contracts") or [])
@@ -331,7 +331,7 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
                 out.add(suite_id)
         return out
 
-    if rel == "data/registries/coupling_contract_registry.json":
+    if rel == "contracts/registry/coupling_contract_registry.json":
         out.add("suite.contract.registry_hard_gate")
         rows = list(record.get("coupling_contracts") or payload.get("coupling_contracts") or [])
         for row in rows:
@@ -344,7 +344,7 @@ def _meta_contract_suites_for_path(repo_root: str, path: str) -> Set[str]:
                     out.add(suite_id)
         return out
 
-    if rel == "data/registries/explain_contract_registry.json":
+    if rel == "contracts/registry/explain_contract_registry.json":
         out.add("suite.contract.registry_hard_gate")
         out.add("suite.contract.explain_engine")
         rows = list(record.get("explain_contracts") or payload.get("explain_contracts") or [])
@@ -458,9 +458,9 @@ def compute_semantic_impact(
         required_docs_updates.update(_docs_required_for_path(rel))
         required_migration_checks.update(_migration_checks_for_path(rel))
         if rel in {
-            "data/registries/tier_contract_registry.json",
-            "data/registries/coupling_contract_registry.json",
-            "data/registries/explain_contract_registry.json",
+            "contracts/registry/tier_contract_registry.json",
+            "contracts/registry/coupling_contract_registry.json",
+            "contracts/registry/explain_contract_registry.json",
         }:
             required_docs_updates.add("docs/meta/TIER_COUPLING_EXPLAIN_CONTRACTS.md")
             required_migration_checks.add("check.meta_contract_registry_consistency")

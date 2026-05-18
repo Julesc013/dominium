@@ -14,7 +14,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/__init__.py",
     "game/domains/logic/",
     "tools/xstack/sessionx/process_runtime.py",
-    "data/registries/process_registry.json",
+    "contracts/registry/process_registry.json",
 )
 
 _ALLOWED_PATHS = {

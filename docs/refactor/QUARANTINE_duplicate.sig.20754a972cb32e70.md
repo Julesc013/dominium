@@ -18,7 +18,7 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/lib/bundle/bundle_manifest.py`
+- `src/tools/libraries/bundle/bundle_manifest.py`
 - `src/platform/_canonical.py`
 - `tools/lib/content_store.py`
 
@@ -26,7 +26,7 @@ Replacement Target: XI-4b manual review resolution
 
 - `tools/lib/content_store.py` disposition=`canonical` rank=`1` total_score=`81.31` risk=`HIGH`
 - `src/platform/_canonical.py` disposition=`merge` rank=`2` total_score=`77.5` risk=`HIGH`
-- `src/lib/bundle/bundle_manifest.py` disposition=`quarantine` rank=`3` total_score=`74.94` risk=`HIGH`
+- `src/tools/libraries/bundle/bundle_manifest.py` disposition=`quarantine` rank=`3` total_score=`74.94` risk=`HIGH`
 
 ## Usage Sites
 

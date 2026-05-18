@@ -22,7 +22,7 @@ This document defines operator-visible behavior for binaries that expose
 
 ## Runtime Contract
 
-- Mode registry: `data/registries/mode_backend.json`.
+- Mode registry: `contracts/registry/mode_backend.json`.
 - Mode schema: `schema/ui/mode_backend.schema`.
 - Runtime entrypoint contract (product-specific surface): `--install-root`,
   `--lockfile`, and `--mode`.

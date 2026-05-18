@@ -1105,10 +1105,10 @@ file(MAKE_DIRECTORY
     "${CMAKE_SOURCE_DIR}/build/msys2-release"
 )
 
-add_subdirectory(libs)
+add_subdirectory(cmake/legacy_libs)
 add_subdirectory(engine)
 add_subdirectory(runtime/app)
-add_subdirectory(libs/ui_backends/win32)
+add_subdirectory(runtime/shell/ui_backends/win32)
 add_subdirectory(tools/ui_shared/ui_ir)
 add_subdirectory(tools/ui_bind)
 if(WIN32)

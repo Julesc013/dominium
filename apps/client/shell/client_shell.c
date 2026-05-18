@@ -3044,7 +3044,13 @@ static int dom_shell_build_exploration_baseline(uint64_t seed,
         }
         return 0;
     }
-    if (!dom_shell_load_template_text("data/world/templates/exploration_baseline.worlddef.json",
+    if (!dom_shell_load_template_text("tests/fixtures/world/templates/exploration_baseline.worlddef.json",
+                                      template_text,
+                                      sizeof(template_text),
+                                      &template_len,
+                                      0,
+                                      0u) &&
+        !dom_shell_load_template_text("data/world/templates/exploration_baseline.worlddef.json",
                                       template_text,
                                       sizeof(template_text),
                                       &template_len,

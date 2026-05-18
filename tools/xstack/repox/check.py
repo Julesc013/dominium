@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Minimal deterministic RepoX policy scan for XStack profile runs."""
 
 from __future__ import annotations
@@ -82,15 +82,15 @@ SCAN_ROOTS = (
     "tools/worldgen_offline",
     "schemas",
     "contracts/schemas/worldgen",
-    "data/registries/domain_registry.json",
-    "data/registries/domain_contract_registry.json",
-    "data/registries/solver_registry.json",
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/net_resync_strategy_registry.json",
-    "data/registries/anti_cheat_policy_registry.json",
-    "data/registries/anti_cheat_module_registry.json",
-    "data/registries/worldgen_constraints_registry.json",
-    "data/registries/worldgen_module_registry.json",
+    "contracts/registry/domain_registry.json",
+    "contracts/registry/domain_contract_registry.json",
+    "contracts/registry/solver_registry.json",
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/net_resync_strategy_registry.json",
+    "contracts/registry/anti_cheat_policy_registry.json",
+    "contracts/registry/anti_cheat_module_registry.json",
+    "contracts/registry/worldgen_constraints_registry.json",
+    "contracts/registry/worldgen_module_registry.json",
     "packs",
     "bundles",
     "docs/contracts",
@@ -135,14 +135,14 @@ SESSION_PIPELINE_REQUIRED_FILES = (
     "contracts/schemas/session_spec.schema.json",
     "contracts/schemas/session_stage.schema.json",
     "contracts/schemas/session_pipeline.schema.json",
-    "data/registries/session_stage_registry.json",
-    "data/registries/session_pipeline_registry.json",
+    "contracts/registry/session_stage_registry.json",
+    "contracts/registry/session_pipeline_registry.json",
 )
 
 DOMAIN_FOUNDATION_REQUIRED_FILES = (
-    "data/registries/domain_registry.json",
-    "data/registries/domain_contract_registry.json",
-    "data/registries/solver_registry.json",
+    "contracts/registry/domain_registry.json",
+    "contracts/registry/domain_contract_registry.json",
+    "contracts/registry/solver_registry.json",
 )
 
 CONTRACT_STABILITY_BASELINE_IDS = (
@@ -156,8 +156,8 @@ CONTRACT_STABILITY_BASELINE_IDS = (
 )
 
 DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
-    "data/registries/domain_registry.json",
-    "data/registries/solver_registry.json",
+    "contracts/registry/domain_registry.json",
+    "contracts/registry/solver_registry.json",
     "packs/system_templates/",
     "docs/scale/",
     "contracts/schemas/scale/",
@@ -167,9 +167,9 @@ DOMAIN_TOKEN_ALLOWED_PATH_PREFIXES = (
 )
 
 CONTRACT_TOKEN_ALLOWED_PATH_PREFIXES = (
-    "data/registries/domain_registry.json",
-    "data/registries/domain_contract_registry.json",
-    "data/registries/solver_registry.json",
+    "contracts/registry/domain_registry.json",
+    "contracts/registry/domain_contract_registry.json",
+    "contracts/registry/solver_registry.json",
     "docs/scale/",
     "contracts/schemas/scale/",
     "contracts/schemas/domain_foundation_registry.schema.json",
@@ -270,8 +270,8 @@ RENDER_SNAPSHOT_DERIVED_FILES = (
     "tools/render/tool_render_capture.py",
 )
 
-INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "data/registries/intent_dispatch_whitelist.json"
-DEPRECATIONS_REGISTRY_REL = "data/governance/deprecations.json"
+INTENT_DISPATCH_WHITELIST_REGISTRY_REL = "contracts/registry/intent_dispatch_whitelist.json"
+DEPRECATIONS_REGISTRY_REL = "content/data/governance/deprecations.json"
 WORKTREE_LEFTOVERS_REL = "docs/audit/WORKTREE_LEFTOVERS.md"
 DEFAULT_INTENT_DISPATCH_ALLOWED_PATTERNS = (
     "src/net/**",
@@ -637,19 +637,19 @@ INTERACTION_DISPATCH_ALLOWED_DIRECT_PROCESS_FILE = "apps/client/interaction/inte
 INTERACTION_AFFORDANCE_FILE = "apps/client/interaction/affordance_generator.py"
 ACTION_SURFACE_ENGINE_FILE = "game/domains/interaction/action_surface_engine.py"
 ACTION_SURFACE_REGISTRY_FILES = (
-    "data/registries/surface_type_registry.json",
-    "data/registries/tool_tag_registry.json",
-    "data/registries/surface_visibility_policy_registry.json",
+    "contracts/registry/surface_type_registry.json",
+    "contracts/registry/tool_tag_registry.json",
+    "contracts/registry/surface_visibility_policy_registry.json",
 )
 TOOL_REGISTRY_FILES = (
-    "data/registries/tool_type_registry.json",
-    "data/registries/tool_effect_model_registry.json",
+    "contracts/registry/tool_type_registry.json",
+    "contracts/registry/tool_effect_model_registry.json",
 )
 MACHINE_REGISTRY_FILES = (
-    "data/registries/port_type_registry.json",
-    "data/registries/machine_type_registry.json",
-    "data/registries/machine_operation_registry.json",
-    "data/registries/port_visibility_policy_registry.json",
+    "contracts/registry/port_type_registry.json",
+    "contracts/registry/machine_type_registry.json",
+    "contracts/registry/machine_operation_registry.json",
+    "contracts/registry/port_visibility_policy_registry.json",
 )
 INTERACTION_TRUTH_MUTATION_FORBIDDEN_KEYS = (
     "agent_states",
@@ -691,9 +691,9 @@ PLAYER_FACTION_LITERAL_ALLOWED_PATH_PREFIXES = (
 )
 
 PLAYER_DIEGETIC_REQUIRED_FILES = (
-    "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json",
-    "packs/experience/profile.player.default/data/experience_profile.player.default.json",
-    "packs/tool/workspace.player.diegetic_default/pack.json",
+    "content/packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json",
+    "content/packs/experience/profile.player.default/data/experience_profile.player.default.json",
+    "content/packs/tool/workspace.player.diegetic_default/pack.json",
 )
 
 PLAYER_DEBUG_WINDOW_PREFIXES = (
@@ -727,13 +727,13 @@ PLAYER_DEBUG_FORBIDDEN_ENTITLEMENTS = (
 WORLDGEN_CONSTRAINT_REQUIRED_FILES = (
     "contracts/schemas/worldgen_constraints.schema.json",
     "contracts/schemas/worldgen_search_plan.schema.json",
-    "data/registries/worldgen_constraints_registry.json",
+    "contracts/registry/worldgen_constraints_registry.json",
 )
 
 WORLDGEN_CONSTRAINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
     "bundles/",
-    "data/registries/worldgen_constraints_registry.json",
+    "contracts/registry/worldgen_constraints_registry.json",
     "docs/worldgen/",
     "contracts/schemas/worldgen/",
     "contracts/schemas/",
@@ -770,15 +770,15 @@ MULTIPLAYER_NET_SCHEMA_NAMES = (
 )
 
 MULTIPLAYER_POLICY_REGISTRY_FILES = (
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/net_resync_strategy_registry.json",
-    "data/registries/net_server_policy_registry.json",
-    "data/registries/securex_policy_registry.json",
-    "data/registries/server_profile_registry.json",
-    "data/registries/shard_map_registry.json",
-    "data/registries/perception_interest_policy_registry.json",
-    "data/registries/anti_cheat_policy_registry.json",
-    "data/registries/anti_cheat_module_registry.json",
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/net_resync_strategy_registry.json",
+    "contracts/registry/net_server_policy_registry.json",
+    "contracts/registry/securex_policy_registry.json",
+    "contracts/registry/server_profile_registry.json",
+    "contracts/registry/shard_map_registry.json",
+    "contracts/registry/perception_interest_policy_registry.json",
+    "contracts/registry/anti_cheat_policy_registry.json",
+    "contracts/registry/anti_cheat_module_registry.json",
 )
 
 ANTI_CHEAT_REQUIRED_POLICY_IDS = (
@@ -925,7 +925,7 @@ CI_DEV_FORBIDDEN_PACKAGING_TOKENS = (
     "build/dist",
 )
 
-REGRESSION_LOCK_PATH = "data/regression/observer_baseline.json"
+REGRESSION_LOCK_PATH = "tests/fixtures/regression/observer_baseline.json"
 REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
     "bundle_id",
@@ -935,7 +935,7 @@ REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-MULTIPLAYER_REGRESSION_LOCK_PATH = "data/regression/multiplayer_baseline.json"
+MULTIPLAYER_REGRESSION_LOCK_PATH = "tests/fixtures/regression/multiplayer_baseline.json"
 MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
     "bundle_id",
@@ -945,7 +945,7 @@ MULTIPLAYER_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-CONTROL_DECISION_REGRESSION_LOCK_PATH = "data/regression/control_decision_baseline.json"
+CONTROL_DECISION_REGRESSION_LOCK_PATH = "tests/fixtures/regression/control_decision_baseline.json"
 CONTROL_DECISION_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
     "sequence_id",
@@ -954,7 +954,7 @@ CONTROL_DECISION_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH = "data/regression/control_plane_full_baseline.json"
+CONTROL_PLANE_FULL_REGRESSION_LOCK_PATH = "tests/fixtures/regression/control_plane_full_baseline.json"
 CONTROL_PLANE_FULL_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
     "scenario_id",
@@ -965,7 +965,7 @@ CONTROL_PLANE_FULL_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "update_policy",
 )
 
-MAT_SCALE_REGRESSION_LOCK_PATH = "data/regression/mat_scale_baseline.json"
+MAT_SCALE_REGRESSION_LOCK_PATH = "tests/fixtures/regression/mat_scale_baseline.json"
 MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
     "baseline_id",
     "scenario_id",
@@ -978,7 +978,7 @@ MAT_SCALE_REGRESSION_LOCK_REQUIRED_FIELDS = (
 MVP_SMOKE_DOCTRINE_PATH = "docs/mvp/MVP_SMOKE_SUITE.md"
 MVP_SMOKE_HASHES_PATH = "build/mvp/mvp_smoke_hashes.json"
 MVP_SMOKE_REPORT_PATH = "build/mvp/mvp_smoke_report.json"
-MVP_SMOKE_BASELINE_PATH = "data/regression/mvp_smoke_baseline.json"
+MVP_SMOKE_BASELINE_PATH = "tests/fixtures/regression/mvp_smoke_baseline.json"
 MVP_SMOKE_FINAL_PATH = "docs/audit/MVP_SMOKE_FINAL.md"
 MVP_SMOKE_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
@@ -997,7 +997,7 @@ MVP_STRESS_DOCTRINE_PATH = "docs/mvp/MVP_STRESS_GATE.md"
 MVP_STRESS_HASHES_PATH = "build/mvp/mvp_stress_hashes.json"
 MVP_STRESS_REPORT_PATH = "build/mvp/mvp_stress_report.json"
 MVP_STRESS_PROOF_REPORT_PATH = "build/mvp/mvp_stress_proof_report.json"
-MVP_STRESS_BASELINE_PATH = "data/regression/mvp_stress_baseline.json"
+MVP_STRESS_BASELINE_PATH = "tests/fixtures/regression/mvp_stress_baseline.json"
 MVP_STRESS_FINAL_PATH = "docs/audit/MVP_STRESS_FINAL.md"
 MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
@@ -1021,7 +1021,7 @@ MVP_STRESS_BASELINE_REQUIRED_FIELDS = (
 MVP_CROSS_PLATFORM_DOCTRINE_PATH = "docs/mvp/MVP_CROSS_PLATFORM_GATE.md"
 MVP_CROSS_PLATFORM_HASHES_PATH = "build/mvp/mvp_cross_platform_hashes.json"
 MVP_CROSS_PLATFORM_REPORT_PATH = "build/mvp/mvp_cross_platform_matrix.json"
-MVP_CROSS_PLATFORM_BASELINE_PATH = "data/regression/mvp_cross_platform_baseline.json"
+MVP_CROSS_PLATFORM_BASELINE_PATH = "tests/fixtures/regression/mvp_cross_platform_baseline.json"
 MVP_CROSS_PLATFORM_FINAL_PATH = "docs/audit/MVP_CROSS_PLATFORM_FINAL.md"
 MVP_CROSS_PLATFORM_BASELINE_REQUIRED_FIELDS = (
     "baseline_id",
@@ -1045,10 +1045,10 @@ META_STABILITY_DOCTRINE_PATH = "docs/meta/STABILITY_CLASSIFICATION.md"
 META_STABILITY_CONVENTION_PATH = "docs/meta/STABILITY_REGISTRY_CONVENTION.md"
 META_STABILITY_SCHEMA_DOC_PATH = "contracts/schemas/meta/stability_marker.schema"
 META_STABILITY_SCHEMA_JSON_PATH = "contracts/schemas/stability_marker.schema.json"
-META_STABILITY_CLASS_REGISTRY_PATH = "data/registries/stability_class_registry.json"
-META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "data/registries/stability_requirements_registry.json"
-META_STABILITY_VALIDATOR_PATH = "meta/stability/stability_validator.py"
-META_STABILITY_SCOPE_PATH = "meta/stability/stability_scope.py"
+META_STABILITY_CLASS_REGISTRY_PATH = "contracts/registry/stability_class_registry.json"
+META_STABILITY_REQUIREMENTS_REGISTRY_PATH = "contracts/registry/stability_requirements_registry.json"
+META_STABILITY_VALIDATOR_PATH = "tools/validators/stability/stability_validator.py"
+META_STABILITY_SCOPE_PATH = "tools/validators/stability/stability_scope.py"
 META_STABILITY_FINAL_PATH = "docs/audit/STABILITY_TAGGING_FINAL.md"
 
 TIME_ANCHOR_RETRO_AUDIT_PATH = "docs/audit/TIME_ANCHOR0_RETRO_AUDIT.md"
@@ -1057,7 +1057,7 @@ TIME_ANCHOR_TICK_SCHEMA_DOC_PATH = "contracts/schemas/time/tick_t.schema"
 TIME_ANCHOR_EPOCH_SCHEMA_DOC_PATH = "contracts/schemas/time/epoch_anchor_record.schema"
 TIME_ANCHOR_TICK_SCHEMA_JSON_PATH = "contracts/schemas/tick_t.schema.json"
 TIME_ANCHOR_EPOCH_SCHEMA_JSON_PATH = "contracts/schemas/epoch_anchor_record.schema.json"
-TIME_ANCHOR_POLICY_REGISTRY_PATH = "data/registries/time_anchor_policy_registry.json"
+TIME_ANCHOR_POLICY_REGISTRY_PATH = "contracts/registry/time_anchor_policy_registry.json"
 TIME_ANCHOR_TICK_MODULE_PATH = "engine/time/tick_t.py"
 TIME_ANCHOR_ENGINE_PATH = "engine/time/epoch_anchor_engine.py"
 TIME_ANCHOR_VERIFY_TOOL_PATH = "tools/time/tool_verify_longrun_ticks.py"
@@ -1068,17 +1068,17 @@ ARCH_AUDIT_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT0_RETRO_AUDIT.md"
 ARCH_AUDIT_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT_CONSTITUTION.md"
 ARCH_AUDIT_TOOL_PATH = "tools/audit/tool_run_arch_audit.py"
 ARCH_AUDIT_REPORT_PATH = "docs/audit/ARCH_AUDIT_REPORT.md"
-ARCH_AUDIT_REPORT_JSON_PATH = "data/audit/arch_audit_report.json"
+ARCH_AUDIT_REPORT_JSON_PATH = "content/data/audit/arch_audit_report.json"
 ARCH_AUDIT_BASELINE_PATH = "docs/audit/ARCH_AUDIT_BASELINE.md"
 ARCH_AUDIT2_RETRO_AUDIT_PATH = "docs/audit/ARCH_AUDIT2_RETRO_AUDIT.md"
 ARCH_AUDIT2_CONSTITUTION_PATH = "docs/audit/ARCH_AUDIT2_CONSTITUTION.md"
 ARCH_AUDIT2_REPORT_PATH = "docs/audit/ARCH_AUDIT2_REPORT.md"
-ARCH_AUDIT2_REPORT_JSON_PATH = "data/audit/arch_audit2_report.json"
+ARCH_AUDIT2_REPORT_JSON_PATH = "content/data/audit/arch_audit2_report.json"
 ARCH_AUDIT2_FINAL_PATH = "docs/audit/ARCH_AUDIT2_FINAL.md"
 
 REPO_INVENTORY_TOOL_PATH = "tools/review/tool_repo_inventory.py"
 REPO_INVENTORY_COMMON_PATH = "tools/review/repo_inventory_common.py"
-REPO_INVENTORY_JSON_PATH = "data/audit/repo_inventory.json"
+REPO_INVENTORY_JSON_PATH = "content/data/audit/repo_inventory.json"
 REPO_TREE_INDEX_PATH = "docs/audit/REPO_TREE_INDEX.md"
 MODULE_DUPLICATION_REPORT_PATH = "docs/audit/MODULE_DUPLICATION_REPORT.md"
 ENTRYPOINT_MAP_PATH = "docs/audit/ENTRYPOINT_MAP.md"
@@ -1095,76 +1095,76 @@ UI_MODE_RESOLUTION_TOOL_PATH = "tools/release/tool_run_ui_mode_resolution.py"
 UI_MODE_RESOLUTION_COMMON_PATH = "tools/release/ui_mode_resolution_common.py"
 UI_MODE_RESOLUTION_DOC_PATH = "docs/appshell/UI_MODE_RESOLUTION.md"
 UI_MODE_RESOLUTION_BASELINE_PATH = "docs/audit/UI_MODE_RESOLUTION_BASELINE.md"
-UI_MODE_POLICY_REGISTRY_PATH = "data/registries/ui_mode_policy_registry.json"
-PLATFORM_CAPABILITY_REGISTRY_PATH = "data/registries/platform_capability_registry.json"
+UI_MODE_POLICY_REGISTRY_PATH = "contracts/registry/ui_mode_policy_registry.json"
+PLATFORM_CAPABILITY_REGISTRY_PATH = "contracts/registry/platform_capability_registry.json"
 PLATFORM_PROBE_PATH = "engine/platform/platform_probe.py"
 PLATFORM_CAPS_PROBE_PATH = "engine/platform/platform_caps_probe.py"
 PLATFORM_FORMALIZE_TOOL_PATH = "tools/release/tool_run_platform_formalize.py"
 PLATFORM_FORMALIZE_COMMON_PATH = "tools/release/platform_formalize_common.py"
 PLATFORM_RENDERER_MATRIX_PATH = "docs/audit/PLATFORM_RENDERER_MATRIX.md"
 PLATFORM_FORMALIZE_FINAL_PATH = "docs/audit/PLATFORM_FORMALIZE_FINAL.md"
-PLATFORM_FORMALIZE_REPORT_PATH = "data/audit/platform_formalize_report.json"
+PLATFORM_FORMALIZE_REPORT_PATH = "content/data/audit/platform_formalize_report.json"
 UI_MODE_SELECTOR_PATH = "runtime/appshell/ui_mode_selector.py"
 UI_RECONCILE_TOOL_PATH = "tools/release/tool_run_ui_reconcile.py"
 UI_RECONCILE_COMMON_PATH = "tools/release/ui_reconcile_common.py"
 UI_ADAPTER_CONTRACT_PATH = "docs/ui/UI_ADAPTER_CONTRACT.md"
 UI_SURFACE_MAP_AUDIT_PATH = "docs/audit/UI_SURFACE_MAP.md"
 UI_RECONCILE_FINAL_PATH = "docs/audit/UI_RECONCILE_FINAL.md"
-UI_SURFACE_REPORT_JSON_PATH = "data/audit/ui_surface_report.json"
+UI_SURFACE_REPORT_JSON_PATH = "content/data/audit/ui_surface_report.json"
 TOOL_SURFACE_TOOL_PATH = "tools/release/tool_run_tool_surface.py"
 TOOL_SURFACE_ADAPTER_PATH = "tools/tool_surface_adapter.py"
 TOOL_SURFACE_MAP_PATH = "docs/audit/TOOL_SURFACE_MAP.md"
 TOOL_SURFACE_FINAL_PATH = "docs/audit/TOOL_SURFACE_FINAL.md"
 TOOL_SURFACE_REFERENCE_PATH = "docs/appshell/TOOL_REFERENCE.md"
-VIRTUAL_ROOT_REGISTRY_PATH = "data/registries/virtual_root_registry.json"
+VIRTUAL_ROOT_REGISTRY_PATH = "contracts/registry/virtual_root_registry.json"
 VIRTUAL_PATHS_ENGINE_PATH = "runtime/appshell/paths/virtual_paths.py"
 VIRTUAL_PATHS_DOC_PATH = "docs/appshell/VIRTUAL_PATHS.md"
 VIRTUAL_PATHS_TOOL_PATH = "tools/release/tool_run_virtual_paths.py"
 VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
-VIRTUAL_PATHS_REPORT_PATH = "data/audit/virtual_paths_report.json"
-INSTALL_DISCOVERY_ENGINE_PATH = "lib/install/install_discovery_engine.py"
+VIRTUAL_PATHS_REPORT_PATH = "content/data/audit/virtual_paths_report.json"
+INSTALL_DISCOVERY_ENGINE_PATH = "engine/install/install_discovery_engine.py"
 INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schemas/lib/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
-INSTALL_DISCOVERY_REPORT_PATH = "data/audit/install_discovery_report.json"
+INSTALL_DISCOVERY_REPORT_PATH = "content/data/audit/install_discovery_report.json"
 PRODUCT_BOOT_MATRIX_DOC_PATH = "docs/mvp/PRODUCT_BOOT_MATRIX.md"
 PRODUCT_BOOT_MATRIX_TOOL_PATH = "tools/mvp/tool_run_product_boot_matrix.py"
 PRODUCT_BOOT_MATRIX_COMMON_PATH = "tools/mvp/prod_gate0_common.py"
 PRODUCT_BOOT_MATRIX_REPORT_PATH = "docs/audit/PRODUCT_BOOT_MATRIX_REPORT.md"
-PRODUCT_BOOT_MATRIX_JSON_PATH = "data/audit/product_boot_matrix.json"
+PRODUCT_BOOT_MATRIX_JSON_PATH = "contracts/audit/product_boot_matrix.json"
 PROD_GATE_FINAL_PATH = "docs/audit/PROD_GATE_FINAL.md"
 DIST_PLATFORM_MATRIX_MODEL_PATH = "docs/release/DIST_PLATFORM_MATRIX_MODEL.md"
 DIST_PLATFORM_MATRIX_TOOL_PATH = "tools/dist/tool_run_platform_matrix.py"
 DIST_PLATFORM_MATRIX_COMMON_PATH = "tools/dist/dist_platform_matrix_common.py"
 DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
-DIST_PLATFORM_MATRIX_JSON_PATH = "data/audit/dist_platform_matrix.json"
+DIST_PLATFORM_MATRIX_JSON_PATH = "contracts/audit/dist_platform_matrix.json"
 SUPPORTED_PLATFORMS_V0_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
 DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
 CONVERGENCE_GATE_COMMON_PATH = "tools/convergence/convergence_gate_common.py"
 CONVERGENCE_GATE_TOOL_PATH = "tools/convergence/tool_run_convergence_gate.py"
 CONVERGENCE_GATE_FINAL_DOC_PATH = "docs/audit/CONVERGENCE_FINAL.md"
-CONVERGENCE_GATE_FINAL_JSON_PATH = "data/audit/convergence_final.json"
+CONVERGENCE_GATE_FINAL_JSON_PATH = "content/data/audit/convergence_final.json"
 SHIM_POLICY_DOC_PATH = "docs/restructure/SHIM_POLICY.md"
 SHIM_COVERAGE_REPORT_PATH = "docs/audit/SHIM_COVERAGE_REPORT.md"
 SHIM_TOOL_PATH = "tools/release/tool_run_shim_coverage.py"
 SHIM_COMMON_PATH = "tools/release/shim_coverage_common.py"
-PATH_SHIMS_PATH = "compat/shims/path_shims.py"
-FLAG_SHIMS_PATH = "compat/shims/flag_shims.py"
-TOOL_SHIMS_PATH = "compat/shims/tool_shims.py"
-VALIDATION_SHIMS_PATH = "compat/shims/validation_shims.py"
+PATH_SHIMS_PATH = "tools/validators/compatibility/shims/path_shims.py"
+FLAG_SHIMS_PATH = "tools/validators/compatibility/shims/flag_shims.py"
+TOOL_SHIMS_PATH = "tools/validators/compatibility/shims/tool_shims.py"
+VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.py"
 VALIDATION_PIPELINE_DOC_PATH = "docs/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
 VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schemas/validation/validation_result.schema"
 VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schemas/validation_result.schema.json"
-VALIDATION_SUITE_REGISTRY_PATH = "data/registries/validation_suite_registry.json"
-VALIDATION_ENGINE_PATH = "validation/validation_engine.py"
+VALIDATION_SUITE_REGISTRY_PATH = "contracts/registry/validation_suite_registry.json"
+VALIDATION_ENGINE_PATH = "tools/validators/validation/validation_engine.py"
 VALIDATION_TOOL_PATH = "tools/validation/tool_run_validation.py"
 DOC_INVENTORY_TOOL_PATH = "tools/review/tool_doc_inventory.py"
 DOC_INVENTORY_COMMON_PATH = "tools/review/doc_inventory_common.py"
-DOC_INVENTORY_JSON_PATH = "data/audit/doc_inventory.json"
+DOC_INVENTORY_JSON_PATH = "content/data/audit/doc_inventory.json"
 DOC_INDEX_PATH = "docs/audit/DOC_INDEX.md"
 CANON_MAP_PATH = "docs/audit/CANON_MAP.md"
 DOC_DRIFT_MATRIX_PATH = "docs/audit/DOC_DRIFT_MATRIX.md"
@@ -1173,8 +1173,8 @@ REPO_REVIEW_3_FINAL_PATH = "docs/audit/REPO_REVIEW_3_FINAL.md"
 
 EARTH10_RETRO_AUDIT_PATH = "docs/audit/EARTH10_RETRO_AUDIT.md"
 EARTH10_DOCTRINE_PATH = "docs/worldgen/EARTH_MATERIAL_SURFACE_PROXY.md"
-EARTH10_MATERIAL_REGISTRY_PATH = "data/registries/material_proxy_registry.json"
-EARTH10_SURFACE_FLAG_REGISTRY_PATH = "data/registries/surface_flag_registry.json"
+EARTH10_MATERIAL_REGISTRY_PATH = "contracts/registry/material_proxy_registry.json"
+EARTH10_SURFACE_FLAG_REGISTRY_PATH = "contracts/registry/surface_flag_registry.json"
 EARTH10_PROBE_PATH = "tools/worldgen/earth10_probe.py"
 EARTH10_AUDIT_COMMON_PATH = "tools/worldgen/earth10_audit_common.py"
 EARTH10_REPLAY_TOOL_PATH = "tools/worldgen/tool_replay_material_proxy_window.py"
@@ -1188,9 +1188,9 @@ SOL1_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/illumination_view_artifact.
 SOL1_EMITTER_SCHEMA_JSON_PATH = "contracts/schemas/emitter.schema.json"
 SOL1_RECEIVER_SCHEMA_JSON_PATH = "contracts/schemas/receiver.schema.json"
 SOL1_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/illumination_view_artifact.schema.json"
-SOL1_EMITTER_REGISTRY_PATH = "data/registries/emitter_kind_registry.json"
-SOL1_RECEIVER_REGISTRY_PATH = "data/registries/receiver_kind_registry.json"
-SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "data/registries/occlusion_policy_registry.json"
+SOL1_EMITTER_REGISTRY_PATH = "contracts/registry/emitter_kind_registry.json"
+SOL1_RECEIVER_REGISTRY_PATH = "contracts/registry/receiver_kind_registry.json"
+SOL1_OCCLUSION_POLICY_REGISTRY_PATH = "contracts/registry/occlusion_policy_registry.json"
 SOL1_ENGINE_PATH = "game/domains/astronomy/illumination/illumination_geometry_engine.py"
 SOL1_REPLAY_TOOL_PATH = "tools/astro/tool_replay_illumination_view.py"
 SOL1_AUDIT_COMMON_PATH = "tools/astro/sol1_audit_common.py"
@@ -1203,8 +1203,8 @@ SOL2_VIEW_SCHEMA_DOC_PATH = "contracts/schemas/astro/orbit_view_artifact.schema"
 SOL2_PROVIDER_SCHEMA_JSON_PATH = "contracts/schemas/ephemeris_provider.schema.json"
 SOL2_POLICY_SCHEMA_JSON_PATH = "contracts/schemas/orbit_path_policy.schema.json"
 SOL2_VIEW_SCHEMA_JSON_PATH = "contracts/schemas/orbit_view_artifact.schema.json"
-SOL2_PROVIDER_REGISTRY_PATH = "data/registries/ephemeris_provider_registry.json"
-SOL2_POLICY_REGISTRY_PATH = "data/registries/orbit_path_policy_registry.json"
+SOL2_PROVIDER_REGISTRY_PATH = "contracts/registry/ephemeris_provider_registry.json"
+SOL2_POLICY_REGISTRY_PATH = "contracts/registry/orbit_path_policy_registry.json"
 SOL2_ENGINE_PATH = "game/domains/astronomy/ephemeris/kepler_proxy_engine.py"
 SOL2_VIEW_ENGINE_PATH = "game/domains/astronomy/views/orbit_view_engine.py"
 SOL2_REPLAY_TOOL_PATH = "tools/astro/tool_replay_orbit_view.py"
@@ -1212,7 +1212,7 @@ SOL2_RUNTIME_COMMON_PATH = "tools/astro/sol2_runtime_common.py"
 SOL2_AUDIT_COMMON_PATH = "tools/astro/sol2_audit_common.py"
 GAL0_RETRO_AUDIT_PATH = "docs/audit/GAL0_RETRO_AUDIT.md"
 GAL0_DOCTRINE_PATH = "docs/worldgen/GALAXY_METADATA_PROXIES.md"
-GAL0_REGION_REGISTRY_PATH = "data/registries/galactic_region_registry.json"
+GAL0_REGION_REGISTRY_PATH = "contracts/registry/galactic_region_registry.json"
 GAL0_ENGINE_PATH = "game/domains/worldgen/galaxy/galaxy_proxy_field_engine.py"
 GAL0_PROBE_PATH = "tools/worldgen/gal0_probe.py"
 GAL0_AUDIT_COMMON_PATH = "tools/worldgen/gal0_audit_common.py"
@@ -1222,7 +1222,7 @@ GAL1_RETRO_AUDIT_PATH = "docs/audit/GAL1_RETRO_AUDIT.md"
 GAL1_DOCTRINE_PATH = "docs/worldgen/GALAXY_COMPACT_OBJECT_STUBS.md"
 GAL1_SCHEMA_DOC_PATH = "contracts/schemas/worldgen/galaxy_object_stub.schema"
 GAL1_SCHEMA_JSON_PATH = "contracts/schemas/galaxy_object_stub.schema.json"
-GAL1_OBJECT_KIND_REGISTRY_PATH = "data/registries/object_kind_registry.json"
+GAL1_OBJECT_KIND_REGISTRY_PATH = "contracts/registry/object_kind_registry.json"
 GAL1_ENGINE_PATH = "game/domains/worldgen/galaxy/galaxy_object_stub_generator.py"
 GAL1_PROBE_PATH = "tools/worldgen/gal1_probe.py"
 GAL1_AUDIT_COMMON_PATH = "tools/worldgen/gal1_audit_common.py"
@@ -1278,7 +1278,7 @@ RUNTIME_PATH_PREFIXES = (
     "libs/",
 )
 
-PLAYER_DEMAND_MATRIX_REL = "data/meta/player_demand_matrix.json"
+PLAYER_DEMAND_MATRIX_REL = "contracts/meta/player_demand_matrix.json"
 PLAYER_DEMAND_IMPACT_PREFIX = "docs/impact/"
 PLAYER_DEMAND_RUNTIME_PREFIXES = (
     "src/",
@@ -1431,7 +1431,7 @@ def _full_fail_strict_warn_severity(profile: str) -> str:
 
 
 def _deprecated_inline_response_curve_sites(repo_root: str) -> Set[Tuple[str, int]]:
-    rel_path = "data/registries/deprecation_registry.json"
+    rel_path = "contracts/registry/deprecation_registry.json"
     payload, err = _load_json_object(repo_root, rel_path)
     if err:
         return set()
@@ -1480,13 +1480,13 @@ def _append_session_pipeline_invariant_findings(
     if missing:
         return
 
-    stage_registry, stage_err = _load_json_object(repo_root, "data/registries/session_stage_registry.json")
-    pipeline_registry, pipeline_err = _load_json_object(repo_root, "data/registries/session_pipeline_registry.json")
+    stage_registry, stage_err = _load_json_object(repo_root, "contracts/registry/session_stage_registry.json")
+    pipeline_registry, pipeline_err = _load_json_object(repo_root, "contracts/registry/session_pipeline_registry.json")
     if stage_err or pipeline_err:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_pipeline_registry.json",
+                file_path="contracts/registry/session_pipeline_registry.json",
                 line_number=1,
                 snippet="",
                 message="session stage/pipeline registry JSON is invalid",
@@ -1501,7 +1501,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_pipeline_registry.json",
+                file_path="contracts/registry/session_pipeline_registry.json",
                 line_number=1,
                 snippet="",
                 message="session stage/pipeline registry record lists are missing",
@@ -1528,7 +1528,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_pipeline_registry.json",
+                file_path="contracts/registry/session_pipeline_registry.json",
                 line_number=1,
                 snippet="",
                 message="default pipeline.client.default is missing",
@@ -1545,7 +1545,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_stage_registry.json",
+                file_path="contracts/registry/session_stage_registry.json",
                 line_number=1,
                 snippet="",
                 message="stage.resolve_session cannot directly transition to stage.session_running",
@@ -1561,7 +1561,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_stage_registry.json",
+                file_path="contracts/registry/session_stage_registry.json",
                 line_number=1,
                 snippet="",
                 message="stage.session_ready must allow transition to stage.session_running",
@@ -1575,7 +1575,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_pipeline_registry.json",
+                file_path="contracts/registry/session_pipeline_registry.json",
                 line_number=1,
                 snippet="",
                 message="pipeline.client.default is missing required canonical stages",
@@ -1588,7 +1588,7 @@ def _append_session_pipeline_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/session_pipeline_registry.json",
+                    file_path="contracts/registry/session_pipeline_registry.json",
                     line_number=1,
                     snippet="",
                     message="pipeline.client.default stage order allows skip relative to running transition",
@@ -1602,7 +1602,7 @@ def _append_session_pipeline_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/session_stage_registry.json",
+                file_path="contracts/registry/session_stage_registry.json",
                 line_number=1,
                 snippet="",
                 message="stage.session_ready must enforce simulation_time.tick == 0",
@@ -1669,18 +1669,18 @@ def _append_multiplayer_contract_invariant_findings(
     if missing:
         return
 
-    replication_payload, replication_err = _load_json_object(repo_root, "data/registries/net_replication_policy_registry.json")
-    resync_payload, resync_err = _load_json_object(repo_root, "data/registries/net_resync_strategy_registry.json")
-    server_policy_payload, server_policy_err = _load_json_object(repo_root, "data/registries/net_server_policy_registry.json")
-    shard_map_payload, shard_map_err = _load_json_object(repo_root, "data/registries/shard_map_registry.json")
+    replication_payload, replication_err = _load_json_object(repo_root, "contracts/registry/net_replication_policy_registry.json")
+    resync_payload, resync_err = _load_json_object(repo_root, "contracts/registry/net_resync_strategy_registry.json")
+    server_policy_payload, server_policy_err = _load_json_object(repo_root, "contracts/registry/net_server_policy_registry.json")
+    shard_map_payload, shard_map_err = _load_json_object(repo_root, "contracts/registry/shard_map_registry.json")
     perception_interest_payload, perception_interest_err = _load_json_object(
         repo_root,
-        "data/registries/perception_interest_policy_registry.json",
+        "contracts/registry/perception_interest_policy_registry.json",
     )
-    anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "data/registries/anti_cheat_policy_registry.json")
-    anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "data/registries/anti_cheat_module_registry.json")
-    securex_policy_payload, securex_policy_err = _load_json_object(repo_root, "data/registries/securex_policy_registry.json")
-    server_profile_payload, server_profile_err = _load_json_object(repo_root, "data/registries/server_profile_registry.json")
+    anti_cheat_policy_payload, anti_cheat_policy_err = _load_json_object(repo_root, "contracts/registry/anti_cheat_policy_registry.json")
+    anti_cheat_module_payload, anti_cheat_module_err = _load_json_object(repo_root, "contracts/registry/anti_cheat_module_registry.json")
+    securex_policy_payload, securex_policy_err = _load_json_object(repo_root, "contracts/registry/securex_policy_registry.json")
+    server_profile_payload, server_profile_err = _load_json_object(repo_root, "contracts/registry/server_profile_registry.json")
     if (
         replication_err
         or resync_err
@@ -1695,7 +1695,7 @@ def _append_multiplayer_contract_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/net_replication_policy_registry.json",
+                file_path="contracts/registry/net_replication_policy_registry.json",
                 line_number=1,
                 snippet="",
                 message="one or more multiplayer policy registries are invalid JSON",
@@ -1727,7 +1727,7 @@ def _append_multiplayer_contract_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/net_replication_policy_registry.json",
+                file_path="contracts/registry/net_replication_policy_registry.json",
                 line_number=1,
                 snippet="",
                 message="multiplayer policy registry record lists are missing",
@@ -1768,7 +1768,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/net_replication_policy_registry.json",
+                    file_path="contracts/registry/net_replication_policy_registry.json",
                     line_number=1,
                     snippet=policy_id,
                     message="replication policy '{}' references missing resync strategy '{}'".format(policy_id, strategy_id),
@@ -1785,7 +1785,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/net_resync_strategy_registry.json",
+                        file_path="contracts/registry/net_resync_strategy_registry.json",
                         line_number=1,
                         snippet=strategy_id,
                         message="resync strategy '{}' references missing replication policy '{}'".format(strategy_id, policy_id),
@@ -1812,7 +1812,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    file_path="contracts/registry/anti_cheat_policy_registry.json",
                     line_number=1,
                     snippet="",
                     message="anti-cheat policy entry is missing policy_id",
@@ -1825,7 +1825,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    file_path="contracts/registry/anti_cheat_policy_registry.json",
                     line_number=1,
                     snippet=policy_id,
                     message="anti-cheat policy '{}' must declare non-empty modules_enabled".format(policy_id),
@@ -1837,7 +1837,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/anti_cheat_policy_registry.json",
+                        file_path="contracts/registry/anti_cheat_policy_registry.json",
                         line_number=1,
                         snippet=policy_id,
                         message="anti-cheat policy '{}' references missing module '{}'".format(policy_id, module_id),
@@ -1852,7 +1852,7 @@ def _append_multiplayer_contract_invariant_findings(
                     findings.append(
                         _finding(
                             severity=severity,
-                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            file_path="contracts/registry/anti_cheat_policy_registry.json",
                             line_number=1,
                             snippet=policy_id,
                             message="anti-cheat policy '{}' default_actions references missing module '{}'".format(
@@ -1867,7 +1867,7 @@ def _append_multiplayer_contract_invariant_findings(
                     findings.append(
                         _finding(
                             severity=severity,
-                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            file_path="contracts/registry/anti_cheat_policy_registry.json",
                             line_number=1,
                             snippet="{}={}".format(token, action_token),
                             message="anti-cheat policy '{}' default action '{}' is not allowed".format(policy_id, action_token),
@@ -1879,7 +1879,7 @@ def _append_multiplayer_contract_invariant_findings(
                     findings.append(
                         _finding(
                             severity=severity,
-                            file_path="data/registries/anti_cheat_policy_registry.json",
+                            file_path="contracts/registry/anti_cheat_policy_registry.json",
                             line_number=1,
                             snippet=policy_id,
                             message="anti-cheat policy '{}' is missing default action for enabled module '{}'".format(
@@ -1893,7 +1893,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/anti_cheat_policy_registry.json",
+                    file_path="contracts/registry/anti_cheat_policy_registry.json",
                     line_number=1,
                     snippet=policy_id,
                     message="anti-cheat policy '{}' default_actions must be an object".format(policy_id),
@@ -1905,7 +1905,7 @@ def _append_multiplayer_contract_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/anti_cheat_policy_registry.json",
+                file_path="contracts/registry/anti_cheat_policy_registry.json",
                 line_number=1,
                 snippet=policy_id,
                 message="required anti-cheat policy '{}' is missing".format(policy_id),
@@ -1929,7 +1929,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/net_server_policy_registry.json",
+                        file_path="contracts/registry/net_server_policy_registry.json",
                         line_number=1,
                         snippet=server_policy_id,
                         message="server policy '{}' references missing replication policy '{}'".format(server_policy_id, token),
@@ -1945,7 +1945,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/net_server_policy_registry.json",
+                        file_path="contracts/registry/net_server_policy_registry.json",
                         line_number=1,
                         snippet=server_policy_id,
                         message="server policy '{}' references missing anti-cheat policy '{}'".format(server_policy_id, token),
@@ -1957,7 +1957,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/net_server_policy_registry.json",
+                    file_path="contracts/registry/net_server_policy_registry.json",
                     line_number=1,
                     snippet=server_policy_id,
                     message="server policy '{}' required anti-cheat policy is not present in allowed_anti_cheat_policy_ids".format(
@@ -1971,7 +1971,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/net_server_policy_registry.json",
+                    file_path="contracts/registry/net_server_policy_registry.json",
                     line_number=1,
                     snippet=server_policy_id,
                     message="server policy '{}' references missing securex policy '{}'".format(server_policy_id, securex_policy_id),
@@ -1988,7 +1988,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/net_server_policy_registry.json",
+                        file_path="contracts/registry/net_server_policy_registry.json",
                         line_number=1,
                         snippet=server_policy_id,
                         message="server policy '{}' must declare a valid extensions.default_shard_map_id when srz_hybrid is allowed".format(
@@ -2002,7 +2002,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/net_server_policy_registry.json",
+                        file_path="contracts/registry/net_server_policy_registry.json",
                         line_number=1,
                         snippet=server_policy_id,
                         message="server policy '{}' must declare a valid extensions.perception_interest_policy_id when srz_hybrid is allowed".format(
@@ -2031,7 +2031,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/server_profile_registry.json",
+                    file_path="contracts/registry/server_profile_registry.json",
                     line_number=1,
                     snippet=server_profile_id,
                     message="server profile '{}' references missing securex policy '{}'".format(server_profile_id, securex_policy_id),
@@ -2042,7 +2042,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/server_profile_registry.json",
+                    file_path="contracts/registry/server_profile_registry.json",
                     line_number=1,
                     snippet=server_profile_id,
                     message="server profile '{}' references missing anti-cheat policy '{}'".format(server_profile_id, anti_cheat_policy_id),
@@ -2054,7 +2054,7 @@ def _append_multiplayer_contract_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/server_profile_registry.json",
+                        file_path="contracts/registry/server_profile_registry.json",
                         line_number=1,
                         snippet=server_profile_id,
                         message="server profile '{}' references missing replication policy '{}'".format(server_profile_id, policy_id),
@@ -2065,7 +2065,7 @@ def _append_multiplayer_contract_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/server_profile_registry.json",
+                    file_path="contracts/registry/server_profile_registry.json",
                     line_number=1,
                     snippet=server_profile_id,
                     message="server profile '{}' must declare non-empty allowed_law_profile_ids".format(server_profile_id),
@@ -2208,8 +2208,8 @@ def _append_multiplayer_contract_invariant_findings(
                 )
 
     perceived_required = (
-        ("net/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
-        ("net/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("tools/network/policies/policy_server_authoritative.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
+        ("tools/network/srz/shard_coordinator.py", ("observe_truth(", "schema_name=\"net_perceived_delta\"")),
     )
     for rel_path, required_tokens in perceived_required:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -2252,7 +2252,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    law_registry_path = "data/registries/law_profiles.json"
+    law_registry_path = "contracts/registry/law_profiles.json"
     law_registry_payload, law_registry_err = _load_json_object(repo_root, law_registry_path)
     law_rows = []
     if not law_registry_err:
@@ -2321,7 +2321,7 @@ def _append_multiplayer_contract_invariant_findings(
                         )
                     )
 
-    authoritative_rel = "net/policies/policy_server_authoritative.py"
+    authoritative_rel = "tools/network/policies/policy_server_authoritative.py"
     authoritative_abs = os.path.join(repo_root, authoritative_rel.replace("/", os.sep))
     if not os.path.isfile(authoritative_abs):
         findings.append(
@@ -2373,7 +2373,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_routing_rel = "net/srz/routing.py"
+    srz_routing_rel = "tools/network/srz/routing.py"
     srz_routing_abs = os.path.join(repo_root, srz_routing_rel.replace("/", os.sep))
     if not os.path.isfile(srz_routing_abs):
         findings.append(
@@ -2405,7 +2405,7 @@ def _append_multiplayer_contract_invariant_findings(
                     )
                 )
 
-    srz_coordinator_rel = "net/srz/shard_coordinator.py"
+    srz_coordinator_rel = "tools/network/srz/shard_coordinator.py"
     srz_coordinator_abs = os.path.join(repo_root, srz_coordinator_rel.replace("/", os.sep))
     if not os.path.isfile(srz_coordinator_abs):
         findings.append(
@@ -2496,7 +2496,7 @@ def _append_domain_foundation_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path=str(row.get("path", "data/registries/domain_registry.json")),
+                    file_path=str(row.get("path", "contracts/registry/domain_registry.json")),
                     line_number=1,
                     snippet="",
                     message=str(row.get("message", "")),
@@ -2504,12 +2504,12 @@ def _append_domain_foundation_invariant_findings(
                 )
             )
 
-    solver_payload, solver_err = _load_json_object(repo_root, "data/registries/solver_registry.json")
+    solver_payload, solver_err = _load_json_object(repo_root, "contracts/registry/solver_registry.json")
     if solver_err:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/solver_registry.json",
+                file_path="contracts/registry/solver_registry.json",
                 line_number=1,
                 snippet="",
                 message="solver registry JSON is invalid",
@@ -2522,7 +2522,7 @@ def _append_domain_foundation_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/solver_registry.json",
+                    file_path="contracts/registry/solver_registry.json",
                     line_number=1,
                     snippet="",
                     message="solver registry records list is missing",
@@ -2540,7 +2540,7 @@ def _append_domain_foundation_invariant_findings(
                     findings.append(
                         _finding(
                             severity=severity,
-                            file_path="data/registries/solver_registry.json",
+                            file_path="contracts/registry/solver_registry.json",
                             line_number=1,
                             snippet="",
                             message="solver '{}' at records[{}] must declare non-empty domain_ids and contract_ids".format(
@@ -2551,12 +2551,12 @@ def _append_domain_foundation_invariant_findings(
                         )
                     )
 
-    contract_payload, contract_err = _load_json_object(repo_root, "data/registries/domain_contract_registry.json")
+    contract_payload, contract_err = _load_json_object(repo_root, "contracts/registry/domain_contract_registry.json")
     if contract_err:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/domain_contract_registry.json",
+                file_path="contracts/registry/domain_contract_registry.json",
                 line_number=1,
                 snippet="",
                 message="domain contract registry JSON is invalid",
@@ -2569,7 +2569,7 @@ def _append_domain_foundation_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/domain_contract_registry.json",
+                file_path="contracts/registry/domain_contract_registry.json",
                 line_number=1,
                 snippet="",
                 message="domain contract registry records list is missing",
@@ -2588,7 +2588,7 @@ def _append_domain_foundation_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/domain_contract_registry.json",
+                file_path="contracts/registry/domain_contract_registry.json",
                 line_number=1,
                 snippet="",
                 message="contract IDs removed/renamed without schema version bump: {}".format(",".join(missing_baseline)),
@@ -2668,14 +2668,14 @@ def _append_worldgen_constraint_invariant_findings(
     except Exception:
         validate_instance = None
 
-    registry_payload, registry_error = _load_json_object(repo_root, "data/registries/worldgen_constraints_registry.json")
+    registry_payload, registry_error = _load_json_object(repo_root, "contracts/registry/worldgen_constraints_registry.json")
     registry_entries = (((registry_payload.get("record") or {}).get("entries")) or []) if not registry_error else []
     registry_by_id: Dict[str, Dict[str, object]] = {}
     if registry_error:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/worldgen_constraints_registry.json",
+                file_path="contracts/registry/worldgen_constraints_registry.json",
                 line_number=1,
                 snippet="",
                 message="worldgen constraints registry JSON is invalid",
@@ -2686,7 +2686,7 @@ def _append_worldgen_constraint_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/worldgen_constraints_registry.json",
+                file_path="contracts/registry/worldgen_constraints_registry.json",
                 line_number=1,
                 snippet="",
                 message="worldgen constraints registry entries list is missing",
@@ -2702,7 +2702,7 @@ def _append_worldgen_constraint_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/worldgen_constraints_registry.json",
+                        file_path="contracts/registry/worldgen_constraints_registry.json",
                         line_number=1,
                         snippet="",
                         message="entry[{}] missing constraints_id".format(idx),
@@ -2714,7 +2714,7 @@ def _append_worldgen_constraint_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/worldgen_constraints_registry.json",
+                        file_path="contracts/registry/worldgen_constraints_registry.json",
                         line_number=1,
                         snippet=constraints_id,
                         message="duplicate constraints_id '{}' in registry".format(constraints_id),
@@ -2881,7 +2881,7 @@ def _append_worldgen_constraint_invariant_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/worldgen_constraints_registry.json",
+                file_path="contracts/registry/worldgen_constraints_registry.json",
                 line_number=1,
                 snippet=constraints_id,
                 message="registry constraints_id has no matching worldgen_constraints pack contribution",
@@ -3179,7 +3179,7 @@ def _append_reference_evaluator_invariant_findings(
 ) -> None:
     severity = _full_fail_strict_warn_severity(profile)
     rule_id = "INV-CRITICAL-SUBSYSTEM-REF-AVAILABLE"
-    registry_rel = "data/registries/reference_evaluator_registry.json"
+    registry_rel = "contracts/registry/reference_evaluator_registry.json"
     required_evaluator_ids = (
         "ref.energy_ledger",
         "ref.coupling_scheduler",
@@ -3187,7 +3187,7 @@ def _append_reference_evaluator_invariant_findings(
         "ref.compiled_model_verify",
     )
     required_paths = (
-        "meta/reference/reference_engine.py",
+        "tools/repo/meta/reference/reference_engine.py",
         "tools/meta/tool_run_reference_suite.py",
     )
     for rel_path in required_paths:
@@ -3267,7 +3267,7 @@ def _append_instrumentation_surface_invariant_findings(
     surface_severity = _full_fail_strict_warn_severity(profile)
     readout_severity = _strict_only_severity(profile)
 
-    registry_rel = "data/registries/instrumentation_surface_registry.json"
+    registry_rel = "contracts/registry/instrumentation_surface_registry.json"
     required_owners = (
         ("domain", "domain.elec"),
         ("domain", "domain.therm"),
@@ -3329,7 +3329,7 @@ def _append_instrumentation_surface_invariant_findings(
                     )
                 )
 
-    engine_rel = "meta/instrumentation/instrumentation_engine.py"
+    engine_rel = "tools/repo/meta/instrumentation/instrumentation_engine.py"
     engine_abs = os.path.join(repo_root, engine_rel.replace("/", os.sep))
     if not os.path.isfile(engine_abs):
         findings.append(
@@ -3393,11 +3393,11 @@ def _append_profile_override_invariant_findings(
     mode_severity = _invariant_severity(profile)
 
     required_paths = (
-        "meta/profile/profile_engine.py",
+        "tools/repo/meta/profile/profile_engine.py",
         "contracts/schemas/meta/profile.schema",
         "contracts/schemas/meta/profile_binding.schema",
         "contracts/schemas/meta/exception_event.schema",
-        "data/registries/profile_registry.json",
+        "contracts/registry/profile_registry.json",
     )
     for rel_path in required_paths:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -3448,7 +3448,7 @@ def _append_profile_override_invariant_findings(
                     )
                     break
 
-    profile_engine_rel = "meta/profile/profile_engine.py"
+    profile_engine_rel = "tools/repo/meta/profile/profile_engine.py"
     profile_engine_text = _file_text(repo_root, profile_engine_rel)
     required_override_tokens = (
         "resolve_profile(",
@@ -3524,9 +3524,9 @@ def _append_compute_budget_invariant_findings(
     required_paths = (
         "contracts/schemas/meta/compute_budget_profile.schema",
         "contracts/schemas/meta/compute_consumption_record.schema",
-        "data/registries/compute_budget_profile_registry.json",
-        "data/registries/compute_degrade_policy_registry.json",
-        "meta/compute/compute_budget_engine.py",
+        "contracts/registry/compute_budget_profile_registry.json",
+        "contracts/registry/compute_degrade_policy_registry.json",
+        "tools/repo/meta/compute/compute_budget_engine.py",
     )
     for rel_path in required_paths:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -3552,7 +3552,7 @@ def _append_compute_budget_invariant_findings(
             ),
         ),
         (
-            "meta/compile/compile_engine.py",
+            "tools/repo/meta/compile/compile_engine.py",
             (
                 "request_compute(",
                 "compute_consumption_record_row",
@@ -3596,7 +3596,7 @@ def _append_compute_budget_invariant_findings(
                 )
             )
 
-    compute_engine_rel = "meta/compute/compute_budget_engine.py"
+    compute_engine_rel = "tools/repo/meta/compute/compute_budget_engine.py"
     compute_engine_text = _file_text(repo_root, compute_engine_rel)
     required_metering_tokens = (
         "build_compute_consumption_record_row(",
@@ -3639,7 +3639,7 @@ def _append_compute_budget_invariant_findings(
             )
         )
 
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     explain_text = _file_text(repo_root, explain_registry_rel)
     for token in ("explain.compute_throttle", "explain.compute_refusal", "explain.compute_shutdown"):
         if token in explain_text:
@@ -3673,21 +3673,21 @@ def _append_logic_constitution_invariant_findings(
     constitution_rel = "docs/logic/LOGIC_CONSTITUTION.md"
     signal_schema_rel = "contracts/schemas/logic/signal_type.schema"
     logic_policy_schema_rel = "contracts/schemas/logic/logic_policy.schema"
-    signal_registry_rel = "data/registries/signal_type_registry.json"
-    carrier_registry_rel = "data/registries/carrier_type_registry.json"
-    bus_encoding_rel = "data/registries/bus_encoding_registry.json"
-    protocol_registry_rel = "data/registries/protocol_registry.json"
-    signal_delay_policy_rel = "data/registries/signal_delay_policy_registry.json"
-    signal_noise_policy_rel = "data/registries/signal_noise_policy_registry.json"
-    process_registry_rel = "data/registries/process_registry.json"
+    signal_registry_rel = "contracts/registry/signal_type_registry.json"
+    carrier_registry_rel = "contracts/registry/carrier_type_registry.json"
+    bus_encoding_rel = "contracts/registry/bus_encoding_registry.json"
+    protocol_registry_rel = "contracts/registry/protocol_registry.json"
+    signal_delay_policy_rel = "contracts/registry/signal_delay_policy_registry.json"
+    signal_noise_policy_rel = "contracts/registry/signal_noise_policy_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     signal_store_rel = "game/domains/logic/signal/signal_store.py"
     carrier_adapter_rel = "game/domains/logic/signal/carrier_adapters.py"
     observation_rel = "game/domains/logic/signal/observation.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    logic_policy_rel = "data/registries/logic_policy_registry.json"
-    compute_registry_rel = "data/registries/compute_budget_profile_registry.json"
-    instrument_registry_rel = "data/registries/instrument_type_registry.json"
-    profile_registry_rel = "data/registries/profile_registry.json"
+    logic_policy_rel = "contracts/registry/logic_policy_registry.json"
+    compute_registry_rel = "contracts/registry/compute_budget_profile_registry.json"
+    instrument_registry_rel = "contracts/registry/instrument_type_registry.json"
+    profile_registry_rel = "contracts/registry/profile_registry.json"
     exception_schema_rel = "contracts/schemas/meta/exception_event.schema"
 
     constitution_text = _file_text(repo_root, constitution_rel)
@@ -4088,11 +4088,11 @@ def _append_logic_element_invariant_findings(
         ("contracts/schemas/logic/logic_element_definition.schema", statevec_rule_id),
         ("contracts/schemas/logic/logic_behavior_model.schema", statevec_rule_id),
         ("contracts/schemas/logic/state_machine_definition.schema", statevec_rule_id),
-        ("data/registries/logic_element_registry.json", compute_rule_id),
-        ("data/registries/logic_behavior_model_registry.json", hardcoded_rule_id),
-        ("data/registries/logic_state_machine_registry.json", statevec_rule_id),
-        ("packs/core/pack.core.logic_base/data/logic_element_registry.json", compute_rule_id),
-        ("packs/core/pack.core.logic_base/data/logic_state_vectors.json", statevec_rule_id),
+        ("contracts/registry/logic_element_registry.json", compute_rule_id),
+        ("contracts/registry/logic_behavior_model_registry.json", hardcoded_rule_id),
+        ("contracts/registry/logic_state_machine_registry.json", statevec_rule_id),
+        ("content/packs/core/pack.core.logic_base/data/logic_element_registry.json", compute_rule_id),
+        ("content/packs/core/pack.core.logic_base/data/logic_state_vectors.json", statevec_rule_id),
         ("game/domains/logic/element/logic_element_validator.py", statevec_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -4109,8 +4109,8 @@ def _append_logic_element_invariant_findings(
             )
         )
 
-    element_payload, element_error = _load_json_object(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json")
-    statevec_payload, statevec_error = _load_json_object(repo_root, "packs/core/pack.core.logic_base/data/logic_state_vectors.json")
+    element_payload, element_error = _load_json_object(repo_root, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json")
+    statevec_payload, statevec_error = _load_json_object(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_vectors.json")
     if (not element_error) and (not statevec_error):
         element_rows = list(element_payload.get("logic_elements") or [])
         statevec_rows = list(statevec_payload.get("state_vector_definitions") or [])
@@ -4130,7 +4130,7 @@ def _append_logic_element_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+                        file_path="content/packs/core/pack.core.logic_base/data/logic_element_registry.json",
                         line_number=1,
                         snippet=element_id,
                         message="logic elements must declare state_vector_definition_id",
@@ -4142,7 +4142,7 @@ def _append_logic_element_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+                        file_path="content/packs/core/pack.core.logic_base/data/logic_state_vectors.json",
                         line_number=1,
                         snippet=element_id,
                         message="logic elements must have explicit state vector definitions",
@@ -4153,7 +4153,7 @@ def _append_logic_element_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="packs/core/pack.core.logic_base/data/logic_state_vectors.json",
+                        file_path="content/packs/core/pack.core.logic_base/data/logic_state_vectors.json",
                         line_number=1,
                         snippet=element_id,
                         message="logic element state_vector_definition_id must match declared state vector row",
@@ -4165,7 +4165,7 @@ def _append_logic_element_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="packs/core/pack.core.logic_base/data/logic_element_registry.json",
+                    file_path="content/packs/core/pack.core.logic_base/data/logic_element_registry.json",
                     line_number=1,
                     snippet=element_id,
                     message="logic elements must declare positive compute_cost_units",
@@ -4216,9 +4216,9 @@ def _append_logic_network_invariant_findings(
         ("contracts/schemas/logic/logic_node_payload.schema", substrate_rule_id),
         ("contracts/schemas/logic/logic_edge_payload.schema", substrate_rule_id),
         ("contracts/schemas/logic/logic_network_binding.schema", substrate_rule_id),
-        ("data/registries/logic_node_kind_registry.json", substrate_rule_id),
-        ("data/registries/logic_edge_kind_registry.json", substrate_rule_id),
-        ("data/registries/logic_network_policy_registry.json", loop_rule_id),
+        ("contracts/registry/logic_node_kind_registry.json", substrate_rule_id),
+        ("contracts/registry/logic_edge_kind_registry.json", substrate_rule_id),
+        ("contracts/registry/logic_network_policy_registry.json", loop_rule_id),
         ("game/domains/logic/network/logic_network_engine.py", substrate_rule_id),
         ("game/domains/logic/network/logic_network_validator.py", loop_rule_id),
     )
@@ -4275,7 +4275,7 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     process_registry_text = _file_text(repo_root, process_registry_rel)
     if '"process.logic_network_validate"' not in process_registry_text:
         findings.append(
@@ -4312,12 +4312,12 @@ def _append_logic_network_invariant_findings(
             )
         )
 
-    policy_payload, policy_error = _load_json_object(repo_root, "data/registries/logic_network_policy_registry.json")
+    policy_payload, policy_error = _load_json_object(repo_root, "contracts/registry/logic_network_policy_registry.json")
     if policy_error:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/logic_network_policy_registry.json",
+                file_path="contracts/registry/logic_network_policy_registry.json",
                 line_number=1,
                 snippet="logic_network_policies",
                 message="logic network policy registry must be valid JSON",
@@ -4345,7 +4345,7 @@ def _append_logic_network_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/logic_network_policy_registry.json",
+                        file_path="contracts/registry/logic_network_policy_registry.json",
                         line_number=1,
                         snippet=policy_id,
                         message="logic network policy registry missing required policy",
@@ -4358,7 +4358,7 @@ def _append_logic_network_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/logic_network_policy_registry.json",
+                        file_path="contracts/registry/logic_network_policy_registry.json",
                         line_number=1,
                         snippet="{} -> {}".format(policy_id, observed_mode or "<missing>"),
                         message="logic network policy has unexpected loop_resolution_mode",
@@ -4370,7 +4370,7 @@ def _append_logic_network_invariant_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/logic_network_policy_registry.json",
+                    file_path="contracts/registry/logic_network_policy_registry.json",
                     line_number=1,
                     snippet="logic.policy.default",
                     message="default logic network policy must refuse combinational loops",
@@ -4556,7 +4556,7 @@ def _append_logic_eval_invariant_findings(
             )
         )
 
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     process_registry_text = _file_text(repo_root, process_registry_rel)
     for token, rule_id in (
         ('"process.logic_network_evaluate"', budget_rule_id),
@@ -4643,7 +4643,7 @@ def _append_logic_timing_invariant_findings(
         ("contracts/schemas/logic/watchdog_definition.schema", explain_rule_id),
         ("contracts/schemas/logic/timing_violation_event.schema", explain_rule_id),
         ("contracts/schemas/logic/watchdog_timeout_event.schema", explain_rule_id),
-        ("data/registries/timing_pattern_registry.json", delay_rule_id),
+        ("contracts/registry/timing_pattern_registry.json", delay_rule_id),
         ("game/domains/logic/timing/oscillation_engine.py", explain_rule_id),
         ("game/domains/logic/timing/pattern_engine.py", explain_rule_id),
         ("game/domains/logic/timing/constraint_engine.py", delay_rule_id),
@@ -4724,7 +4724,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     explain_text = _file_text(repo_root, explain_registry_rel)
     for token in ("explain.logic_oscillation", "explain.logic_timing_violation", "explain.watchdog_timeout"):
         if token in explain_text:
@@ -4740,7 +4740,7 @@ def _append_logic_timing_invariant_findings(
             )
         )
 
-    instr_registry_rel = "data/registries/instrumentation_surface_registry.json"
+    instr_registry_rel = "contracts/registry/instrumentation_surface_registry.json"
     instr_text = _file_text(repo_root, instr_registry_rel)
     for token in ("forensics.logic.oscillation", "forensics.logic.watchdog_timeout", "forensics.logic.network.timing_violation"):
         if token in instr_text:
@@ -4801,11 +4801,11 @@ def _append_logic_compile_invariant_findings(
 
     required_files = (
         ("docs/logic/LOGIC_COMPILATION_MODEL.md", proof_rule_id),
-        ("data/registries/logic_compile_policy_registry.json", deterministic_rule_id),
+        ("contracts/registry/logic_compile_policy_registry.json", deterministic_rule_id),
         ("game/domains/logic/compile/logic_compiler.py", deterministic_rule_id),
         ("game/domains/logic/compile/logic_proof_engine.py", proof_rule_id),
         ("game/domains/logic/eval/logic_eval_engine.py", fallback_rule_id),
-        ("control/proof/control_proof_bundle.py", proof_rule_id),
+        ("tools/governance/proof/control_proof_bundle.py", proof_rule_id),
         ("tools/logic/tool_replay_logic_window.py", proof_rule_id),
         ("tools/logic/tool_replay_compiled_logic_window.py", deterministic_rule_id),
     )
@@ -4969,7 +4969,7 @@ def _append_logic_compile_invariant_findings(
             )
         )
 
-    proof_bundle_rel = "control/proof/control_proof_bundle.py"
+    proof_bundle_rel = "tools/governance/proof/control_proof_bundle.py"
     proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
     for token in ("compile_result_hash_chain", "logic_compile_policy_hash_chain", "forced_expand_event_hash_chain"):
         if token in proof_bundle_text:
@@ -5002,7 +5002,7 @@ def _append_logic_debug_invariant_findings(
         ("contracts/schemas/logic/debug_trace_request.schema", bounded_rule_id),
         ("contracts/schemas/logic/debug_trace_artifact.schema", bounded_rule_id),
         ("contracts/schemas/logic/debug_sampling_policy.schema", bounded_rule_id),
-        ("data/registries/debug_sampling_policy_registry.json", bounded_rule_id),
+        ("contracts/registry/debug_sampling_policy_registry.json", bounded_rule_id),
         ("game/domains/logic/debug/debug_engine.py", budget_rule_id),
         ("game/domains/logic/debug/runtime_state.py", bounded_rule_id),
         ("tools/logic/tool_replay_trace_window.py", bounded_rule_id),
@@ -5046,7 +5046,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    instrument_rel = "data/registries/instrument_type_registry.json"
+    instrument_rel = "contracts/registry/instrument_type_registry.json"
     instrument_text = _file_text(repo_root, instrument_rel)
     for token in ("instrument.logic_probe", "instrument.logic_analyzer", "instrument.protocol_sniffer_stub"):
         if token in instrument_text:
@@ -5062,7 +5062,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    surface_rel = "data/registries/instrumentation_surface_registry.json"
+    surface_rel = "contracts/registry/instrumentation_surface_registry.json"
     surface_text = _file_text(repo_root, surface_rel)
     for token, rule_id, message in (
         ("measure.logic.signal", omniscient_rule_id, "logic signal measurement point must be registered"),
@@ -5082,7 +5082,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_rel = "contracts/registry/explain_contract_registry.json"
     explain_text = _file_text(repo_root, explain_rel)
     for token in ("explain.logic_debug_refused", "explain.logic_debug_throttled", "explain.logic_debug_forced_expand"):
         if token in explain_text:
@@ -5098,7 +5098,7 @@ def _append_logic_debug_invariant_findings(
             )
         )
 
-    process_rel = "data/registries/process_registry.json"
+    process_rel = "contracts/registry/process_registry.json"
     process_text = _file_text(repo_root, process_rel)
     for token in ("process.logic_probe", "process.logic_trace_start", "process.logic_trace_tick", "process.logic_trace_end"):
         if token in process_text:
@@ -5219,8 +5219,8 @@ def _append_logic_protocol_invariant_findings(
         ("contracts/schemas/logic/protocol_frame.schema", deterministic_rule_id),
         ("contracts/schemas/logic/arbitration_state.schema", deterministic_rule_id),
         ("contracts/schemas/logic/protocol_event_record.schema", deterministic_rule_id),
-        ("data/registries/arbitration_policy_registry.json", deterministic_rule_id),
-        ("data/registries/error_detection_policy_registry.json", deterministic_rule_id),
+        ("contracts/registry/arbitration_policy_registry.json", deterministic_rule_id),
+        ("contracts/registry/error_detection_policy_registry.json", deterministic_rule_id),
         ("game/domains/logic/protocol/protocol_engine.py", bypass_rule_id),
         ("tools/logic/tool_replay_protocol_window.py", deterministic_rule_id),
         ("tools/logic/tool_run_logic_protocol_stress.py", deterministic_rule_id),
@@ -5282,7 +5282,7 @@ def _append_logic_protocol_invariant_findings(
             )
         )
 
-    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_rel = "contracts/registry/explain_contract_registry.json"
     explain_text = _file_text(repo_root, explain_rel)
     for token in ("explain.protocol_arbitration_loss", "explain.protocol_security_block", "explain.protocol_corruption"):
         if token in explain_text:
@@ -5399,7 +5399,7 @@ def _append_logic_envelope_invariant_findings(
         ("tools/logic/tool_generate_logic_stress.py", budget_rule_id),
         ("tools/logic/tool_run_logic_stress.py", degrade_rule_id),
         ("tools/logic/tool_verify_compiled_vs_l1.py", budget_rule_id),
-        ("data/regression/logic_full_baseline.json", degrade_rule_id),
+        ("tests/fixtures/regression/logic_full_baseline.json", degrade_rule_id),
         ("docs/audit/LOGIC10_STRESS_RESULTS.json", budget_rule_id),
     )
     for rel_path, rule_id in required_files:
@@ -5505,7 +5505,7 @@ def _append_logic_envelope_invariant_findings(
             )
         )
 
-    baseline_rel = "data/regression/logic_full_baseline.json"
+    baseline_rel = "tests/fixtures/regression/logic_full_baseline.json"
     baseline_text = _file_text(repo_root, baseline_rel)
     for token, rule_id, message in (
         ("LOGIC-REGRESSION-UPDATE", degrade_rule_id, "logic regression baseline must declare explicit update tag gating"),
@@ -5640,9 +5640,9 @@ def _append_provenance_compaction_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    registry_rel = "data/registries/provenance_classification_registry.json"
+    registry_rel = "contracts/registry/provenance_classification_registry.json"
     schema_rel = "contracts/schemas/control_proof_bundle.schema.json"
-    engine_rel = "meta/provenance/compaction_engine.py"
+    engine_rel = "tools/repo/meta/provenance/compaction_engine.py"
     tool_rel = "tools/meta/tool_verify_replay_from_anchor.py"
 
     registry_payload, registry_error = _load_json_object(repo_root, registry_rel)
@@ -7501,7 +7501,7 @@ def _append_meta_stability_findings(
         )
 
     try:
-        from meta.stability import validate_all_registries
+        from tools.validators.stability import validate_all_registries
     except Exception as exc:
         findings.append(
             _finding(
@@ -8633,12 +8633,12 @@ def _append_validation_unify_findings(
             )
         )
 
-    command_text = _file_text(repo_root, "data/registries/command_registry.json")
+    command_text = _file_text(repo_root, "contracts/registry/command_registry.json")
     if '"command_path": "validate"' not in command_text:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/registries/command_registry.json",
+                file_path="contracts/registry/command_registry.json",
                 line_number=1,
                 snippet="command_path validate",
                 message="AppShell command registry must expose `validate --all`",
@@ -8647,7 +8647,7 @@ def _append_validation_unify_findings(
         )
 
     try:
-        from validation import validation_surface_findings
+        from tools.validators.validation import validation_surface_findings
     except Exception as exc:
         findings.append(
             _finding(
@@ -9162,7 +9162,7 @@ def _append_release_identity_findings(
         ("docs/release/RELEASE_IDENTITY_CONSTITUTION.md", "release identity constitution is required", wallclock_rule_id),
         ("docs/release/ARTIFACT_NAMING_RULES.md", "artifact naming rules are required", artifact_rule_id),
         ("release/build_id_engine.py", "deterministic build_id engine is required", wallclock_rule_id),
-        ("data/registries/release_channel_registry.json", "release channel registry is required", artifact_rule_id),
+        ("contracts/registry/release_channel_registry.json", "release channel registry is required", artifact_rule_id),
         ("tools/release/release_identity_common.py", "release identity audit helper is required", artifact_rule_id),
         ("tools/release/tool_run_release_identity.py", "release identity report tool is required", artifact_rule_id),
         ("tools/auditx/analyzers/e490_wallclock_build_id_smell.py", "WallclockBuildIdSmell analyzer is required", wallclock_rule_id),
@@ -9499,7 +9499,7 @@ def _append_dist2_findings(
         ("docs/release/DIST_VERIFICATION_RULES.md", "distribution verification rules are required", verify_rule_id),
         ("docs/audit/DIST_VERIFY_win64.md", "distribution verification report is required", verify_rule_id),
         ("docs/audit/DIST2_FINAL.md", "DIST-2 final report is required", verify_rule_id),
-        ("data/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
+        ("content/data/audit/dist_verify_win64.json", "distribution verification machine report is required", verify_rule_id),
         ("tools/dist/dist_verify_common.py", "distribution verification helper is required", verify_rule_id),
         ("tools/dist/tool_verify_distribution.py", "distribution verification tool is required", verify_rule_id),
         ("tools/auditx/analyzers/e499_absolute_path_leak_smell.py", "AbsolutePathLeakSmell analyzer is required", absolute_rule_id),
@@ -9560,7 +9560,7 @@ def _append_dist3_findings(
         ("docs/release/CLEAN_ROOM_TEST_MODEL.md", "clean-room doctrine is required", rule_id),
         ("docs/audit/CLEAN_ROOM_win64.md", "clean-room platform report is required", rule_id),
         ("docs/audit/DIST3_FINAL.md", "DIST-3 final report is required", rule_id),
-        ("data/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
+        ("content/data/audit/clean_room_win64.json", "clean-room machine report is required", rule_id),
         ("tools/dist/clean_room_common.py", "clean-room helper is required", rule_id),
         ("tools/dist/tool_run_clean_room.py", "clean-room harness tool is required", rule_id),
         ("tools/auditx/analyzers/e501_portable_root_not_detected_smell.py", "PortableRootNotDetectedSmell analyzer is required", rule_id),
@@ -9726,7 +9726,7 @@ def _append_dist5_findings(
         ("docs/appshell/CLI_REFERENCE.md", "generated CLI reference is required", help_rule_id),
         ("docs/audit/DIST5_UX_SMOKE.md", "DIST-5 UX smoke report is required", help_rule_id),
         ("docs/audit/DIST5_UX_POLISH_FINAL.md", "DIST-5 final report is required", help_rule_id),
-        ("data/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
+        ("content/data/audit/dist5_ux_smoke.json", "DIST-5 machine report is required", help_rule_id),
         ("tools/dist/ux_smoke_common.py", "DIST-5 UX smoke helper is required", help_rule_id),
         ("tools/dist/tool_run_ux_smoke.py", "DIST-5 UX smoke runner is required", help_rule_id),
         ("tools/auditx/analyzers/e505_missing_remediation_hint_smell.py", "MissingRemediationHintSmell analyzer is required", remediation_rule_id),
@@ -9916,7 +9916,7 @@ def _append_ipc_unify_findings(
         ("docs/audit/IPC_DUPLICATION_FIXES.md", "IPC duplication fixes report is required", rule_id),
         ("docs/appshell/IPC_DISCOVERY.md", "IPC discovery doctrine is required", rule_id),
         ("docs/audit/IPC_UNIFY_FINAL.md", "IPC unify final report is required", rule_id),
-        ("data/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
+        ("content/data/audit/ipc_unify_report.json", "IPC unify machine-readable report is required", rule_id),
         ("tools/appshell/ipc_unify_common.py", "IPC unify helper module is required", rule_id),
         ("tools/appshell/tool_run_ipc_unify.py", "IPC unify tool runner is required", rule_id),
         ("tools/xstack/testx/tests/ipc_unify_testlib.py", "IPC unify TestX helper is required", rule_id),
@@ -10023,7 +10023,7 @@ def _append_supervisor_hardening_findings(
                 ("docs/audit/SUPERVISOR_SURFACE_MAP.md", "supervisor surface map is required"),
                 ("docs/appshell/LOG_MERGE_RULES.md", "supervisor log merge rules doc is required"),
                 ("docs/audit/SUPERVISOR_HARDENING_FINAL.md", "supervisor hardening final report is required"),
-                ("data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
+                ("content/data/audit/supervisor_hardening_report.json", "supervisor hardening machine-readable report is required"),
                 ("tools/appshell/supervisor_hardening_common.py", "supervisor hardening helper module is required"),
                 ("tools/appshell/tool_run_supervisor_hardening.py", "supervisor hardening tool runner is required"),
                 ("runtime/appshell/supervisor/args_canonicalizer.py", "supervisor args canonicalizer is required"),
@@ -10196,26 +10196,26 @@ def _append_xi4_convergence_warning_findings(
 ) -> None:
     del profile
     severity = "warn"
-    src_report, _ = _load_json_object(repo_root, "data/audit/src_directory_report.json")
+    src_report, _ = _load_json_object(repo_root, "content/data/audit/src_directory_report.json")
     src_rows = list(src_report.get("directories") or src_report.get("src_directories") or src_report.get("entries") or [])
     if src_rows:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/audit/src_directory_report.json",
+                file_path="content/data/audit/src_directory_report.json",
                 line_number=1,
                 snippet=str(len(src_rows)),
                 message="source-like directories remain present and require XI-5 structural cleanup",
                 rule_id="WARN-SRC-DIRECTORY-PRESENT",
             )
         )
-    duplicate_impls, _ = _load_json_object(repo_root, "data/audit/duplicate_impls.json")
+    duplicate_impls, _ = _load_json_object(repo_root, "content/data/audit/duplicate_impls.json")
     duplicate_groups = list(duplicate_impls.get("groups") or [])
     if duplicate_groups:
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/audit/duplicate_impls.json",
+                file_path="content/data/audit/duplicate_impls.json",
                 line_number=1,
                 snippet=str(len(duplicate_groups)),
                 message="duplicate implementation groups remain present and require XI convergence follow-up",
@@ -10372,10 +10372,10 @@ def _append_earth10_proxy_findings(
             ],
         )
 
-    field_type_payload, field_type_error = _load_json_object(repo_root, "data/registries/field_type_registry.json")
+    field_type_payload, field_type_error = _load_json_object(repo_root, "contracts/registry/field_type_registry.json")
     if not field_type_error:
         _require_provisional_rows(
-            "data/registries/field_type_registry.json",
+            "contracts/registry/field_type_registry.json",
             _registry_rows(field_type_payload, "field_types"),
             "field_type_id",
             [
@@ -10385,7 +10385,7 @@ def _append_earth10_proxy_findings(
             ],
         )
 
-    field_binding_payload, field_binding_error = _load_json_object(repo_root, "data/registries/field_binding_registry.json")
+    field_binding_payload, field_binding_error = _load_json_object(repo_root, "contracts/registry/field_binding_registry.json")
     if not field_binding_error:
         binding_rows = [
             row
@@ -10400,7 +10400,7 @@ def _append_earth10_proxy_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/field_binding_registry.json",
+                    file_path="contracts/registry/field_binding_registry.json",
                     line_number=1,
                     snippet="field.material_proxy",
                     message="EARTH10 proxy fields must be bound in the field binding registry",
@@ -10413,7 +10413,7 @@ def _append_earth10_proxy_findings(
             findings.append(
                 _finding(
                     severity=severity,
-                    file_path="data/registries/field_binding_registry.json",
+                    file_path="contracts/registry/field_binding_registry.json",
                     line_number=1,
                     snippet=str(row.get("field_id", ""))[:160],
                     message="EARTH10 field bindings must be tagged provisional",
@@ -10421,11 +10421,11 @@ def _append_earth10_proxy_findings(
                 )
             )
 
-    process_payload, process_error = _load_json_object(repo_root, "data/registries/process_registry.json")
+    process_payload, process_error = _load_json_object(repo_root, "contracts/registry/process_registry.json")
     if not process_error:
         process_rows = [dict(row) for row in list(process_payload.get("records") or []) if isinstance(row, dict)]
         _require_provisional_rows(
-            "data/registries/process_registry.json",
+            "contracts/registry/process_registry.json",
             process_rows,
             "process_id",
             ["process.earth_material_proxy_tick"],
@@ -11068,8 +11068,8 @@ def _append_reserved_misuse_findings(
         "packs/derived/",
     )
     exempt_files = (
-        "data/registries/session_stage_registry.json",
-        "data/registries/session_pipeline_registry.json",
+        "contracts/registry/session_stage_registry.json",
+        "contracts/registry/session_pipeline_registry.json",
     )
     if rel_norm.startswith(exempt_roots) or rel_norm in exempt_files:
         return
@@ -11880,7 +11880,7 @@ def _append_negative_invariant_findings(
                 )
             )
 
-        control_action_rel = "data/registries/control_action_registry.json"
+        control_action_rel = "contracts/registry/control_action_registry.json"
         control_action_payload, control_action_err = _load_json_object(repo_root, control_action_rel)
         if control_action_err:
             findings.append(
@@ -11963,7 +11963,7 @@ def _append_negative_invariant_findings(
                     )
                 )
 
-    cohort_policy_registry_rel = "data/registries/cohort_mapping_policy_registry.json"
+    cohort_policy_registry_rel = "contracts/registry/cohort_mapping_policy_registry.json"
     cohort_policy_registry_payload, cohort_policy_registry_err = _load_json_object(repo_root, cohort_policy_registry_rel)
     if cohort_policy_registry_err:
         findings.append(
@@ -12031,7 +12031,7 @@ def _append_negative_invariant_findings(
                         )
                     )
 
-    demography_policy_registry_rel = "data/registries/demography_policy_registry.json"
+    demography_policy_registry_rel = "contracts/registry/demography_policy_registry.json"
     demography_policy_payload, demography_policy_err = _load_json_object(repo_root, demography_policy_registry_rel)
     if demography_policy_err:
         findings.append(
@@ -12083,7 +12083,7 @@ def _append_negative_invariant_findings(
                     )
                 )
 
-    parameter_bundle_registry_rel = "data/registries/parameter_bundles.json"
+    parameter_bundle_registry_rel = "contracts/registry/parameter_bundles.json"
     parameter_bundle_payload, parameter_bundle_err = _load_json_object(repo_root, parameter_bundle_registry_rel)
     if parameter_bundle_err:
         findings.append(
@@ -12210,8 +12210,8 @@ def _append_negative_invariant_findings(
         )
         micro_scan_paths = (
             observation_rel,
-            "net/policies/policy_server_authoritative.py",
-            "net/srz/shard_coordinator.py",
+            "tools/network/policies/policy_server_authoritative.py",
+            "tools/network/srz/shard_coordinator.py",
         )
         for rel_path in micro_scan_paths:
             for line_no, line in _iter_lines(repo_root, rel_path):
@@ -12397,7 +12397,7 @@ def _append_negative_invariant_findings(
             )
         )
 
-    instrument_registry_rel = "data/registries/instrument_type_registry.json"
+    instrument_registry_rel = "contracts/registry/instrument_type_registry.json"
     instrument_registry_payload, instrument_registry_err = _load_json_object(repo_root, instrument_registry_rel)
     declared_diegetic_channels = set()
     required_runtime_channels = set()
@@ -12449,7 +12449,7 @@ def _append_negative_invariant_findings(
 
     channel_token_pattern = re.compile(r"\bch\.diegetic\.[a-z0-9_.-]+\b")
     discovered_tokens = set(channel_token_pattern.findall(str(observation_text or "")))
-    policy_registry_rel = "data/registries/epistemic_policy_registry.json"
+    policy_registry_rel = "contracts/registry/epistemic_policy_registry.json"
     policy_registry_payload, _policy_registry_err = _load_json_object(repo_root, policy_registry_rel)
     policy_text = ""
     if isinstance(policy_registry_payload, dict):
@@ -12459,7 +12459,7 @@ def _append_negative_invariant_findings(
             policy_text = ""
     discovered_tokens.update(channel_token_pattern.findall(str(policy_text)))
 
-    lens_registry_rel = "packs/domain/pack.domain.navigation/data/lens.sensor.json"
+    lens_registry_rel = "content/packs/domain/pack.domain.navigation/data/lens.sensor.json"
     lens_abs = os.path.join(repo_root, lens_registry_rel.replace("/", os.sep))
     lens_text = ""
     if os.path.isfile(lens_abs):
@@ -12503,7 +12503,7 @@ def _append_negative_invariant_findings(
     if missing_player_diegetic_files:
         return
 
-    player_law_rel = "packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json"
+    player_law_rel = "content/packs/law/law.player.diegetic_default/data/law_profile.player.diegetic_default.json"
     player_law_payload, player_law_err = _load_json_object(repo_root, player_law_rel)
     if player_law_err:
         findings.append(
@@ -12572,7 +12572,7 @@ def _append_negative_invariant_findings(
                 )
             )
 
-    player_experience_rel = "packs/experience/profile.player.default/data/experience_profile.player.default.json"
+    player_experience_rel = "content/packs/experience/profile.player.default/data/experience_profile.player.default.json"
     player_experience_payload, player_experience_err = _load_json_object(repo_root, player_experience_rel)
     if player_experience_err:
         findings.append(
@@ -12623,7 +12623,7 @@ def _append_negative_invariant_findings(
                 )
             )
 
-    player_workspace_rel = "packs/tool/workspace.player.diegetic_default/pack.json"
+    player_workspace_rel = "content/packs/tool/workspace.player.diegetic_default/pack.json"
     player_workspace_payload, player_workspace_err = _load_json_object(repo_root, player_workspace_rel)
     if player_workspace_err:
         findings.append(
@@ -13055,7 +13055,7 @@ def _append_ranked_governance_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    registry_rel = "data/registries/server_profile_registry.json"
+    registry_rel = "contracts/registry/server_profile_registry.json"
     registry_payload, registry_err = _load_json_object(repo_root, registry_rel)
     if registry_err:
         findings.append(
@@ -13155,7 +13155,7 @@ def _append_hidden_ban_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    anti_engine_rel = "net/anti_cheat/anti_cheat_engine.py"
+    anti_engine_rel = "tools/network/anti_cheat/anti_cheat_engine.py"
     anti_engine_abs = os.path.join(repo_root, anti_engine_rel.replace("/", os.sep))
     if not os.path.isfile(anti_engine_abs):
         findings.append(
@@ -13204,9 +13204,9 @@ def _append_hidden_ban_invariant_findings(
             )
 
     termination_paths = (
-        "net/policies/policy_server_authoritative.py",
-        "net/srz/shard_coordinator.py",
-        "net/policies/policy_lockstep.py",
+        "tools/network/policies/policy_server_authoritative.py",
+        "tools/network/srz/shard_coordinator.py",
+        "tools/network/policies/policy_lockstep.py",
     )
     for rel_path in termination_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13464,7 +13464,7 @@ def _append_unregistered_quantity_invariant_findings(
 ) -> None:
     severity = _strict_only_severity(profile)
     rule_id = "INV-UNREGISTERED-QUANTITY-FORBIDDEN"
-    quantity_registry_rel = "data/registries/quantity_registry.json"
+    quantity_registry_rel = "contracts/registry/quantity_registry.json"
 
     payload, payload_error = _load_json_object(repo_root, quantity_registry_rel)
     rows = list(((payload.get("record") or {}).get("quantities") or []) if not payload_error else [])
@@ -13539,7 +13539,7 @@ def _append_unregistered_quantity_invariant_findings(
                     file_path=rel_norm,
                     line_number=line_no,
                     snippet=snippet[:140],
-                    message="quantity identifier is not registered in data/registries/quantity_registry.json: {}".format(
+                    message="quantity identifier is not registered in contracts/registry/quantity_registry.json: {}".format(
                         ",".join(sorted(set(unknown_tokens)))
                     ),
                     rule_id=rule_id,
@@ -13677,7 +13677,7 @@ def _append_material_dimension_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    quantity_type_registry_rel = "data/registries/quantity_type_registry.json"
+    quantity_type_registry_rel = "contracts/registry/quantity_type_registry.json"
     quantity_type_abs = os.path.join(repo_root, quantity_type_registry_rel.replace("/", os.sep))
     if not os.path.isfile(quantity_type_abs):
         findings.append(
@@ -13810,11 +13810,11 @@ def _append_material_taxonomy_invariant_findings(
     severity = _invariant_severity(profile)
 
     material_registry_paths = (
-        "data/registries/element_registry.json",
-        "data/registries/compound_registry.json",
-        "data/registries/mixture_registry.json",
-        "data/registries/material_class_registry.json",
-        "data/registries/quality_distribution_registry.json",
+        "contracts/registry/element_registry.json",
+        "contracts/registry/compound_registry.json",
+        "contracts/registry/mixture_registry.json",
+        "contracts/registry/material_class_registry.json",
+        "contracts/registry/quality_distribution_registry.json",
     )
     for rel_path in material_registry_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -13913,9 +13913,9 @@ def _append_material_structure_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_registry_paths = (
-        "data/registries/part_class_registry.json",
-        "data/registries/connection_type_registry.json",
-        "data/registries/blueprint_registry.json",
+        "contracts/registry/part_class_registry.json",
+        "contracts/registry/connection_type_registry.json",
+        "contracts/registry/blueprint_registry.json",
     )
     for rel_path in required_registry_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14032,8 +14032,8 @@ def _append_material_logistics_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_registry_paths = (
-        "data/registries/logistics_routing_rule_registry.json",
-        "data/registries/logistics_graph_registry.json",
+        "contracts/registry/logistics_routing_rule_registry.json",
+        "contracts/registry/logistics_graph_registry.json",
     )
     for rel_path in required_registry_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14185,8 +14185,8 @@ def _append_material_construction_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_registry_paths = (
-        "data/registries/provenance_event_type_registry.json",
-        "data/registries/construction_policy_registry.json",
+        "contracts/registry/provenance_event_type_registry.json",
+        "contracts/registry/construction_policy_registry.json",
     )
     for rel_path in required_registry_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -14378,9 +14378,9 @@ def _append_material_maintenance_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_registry_paths = (
-        "data/registries/failure_mode_registry.json",
-        "data/registries/maintenance_policy_registry.json",
-        "data/registries/backlog_growth_rule_registry.json",
+        "contracts/registry/failure_mode_registry.json",
+        "contracts/registry/maintenance_policy_registry.json",
+        "contracts/registry/backlog_growth_rule_registry.json",
     )
     for rel_path in required_registry_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -15106,37 +15106,37 @@ def _append_core_abstraction_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_files = {
-        "core/graph/network_graph_engine.py": (
+        "tools/core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH-SUBSTRATES",
             ("normalize_network_graph(", "route_query(", "heapq.heappush("),
             "core graph substrate file missing deterministic graph tokens",
         ),
-        "core/graph/routing_engine.py": (
+        "tools/core/graph/routing_engine.py": (
             "INV-NETWORKGRAPH-ONLY",
             ("query_route_result(", "route_query_edges(", "build_route_cache_key("),
             "core routing substrate file missing deterministic NetworkGraph routing tokens",
         ),
-        "core/schedule/schedule_engine.py": (
+        "tools/core/schedule/schedule_engine.py": (
             "INV-NO-DUPLICATE-SCHEDULERS",
             ("normalize_schedule(", "advance_schedule(", "recurrence_rule"),
             "core schedule substrate file missing deterministic schedule tokens",
         ),
-        "core/state/state_machine_engine.py": (
+        "engine/state/state/state_machine_engine.py": (
             "INV-NO-ADHOC-STATE-MACHINES",
             ("normalize_state_machine(", "apply_transition(", "trigger_process_id"),
             "core state-machine substrate file missing deterministic transition tokens",
         ),
-        "core/constraints/constraint_engine.py": (
+        "tools/core/constraints/constraint_engine.py": (
             "INV-CONSTRAINTS-USE-COMPONENT",
             ("normalize_constraint_component(", "tick_constraints(", "build_constraint_enforcement_hooks("),
             "core constraint substrate file missing deterministic constraint component tokens",
         ),
-        "core/hazards/hazard_engine.py": (
+        "tools/core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD-LOOPS",
             ("normalize_hazard_model(", "tick_hazard_models(", "consequence_process_id"),
             "core hazard substrate file missing deterministic hazard component tokens",
         ),
-        "core/flow/flow_engine.py": (
+        "tools/core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW-LOGIC",
             ("normalize_flow_channel(", "tick_flow_channels(", "normalize_flow_transfer_event(", "quantity_id"),
             "core flow substrate file missing deterministic flow tokens",
@@ -16372,27 +16372,27 @@ def _append_retro_consistency_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     retro_required_files = {
-        "core/graph/network_graph_engine.py": (
+        "tools/core/graph/network_graph_engine.py": (
             "INV-NO-DUPLICATE-GRAPH",
             ("normalize_network_graph(", "route_query("),
             "retro-consistency requires canonical core graph substrate",
         ),
-        "core/flow/flow_engine.py": (
+        "tools/core/flow/flow_engine.py": (
             "INV-NO-DUPLICATE-FLOW",
             ("normalize_flow_channel(", "tick_flow_channels("),
             "retro-consistency requires canonical core flow substrate",
         ),
-        "core/state/state_machine_engine.py": (
+        "engine/state/state/state_machine_engine.py": (
             "INV-NO-ADHOC-STATE-FLAG",
             ("normalize_state_machine(", "apply_transition("),
             "retro-consistency requires canonical state-machine substrate",
         ),
-        "core/schedule/schedule_engine.py": (
+        "tools/core/schedule/schedule_engine.py": (
             "INV-NO-ADHOC-SCHEDULER",
             ("normalize_schedule(", "tick_schedules("),
             "retro-consistency requires canonical schedule substrate",
         ),
-        "core/hazards/hazard_engine.py": (
+        "tools/core/hazards/hazard_engine.py": (
             "INV-NO-ADHOC-HAZARD",
             ("normalize_hazard_model(", "tick_hazard_models("),
             "retro-consistency requires canonical hazard substrate",
@@ -16565,10 +16565,10 @@ def _append_retro_consistency_invariant_findings(
             )
 
     allowed_intent_dispatch_paths = {
-        "control/control_plane_engine.py",
+        "tools/governance/control_plane_engine.py",
         "apps/client/interaction/interaction_dispatch.py",
-        "net/srz/shard_coordinator.py",
-        "net/policies/policy_server_authoritative.py",
+        "tools/network/srz/shard_coordinator.py",
+        "tools/network/policies/policy_server_authoritative.py",
     }
     for rel_path in _scan_files(repo_root):
         if not rel_path.endswith(".py"):
@@ -16610,7 +16610,7 @@ def _append_retro_consistency_invariant_findings(
                 )
             )
 
-    control_plane_path = "control/control_plane_engine.py"
+    control_plane_path = "tools/governance/control_plane_engine.py"
     control_plane_text = _file_text(repo_root, control_plane_path)
     if (not control_plane_text) or ("_write_decision_log(" not in control_plane_text) or ('"decision_log_ref"' not in control_plane_text):
         findings.append(
@@ -17052,7 +17052,7 @@ def _append_time_constitution_invariant_findings(
         "contracts/schemas/core/schedule.schema": (
             "temporal_domain_id",
         ),
-        "core/schedule/schedule_engine.py": (
+        "tools/core/schedule/schedule_engine.py": (
             "_normalize_temporal_domain_id(",
             "time.canonical_tick",
             "\"temporal_domain_id\": temporal_domain_id",
@@ -17090,9 +17090,9 @@ def _append_time_constitution_invariant_findings(
                 )
             )
 
-    time_mapping_registry_rel = "data/registries/time_mapping_registry.json"
-    constitutive_model_registry_rel = "data/registries/constitutive_model_registry.json"
-    model_type_registry_rel = "data/registries/model_type_registry.json"
+    time_mapping_registry_rel = "contracts/registry/time_mapping_registry.json"
+    constitutive_model_registry_rel = "contracts/registry/constitutive_model_registry.json"
+    model_type_registry_rel = "contracts/registry/model_type_registry.json"
     allowed_time_mapping_model_type_ids = {
         "model_type.time_mapping_proper_default_stub",
         "model_type.time_mapping_civil_calendar_stub",
@@ -17221,7 +17221,7 @@ def _append_time_constitution_invariant_findings(
                 )
 
     deterministic_schedule_required_tokens = {
-        "core/schedule/schedule_engine.py": (
+        "tools/core/schedule/schedule_engine.py": (
             "resolve_domain_time_fn",
             "domain_evaluations",
             "due_events_sorted = sorted(",
@@ -17269,7 +17269,7 @@ def _append_time_constitution_invariant_findings(
             "_apply_drift_policy(",
             "active_drift_policy_ids",
         ),
-        "data/registries/drift_policy_registry.json": (
+        "contracts/registry/drift_policy_registry.json": (
             "drift.none",
             "drift.linear_small",
             "drift.profile_defined",
@@ -17310,11 +17310,11 @@ def _append_time_constitution_invariant_findings(
             "time_adjust_events",
             "time_adjust_event_hash_chain",
         ),
-        "control/proof/control_proof_bundle.py": (
+        "tools/governance/proof/control_proof_bundle.py": (
             "time_adjust_event_hash_chain",
             "drift_policy_id",
         ),
-        "data/registries/sync_policy_registry.json": (
+        "contracts/registry/sync_policy_registry.json": (
             "sync.none",
             "sync.adjust_on_receipt",
             "sync.strict_reject",
@@ -17486,7 +17486,7 @@ def _append_time_constitution_invariant_findings(
             )
             break
 
-    substep_registry_rel = "data/registries/substep_policy_registry.json"
+    substep_registry_rel = "contracts/registry/substep_policy_registry.json"
     substep_registry_payload, substep_registry_error = _load_json_object(repo_root, substep_registry_rel)
     required_substep_ids = {
         "substep.none",
@@ -17801,8 +17801,8 @@ def _append_performance_constitution_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    cost_engine_rel = "performance/cost_engine.py"
-    inspection_cache_rel = "performance/inspection_cache.py"
+    cost_engine_rel = "tools/performance/cost_engine.py"
+    inspection_cache_rel = "tools/performance/inspection_cache.py"
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     transition_controller_rel = "game/domains/reality/transitions/transition_controller.py"
 
@@ -18779,8 +18779,8 @@ def _append_domain_control_registered_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    control_rel = "data/registries/control_action_registry.json"
-    interaction_rel = "data/registries/interaction_action_registry.json"
+    control_rel = "contracts/registry/control_action_registry.json"
+    interaction_rel = "contracts/registry/interaction_action_registry.json"
     control_payload, control_err = _load_json_object(repo_root, control_rel)
     interaction_payload, interaction_err = _load_json_object(repo_root, interaction_rel)
     if control_err:
@@ -18873,12 +18873,12 @@ def _append_action_grammar_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    control_rel = "data/registries/control_action_registry.json"
-    interaction_rel = "data/registries/interaction_action_registry.json"
-    task_rel = "data/registries/task_type_registry.json"
-    process_rel = "data/registries/process_registry.json"
-    family_rel = "data/registries/action_family_registry.json"
-    template_rel = "data/registries/action_template_registry.json"
+    control_rel = "contracts/registry/control_action_registry.json"
+    interaction_rel = "contracts/registry/interaction_action_registry.json"
+    task_rel = "contracts/registry/task_type_registry.json"
+    process_rel = "contracts/registry/process_registry.json"
+    family_rel = "contracts/registry/action_family_registry.json"
+    template_rel = "contracts/registry/action_template_registry.json"
 
     control_payload, control_err = _load_json_object(repo_root, control_rel)
     interaction_payload, interaction_err = _load_json_object(repo_root, interaction_rel)
@@ -19063,8 +19063,8 @@ def _append_info_grammar_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    template_rel = "data/registries/action_template_registry.json"
-    mapping_rel = "data/registries/info_artifact_family_registry.json"
+    template_rel = "contracts/registry/action_template_registry.json"
+    mapping_rel = "contracts/registry/info_artifact_family_registry.json"
 
     template_payload, template_err = _load_json_object(repo_root, template_rel)
     mapping_payload, mapping_err = _load_json_object(repo_root, mapping_rel)
@@ -19175,9 +19175,9 @@ def _append_meta_contract_invariant_findings(
     explain_rule_id = "INV-EXPLAIN-CONTRACT-REQUIRED"
     undeclared_rule_id = "INV-NO-UNDECLARED-COUPLING"
 
-    tier_rel = "data/registries/tier_contract_registry.json"
-    coupling_rel = "data/registries/coupling_contract_registry.json"
-    explain_rel = "data/registries/explain_contract_registry.json"
+    tier_rel = "contracts/registry/tier_contract_registry.json"
+    coupling_rel = "contracts/registry/coupling_contract_registry.json"
+    explain_rel = "contracts/registry/explain_contract_registry.json"
 
     tier_payload, tier_err = _load_json_object(repo_root, tier_rel)
     coupling_payload, coupling_err = _load_json_object(repo_root, coupling_rel)
@@ -19520,7 +19520,7 @@ def _append_affordance_matrix_invariant_findings(
     profile: str,
 ) -> None:
     severity = _invariant_severity(profile)
-    matrix_rel = "data/meta/real_world_affordance_matrix.json"
+    matrix_rel = "contracts/meta/real_world_affordance_matrix.json"
     matrix_payload, matrix_err = _load_json_object(repo_root, matrix_rel)
 
     if matrix_err:
@@ -19870,9 +19870,9 @@ def _append_control_ir_enforcement_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_ir_files = (
-        "control/ir/control_ir_verifier.py",
-        "control/ir/control_ir_compiler.py",
-        "control/ir/control_ir_programs.py",
+        "tools/governance/ir/control_ir_verifier.py",
+        "tools/governance/ir/control_ir_compiler.py",
+        "tools/governance/ir/control_ir_programs.py",
     )
     for rel_path in required_ir_files:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -19970,11 +19970,11 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_tokens_by_file = {
-        "control/negotiation/negotiation_kernel.py": (
+        "tools/governance/negotiation/negotiation_kernel.py": (
             "def negotiate_request(",
             "NEGOTIATION_AXIS_ORDER",
         ),
-        "control/control_plane_engine.py": (
+        "tools/governance/control_plane_engine.py": (
             "negotiate_request(",
             "_decision_log_row(",
         ),
@@ -20020,7 +20020,7 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
             )
         ):
             continue
-        if rel_path == "control/negotiation/negotiation_kernel.py":
+        if rel_path == "tools/governance/negotiation/negotiation_kernel.py":
             continue
         for line_no, line in _iter_lines(repo_root, rel_path):
             token = str(line)
@@ -20035,7 +20035,7 @@ def _append_negotiation_kernel_enforcement_invariant_findings(
                     message="downgrade entries must be constructed only in the negotiation kernel",
                     rule_id="INV-NO-DOMAIN-DOWNGRADE-LOGIC",
                 )
-            ) 
+            )
 
 
 def _append_fidelity_engine_enforcement_invariant_findings(
@@ -20045,7 +20045,7 @@ def _append_fidelity_engine_enforcement_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    fidelity_core_rel = "control/fidelity/fidelity_engine.py"
+    fidelity_core_rel = "tools/governance/fidelity/fidelity_engine.py"
     fidelity_core_text = _file_text(repo_root, fidelity_core_rel)
     if not fidelity_core_text:
         findings.append(
@@ -20250,10 +20250,10 @@ def _append_capability_enforcement_invariant_findings(
 ) -> None:
     severity = _invariant_severity(profile)
 
-    capability_registry_rel = "data/registries/capability_registry.json"
-    capability_engine_rel = "control/capability/capability_engine.py"
-    control_plane_rel = "control/control_plane_engine.py"
-    plan_engine_rel = "control/planning/plan_engine.py"
+    capability_registry_rel = "contracts/registry/capability_registry.json"
+    capability_engine_rel = "contracts/capability/capability/capability_engine.py"
+    control_plane_rel = "tools/governance/control_plane_engine.py"
+    plan_engine_rel = "tools/governance/planning/plan_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     power_engine_rel = "game/domains/electricity/power_network_engine.py"
 
@@ -20355,7 +20355,7 @@ def _append_capability_enforcement_invariant_findings(
                 token = str(row.get("capability_id", "")).strip()
                 if token:
                     capability_ids.add(token)
-    control_action_registry_text = _file_text(repo_root, "data/registries/control_action_registry.json")
+    control_action_registry_text = _file_text(repo_root, "contracts/registry/control_action_registry.json")
     if control_action_registry_text:
         try:
             action_payload = json.loads(control_action_registry_text)
@@ -20375,7 +20375,7 @@ def _append_capability_enforcement_invariant_findings(
                 findings.append(
                     _finding(
                         severity=severity,
-                        file_path="data/registries/control_action_registry.json",
+                        file_path="contracts/registry/control_action_registry.json",
                         line_number=1,
                         snippet=capability_id,
                         message="control action '{}' references capability '{}' missing from capability registry".format(
@@ -20481,7 +20481,7 @@ def _append_effect_system_invariant_findings(
     severity = _invariant_severity(profile)
 
     required_tokens_by_file = {
-        "control/effects/effect_engine.py": (
+        "tools/governance/effects/effect_engine.py": (
             "def build_effect(",
             "def prune_expired_effect_rows(",
             "def get_effective_modifier(",
@@ -20492,7 +20492,7 @@ def _append_effect_system_invariant_findings(
             "normalize_effect_rows(",
             "prune_expired_effect_rows(",
         ),
-        "control/control_plane_engine.py": (
+        "tools/governance/control_plane_engine.py": (
             "def _effect_influence(",
             "REFUSAL_EFFECT_FORBIDDEN",
             "get_effective_modifier_map(",
@@ -20672,8 +20672,8 @@ def _append_formalization_invariant_findings(
 
     inference_rel = "game/domains/infrastructure/formalization/inference_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    control_action_registry_rel = "data/registries/control_action_registry.json"
-    control_policy_registry_rel = "data/registries/control_policy_registry.json"
+    control_action_registry_rel = "contracts/registry/control_action_registry.json"
+    control_policy_registry_rel = "contracts/registry/control_policy_registry.json"
 
     inference_text = _file_text(repo_root, inference_rel)
     runtime_text = _file_text(repo_root, runtime_rel)
@@ -20832,7 +20832,7 @@ def _append_formalization_invariant_findings(
     direct_dispatch_call = re.compile(r"\b(?:run_process|execute_process|runtime_execute_intent|execute_intent)\s*\(")
     allowed_literal_prefixes = (
         "tools/xstack/sessionx/process_runtime.py",
-        "data/registries/control_action_registry.json",
+        "contracts/registry/control_action_registry.json",
         "tools/xstack/testx/tests/",
         "tools/auditx/analyzers/",
         "docs/",
@@ -21133,7 +21133,7 @@ def _append_field_generalization_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    field_registry_rel = "data/registries/field_type_registry.json"
+    field_registry_rel = "contracts/registry/field_type_registry.json"
     field_registry_payload, field_registry_error = _load_json_object(repo_root, field_registry_rel)
     field_rows = list((dict(field_registry_payload.get("record") or {})).get("field_types") or []) if not field_registry_error else []
     registered_field_ids = set()
@@ -21164,8 +21164,8 @@ def _append_field_generalization_invariant_findings(
             "game/domains/fields/",
             "models/model_engine.py",
             "tools/xstack/sessionx/process_runtime.py",
-            "data/registries/field_type_registry.json",
-            "data/registries/constitutive_model_registry.json",
+            "contracts/registry/field_type_registry.json",
+            "contracts/registry/constitutive_model_registry.json",
         )
         skip_files = {
             "tools/xstack/repox/check.py",
@@ -21223,7 +21223,7 @@ def _append_field_generalization_invariant_findings(
                         file_path=rel_norm,
                         line_number=line_no,
                         snippet=snippet[:140],
-                        message="field identifier is not registered in data/registries/field_type_registry.json: {}".format(
+                        message="field identifier is not registered in contracts/registry/field_type_registry.json: {}".format(
                             ",".join(sorted(set(unknown_tokens)))
                         ),
                         rule_id="INV-FIELD-TYPE-REGISTERED",
@@ -21557,7 +21557,7 @@ def _append_geo_identity_invariant_findings(
     object_rel = "game/domains/geology/index/object_id_engine.py"
     geo_init_rel = "game/domains/geology/__init__.py"
     tool_rel = "tools/geo/tool_verify_id_stability.py"
-    registry_rel = "data/registries/object_kind_registry.json"
+    registry_rel = "contracts/registry/object_kind_registry.json"
 
     index_text = _file_text(repo_root, index_rel)
     if "geo_cell_key_from_position(" not in index_text:
@@ -21768,7 +21768,7 @@ def _append_geo_metric_invariant_findings(
     profile: str,
 ) -> None:
     severity = _strict_only_severity(profile)
-    metric_registry_rel = "data/registries/metric_profile_registry.json"
+    metric_registry_rel = "contracts/registry/metric_profile_registry.json"
     metric_engine_rel = "game/domains/geology/metric/metric_engine.py"
     neighborhood_rel = "game/domains/geology/metric/neighborhood_engine.py"
     field_rel = "game/domains/fields/field_engine.py"
@@ -22241,9 +22241,9 @@ def _append_geo_geometry_edit_invariant_findings(
     engine_rel = "game/domains/geology/edit/geometry_state_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     proof_tool_rel = "tools/geo/tool_replay_geometry_window.py"
-    control_proof_rel = "control/proof/control_proof_bundle.py"
-    server_proof_rel = "net/policies/policy_server_authoritative.py"
-    shard_proof_rel = "net/srz/shard_coordinator.py"
+    control_proof_rel = "tools/governance/proof/control_proof_bundle.py"
+    server_proof_rel = "tools/network/policies/policy_server_authoritative.py"
+    shard_proof_rel = "tools/network/srz/shard_coordinator.py"
 
     engine_text = _file_text(repo_root, engine_rel)
     for required_token in (
@@ -22433,8 +22433,8 @@ def _append_geo_worldgen_invariant_findings(
     geo_init_rel = "game/domains/geology/__init__.py"
     schema_rel = "contracts/schemas/universe/universe_identity.schema"
     schema_json_rel = "contracts/schemas/universe_identity.schema.json"
-    realism_registry_rel = "data/registries/realism_profile_registry.json"
-    generator_registry_rel = "data/registries/generator_version_registry.json"
+    realism_registry_rel = "contracts/registry/realism_profile_registry.json"
+    generator_registry_rel = "contracts/registry/generator_version_registry.json"
 
     engine_text = _file_text(repo_root, engine_rel)
     for required_token, rule_id, message in (
@@ -22627,10 +22627,10 @@ def _append_geo_overlay_invariant_findings(
     replay_tool_rel = "tools/geo/tool_replay_overlay_merge.py"
     explain_tool_rel = "tools/geo/tool_explain_property_origin.py"
     geo_init_rel = "game/domains/geology/__init__.py"
-    control_proof_rel = "control/proof/control_proof_bundle.py"
-    server_proof_rel = "net/policies/policy_server_authoritative.py"
-    shard_proof_rel = "net/srz/shard_coordinator.py"
-    overlay_policy_registry_rel = "data/registries/overlay_policy_registry.json"
+    control_proof_rel = "tools/governance/proof/control_proof_bundle.py"
+    server_proof_rel = "tools/network/policies/policy_server_authoritative.py"
+    shard_proof_rel = "tools/network/srz/shard_coordinator.py"
+    overlay_policy_registry_rel = "contracts/registry/overlay_policy_registry.json"
 
     engine_text = _file_text(repo_root, engine_rel)
     for required_token, rule_id, message in (
@@ -22905,7 +22905,7 @@ def _append_geo_envelope_invariant_findings(
     replay_tool_rel = "tools/geo/tool_replay_geo_window.py"
     overlay_tool_rel = "tools/geo/tool_verify_overlay_identity.py"
     degradation_rel = "game/domains/geology/degradation_policy.py"
-    regression_rel = "data/regression/geo_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/geo_full_baseline.json"
 
     for rel_path in (
         scenario_tool_rel,
@@ -23153,10 +23153,10 @@ def _append_mobility_invariant_findings(
 ) -> None:
     severity = "warn"
     promotion_replication_rule_id = "INV-PROMOTION-REQUIRES-REPLICATION"
-    research_policy_registry_rel = "data/registries/research_policy_registry.json"
+    research_policy_registry_rel = "contracts/registry/research_policy_registry.json"
 
     process_runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    control_plane_rel = "control/control_plane_engine.py"
+    control_plane_rel = "tools/governance/control_plane_engine.py"
     constitution_rel = "docs/mobility/MOBILITY_CONSTITUTION.md"
     travel_engine_rel = "game/domains/mobility/travel/travel_engine.py"
 
@@ -24054,7 +24054,7 @@ def _append_mobility_invariant_findings(
         "tools/xstack/testx/tests/",
     )
     adhoc_routing_allow = {
-        "core/graph/routing_engine.py",
+        "tools/core/graph/routing_engine.py",
         "tools/xstack/sessionx/process_runtime.py",
         "tools/xstack/repox/check.py",
     }
@@ -24189,8 +24189,8 @@ def _append_safety_invariant_findings(
     severity = _strict_only_severity(profile)
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    safety_engine_rel = "safety/safety_engine.py"
-    safety_registry_rel = "data/registries/safety_pattern_registry.json"
+    safety_engine_rel = "tools/validators/safety/safety_engine.py"
+    safety_registry_rel = "contracts/registry/safety_pattern_registry.json"
     runtime_text = _file_text(repo_root, runtime_rel)
     safety_engine_text = _file_text(repo_root, safety_engine_rel)
     safety_registry_text = _file_text(repo_root, safety_registry_rel)
@@ -24412,8 +24412,8 @@ def _append_electric_invariant_findings(
     observation_rel = "tools/xstack/sessionx/observation.py"
     inspection_rel = "game/domains/inspection/inspection_engine.py"
     overlay_rel = "apps/client/interaction/inspection_overlays.py"
-    control_registry_rel = "data/registries/control_action_registry.json"
-    action_template_rel = "data/registries/action_template_registry.json"
+    control_registry_rel = "contracts/registry/control_action_registry.json"
+    action_template_rel = "contracts/registry/action_template_registry.json"
     observation_text = _file_text(repo_root, observation_rel)
     inspection_text = _file_text(repo_root, inspection_rel)
     overlay_text = _file_text(repo_root, overlay_rel)
@@ -24541,25 +24541,25 @@ def _append_electric_invariant_findings(
     allowed_power_loss_files = {
         runtime_rel,
         power_engine_rel,
-        "core/flow/flow_engine.py",
+        "tools/core/flow/flow_engine.py",
         "models/model_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_breaker_files = {
         runtime_rel,
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_fault_trip_files = {
         runtime_rel,
         "game/domains/electricity/fault/fault_engine.py",
         "game/domains/electricity/protection/protection_engine.py",
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     allowed_loto_files = {
         runtime_rel,
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
         "tools/xstack/repox/check.py",
     }
     for rel_path in _scan_files(repo_root):
@@ -24770,7 +24770,7 @@ def _append_thermal_invariant_findings(
             )
         )
 
-    thermal_policy_rel = "data/registries/thermal_policy_registry.json"
+    thermal_policy_rel = "contracts/registry/thermal_policy_registry.json"
     thermal_policy_text = _file_text(repo_root, thermal_policy_rel)
     for token in (
         "therm.policy.default",
@@ -24940,7 +24940,7 @@ def _append_thermal_invariant_findings(
                 rule_id="INV-THERM-DEGRADE-LOGGED",
             )
         )
-    proof_bundle_rel = "control/proof/control_proof_bundle.py"
+    proof_bundle_rel = "tools/governance/proof/control_proof_bundle.py"
     proof_bundle_text = _file_text(repo_root, proof_bundle_rel)
     for token in (
         "heat_input_hash_chain",
@@ -25213,8 +25213,8 @@ def _append_fluid_constitution_invariant_findings(
     safety_rule_id = "INV-FLUID-SAFETY-THROUGH-PATTERNS"
     pressure_rule_id = "INV-NO-ADHOC-PRESSURE-LOGIC"
 
-    bundle_rel = "data/registries/quantity_bundle_registry.json"
-    quantity_rel = "data/registries/quantity_registry.json"
+    bundle_rel = "contracts/registry/quantity_bundle_registry.json"
+    quantity_rel = "contracts/registry/quantity_registry.json"
     bundle_payload, bundle_err = _load_json_object(repo_root, bundle_rel)
     quantity_payload, quantity_err = _load_json_object(repo_root, quantity_rel)
 
@@ -25274,7 +25274,7 @@ def _append_fluid_constitution_invariant_findings(
             )
         )
 
-    safety_rel = "data/registries/safety_pattern_registry.json"
+    safety_rel = "contracts/registry/safety_pattern_registry.json"
     safety_payload, safety_err = _load_json_object(repo_root, safety_rel)
     safety_rows = list((dict(safety_payload.get("record") or {})).get("safety_patterns") or [])
     declared_patterns = set(
@@ -25375,7 +25375,7 @@ def _append_fluid_containment_invariant_findings(
         "contracts/schemas/pressure_vessel_state.schema.json",
         "contracts/schemas/leak_state.schema.json",
         "contracts/schemas/burst_event.schema.json",
-        "data/registries/fluid_failure_policy_registry.json",
+        "contracts/registry/fluid_failure_policy_registry.json",
     )
     for rel_path in required_paths:
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -25392,7 +25392,7 @@ def _append_fluid_containment_invariant_findings(
             )
         )
 
-    safety_rel = "data/registries/safety_pattern_registry.json"
+    safety_rel = "contracts/registry/safety_pattern_registry.json"
     safety_payload, safety_err = _load_json_object(repo_root, safety_rel)
     safety_rows = list((dict(safety_payload.get("record") or {})).get("safety_patterns") or [])
     safety_ids = set(
@@ -25503,7 +25503,7 @@ def _append_fluid_envelope_invariant_findings(
     stress_tool_rel = "tools/fluid/tool_run_fluid_stress.py"
     replay_tool_rel = "tools/fluid/tool_replay_fluid_window.py"
     scenario_tool_rel = "tools/fluid/tool_generate_fluid_stress.py"
-    regression_rel = "data/regression/fluid_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/fluid_full_baseline.json"
 
     for rel_path in (scenario_tool_rel, stress_tool_rel, replay_tool_rel):
         abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
@@ -25703,8 +25703,8 @@ def _append_pollution_constitution_invariant_findings(
     compliance_report_artifact_rule_id = "INV-COMPLIANCE-REPORT-ARTIFACT"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
-    pollutant_registry_rel = "data/registries/pollutant_type_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    pollutant_registry_rel = "contracts/registry/pollutant_type_registry.json"
 
     required_paths = (
         "docs/pollution/POLLUTION_CONSTITUTION.md",
@@ -26190,7 +26190,7 @@ def _append_pollution_envelope_invariant_findings(
     stress_tool_rel = "tools/pollution/tool_run_poll_stress.py"
     replay_tool_rel = "tools/pollution/tool_replay_poll_window.py"
     mass_tool_rel = "tools/pollution/tool_verify_poll_mass_balance.py"
-    regression_rel = "data/regression/poll_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/poll_full_baseline.json"
 
     for rel_path in (
         scenario_tool_rel,
@@ -26386,8 +26386,8 @@ def _append_system_composition_invariant_findings(
     collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
     expand_engine_rel = "game/domains/systems/system_expand_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
-    boundary_registry_rel = "data/registries/system_boundary_invariant_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    boundary_registry_rel = "contracts/registry/system_boundary_invariant_registry.json"
     required_schema_rels = (
         "contracts/schemas/system/interface_signature.schema",
         "contracts/schemas/system/boundary_invariant.schema",
@@ -26395,8 +26395,8 @@ def _append_system_composition_invariant_findings(
         "contracts/schemas/system/system_state_vector.schema",
     )
     required_registry_rels = (
-        "data/registries/system_template_registry.json",
-        "data/registries/system_macro_model_registry.json",
+        "contracts/registry/system_template_registry.json",
+        "contracts/registry/system_macro_model_registry.json",
         boundary_registry_rel,
     )
 
@@ -26624,9 +26624,9 @@ def _append_system_validation_invariant_findings(
     validation_engine_rel = "game/domains/systems/system_validation_engine.py"
     collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
     expand_engine_rel = "game/domains/systems/system_expand_engine.py"
-    interface_registry_rel = "data/registries/interface_signature_template_registry.json"
-    invariant_registry_rel = "data/registries/boundary_invariant_template_registry.json"
-    macro_registry_rel = "data/registries/macro_model_set_registry.json"
+    interface_registry_rel = "contracts/registry/interface_signature_template_registry.json"
+    invariant_registry_rel = "contracts/registry/boundary_invariant_template_registry.json"
+    macro_registry_rel = "contracts/registry/macro_model_set_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     required_paths = (
@@ -26916,7 +26916,7 @@ def _append_system_macro_invariant_findings(
 
     macro_engine_rel = "game/domains/systems/macro/macro_capsule_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     replay_tool_rel = "tools/system/tool_replay_capsule_window.py"
     runtime_schema_rel = "contracts/schemas/system/macro_runtime_state.schema"
     forced_schema_rel = "contracts/schemas/system/forced_expand_event.schema"
@@ -27109,8 +27109,8 @@ def _append_system_tier_invariant_findings(
     scheduler_rel = "game/domains/systems/roi/system_roi_scheduler.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     schema_rel = "contracts/schemas/system/system_tier_change_event.schema"
-    process_registry_rel = "data/registries/process_registry.json"
-    tier_registry_rel = "data/registries/tier_contract_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    tier_registry_rel = "contracts/registry/tier_contract_registry.json"
     replay_tool_rel = "tools/system/tool_replay_tier_transitions.py"
 
     for rel_path in (
@@ -27375,8 +27375,8 @@ def _append_system_template_invariant_findings(
         "contracts/schemas/system/template_instance_record.schema",
         "game/domains/systems/templates/template_compiler.py",
         "tools/xstack/sessionx/process_runtime.py",
-        "data/registries/system_template_registry.json",
-        "packs/system_templates/base/data/system_template_registry.json",
+        "contracts/registry/system_template_registry.json",
+        "content/packs/system_templates/base/data/system_template_registry.json",
         "tools/system/tool_verify_template_reproducible.py",
     )
     for rel_path in required_paths:
@@ -27444,7 +27444,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     process_text = _file_text(repo_root, process_registry_rel)
     for token in (
         '"process_id": "process.template_instantiate"',
@@ -27464,7 +27464,7 @@ def _append_system_template_invariant_findings(
             )
         )
 
-    registry_rel = "packs/system_templates/base/data/system_template_registry.json"
+    registry_rel = "content/packs/system_templates/base/data/system_template_registry.json"
     registry_text = _file_text(repo_root, registry_rel)
     for token in (
         "template.engine.ice_stub",
@@ -27536,7 +27536,7 @@ def _append_system_certification_invariant_findings(
         "contracts/schemas/system/certification_profile.schema",
         "contracts/schemas/system/certification_result.schema",
         "contracts/schemas/system/certificate_artifact.schema",
-        "data/registries/certification_profile_registry.json",
+        "contracts/registry/certification_profile_registry.json",
         "game/domains/systems/certification/system_cert_engine.py",
         "tools/system/tool_replay_certification_window.py",
         "tools/xstack/sessionx/process_runtime.py",
@@ -27584,7 +27584,7 @@ def _append_system_certification_invariant_findings(
             )
         )
 
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     process_registry_text = _file_text(repo_root, process_registry_rel)
     for token in (
         '"process_id": "process.system_evaluate_certification"',
@@ -27604,7 +27604,7 @@ def _append_system_certification_invariant_findings(
             )
         )
 
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
     explain_registry_text = _file_text(repo_root, explain_registry_rel)
     for token in (
         '"contract_id": "explain.system.certification_failure"',
@@ -27625,7 +27625,7 @@ def _append_system_certification_invariant_findings(
             )
         )
 
-    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+    provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
     provenance_registry_text = _file_text(repo_root, provenance_registry_rel)
     for token in (
         "artifact.record.system_certification_result",
@@ -27714,8 +27714,8 @@ def _append_system_reliability_invariant_findings(
     forced_rule_id = "INV-FORCED-EXPAND-LOGGED"
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
-    reliability_registry_rel = "data/registries/reliability_profile_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    reliability_registry_rel = "contracts/registry/reliability_profile_registry.json"
     required_paths = (
         "docs/system/SYSTEM_RELIABILITY_MODEL.md",
         "contracts/schemas/system/reliability_profile.schema",
@@ -27916,9 +27916,9 @@ def _append_system_forensics_invariant_findings(
 
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     forensics_engine_rel = "game/domains/systems/forensics/system_forensics_engine.py"
-    process_registry_rel = "data/registries/process_registry.json"
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
-    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
+    provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
     replay_tool_rel = "tools/system/tool_verify_explain_determinism.py"
     required_paths = (
         "docs/system/SYSTEM_FORENSICS_MODEL.md",
@@ -28129,7 +28129,7 @@ def _append_system_envelope_invariant_findings(
     scenario_tool_rel = "tools/system/tool_generate_sys_stress.py"
     stress_tool_rel = "tools/system/tool_run_sys_stress.py"
     replay_tool_rel = "tools/system/tool_replay_sys_window.py"
-    regression_rel = "data/regression/sys_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/sys_full_baseline.json"
     shard_rules_rel = "docs/system/SYS_SHARD_BOUNDARY_RULES.md"
 
     required_paths = (
@@ -28329,9 +28329,9 @@ def _append_compiled_model_invariant_findings(
     bespoke_rule_id = "INV-NO-BESPOKE-COMPILER"
     proof_rule_id = "INV-COMPILED-MODEL-REQUIRES-PROOF"
 
-    compile_engine_rel = "meta/compile/compile_engine.py"
+    compile_engine_rel = "tools/repo/meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    process_registry_rel = "data/registries/process_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
     verify_tool_rel = "tools/meta/tool_verify_compiled_model.py"
     required_schema_rels = (
         "contracts/schemas/meta/compiled_model.schema",
@@ -28341,9 +28341,9 @@ def _append_compiled_model_invariant_findings(
         "contracts/schemas/meta/compile_result.schema",
     )
     required_registry_rels = (
-        "data/registries/compiled_type_registry.json",
-        "data/registries/verification_procedure_registry.json",
-        "data/registries/compile_policy_registry.json",
+        "contracts/registry/compiled_type_registry.json",
+        "contracts/registry/verification_procedure_registry.json",
+        "contracts/registry/compile_policy_registry.json",
     )
     for rel_path in (
         compile_engine_rel,
@@ -28477,9 +28477,9 @@ def _append_state_vector_invariant_findings(
     statevec_engine_rel = "game/domains/systems/statevec/statevec_engine.py"
     collapse_engine_rel = "game/domains/systems/system_collapse_engine.py"
     expand_engine_rel = "game/domains/systems/system_expand_engine.py"
-    compile_engine_rel = "meta/compile/compile_engine.py"
+    compile_engine_rel = "tools/repo/meta/compile/compile_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    statevec_registry_rel = "data/registries/state_vector_registry.json"
+    statevec_registry_rel = "contracts/registry/state_vector_registry.json"
     verify_tool_rel = "tools/system/tool_verify_statevec_roundtrip.py"
     required_paths = (
         "docs/system/EXPLICIT_STATE_VECTOR_RULE.md",
@@ -28846,7 +28846,7 @@ def _append_energy_ledger_invariant_findings(
     severity = _strict_only_severity(profile)
     transform_rule_id = "INV-ENERGY-TRANSFORM-REGISTERED"
     mutation_rule_id = "INV-NO-DIRECT-ENERGY-MUTATION"
-    registry_rel = "data/registries/energy_transformation_registry.json"
+    registry_rel = "contracts/registry/energy_transformation_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     engine_rel = "game/domains/physics/energy/energy_ledger_engine.py"
 
@@ -29030,8 +29030,8 @@ def _append_chem_combustion_invariant_findings(
     severity = _strict_only_severity(profile)
     engine_rule_id = "INV-COMBUSTION-THROUGH-REACTION-ENGINE"
     fuel_rule_id = "INV-NO-DIRECT-FUEL-DECREMENT"
-    reaction_registry_rel = "data/registries/reaction_profile_registry.json"
-    energy_registry_rel = "data/registries/energy_transformation_registry.json"
+    reaction_registry_rel = "contracts/registry/reaction_profile_registry.json"
+    energy_registry_rel = "contracts/registry/energy_transformation_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
@@ -29189,10 +29189,10 @@ def _append_chem_processing_invariant_findings(
     yield_rule_id = "INV-YIELD-MUST-BE-MODEL"
     quality_rule_id = "INV-BATCH-QUALITY-DECLARED"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
-    reaction_registry_rel = "data/registries/reaction_profile_registry.json"
-    yield_registry_rel = "data/registries/yield_model_registry.json"
+    reaction_registry_rel = "contracts/registry/reaction_profile_registry.json"
+    yield_registry_rel = "contracts/registry/yield_model_registry.json"
     quality_schema_rel = "contracts/schemas/materials/batch_quality.schema"
-    provenance_registry_rel = "data/registries/provenance_classification_registry.json"
+    provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
 
     reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
     reaction_rows = list((dict(reaction_payload.get("record") or {})).get("reaction_profiles") or [])
@@ -29498,15 +29498,15 @@ def _append_process_constitution_invariant_findings(
     proc_inference_derived_rule_id = "INV-PROC-INFERENCE-DERIVED-ONLY"
     proc_statevec_rule_id = "INV-PROC-STATEVEC-REQUIRED"
 
-    process_registry_rel = "data/registries/process_registry.json"
-    lifecycle_policy_rel = "data/registries/process_lifecycle_policy_registry.json"
-    stabilization_policy_rel = "data/registries/process_stabilization_policy_registry.json"
-    drift_policy_rel = "data/registries/process_drift_policy_registry.json"
-    qc_policy_registry_rel = "data/registries/qc_policy_registry.json"
-    sampling_strategy_registry_rel = "data/registries/sampling_strategy_registry.json"
-    test_procedure_registry_rel = "data/registries/test_procedure_registry.json"
-    yield_registry_rel = "data/registries/yield_model_registry.json"
-    defect_registry_rel = "data/registries/defect_model_registry.json"
+    process_registry_rel = "contracts/registry/process_registry.json"
+    lifecycle_policy_rel = "contracts/registry/process_lifecycle_policy_registry.json"
+    stabilization_policy_rel = "contracts/registry/process_stabilization_policy_registry.json"
+    drift_policy_rel = "contracts/registry/process_drift_policy_registry.json"
+    qc_policy_registry_rel = "contracts/registry/qc_policy_registry.json"
+    sampling_strategy_registry_rel = "contracts/registry/sampling_strategy_registry.json"
+    test_procedure_registry_rel = "contracts/registry/test_procedure_registry.json"
+    yield_registry_rel = "contracts/registry/yield_model_registry.json"
+    defect_registry_rel = "contracts/registry/defect_model_registry.json"
     process_definition_schema_rel = "contracts/schemas/process/process_definition.schema"
     qc_policy_schema_rel = "contracts/schemas/process/qc_policy.schema"
     qc_result_schema_rel = "contracts/schemas/process/qc_result_record.schema"
@@ -29526,9 +29526,9 @@ def _append_process_constitution_invariant_findings(
     maturity_doc_rel = "docs/process/STABILIZATION_AND_MATURITY_MODEL.md"
     drift_doc_rel = "docs/process/DRIFT_AND_REVALIDATION_MODEL.md"
     research_doc_rel = "docs/process/RESEARCH_AND_REVERSE_ENGINEERING_MODEL.md"
-    explain_registry_rel = "data/registries/explain_contract_registry.json"
-    inspection_section_rel = "data/registries/inspection_section_registry.json"
-    stabilization_policy_registry_v2_rel = "data/registries/stabilization_policy_registry.json"
+    explain_registry_rel = "contracts/registry/explain_contract_registry.json"
+    inspection_section_rel = "contracts/registry/inspection_section_registry.json"
+    stabilization_policy_registry_v2_rel = "contracts/registry/stabilization_policy_registry.json"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     validator_rel = "game/domains/processes/process_definition_validator.py"
     run_engine_rel = "game/domains/processes/process_run_engine.py"
@@ -29548,19 +29548,19 @@ def _append_process_constitution_invariant_findings(
     experiment_result_schema_rel = "contracts/schemas/process/experiment_result.schema"
     candidate_process_schema_rel = "contracts/schemas/process/candidate_process_definition.schema"
     reverse_engineering_schema_rel = "contracts/schemas/process/reverse_engineering_record.schema"
-    research_policy_registry_rel = "data/registries/research_policy_registry.json"
+    research_policy_registry_rel = "contracts/registry/research_policy_registry.json"
     software_pipeline_profile_schema_rel = "contracts/schemas/process/software_pipeline_profile.schema"
     software_artifact_schema_rel = "contracts/schemas/process/software_artifact.schema"
     deployment_record_schema_rel = "contracts/schemas/process/deployment_record.schema"
-    software_toolchain_registry_rel = "data/registries/software_toolchain_registry.json"
-    software_pipeline_template_registry_rel = "data/registries/software_pipeline_template_registry.json"
+    software_toolchain_registry_rel = "contracts/registry/software_toolchain_registry.json"
+    software_pipeline_template_registry_rel = "contracts/registry/software_pipeline_template_registry.json"
     software_pipeline_doc_rel = "docs/process/SOFTWARE_PIPELINE_MODEL.md"
     pipeline_replay_tool_rel = "tools/process/tool_replay_pipeline_window.py"
     proc_stress_generator_rel = "tools/process/tool_generate_proc_stress.py"
     proc_stress_harness_rel = "tools/process/tool_run_proc_stress.py"
     proc_replay_tool_rel = "tools/process/tool_replay_proc_window.py"
     proc_compaction_tool_rel = "tools/process/tool_verify_proc_compaction.py"
-    proc_regression_rel = "data/regression/proc_full_baseline.json"
+    proc_regression_rel = "tests/fixtures/regression/proc_full_baseline.json"
     run_schema_rel = "contracts/schemas/process/process_run_record.schema"
     step_schema_rel = "contracts/schemas/process/process_step_record.schema"
 
@@ -31545,9 +31545,9 @@ def _append_logic_fault_invariant_findings(
         ("contracts/schemas/logic/logic_fault_state.schema", process_rule_id),
         ("contracts/schemas/logic/noise_policy.schema", noise_rule_id),
         ("contracts/schemas/logic/security_policy.schema", security_rule_id),
-        ("data/registries/logic_fault_kind_registry.json", process_rule_id),
-        ("data/registries/logic_noise_policy_registry.json", noise_rule_id),
-        ("data/registries/logic_security_policy_registry.json", security_rule_id),
+        ("contracts/registry/logic_fault_kind_registry.json", process_rule_id),
+        ("contracts/registry/logic_noise_policy_registry.json", noise_rule_id),
+        ("contracts/registry/logic_security_policy_registry.json", security_rule_id),
         ("game/domains/logic/fault/fault_engine.py", process_rule_id),
         ("game/domains/logic/noise/noise_engine.py", noise_rule_id),
         ("tools/logic/tool_replay_fault_window.py", security_rule_id),
@@ -31594,7 +31594,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    process_rel = "data/registries/process_registry.json"
+    process_rel = "contracts/registry/process_registry.json"
     process_text = _file_text(repo_root, process_rel)
     for token in ('"process.logic_fault_set"', '"process.logic_fault_clear"'):
         if token in process_text:
@@ -31610,7 +31610,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    explain_rel = "data/registries/explain_contract_registry.json"
+    explain_rel = "contracts/registry/explain_contract_registry.json"
     explain_text = _file_text(repo_root, explain_rel)
     for token, rule_id in (
         ("explain.logic_fault_open", process_rule_id),
@@ -31632,7 +31632,7 @@ def _append_logic_fault_invariant_findings(
             )
         )
 
-    surface_rel = "data/registries/instrumentation_surface_registry.json"
+    surface_rel = "contracts/registry/instrumentation_surface_registry.json"
     surface_text = _file_text(repo_root, surface_rel)
     for token, rule_id, message in (
         ("measure.logic.fault_state", process_rule_id, "logic fault state must be observable only through instrumentation"),
@@ -31799,8 +31799,8 @@ def _append_chem_degradation_invariant_findings(
     pipe_rule_id = "INV-NO-ADHOC-PIPE-RESTRICTION"
     coupling_rule_id = "INV-COUPLING-CONTRACT-DECLARED"
 
-    degradation_profile_registry_rel = "data/registries/degradation_profile_registry.json"
-    coupling_registry_rel = "data/registries/coupling_contract_registry.json"
+    degradation_profile_registry_rel = "contracts/registry/degradation_profile_registry.json"
+    coupling_registry_rel = "contracts/registry/coupling_contract_registry.json"
     degradation_engine_rel = "game/domains/chemistry/degradation/degradation_engine.py"
     fluid_engine_rel = "game/domains/fluids/network/fluid_network_engine.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
@@ -32026,7 +32026,7 @@ def _append_chem_envelope_invariant_findings(
     verify_mass_rel = "tools/chem/tool_verify_mass_conservation.py"
     verify_energy_rel = "tools/chem/tool_verify_energy_conservation.py"
     verify_entropy_rel = "tools/chem/tool_verify_entropy_monotonicity.py"
-    regression_rel = "data/regression/chem_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/chem_full_baseline.json"
 
     for rel_path in (
         scenario_tool_rel,
@@ -32210,8 +32210,8 @@ def _append_entropy_policy_invariant_findings(
     efficiency_rule_id = "INV-NO-SILENT-EFFICIENCY-DROP"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     engine_rel = "game/domains/physics/entropy/entropy_engine.py"
-    contribution_registry_rel = "data/registries/entropy_contribution_registry.json"
-    effect_registry_rel = "data/registries/entropy_effect_policy_registry.json"
+    contribution_registry_rel = "contracts/registry/entropy_contribution_registry.json"
+    effect_registry_rel = "contracts/registry/entropy_effect_policy_registry.json"
 
     contribution_payload, contribution_error = _load_json_object(repo_root, contribution_registry_rel)
     contribution_rows = list(contribution_payload.get("entropy_contributions") or [])
@@ -32424,10 +32424,10 @@ def _append_numeric_tolerance_invariant_findings(
     serialization_rule_id = "INV-CANONICAL-NUMERIC-SERIALIZATION"
     compiler_rule_id = "INV-SAFE-FLOAT-COMPILER-FLAGS"
 
-    quantity_registry_rel = "data/registries/quantity_registry.json"
-    tolerance_registry_rel = "data/registries/quantity_tolerance_registry.json"
-    engine_tolerance_registry_rel = "data/registries/tolerance_registry.json"
-    numeric_helper_rel = "meta/numeric.py"
+    quantity_registry_rel = "contracts/registry/quantity_registry.json"
+    tolerance_registry_rel = "contracts/registry/quantity_tolerance_registry.json"
+    engine_tolerance_registry_rel = "contracts/registry/tolerance_registry.json"
+    numeric_helper_rel = "tools/repo/meta/numeric.py"
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
 
     quantity_payload, quantity_error = _load_json_object(repo_root, quantity_registry_rel)
@@ -32594,7 +32594,7 @@ def _append_numeric_tolerance_invariant_findings(
         "game/domains/physics/momentum_engine.py",
         "game/domains/physics/energy/energy_ledger_engine.py",
         "game/domains/mobility/micro/free_motion_solver.py",
-        "meta/numeric.py",
+        "tools/repo/meta/numeric.py",
     ):
         for line_no, line in _iter_lines(repo_root, rel_path):
             snippet = str(line).strip()
@@ -32731,14 +32731,14 @@ def _append_store_gc_findings(
         ("contracts/schemas/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
         ("contracts/schemas/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
         ("contracts/schemas/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
-        ("data/registries/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
-        ("lib/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
-        ("lib/store/gc_engine.py", "gc engine is required", graph_rule_id),
+        ("contracts/registry/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
+        ("contracts/abi/store/reachability_engine.py", "reachability engine is required", graph_rule_id),
+        ("engine/store/gc_engine.py", "gc engine is required", graph_rule_id),
         ("tools/lib/store_gc_common.py", "STORE-GC helper is required", deterministic_rule_id),
         ("tools/lib/tool_store_verify.py", "store verification tool is required", deterministic_rule_id),
         ("tools/lib/tool_run_store_gc.py", "STORE-GC runner is required", deterministic_rule_id),
         ("docs/audit/STORE_VERIFY_REPORT.md", "store verification report is required", deterministic_rule_id),
-        ("data/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
+        ("content/data/audit/store_verify_report.json", "store verification machine report is required", deterministic_rule_id),
         ("docs/audit/STORE_GC_BASELINE.md", "STORE-GC baseline is required", deterministic_rule_id),
     )
     for rel_path, message, rule_id in required_files:
@@ -33503,7 +33503,7 @@ def _append_save_manifest_invariant_findings(
                 "save_format_version",
                 "migration_chain",
             ),
-            "lib/save/save_validator.py": (
+            "tools/libraries/save/save_validator.py": (
                 "REFUSAL_SAVE_MANIFEST_REQUIRED",
                 "validate_save_manifest(",
             ),
@@ -33523,7 +33523,7 @@ def _append_save_manifest_invariant_findings(
                 "pack_lock_hash",
                 "allow_read_only_open",
             ),
-            "lib/save/save_validator.py": (
+            "tools/libraries/save/save_validator.py": (
                 "load_save_contract_bundle(",
                 "REFUSAL_SAVE_CONTRACT_MISMATCH",
                 "REFUSAL_SAVE_PACK_LOCK_MISMATCH",
@@ -33543,7 +33543,7 @@ def _append_save_manifest_invariant_findings(
                 "migration application remains explicit invoke-only",
                 "tick_applied",
             ),
-            "lib/save/save_validator.py": (
+            "tools/libraries/save/save_validator.py": (
                 "migrate_save_manifest(",
                 "allow_save_migration",
                 "REFUSAL_SAVE_MIGRATION_REQUIRED",
@@ -33628,7 +33628,7 @@ def _append_artifact_manifest_invariant_findings(
                 "\"process_definitions\"",
                 "\"view_presets\"",
             ),
-            "data/registries/artifact_kind_registry.json": (
+            "contracts/registry/artifact_kind_registry.json": (
                 "\"artifact.profile_bundle\"",
                 "\"store_category\": \"profiles\"",
             ),
@@ -33639,7 +33639,7 @@ def _append_artifact_manifest_invariant_findings(
                 "Artifact load pipeline",
                 "No silent migration is permitted.",
             ),
-            "lib/artifact/artifact_validator.py": (
+            "tools/libraries/artifact/artifact_validator.py": (
                 "validate_artifact_manifest(",
                 "evaluate_artifact_load(",
                 "REFUSAL_ARTIFACT_HASH_MISMATCH",
@@ -33706,7 +33706,7 @@ def _append_forking_provides_invariant_findings(
                 "fork.<origin_pack_id>.<fork_author>.<fork_name>",
                 "Legacy reverse-DNS pack ids remain loadable for compatibility.",
             ),
-            "lib/provides/provider_resolution.py": (
+            "tools/libraries/provides/provider_resolution.py": (
                 "classify_pack_namespace(",
                 "REFUSAL_PACK_NAMESPACE_INVALID",
             ),
@@ -33728,12 +33728,12 @@ def _append_forking_provides_invariant_findings(
                 "chosen_pack_id",
                 "deterministic_fingerprint",
             ),
-            "lib/provides/provider_resolution.py": (
+            "tools/libraries/provides/provider_resolution.py": (
                 "resolve_providers(",
                 "selection_logged",
                 "selection_mode",
             ),
-            "packs/compat/pack_verification_pipeline.py": (
+            "content/packs/compatibility_payload/pack_verification_pipeline.py": (
                 "resolve_providers(",
                 "provides_resolutions",
                 "provider_selection_logged",
@@ -33745,7 +33745,7 @@ def _append_forking_provides_invariant_findings(
                 "resolve.strict_refuse_ambiguous",
                 "Strict servers must refuse ambiguous providers.",
             ),
-            "lib/provides/provider_resolution.py": (
+            "tools/libraries/provides/provider_resolution.py": (
                 "REFUSAL_PROVIDES_AMBIGUOUS",
                 "RESOLUTION_POLICY_STRICT_REFUSE_AMBIGUOUS",
             ),
@@ -33798,14 +33798,14 @@ def _append_component_graph_findings(
         ("contracts/schemas/component_edge.schema.json", "compiled component edge schema is required", install_rule_id),
         ("contracts/schemas/component_graph.schema.json", "compiled component graph schema is required", install_rule_id),
         ("contracts/schemas/install_plan.schema.json", "compiled install plan schema is required", install_rule_id),
-        ("data/registries/arch_registry.json", "architecture registry is required", install_rule_id),
-        ("data/registries/os_registry.json", "operating-system registry is required", install_rule_id),
-        ("data/registries/component_graph_registry.json", "component graph registry is required", install_rule_id),
+        ("contracts/registry/arch_registry.json", "architecture registry is required", install_rule_id),
+        ("contracts/registry/os_registry.json", "operating-system registry is required", install_rule_id),
+        ("contracts/registry/component_graph_registry.json", "component graph registry is required", install_rule_id),
         ("release/component_graph_resolver.py", "component graph resolver is required", install_rule_id),
         ("tools/release/component_graph_common.py", "component graph helper is required", install_rule_id),
         ("tools/release/tool_run_component_graph.py", "component graph runner is required", install_rule_id),
         ("docs/audit/COMPONENT_GRAPH_BASELINE.md", "component graph baseline report is required", install_rule_id),
-        ("data/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
+        ("content/data/audit/component_graph_report.json", "component graph machine report is required", install_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -33904,11 +33904,11 @@ def _append_install_profile_findings(
         ("docs/release/INSTALL_PROFILES.md", "install profile doctrine is required", use_rule_id),
         ("contracts/schemas/release/install_profile.schema", "install_profile schema is required", use_rule_id),
         ("contracts/schemas/install_profile.schema.json", "compiled install_profile schema is required", use_rule_id),
-        ("data/registries/install_profile_registry.json", "install profile registry is required", use_rule_id),
+        ("contracts/registry/install_profile_registry.json", "install profile registry is required", use_rule_id),
         ("tools/release/install_profile_common.py", "install profile helper is required", use_rule_id),
         ("tools/release/tool_run_install_profiles.py", "install profile runner is required", use_rule_id),
         ("docs/audit/INSTALL_PROFILE_BASELINE.md", "install profile baseline report is required", use_rule_id),
-        ("data/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
+        ("content/data/audit/install_profile_report.json", "install profile machine report is required", use_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34015,7 +34015,7 @@ def _append_update_model_findings(
         ("tools/release/update_model_common.py", "update-model helper is required", graph_rule_id),
         ("tools/release/tool_run_update_model.py", "update-model runner is required", graph_rule_id),
         ("docs/audit/UPDATE_MODEL_BASELINE.md", "update-model baseline is required", graph_rule_id),
-        ("data/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
+        ("content/data/audit/update_model_report.json", "update-model machine report is required", graph_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34156,13 +34156,13 @@ def _append_trust_model_findings(
         ("contracts/schemas/trust_root.schema.json", "compiled trust_root schema is required", policy_rule_id),
         ("contracts/schemas/trust_policy.schema.json", "compiled trust_policy schema is required", policy_rule_id),
         ("contracts/schemas/signature_record.schema.json", "compiled signature_record schema is required", policy_rule_id),
-        ("data/registries/trust_root_registry.json", "trust root registry is required", policy_rule_id),
-        ("data/registries/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
-        ("security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
+        ("contracts/registry/trust_root_registry.json", "trust root registry is required", policy_rule_id),
+        ("contracts/registry/trust_policy_registry.json", "trust policy registry is required", policy_rule_id),
+        ("tools/validators/security/trust/trust_verifier.py", "trust verifier is required", hashes_rule_id),
         ("tools/security/trust_model_common.py", "trust-model helper is required", policy_rule_id),
         ("tools/security/tool_run_trust_model.py", "trust-model runner is required", policy_rule_id),
         ("docs/audit/TRUST_MODEL_BASELINE.md", "trust-model baseline is required", policy_rule_id),
-        ("data/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
+        ("content/data/audit/trust_model_report.json", "trust-model machine report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34263,12 +34263,12 @@ def _append_governance_model_findings(
         ("docs/governance/LICENSING_STRATEGY.md", "licensing strategy document is required", rule_id),
         ("contracts/schemas/governance/governance_profile.schema", "governance_profile schema is required", rule_id),
         ("contracts/schemas/governance_profile.schema.json", "compiled governance_profile schema is required", rule_id),
-        ("data/registries/governance_mode_registry.json", "governance mode registry is required", rule_id),
-        ("data/governance/governance_profile.json", "governance profile is required", rule_id),
+        ("contracts/registry/governance_mode_registry.json", "governance mode registry is required", rule_id),
+        ("content/data/governance/governance_profile.json", "governance profile is required", rule_id),
         ("tools/governance/governance_model_common.py", "governance-model helper is required", rule_id),
         ("tools/governance/tool_run_governance_model.py", "governance-model runner is required", rule_id),
         ("docs/audit/GOVERNANCE_POLICY_BASELINE.md", "governance baseline is required", rule_id),
-        ("data/audit/governance_policy_report.json", "governance machine report is required", rule_id),
+        ("contracts/audit/governance_policy_report.json", "governance machine report is required", rule_id),
     )
     for rel_path, message, current_rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34420,11 +34420,11 @@ def _append_arch_matrix_findings(
         ("docs/audit/ARCH_MATRIX0_RETRO_AUDIT.md", "ARCH-MATRIX-0 retro audit is required", matrix_rule_id),
         ("docs/release/TARGET_MATRIX_v0_0_0_mock.md", "target matrix doctrine is required", matrix_rule_id),
         ("docs/release/TARGET_CAPABILITY_RULES.md", "target capability rules are required", matrix_rule_id),
-        ("data/registries/target_matrix_registry.json", "target matrix registry is required", matrix_rule_id),
+        ("contracts/registry/target_matrix_registry.json", "target matrix registry is required", matrix_rule_id),
         ("tools/release/arch_matrix_common.py", "ARCH-MATRIX helper is required", matrix_rule_id),
         ("tools/release/tool_run_arch_matrix.py", "ARCH-MATRIX runner is required", matrix_rule_id),
         ("docs/audit/ARCH_MATRIX_FINAL.md", "ARCH-MATRIX final report is required", matrix_rule_id),
-        ("data/audit/arch_matrix_report.json", "ARCH-MATRIX machine report is required", matrix_rule_id),
+        ("contracts/audit/arch_matrix_report.json", "ARCH-MATRIX machine report is required", matrix_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34529,13 +34529,13 @@ def _append_universal_identity_findings(
         ("docs/meta/IDENTITY_INTEGRATION_MAP.md", "identity integration map is required", warn_rule_id),
         ("contracts/schemas/meta/universal_identity_block.schema", "universal identity schema is required", canonical_rule_id),
         ("contracts/schemas/universal_identity_block.schema.json", "compiled universal identity schema is required", canonical_rule_id),
-        ("data/registries/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
-        ("meta/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
+        ("contracts/registry/identity_kind_registry.json", "identity kind registry is required", namespaced_rule_id),
+        ("tools/validators/identity/identity_validator.py", "identity validator is required", canonical_rule_id),
         ("tools/meta/identity_common.py", "identity helper is required", canonical_rule_id),
         ("tools/meta/tool_print_identity.py", "identity print tool is required", warn_rule_id),
         ("tools/meta/tool_diff_identity.py", "identity diff tool is required", warn_rule_id),
         ("docs/audit/UNIVERSAL_IDENTITY_BASELINE.md", "universal identity baseline is required", warn_rule_id),
-        ("data/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
+        ("content/data/audit/universal_identity_report.json", "universal identity machine report is required", warn_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34622,13 +34622,13 @@ def _append_migration_lifecycle_findings(
         ("contracts/schemas/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
         ("contracts/schemas/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
         ("contracts/schemas/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
-        ("data/registries/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
-        ("compat/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
+        ("contracts/registry/migration_policy_registry.json", "migration policy registry is required", policy_rule_id),
+        ("tools/validators/compatibility/migration_lifecycle.py", "migration lifecycle helper is required", policy_rule_id),
         ("tools/compat/migration_lifecycle_common.py", "migration lifecycle helper/reporting tool is required", policy_rule_id),
         ("tools/compat/tool_plan_migration.py", "migration planning tool is required", silent_rule_id),
         ("tools/compat/tool_apply_migration.py", "migration apply tool is required", silent_rule_id),
         ("docs/audit/MIGRATION_LIFECYCLE_BASELINE.md", "migration lifecycle baseline is required", policy_rule_id),
-        ("data/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
+        ("content/data/audit/migration_lifecycle_report.json", "migration lifecycle report is required", policy_rule_id),
     )
     for rel_path, message, rule_id in required_files:
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
@@ -34716,12 +34716,12 @@ def _append_bundle_invariant_findings(
                 "bundle_hash is computed from the canonical ordered item projection",
                 "deterministic_fingerprint",
             ),
-            "lib/bundle/bundle_manifest.py": (
+            "tools/libraries/bundle/bundle_manifest.py": (
                 "compute_bundle_hash(",
                 "stable_bundle_id(",
                 "verify_bundle_directory(",
             ),
-            "lib/export/export_engine.py": (
+            "engine/export/export_engine.py": (
                 "write_bundle_directory(",
                 "\"refusal.bundle.destination_exists\"",
                 "BUNDLE_KIND_INSTANCE_PORTABLE",
@@ -34732,7 +34732,7 @@ def _append_bundle_invariant_findings(
                 "zip` with fixed timestamp `2000-01-01T00:00:00Z`",
                 "No OS-specific metadata is permitted in archive entries.",
             ),
-            "lib/bundle/bundle_manifest.py": (
+            "tools/libraries/bundle/bundle_manifest.py": (
                 "bundle.manifest.json",
                 "hashes/content.sha256.json",
                 "bundle.manifest.json is missing",
@@ -34748,12 +34748,12 @@ def _append_bundle_invariant_findings(
                 "recompute `bundle_hash`",
                 "refuse if any mismatch occurs",
             ),
-            "lib/import/import_engine.py": (
+            "engine/import/import_engine.py": (
                 "verify_bundle_directory(",
                 "_insert_bundle_store_artifacts(",
                 "\"refusal.bundle.artifact_hash_mismatch\"",
             ),
-            "lib/bundle/bundle_manifest.py": (
+            "tools/libraries/bundle/bundle_manifest.py": (
                 "\"bundle_content_hash_mismatch\"",
                 "\"bundle_hash_mismatch\"",
                 "\"bundle_hash_index_mismatch\"",
@@ -34823,7 +34823,7 @@ def _append_lib_envelope_invariant_findings(
                 "forward- and backslash-shaped scenarios keep identical bundle hashes",
                 "cross-platform bundle hash stability is covered",
             ),
-            "data/regression/lib_full_baseline.json": (
+            "tests/fixtures/regression/lib_full_baseline.json": (
                 "\"baseline_id\": \"lib.full.baseline.v1\"",
                 "\"scenario_seed\": 71007",
                 "\"bundle_hashes\"",
@@ -34880,7 +34880,7 @@ def _append_lib_envelope_invariant_findings(
                 "strict policy refuses ambiguity with `refusal.provides.ambiguous`",
                 "anarchy policy completes deterministically",
             ),
-            "data/regression/lib_full_baseline.json": (
+            "tests/fixtures/regression/lib_full_baseline.json": (
                 "\"provider_resolution_outcomes\"",
                 "\"selection_logged\": true",
                 "\"required_commit_tag\": \"LIB-REGRESSION-UPDATE\"",
@@ -34916,7 +34916,7 @@ def _append_lib_envelope_invariant_findings(
                     )
                 )
 
-    regression_rel = "data/regression/lib_full_baseline.json"
+    regression_rel = "tests/fixtures/regression/lib_full_baseline.json"
     regression_payload, regression_err = _load_json_object(repo_root, regression_rel)
     if regression_err:
         findings.append(
@@ -35006,11 +35006,11 @@ def _append_toolchain_matrix_invariant_findings(
     rule_id = "INV-TOOLCHAIN-MATRIX-REGISTRY-PRESENT"
     for rel_path, message in (
         (
-            "data/registries/toolchain_matrix_registry.json",
+            "contracts/registry/toolchain_matrix_registry.json",
             "toolchain matrix registry is required for Ω-9 environment declarations",
         ),
         (
-            "data/registries/toolchain_test_profile_registry.json",
+            "contracts/registry/toolchain_test_profile_registry.json",
             "toolchain test profile registry is required for Ω-9 profile declarations",
         ),
     ):
@@ -35047,7 +35047,7 @@ def _append_dist_final_plan_invariant_findings(
             "final distribution checklist is required for Ω-10 execution tracking",
         ),
         (
-            "data/release/dist_final_expected_artifacts.json",
+            "content/data/release/dist_final_expected_artifacts.json",
             "expected artifacts registry is required for Ω-10 final distribution planning",
         ),
         (
@@ -35104,10 +35104,10 @@ def _append_arch_graph_v1_present_findings(
 ) -> None:
     severity = _invariant_severity(profile)
     for rel_path in (
-        "data/architecture/architecture_graph.v1.json",
-        "data/architecture/module_registry.v1.json",
-        "data/architecture/module_boundary_rules.v1.json",
-        "data/architecture/single_engine_registry.json",
+        "content/data/architecture/architecture_graph.v1.json",
+        "contracts/registry/architecture/module_registry.v1.json",
+        "content/data/architecture/module_boundary_rules.v1.json",
+        "contracts/registry/architecture/single_engine_registry.json",
     ):
         if os.path.isfile(os.path.join(repo_root, rel_path.replace("/", os.sep))):
             continue
@@ -35136,7 +35136,7 @@ def _append_repository_structure_locked_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/architecture/repository_structure_lock.json",
+                file_path="content/data/architecture/repository_structure_lock.json",
                 line_number=1,
                 snippet="build_repository_structure_violations",
                 message="failed to evaluate Xi-8 repository structure lock: {}".format(type(exc).__name__),
@@ -35171,7 +35171,7 @@ def _append_architecture_drift_guard_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/architecture/architecture_graph.v1.json",
+                file_path="content/data/architecture/architecture_graph.v1.json",
                 line_number=1,
                 snippet="evaluate_architecture_drift",
                 message="failed to evaluate Xi-6 architecture drift guard: {}".format(type(exc).__name__),
@@ -35192,7 +35192,7 @@ def _append_architecture_drift_guard_findings(
     findings.append(
         _finding(
             severity=severity,
-            file_path="data/architecture/architecture_graph.v1.json",
+            file_path="content/data/architecture/architecture_graph.v1.json",
             line_number=1,
             snippet=str(report.get("live_content_hash", ""))[:140],
             message=str(report.get("reason", "")).strip() or "live architecture graph drifted from Xi-6 freeze",
@@ -35214,7 +35214,7 @@ def _append_arch_graph_matches_repo_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/architecture/repository_structure_lock.json",
+                file_path="content/data/architecture/repository_structure_lock.json",
                 line_number=1,
                 snippet="build_arch_graph_matches_repo_violations",
                 message="failed to evaluate Xi-8 architecture/repository alignment: {}".format(type(exc).__name__),
@@ -35249,7 +35249,7 @@ def _append_module_boundaries_respected_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/architecture/module_boundary_rules.v1.json",
+                file_path="content/data/architecture/module_boundary_rules.v1.json",
                 line_number=1,
                 snippet="build_boundary_findings",
                 message="failed to evaluate Xi-6 module boundaries: {}".format(type(exc).__name__),
@@ -35290,7 +35290,7 @@ def _append_single_canonical_engines_findings(
         findings.append(
             _finding(
                 severity=severity,
-                file_path="data/architecture/single_engine_registry.json",
+                file_path="contracts/registry/architecture/single_engine_registry.json",
                 line_number=1,
                 snippet="build_single_engine_findings",
                 message="failed to evaluate Xi-6 single-engine registry: {}".format(type(exc).__name__),

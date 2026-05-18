@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `near`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/control/negotiation/__init__.py`
+- Canonical Candidate: `src/tools/governance/negotiation/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/control/negotiation/__init__.py`
-- `src/control/negotiation/negotiation_kernel.py`
+- `src/tools/governance/negotiation/__init__.py`
+- `src/tools/governance/negotiation/negotiation_kernel.py`
 
 ## Scorecard
 
-- `src/control/negotiation/__init__.py` disposition=`canonical` rank=`1` total_score=`63.15` risk=`HIGH`
-- `src/control/negotiation/negotiation_kernel.py` disposition=`quarantine` rank=`2` total_score=`54.76` risk=`HIGH`
+- `src/tools/governance/negotiation/__init__.py` disposition=`canonical` rank=`1` total_score=`63.15` risk=`HIGH`
+- `src/tools/governance/negotiation/negotiation_kernel.py` disposition=`quarantine` rank=`2` total_score=`54.76` risk=`HIGH`
 
 ## Usage Sites
 

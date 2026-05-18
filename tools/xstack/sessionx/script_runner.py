@@ -9,8 +9,8 @@ from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.compatx.validator import validate_instance
 from tools.xstack.registry_compile.constants import DEFAULT_BUNDLE_ID
 from tools.xstack.registry_compile.lockfile import validate_lockfile_payload
-from compat.data_format_loader import stamp_artifact_metadata
-from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
 from engine.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
 from game.domains.universe import enforce_session_contract_bundle
 

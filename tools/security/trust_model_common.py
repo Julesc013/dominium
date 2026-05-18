@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping, Sequence
 
-from security.trust import (
+from tools.validators.security.trust import (
     ARTIFACT_KIND_PACK,
     ARTIFACT_KIND_RELEASE_INDEX,
     ARTIFACT_KIND_RELEASE_MANIFEST,
@@ -243,24 +243,24 @@ def build_trust_model_report(repo_root: str) -> dict:
 
     if _token(cases["hash_missing"].get("refusal_code")) != REFUSAL_TRUST_HASH_MISSING:
         violations.append(
-            _violation(RULE_HASHES, "hash_missing_not_refused", "artifacts must never be accepted without a canonical content hash", file_path="security/trust/trust_verifier.py")
+            _violation(RULE_HASHES, "hash_missing_not_refused", "artifacts must never be accepted without a canonical content hash", file_path="tools/validators/security/trust/trust_verifier.py")
         )
     if _token(cases["strict_unsigned"].get("refusal_code")) != REFUSAL_TRUST_SIGNATURE_MISSING:
         violations.append(
-            _violation(RULE_STRICT, "strict_unsigned_not_refused", "strict trust policy must refuse unsigned governed artifacts", file_path="security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "strict_unsigned_not_refused", "strict trust policy must refuse unsigned governed artifacts", file_path="tools/validators/security/trust/trust_verifier.py")
         )
     default_warnings = { _token(_as_map(row).get("code")) for row in _as_list(cases["default_unsigned"].get("warnings")) }
     if _token(cases["default_unsigned"].get("result")) not in {"complete", "warn"} or "warn.trust.signature_missing" not in default_warnings:
         violations.append(
-            _violation(RULE_POLICY, "default_unsigned_not_warning", "default mock trust policy must warn but not refuse unsigned artifacts", file_path="security/trust/trust_verifier.py")
+            _violation(RULE_POLICY, "default_unsigned_not_warning", "default mock trust policy must warn but not refuse unsigned artifacts", file_path="tools/validators/security/trust/trust_verifier.py")
         )
     if _token(cases["invalid_signature"].get("refusal_code")) != REFUSAL_TRUST_SIGNATURE_INVALID:
         violations.append(
-            _violation(RULE_STRICT, "invalid_signature_not_refused", "invalid signatures must be refused deterministically", file_path="security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "invalid_signature_not_refused", "invalid signatures must be refused deterministically", file_path="tools/validators/security/trust/trust_verifier.py")
         )
     if _token(cases["strict_signed"].get("result")) != "complete":
         violations.append(
-            _violation(RULE_STRICT, "strict_signed_not_accepted", "strict trust policy must accept valid signatures from trusted roots", file_path="security/trust/trust_verifier.py")
+            _violation(RULE_STRICT, "strict_signed_not_accepted", "strict trust policy must accept valid signatures from trusted roots", file_path="tools/validators/security/trust/trust_verifier.py")
         )
 
     server_rows = list(_as_map(server_registry.get("record")).get("server_configs") or [])
@@ -330,10 +330,10 @@ def render_trust_model_baseline(report: Mapping[str, object]) -> str:
         "",
         "## Integration Points",
         "",
-        "- `setup verify` and pack verification route through `security/trust/trust_verifier.py`.",
+        "- `setup verify` and pack verification route through `tools/validators/security/trust/trust_verifier.py`.",
         "- `setup update` passes the resolved trust policy into `release/update_resolver.py`.",
         "- `tool_verify_release_manifest` and DIST-2 verification use trust-aware manifest verification.",
-        "- Server policy binding is declared in `data/registries/server_config_registry.json`.",
+        "- Server policy binding is declared in `contracts/registry/server_config_registry.json`.",
         "",
         "## Canonical Verification Cases",
         "",

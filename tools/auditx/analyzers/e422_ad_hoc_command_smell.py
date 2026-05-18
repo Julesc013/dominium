@@ -15,7 +15,7 @@ REQUIRED_TOKENS = {
         "packs verify",
         "profiles show",
     ),
-    "data/registries/command_registry.json": (
+    "contracts/registry/command_registry.json": (
         '"command_path": "help"',
         '"command_path": "compat-status"',
         '"command_path": "packs verify"',

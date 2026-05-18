@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
     allowed_files = {
         runtime_rel,
         "game/domains/electricity/protection/protection_engine.py",
-        "safety/safety_engine.py",
+        "tools/validators/safety/safety_engine.py",
     }
     for root in scan_roots:
         if not os.path.isdir(root):

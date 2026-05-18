@@ -12,19 +12,19 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/lib/install/__init__.py`
+- Canonical Candidate: `src/tools/libraries/install/__init__.py`
 - Quarantine Reasons: `planned_quarantine`
 - Planned Action Kinds: `quarantine`
 
 ## Competing Files
 
-- `src/lib/install/__init__.py`
-- `src/lib/install/install_discovery_engine.py`
+- `src/tools/libraries/install/__init__.py`
+- `src/engine/install/install_discovery_engine.py`
 
 ## Scorecard
 
-- `src/lib/install/__init__.py` disposition=`canonical` rank=`1` total_score=`66.55` risk=`HIGH`
-- `src/lib/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`61.19` risk=`HIGH`
+- `src/tools/libraries/install/__init__.py` disposition=`canonical` rank=`1` total_score=`66.55` risk=`HIGH`
+- `src/engine/install/install_discovery_engine.py` disposition=`quarantine` rank=`2` total_score=`61.19` risk=`HIGH`
 
 ## Usage Sites
 

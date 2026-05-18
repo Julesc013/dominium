@@ -14,28 +14,28 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
   Expected outputs: convergence report under `docs/audit/convergence_steps/`
   Pass criteria: result `complete`
 - [ ] Run `python tools/audit/tool_run_arch_audit.py --repo-root .`
-  Expected outputs: `docs/audit/ARCH_AUDIT_REPORT.md`, `data/audit/arch_audit_report.json`
+  Expected outputs: `docs/audit/ARCH_AUDIT_REPORT.md`, `content/data/audit/arch_audit_report.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/worldgen/tool_verify_worldgen_lock.py --repo-root .`
-  Expected outputs: `docs/audit/WORLDGEN_LOCK_VERIFY.md`, `data/audit/worldgen_lock_verify.json`
+  Expected outputs: `docs/audit/WORLDGEN_LOCK_VERIFY.md`, `content/data/audit/worldgen_lock_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/mvp/tool_verify_baseline_universe.py --repo-root .`
-  Expected outputs: `docs/audit/BASELINE_UNIVERSE_VERIFY.md`, `data/audit/baseline_universe_verify.json`
+  Expected outputs: `docs/audit/BASELINE_UNIVERSE_VERIFY.md`, `tests/fixtures/audit/baseline_universe_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/mvp/tool_verify_gameplay_loop.py --repo-root .`
-  Expected outputs: `docs/audit/MVP_GAMEPLAY_VERIFY.md`, `data/audit/gameplay_verify.json`
+  Expected outputs: `docs/audit/MVP_GAMEPLAY_VERIFY.md`, `content/data/audit/gameplay_verify.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/mvp/tool_run_disaster_suite.py --repo-root .`
-  Expected outputs: `docs/audit/DISASTER_SUITE_RUN.md`, `data/audit/disaster_suite_run.json`
+  Expected outputs: `docs/audit/DISASTER_SUITE_RUN.md`, `content/data/audit/disaster_suite_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/mvp/tool_verify_ecosystem.py --repo-root .`
-  Expected outputs: `docs/audit/ECOSYSTEM_VERIFY_RUN.md`, `data/audit/ecosystem_verify_run.json`
+  Expected outputs: `docs/audit/ECOSYSTEM_VERIFY_RUN.md`, `content/data/audit/ecosystem_verify_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/mvp/tool_run_update_sim.py --repo-root .`
-  Expected outputs: `docs/audit/UPDATE_SIM_RUN.md`, `data/audit/update_sim_run.json`
+  Expected outputs: `docs/audit/UPDATE_SIM_RUN.md`, `content/data/audit/update_sim_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/security/tool_run_trust_strict_suite.py --repo-root .`
-  Expected outputs: `docs/audit/TRUST_STRICT_SUITE_RUN.md`, `data/audit/trust_strict_run.json`
+  Expected outputs: `docs/audit/TRUST_STRICT_SUITE_RUN.md`, `content/data/audit/trust_strict_run.json`
   Pass criteria: result `complete`
 - [ ] Run `python tools/perf/tool_run_performance_envelope.py --repo-root . --platform-tag win64`
   Expected outputs: `docs/audit/PERFORMANCE_ENVELOPE_BASELINE.md`
@@ -68,7 +68,7 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
   Expected outputs: offline verification result on stdout or bundle-local logs
   Pass criteria: no refusal, no contract drift
 - [ ] Run clean-room verification with `python tools/dist/tool_run_clean_room.py --repo-root . --dist-root dist --platform-tag win64 --mode-policy cli`
-  Expected outputs: `data/audit/clean_room_win64.json`, `docs/audit/CLEAN_ROOM_TEST_FINAL.md`
+  Expected outputs: `content/data/audit/clean_room_win64.json`, `docs/audit/CLEAN_ROOM_TEST_FINAL.md`
   Pass criteria: result `complete`
 - [ ] Run the platform matrix with `python tools/dist/tool_run_platform_matrix.py --repo-root . --dist-spec win64=dist/v0.0.0-mock/win64/dominium --channel mock`
   Expected outputs: `docs/audit/DIST_PLATFORM_MATRIX_REPORT.md`, `docs/audit/DIST4_FINAL.md`
@@ -86,7 +86,7 @@ Replacement Target: Ω-11 execution ledger and final mock signoff
   Expected outputs: `build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
   Pass criteria: bundle written and hash recorded
 - [ ] Verify the offline reconstruction archive with `python tools/release/tool_verify_offline_archive.py --repo-root . --archive-path build/offline_archive/dominium-archive-v0.0.0-mock.tar.gz`
-  Expected outputs: `docs/audit/OFFLINE_ARCHIVE_VERIFY.md`, `data/audit/offline_archive_verify.json`
+  Expected outputs: `docs/audit/OFFLINE_ARCHIVE_VERIFY.md`, `content/data/audit/offline_archive_verify.json`
   Pass criteria: result `complete`
 
 ## Signoff

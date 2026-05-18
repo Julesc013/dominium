@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # PROC-1 Retro-Consistency Audit
 
-Date: 2026-03-06  
+Date: 2026-03-06
 Scope: ProcessDefinition schemas and deterministic step-graph execution baseline.
 
 ## Inputs Audited

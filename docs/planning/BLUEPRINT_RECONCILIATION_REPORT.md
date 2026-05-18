@@ -4,7 +4,7 @@ Supersedes: none
 Superseded By: none
 Stability: provisional
 Future Series: Ρ, Λ, Σ, Φ, Υ, Ζ
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `data/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `data/planning/reality/module_map.json`, `data/planning/reality/product_entrypoints.json`, `data/planning/reality/runtime_surfaces.json`, `data/planning/reality/control_plane_surfaces.json`, `data/planning/reality/content_domain_surfaces.json`, `data/planning/reality/toolchain_and_preset_map.json`, `data/planning/reality/agent_instruction_surfaces.json`, `data/planning/reality/schema_registry_inventory.json`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/SNAPSHOT_INTAKE_PROTOCOL.md`, `docs/planning/AUTHORITY_ORDER.md`, `contracts/planning/snapshot_intake_policy.json`, `docs/planning/REALITY_EXTRACTION_REPORT.md`, `content/data/planning/reality/module_map.json`, `content/data/planning/reality/product_entrypoints.json`, `content/data/planning/reality/runtime_surfaces.json`, `content/data/planning/reality/control_plane_surfaces.json`, `content/data/planning/reality/content_domain_surfaces.json`, `content/data/planning/reality/toolchain_and_preset_map.json`, `content/data/planning/reality/agent_instruction_surfaces.json`, `contracts/schema/planning/reality/schema_registry_inventory.json`
 
 # Blueprint Reconciliation Report
 
@@ -182,7 +182,7 @@ Keep:
 - `schema`
 - `data/architecture`
 - `data/registries`
-- `repo/release_policy.toml`
+- `contracts/repo/release_policy.toml`
 - `packs`
 
 These surfaces already look like the strongest machine-readable law, registry, and compatibility backbone in the current repo.
@@ -306,7 +306,7 @@ The strongest invalidations are:
 - schema and pack ownership are not single-root and unambiguous
 - duplicate-shadow risk is not confined to explicit legacy roots
 
-See `data/planning/reconciliation/assumption_invalidations.json` for the operational registry.
+See `content/data/planning/reconciliation/assumption_invalidations.json` for the operational registry.
 
 ## 7. What Later Prompts Must Not Overwrite
 

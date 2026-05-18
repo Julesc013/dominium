@@ -32,33 +32,33 @@ def run(repo_root: str):
     from game.domains.logic import validate_logic_element_definitions
 
     logic_element_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_element_registry.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_element_registry.json"),
         "logic_elements",
     )
     logic_behavior_model_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_behavior_model_registry.json"),
         "logic_behavior_models",
     )
     state_machine_definition_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_machine_registry.json"),
         "state_machine_definitions",
     )
     assembly_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_assemblies.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_assemblies.json"),
         "assemblies",
     )
     interface_signature_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_interface_signatures.json"),
         "logic_interface_signatures",
     )
     state_vector_definition_rows = _record_rows(
-        _load_json(repo_root, "packs/core/pack.core.logic_base/data/logic_state_vectors.json"),
+        _load_json(repo_root, "content/packs/core/pack.core.logic_base/data/logic_state_vectors.json"),
         "state_vector_definitions",
     )
-    quantity_bundle_registry_payload = _load_json(repo_root, "data/registries/quantity_bundle_registry.json")
-    spec_type_registry_payload = _load_json(repo_root, "data/registries/spec_type_registry.json")
-    signal_channel_type_registry_payload = _load_json(repo_root, "data/registries/signal_channel_type_registry.json")
-    port_type_registry_payload = _load_json(repo_root, "data/registries/port_type_registry.json")
+    quantity_bundle_registry_payload = _load_json(repo_root, "contracts/registry/quantity_bundle_registry.json")
+    spec_type_registry_payload = _load_json(repo_root, "contracts/registry/spec_type_registry.json")
+    signal_channel_type_registry_payload = _load_json(repo_root, "contracts/registry/signal_channel_type_registry.json")
+    port_type_registry_payload = _load_json(repo_root, "contracts/registry/port_type_registry.json")
 
     baseline = validate_logic_element_definitions(
         logic_element_rows=logic_element_rows,

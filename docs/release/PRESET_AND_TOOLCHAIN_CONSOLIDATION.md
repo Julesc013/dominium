@@ -5,7 +5,7 @@ Superseded By: none
 Stability: provisional
 Future Series: Υ-2, Υ-3, Υ-4, Υ-5, Υ-6, Υ-7, Υ-8, later checkpoints
 Replacement Target: later versioning, release-contract, naming, release-index, archive, and operator-transaction doctrine may refine the consolidated matrix without replacing the underlying preset/toolchain classifications
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB1.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/BUILD_GRAPH_LOCK.md`, `CMakePresets.json`, `CMakeLists.txt`, `cmake/toolchains/`, `cmake/ide/`, `cmake/toolchain_descriptor.json.in`, `.vscode/tasks.json`, `scripts/ci/check_repox_rules.py`, `scripts/verify_projection_regen_clean.py`, `scripts/repox/repox_release.py`, `tools/xstack/ci/`, `data/planning/reality/toolchain_and_preset_map.json`, `data/registries/target_matrix_registry.json`, `data/registries/toolchain_matrix_registry.json`, `data/registries/install_profile_registry.json`, `repo/release_policy.toml`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md`, `docs/planning/CHECKPOINT_C_PHIB1_Y0_REVIEW.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_PHIB1.md`, `docs/runtime/RUNTIME_KERNEL_MODEL.md`, `docs/runtime/COMPONENT_MODEL.md`, `docs/runtime/RUNTIME_SERVICES.md`, `docs/runtime/DOMAIN_SERVICE_BINDING_MODEL.md`, `docs/runtime/STATE_EXTERNALIZATION.md`, `docs/runtime/LIFECYCLE_MANAGER.md`, `docs/runtime/EVENT_LOG_AND_REPLAY_DOCTRINE.md`, `docs/runtime/SNAPSHOT_SERVICE_DOCTRINE.md`, `docs/runtime/SANDBOXING_AND_ISOLATION_MODEL.md`, `docs/release/BUILD_GRAPH_LOCK.md`, `CMakePresets.json`, `CMakeLists.txt`, `cmake/toolchains/`, `cmake/ide/`, `cmake/toolchain_descriptor.json.in`, `.vscode/tasks.json`, `scripts/ci/check_repox_rules.py`, `scripts/verify_projection_regen_clean.py`, `scripts/repox/repox_release.py`, `tools/xstack/ci/`, `content/data/planning/reality/toolchain_and_preset_map.json`, `contracts/registry/target_matrix_registry.json`, `contracts/registry/toolchain_matrix_registry.json`, `contracts/registry/install_profile_registry.json`, `contracts/repo/release_policy.toml`
 
 # Preset And Toolchain Consolidation
 
@@ -311,8 +311,8 @@ Current repo evidence already supports this through authored checks and consumer
 - `scripts/verify_projection_regen_clean.py`
 - `scripts/repox/repox_release.py`
 - `tools/xstack/ci/profiles/*.json`
-- `data/planning/reality/toolchain_and_preset_map.json`
-- `data/registries/toolchain_matrix_registry.json`
+- `content/data/planning/reality/toolchain_and_preset_map.json`
+- `contracts/registry/toolchain_matrix_registry.json`
 
 ## L. Ownership And Anti-Reinvention Cautions
 

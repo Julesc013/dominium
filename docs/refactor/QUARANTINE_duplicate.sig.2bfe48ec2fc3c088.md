@@ -12,7 +12,7 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `HIGH`
-- Canonical Candidate: `src/core/graph/network_graph_engine.py`
+- Canonical Candidate: `src/tools/core/graph/network_graph_engine.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_single_action_full_gate`
 - Planned Action Kinds: `rewire, deprecate, quarantine`
 
@@ -20,21 +20,21 @@ Replacement Target: XI-4b manual review resolution
 
 - `src/astro/ephemeris/kepler_proxy_engine.py`
 - `src/astro/illumination/illumination_geometry_engine.py`
-- `src/core/flow/flow_engine.py`
-- `src/core/graph/network_graph_engine.py`
-- `src/core/spatial/spatial_engine.py`
+- `src/tools/core/flow/flow_engine.py`
+- `src/tools/core/graph/network_graph_engine.py`
+- `src/tools/core/spatial/spatial_engine.py`
 - `src/geo/frame/frame_engine.py`
 - `src/materials/composition_engine.py`
 - `src/materials/dimension_engine.py`
 
 ## Scorecard
 
-- `src/core/graph/network_graph_engine.py` disposition=`canonical` rank=`1` total_score=`59.41` risk=`HIGH`
+- `src/tools/core/graph/network_graph_engine.py` disposition=`canonical` rank=`1` total_score=`59.41` risk=`HIGH`
 - `src/materials/dimension_engine.py` disposition=`quarantine` rank=`2` total_score=`59.41` risk=`HIGH`
-- `src/core/spatial/spatial_engine.py` disposition=`quarantine` rank=`3` total_score=`56.19` risk=`HIGH`
+- `src/tools/core/spatial/spatial_engine.py` disposition=`quarantine` rank=`3` total_score=`56.19` risk=`HIGH`
 - `src/materials/composition_engine.py` disposition=`quarantine` rank=`4` total_score=`55.71` risk=`HIGH`
 - `src/geo/frame/frame_engine.py` disposition=`quarantine` rank=`5` total_score=`55.36` risk=`HIGH`
-- `src/core/flow/flow_engine.py` disposition=`quarantine` rank=`6` total_score=`53.33` risk=`HIGH`
+- `src/tools/core/flow/flow_engine.py` disposition=`quarantine` rank=`6` total_score=`53.33` risk=`HIGH`
 - `src/astro/illumination/illumination_geometry_engine.py` disposition=`quarantine` rank=`7` total_score=`51.19` risk=`HIGH`
 - `src/astro/ephemeris/kepler_proxy_engine.py` disposition=`drop` rank=`8` total_score=`48.87` risk=`HIGH`
 

@@ -91,11 +91,11 @@ def policy_context(*, repo_root: str) -> dict:
     return {
         "reliability_profile_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/reliability_profile_registry.json",
+            rel_path="contracts/registry/reliability_profile_registry.json",
         ),
         "explain_contract_registry": _read_registry_payload(
             repo_root=repo_root,
-            rel_path="data/registries/explain_contract_registry.json",
+            rel_path="contracts/registry/explain_contract_registry.json",
         ),
         "system_health_max_updates_per_tick": 128,
         "system_health_low_priority_update_stride": 1,

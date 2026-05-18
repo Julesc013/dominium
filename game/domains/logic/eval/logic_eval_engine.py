@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from meta.explain import build_explain_artifact
+from tools.repo.meta.explain import build_explain_artifact
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from game.domains.logic.protocol import arbitrate_logic_protocol_frames, transport_logic_sig_receipts
 

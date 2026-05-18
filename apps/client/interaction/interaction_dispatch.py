@@ -6,16 +6,16 @@ import json
 import os
 from typing import Dict, List
 
-from net.anti_cheat.anti_cheat_engine import (
+from tools.network.anti_cheat.anti_cheat_engine import (
     check_authority_integrity,
     check_input_integrity,
 )
-from net.policies.policy_lockstep import POLICY_ID_LOCKSTEP
-from net.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
-from net.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
+from tools.network.policies.policy_lockstep import POLICY_ID_LOCKSTEP
+from tools.network.policies.policy_server_authoritative import POLICY_ID_SERVER_AUTHORITATIVE
+from tools.network.policies.policy_srz_hybrid import POLICY_ID_SRZ_HYBRID
 from tools.xstack.compatx.canonical_json import canonical_sha256
 from tools.xstack.sessionx.boundary_debug import debug_assert_after_execute
-from control import build_control_intent, build_control_resolution
+from runtime.control import build_control_intent, build_control_resolution
 from game.domains.interaction.task import resolve_task_type_for_completion_process
 
 from .affordance_generator import build_affordance_list
@@ -711,13 +711,13 @@ def execute_affordance(
         policy_context=policy_context,
         key="effect_type_registry",
         repo_root=repo_root,
-        registry_rel_path="data/registries/effect_type_registry.json",
+        registry_rel_path="contracts/registry/effect_type_registry.json",
     )
     control_policy_context["stacking_policy_registry"] = _registry_payload_with_fallback(
         policy_context=policy_context,
         key="stacking_policy_registry",
         repo_root=repo_root,
-        registry_rel_path="data/registries/stacking_policy_registry.json",
+        registry_rel_path="contracts/registry/stacking_policy_registry.json",
     )
     control_resolution = build_control_resolution(
         control_intent=dict(control_intent),

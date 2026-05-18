@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # CONTROL_NEGOTIATION_BASELINE
 
-Status: BASELINE  
-Last Updated: 2026-03-01  
+Status: BASELINE
+Last Updated: 2026-03-01
 Scope: CTRL-3 Negotiation Kernel + Decision Log formalization
 
 ## 1) Negotiation Axis Definitions

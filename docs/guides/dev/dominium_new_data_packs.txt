@@ -39,7 +39,7 @@ Canonical structure:
    └─ fonts/
 Pack root names (base_gfx, base_audio, minimal_vector) are examples; you’ll pick your own.
 
-1. /data/packs/README.md
+1. /data/content/packs/README.md
 Human-facing explanation:
 • What a “pack” is.
 • Difference between data packs (/data/base, /data/dlc) and asset packs (/data/packs).

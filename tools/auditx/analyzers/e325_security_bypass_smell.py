@@ -13,7 +13,7 @@ WATCH_PREFIXES = (
     "tools/auditx/analyzers/__init__.py",
     "docs/logic/FAULT_NOISE_SECURITY_MODEL.md",
     "contracts/schemas/logic/security_policy.schema",
-    "data/registries/logic_security_policy_registry.json",
+    "contracts/registry/logic_security_policy_registry.json",
     "game/domains/logic/eval/sense_engine.py",
     "tools/logic/tool_replay_fault_window.py",
 )
@@ -82,7 +82,7 @@ def run(graph, repo_root, changed_files=None):
             )
         )
 
-    registry_rel = "data/registries/logic_security_policy_registry.json"
+    registry_rel = "contracts/registry/logic_security_policy_registry.json"
     registry_text = _read_text(repo_root, registry_rel)
     for token in ("sec.none", "sec.auth_required_stub", "sec.encrypted_required_stub", "requires_auth", "requires_encryption"):
         if token in registry_text:

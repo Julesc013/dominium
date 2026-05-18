@@ -30,7 +30,7 @@ All extensions must preserve:
 
 Every new vehicle class must:
 
-- register a unique `vehicle_class_id` in `data/registries/vehicle_class_registry.json`
+- register a unique `vehicle_class_id` in `contracts/registry/vehicle_class_registry.json`
 - declare `supported_motion_modes` only via registry/spec data
 - define required interfaces through `spec_ids`/required specs
 - map control authority through `PoseSlots` + `ControlBinding`

@@ -12,7 +12,7 @@ if REPO_ROOT_HINT not in os.sys.path:
 
 
 from analyzers.base import make_finding
-from validation import validation_surface_findings
+from tools.validators.validation import validation_surface_findings
 
 
 ANALYZER_ID = "E473_DUPLICATE_VALIDATION_SURFACE_SMELL"
@@ -40,7 +40,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="REWRITE",
                 related_invariants=[RULE_ID],
-                related_paths=[rel_path or "data/registries/validation_suite_registry.json"],
+                related_paths=[rel_path or "contracts/registry/validation_suite_registry.json"],
             )
         )
     return findings

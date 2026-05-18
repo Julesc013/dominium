@@ -5,10 +5,10 @@
   "stability": "provisional",
   "last_reviewed": "2026-04-06",
   "binding_sources": [
-    "specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
-    "specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
-    "specs/reality/SPEC_CAPABILITY_SURFACES.md",
-    "specs/reality/SPEC_FORMALIZATION_CHAIN.md",
+    "docs/specs/reality/SPEC_CROSS_DOMAIN_BRIDGES.md",
+    "docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md",
+    "contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md",
+    "docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md",
     "docs/planning/SEMANTIC_OWNERSHIP_REVIEW.md",
     "docs/planning/UNIVERSAL_DOMAIN_CONSTITUTION_TEMPLATE.md"
   ],

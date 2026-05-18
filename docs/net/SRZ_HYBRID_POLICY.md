@@ -92,6 +92,6 @@ Policy uses `resync.hybrid.shard_snapshot`.
 
 - `docs/net/REPLICATION_POLICIES.md`
 - `schemas/shard_map.schema.json`
-- `data/registries/shard_map_registry.json`
-- `data/registries/perception_interest_policy_registry.json`
+- `contracts/registry/shard_map_registry.json`
+- `contracts/registry/perception_interest_policy_registry.json`
 - `docs/contracts/refusal_contract.md`

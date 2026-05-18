@@ -16,7 +16,7 @@ if REPO_ROOT_HINT not in sys.path:
 
 
 from runtime.appshell.ui_mode_selector import policy_row_for_product
-from compat.capability_negotiation import fallback_map_rows_by_capability_id
+from tools.validators.compatibility.capability_negotiation import fallback_map_rows_by_capability_id
 from engine.platform.platform_probe import (
     MODE_TO_CAPABILITY_ID,
     canonical_platform_id,
@@ -30,7 +30,7 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 
 DIST_PLATFORM_MATRIX_REPORT_ID = "dist.platform_matrix.v1"
 DIST_PLATFORM_MATRIX_REPORT_PATH = "docs/audit/DIST_PLATFORM_MATRIX_REPORT.md"
-DIST_PLATFORM_MATRIX_JSON_PATH = "data/audit/dist_platform_matrix.json"
+DIST_PLATFORM_MATRIX_JSON_PATH = "contracts/audit/dist_platform_matrix.json"
 SUPPORTED_PLATFORMS_DOC_PATH = "docs/release/SUPPORTED_PLATFORMS_v0_0_0_mock.md"
 DIST4_FINAL_PATH = "docs/audit/DIST4_FINAL.md"
 DEFAULT_PLATFORM_TAGS = ("win64",)

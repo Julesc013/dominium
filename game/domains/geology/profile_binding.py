@@ -6,7 +6,7 @@ from typing import Mapping
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
-from meta.profile import build_profile_exception_event_row, resolve_effective_profile_snapshot
+from tools.repo.meta.profile import build_profile_exception_event_row, resolve_effective_profile_snapshot
 
 from .kernel.geo_kernel import (
     _as_map,

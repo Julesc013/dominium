@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Dict, Iterable, List, Mapping, Sequence
 
 from tools.xstack.compatx.canonical_json import canonical_sha256
-from meta.compute import request_compute
+from tools.repo.meta.compute import request_compute
 from game.domains.systems.statevec import (
     build_state_vector_definition_row,
     deserialize_state,

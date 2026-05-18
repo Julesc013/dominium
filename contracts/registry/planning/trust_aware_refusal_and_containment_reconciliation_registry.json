@@ -34,12 +34,12 @@
       "docs/runtime/BOUNDED_RUNTIME_CUTOVER_PROOF_REHEARSAL.md"
     ],
     "evidence_surfaces": [
-      "data/registries/trust_policy_registry.json",
-      "data/registries/trust_root_registry.json",
-      "data/registries/provenance_classification_registry.json",
+      "contracts/registry/trust_policy_registry.json",
+      "contracts/registry/trust_root_registry.json",
+      "contracts/registry/provenance_classification_registry.json",
       "server/net/dom_server_protocol.h",
       "server/net/dom_server_runtime.h",
-      "security/trust/trust_verifier.py"
+      "tools/validators/security/trust/trust_verifier.py"
     ]
   },
   "core_posture_markers": {

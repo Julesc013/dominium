@@ -41,7 +41,7 @@ def _envelope(lock_payload: dict, law_profile_id: str) -> dict:
 
 
 def _run_once(repo_root: str):
-    from net.policies.policy_srz_hybrid import run_hybrid_simulation
+    from tools.network.policies.policy_srz_hybrid import run_hybrid_simulation
     from tools.xstack.testx.tests.net_hybrid_testlib import clone_runtime, prepare_hybrid_runtime_fixture
 
     fixture = prepare_hybrid_runtime_fixture(

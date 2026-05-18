@@ -101,13 +101,13 @@
     "release/update_resolver.py",
     "release/component_graph_resolver.py",
     "release/release_manifest_engine.py",
-    "security/trust/trust_verifier.py",
-    "repo/release_policy.toml",
-    "updates/README.md",
-    "data/registries/component_graph_registry.json",
-    "data/registries/release_channel_registry.json",
-    "data/registries/target_matrix_registry.json",
-    "data/registries/trust_root_registry.json"
+    "tools/validators/security/trust/trust_verifier.py",
+    "contracts/repo/release_policy.toml",
+    "docs/release/updates/README.md",
+    "contracts/registry/component_graph_registry.json",
+    "contracts/registry/release_channel_registry.json",
+    "contracts/registry/target_matrix_registry.json",
+    "contracts/registry/trust_root_registry.json"
   ],
   "coexistence_subject_classes": [
     {

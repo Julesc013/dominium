@@ -64,7 +64,7 @@ def _envelope_defaults(budget_envelope_id: str) -> dict:
 
 
 def _reaction_rows_by_id(repo_root: str) -> Dict[str, dict]:
-    rel = "data/registries/reaction_profile_registry.json"
+    rel = "contracts/registry/reaction_profile_registry.json"
     abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
     payload = _read_json(abs_path)
     rows = list((dict(payload.get("record") or {})).get("reaction_profiles") or [])

@@ -9,7 +9,7 @@ from analyzers.base import make_finding
 
 ANALYZER_ID = "E413_MISSING_INTEROP_TEST_SMELL"
 REQUIRED_TOKENS = {
-    "data/regression/cap_neg_full_baseline.json": (
+    "tests/fixtures/regression/cap_neg_full_baseline.json": (
         '"baseline_id": "cap.neg.full.baseline.v1"',
         '"required_commit_tag": "CAP-NEG-REGRESSION-UPDATE"',
         '"scenario_id": "interop.client_server.contract_mismatch_read_only"',

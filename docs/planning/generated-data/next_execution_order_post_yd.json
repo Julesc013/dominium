@@ -30,7 +30,7 @@
         "server/shard/dom_cross_shard_log.h",
         "server/net/dom_server_runtime.h",
         "server/net/dom_server_protocol.h",
-        "data/registries/net_replication_policy_registry.json"
+        "contracts/registry/net_replication_policy_registry.json"
       ],
       "human_review_requirements": [
         "distributed_authority_model_changes FULL review",

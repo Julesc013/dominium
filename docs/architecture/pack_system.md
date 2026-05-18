@@ -36,7 +36,7 @@ Define strict, deterministic pack composition contracts for data-only modular in
 - Dependency resolver computes canonical ordering regardless of bundle declaration order.
 - Commands:
   - `tools/xstack/bundle_list`
-  - `tools/xstack/bundle_validate bundles/bundle.base.lab/bundle.json`
+  - `tools/xstack/bundle_validate content/bundles/bundle.base.lab/bundle.json`
 
 ## Contract Boundaries (Non-Negotiable)
 - Packs are data-only.

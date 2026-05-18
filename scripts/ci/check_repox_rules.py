@@ -200,8 +200,8 @@ FORBIDDEN_LEGACY_GATING_TOKEN_RE = re.compile(
 )
 SOLVER_COST_CLASS_SET = ("low", "medium", "high", "critical")
 SOLVER_RESOLUTION_SET = ("macro", "micro", "hybrid")
-COMMAND_REGISTRY_REL = os.path.join("libs", "appcore", "command", "command_registry.c")
-UI_BIND_TABLE_REL = os.path.join("libs", "appcore", "ui_bind", "ui_command_binding_table.c")
+COMMAND_REGISTRY_REL = os.path.join("runtime", "shell", "appcore", "command", "command_registry.c")
+UI_BIND_TABLE_REL = os.path.join("runtime", "shell", "appcore", "ui_bind", "ui_command_binding_table.c")
 CAPABILITY_MATRIX_REL = os.path.join("tests", "testx", "CAPABILITY_MATRIX.yaml")
 CAPABILITY_FIXTURE_ROOT = os.path.join("tests", "fixtures", "worlds")
 CAPABILITY_TESTX_ROOT = os.path.join("tests", "testx", "capability_sets")
@@ -1432,9 +1432,9 @@ def _build_proof_manifest(repo_root, warnings, failures):
     for path in changed:
         parts = path.split("/")
         top = parts[1] if len(parts) > 1 and parts[0] == "apps" else (parts[0] if parts else path)
-        if top in ("engine", "game", "client", "server", "launcher", "setup", "tools", "schema", "data", "docs", "tests", "libs"):
+        if top in ("engine", "game", "client", "server", "launcher", "setup", "tools", "schema", "data", "docs", "tests", "runtime"):
             impacted_subsystems.add(top)
-        if path.startswith("apps/client/") or path.startswith("libs/appcore/command/") or path.startswith("libs/appcore/ui_bind/"):
+        if path.startswith("apps/client/") or path.startswith("runtime/shell/appcore/command/") or path.startswith("runtime/shell/appcore/ui_bind/"):
             required_tests.update({
                 "capability_runtime_enforcement",
                 "freecam_epistemics",
@@ -3876,7 +3876,7 @@ def check_survival_no_nondiegetic_lenses(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "data/registries/law_profiles.json"
+    rel = "contracts/registry/law_profiles.json"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]
@@ -3928,7 +3928,7 @@ def check_survival_diegetic_contract(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    law_rel = "data/registries/law_profiles.json"
+    law_rel = "contracts/registry/law_profiles.json"
     bridge_rel = "apps/client/core/client_command_bridge.c"
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
     bridge_path = os.path.join(repo_root, bridge_rel.replace("/", os.sep))
@@ -4037,7 +4037,7 @@ def check_session_spec_required_for_run(repo_root):
         return []
 
     schema_rel = "contracts/schemas/session/session_spec.schema"
-    registry_rel = "data/registries/session_defaults.json"
+    registry_rel = "contracts/registry/session_defaults.json"
     bridge_rel = "apps/client/core/client_command_bridge.c"
     commands_rel = "apps/client/core/client_commands_registry.c"
     violations = []
@@ -6713,7 +6713,7 @@ def check_artifacts_must_have_format_version(repo_root):
             "\"format_version\"",
             "\"engine_version_created\"",
         ),
-        "compat/data_format_loader.py": (
+        "tools/validators/compatibility/data_format_loader.py": (
             "CURRENT_ARTIFACT_FORMAT_VERSION",
             "stamp_artifact_metadata(",
             "load_versioned_artifact(",
@@ -6749,7 +6749,7 @@ def check_no_silent_format_interpretation(repo_root):
             "attempt deterministic migration path",
             "attempt read-only mode",
         ),
-        "compat/data_format_loader.py": (
+        "tools/validators/compatibility/data_format_loader.py": (
             "REFUSAL_FORMAT_FUTURE_VERSION",
             "REFUSAL_FORMAT_MIGRATION_MISSING",
             "REFUSAL_FORMAT_READ_ONLY_UNAVAILABLE",
@@ -6785,12 +6785,12 @@ def check_migrations_logged(repo_root):
         return []
 
     required_tokens = {
-        "data/registries/migration_registry.json": (
+        "contracts/registry/migration_registry.json": (
             "\"migration.save.v1_to_v2\"",
             "\"migration.blueprint.v1_to_v2\"",
             "\"migration.profile.v1_to_v2\"",
         ),
-        "compat/data_format_loader.py": (
+        "tools/validators/compatibility/data_format_loader.py": (
             "\"migration_events\"",
             "\"migration_id\"",
             "\"deterministic_transform_function_id\"",
@@ -11212,9 +11212,9 @@ def check_mode_as_profiles(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    law_rel = "data/registries/law_profiles.json"
-    exp_rel = "data/registries/experience_profiles.json"
-    param_rel = "data/registries/parameter_bundles.json"
+    law_rel = "contracts/registry/law_profiles.json"
+    exp_rel = "contracts/registry/experience_profiles.json"
+    param_rel = "contracts/registry/parameter_bundles.json"
     violations = []
 
     law_path = os.path.join(repo_root, law_rel.replace("/", os.sep))
@@ -11358,10 +11358,10 @@ def check_presentation_matrix_integrity(repo_root):
         violations.append("{}: missing registry {}".format(invariant_id, normalize_path(PRESENTATION_MATRIX_REGISTRY_REL)))
         return violations
     if not os.path.isfile(law_path):
-        violations.append("{}: missing data/registries/law_profiles.json".format(invariant_id))
+        violations.append("{}: missing contracts/registry/law_profiles.json".format(invariant_id))
         return violations
     if not os.path.isfile(lens_path):
-        violations.append("{}: missing data/registries/lenses.json".format(invariant_id))
+        violations.append("{}: missing contracts/registry/lenses.json".format(invariant_id))
         return violations
 
     payload = _load_json_file(registry_path)
@@ -11443,7 +11443,7 @@ def check_defaults_optional(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    rel = "data/registries/bundle_profiles.json"
+    rel = "contracts/registry/bundle_profiles.json"
     path = os.path.join(repo_root, rel.replace("/", os.sep))
     if not os.path.isfile(path):
         return ["{}: missing {}".format(invariant_id, rel)]

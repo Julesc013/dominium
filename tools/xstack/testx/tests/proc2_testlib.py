@@ -77,13 +77,13 @@ def run_proc2_quality_case(
 
     from game.domains.processes.process_run_engine import process_run_end, process_run_start, process_run_tick
 
-    action_registry = _load_json(repo_root, "data/registries/action_template_registry.json")
-    temporal_registry = _load_json(repo_root, "data/registries/temporal_domain_registry.json")
-    yield_registry = _load_json(repo_root, "data/registries/yield_model_registry.json")
-    defect_registry = _load_json(repo_root, "data/registries/defect_model_registry.json")
-    model_registry = _load_json(repo_root, "data/registries/constitutive_model_registry.json")
-    model_type_registry = _load_json(repo_root, "data/registries/model_type_registry.json")
-    cache_policy_registry = _load_json(repo_root, "data/registries/model_cache_policy_registry.json")
+    action_registry = _load_json(repo_root, "contracts/registry/action_template_registry.json")
+    temporal_registry = _load_json(repo_root, "contracts/registry/temporal_domain_registry.json")
+    yield_registry = _load_json(repo_root, "contracts/registry/yield_model_registry.json")
+    defect_registry = _load_json(repo_root, "contracts/registry/defect_model_registry.json")
+    model_registry = _load_json(repo_root, "contracts/registry/constitutive_model_registry.json")
+    model_type_registry = _load_json(repo_root, "contracts/registry/model_type_registry.json")
+    cache_policy_registry = _load_json(repo_root, "contracts/registry/model_cache_policy_registry.json")
 
     process_definition = _process_definition(yield_model_id=str(yield_model_id), defect_model_id=str(defect_model_id))
     started = process_run_start(

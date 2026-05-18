@@ -39,10 +39,10 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="REGENERATE_AND_FIX_IPC_UNIFY",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-IPC-REQUIRES-NEGOTIATION"],
                 related_paths=[
-                    rel_path or "data/audit/ipc_unify_report.json",
+                    rel_path or "content/data/audit/ipc_unify_report.json",
                     "tools/appshell/tool_run_ipc_unify.py",
                     "runtime/appshell/ipc/ipc_transport.py",
-                    "compat/handshake/handshake_engine.py",
+                    "tools/validators/compatibility/handshake/handshake_engine.py",
                 ],
             )
         )

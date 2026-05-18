@@ -185,7 +185,7 @@ def _step_bundle(context: RunContext) -> Dict[str, object]:
                     "severity": "refusal",
                     "code": str(row.get("code", "refuse.bundle_profile.invalid")),
                     "message": str(row.get("message", "")),
-                    "file_path": "bundles/bundle.base.lab/bundle.json",
+                    "file_path": "content/bundles/bundle.base.lab/bundle.json",
                 }
             )
         return {
@@ -194,7 +194,7 @@ def _step_bundle(context: RunContext) -> Dict[str, object]:
             "findings": findings,
         }
 
-    artifact_path = "bundles/bundle.base.lab/bundle.json"
+    artifact_path = "content/bundles/bundle.base.lab/bundle.json"
     return {
         "status": "pass",
         "message": "bundle validation passed (bundles={})".format(int(listing.get("bundle_count", 0))),

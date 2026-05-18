@@ -8,7 +8,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "E88_ROUTING_DUPLICATION_SMELL"
-CORE_ROUTING_PATH = "core/graph/routing_engine.py"
+CORE_ROUTING_PATH = "tools/core/graph/routing_engine.py"
 
 
 def _norm(path: str) -> str:

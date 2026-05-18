@@ -16323,7 +16323,7 @@ Pack root names (base_gfx, base_audio, minimal_vector) are examples; you’ll pi
 
 
 
-1. /data/packs/README.md
+1. /data/content/packs/README.md
 
 Human-facing explanation:
 

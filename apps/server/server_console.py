@@ -5,9 +5,9 @@ from __future__ import annotations
 import os
 from typing import Mapping
 
-from compat import build_compat_status_payload
-from compat.data_format_loader import stamp_artifact_metadata
-from compat import emit_product_descriptor
+from tools.validators.compatibility import build_compat_status_payload
+from tools.validators.compatibility.data_format_loader import stamp_artifact_metadata
+from tools.validators.compatibility import emit_product_descriptor
 from runtime.diagnostics import write_repro_bundle
 from engine.time import ANCHOR_REASON_SAVE, emit_epoch_anchor
 from runtime.appshell.logging import get_current_log_engine

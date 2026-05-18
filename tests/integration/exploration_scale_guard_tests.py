@@ -126,7 +126,7 @@ def main():
     shell_path = os.path.join(repo_root, "apps", "client", "shell", "client_shell.c")
     ui_path = os.path.join(repo_root, "apps", "client", "app", "main_client.c")
     template_path = os.path.join(
-        repo_root, "data", "world", "templates", "exploration_baseline.worlddef.json"
+        repo_root, "tests", "fixtures", "world", "templates", "exploration_baseline.worlddef.json"
     )
 
     ok = True

@@ -6,7 +6,7 @@ import json
 import os
 from typing import Dict, List, Mapping, Tuple
 
-from lib.provides import (
+from tools.libraries.provides import (
     normalize_provides_declarations,
     validate_provides_declaration,
 )

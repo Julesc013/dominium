@@ -16,16 +16,16 @@ if REPO_ROOT_HINT not in sys.path:
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256
 from tools.xstack.registry_compile.lockfile import compute_pack_lock_hash
 from tools.xstack.sessionx.common import deterministic_seed_hex, identity_hash_for_payload
-from modding import (
+from tools.validators.modding import (
     DEFAULT_MOD_POLICY_ID,
     load_mod_policy_registry,
     load_pack_policy_descriptors,
     mod_policy_registry_hash,
     mod_policy_rows_by_id,
 )
-from packs.compat import attach_pack_compat_manifest
-from compat.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
-from meta.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
+from content.packs.compatibility_payload import attach_pack_compat_manifest
+from tools.validators.compatibility.data_format_loader import artifact_deterministic_fingerprint, load_versioned_artifact, stamp_artifact_metadata
+from tools.validators.identity import IDENTITY_KIND_BUNDLE, UNIVERSAL_IDENTITY_FIELD, attach_universal_identity_block
 from game.domains.universe import DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF, build_universe_contract_bundle_payload, pin_contract_bundle_metadata
 
 

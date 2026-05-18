@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, `specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0, and `specs/reality/SPEC_FORMALIZATION_CHAIN.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0, `docs/specs/reality/SPEC_SEMANTIC_ASCENT_DESCENT.md` v1.0.0, and `docs/specs/reality/SPEC_FORMALIZATION_CHAIN.md` v1.0.0.
 Stability: stable
 Future Series: Λ-5½, Λ-6, Σ, Φ, Υ, Ζ
 Replacement Target: later domain constitutions, bridge specs, governance/task constitutions, runtime priorities, and release/live-ops constitutions must instantiate this acceptance map rather than replace it

@@ -1,5 +1,5 @@
 /*
-FILE: libs/appcore/output/appcore_output.h
+FILE: runtime/shell/appcore/output/appcore_output.h
 MODULE: Dominium
 PURPOSE: Output envelope stubs (human + machine).
 NOTES: Stub surface; no side effects.

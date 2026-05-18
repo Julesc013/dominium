@@ -4,17 +4,17 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.flow.flow_engine import (
+from tools.core.flow.flow_engine import (
     flow_solver_policy_rows_by_id,
     tick_flow_channels,
 )
-from core.graph.network_graph_engine import (
+from tools.core.graph.network_graph_engine import (
     NetworkGraphError,
     normalize_network_graph as core_normalize_network_graph,
     route_delay_ticks as core_route_delay_ticks,
     route_loss_fraction as core_route_loss_fraction,
 )
-from core.graph.routing_engine import RoutingError, route_query_edges
+from tools.core.graph.routing_engine import RoutingError, route_query_edges
 from game.domains.materials.dimension_engine import fixed_point_config_from_policy
 from tools.xstack.compatx.canonical_json import canonical_sha256
 

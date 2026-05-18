@@ -15,7 +15,7 @@ from tools.xstack.pack_contrib.parser import parse_contributions
 from tools.xstack.pack_loader.dependency_resolver import resolve_packs
 from tools.xstack.pack_loader.loader import load_pack_set
 from tools.xstack.sessionx.universe_physics import write_null_boot_artifacts
-from modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, evaluate_mod_policy
 
 from .bundle_profile import resolve_bundle_selection
 from .constants import (
@@ -1389,7 +1389,7 @@ def _control_registry_rows(
 
     _action_record, action_rows_raw, action_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/control_action_registry.json",
+        registry_rel_path="contracts/registry/control_action_registry.json",
         expected_schema_id="dominium.registry.control_action_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="actions",
@@ -1468,7 +1468,7 @@ def _control_registry_rows(
             schema_root=schema_root,
             schema_name="control_action",
             payload=schema_payload,
-            path="data/registries/control_action_registry.json#{}".format(action_id),
+            path="contracts/registry/control_action_registry.json#{}".format(action_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -1493,7 +1493,7 @@ def _control_registry_rows(
 
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/control_policy_registry.json",
+        registry_rel_path="contracts/registry/control_policy_registry.json",
         expected_schema_id="dominium.registry.control_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -1548,7 +1548,7 @@ def _control_registry_rows(
             schema_root=schema_root,
             schema_name="control_policy",
             payload=schema_payload,
-            path="data/registries/control_policy_registry.json#{}".format(control_policy_id),
+            path="contracts/registry/control_policy_registry.json#{}".format(control_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -1559,7 +1559,7 @@ def _control_registry_rows(
 
     _controller_record, controller_rows_raw, controller_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/controller_type_registry.json",
+        registry_rel_path="contracts/registry/controller_type_registry.json",
         expected_schema_id="dominium.registry.controller_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="controller_types",
@@ -1640,7 +1640,7 @@ def _capability_registry_rows(
 ) -> Tuple[List[dict], List[dict]]:
     _record, rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/capability_registry.json",
+        registry_rel_path="contracts/registry/capability_registry.json",
         expected_schema_id="dominium.registry.capability_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="capabilities",
@@ -1732,7 +1732,7 @@ def _capability_registry_rows(
             schema_root=schema_root,
             schema_name="capability",
             payload=schema_payload,
-            path="data/registries/capability_registry.json#{}".format(capability_id),
+            path="contracts/registry/capability_registry.json#{}".format(capability_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -1749,7 +1749,7 @@ def _effect_registry_rows(
 ) -> Tuple[List[dict], List[dict], List[dict]]:
     effect_record, effect_rows_raw, effect_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/effect_type_registry.json",
+        registry_rel_path="contracts/registry/effect_type_registry.json",
         expected_schema_id="dominium.registry.effect_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="effect_types",
@@ -1759,7 +1759,7 @@ def _effect_registry_rows(
 
     stack_record, stack_rows_raw, stack_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/stacking_policy_registry.json",
+        registry_rel_path="contracts/registry/stacking_policy_registry.json",
         expected_schema_id="dominium.registry.stacking_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="stacking_policies",
@@ -1826,7 +1826,7 @@ def _effect_registry_rows(
             schema_root=schema_root,
             schema_name="effect_type",
             payload=schema_payload,
-            path="data/registries/effect_type_registry.json#{}".format(effect_type_id),
+            path="contracts/registry/effect_type_registry.json#{}".format(effect_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -1886,7 +1886,7 @@ def _effect_registry_rows(
             schema_root=schema_root,
             schema_name="stacking_policy",
             payload=schema_payload,
-            path="data/registries/stacking_policy_registry.json#{}".format(stacking_policy_id),
+            path="contracts/registry/stacking_policy_registry.json#{}".format(stacking_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -1904,7 +1904,7 @@ def _field_registry_rows(
 ) -> Tuple[List[dict], List[dict], List[dict]]:
     field_type_record, field_type_rows_raw, field_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/field_type_registry.json",
+        registry_rel_path="contracts/registry/field_type_registry.json",
         expected_schema_id="dominium.registry.field_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="field_types",
@@ -1914,7 +1914,7 @@ def _field_registry_rows(
 
     policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/field_update_policy_registry.json",
+        registry_rel_path="contracts/registry/field_update_policy_registry.json",
         expected_schema_id="dominium.registry.field_update_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -1976,7 +1976,7 @@ def _field_registry_rows(
             schema_root=schema_root,
             schema_name="field_type",
             payload=schema_payload,
-            path="data/registries/field_type_registry.json#{}".format(field_type_id),
+            path="contracts/registry/field_type_registry.json#{}".format(field_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2037,7 +2037,7 @@ def _field_registry_rows(
             schema_root=schema_root,
             schema_name="field_update_policy",
             payload=schema_payload,
-            path="data/registries/field_update_policy_registry.json#{}".format(update_policy_id),
+            path="contracts/registry/field_update_policy_registry.json#{}".format(update_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2055,7 +2055,7 @@ def _safety_registry_rows(
 ) -> Tuple[List[dict], List[dict]]:
     record, rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/safety_pattern_registry.json",
+        registry_rel_path="contracts/registry/safety_pattern_registry.json",
         expected_schema_id="dominium.registry.safety_pattern_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="safety_patterns",
@@ -2197,7 +2197,7 @@ def _safety_registry_rows(
             schema_root=schema_root,
             schema_name="safety_pattern",
             payload=schema_payload,
-            path="data/registries/safety_pattern_registry.json#{}".format(pattern_id),
+            path="contracts/registry/safety_pattern_registry.json#{}".format(pattern_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2215,7 +2215,7 @@ def _spec_registry_rows(
 ) -> Tuple[List[dict], List[dict], List[dict], List[dict]]:
     spec_type_record, spec_type_rows_raw, spec_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/spec_type_registry.json",
+        registry_rel_path="contracts/registry/spec_type_registry.json",
         expected_schema_id="dominium.registry.spec_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="spec_types",
@@ -2225,7 +2225,7 @@ def _spec_registry_rows(
 
     tolerance_record, tolerance_rows_raw, tolerance_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/tolerance_policy_registry.json",
+        registry_rel_path="contracts/registry/tolerance_policy_registry.json",
         expected_schema_id="dominium.registry.tolerance_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="tolerance_policies",
@@ -2235,7 +2235,7 @@ def _spec_registry_rows(
 
     compliance_record, compliance_rows_raw, compliance_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/compliance_check_registry.json",
+        registry_rel_path="contracts/registry/compliance_check_registry.json",
         expected_schema_id="dominium.registry.compliance_check_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="compliance_checks",
@@ -2297,7 +2297,7 @@ def _spec_registry_rows(
             schema_root=schema_root,
             schema_name="spec_type",
             payload=schema_payload,
-            path="data/registries/spec_type_registry.json#{}".format(spec_type_id),
+            path="contracts/registry/spec_type_registry.json#{}".format(spec_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2358,7 +2358,7 @@ def _spec_registry_rows(
             schema_root=schema_root,
             schema_name="tolerance_policy",
             payload=schema_payload,
-            path="data/registries/tolerance_policy_registry.json#{}".format(tolerance_policy_id),
+            path="contracts/registry/tolerance_policy_registry.json#{}".format(tolerance_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2447,7 +2447,7 @@ def _spec_registry_rows(
             schema_root=schema_root,
             schema_name="compliance_check",
             payload=schema_payload,
-            path="data/registries/compliance_check_registry.json#{}".format(check_id),
+            path="contracts/registry/compliance_check_registry.json#{}".format(check_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2465,7 +2465,7 @@ def _formalization_registry_rows(
 ) -> Tuple[List[dict], List[dict], List[dict]]:
     target_record, target_rows_raw, target_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/formalization_target_registry.json",
+        registry_rel_path="contracts/registry/formalization_target_registry.json",
         expected_schema_id="dominium.registry.formalization_target_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="targets",
@@ -2475,7 +2475,7 @@ def _formalization_registry_rows(
 
     policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/formalization_policy_registry.json",
+        registry_rel_path="contracts/registry/formalization_policy_registry.json",
         expected_schema_id="dominium.registry.formalization_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -2530,7 +2530,7 @@ def _formalization_registry_rows(
             schema_root=schema_root,
             schema_name="formalization_target",
             payload=schema_payload,
-            path="data/registries/formalization_target_registry.json#{}".format(target_id),
+            path="contracts/registry/formalization_target_registry.json#{}".format(target_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2597,7 +2597,7 @@ def _formalization_registry_rows(
             schema_root=schema_root,
             schema_name="formalization_policy",
             payload=schema_payload,
-            path="data/registries/formalization_policy_registry.json#{}".format(policy_id),
+            path="contracts/registry/formalization_policy_registry.json#{}".format(policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -2614,7 +2614,7 @@ def _interaction_registry_rows(
 ) -> Tuple[List[dict], List[dict]]:
     _record, action_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/interaction_action_registry.json",
+        registry_rel_path="contracts/registry/interaction_action_registry.json",
         expected_schema_id="dominium.registry.interaction_action_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="actions",
@@ -2746,7 +2746,7 @@ def _action_surface_registry_rows(
 
     _surface_type_record, surface_type_rows_raw, surface_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/surface_type_registry.json",
+        registry_rel_path="contracts/registry/surface_type_registry.json",
         expected_schema_id="dominium.registry.surface_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="surface_types",
@@ -2807,7 +2807,7 @@ def _action_surface_registry_rows(
 
     _tool_tag_record, tool_tag_rows_raw, tool_tag_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/tool_tag_registry.json",
+        registry_rel_path="contracts/registry/tool_tag_registry.json",
         expected_schema_id="dominium.registry.tool_tag_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="tool_tags",
@@ -2861,7 +2861,7 @@ def _action_surface_registry_rows(
 
     _tool_type_record, tool_type_rows_raw, tool_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/tool_type_registry.json",
+        registry_rel_path="contracts/registry/tool_type_registry.json",
         expected_schema_id="dominium.registry.tool_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="tool_types",
@@ -2931,7 +2931,7 @@ def _action_surface_registry_rows(
 
     _tool_effect_record, tool_effect_rows_raw, tool_effect_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/tool_effect_model_registry.json",
+        registry_rel_path="contracts/registry/tool_effect_model_registry.json",
         expected_schema_id="dominium.registry.tool_effect_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="effect_models",
@@ -3021,7 +3021,7 @@ def _action_surface_registry_rows(
 
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/surface_visibility_policy_registry.json",
+        registry_rel_path="contracts/registry/surface_visibility_policy_registry.json",
         expected_schema_id="dominium.registry.surface_visibility_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -3093,7 +3093,7 @@ def _pose_registry_rows(
 
     _posture_record, posture_rows_raw, posture_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/posture_registry.json",
+        registry_rel_path="contracts/registry/posture_registry.json",
         expected_schema_id="dominium.registry.posture_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="postures",
@@ -3146,7 +3146,7 @@ def _pose_registry_rows(
 
     _mount_tag_record, mount_tag_rows_raw, mount_tag_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mount_tag_registry.json",
+        registry_rel_path="contracts/registry/mount_tag_registry.json",
         expected_schema_id="dominium.registry.mount_tag_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="mount_tags",
@@ -3199,7 +3199,7 @@ def _pose_registry_rows(
 
     _control_binding_record, control_binding_rows_raw, control_binding_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/control_binding_registry.json",
+        registry_rel_path="contracts/registry/control_binding_registry.json",
         expected_schema_id="dominium.registry.pose_control_binding_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="control_bindings",
@@ -3267,7 +3267,7 @@ def _mobility_registry_rows(
 
     _vehicle_record, vehicle_rows_raw, vehicle_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_vehicle_class_registry.json",
+        registry_rel_path="contracts/registry/mobility_vehicle_class_registry.json",
         expected_schema_id="dominium.registry.mobility_vehicle_class_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="vehicle_classes",
@@ -3277,7 +3277,7 @@ def _mobility_registry_rows(
 
     _constraint_record, constraint_rows_raw, constraint_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_constraint_type_registry.json",
+        registry_rel_path="contracts/registry/mobility_constraint_type_registry.json",
         expected_schema_id="dominium.registry.mobility_constraint_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="constraint_types",
@@ -3287,7 +3287,7 @@ def _mobility_registry_rows(
 
     _signal_record, signal_rows_raw, signal_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_signal_type_registry.json",
+        registry_rel_path="contracts/registry/mobility_signal_type_registry.json",
         expected_schema_id="dominium.registry.mobility_signal_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="signal_types",
@@ -3297,7 +3297,7 @@ def _mobility_registry_rows(
 
     _speed_policy_record, speed_policy_rows_raw, speed_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_speed_policy_registry.json",
+        registry_rel_path="contracts/registry/mobility_speed_policy_registry.json",
         expected_schema_id="dominium.registry.mobility_speed_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="speed_policies",
@@ -3307,7 +3307,7 @@ def _mobility_registry_rows(
 
     _node_kind_record, node_kind_rows_raw, node_kind_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_node_kind_registry.json",
+        registry_rel_path="contracts/registry/mobility_node_kind_registry.json",
         expected_schema_id="dominium.registry.mobility_node_kind_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="node_kinds",
@@ -3317,7 +3317,7 @@ def _mobility_registry_rows(
 
     _edge_kind_record, edge_kind_rows_raw, edge_kind_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_edge_kind_registry.json",
+        registry_rel_path="contracts/registry/mobility_edge_kind_registry.json",
         expected_schema_id="dominium.registry.mobility_edge_kind_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="edge_kinds",
@@ -3327,7 +3327,7 @@ def _mobility_registry_rows(
 
     _max_speed_record, max_speed_rows_raw, max_speed_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mobility_max_speed_policy_registry.json",
+        registry_rel_path="contracts/registry/mobility_max_speed_policy_registry.json",
         expected_schema_id="dominium.registry.mobility_max_speed_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="max_speed_policies",
@@ -3662,7 +3662,7 @@ def _signal_registry_rows(
 
     _signal_type_record, signal_type_rows_raw, signal_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/signal_type_registry.json",
+        registry_rel_path="contracts/registry/signal_type_registry.json",
         expected_schema_id="dominium.registry.signal_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="signal_types",
@@ -3672,7 +3672,7 @@ def _signal_registry_rows(
 
     _signal_rule_record, signal_rule_rows_raw, signal_rule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/signal_rule_policy_registry.json",
+        registry_rel_path="contracts/registry/signal_rule_policy_registry.json",
         expected_schema_id="dominium.registry.signal_rule_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="signal_rule_policies",
@@ -3782,7 +3782,7 @@ def _guide_geometry_registry_rows(
 
     _geometry_type_record, geometry_type_rows_raw, geometry_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/geometry_type_registry.json",
+        registry_rel_path="contracts/registry/geometry_type_registry.json",
         expected_schema_id="dominium.registry.geometry_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="geometry_types",
@@ -3792,7 +3792,7 @@ def _guide_geometry_registry_rows(
 
     _junction_type_record, junction_type_rows_raw, junction_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/junction_type_registry.json",
+        registry_rel_path="contracts/registry/junction_type_registry.json",
         expected_schema_id="dominium.registry.junction_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="junction_types",
@@ -3802,7 +3802,7 @@ def _guide_geometry_registry_rows(
 
     _snap_policy_record, snap_policy_rows_raw, snap_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/geometry_snap_policy_registry.json",
+        registry_rel_path="contracts/registry/geometry_snap_policy_registry.json",
         expected_schema_id="dominium.registry.geometry_snap_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="snap_policies",
@@ -3952,7 +3952,7 @@ def _task_registry_rows(
     errors: List[dict] = []
     _task_type_record, task_type_rows_raw, task_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/task_type_registry.json",
+        registry_rel_path="contracts/registry/task_type_registry.json",
         expected_schema_id="dominium.registry.task_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="task_types",
@@ -3995,7 +3995,7 @@ def _task_registry_rows(
             schema_root=schema_root,
             schema_name="task_type",
             payload=entry,
-            path="data/registries/task_type_registry.json#{}".format(task_type_id),
+            path="contracts/registry/task_type_registry.json#{}".format(task_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -4018,7 +4018,7 @@ def _task_registry_rows(
 
     _progress_record, progress_rows_raw, progress_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/progress_model_registry.json",
+        registry_rel_path="contracts/registry/progress_model_registry.json",
         expected_schema_id="dominium.registry.progress_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="progress_models",
@@ -4061,7 +4061,7 @@ def _task_registry_rows(
             schema_root=schema_root,
             schema_name="progress_model",
             payload=entry,
-            path="data/registries/progress_model_registry.json#{}".format(progress_model_id),
+            path="contracts/registry/progress_model_registry.json#{}".format(progress_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -4090,7 +4090,7 @@ def _machine_registry_rows(
 
     _port_type_record, port_type_rows_raw, port_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/port_type_registry.json",
+        registry_rel_path="contracts/registry/port_type_registry.json",
         expected_schema_id="dominium.registry.port_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="port_types",
@@ -4133,7 +4133,7 @@ def _machine_registry_rows(
             schema_root=schema_root,
             schema_name="port_type",
             payload=entry,
-            path="data/registries/port_type_registry.json#{}".format(port_type_id),
+            path="contracts/registry/port_type_registry.json#{}".format(port_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -4153,7 +4153,7 @@ def _machine_registry_rows(
 
     _machine_type_record, machine_type_rows_raw, machine_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/machine_type_registry.json",
+        registry_rel_path="contracts/registry/machine_type_registry.json",
         expected_schema_id="dominium.registry.machine_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="machine_types",
@@ -4196,7 +4196,7 @@ def _machine_registry_rows(
             schema_root=schema_root,
             schema_name="machine_type",
             payload=entry,
-            path="data/registries/machine_type_registry.json#{}".format(machine_type_id),
+            path="contracts/registry/machine_type_registry.json#{}".format(machine_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -4217,7 +4217,7 @@ def _machine_registry_rows(
 
     _port_vis_record, port_vis_rows_raw, port_vis_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/port_visibility_policy_registry.json",
+        registry_rel_path="contracts/registry/port_visibility_policy_registry.json",
         expected_schema_id="dominium.registry.port_visibility_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -4278,7 +4278,7 @@ def _machine_registry_rows(
 
     _machine_op_record, machine_op_rows_raw, machine_op_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/machine_operation_registry.json",
+        registry_rel_path="contracts/registry/machine_operation_registry.json",
         expected_schema_id="dominium.registry.machine_operation_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="operations",
@@ -4326,7 +4326,7 @@ def _machine_registry_rows(
                 "operations": [dict(entry)],
                 "registry_hash": "0" * 64,
             },
-            path="data/registries/machine_operation_registry.json#{}".format(operation_id),
+            path="contracts/registry/machine_operation_registry.json#{}".format(operation_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -4375,7 +4375,7 @@ def _civilisation_registry_rows(
 
     _governance_record, governance_rows_raw, governance_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/governance_type_registry.json",
+        registry_rel_path="contracts/registry/governance_type_registry.json",
         expected_schema_id="dominium.registry.governance_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="governance_types",
@@ -4428,7 +4428,7 @@ def _civilisation_registry_rows(
 
     _diplomatic_record, diplomatic_rows_raw, diplomatic_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/diplomatic_state_registry.json",
+        registry_rel_path="contracts/registry/diplomatic_state_registry.json",
         expected_schema_id="dominium.registry.diplomatic_state_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="states",
@@ -4481,7 +4481,7 @@ def _civilisation_registry_rows(
 
     _cohort_record, cohort_rows_raw, cohort_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/cohort_mapping_policy_registry.json",
+        registry_rel_path="contracts/registry/cohort_mapping_policy_registry.json",
         expected_schema_id="dominium.registry.cohort_mapping_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -4556,7 +4556,7 @@ def _civilisation_registry_rows(
 
     _order_type_record, order_type_rows_raw, order_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/order_type_registry.json",
+        registry_rel_path="contracts/registry/order_type_registry.json",
         expected_schema_id="dominium.registry.order_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="order_types",
@@ -4639,7 +4639,7 @@ def _civilisation_registry_rows(
 
     _role_record, role_rows_raw, role_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/role_registry.json",
+        registry_rel_path="contracts/registry/role_registry.json",
         expected_schema_id="dominium.registry.role_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="roles",
@@ -4694,7 +4694,7 @@ def _civilisation_registry_rows(
 
     _institution_record, institution_rows_raw, institution_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/institution_type_registry.json",
+        registry_rel_path="contracts/registry/institution_type_registry.json",
         expected_schema_id="dominium.registry.institution_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="institution_types",
@@ -4764,7 +4764,7 @@ def _civilisation_registry_rows(
 
     _demography_policy_record, demography_policy_rows_raw, demography_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/demography_policy_registry.json",
+        registry_rel_path="contracts/registry/demography_policy_registry.json",
         expected_schema_id="dominium.registry.demography_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -4774,7 +4774,7 @@ def _civilisation_registry_rows(
 
     _death_model_record, death_model_rows_raw, death_model_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/death_model_registry.json",
+        registry_rel_path="contracts/registry/death_model_registry.json",
         expected_schema_id="dominium.registry.death_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="death_models",
@@ -4840,7 +4840,7 @@ def _civilisation_registry_rows(
 
     _birth_model_record, birth_model_rows_raw, birth_model_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/birth_model_registry.json",
+        registry_rel_path="contracts/registry/birth_model_registry.json",
         expected_schema_id="dominium.registry.birth_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="birth_models",
@@ -4906,7 +4906,7 @@ def _civilisation_registry_rows(
 
     _migration_model_record, migration_model_rows_raw, migration_model_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/migration_model_registry.json",
+        registry_rel_path="contracts/registry/migration_model_registry.json",
         expected_schema_id="dominium.registry.migration_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="migration_models",
@@ -5079,7 +5079,7 @@ def _conservation_registry_rows(
 
     _quantity_record, quantity_rows_raw, quantity_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/quantity_registry.json",
+        registry_rel_path="contracts/registry/quantity_registry.json",
         expected_schema_id="dominium.registry.quantity_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="quantities",
@@ -5089,7 +5089,7 @@ def _conservation_registry_rows(
 
     _exception_record, exception_type_rows_raw, exception_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/exception_type_registry.json",
+        registry_rel_path="contracts/registry/exception_type_registry.json",
         expected_schema_id="dominium.registry.exception_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="exception_types",
@@ -5099,7 +5099,7 @@ def _conservation_registry_rows(
 
     _contract_set_record, contract_set_rows_raw, contract_set_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/conservation_contract_set_registry.json",
+        registry_rel_path="contracts/registry/conservation_contract_set_registry.json",
         expected_schema_id="dominium.registry.conservation_contract_set_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="contract_sets",
@@ -5142,7 +5142,7 @@ def _conservation_registry_rows(
             schema_root=schema_root,
             schema_name="quantity",
             payload=entry,
-            path="data/registries/quantity_registry.json#{}".format(quantity_id),
+            path="contracts/registry/quantity_registry.json#{}".format(quantity_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5258,7 +5258,7 @@ def _conservation_registry_rows(
             schema_root=schema_root,
             schema_name="conservation_contract_set",
             payload=entry,
-            path="data/registries/conservation_contract_set_registry.json#{}".format(contract_set_id),
+            path="contracts/registry/conservation_contract_set_registry.json#{}".format(contract_set_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5332,7 +5332,7 @@ def _materials_dimension_registry_rows(
 
     _base_record, base_rows_raw, base_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/base_dimension_registry.json",
+        registry_rel_path="contracts/registry/base_dimension_registry.json",
         expected_schema_id="dominium.registry.base_dimension_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="base_dimensions",
@@ -5342,7 +5342,7 @@ def _materials_dimension_registry_rows(
 
     _dimension_record, dimension_rows_raw, dimension_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/dimension_registry.json",
+        registry_rel_path="contracts/registry/dimension_registry.json",
         expected_schema_id="dominium.registry.dimension_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="dimensions",
@@ -5352,7 +5352,7 @@ def _materials_dimension_registry_rows(
 
     _unit_record, unit_rows_raw, unit_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/unit_registry.json",
+        registry_rel_path="contracts/registry/unit_registry.json",
         expected_schema_id="dominium.registry.unit_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="units",
@@ -5362,7 +5362,7 @@ def _materials_dimension_registry_rows(
 
     _quantity_type_record, quantity_type_rows_raw, quantity_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/quantity_type_registry.json",
+        registry_rel_path="contracts/registry/quantity_type_registry.json",
         expected_schema_id="dominium.registry.quantity_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="quantity_types",
@@ -5405,7 +5405,7 @@ def _materials_dimension_registry_rows(
             schema_root=schema_root,
             schema_name="base_dimension",
             payload=entry,
-            path="data/registries/base_dimension_registry.json#{}".format(base_dimension_id),
+            path="contracts/registry/base_dimension_registry.json#{}".format(base_dimension_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5458,7 +5458,7 @@ def _materials_dimension_registry_rows(
             schema_root=schema_root,
             schema_name="dimension",
             payload=entry,
-            path="data/registries/dimension_registry.json#{}".format(dimension_id),
+            path="contracts/registry/dimension_registry.json#{}".format(dimension_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5538,7 +5538,7 @@ def _materials_dimension_registry_rows(
             schema_root=schema_root,
             schema_name="unit",
             payload=entry,
-            path="data/registries/unit_registry.json#{}".format(unit_id),
+            path="contracts/registry/unit_registry.json#{}".format(unit_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5619,7 +5619,7 @@ def _materials_dimension_registry_rows(
             schema_root=schema_root,
             schema_name="quantity_type",
             payload=entry,
-            path="data/registries/quantity_type_registry.json#{}".format(quantity_id),
+            path="contracts/registry/quantity_type_registry.json#{}".format(quantity_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5685,7 +5685,7 @@ def _material_taxonomy_registry_rows(
 
     _element_record, element_rows_raw, element_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/element_registry.json",
+        registry_rel_path="contracts/registry/element_registry.json",
         expected_schema_id="dominium.registry.element_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="elements",
@@ -5695,7 +5695,7 @@ def _material_taxonomy_registry_rows(
 
     _compound_record, compound_rows_raw, compound_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/compound_registry.json",
+        registry_rel_path="contracts/registry/compound_registry.json",
         expected_schema_id="dominium.registry.compound_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="compounds",
@@ -5705,7 +5705,7 @@ def _material_taxonomy_registry_rows(
 
     _mixture_record, mixture_rows_raw, mixture_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/mixture_registry.json",
+        registry_rel_path="contracts/registry/mixture_registry.json",
         expected_schema_id="dominium.registry.mixture_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="mixtures",
@@ -5715,7 +5715,7 @@ def _material_taxonomy_registry_rows(
 
     _material_record, material_rows_raw, material_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/material_class_registry.json",
+        registry_rel_path="contracts/registry/material_class_registry.json",
         expected_schema_id="dominium.registry.material_class_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="materials",
@@ -5725,7 +5725,7 @@ def _material_taxonomy_registry_rows(
 
     _quality_record, quality_rows_raw, quality_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/quality_distribution_registry.json",
+        registry_rel_path="contracts/registry/quality_distribution_registry.json",
         expected_schema_id="dominium.registry.quality_distribution_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="quality_distribution_models",
@@ -5792,7 +5792,7 @@ def _material_taxonomy_registry_rows(
             schema_root=schema_root,
             schema_name="element",
             payload=entry,
-            path="data/registries/element_registry.json#{}".format(element_id),
+            path="contracts/registry/element_registry.json#{}".format(element_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -5872,7 +5872,7 @@ def _material_taxonomy_registry_rows(
             schema_root=schema_root,
             schema_name="compound",
             payload=entry,
-            path="data/registries/compound_registry.json#{}".format(compound_id),
+            path="contracts/registry/compound_registry.json#{}".format(compound_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6004,7 +6004,7 @@ def _material_taxonomy_registry_rows(
             schema_root=schema_root,
             schema_name="mixture",
             payload=entry,
-            path="data/registries/mixture_registry.json#{}".format(mixture_id),
+            path="contracts/registry/mixture_registry.json#{}".format(mixture_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6092,7 +6092,7 @@ def _material_taxonomy_registry_rows(
             schema_root=schema_root,
             schema_name="quality_distribution",
             payload=entry,
-            path="data/registries/quality_distribution_registry.json#{}".format(quality_distribution_model_id),
+            path="contracts/registry/quality_distribution_registry.json#{}".format(quality_distribution_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6147,7 +6147,7 @@ def _material_taxonomy_registry_rows(
             schema_root=schema_root,
             schema_name="material_class",
             payload=entry,
-            path="data/registries/material_class_registry.json#{}".format(material_id),
+            path="contracts/registry/material_class_registry.json#{}".format(material_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6285,7 +6285,7 @@ def _materials_structure_registry_rows(
 
     _part_class_record, part_class_rows_raw, part_class_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/part_class_registry.json",
+        registry_rel_path="contracts/registry/part_class_registry.json",
         expected_schema_id="dominium.registry.part_class_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="part_classes",
@@ -6295,7 +6295,7 @@ def _materials_structure_registry_rows(
 
     _connection_type_record, connection_type_rows_raw, connection_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/connection_type_registry.json",
+        registry_rel_path="contracts/registry/connection_type_registry.json",
         expected_schema_id="dominium.registry.connection_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="connection_types",
@@ -6305,7 +6305,7 @@ def _materials_structure_registry_rows(
 
     _blueprint_record, blueprint_rows_raw, blueprint_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/blueprint_registry.json",
+        registry_rel_path="contracts/registry/blueprint_registry.json",
         expected_schema_id="dominium.registry.blueprint_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="blueprints",
@@ -6348,7 +6348,7 @@ def _materials_structure_registry_rows(
             schema_root=schema_root,
             schema_name="part_class",
             payload=entry,
-            path="data/registries/part_class_registry.json#{}".format(part_class_id),
+            path="contracts/registry/part_class_registry.json#{}".format(part_class_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6408,7 +6408,7 @@ def _materials_structure_registry_rows(
             schema_root=schema_root,
             schema_name="connection_type",
             payload=entry,
-            path="data/registries/connection_type_registry.json#{}".format(connection_type_id),
+            path="contracts/registry/connection_type_registry.json#{}".format(connection_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -6551,7 +6551,7 @@ def _interior_registry_rows(
 
     _volume_type_record, volume_type_rows_raw, volume_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/interior_volume_type_registry.json",
+        registry_rel_path="contracts/registry/interior_volume_type_registry.json",
         expected_schema_id="dominium.registry.interior_volume_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="volume_types",
@@ -6561,7 +6561,7 @@ def _interior_registry_rows(
 
     _portal_type_record, portal_type_rows_raw, portal_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/portal_type_registry.json",
+        registry_rel_path="contracts/registry/portal_type_registry.json",
         expected_schema_id="dominium.registry.portal_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="portal_types",
@@ -6571,7 +6571,7 @@ def _interior_registry_rows(
 
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/compartment_flow_policy_registry.json",
+        registry_rel_path="contracts/registry/compartment_flow_policy_registry.json",
         expected_schema_id="dominium.registry.compartment_flow_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -6581,7 +6581,7 @@ def _interior_registry_rows(
 
     _template_record, template_rows_raw, template_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/portal_flow_template_registry.json",
+        registry_rel_path="contracts/registry/portal_flow_template_registry.json",
         expected_schema_id="dominium.registry.portal_flow_template_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="templates",
@@ -6815,7 +6815,7 @@ def _core_abstraction_registry_rows(
 
     _routing_record, routing_rows_raw, routing_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_routing_policy_registry.json",
+        registry_rel_path="contracts/registry/core_routing_policy_registry.json",
         expected_schema_id="dominium.registry.core_routing_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="routing_policies",
@@ -6825,7 +6825,7 @@ def _core_abstraction_registry_rows(
 
     _solver_record, solver_rows_raw, solver_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_flow_solver_policy_registry.json",
+        registry_rel_path="contracts/registry/core_flow_solver_policy_registry.json",
         expected_schema_id="dominium.registry.core_flow_solver_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="solver_policies",
@@ -6835,7 +6835,7 @@ def _core_abstraction_registry_rows(
 
     _constraint_record, constraint_rows_raw, constraint_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_constraint_type_registry.json",
+        registry_rel_path="contracts/registry/core_constraint_type_registry.json",
         expected_schema_id="dominium.registry.core_constraint_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="constraint_types",
@@ -6845,7 +6845,7 @@ def _core_abstraction_registry_rows(
 
     _machine_record, machine_rows_raw, machine_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_state_machine_type_registry.json",
+        registry_rel_path="contracts/registry/core_state_machine_type_registry.json",
         expected_schema_id="dominium.registry.core_state_machine_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="machine_types",
@@ -6855,7 +6855,7 @@ def _core_abstraction_registry_rows(
 
     _hazard_record, hazard_rows_raw, hazard_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_hazard_type_registry.json",
+        registry_rel_path="contracts/registry/core_hazard_type_registry.json",
         expected_schema_id="dominium.registry.core_hazard_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="hazard_types",
@@ -6865,7 +6865,7 @@ def _core_abstraction_registry_rows(
 
     _schedule_record, schedule_rows_raw, schedule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/core_schedule_policy_registry.json",
+        registry_rel_path="contracts/registry/core_schedule_policy_registry.json",
         expected_schema_id="dominium.registry.core_schedule_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="schedule_policies",
@@ -7226,21 +7226,21 @@ def _quantity_bundle_registry_rows(
     errors: List[dict] = []
     _bundle_record, bundle_rows_raw, bundle_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/quantity_bundle_registry.json",
+        registry_rel_path="contracts/registry/quantity_bundle_registry.json",
         expected_schema_id="dominium.registry.quantity_bundle_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="quantity_bundles",
     )
     _component_capacity_record, component_capacity_rows_raw, component_capacity_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/component_capacity_policy_registry.json",
+        registry_rel_path="contracts/registry/component_capacity_policy_registry.json",
         expected_schema_id="dominium.registry.component_capacity_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
     )
     _component_loss_record, component_loss_rows_raw, component_loss_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/component_loss_policy_registry.json",
+        registry_rel_path="contracts/registry/component_loss_policy_registry.json",
         expected_schema_id="dominium.registry.component_loss_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -7413,7 +7413,7 @@ def _logistics_registry_rows(
 
     _routing_rule_record, routing_rule_rows_raw, routing_rule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/logistics_routing_rule_registry.json",
+        registry_rel_path="contracts/registry/logistics_routing_rule_registry.json",
         expected_schema_id="dominium.registry.logistics_routing_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="routing_rules",
@@ -7423,7 +7423,7 @@ def _logistics_registry_rows(
 
     _graph_record, graph_rows_raw, graph_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/logistics_graph_registry.json",
+        registry_rel_path="contracts/registry/logistics_graph_registry.json",
         expected_schema_id="dominium.registry.logistics_graph_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="graphs",
@@ -7466,7 +7466,7 @@ def _logistics_registry_rows(
             schema_root=schema_root,
             schema_name="routing_rule",
             payload=entry,
-            path="data/registries/logistics_routing_rule_registry.json#{}".format(rule_id),
+            path="contracts/registry/logistics_routing_rule_registry.json#{}".format(rule_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7520,7 +7520,7 @@ def _logistics_registry_rows(
             schema_root=schema_root,
             schema_name="logistics_graph",
             payload=entry,
-            path="data/registries/logistics_graph_registry.json#{}".format(graph_id),
+            path="contracts/registry/logistics_graph_registry.json#{}".format(graph_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7553,7 +7553,7 @@ def _construction_registry_rows(
 
     _event_type_record, event_type_rows_raw, event_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/provenance_event_type_registry.json",
+        registry_rel_path="contracts/registry/provenance_event_type_registry.json",
         expected_schema_id="dominium.registry.provenance_event_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="event_types",
@@ -7563,7 +7563,7 @@ def _construction_registry_rows(
 
     _construction_policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/construction_policy_registry.json",
+        registry_rel_path="contracts/registry/construction_policy_registry.json",
         expected_schema_id="dominium.registry.construction_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -7606,7 +7606,7 @@ def _construction_registry_rows(
             schema_root=schema_root,
             schema_name="event_type_registry",
             payload=entry,
-            path="data/registries/provenance_event_type_registry.json#{}".format(event_type_id),
+            path="contracts/registry/provenance_event_type_registry.json#{}".format(event_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7657,7 +7657,7 @@ def _construction_registry_rows(
             schema_root=schema_root,
             schema_name="construction_policy",
             payload=entry,
-            path="data/registries/construction_policy_registry.json#{}".format(policy_id),
+            path="contracts/registry/construction_policy_registry.json#{}".format(policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7701,7 +7701,7 @@ def _maintenance_registry_rows(
 
     _failure_mode_record, failure_mode_rows_raw, failure_mode_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/failure_mode_registry.json",
+        registry_rel_path="contracts/registry/failure_mode_registry.json",
         expected_schema_id="dominium.registry.failure_mode_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="failure_modes",
@@ -7711,7 +7711,7 @@ def _maintenance_registry_rows(
 
     _maintenance_policy_record, maintenance_policy_rows_raw, maintenance_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/maintenance_policy_registry.json",
+        registry_rel_path="contracts/registry/maintenance_policy_registry.json",
         expected_schema_id="dominium.registry.maintenance_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -7721,7 +7721,7 @@ def _maintenance_registry_rows(
 
     _backlog_rule_record, backlog_rule_rows_raw, backlog_rule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/backlog_growth_rule_registry.json",
+        registry_rel_path="contracts/registry/backlog_growth_rule_registry.json",
         expected_schema_id="dominium.registry.backlog_growth_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="rules",
@@ -7764,7 +7764,7 @@ def _maintenance_registry_rows(
             schema_root=schema_root,
             schema_name="failure_mode",
             payload=entry,
-            path="data/registries/failure_mode_registry.json#{}".format(failure_mode_id),
+            path="contracts/registry/failure_mode_registry.json#{}".format(failure_mode_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7821,7 +7821,7 @@ def _maintenance_registry_rows(
             schema_root=schema_root,
             schema_name="backlog_growth_rule",
             payload=entry,
-            path="data/registries/backlog_growth_rule_registry.json#{}".format(rule_id),
+            path="contracts/registry/backlog_growth_rule_registry.json#{}".format(rule_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7886,7 +7886,7 @@ def _maintenance_registry_rows(
             schema_root=schema_root,
             schema_name="maintenance_policy",
             payload=entry,
-            path="data/registries/maintenance_policy_registry.json#{}".format(policy_id),
+            path="contracts/registry/maintenance_policy_registry.json#{}".format(policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -7930,7 +7930,7 @@ def _commitment_registry_rows(
 
     _commitment_record, commitment_rows_raw, commitment_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/commitment_type_registry.json",
+        registry_rel_path="contracts/registry/commitment_type_registry.json",
         expected_schema_id="dominium.registry.commitment_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="commitment_types",
@@ -7940,7 +7940,7 @@ def _commitment_registry_rows(
 
     _strictness_record, strictness_rows_raw, strictness_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/causality_strictness_registry.json",
+        registry_rel_path="contracts/registry/causality_strictness_registry.json",
         expected_schema_id="dominium.registry.causality_strictness_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="strictness_levels",
@@ -7983,7 +7983,7 @@ def _commitment_registry_rows(
             schema_root=schema_root,
             schema_name="causality_strictness",
             payload=entry,
-            path="data/registries/causality_strictness_registry.json#{}".format(strictness_id),
+            path="contracts/registry/causality_strictness_registry.json#{}".format(strictness_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8047,7 +8047,7 @@ def _commitment_registry_rows(
             schema_root=schema_root,
             schema_name="commitment_type",
             payload=entry,
-            path="data/registries/commitment_type_registry.json#{}".format(commitment_type_id),
+            path="contracts/registry/commitment_type_registry.json#{}".format(commitment_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8096,7 +8096,7 @@ def _universe_physics_registry_rows(
 
     _time_record, time_rows_raw, time_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/time_model_registry.json",
+        registry_rel_path="contracts/registry/time_model_registry.json",
         expected_schema_id="dominium.registry.time_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="time_models",
@@ -8106,7 +8106,7 @@ def _universe_physics_registry_rows(
 
     _precision_record, precision_rows_raw, precision_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/numeric_precision_policy_registry.json",
+        registry_rel_path="contracts/registry/numeric_precision_policy_registry.json",
         expected_schema_id="dominium.registry.numeric_precision_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="precision_policies",
@@ -8116,7 +8116,7 @@ def _universe_physics_registry_rows(
 
     _taxonomy_record, taxonomy_rows_raw, taxonomy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/tier_taxonomy_registry.json",
+        registry_rel_path="contracts/registry/tier_taxonomy_registry.json",
         expected_schema_id="dominium.registry.tier_taxonomy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="taxonomies",
@@ -8126,7 +8126,7 @@ def _universe_physics_registry_rows(
 
     _boundary_record, boundary_rows_raw, boundary_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/boundary_model_registry.json",
+        registry_rel_path="contracts/registry/boundary_model_registry.json",
         expected_schema_id="dominium.registry.boundary_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="boundary_models",
@@ -8136,7 +8136,7 @@ def _universe_physics_registry_rows(
 
     _profile_record, profile_rows_raw, profile_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/universe_physics_profile_registry.json",
+        registry_rel_path="contracts/registry/universe_physics_profile_registry.json",
         expected_schema_id="dominium.registry.universe_physics_profile_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="physics_profiles",
@@ -8226,7 +8226,7 @@ def _universe_physics_registry_rows(
             schema_root=schema_root,
             schema_name="time_model",
             payload=entry,
-            path="data/registries/time_model_registry.json#{}".format(time_model_id),
+            path="contracts/registry/time_model_registry.json#{}".format(time_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8270,7 +8270,7 @@ def _universe_physics_registry_rows(
             schema_root=schema_root,
             schema_name="numeric_precision_policy",
             payload=entry,
-            path="data/registries/numeric_precision_policy_registry.json#{}".format(policy_id),
+            path="contracts/registry/numeric_precision_policy_registry.json#{}".format(policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8314,7 +8314,7 @@ def _universe_physics_registry_rows(
             schema_root=schema_root,
             schema_name="tier_taxonomy",
             payload=entry,
-            path="data/registries/tier_taxonomy_registry.json#{}".format(taxonomy_id),
+            path="contracts/registry/tier_taxonomy_registry.json#{}".format(taxonomy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8358,7 +8358,7 @@ def _universe_physics_registry_rows(
             schema_root=schema_root,
             schema_name="boundary_model",
             payload=entry,
-            path="data/registries/boundary_model_registry.json#{}".format(boundary_model_id),
+            path="contracts/registry/boundary_model_registry.json#{}".format(boundary_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8414,7 +8414,7 @@ def _universe_physics_registry_rows(
             schema_root=schema_root,
             schema_name="universe_physics_profile",
             payload=entry,
-            path="data/registries/universe_physics_profile_registry.json#{}".format(physics_profile_id),
+            path="contracts/registry/universe_physics_profile_registry.json#{}".format(physics_profile_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8476,7 +8476,7 @@ def _transition_policy_registry_rows(
 
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/transition_policy_registry.json",
+        registry_rel_path="contracts/registry/transition_policy_registry.json",
         expected_schema_id="dominium.registry.transition_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -8486,7 +8486,7 @@ def _transition_policy_registry_rows(
 
     _arb_record, arb_rows_raw, arb_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/arbitration_rule_registry.json",
+        registry_rel_path="contracts/registry/arbitration_rule_registry.json",
         expected_schema_id="dominium.registry.arbitration_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="rules",
@@ -8573,7 +8573,7 @@ def _transition_policy_registry_rows(
             schema_root=schema_root,
             schema_name="transition_policy",
             payload=entry,
-            path="data/registries/transition_policy_registry.json#{}".format(transition_policy_id),
+            path="contracts/registry/transition_policy_registry.json#{}".format(transition_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8620,7 +8620,7 @@ def _performance_registry_rows(
 
     _envelope_record, envelope_rows_raw, envelope_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/budget_envelope_registry.json",
+        registry_rel_path="contracts/registry/budget_envelope_registry.json",
         expected_schema_id="dominium.registry.budget_envelope_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="envelopes",
@@ -8630,7 +8630,7 @@ def _performance_registry_rows(
 
     _arbitration_record, arbitration_rows_raw, arbitration_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/arbitration_policy_registry.json",
+        registry_rel_path="contracts/registry/arbitration_policy_registry.json",
         expected_schema_id="dominium.registry.arbitration_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -8640,7 +8640,7 @@ def _performance_registry_rows(
 
     _inspection_record, inspection_rows_raw, inspection_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/inspection_cache_policy_registry.json",
+        registry_rel_path="contracts/registry/inspection_cache_policy_registry.json",
         expected_schema_id="dominium.registry.inspection_cache_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -8683,7 +8683,7 @@ def _performance_registry_rows(
             schema_root=schema_root,
             schema_name="budget_envelope",
             payload=entry,
-            path="data/registries/budget_envelope_registry.json#{}".format(envelope_id),
+            path="contracts/registry/budget_envelope_registry.json#{}".format(envelope_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8727,7 +8727,7 @@ def _performance_registry_rows(
             schema_root=schema_root,
             schema_name="arbitration_policy",
             payload=entry,
-            path="data/registries/arbitration_policy_registry.json#{}".format(arbitration_policy_id),
+            path="contracts/registry/arbitration_policy_registry.json#{}".format(arbitration_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8774,7 +8774,7 @@ def _performance_registry_rows(
             schema_root=schema_root,
             schema_name="inspection_cache_policy",
             payload=entry,
-            path="data/registries/inspection_cache_policy_registry.json#{}".format(cache_policy_id),
+            path="contracts/registry/inspection_cache_policy_registry.json#{}".format(cache_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8796,7 +8796,7 @@ def _inspection_registry_rows(
     errors: List[dict] = []
     _inspection_record, section_rows_raw, section_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/inspection_section_registry.json",
+        registry_rel_path="contracts/registry/inspection_section_registry.json",
         expected_schema_id="dominium.registry.inspection_section_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="sections",
@@ -8839,7 +8839,7 @@ def _inspection_registry_rows(
             schema_root=schema_root,
             schema_name="inspection_section",
             payload=entry,
-            path="data/registries/inspection_section_registry.json#{}".format(section_id),
+            path="contracts/registry/inspection_section_registry.json#{}".format(section_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8860,7 +8860,7 @@ def _time_control_registry_rows(
 
     _dt_rule_record, dt_rule_rows_raw, dt_rule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/dt_quantization_rule_registry.json",
+        registry_rel_path="contracts/registry/dt_quantization_rule_registry.json",
         expected_schema_id="dominium.registry.dt_quantization_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="rules",
@@ -8870,7 +8870,7 @@ def _time_control_registry_rows(
 
     _compaction_record, compaction_rows_raw, compaction_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/compaction_policy_registry.json",
+        registry_rel_path="contracts/registry/compaction_policy_registry.json",
         expected_schema_id="dominium.registry.compaction_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -8880,7 +8880,7 @@ def _time_control_registry_rows(
 
     _time_control_record, time_control_rows_raw, time_control_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/time_control_policy_registry.json",
+        registry_rel_path="contracts/registry/time_control_policy_registry.json",
         expected_schema_id="dominium.registry.time_control_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -8923,7 +8923,7 @@ def _time_control_registry_rows(
             schema_root=schema_root,
             schema_name="dt_quantization_rule",
             payload=entry,
-            path="data/registries/dt_quantization_rule_registry.json#{}".format(dt_rule_id),
+            path="contracts/registry/dt_quantization_rule_registry.json#{}".format(dt_rule_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -8988,7 +8988,7 @@ def _time_control_registry_rows(
             schema_root=schema_root,
             schema_name="compaction_policy",
             payload=entry,
-            path="data/registries/compaction_policy_registry.json#{}".format(compaction_policy_id),
+            path="contracts/registry/compaction_policy_registry.json#{}".format(compaction_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9046,7 +9046,7 @@ def _time_control_registry_rows(
             schema_root=schema_root,
             schema_name="time_control_policy",
             payload=entry,
-            path="data/registries/time_control_policy_registry.json#{}".format(time_control_policy_id),
+            path="contracts/registry/time_control_policy_registry.json#{}".format(time_control_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9093,7 +9093,7 @@ def _time_control_registry_rows(
 def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _body_record, body_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/body_shape_registry.json",
+        registry_rel_path="contracts/registry/body_shape_registry.json",
         expected_schema_id="dominium.registry.body_shape_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="shape_types",
@@ -9164,7 +9164,7 @@ def _body_shape_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
 def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _view_record, view_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/view_mode_registry.json",
+        registry_rel_path="contracts/registry/view_mode_registry.json",
         expected_schema_id="dominium.registry.view_mode_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="view_modes",
@@ -9251,7 +9251,7 @@ def _view_mode_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
 def _view_policy_registry_rows(repo_root: str) -> Tuple[List[dict], List[dict]]:
     _policy_record, policy_rows_raw, load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/view_policy_registry.json",
+        registry_rel_path="contracts/registry/view_policy_registry.json",
         expected_schema_id="dominium.registry.view_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="view_policies",
@@ -9343,7 +9343,7 @@ def _diegetic_registry_rows(
 
     _calib_record, calibration_rows_raw, calibration_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/calibration_model_registry.json",
+        registry_rel_path="contracts/registry/calibration_model_registry.json",
         expected_schema_id="dominium.registry.calibration_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="calibration_models",
@@ -9388,7 +9388,7 @@ def _diegetic_registry_rows(
             schema_root=schema_root,
             schema_name="calibration_model",
             payload=schema_payload,
-            path="data/registries/calibration_model_registry.json#{}".format(calibration_model_id),
+            path="contracts/registry/calibration_model_registry.json#{}".format(calibration_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9410,7 +9410,7 @@ def _diegetic_registry_rows(
 
     _instrument_record, instrument_rows_raw, instrument_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/instrument_type_registry.json",
+        registry_rel_path="contracts/registry/instrument_type_registry.json",
         expected_schema_id="dominium.registry.instrument_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="instrument_types",
@@ -9455,7 +9455,7 @@ def _diegetic_registry_rows(
             schema_root=schema_root,
             schema_name="instrument_type",
             payload=schema_payload,
-            path="data/registries/instrument_type_registry.json#{}".format(instrument_type_id),
+            path="contracts/registry/instrument_type_registry.json#{}".format(instrument_type_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9500,7 +9500,7 @@ def _representation_registry_rows(
 
     _render_record, render_rows_raw, render_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/render_proxy_registry.json",
+        registry_rel_path="contracts/registry/render_proxy_registry.json",
         expected_schema_id="dominium.registry.render_proxy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="render_proxies",
@@ -9545,7 +9545,7 @@ def _representation_registry_rows(
             schema_root=schema_root,
             schema_name="render_proxy",
             payload=schema_payload,
-            path="data/registries/render_proxy_registry.json#{}".format(render_proxy_id),
+            path="contracts/registry/render_proxy_registry.json#{}".format(render_proxy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9580,7 +9580,7 @@ def _representation_registry_rows(
 
     _cosmetic_record, cosmetic_rows_raw, cosmetic_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/cosmetic_registry.json",
+        registry_rel_path="contracts/registry/cosmetic_registry.json",
         expected_schema_id="dominium.registry.cosmetic_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="cosmetics",
@@ -9663,7 +9663,7 @@ def _representation_registry_rows(
 
     _policy_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/cosmetic_policy_registry.json",
+        registry_rel_path="contracts/registry/cosmetic_policy_registry.json",
         expected_schema_id="dominium.registry.cosmetic_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -9756,7 +9756,7 @@ def _representation_registry_rows(
 
     _primitive_record, primitive_rows_raw, primitive_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/render_primitive_registry.json",
+        registry_rel_path="contracts/registry/render_primitive_registry.json",
         expected_schema_id="dominium.registry.render_primitive_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="primitives",
@@ -9801,7 +9801,7 @@ def _representation_registry_rows(
             schema_root=schema_root,
             schema_name="render_primitive",
             payload=schema_payload,
-            path="data/registries/render_primitive_registry.json#{}".format(primitive_id),
+            path="contracts/registry/render_primitive_registry.json#{}".format(primitive_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9819,7 +9819,7 @@ def _representation_registry_rows(
 
     _template_record, template_rows_raw, template_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/procedural_material_template_registry.json",
+        registry_rel_path="contracts/registry/procedural_material_template_registry.json",
         expected_schema_id="dominium.registry.procedural_material_template_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="material_templates",
@@ -9864,7 +9864,7 @@ def _representation_registry_rows(
             schema_root=schema_root,
             schema_name="material_template",
             payload=schema_payload,
-            path="data/registries/procedural_material_template_registry.json#{}".format(template_id),
+            path="contracts/registry/procedural_material_template_registry.json#{}".format(template_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -9884,7 +9884,7 @@ def _representation_registry_rows(
 
     _label_record, label_rows_raw, label_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/label_policy_registry.json",
+        registry_rel_path="contracts/registry/label_policy_registry.json",
         expected_schema_id="dominium.registry.label_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="label_policies",
@@ -9942,7 +9942,7 @@ def _representation_registry_rows(
 
     _lod_record, lod_rows_raw, lod_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/lod_policy_registry.json",
+        registry_rel_path="contracts/registry/lod_policy_registry.json",
         expected_schema_id="dominium.registry.lod_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="lod_policies",
@@ -10021,7 +10021,7 @@ def _representation_registry_rows(
 
     _representation_rule_record, rule_rows_raw, rule_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/representation_rule_registry.json",
+        registry_rel_path="contracts/registry/representation_rule_registry.json",
         expected_schema_id="dominium.registry.representation_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="representation_rules",
@@ -10066,7 +10066,7 @@ def _representation_registry_rows(
             schema_root=schema_root,
             schema_name="representation_rule",
             payload=schema_payload,
-            path="data/registries/representation_rule_registry.json#{}".format(rule_id),
+            path="contracts/registry/representation_rule_registry.json#{}".format(rule_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -10174,7 +10174,7 @@ def _network_policy_rows(
 
     _modules_record, module_rows_raw, module_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/anti_cheat_module_registry.json",
+        registry_rel_path="contracts/registry/anti_cheat_module_registry.json",
         expected_schema_id="dominium.registry.anti_cheat_module_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="modules",
@@ -10240,7 +10240,7 @@ def _network_policy_rows(
 
     _policies_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/anti_cheat_policy_registry.json",
+        registry_rel_path="contracts/registry/anti_cheat_policy_registry.json",
         expected_schema_id="dominium.registry.anti_cheat_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -10359,7 +10359,7 @@ def _network_policy_rows(
 
     _strategies_record, strategy_rows_raw, strategy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/net_resync_strategy_registry.json",
+        registry_rel_path="contracts/registry/net_resync_strategy_registry.json",
         expected_schema_id="dominium.registry.net_resync_strategy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="strategies",
@@ -10423,7 +10423,7 @@ def _network_policy_rows(
 
     _replication_record, replication_rows_raw, replication_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/net_replication_policy_registry.json",
+        registry_rel_path="contracts/registry/net_replication_policy_registry.json",
         expected_schema_id="dominium.registry.net_replication_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -10515,7 +10515,7 @@ def _network_policy_rows(
 
     _server_policies_record, server_policy_rows_raw, server_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/net_server_policy_registry.json",
+        registry_rel_path="contracts/registry/net_server_policy_registry.json",
         expected_schema_id="dominium.registry.net_server_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -10651,7 +10651,7 @@ def _network_policy_rows(
 
     _securex_record, securex_rows_raw, securex_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/securex_policy_registry.json",
+        registry_rel_path="contracts/registry/securex_policy_registry.json",
         expected_schema_id="dominium.registry.securex_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -10793,7 +10793,7 @@ def _network_policy_rows(
 
     _server_profile_record, server_profile_rows_raw, server_profile_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/server_profile_registry.json",
+        registry_rel_path="contracts/registry/server_profile_registry.json",
         expected_schema_id="dominium.registry.server_profile_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="profiles",
@@ -11050,7 +11050,7 @@ def _hybrid_policy_rows(
 
     _shard_map_record, shard_map_rows_raw, shard_map_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/shard_map_registry.json",
+        registry_rel_path="contracts/registry/shard_map_registry.json",
         expected_schema_id="dominium.registry.shard_map_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="shard_maps",
@@ -11093,7 +11093,7 @@ def _hybrid_policy_rows(
             schema_root=schema_root,
             schema_name="shard_map",
             payload=dict(entry),
-            path="data/registries/shard_map_registry.json#{}".format(shard_map_id),
+            path="contracts/registry/shard_map_registry.json#{}".format(shard_map_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -11133,7 +11133,7 @@ def _hybrid_policy_rows(
 
     _perception_record, perception_rows_raw, perception_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/perception_interest_policy_registry.json",
+        registry_rel_path="contracts/registry/perception_interest_policy_registry.json",
         expected_schema_id="dominium.registry.perception_interest_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -11269,7 +11269,7 @@ def _epistemic_policy_rows(
     errors: List[dict] = []
     _eviction_record, eviction_rows_raw, eviction_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/eviction_rule_registry.json",
+        registry_rel_path="contracts/registry/eviction_rule_registry.json",
         expected_schema_id="dominium.registry.eviction_rule_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="eviction_rules",
@@ -11314,7 +11314,7 @@ def _epistemic_policy_rows(
             schema_root=schema_root,
             schema_name="eviction_rule",
             payload=schema_payload,
-            path="data/registries/eviction_rule_registry.json#{}".format(eviction_rule_id),
+            path="contracts/registry/eviction_rule_registry.json#{}".format(eviction_rule_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -11334,7 +11334,7 @@ def _epistemic_policy_rows(
 
     _decay_record, decay_rows_raw, decay_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/decay_model_registry.json",
+        registry_rel_path="contracts/registry/decay_model_registry.json",
         expected_schema_id="dominium.registry.decay_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="decay_models",
@@ -11379,7 +11379,7 @@ def _epistemic_policy_rows(
             schema_root=schema_root,
             schema_name="decay_model",
             payload=schema_payload,
-            path="data/registries/decay_model_registry.json#{}".format(decay_model_id),
+            path="contracts/registry/decay_model_registry.json#{}".format(decay_model_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -11428,7 +11428,7 @@ def _epistemic_policy_rows(
 
     _retention_record, retention_rows_raw, retention_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/retention_policy_registry.json",
+        registry_rel_path="contracts/registry/retention_policy_registry.json",
         expected_schema_id="dominium.registry.retention_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -11473,7 +11473,7 @@ def _epistemic_policy_rows(
             schema_root=schema_root,
             schema_name="retention_policy",
             payload=schema_payload,
-            path="data/registries/retention_policy_registry.json#{}".format(retention_policy_id),
+            path="contracts/registry/retention_policy_registry.json#{}".format(retention_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -11532,7 +11532,7 @@ def _epistemic_policy_rows(
 
     _epistemic_record, policy_rows_raw, policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/epistemic_policy_registry.json",
+        registry_rel_path="contracts/registry/epistemic_policy_registry.json",
         expected_schema_id="dominium.registry.epistemic_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="policies",
@@ -11577,7 +11577,7 @@ def _epistemic_policy_rows(
             schema_root=schema_root,
             schema_name="epistemic_policy",
             payload=schema_payload,
-            path="data/registries/epistemic_policy_registry.json#{}".format(epistemic_policy_id),
+            path="contracts/registry/epistemic_policy_registry.json#{}".format(epistemic_policy_id),
         )
         if schema_errors:
             errors.extend(schema_errors)
@@ -13455,21 +13455,21 @@ def compile_bundle(
     )
     _model_type_record, model_type_rows_raw, model_type_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/model_type_registry.json",
+        registry_rel_path="contracts/registry/model_type_registry.json",
         expected_schema_id="dominium.registry.model_type_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="model_types",
     )
     _model_cache_policy_record, model_cache_policy_rows_raw, model_cache_policy_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/model_cache_policy_registry.json",
+        registry_rel_path="contracts/registry/model_cache_policy_registry.json",
         expected_schema_id="dominium.registry.model_cache_policy_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="cache_policies",
     )
     _constitutive_model_record, constitutive_model_rows_raw, constitutive_model_load_errors = _load_registry_record(
         repo_root=repo_root,
-        registry_rel_path="data/registries/constitutive_model_registry.json",
+        registry_rel_path="contracts/registry/constitutive_model_registry.json",
         expected_schema_id="dominium.registry.constitutive_model_registry",
         expected_schema_version="1.0.0",
         expected_entry_key="models",
@@ -13880,7 +13880,7 @@ def compile_bundle(
         registry_hashes[registry_key + "_hash"] = digest
         output_files.append(out_path)
 
-    rwam_rel_path = "data/meta/real_world_affordance_matrix.json"
+    rwam_rel_path = "contracts/meta/real_world_affordance_matrix.json"
     rwam_abs_path = _source_path(repo_root, rwam_rel_path)
     rwam_payload, rwam_err = _read_json_payload(rwam_abs_path)
     if rwam_err:

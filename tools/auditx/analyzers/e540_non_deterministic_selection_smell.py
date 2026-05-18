@@ -33,7 +33,7 @@ def run(graph, repo_root, changed_files=None):
                 category="release.non_deterministic_selection_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/audit/release_index_policy_report.json",
+                file_path=rel_path or "contracts/audit/release_index_policy_report.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "release-resolution selection drifted across identical runs",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="CANONICALIZE_COMPONENT_CANDIDATE_ORDER_AND_STABILIZE_TIE_BREAK_SELECTION",
                 related_invariants=[RULE_POLICY_DECLARED],
                 related_paths=[
-                    rel_path or "data/audit/release_index_policy_report.json",
+                    rel_path or "contracts/audit/release_index_policy_report.json",
                     "release/update_resolver.py",
                     "tools/release/release_index_policy_common.py",
                 ],

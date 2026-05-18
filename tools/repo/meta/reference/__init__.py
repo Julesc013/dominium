@@ -1,6 +1,6 @@
 """META-REF0 exports."""
 
-from meta.reference.reference_engine import (
+from tools.repo.meta.reference.reference_engine import (
     REFERENCE_STUB_STATUS,
     build_reference_run_record_row,
     evaluate_reference_compiled_model_verify,

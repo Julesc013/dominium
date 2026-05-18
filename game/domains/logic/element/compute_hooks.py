@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Mapping
 
-from meta.compute import request_compute
+from tools.repo.meta.compute import request_compute
 from game.domains.systems import state_vector_definition_rows_by_owner
 
 

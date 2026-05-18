@@ -9,13 +9,13 @@ import subprocess
 import sys
 from typing import Iterable, List, Mapping, Sequence
 
-from compat import (
+from tools.validators.compatibility import (
     build_default_endpoint_descriptor,
     build_endpoint_descriptor,
     negotiate_endpoint_descriptors,
     verify_negotiation_record,
 )
-from compat.capability_negotiation import semantic_contract_rows_by_category
+from tools.validators.compatibility.capability_negotiation import semantic_contract_rows_by_category
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

@@ -32,7 +32,7 @@ def run(graph, repo_root, changed_files=None):
                 category="governance.missing_governance_profile_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/governance/governance_profile.json",
+                file_path=rel_path or "content/data/governance/governance_profile.json",
                 evidence=[
                     str(item.get("code", "")).strip() or "governance_profile_missing",
                     str(item.get("message", "")).strip() or "release artifacts are missing governance profile linkage",
@@ -41,7 +41,7 @@ def run(graph, repo_root, changed_files=None):
                 recommended_action="PUBLISH_GOVERNANCE_PROFILE_AND_RECORD_ITS_HASH_IN_RELEASE_INDEX_AND_BUNDLE_METADATA",
                 related_invariants=[RULE_PROFILE],
                 related_paths=[
-                    rel_path or "data/governance/governance_profile.json",
+                    rel_path or "content/data/governance/governance_profile.json",
                     "tools/release/update_model_common.py",
                     "tools/setup/setup_cli.py",
                 ],

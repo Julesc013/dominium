@@ -22,7 +22,7 @@ No feature series may be accepted without explicit RWAM mapping and substrate/ti
 Every new series must provide, at minimum:
 
 1. RWAM mapping
-- map to one or more canonical affordance IDs from `data/meta/real_world_affordance_matrix.json`
+- map to one or more canonical affordance IDs from `contracts/meta/real_world_affordance_matrix.json`
 - declare coverage as implemented or planned
 
 2. Substrate mapping

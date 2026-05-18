@@ -54,9 +54,9 @@
     "server/net/dom_server_protocol.h",
     "server/shard/dom_shard_lifecycle.h",
     "server/shard/dom_cross_shard_log.h",
-    "data/registries/net_replication_policy_registry.json",
-    "data/registries/provenance_classification_registry.json",
-    "data/registries/provenance_event_type_registry.json"
+    "contracts/registry/net_replication_policy_registry.json",
+    "contracts/registry/provenance_classification_registry.json",
+    "contracts/registry/provenance_event_type_registry.json"
   ],
   "proof_only_guardrails": [
     "rehearsal_only_or_proof_only_unless_later_checkpoint_changes_it",

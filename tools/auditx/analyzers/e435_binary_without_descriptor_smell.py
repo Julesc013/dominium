@@ -13,7 +13,7 @@ REQUIRED_TOKENS = {
         "binary_hash",
         "endpoint_descriptor_hash",
     ),
-    "lib/install/install_validator.py": (
+    "tools/libraries/install/install_validator.py": (
         "descriptor_ref",
         "endpoint_descriptor_hash",
         "REFUSAL_INSTALL_HASH_MISMATCH",

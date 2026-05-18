@@ -18,13 +18,13 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/compat/migration_lifecycle.py`
+- `src/tools/validators/compatibility/migration_lifecycle.py`
 - `tools/xstack/testx/tests/migration_lifecycle_testlib.py`
 
 ## Scorecard
 
 - `tools/xstack/testx/tests/migration_lifecycle_testlib.py` disposition=`canonical` rank=`1` total_score=`71.08` risk=`HIGH`
-- `src/compat/migration_lifecycle.py` disposition=`quarantine` rank=`2` total_score=`70.48` risk=`HIGH`
+- `src/tools/validators/compatibility/migration_lifecycle.py` disposition=`quarantine` rank=`2` total_score=`70.48` risk=`HIGH`
 
 ## Usage Sites
 

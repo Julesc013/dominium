@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # TRUST_BELIEF_BASELINE
 
-Status: BASELINE  
-Last Updated: 2026-03-03  
+Status: BASELINE
+Last Updated: 2026-03-03
 Scope: SIG-5 deterministic trust graph and belief dynamics.
 
 ## 1) Trust Graph Model

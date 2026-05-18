@@ -201,28 +201,28 @@ def run_compile(args: argparse.Namespace) -> Dict[str, object]:
 
     blueprint_registry, blueprint_registry_error = _load_registry_payload(
         repo_root,
-        "data/registries/blueprint_registry.json",
+        "contracts/registry/blueprint_registry.json",
         required=True,
     )
     if blueprint_registry_error:
         return blueprint_registry_error
     part_class_registry, part_class_registry_error = _load_registry_payload(
         repo_root,
-        "data/registries/part_class_registry.json",
+        "contracts/registry/part_class_registry.json",
         required=True,
     )
     if part_class_registry_error:
         return part_class_registry_error
     connection_type_registry, connection_type_registry_error = _load_registry_payload(
         repo_root,
-        "data/registries/connection_type_registry.json",
+        "contracts/registry/connection_type_registry.json",
         required=True,
     )
     if connection_type_registry_error:
         return connection_type_registry_error
     material_class_registry, _material_error = _load_registry_payload(
         repo_root,
-        "data/registries/material_class_registry.json",
+        "contracts/registry/material_class_registry.json",
         required=False,
     )
 

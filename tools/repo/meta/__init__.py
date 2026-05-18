@@ -1,6 +1,6 @@
 """Meta subsystem package."""
 
-from meta.compile import (
+from tools.repo.meta.compile import (
     REFUSAL_COMPILE_INVALID,
     REFUSAL_COMPILE_MISSING_PROOF,
     REFUSAL_COMPILE_SOURCE_MISSING,
@@ -9,18 +9,18 @@ from meta.compile import (
     compiled_model_is_valid,
     evaluate_compile_request,
 )
-from meta.instrumentation import (
+from tools.repo.meta.instrumentation import (
     generate_measurement_observation,
     resolve_instrumentation_surface,
     route_forensics_request,
     validate_control_access,
 )
-from meta.profile import (
+from tools.repo.meta.profile import (
     apply_override,
     resolve_effective_profile_snapshot,
     resolve_profile,
 )
-from meta.compute import (
+from tools.repo.meta.compute import (
     REFUSAL_COMPUTE_BUDGET_EXCEEDED,
     REFUSAL_COMPUTE_INVALID_OWNER,
     REFUSAL_COMPUTE_MEMORY_EXCEEDED,
@@ -30,13 +30,13 @@ from meta.compute import (
 
 
 def evaluate_reference_evaluator(*args, **kwargs):
-    from meta.reference import evaluate_reference_evaluator as _evaluate_reference_evaluator
+    from tools.repo.meta.reference import evaluate_reference_evaluator as _evaluate_reference_evaluator
 
     return _evaluate_reference_evaluator(*args, **kwargs)
 
 
 def evaluate_reference_suite(*args, **kwargs):
-    from meta.reference import evaluate_reference_suite as _evaluate_reference_suite
+    from tools.repo.meta.reference import evaluate_reference_suite as _evaluate_reference_suite
 
     return _evaluate_reference_suite(*args, **kwargs)
 

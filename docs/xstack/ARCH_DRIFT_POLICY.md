@@ -19,14 +19,14 @@ Intentional architecture and repository-structure change requires deliberate pro
 
 ## New Modules
 
-1. update `data/architecture/module_registry.v1.json`
-2. update `data/architecture/architecture_graph.v1.json`
-3. update `data/architecture/repository_structure_lock.json` if a new top-level root is involved
+1. update `contracts/registry/architecture/module_registry.v1.json`
+2. update `content/data/architecture/architecture_graph.v1.json`
+3. update `content/data/architecture/repository_structure_lock.json` if a new top-level root is involved
 4. pass `STRICT` and `FULL`
 
 ## New Dependencies
 
-1. update `data/architecture/module_boundary_rules.v1.json`
+1. update `content/data/architecture/module_boundary_rules.v1.json`
 2. preserve constitutional architecture
 3. pass `STRICT` and `FULL`
 

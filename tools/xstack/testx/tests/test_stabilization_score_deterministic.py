@@ -30,7 +30,7 @@ def run(repo_root: str):
     )
     from game.domains.processes.maturity.maturity_engine import compute_stabilization_score
 
-    registry = _load_json(repo_root, "data/registries/stabilization_policy_registry.json")
+    registry = _load_json(repo_root, "contracts/registry/stabilization_policy_registry.json")
     policy = dict(stabilization_policy_rows_by_id(registry).get("stab.default") or {})
     if not policy:
         return {"status": "fail", "message": "missing stab.default policy row"}

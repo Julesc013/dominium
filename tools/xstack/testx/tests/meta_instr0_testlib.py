@@ -20,14 +20,14 @@ def _load_json(repo_root: str, rel_path: str) -> dict:
 def instrumentation_inputs(repo_root: str) -> dict:
     return {
         "instrumentation_surface_registry_payload": _load_json(
-            repo_root, "data/registries/instrumentation_surface_registry.json"
+            repo_root, "contracts/registry/instrumentation_surface_registry.json"
         ),
-        "access_policy_registry_payload": _load_json(repo_root, "data/registries/access_policy_registry.json"),
+        "access_policy_registry_payload": _load_json(repo_root, "contracts/registry/access_policy_registry.json"),
         "measurement_model_registry_payload": _load_json(
-            repo_root, "data/registries/measurement_model_registry.json"
+            repo_root, "contracts/registry/measurement_model_registry.json"
         ),
         "explain_contract_registry_payload": _load_json(
-            repo_root, "data/registries/explain_contract_registry.json"
+            repo_root, "contracts/registry/explain_contract_registry.json"
         ),
     }
 
@@ -56,7 +56,7 @@ def run_measurement_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.instrumentation import generate_measurement_observation
+    from tools.repo.meta.instrumentation import generate_measurement_observation
 
     payloads = instrumentation_inputs(repo_root)
     return generate_measurement_observation(
@@ -88,7 +88,7 @@ def run_forensics_case(
 ) -> dict:
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
-    from meta.instrumentation import route_forensics_request
+    from tools.repo.meta.instrumentation import route_forensics_request
 
     payloads = instrumentation_inputs(repo_root)
     return route_forensics_request(

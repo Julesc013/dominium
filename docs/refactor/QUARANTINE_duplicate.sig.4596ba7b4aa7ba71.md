@@ -18,13 +18,13 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/compat/descriptor/descriptor_engine.py`
+- `src/tools/validators/compatibility/descriptor/descriptor_engine.py`
 - `tools/mvp/toolchain_matrix_common.py`
 
 ## Scorecard
 
 - `tools/mvp/toolchain_matrix_common.py` disposition=`canonical` rank=`1` total_score=`61.04` risk=`HIGH`
-- `src/compat/descriptor/descriptor_engine.py` disposition=`quarantine` rank=`2` total_score=`52.55` risk=`HIGH`
+- `src/tools/validators/compatibility/descriptor/descriptor_engine.py` disposition=`quarantine` rank=`2` total_score=`52.55` risk=`HIGH`
 
 ## Usage Sites
 

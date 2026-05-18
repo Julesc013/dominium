@@ -34,5 +34,5 @@ Replacement Target: patched document aligned to current canon ownership and rele
 ## Exemptions
 
 - Core invariants are non-exemptable.
-- Non-core exemptions use `@repox:allow(<rule_id>) reason="..." expires="YYYY-MM-DD"` or `repo/repox/repox_exemptions.json`.
+- Non-core exemptions use `@repox:allow(<rule_id>) reason="..." expires="YYYY-MM-DD"` or `contracts/repo/repox/repox_exemptions.json`.
 - Missing reason, missing expiry, or expired entries fail RepoX.

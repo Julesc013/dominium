@@ -32,10 +32,10 @@ from tools.review.xi4z_fix2_common import (  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_sha256  # noqa: E402
 
 
-SRC_DOMAIN_MAPPING_LOCK_APPROVED_V4_REL = "data/restructure/src_domain_mapping_lock_approved_v4.json"
-XI5_READINESS_CONTRACT_V4_REL = "data/restructure/xi5_readiness_contract_v4.json"
-SRC_DOMAIN_MAPPING_TARGET_PATHS_V4_REL = "data/restructure/src_domain_mapping_target_paths_v4.json"
-XI4Z_FIX3_REPORT_JSON_REL = "data/restructure/xi4z_fix3_report.json"
+SRC_DOMAIN_MAPPING_LOCK_APPROVED_V4_REL = "content/data/restructure/src_domain_mapping_lock_approved_v4.json"
+XI5_READINESS_CONTRACT_V4_REL = "contracts/restructure/xi5_readiness_contract_v4.json"
+SRC_DOMAIN_MAPPING_TARGET_PATHS_V4_REL = "content/data/restructure/src_domain_mapping_target_paths_v4.json"
+XI4Z_FIX3_REPORT_JSON_REL = "content/data/restructure/xi4z_fix3_report.json"
 
 XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT_REL = "docs/restructure/XI_4Z_SHADOW_ROOT_RESOLUTION_REPORT.md"
 XI_4Z_FIX3_FINAL_REL = "docs/audit/XI_4Z_FIX3_FINAL.md"
@@ -60,7 +60,7 @@ FIX3_OUTPUT_RELS = (
 DANGEROUS_SHADOW_PREFIXES = ("app/src/", "src/")
 MISSING_PACKAGE_INIT_TARGETS = {
     "apps/client/interaction/__init__.py": "apps/client/interaction/__init__.py",
-    "lib/store/__init__.py": "lib/store/__init__.py",
+    "tools/libraries/store/__init__.py": "tools/libraries/store/__init__.py",
 }
 RESERVED_PACKAGE_TARGETS = ("engine/platform/", "engine/time/")
 
@@ -294,8 +294,8 @@ def _build_json_payloads(repo_root: str, inputs: Mapping[str, object]) -> dict[s
     counts = _counts(lock_v4)
     readiness_v4 = {
         "allowed_actions": [
-            "move only rows listed in data/restructure/src_domain_mapping_lock_approved_v4.json approved_for_xi5 using their explicit source_path and target_path values",
-            "route only rows listed in data/restructure/src_domain_mapping_lock_approved_v4.json approved_to_attic using their explicit source_path and target_path values",
+            "move only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v4.json approved_for_xi5 using their explicit source_path and target_path values",
+            "route only rows listed in content/data/restructure/src_domain_mapping_lock_approved_v4.json approved_to_attic using their explicit source_path and target_path values",
             "update include paths and build references only for explicitly listed dangerous shadow-root rows",
             "refuse if additional unmapped runtime-critical source-like paths are encountered inside top-level src/ or app/src/",
         ],

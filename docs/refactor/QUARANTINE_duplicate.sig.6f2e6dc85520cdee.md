@@ -18,15 +18,15 @@ Replacement Target: XI-4b manual review resolution
 
 ## Competing Files
 
-- `src/lib/store/__init__.py`
-- `src/lib/store/gc_engine.py`
+- `src/tools/libraries/store/__init__.py`
+- `src/engine/store/gc_engine.py`
 - `tools/xstack/testx/tests/store_gc_testlib.py`
 
 ## Scorecard
 
 - `tools/xstack/testx/tests/store_gc_testlib.py` disposition=`canonical` rank=`1` total_score=`67.51` risk=`HIGH`
-- `src/lib/store/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.79` risk=`HIGH`
-- `src/lib/store/gc_engine.py` disposition=`merge` rank=`3` total_score=`56.96` risk=`HIGH`
+- `src/tools/libraries/store/__init__.py` disposition=`quarantine` rank=`2` total_score=`66.79` risk=`HIGH`
+- `src/engine/store/gc_engine.py` disposition=`merge` rank=`3` total_score=`56.96` risk=`HIGH`
 
 ## Usage Sites
 

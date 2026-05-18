@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,15 +8,15 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # REAL_DATA_INTEGRATION_REPORT
 
-Version: 1.0.0  
-Date: 2026-02-15  
-Scope: Prompt 18/20 deterministic real-data integration (SPICE + SRTM)  
+Version: 1.0.0
+Date: 2026-02-15
+Scope: Prompt 18/20 deterministic real-data integration (SPICE + SRTM)
 Binding refs: `AGENTS.md`, `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `docs/worldgen/REAL_DATA_IMPORT_PIPELINE.md`
 
 ## 1. Summary
 
-Prompt 18 real-data integration is implemented and validated under `STRICT` without changing simulation semantics.  
-SPICE source data feeds deterministic Sol ephemeris derived artifacts; SRTM source data feeds deterministic Earth tile-pyramid derived artifacts.  
+Prompt 18 real-data integration is implemented and validated under `STRICT` without changing simulation semantics.
+SPICE source data feeds deterministic Sol ephemeris derived artifacts; SRTM source data feeds deterministic Earth tile-pyramid derived artifacts.
 Registry compile, lockfile enforcement, ROI tile selection, packaging, and cache behavior remain deterministic.
 
 ## 2. Source Pack Integration

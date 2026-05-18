@@ -3,7 +3,7 @@ Last Reviewed: 2026-04-02
 Supersedes: none
 Superseded By: none
 Version: 1.0.0
-Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `specs/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, and `specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0.
+Compatibility: Bound to `docs/canon/constitution_v1.md` v1.0.0, `docs/canon/glossary_v1.md` v1.0.0, `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md` v1.0.0, `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md` v1.0.0, `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md` v1.0.0, and `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md` v1.0.0.
 Stability: stable
 Future Series: Λ-4, Λ-5, Λ-6, Σ, Φ
 Replacement Target: later domain constitutions and bridge constitutions must instantiate this framework rather than replace it
@@ -302,10 +302,10 @@ Any future change to the meaning of ascent, descent, or their relation to ladder
 - `docs/canon/constitution_v1.md`
 - `docs/canon/glossary_v1.md`
 - `AGENTS.md`
-- `specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
-- `specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
-- `specs/reality/SPEC_CAPABILITY_SURFACES.md`
-- `specs/reality/SPEC_REPRESENTATION_LADDERS.md`
+- `docs/specs/reality/SPEC_DOMINIUM_UNIVERSAL_REALITY_FRAMEWORK.md`
+- `docs/specs/reality/SPEC_DOMAIN_CONTRACT_TEMPLATE.md`
+- `contracts/abi/reality/SPEC_CAPABILITY_SURFACES.md`
+- `docs/specs/reality/SPEC_REPRESENTATION_LADDERS.md`
 - `docs/worldgen/CIVILIZATIONS_AND_HISTORY_BASELINE.md`
 - `docs/worldgen/REFINEMENT_CONTRACT.md`
 - `docs/worldgen/REFINEMENT_LATTICE.md`

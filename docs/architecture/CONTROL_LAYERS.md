@@ -102,7 +102,7 @@ Control support is expressed exclusively as capabilities.
 Canonical keys are data-driven and stored in:
 
 
-`data/registries/control_capabilities.registry`
+`contracts/registry/control_capabilities.registry`
 
 
 

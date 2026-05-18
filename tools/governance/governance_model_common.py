@@ -6,7 +6,7 @@ import json
 import os
 from typing import Mapping
 
-from governance import (
+from tools.governance import (
     ARCHIVE_POLICY_ID,
     DEFAULT_GOVERNANCE_MODE_REGISTRY_REL,
     DEFAULT_GOVERNANCE_PROFILE_REL,
@@ -21,7 +21,7 @@ from governance import (
     load_governance_profile,
     parse_release_tag,
 )
-from meta.stability import build_stability_marker
+from tools.validators.stability import build_stability_marker
 from release import DEFAULT_RELEASE_INDEX_REL, load_release_index
 from tools.dist.dist_tree_common import build_dist_tree
 from tools.release.update_model_common import build_update_model_report

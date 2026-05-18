@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # POLL-2 Retro-Consistency Audit
 
-Date: 2026-03-05  
+Date: 2026-03-05
 Scope: Exposure accumulation, measurement epistemics, and compliance/reporting integration over POLL-1 deterministic dispersion baseline.
 
 ## Inputs Audited

@@ -34,7 +34,7 @@ def run(graph, repo_root, changed_files=None):
                 category="dist.missing_remediation_hint_smell",
                 severity="RISK",
                 confidence=0.99,
-                file_path=rel_path or "data/audit/dist5_ux_smoke.json",
+                file_path=rel_path or "content/data/audit/dist5_ux_smoke.json",
                 evidence=[
                     code,
                     str(item.get("message", "")).strip() or "user-facing refusal is missing a remediation hint",
@@ -42,7 +42,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_STABLE_REMEDIATION_HINT_TO_REFUSAL_SURFACE",
                 related_invariants=[str(item.get("rule_id", "")).strip() or "INV-REFUSALS-MUST-HAVE-REMEDIATION"],
-                related_paths=[rel_path or "data/audit/dist5_ux_smoke.json", "tools/dist/ux_smoke_common.py"],
+                related_paths=[rel_path or "content/data/audit/dist5_ux_smoke.json", "tools/dist/ux_smoke_common.py"],
             )
         )
     return findings

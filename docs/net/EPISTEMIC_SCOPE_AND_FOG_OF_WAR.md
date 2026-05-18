@@ -36,8 +36,8 @@ Perceived derivation contract:
 
 Policies are data-defined under:
 
-- `data/registries/epistemic_policy_registry.json`
-- `data/registries/retention_policy_registry.json`
+- `contracts/registry/epistemic_policy_registry.json`
+- `contracts/registry/retention_policy_registry.json`
 
 ## Deterministic Fog of War
 

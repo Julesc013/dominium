@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,8 +8,8 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # META-GENRE0 Retro-Consistency Audit
 
-Status: AUDIT  
-Last Updated: 2026-03-07  
+Status: AUDIT
+Last Updated: 2026-03-07
 Scope: Player Demand Coverage Matrix (PDCM) constitution and XStack linkage.
 
 ## Audit Findings

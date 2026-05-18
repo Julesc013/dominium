@@ -18,8 +18,8 @@ if REPO_ROOT_HINT not in sys.path:
 from runtime.appshell import appshell_main  # noqa: E402
 from runtime.appshell.pack_verifier_adapter import verify_pack_root  # noqa: E402
 from runtime.appshell.paths import VROOT_INSTALL, VROOT_SAVES, get_current_virtual_paths, vpath_resolve_existing  # noqa: E402
-from compat import descriptor_json_text, emit_product_descriptor  # noqa: E402
-from lib.install import default_install_registry_path, discover_install  # noqa: E402
+from tools.validators.compatibility import descriptor_json_text, emit_product_descriptor  # noqa: E402
+from tools.libraries.install import default_install_registry_path, discover_install  # noqa: E402
 from release import (  # noqa: E402
     DEFAULT_RELEASE_MANIFEST_REL,
     DEFAULT_INSTALL_PROFILE_ID,

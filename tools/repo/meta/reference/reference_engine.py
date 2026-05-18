@@ -4,15 +4,15 @@ from __future__ import annotations
 
 from typing import Dict, Iterable, List, Mapping, Sequence
 
-from meta.compile import compiled_model_rows_by_id, equivalence_proof_rows_by_id
-from meta.numeric import tolerance_abs_for_quantity
-from meta.reference.geo_small_reference import (
+from tools.repo.meta.compile import compiled_model_rows_by_id, equivalence_proof_rows_by_id
+from tools.repo.meta.numeric import tolerance_abs_for_quantity
+from tools.repo.meta.reference.geo_small_reference import (
     evaluate_reference_metric_distance_small,
     evaluate_reference_neighborhood_small,
     evaluate_reference_overlay_merge_small,
 )
-from meta.reference.logic_small_reference import evaluate_reference_logic_eval_small
-from models import (
+from tools.repo.meta.reference.logic_small_reference import evaluate_reference_logic_eval_small
+from tools.models import (
     evaluate_model_bindings,
     normalize_constitutive_model_rows,
     normalize_model_binding_rows,

@@ -95,7 +95,7 @@
         {
           "domain_id": "domain.navigation",
           "pack_id": "pack.domain.navigation",
-          "path": "packs/domain/pack.domain.navigation/data/domain.navigation.json",
+          "path": "content/packs/domain/pack.domain.navigation/data/domain.navigation.json",
           "declared_version": "1.0.0"
         }
       ],

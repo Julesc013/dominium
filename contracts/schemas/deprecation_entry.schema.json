@@ -88,9 +88,9 @@
   "examples": [
     {
       "schema_version": "1.0.0",
-      "deprecated_id": "data/registries/deprecation_registry.json",
+      "deprecated_id": "contracts/registry/deprecation_registry.json",
       "deprecated_kind": "registry",
-      "replacement_id": "data/governance/deprecations.json",
+      "replacement_id": "content/data/governance/deprecations.json",
       "reason": "ARCH4 governance registry supersedes legacy deprecation registry location",
       "introduced_version": "1.0.0",
       "deprecated_version": "1.0.0",

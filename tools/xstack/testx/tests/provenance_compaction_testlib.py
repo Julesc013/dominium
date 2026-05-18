@@ -9,7 +9,7 @@ from typing import Dict, List
 
 
 def read_provenance_classification_rows(repo_root: str) -> List[dict]:
-    rel_path = "data/registries/provenance_classification_registry.json"
+    rel_path = "contracts/registry/provenance_classification_registry.json"
     abs_path = os.path.join(repo_root, rel_path.replace("/", os.sep))
     payload = json.load(open(abs_path, "r", encoding="utf-8"))
     rows = list((dict(payload.get("record") or {})).get("provenance_classifications") or [])

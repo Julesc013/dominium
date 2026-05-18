@@ -18,8 +18,8 @@ from game.domains.logic.network.instrumentation_binding import (
     observe_logic_network_node,
 )
 from game.domains.logic.signal import normalize_signal_store_state, observe_signal_row
-from meta.explain import build_explain_artifact, normalize_explain_artifact_rows
-from meta.instrumentation import generate_measurement_observation
+from tools.repo.meta.explain import build_explain_artifact, normalize_explain_artifact_rows
+from tools.repo.meta.instrumentation import generate_measurement_observation
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 from .compute_hooks import request_logic_debug_compute

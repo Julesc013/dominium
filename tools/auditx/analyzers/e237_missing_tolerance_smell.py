@@ -16,8 +16,8 @@ class MissingToleranceSmell:
 
 
 WATCH_PREFIXES = (
-    "data/registries/quantity_registry.json",
-    "data/registries/quantity_tolerance_registry.json",
+    "contracts/registry/quantity_registry.json",
+    "contracts/registry/quantity_tolerance_registry.json",
 )
 
 
@@ -54,8 +54,8 @@ def run(graph, repo_root, changed_files=None):
     del graph
     del changed_files
 
-    quantity_rel = "data/registries/quantity_registry.json"
-    tolerance_rel = "data/registries/quantity_tolerance_registry.json"
+    quantity_rel = "contracts/registry/quantity_registry.json"
+    tolerance_rel = "contracts/registry/quantity_tolerance_registry.json"
     quantity_payload = _read_json(repo_root, quantity_rel)
     tolerance_payload = _read_json(repo_root, tolerance_rel)
     quantity_ids = _quantity_ids(quantity_payload)

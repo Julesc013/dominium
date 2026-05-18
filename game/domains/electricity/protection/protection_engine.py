@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping, Tuple
 
-from safety.safety_engine import build_safety_event, build_safety_instance
+from tools.validators.safety.safety_engine import build_safety_event, build_safety_instance
 from tools.xstack.compatx.canonical_json import canonical_sha256
 
 

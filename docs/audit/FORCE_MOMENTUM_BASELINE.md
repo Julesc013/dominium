@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # FORCE & MOMENTUM BASELINE (PHYS-1)
 
-Date: 2026-03-04  
+Date: 2026-03-04
 Scope: PHYS-1 deterministic force/momentum substrate across process runtime, model coupling, proof hooks, and enforcement scaffolding.
 
 ## 1) Momentum State Model

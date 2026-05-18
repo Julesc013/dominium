@@ -13,14 +13,14 @@ if REPO_ROOT_HINT not in sys.path:
     sys.path.insert(0, REPO_ROOT_HINT)
 
 
-from meta.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries  # noqa: E402
+from tools.validators.stability import ALL_REGISTRY_PATHS, registry_entry_rows, validate_all_registries  # noqa: E402
 from tools.xstack.compatx.canonical_json import canonical_sha256  # noqa: E402
 
 
 MVP_SCOPE_LOCK_PATH = "docs/release/MVP_SCOPE_LOCK.md"
 FROZEN_INVARIANTS_PATH = "docs/release/FROZEN_INVARIANTS_v0_0_0.md"
 PROVISIONAL_FEATURE_LIST_PATH = "docs/release/PROVISIONAL_FEATURE_LIST.md"
-SEMANTIC_CONTRACT_REGISTRY_PATH = "data/registries/semantic_contract_registry.json"
+SEMANTIC_CONTRACT_REGISTRY_PATH = "contracts/registry/semantic_contract_registry.json"
 
 FROZEN_SEMANTIC_CONTRACT_REGISTRY_HASH = "55bef1f0337c3a311cc5a30c8880715bffbf93d93eb64c24cc2f1d7f86b1df94"
 FROZEN_ALLOWED_FUTURE_SERIES = (

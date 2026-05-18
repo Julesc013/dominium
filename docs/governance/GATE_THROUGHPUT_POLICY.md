@@ -41,7 +41,7 @@ Invariants, determinism, and canonical enforcement remain mandatory.
 
 ## Escalation Rules
 
-Escalation is data-defined in `data/registries/gate_policy.json`.
+Escalation is data-defined in `contracts/registry/gate_policy.json`.
 
 - `FAST -> STRICT` when changed paths include:
   - `schema/**`
@@ -127,7 +127,7 @@ Live events include:
 
 - `gate.py verify|strict|full|doctor` must not modify tracked files.
 - these commands may only write under `.xstack_cache/` (or workspace temp roots).
-- `gate.py snapshot` is the only command allowed to update tracked `docs/audit/**` artifacts, and only for entries marked `commit_policy=SNAPSHOT_ONLY` in `data/registries/derived_artifacts.json`.
+- `gate.py snapshot` is the only command allowed to update tracked `docs/audit/**` artifacts, and only for entries marked `commit_policy=SNAPSHOT_ONLY` in `contracts/registry/derived_artifacts.json`.
 - each gate run emits `.xstack_cache/gate/TOUCHED_FILES_MANIFEST.json` for enforcement and diagnostics.
 
 ## Structural Bounding
@@ -142,7 +142,7 @@ FULL mode is bounded by architecture, not timeouts:
 ## TestX Monolith Policy
 
 - `testx_all` is treated as CI/legacy-only.
-- Gate profiles route through sharded groups in `data/registries/testx_groups.json`.
+- Gate profiles route through sharded groups in `contracts/registry/testx_groups.json`.
 - Local development should use `gate.py verify|strict|full`.
 
 ## Repo Health Snapshot
@@ -160,7 +160,7 @@ FULL mode is bounded by architecture, not timeouts:
 - `tools/xstack/core/cache_store.py`
 - `tools/xstack/core/impact_graph.py`
 - `tools/xstack/core/merkle_tree.py`
-- `data/registries/gate_policy.json`
-- `data/registries/testx_groups.json`
-- `data/registries/auditx_groups.json`
-- `data/registries/xstack_components.json`
+- `contracts/registry/gate_policy.json`
+- `contracts/registry/testx_groups.json`
+- `contracts/registry/auditx_groups.json`
+- `contracts/registry/xstack_components.json`

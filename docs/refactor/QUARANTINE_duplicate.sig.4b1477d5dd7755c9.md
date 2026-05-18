@@ -12,21 +12,21 @@ Replacement Target: XI-4b manual review resolution
 - Cluster Kind: `exact`
 - Cluster Resolution: `quarantine`
 - Risk Level: `MED`
-- Canonical Candidate: `src/control/effects/__init__.py`
+- Canonical Candidate: `src/tools/governance/effects/__init__.py`
 - Quarantine Reasons: `phase_boundary_deferred, planned_quarantine, requires_medium_risk_batch_gate`
 - Planned Action Kinds: `merge, rewire, deprecate, quarantine`
 
 ## Competing Files
 
 - `src/control/__init__.py`
-- `src/control/effects/__init__.py`
-- `src/control/effects/effect_engine.py`
+- `src/tools/governance/effects/__init__.py`
+- `src/tools/governance/effects/effect_engine.py`
 
 ## Scorecard
 
-- `src/control/effects/__init__.py` disposition=`canonical` rank=`1` total_score=`68.93` risk=`MED`
+- `src/tools/governance/effects/__init__.py` disposition=`canonical` rank=`1` total_score=`68.93` risk=`MED`
 - `src/control/__init__.py` disposition=`quarantine` rank=`2` total_score=`59.88` risk=`HIGH`
-- `src/control/effects/effect_engine.py` disposition=`merge` rank=`3` total_score=`47.63` risk=`MED`
+- `src/tools/governance/effects/effect_engine.py` disposition=`merge` rank=`3` total_score=`47.63` risk=`MED`
 
 ## Usage Sites
 

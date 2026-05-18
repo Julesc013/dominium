@@ -8,7 +8,7 @@ Future Series: DOC-ARCHIVE
 Replacement Target: legacy reference surface retained without current binding authority
 
 Touched Paths:
-- data/meta/real_world_affordance_matrix.json
+- contracts/meta/real_world_affordance_matrix.json
 - docs/audit/WORKTREE_LEFTOVERS.md
 - schema/meta/coupling_evaluation_record.schema
 - process/software/pipeline_engine.py

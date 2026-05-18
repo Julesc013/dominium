@@ -154,14 +154,14 @@
       "docs/release/ARTIFACT_NAMING_CHANGELOG_TARGET_POLICY.md",
       "docs/release/VERSIONING_CONSTITUTION.md",
       "docs/release/RELEASE_CONTRACT_PROFILE.md",
-      "data/release/artifact_naming_changelog_target_registry.json",
+      "contracts/registry/release/artifact_naming_changelog_target_registry.json",
       "target and product registries",
       "release contract profiles and later release-state artifacts that explicitly own machine truth"
     ],
     "derived_surfaces": [
       "filenames",
       "release notes prose",
-      "updates/changelog.json summaries",
+      "release/updates/changelog.json summaries",
       "checkpoint zip names",
       "generated bundle labels",
       "dist layout labels"
@@ -183,14 +183,14 @@
     "docs/release/RELEASE_NOTES_v0_0_0_mock.md",
     "docs/release/RELEASE_IDENTITY_CONSTITUTION.md",
     "docs/release/RELEASE_INDEX_MODEL.md",
-    "updates/changelog.json",
-    "data/registries/target_matrix_registry.json",
-    "data/registries/os_registry.json",
-    "data/registries/arch_registry.json",
-    "data/registries/platform_registry.json",
-    "data/registries/product_registry.json",
-    "data/registries/release_channel_registry.json",
-    "repo/release_policy.toml"
+    "release/updates/changelog.json",
+    "contracts/registry/target_matrix_registry.json",
+    "contracts/registry/os_registry.json",
+    "contracts/registry/arch_registry.json",
+    "contracts/registry/platform_registry.json",
+    "contracts/registry/product_registry.json",
+    "contracts/registry/release_channel_registry.json",
+    "contracts/repo/release_policy.toml"
   ],
   "ambiguities_eliminated": [
     "filenames do not define truth",

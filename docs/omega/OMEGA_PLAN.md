@@ -10,7 +10,7 @@ Replacement Target: Ω-11 locked mock release signoff and post-freeze polish arc
 
 Authoritative structural plan for the final MVP stabilization and distribution arc.
 Gate map: `docs/omega/OMEGA_GATES.md`
-Checklist registry: `data/registries/omega_artifact_registry.json`
+Checklist registry: `contracts/registry/omega_artifact_registry.json`
 
 ## Objectives
 

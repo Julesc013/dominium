@@ -6,15 +6,15 @@ import os
 from typing import Dict, Mapping, Tuple
 
 from game.domains.geology import build_default_overlay_manifest, overlay_proof_surface, validate_overlay_manifest_trust
-from modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
-from net.policies.policy_server_authoritative import (
+from tools.validators.modding import DEFAULT_MOD_POLICY_ID, proof_bundle_from_lockfile, validate_saved_mod_policy
+from tools.network.policies.policy_server_authoritative import (
     POLICY_ID_SERVER_AUTHORITATIVE,
     initialize_authoritative_runtime,
     prepare_server_authoritative_baseline,
     submit_client_intent,
 )
-from compat import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
-from compat.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
+from tools.validators.compatibility import COMPAT_MODE_READ_ONLY, REFUSAL_CONNECTION_NO_NEGOTIATION
+from tools.validators.compatibility.data_format_loader import load_versioned_artifact, stamp_artifact_metadata
 from game.domains.universe import (
     DEFAULT_UNIVERSE_CONTRACT_BUNDLE_REF,
     build_universe_contract_bundle_payload,
@@ -139,7 +139,7 @@ def load_server_config_registry(repo_root: str) -> Tuple[dict, dict]:
         return {}, _server_refusal(
             REFUSAL_SESSION_CONTRACT_MISMATCH,
             "server config registry is missing or invalid",
-            "Restore data/registries/server_config_registry.json and retry server boot.",
+            "Restore contracts/registry/server_config_registry.json and retry server boot.",
             details={"registry_path": SERVER_CONFIG_REGISTRY_REL},
             path="$.server_config_registry",
         )
@@ -202,7 +202,7 @@ def load_server_config(repo_root: str, server_config_id: str = DEFAULT_SERVER_CO
         return {}, _server_refusal(
             REFUSAL_SESSION_CONTRACT_MISMATCH,
             "requested server_config_id is not declared",
-            "Select a declared server_id from data/registries/server_config_registry.json.",
+            "Select a declared server_id from contracts/registry/server_config_registry.json.",
             details={"server_id": config_id},
             path="$.server_id",
         )

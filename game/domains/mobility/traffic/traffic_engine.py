@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Dict, List, Mapping
 
-from core.graph.network_graph_engine import normalize_network_graph
-from models.model_engine import (
+from tools.core.graph.network_graph_engine import normalize_network_graph
+from tools.models.model_engine import (
     compute_congestion_multiplier_permille as model_compute_congestion_multiplier_permille,
 )
-from models.model_engine import (
+from tools.models.model_engine import (
     compute_congestion_ratio_permille as model_compute_congestion_ratio_permille,
 )
 from tools.xstack.compatx.canonical_json import canonical_sha256

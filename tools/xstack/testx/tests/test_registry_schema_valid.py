@@ -24,17 +24,17 @@ def _read_registry(repo_root: str, rel_path: str):
 def run(repo_root: str):
     checks = (
         (
-            "data/registries/tier_contract_registry.json",
+            "contracts/registry/tier_contract_registry.json",
             "tier_contracts",
             ("contract_id", "subsystem_id", "supported_tiers", "deterministic_degradation_order", "cost_model_id"),
         ),
         (
-            "data/registries/coupling_contract_registry.json",
+            "contracts/registry/coupling_contract_registry.json",
             "coupling_contracts",
             ("contract_id", "coupling_class_id", "from_domain_id", "to_domain_id", "mechanism", "mechanism_id"),
         ),
         (
-            "data/registries/explain_contract_registry.json",
+            "contracts/registry/explain_contract_registry.json",
             "explain_contracts",
             ("contract_id", "event_kind_id", "explain_artifact_type_id", "required_inputs", "remediation_hint_keys"),
         ),

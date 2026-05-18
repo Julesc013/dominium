@@ -5,7 +5,7 @@ Superseded By: none
 Stability: stable
 Future Series: X-6, AIDE extraction review
 Replacement Target: later explicit portable capability-profile checkpoint or replacement artifact only
-Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `data/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `data/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `data/xstack/aide_policy_and_permission_shape.json`, `data/registries/capability_registry.json`, `data/registries/platform_capability_registry.json`, `data/registries/product_capability_defaults.json`, `data/registries/tool_capability_registry.json`, `data/registries/server_profile_registry.json`, `data/registries/law_profiles.json`, `data/registries/degrade_ladder_registry.json`, `data/registries/compat_mode_registry.json`, `data/registries/semantic_contract_registry.json`, `compat/descriptor/descriptor_engine.py`, `compat/capability_negotiation.py`, `appshell/ui_mode_selector.py`, `appshell/command_registry.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`, `validation/validation_engine.py`, `tools/xstack/testx/tests/test_required_cap_mismatch_refuses.py`, `tools/xstack/testx/tests/test_unknown_cap_ignored.py`, `tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py`
+Binding Sources: `docs/canon/constitution_v1.md`, `docs/canon/glossary_v1.md`, `AGENTS.md`, `.agentignore`, `docs/planning/AUTHORITY_ORDER.md`, `docs/planning/EXTEND_NOT_REPLACE_LEDGER.md`, `docs/planning/GATES_AND_PROOFS.md`, `docs/planning/MERGED_PROGRAM_STATE.md`, `docs/planning/CHECKPOINT_C_ZETA_MEGA_VALIDATION_AND_CLOSURE.md`, `docs/planning/NEXT_EXECUTION_ORDER_POST_ZETA.md`, `docs/audit/ULTRA_REPO_AUDIT_EXECUTIVE_SUMMARY.md`, `docs/audit/ULTRA_REPO_AUDIT_SYSTEM_INVENTORY.md`, `docs/audit/ULTRA_REPO_AUDIT_REUSE_AND_CONSOLIDATION_PLAN.md`, `docs/xstack/XSTACK_SCOPE_FREEZE.md`, `content/data/xstack/xstack_scope_freeze.json`, `docs/xstack/XSTACK_INVENTORY_AND_CLASSIFICATION.md`, `content/data/xstack/xstack_inventory_and_classification.json`, `docs/xstack/AIDE_PORTABLE_TASK_CONTRACT.md`, `contracts/xstack/aide_portable_task_contract.json`, `docs/xstack/AIDE_EVIDENCE_AND_REVIEW_CONTRACT.md`, `contracts/xstack/aide_evidence_and_review_contract.json`, `docs/xstack/AIDE_POLICY_AND_PERMISSION_SHAPE.md`, `contracts/xstack/aide_policy_and_permission_shape.json`, `contracts/registry/capability_registry.json`, `contracts/registry/platform_capability_registry.json`, `contracts/registry/product_capability_defaults.json`, `contracts/registry/tool_capability_registry.json`, `contracts/registry/server_profile_registry.json`, `contracts/registry/law_profiles.json`, `contracts/registry/degrade_ladder_registry.json`, `contracts/registry/compat_mode_registry.json`, `contracts/registry/semantic_contract_registry.json`, `tools/validators/compatibility/descriptor/descriptor_engine.py`, `tools/validators/compatibility/capability_negotiation.py`, `appshell/ui_mode_selector.py`, `appshell/command_registry.py`, `tools/launcher/launch.py`, `tools/setup/setup_cli.py`, `server/server_boot.py`, `server/net/loopback_transport.py`, `client/interaction/affordance_generator.py`, `tools/validators/validation/validation_engine.py`, `tools/xstack/testx/tests/test_required_cap_mismatch_refuses.py`, `tools/xstack/testx/tests/test_unknown_cap_ignored.py`, `tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py`
 
 # AIDE Capability Profile Shape
 
@@ -81,11 +81,11 @@ Canonical capability profile truth lives in contract-bearing profile rows, defau
 
 The live repo shows this shape through:
 
-- `data/registries/product_capability_defaults.json`
-- `data/registries/platform_capability_registry.json`
-- `data/registries/tool_capability_registry.json`
-- `data/registries/server_profile_registry.json`
-- `data/registries/law_profiles.json`
+- `contracts/registry/product_capability_defaults.json`
+- `contracts/registry/platform_capability_registry.json`
+- `contracts/registry/tool_capability_registry.json`
+- `contracts/registry/server_profile_registry.json`
+- `contracts/registry/law_profiles.json`
 
 These surfaces differ in ownership and portability, but they share a common declarative pattern:
 
@@ -104,11 +104,11 @@ Derived profile views are rendered summaries, selector tables, CLI help, status 
 
 Examples in the live repo include:
 
-- endpoint descriptors emitted by `compat/descriptor/descriptor_engine.py`
+- endpoint descriptors emitted by `tools/validators/compatibility/descriptor/descriptor_engine.py`
 - AppShell mode-selection status from `appshell/ui_mode_selector.py`
 - command descriptor help from `appshell/command_registry.py`
 - setup or launcher output in `tools/setup/setup_cli.py` and `tools/launcher/launch.py`
-- negotiation and validation reports in `compat/capability_negotiation.py` and `validation/validation_engine.py`
+- negotiation and validation reports in `tools/validators/compatibility/capability_negotiation.py` and `tools/validators/validation/validation_engine.py`
 
 These are useful integration surfaces.
 They are not the canonical profile truth.
@@ -143,9 +143,9 @@ A capability profile can be a bundle or composition that packages several declar
 
 The live repo already proves this shape through:
 
-- product defaults that combine feature, required, optional, protocol, contract-range, and degrade-ladder declarations in `data/registries/product_capability_defaults.json`
-- law profiles that combine grants, revocations, entitlements, intent family limits, and refusal codes in `data/registries/law_profiles.json`
-- server profiles that combine replication, anti-cheat, SecureX, law, and entitlement posture in `data/registries/server_profile_registry.json`
+- product defaults that combine feature, required, optional, protocol, contract-range, and degrade-ladder declarations in `contracts/registry/product_capability_defaults.json`
+- law profiles that combine grants, revocations, entitlements, intent family limits, and refusal codes in `contracts/registry/law_profiles.json`
+- server profiles that combine replication, anti-cheat, SecureX, law, and entitlement posture in `contracts/registry/server_profile_registry.json`
 
 Portable now:
 
@@ -268,16 +268,16 @@ Those are real later-AIDE or Dominium-runtime topics, but they are not part of t
 
 This contract freeze is based on live repo evidence rather than aspiration.
 
-- `data/registries/product_capability_defaults.json` proves that canonical profile rows already carry `feature_capabilities`, `required_capabilities`, `optional_capabilities`, `protocol_versions_supported`, `semantic_contract_versions_supported`, `degrade_ladders`, and `stability`. That directly supports `declared_capability_classes`, `required_dependencies`, `optional_dependencies`, `compatibility_notes`, `version_notes`, and `stability`.
-- `data/registries/platform_capability_registry.json` proves that platform rows already carry `platform_id`, `support_tier`, and explicit capability booleans. That is the repo-grounded reason to freeze support, conditional support, exclusion, and capability constraints separately from runtime activation.
-- `data/registries/tool_capability_registry.json` proves that capability-bearing rows can carry `capability_kind`, `required_entitlement_id`, `access_policy_id`, and allowed-process metadata. That supports `profile_kind`, `policy_permission_links`, `task_suitability`, and dependency fields.
-- `data/registries/capability_registry.json` proves that capability classes already have stable ids, descriptions, and stability markers, while many remain provisional. That is the repo-grounded reason to freeze capability-class references without claiming implementation completeness.
-- `data/registries/law_profiles.json` and `data/registries/server_profile_registry.json` prove that named profiles can bundle grants, revocations, entitlements, allowed or forbidden law posture, and refusal-bearing governance links. That supports bundle or composition semantics and explicit exclusions, while also showing why many such rows remain Dominium-retained.
-- `compat/descriptor/descriptor_engine.py` proves that endpoint descriptors are derived from canonical product defaults plus platform projection. That is the repo-grounded reason to keep canonical profile truth separate from descriptor emission and host-specific projection.
-- `compat/capability_negotiation.py` proves that runtime compatibility outcomes such as `compat.full`, `compat.degraded`, `compat.read_only`, and `compat.refuse` are derived from applying declarations, dependencies, and degrade ladders. That is the repo-grounded reason to exclude runtime resolution semantics from the portable profile shape.
+- `contracts/registry/product_capability_defaults.json` proves that canonical profile rows already carry `feature_capabilities`, `required_capabilities`, `optional_capabilities`, `protocol_versions_supported`, `semantic_contract_versions_supported`, `degrade_ladders`, and `stability`. That directly supports `declared_capability_classes`, `required_dependencies`, `optional_dependencies`, `compatibility_notes`, `version_notes`, and `stability`.
+- `contracts/registry/platform_capability_registry.json` proves that platform rows already carry `platform_id`, `support_tier`, and explicit capability booleans. That is the repo-grounded reason to freeze support, conditional support, exclusion, and capability constraints separately from runtime activation.
+- `contracts/registry/tool_capability_registry.json` proves that capability-bearing rows can carry `capability_kind`, `required_entitlement_id`, `access_policy_id`, and allowed-process metadata. That supports `profile_kind`, `policy_permission_links`, `task_suitability`, and dependency fields.
+- `contracts/registry/capability_registry.json` proves that capability classes already have stable ids, descriptions, and stability markers, while many remain provisional. That is the repo-grounded reason to freeze capability-class references without claiming implementation completeness.
+- `contracts/registry/law_profiles.json` and `contracts/registry/server_profile_registry.json` prove that named profiles can bundle grants, revocations, entitlements, allowed or forbidden law posture, and refusal-bearing governance links. That supports bundle or composition semantics and explicit exclusions, while also showing why many such rows remain Dominium-retained.
+- `tools/validators/compatibility/descriptor/descriptor_engine.py` proves that endpoint descriptors are derived from canonical product defaults plus platform projection. That is the repo-grounded reason to keep canonical profile truth separate from descriptor emission and host-specific projection.
+- `tools/validators/compatibility/capability_negotiation.py` proves that runtime compatibility outcomes such as `compat.full`, `compat.degraded`, `compat.read_only`, and `compat.refuse` are derived from applying declarations, dependencies, and degrade ladders. That is the repo-grounded reason to exclude runtime resolution semantics from the portable profile shape.
 - `appshell/ui_mode_selector.py` proves that explicit fallback from rendered mode to TUI or refusal is a deterministic selection result driven by runtime availability and fallback maps. That is derived activation state, not canonical profile truth.
 - `appshell/command_registry.py`, `tools/launcher/launch.py`, and `tools/setup/setup_cli.py` prove that command surfaces package integration behavior, install/update defaults, trust wiring, and activation flow around deeper profile declarations. That is why command surfaces stay outside the portable profile contract.
-- `validation/validation_engine.py` proves that negotiation and validation suites consume descriptors and negotiation records as evidence-bearing outputs. That supports explicit evidence/review linkage while keeping those reports derived.
+- `tools/validators/validation/validation_engine.py` proves that negotiation and validation suites consume descriptors and negotiation records as evidence-bearing outputs. That supports explicit evidence/review linkage while keeping those reports derived.
 - `tools/xstack/testx/tests/test_required_cap_mismatch_refuses.py` proves that required-capability mismatches are a first-class refusal shape.
 - `tools/xstack/testx/tests/test_unknown_cap_ignored.py` proves that unknown future capability tokens can be ignored deterministically rather than silently promoted into support.
 - `tools/xstack/testx/tests/test_cross_platform_caps_degrade_consistent.py` proves that conditional support and degrade outcomes are explicit and deterministic across platforms.

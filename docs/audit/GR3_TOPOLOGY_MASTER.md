@@ -1,4 +1,4 @@
-Status: DERIVED
+﻿Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # GR3 Topology Master
 
-Source artifact: `docs/audit/TOPOLOGY_MAP.json`  
+Source artifact: `docs/audit/TOPOLOGY_MAP.json`
 Generated via: `python tools/governance/tool_topology_generate.py --repo-root .`
 
 ## Snapshot

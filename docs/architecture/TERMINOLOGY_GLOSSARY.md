@@ -8,7 +8,7 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # Terminology Glossary
 
-Generated deterministically from `data/registries/glossary.json`.
+Generated deterministically from `contracts/registry/glossary.json`.
 
 ## Terms
 
