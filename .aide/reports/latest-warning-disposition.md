@@ -26,6 +26,7 @@ Current task: `MOVE-SCRIPT-00`.
 - Remaining excepted bad roots need deferred MOVE-BULK remediation.
 - NAME-00 path, directory, file, and language naming findings are warning-class current debt; they are not proof of cleanup completion.
 - MOVE-SCRIPT-00 skipped/deferred 172 tracked bad-root files that require import, identity, authority, ABI/build, or naming-risk review before any apply task.
+- Initial MOVE-SCRIPT-00 implementation commit `a4425775f` failed latest-commit policy because the message omitted `## Changelog`; it was not amended and is followed by a scoped policy-disposition commit.
 
 Next task: `MOVE-BULK-BG-REFINEMENT-00 - Re-Gate Deferred B-G Cleanup`.
 

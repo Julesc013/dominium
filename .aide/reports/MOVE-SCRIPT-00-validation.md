@@ -80,3 +80,9 @@ Full CTest was not run by scope; it remains governed by the TEST-PERF-01 sharded
 ## Generated Churn
 
 Strict layout validation refreshed `tools/migration/root_inventory.json` and `tools/migration/root_move_map.json` timestamp/SHA fields. Those generated metadata changes were restored because they are outside MOVE-SCRIPT-00 write scope.
+
+## Commit Check Disposition
+
+- Initial MOVE-SCRIPT-00 implementation commit `a4425775f` failed AIDE latest-commit policy because its message omitted the required `## Changelog` section.
+- The commit was not amended.
+- A scoped follow-up commit records this warning and uses the current structured commit format.
