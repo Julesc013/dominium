@@ -13,5 +13,5 @@ def ensure_repo_on_path(repo_root: str) -> None:
 
 
 def load_extension_registry(repo_root: str) -> dict:
-    path = os.path.join(repo_root, "data", "registries", "extension_interpretation_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "extension_interpretation_registry.json")
     return json.load(open(path, "r", encoding="utf-8"))

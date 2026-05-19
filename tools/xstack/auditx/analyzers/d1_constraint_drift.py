@@ -30,7 +30,7 @@ def _read_json(path: str) -> Tuple[Dict[str, object], str]:
 
 
 def _module_outputs(repo_root: str) -> Set[str]:
-    path = os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "worldgen_module_registry.json")
     payload, err = _read_json(path)
     if err:
         return set()
@@ -49,7 +49,7 @@ def _module_outputs(repo_root: str) -> Set[str]:
 
 
 def _constraints_registry_entries(repo_root: str) -> List[Dict[str, str]]:
-    path = os.path.join(repo_root, "data", "registries", "worldgen_constraints_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "worldgen_constraints_registry.json")
     payload, err = _read_json(path)
     if err:
         return []

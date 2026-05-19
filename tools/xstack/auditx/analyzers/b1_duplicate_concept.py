@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A1_DUPLICATE_CONCEPT"
-WATCH_PREFIXES = ("contracts/schema/", "data/registries/", "docs/")
+WATCH_PREFIXES = ("contracts/schema/", "contracts/registry/", "docs/")
 
 SCHEMA_ID_RE = re.compile(r"^\s*schema_id\s*:\s*([A-Za-z0-9_.-]+)\s*$", re.MULTILINE)
 

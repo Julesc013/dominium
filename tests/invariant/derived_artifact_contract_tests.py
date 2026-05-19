@@ -35,7 +35,7 @@ def _canonical_hash(path, artifact_type):
 
 
 def _canonical_artifacts(repo_root):
-    registry_path = os.path.join(repo_root, "data", "registries", "derived_artifacts.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "derived_artifacts.json")
     payload = _load_json(registry_path)
     artifacts = payload.get("record", {}).get("artifacts", [])
     out = []
@@ -70,7 +70,7 @@ def _walk_forbidden(node, path, failures):
 
 
 def _run_auditx_scan(repo_root):
-    tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
+    tool = os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")
     if not os.path.isfile(tool):
         return 0
     result = subprocess.run(

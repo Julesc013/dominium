@@ -477,7 +477,7 @@ def _classify_responsibility(rel_path: str, layer: str) -> str:
         return "platform.adapters"
     if rel_norm.startswith(("src/validation/", "tools/validators/suite/")):
         return "validation.stack"
-    if rel_norm.startswith(("tools/audit", "tools/xstack/auditx", "tools/xstack/compatx", "tools/xstack/", "contracts/schema/", "contracts/schema/", "data/registries/")):
+    if rel_norm.startswith(("tools/audit", "tools/xstack/auditx", "tools/xstack/compatx", "tools/xstack/", "contracts/schema/", "contracts/registry/")):
         return "validation.stack"
     if rel_norm.startswith(("tools/package/launcher/", "tools/package/setup/", "tools/package/pack/", "tools/package/distribution/", "content/packs/")):
         return "packaging.install"

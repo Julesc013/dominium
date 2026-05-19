@@ -13,6 +13,6 @@ def make_temp_repo_fixture(source_repo_root: str) -> str:
         shutil.copytree(src_path, os.path.join(tmp, name))
     src_registries = os.path.join(testdata_root, "registries")
     if os.path.isdir(src_registries):
-        shutil.copytree(src_registries, os.path.join(tmp, "data", "registries"))
+        shutil.copytree(src_registries, os.path.join(tmp, "contracts", "registry"))
     return tmp
 

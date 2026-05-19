@@ -4,34 +4,34 @@
     "canonical_artifact_hashes": [
       {
         "id": "artifact.auditx.findings",
-        "sha256": "ad430a34958ce1725b2b6f319535dae4ebadd87e5dd5e8837b839886166130f4",
-        "source": "docs/audit/auditx/FINDINGS.json"
+        "sha256": "a377e2c91788bed2990931685a61e8450013bfdd4f674219c0be012cc1b7f4ad",
+        "source": "docs/archive/audit/auditx/FINDINGS.json"
       },
       {
         "id": "artifact.compatx.baseline",
         "sha256": "f39b7d1a8c84d767d17bb563607b6528c66c21248eed17800cbfa474ada6e1f5",
-        "source": "docs/audit/compat/COMPAT_BASELINE.json"
+        "source": "docs/archive/audit/compat/COMPAT_BASELINE.json"
       },
       {
         "id": "artifact.identity_fingerprint",
-        "sha256": "16b30e45814b9294f2cf83b25f1431dbdc6f639bb868e651a6558dc77a7b9ee3",
-        "source": "docs/audit/identity_fingerprint.json"
+        "sha256": "d9cd8080cf56e8b016d83b2fe22ef2151df7dd05a2e337cc68ae12fd94080e00",
+        "source": "docs/archive/audit/identity_fingerprint.json"
       }
     ],
     "extensions": {},
-    "identity_fingerprint_sha256": "6c94859d8d543f28b434220c8776c991c9d9540abcf4ac2b0db74c2fc844426e",
+    "identity_fingerprint_sha256": "02895bf596a9d886cd528d1fc0d014ca44cba472eba89b9993dc58563c601397",
     "manifest_id": "securex.integrity_manifest",
     "manifest_version": "1.0.0",
     "pack_hashes": [
       {
         "id": "registry.security_roles",
         "sha256": "1fa60836ad2ee8351e27fd16dce831c9c3cd3d1cbc8b8c243d55957568fb08df",
-        "source": "data/registries/security_roles.json"
+        "source": "contracts/registry/security_roles.json"
       },
       {
         "id": "registry.trust_policy",
         "sha256": "62591c12e62d9c0bf5b73eb6f343fa745fdd2e2fcfed530cfa7104923fa68de5",
-        "source": "data/registries/trust_policy.json"
+        "source": "contracts/registry/trust_policy.json"
       }
     ],
     "schema_hashes": [
@@ -60,22 +60,22 @@
     "tool_hashes": [
       {
         "id": "tool.auditx",
-        "sha256": "144b6dc8f67d81350e2cf88020af5341a623aa3cda17471dfa3afd2ef474930b",
+        "sha256": "c260519119d50a28a013546bc8243d663e9c497287951ef6f795c0f51d536faa",
         "source": "tools/xstack/auditx/auditx.py"
       },
       {
         "id": "tool.compatx",
-        "sha256": "21b2e36b1f5e8ec5441e2f857da72a01039e056e624c24e9913ec9e19278c965",
+        "sha256": "9d9cad523022806ea8aa40b99e1b368b88dc66ca416ac7448c71b5a3499a4c1c",
         "source": "tools/xstack/compatx/compatx.py"
       },
       {
         "id": "tool.controlx",
-        "sha256": "665d5d8f7359cd325e2dffe000945ba055af5816f6acc97c61d44341b67fe325",
+        "sha256": "ce655b3b9c02a1ccf63d1b766bd99fdacc991f01c0bcde64fba6a3fb6b8b767a",
         "source": "tools/xstack/controlx/controlx.py"
       },
       {
         "id": "tool.securex",
-        "sha256": "b23a921afad67e018007a734ad88745d5b7e950b53bab0621d77857ea2f32f46",
+        "sha256": "8b53b1af4f4935f8fe513c3c64dad6b48e8e3f13a8e4434496f9fd46a83f71a3",
         "source": "tools/xstack/securex/securex.py"
       }
     ]

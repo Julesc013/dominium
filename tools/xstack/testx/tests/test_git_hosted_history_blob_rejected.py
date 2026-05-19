@@ -63,7 +63,7 @@ def run(repo_root: str):
         if int(proc.returncode) != 0:
             return {"status": "fail", "message": "failed to seed origin/main: {}".format(proc.stderr.strip())}
 
-        large_rel = os.path.join("docs", "audit", "too_large_history_blob.json")
+        large_rel = os.path.join("docs", "archive", "audit", "too_large_history_blob.json")
         large_abs = os.path.join(temp_root, large_rel)
         os.makedirs(os.path.dirname(large_abs), exist_ok=True)
         with open(large_abs, "w", encoding="utf-8", newline="\n") as handle:

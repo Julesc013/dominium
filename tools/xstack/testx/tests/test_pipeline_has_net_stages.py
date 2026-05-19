@@ -15,8 +15,8 @@ def _read_json(path: str):
 
 
 def run(repo_root: str):
-    stage_path = os.path.join(repo_root, "data", "registries", "session_stage_registry.json")
-    pipeline_path = os.path.join(repo_root, "data", "registries", "session_pipeline_registry.json")
+    stage_path = os.path.join(repo_root, "contracts", "registry", "session_stage_registry.json")
+    pipeline_path = os.path.join(repo_root, "contracts", "registry", "session_pipeline_registry.json")
     try:
         stage_payload = _read_json(stage_path)
         pipeline_payload = _read_json(pipeline_path)

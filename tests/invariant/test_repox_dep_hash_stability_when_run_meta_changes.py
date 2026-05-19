@@ -41,7 +41,7 @@ def _write_contract(repo_root: str) -> None:
             ],
         },
     }
-    contract_path = os.path.join(repo_root, "data", "registries", "derived_artifacts.json")
+    contract_path = os.path.join(repo_root, "contracts", "registry", "derived_artifacts.json")
     _write(contract_path, json.dumps(contract, indent=2, sort_keys=True) + "\n")
 
 
@@ -63,8 +63,8 @@ def main() -> int:
     try:
         _write_contract(temp_root)
         _write(os.path.join(temp_root, "docs", "canonical.md"), "canonical-v1\n")
-        _write(os.path.join(temp_root, "docs", "audit", "run_meta.json"), "{\"generated_utc\":\"t0\"}\n")
-        _write(os.path.join(temp_root, "docs", "audit", "view.md"), "view-v1\n")
+        _write(os.path.join(temp_root, "docs", "archive", "audit", "run_meta.json"), "{\"generated_utc\":\"t0\"}\n")
+        _write(os.path.join(temp_root, "docs", "archive", "audit", "view.md"), "view-v1\n")
 
         merkle_tree = _load_merkle(source_repo_root)
         opts = {
@@ -79,7 +79,7 @@ def main() -> int:
             print("missing baseline repo_state_hash")
             return 1
 
-        _write(os.path.join(temp_root, "docs", "audit", "run_meta.json"), "{\"generated_utc\":\"t1\"}\n")
+        _write(os.path.join(temp_root, "docs", "archive", "audit", "run_meta.json"), "{\"generated_utc\":\"t1\"}\n")
         after_run_meta = merkle_tree.compute_repo_state_hash(temp_root, **opts)
         if str(after_run_meta.get("repo_state_hash", "")) != before_hash:
             print("run-meta edit changed canonical-only hash unexpectedly")

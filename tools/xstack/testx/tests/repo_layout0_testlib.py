@@ -26,8 +26,8 @@ def _write_json(path: str, payload: dict) -> None:
 
 
 def seed_virtual_root_registry(source_repo_root: str, temp_root: str) -> str:
-    source = os.path.join(source_repo_root, "data", "registries", "virtual_root_registry.json")
-    target = os.path.join(temp_root, "data", "registries", "virtual_root_registry.json")
+    source = os.path.join(source_repo_root, "contracts", "registry", "virtual_root_registry.json")
+    target = os.path.join(temp_root, "contracts", "registry", "virtual_root_registry.json")
     os.makedirs(os.path.dirname(target), exist_ok=True)
     with open(source, "r", encoding="utf-8") as handle:
         payload = json.load(handle)
@@ -80,7 +80,7 @@ def make_installed_context(source_repo_root: str, temp_root: str) -> dict:
         },
     )
     _write_json(
-        os.path.join(temp_root, "data", "registries", "install_registry.json"),
+        os.path.join(temp_root, "contracts", "registry", "install_registry.json"),
         {
             "schema_id": "dominium.registry.install_registry",
             "schema_version": "1.0.0",
@@ -115,7 +115,7 @@ def build_report(repo_root: str) -> dict:
 
 
 def baseline_fingerprint(repo_root: str) -> str:
-    text = _read_text(os.path.join(repo_root, "docs", "audit", "VIRTUAL_PATHS_BASELINE.md"))
+    text = _read_text(os.path.join(repo_root, "docs", "archive", "audit", "VIRTUAL_PATHS_BASELINE.md"))
     match = re.search(r"Fingerprint: `([A-Fa-f0-9]{64})`", text)
     if not match:
         raise ValueError("baseline fingerprint missing")

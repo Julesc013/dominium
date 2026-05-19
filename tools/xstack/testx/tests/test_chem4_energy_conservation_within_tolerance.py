@@ -35,7 +35,7 @@ def run(repo_root: str):
     if str(report.get("result", "")).strip() != "complete":
         return {"status": "fail", "message": "CHEM stress run failed for energy-conservation fixture"}
 
-    registry_abs = os.path.join(repo_root, "data", "registries", "energy_transformation_registry.json")
+    registry_abs = os.path.join(repo_root, "contracts", "registry", "energy_transformation_registry.json")
     try:
         registry_payload = json.load(open(registry_abs, "r", encoding="utf-8"))
     except (OSError, ValueError):

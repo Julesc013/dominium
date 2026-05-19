@@ -32,7 +32,7 @@ def main():
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    product_graph_path = os.path.join(repo_root, "data", "registries", "product_graph.json")
+    product_graph_path = os.path.join(repo_root, "contracts", "registry", "product_graph.json")
     payload = _load_json(product_graph_path)
     record = payload.get("record", {})
     nodes = record.get("nodes", [])

@@ -41,9 +41,9 @@ def _scan_forbidden_tokens(paths: Iterable[str], tokens: Iterable[str], refusal_
 
 
 def validate_boundaries(repo_root: str, trust_entries: List[Dict[str, object]]) -> List[str]:
-    client_root = os.path.join(repo_root, "client")
-    server_root = os.path.join(repo_root, "server")
-    runtime_roots = [os.path.join(repo_root, item) for item in ("client", "server", "engine", "game")]
+    client_root = os.path.join(repo_root, "apps", "client")
+    server_root = os.path.join(repo_root, "apps", "server")
+    runtime_roots = [os.path.join(repo_root, item) for item in ("apps", "runtime", "engine", "game")]
 
     issues: List[str] = []
     if not os.path.isdir(client_root):

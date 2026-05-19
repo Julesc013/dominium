@@ -51,7 +51,7 @@ def load_json(path: str) -> dict:
 
 def make_install_manifest(path: str, install_id: str, root: str) -> None:
     os.makedirs(os.path.join(root, "bin"), exist_ok=True)
-    registry_payload = json.load(open(os.path.join(REPO_ROOT, "data", "registries", "semantic_contract_registry.json"), "r", encoding="utf-8"))
+    registry_payload = json.load(open(os.path.join(REPO_ROOT, "contracts", "registry", "semantic_contract_registry.json"), "r", encoding="utf-8"))
     write_json(os.path.join(root, "semantic_contract_registry.json"), registry_payload)
     game_bin = os.path.join(root, "bin", "dominium_game")
     with open(game_bin, "w", encoding="utf-8", newline="\n") as handle:

@@ -47,7 +47,7 @@ def run(repo_root: str):
         if series_id:
             covered.add(series_id)
 
-    retro_dir = os.path.join(repo_root, "docs", "audit")
+    retro_dir = os.path.join(repo_root, "docs", "archive", "audit")
     discovered = set()
     retro_re = re.compile(r"^([A-Z]+)\d+_RETRO_AUDIT\.md$")
     if os.path.isdir(retro_dir):

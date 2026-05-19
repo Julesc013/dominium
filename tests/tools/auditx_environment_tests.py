@@ -7,7 +7,7 @@ import tempfile
 
 
 def _run_scan(repo_root, cwd, env):
-    tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
+    tool = os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")
     return subprocess.run(
         [sys.executable, tool, "scan", "--repo-root", repo_root, "--format", "json"],
         cwd=cwd,

@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Tuple
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 REPO_ROOT_DEFAULT = os.path.normpath(os.path.join(THIS_DIR, "..", ".."))
-AUDIT_ROOT_REL = os.path.join("docs", "audit", "system")
+AUDIT_ROOT_REL = os.path.join("docs", "archive", "audit", "system")
 
 
 def _norm(path: str) -> str:
@@ -181,7 +181,7 @@ def _tool_hashes(repo_root: str) -> List[Dict[str, str]]:
 def _pack_hash(repo_root: str) -> str:
     candidates = [
         os.path.join("dist", "pkg", "winnt", "x86_64", "index", "pkg_index.json"),
-        os.path.join("data", "registries", "bundle_profiles.json"),
+        os.path.join("contracts", "registry", "bundle_profiles.json"),
     ]
     for rel in candidates:
         abs_path = os.path.join(repo_root, rel.replace("/", os.sep))
@@ -196,13 +196,13 @@ def _pack_hash(repo_root: str) -> str:
 
 
 def _baseline_state(repo_root: str) -> Dict[str, Any]:
-    identity_rel = os.path.join("docs", "audit", "identity_fingerprint.json")
+    identity_rel = os.path.join("docs", "archive", "audit", "identity_fingerprint.json")
     identity_abs = os.path.join(repo_root, identity_rel.replace("/", os.sep))
     identity_hash = _canonical_hash_json_file(identity_abs) if os.path.isfile(identity_abs) else ""
-    gate_policy_hash = _canonical_hash_json_file(os.path.join(repo_root, "data", "registries", "gate_policy.json"))
+    gate_policy_hash = _canonical_hash_json_file(os.path.join(repo_root, "contracts", "registry", "gate_policy.json"))
     schema_registry_hash = _hash_many(
         repo_root,
-        roots=["schema", os.path.join("data", "registries")],
+        roots=[os.path.join("contracts", "schema"), os.path.join("contracts", "registry")],
         allowed_exts=(".schema", ".json"),
     )
     return {
@@ -316,7 +316,7 @@ def _scenario_concurrent_workspace_creation(repo_root: str) -> Dict[str, Any]:
 
 
 def _scenario_derived_artifact_corruption(repo_root: str) -> Dict[str, Any]:
-    findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
+    findings_path = os.path.join(repo_root, "docs", "archive", "audit", "auditx", "FINDINGS.json")
     backup = _backup_file(findings_path)
     if backup is None:
         return {
@@ -330,7 +330,7 @@ def _scenario_derived_artifact_corruption(repo_root: str) -> Dict[str, Any]:
     _write_json(findings_path, payload)
 
     repox_fail = _run([sys.executable, os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py"), "--repo-root", repo_root], cwd=repo_root)
-    repair = _run([sys.executable, os.path.join(repo_root, "tools", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
+    repair = _run([sys.executable, os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
     repox_pass = _run([sys.executable, os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py"), "--repo-root", repo_root], cwd=repo_root)
 
     # Keep regenerated canonical output if repair succeeded; otherwise restore backup.
@@ -399,13 +399,13 @@ def _scenario_adversarial_prompt_queue(repo_root: str) -> Dict[str, Any]:
 
 
 def _scenario_determinism_double_scan(repo_root: str) -> Dict[str, Any]:
-    findings_path = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
-    map_path = os.path.join(repo_root, "docs", "audit", "auditx", "INVARIANT_MAP.json")
-    first = _run([sys.executable, os.path.join(repo_root, "tools", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
+    findings_path = os.path.join(repo_root, "docs", "archive", "audit", "auditx", "FINDINGS.json")
+    map_path = os.path.join(repo_root, "docs", "archive", "audit", "auditx", "INVARIANT_MAP.json")
+    first = _run([sys.executable, os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
     if first["returncode"] != 0:
         return {"scenario_id": "determinism.auditx_double_scan", "status": "fail", "returncode": first["returncode"], "evidence": ["AuditX first scan failed"]}
     hash_a = (_canonical_hash_json_file(findings_path), _canonical_hash_json_file(map_path))
-    second = _run([sys.executable, os.path.join(repo_root, "tools", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
+    second = _run([sys.executable, os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py"), "scan", "--repo-root", repo_root, "--format", "json"], cwd=repo_root)
     hash_b = (_canonical_hash_json_file(findings_path), _canonical_hash_json_file(map_path))
     ok = second["returncode"] == 0 and hash_a == hash_b
     return {
@@ -552,8 +552,8 @@ def _scenario_portability_plain_python(repo_root: str) -> Dict[str, Any]:
 
 
 def _scenario_identity_explanation(repo_root: str) -> Dict[str, Any]:
-    fingerprint = os.path.join(repo_root, "docs", "audit", "identity_fingerprint.json")
-    explanation = os.path.join(repo_root, "docs", "audit", "identity_fingerprint_explanation.md")
+    fingerprint = os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint.json")
+    explanation = os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint_explanation.md")
     ok = os.path.isfile(fingerprint) and os.path.isfile(explanation)
     return {
         "scenario_id": "identity.explanation_required",

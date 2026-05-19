@@ -11,7 +11,7 @@ ANALYZER_ID = "A4_SCHEMA_USAGE"
 SCHEMA_TOKEN_RE = re.compile(r"\b[a-z][a-z0-9_.-]{2,}\b")
 KEY_ACCESS_RE = re.compile(r'\[\s*"([a-z][a-z0-9_.-]+)"\s*\]')
 SOURCE_EXTS = (".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".py")
-REGISTRY_FILE_PREFIX = "data/registries/"
+REGISTRY_FILE_PREFIX = "contracts/registry/"
 
 
 def _read(path):

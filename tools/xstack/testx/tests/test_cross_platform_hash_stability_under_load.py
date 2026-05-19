@@ -16,7 +16,7 @@ def run(repo_root: str):
 
     from tools.repo.meta.audit.tool_verify_numeric_stability import verify_numeric_stability
 
-    registry_path = os.path.join(repo_root, "data", "registries", "quantity_tolerance_registry.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "quantity_tolerance_registry.json")
     try:
         import json
 

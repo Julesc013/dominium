@@ -15,7 +15,7 @@ CANONICAL_ARTIFACTS = (
 
 
 def _run_scan(repo_root):
-    tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
+    tool = os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")
     result = subprocess.run(
         [sys.executable, tool, "scan", "--repo-root", repo_root, "--format", "json"],
         cwd=repo_root,
@@ -75,4 +75,3 @@ def main():
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

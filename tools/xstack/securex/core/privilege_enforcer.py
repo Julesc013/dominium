@@ -84,7 +84,10 @@ def validate_security_roles(path: str) -> Tuple[List[Dict[str, Any]], List[str]]
 
 
 def scan_for_hardcoded_modes(repo_root: str) -> List[str]:
-    source_roots = [os.path.join(repo_root, part) for part in ("client", "launcher", "setup", "server")]
+    source_roots = [
+        os.path.join(repo_root, "apps", part)
+        for part in ("client", "launcher", "setup", "server")
+    ]
     tokens = ("creative_profile_enabled", "observer_truth_profile_enabled", "nondiegetic_observer_profile")
     issues: List[str] = []
     for root in source_roots:

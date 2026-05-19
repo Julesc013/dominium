@@ -78,8 +78,8 @@ def make_temp_repo_with_test_packs(source_repo_root: str) -> str:
     src_bundles = os.path.join(source_repo_root, "tools", "xstack", "testdata", "bundles")
     dst_bundles = os.path.join(temp_root, "bundles")
     shutil.copytree(src_bundles, dst_bundles)
-    src_registries = os.path.join(source_repo_root, "data", "registries")
-    dst_registries = os.path.join(temp_root, "data", "registries")
+    src_registries = os.path.join(source_repo_root, "contracts", "registry")
+    dst_registries = os.path.join(temp_root, "contracts", "registry")
     shutil.copytree(src_registries, dst_registries)
     src_meta = os.path.join(source_repo_root, "data", "meta")
     if os.path.isdir(src_meta):

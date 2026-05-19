@@ -145,7 +145,7 @@ def run(graph, repo_root, changed_files=None):
                 category="capability_misuse",
                 severity="INFO",
                 confidence=0.45,
-                file_path="data/registries",
+                file_path="contracts/registry",
                 evidence=[
                     "Declared capability appears unreferenced in runtime/tool source scans.",
                     "Capability id: {}".format(capability_id),
@@ -153,7 +153,7 @@ def run(graph, repo_root, changed_files=None):
                 suggested_classification="TODO-BLOCKED",
                 recommended_action="ADD_TEST",
                 related_invariants=["INV-CAPABILITY-GATED-RUNTIME"],
-                related_paths=["data/registries"],
+                related_paths=["contracts/registry"],
             )
         )
 
@@ -162,7 +162,7 @@ def run(graph, repo_root, changed_files=None):
         for name in sorted(os.listdir(registries_root)):
             if not name.endswith(".json"):
                 continue
-            rel = "data/registries/{}".format(name)
+            rel = "contracts/registry/{}".format(name)
             abs_path = os.path.join(registries_root, name)
             try:
                 payload = json.load(open(abs_path, "r", encoding="utf-8"))

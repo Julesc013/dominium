@@ -16,8 +16,8 @@ def run(repo_root: str):
     if str(report.get("result", "")).strip() != "complete":
         return {"status": "fail", "message": "DIST-3 clean-room report is missing or not complete"}
     required_paths = (
-        os.path.join(repo_root, "docs", "audit", "CLEAN_ROOM_win64.md"),
-        os.path.join(repo_root, "docs", "audit", "DIST3_FINAL.md"),
+        os.path.join(repo_root, "docs", "archive", "audit", "CLEAN_ROOM_win64.md"),
+        os.path.join(repo_root, "docs", "archive", "audit", "DIST3_FINAL.md"),
         os.path.join(repo_root, "data", "audit", "clean_room_win64.json"),
     )
     missing = [path for path in required_paths if not os.path.isfile(path)]

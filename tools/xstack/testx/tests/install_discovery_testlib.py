@@ -52,7 +52,7 @@ def build_report(repo_root: str) -> dict:
 
 
 def baseline_fingerprint(repo_root: str) -> str:
-    path = os.path.join(repo_root, "docs", "audit", "INSTALL_DISCOVERY_BASELINE.md")
+    path = os.path.join(repo_root, "docs", "archive", "audit", "INSTALL_DISCOVERY_BASELINE.md")
     text = open(path, "r", encoding="utf-8").read()
     match = re.search(r"Fingerprint: `([A-Fa-f0-9]{64})`", text)
     if not match:

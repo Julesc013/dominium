@@ -59,7 +59,7 @@ def case_dist(repo_root):
 
 
 def case_no_global_write(repo_root):
-    policy_path = os.path.join(repo_root, "data", "registries", "gate_policy.json")
+    policy_path = os.path.join(repo_root, "contracts", "registry", "gate_policy.json")
     with open(policy_path, "r", encoding="utf-8") as handle:
         payload = json.load(handle)
     gates = payload.get("record", {}).get("gates", [])

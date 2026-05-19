@@ -34,8 +34,8 @@ def main():
     args = parser.parse_args()
     repo_root = os.path.abspath(args.repo_root)
 
-    registry_path = os.path.join(repo_root, "data", "registries", "failure_classes.json")
-    playbooks_path = os.path.join(repo_root, "data", "registries", "remediation_playbooks.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "failure_classes.json")
+    playbooks_path = os.path.join(repo_root, "contracts", "registry", "remediation_playbooks.json")
     if not os.path.isfile(registry_path):
         print("missing failure class registry")
         return 1

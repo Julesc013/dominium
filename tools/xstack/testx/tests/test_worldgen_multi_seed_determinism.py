@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "worldgen", "determinism"]
 
 
 def _load_module_registry(repo_root: str) -> dict:
-    path = os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "worldgen_module_registry.json")
     return json.load(open(path, "r", encoding="utf-8"))
 
 
@@ -85,4 +85,3 @@ def run(repo_root: str):
     if list(first_plan.get("candidate_seeds") or []) != list(second_plan.get("candidate_seeds") or []):
         return {"status": "fail", "message": "candidate_seeds ordering drift detected"}
     return {"status": "pass", "message": "multi-seed deterministic selection passed"}
-

@@ -16,7 +16,7 @@ class UndeclaredInferenceSmell:
 
 
 _INFERENCE_PATTERNS = (
-    re.compile(r"\binfer_candidate_archive\generated\archive\generated\archive\generated\artifacts\s*\(", re.IGNORECASE),
+    re.compile(r"\binfer_candidate_artifacts\s*\(", re.IGNORECASE),
     re.compile(r"\bcandidate_process_definition_rows\b", re.IGNORECASE),
     re.compile(r"\bcandidate_model_binding_rows\b", re.IGNORECASE),
 )

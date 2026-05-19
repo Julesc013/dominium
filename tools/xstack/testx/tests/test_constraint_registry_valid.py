@@ -21,7 +21,7 @@ def run(repo_root: str):
 
     from tools.xstack.compatx.validator import validate_instance
 
-    registry_path = os.path.join(repo_root, "data", "registries", "worldgen_constraints_registry.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "worldgen_constraints_registry.json")
     try:
         registry_payload = _load_json(registry_path)
     except (OSError, ValueError):

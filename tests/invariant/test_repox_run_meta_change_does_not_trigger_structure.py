@@ -48,7 +48,7 @@ def _write_contract(repo_root: str) -> None:
         },
     }
     _write(
-        os.path.join(repo_root, "data", "registries", "derived_artifacts.json"),
+        os.path.join(repo_root, "contracts", "registry", "derived_artifacts.json"),
         json.dumps(payload, indent=2, sort_keys=True) + "\n",
     )
 
@@ -74,7 +74,7 @@ def main() -> int:
         _write_contract(temp_root)
         _write(os.path.join(temp_root, "repo", "repox", "rulesets", "core.json"), "{\n  \"rules\": []\n}\n")
         _write(os.path.join(temp_root, "scripts", "ci", "check_repox_rules.py"), "# synthetic\n")
-        _write(os.path.join(temp_root, "docs", "audit", "repox", "REPOX_PROFILE.json"), "{\"generated_utc\":\"t0\"}\n")
+        _write(os.path.join(temp_root, "docs", "archive", "audit", "repox", "REPOX_PROFILE.json"), "{\"generated_utc\":\"t0\"}\n")
 
         scope = ("repo", "scripts")
         classes = ("CANONICAL",)
@@ -104,7 +104,7 @@ def main() -> int:
             checks=[_no_violations],
         )
 
-        _write(os.path.join(temp_root, "docs", "audit", "repox", "REPOX_PROFILE.json"), "{\"generated_utc\":\"t1\"}\n")
+        _write(os.path.join(temp_root, "docs", "archive", "audit", "repox", "REPOX_PROFILE.json"), "{\"generated_utc\":\"t1\"}\n")
         roots_after = repox._load_merkle_roots(  # pylint: disable=protected-access
             temp_root,
             subtrees=scope,

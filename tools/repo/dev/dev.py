@@ -334,7 +334,7 @@ def _cmd_audit(args: argparse.Namespace) -> int:
         repo_root=repo_root,
         argv=[
             sys.executable,
-            os.path.join(repo_root, "tools", "auditx", "auditx.py"),
+            os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py"),
             "scan",
             "--repo-root",
             repo_root,

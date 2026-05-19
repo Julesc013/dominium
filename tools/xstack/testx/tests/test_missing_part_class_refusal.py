@@ -25,10 +25,10 @@ def run(repo_root: str):
         compile_blueprint_artifacts,
     )
 
-    blueprint_registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))
-    part_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "part_class_registry.json"))
-    connection_type_registry = _read_json(os.path.join(repo_root, "data", "registries", "connection_type_registry.json"))
-    material_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "material_class_registry.json"))
+    blueprint_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "blueprint_registry.json"))
+    part_class_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "part_class_registry.json"))
+    connection_type_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "connection_type_registry.json"))
+    material_class_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "material_class_registry.json"))
 
     rows = list(((part_class_registry.get("record") or {}).get("part_classes") or []))
     filtered = [dict(row) for row in rows if isinstance(row, dict) and str(row.get("part_class_id", "")) != "partclass.pipe.generic"]

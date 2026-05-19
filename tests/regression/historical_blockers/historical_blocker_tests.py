@@ -60,7 +60,7 @@ def case_tool_discovery(repo_root):
 
 
 def case_derived_nondeterminism(repo_root):
-    auditx_tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
+    auditx_tool = os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")
     if not os.path.isfile(auditx_tool):
         print("historical_blocker_derived_nondeterminism=ok")
         return 0
@@ -71,8 +71,8 @@ def case_derived_nondeterminism(repo_root):
             sys.stderr.write(proc.stdout)
             return 1
 
-    findings = os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")
-    invariant_map = os.path.join(repo_root, "docs", "audit", "auditx", "INVARIANT_MAP.json")
+    findings = os.path.join(repo_root, "docs", "archive", "audit", "auditx", "FINDINGS.json")
+    invariant_map = os.path.join(repo_root, "docs", "archive", "audit", "auditx", "INVARIANT_MAP.json")
     if not os.path.isfile(findings) or not os.path.isfile(invariant_map):
         sys.stderr.write("FAIL: auditx canonical artifacts missing\n")
         return 1
@@ -153,8 +153,8 @@ def case_stage_token(repo_root):
 
 
 def case_identity_drift(repo_root):
-    fingerprint = os.path.join(repo_root, "docs", "audit", "identity_fingerprint.json")
-    explanation = os.path.join(repo_root, "docs", "audit", "identity_fingerprint_explanation.md")
+    fingerprint = os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint.json")
+    explanation = os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint_explanation.md")
     if not os.path.isfile(fingerprint):
         sys.stderr.write("FAIL: missing identity fingerprint artifact\n")
         return 1
@@ -167,7 +167,7 @@ def case_identity_drift(repo_root):
 
 def case_identity_explanation_required(repo_root):
     repox = os.path.join(repo_root, "scripts", "ci", "check_repox_rules.py")
-    explanation = os.path.join(repo_root, "docs", "audit", "identity_fingerprint_explanation.md")
+    explanation = os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint_explanation.md")
     if not os.path.isfile(explanation):
         sys.stderr.write("FAIL: missing identity explanation artifact\n")
         return 1

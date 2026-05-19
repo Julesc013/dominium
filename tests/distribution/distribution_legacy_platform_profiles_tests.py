@@ -44,7 +44,7 @@ def _run_json(repo_root, rel_script, args):
 
 
 def _check_platform_registry(repo_root):
-    path = os.path.join(repo_root, "data", "registries", "platform_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "platform_registry.json")
     payload = _load_json(path)
     record = payload.get("record", {})
     entries = record.get("platforms", [])

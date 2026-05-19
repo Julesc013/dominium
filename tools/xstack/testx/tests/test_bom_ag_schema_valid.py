@@ -20,7 +20,7 @@ def run(repo_root: str):
         sys.path.insert(0, repo_root)
     from tools.xstack.compatx.validator import validate_instance
 
-    registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))
+    registry = _read_json(os.path.join(repo_root, "contracts", "registry", "blueprint_registry.json"))
     rows = list(((registry.get("record") or {}).get("blueprints") or []))
     if not rows:
         return {"status": "fail", "message": "blueprint registry has no entries"}

@@ -18,8 +18,8 @@ def _read_json(path: str):
 
 
 def run(repo_root: str):
-    field_registry_path = os.path.join(repo_root, "data", "registries", "field_type_registry.json")
-    policy_registry_path = os.path.join(repo_root, "data", "registries", "field_update_policy_registry.json")
+    field_registry_path = os.path.join(repo_root, "contracts", "registry", "field_type_registry.json")
+    policy_registry_path = os.path.join(repo_root, "contracts", "registry", "field_update_policy_registry.json")
 
     field_registry, field_error = _read_json(field_registry_path)
     if field_error:

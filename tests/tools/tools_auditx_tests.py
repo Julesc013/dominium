@@ -55,7 +55,7 @@ def _run_cmd(cmd, cwd):
 
 
 def _run_auditx(repo_root, *args, output_root=""):
-    tool = os.path.join(repo_root, "tools", "auditx", "auditx.py")
+    tool = os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")
     cmd = [sys.executable, tool]
     cmd.extend(args)
     if output_root:

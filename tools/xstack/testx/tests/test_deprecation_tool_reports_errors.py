@@ -15,7 +15,7 @@ TEST_TAGS = ["fast", "governance", "deprecation", "tooling"]
 
 def run(repo_root: str):
     tool_path = os.path.join(repo_root, "tools", "governance", "tool_deprecation_check.py")
-    topology_path = os.path.join(repo_root, "docs", "audit", "TOPOLOGY_MAP.json")
+    topology_path = os.path.join(repo_root, "docs", "archive", "audit", "TOPOLOGY_MAP.json")
     if not os.path.isfile(tool_path):
         return {"status": "fail", "message": "missing tool_deprecation_check.py"}
 

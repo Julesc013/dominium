@@ -23,7 +23,7 @@ def run(repo_root: str):
     from tools.xstack.compatx.validator import validate_instance
     from game.domain.worldgen.core.constraint_solver import solve_constraints
 
-    module_registry = _load_json(os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json"))
+    module_registry = _load_json(os.path.join(repo_root, "contracts", "registry", "worldgen_module_registry.json"))
     constraints_payload = _load_json(
         os.path.join(
             repo_root,

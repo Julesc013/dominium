@@ -24,7 +24,7 @@ def run_wrapper_json(repo_root: str, bin_name: str, args: Sequence[str]) -> tupl
 
 
 def load_refusal_to_exit_registry(repo_root: str) -> dict:
-    path = os.path.join(repo_root, "data", "registries", "refusal_to_exit_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "refusal_to_exit_registry.json")
     with open(path, "r", encoding="utf-8") as handle:
         payload = json.load(handle)
     if not isinstance(payload, dict):

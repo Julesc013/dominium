@@ -4,7 +4,7 @@ import os
 import sys
 
 
-REG_REL = os.path.join("data", "registries", "testx_groups.json")
+REG_REL = os.path.join("contracts", "registry", "testx_groups.json")
 
 
 def main() -> int:

@@ -18,7 +18,7 @@ STREAM_SOURCE_RELS = (
     os.path.join("worldgen", "mw", "mw_surface_refiner_l3.py"),
     os.path.join("worldgen", "earth", "earth_surface_generator.py"),
 )
-LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
+LOCK_REGISTRY_REL = os.path.join("contracts", "registry", "worldgen_lock_registry.json")
 
 
 def _read_text(path: str) -> str:

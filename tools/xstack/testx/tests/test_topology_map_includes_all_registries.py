@@ -16,7 +16,7 @@ def _norm(path: str) -> str:
 
 def _registry_paths(repo_root: str):
     out = []
-    abs_root = os.path.join(repo_root, "data", "registries")
+    abs_root = os.path.join(repo_root, "contracts", "registry")
     if not os.path.isdir(abs_root):
         return out
     for walk_root, dirs, files in os.walk(abs_root):

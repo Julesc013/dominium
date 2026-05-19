@@ -22,10 +22,10 @@ def run(repo_root: str):
     from runtime.render.backend import build_render_model
     from game.domain.materials.blueprint_engine import build_blueprint_ghost_overlay, compile_blueprint_artifacts
 
-    blueprint_registry = _read_json(os.path.join(repo_root, "data", "registries", "blueprint_registry.json"))
-    part_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "part_class_registry.json"))
-    connection_type_registry = _read_json(os.path.join(repo_root, "data", "registries", "connection_type_registry.json"))
-    material_class_registry = _read_json(os.path.join(repo_root, "data", "registries", "material_class_registry.json"))
+    blueprint_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "blueprint_registry.json"))
+    part_class_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "part_class_registry.json"))
+    connection_type_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "connection_type_registry.json"))
+    material_class_registry = _read_json(os.path.join(repo_root, "contracts", "registry", "material_class_registry.json"))
 
     compiled = compile_blueprint_artifacts(
         repo_root=repo_root,

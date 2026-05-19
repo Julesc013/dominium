@@ -137,7 +137,7 @@ def load_registry_units(repo_root: str, violations: List[str]) -> List[str]:
 
 
 
-    registry_path = os.path.join(repo_root, "data", "registries", "unit_registry.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "unit_registry.json")
 
 
 

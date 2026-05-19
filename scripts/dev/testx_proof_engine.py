@@ -13,11 +13,11 @@ from datetime import datetime
 from env_tools_lib import canonical_workspace_id, canonicalize_env_for_workspace
 
 
-DEFAULT_REGISTRY_REL = os.path.join("data", "registries", "testx_suites.json")
-DEFAULT_MANIFEST_REL = os.path.join("docs", "audit", "proof_manifest.json")
-DEFAULT_SUMMARY_JSON_REL = os.path.join("docs", "audit", "testx", "TESTX_SUMMARY.json")
-DEFAULT_SUMMARY_MD_REL = os.path.join("docs", "audit", "testx", "TESTX_SUMMARY.md")
-DEFAULT_RUN_META_REL = os.path.join("docs", "audit", "testx", "TESTX_RUN_META.json")
+DEFAULT_REGISTRY_REL = os.path.join("contracts", "registry", "testx_suites.json")
+DEFAULT_MANIFEST_REL = os.path.join("docs", "archive", "audit", "proof_manifest.json")
+DEFAULT_SUMMARY_JSON_REL = os.path.join("docs", "archive", "audit", "testx", "TESTX_SUMMARY.json")
+DEFAULT_SUMMARY_MD_REL = os.path.join("docs", "archive", "audit", "testx", "TESTX_SUMMARY.md")
+DEFAULT_RUN_META_REL = os.path.join("docs", "archive", "audit", "testx", "TESTX_RUN_META.json")
 
 
 def _norm(path):

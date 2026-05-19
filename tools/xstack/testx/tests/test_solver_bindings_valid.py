@@ -21,7 +21,7 @@ def run(repo_root: str):
     if str(checked.get("result", "")) != "complete":
         return {"status": "fail", "message": "domain foundation validator refused before solver checks"}
 
-    payload = json.load(open(os.path.join(repo_root, "data", "registries", "solver_registry.json"), "r", encoding="utf-8"))
+    payload = json.load(open(os.path.join(repo_root, "contracts", "registry", "solver_registry.json"), "r", encoding="utf-8"))
     rows = payload.get("records")
     if not isinstance(rows, list):
         return {"status": "fail", "message": "solver_registry.records missing"}

@@ -7,7 +7,7 @@ from invariant_utils import is_override_active
 
 
 SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "glossary.schema")
-REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
+REGISTRY_REL = os.path.join("contracts", "registry", "glossary.json")
 DOC_REL = os.path.join("docs", "architecture", "TERMINOLOGY_GLOSSARY.md")
 
 

@@ -2,11 +2,11 @@
 
 ## PHASE
 
-UNSPECIFIED - CANON-DEBT-CLEANUP-02
+UNSPECIFIED - REPOX-TESTX-CANON-PATHS-01
 
 ## GOAL
 
-CANON-DEBT-CLEANUP-02
+REPOX-TESTX-CANON-PATHS-01
 
 ## WHY
 
@@ -113,8 +113,8 @@ Include the verifier result when Q12 verifier behavior is available.
 ## TOKEN_ESTIMATE
 
 - method: chars / 4, rounded up
-- chars: 4104
-- approx_tokens: 1026
+- chars: 4114
+- approx_tokens: 1029
 - budget_status: PASS
 - warnings:
   - none

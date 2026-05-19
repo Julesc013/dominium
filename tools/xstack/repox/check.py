@@ -844,7 +844,7 @@ ANTI_CHEAT_ALLOWED_ACTIONS = (
 )
 
 NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
-    "data/registries/",
+    "contracts/registry/",
     "docs/runtime/network/",
     "docs/reference/contracts/",
     "contracts/schema/",
@@ -857,7 +857,7 @@ NET_POLICY_LITERAL_ALLOWED_PATH_PREFIXES = (
 
 PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
-    "data/registries/",
+    "contracts/registry/",
     "docs/",
     "contracts/schema/",
     "tools/xstack/auditx/",
@@ -867,7 +867,7 @@ PHYSICS_LITERAL_ALLOWED_PATH_PREFIXES = (
 
 BLUEPRINT_LITERAL_ALLOWED_PATH_PREFIXES = (
     "packs/",
-    "data/registries/",
+    "contracts/registry/",
     "docs/",
     "contracts/schema/",
     "contracts/schema/",
@@ -18547,7 +18547,7 @@ def _append_interaction_invariant_findings(
                 continue
             if token.startswith("#"):
                 continue
-            if "data/registries/" in token:
+            if "contracts/registry/" in token:
                 continue
             if any(pattern.search(token) for pattern in hardcoded_tool_patterns):
                 findings.append(

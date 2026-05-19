@@ -75,6 +75,9 @@ _CANONICAL_PREFIX_ALIASES = (
     ("data/packs/", "content/packs/"),
     ("data/regression/", "tests/fixtures/regression/"),
     ("data/session_templates/", "content/templates/session/"),
+    ("contracts/registries/", "contracts/registry/"),
+    ("contracts/capabilities/", "contracts/capability/"),
+    ("contracts/package/packs/", "content/packs/"),
     ("contracts/schemas/geo/", "contracts/schema/domain/geology/"),
     ("contracts/schemas/chem/", "contracts/schema/domain/chemistry/"),
     ("contracts/schemas/civ/", "contracts/schema/domain/civilization/"),
@@ -119,6 +122,13 @@ _CANONICAL_PREFIX_ALIASES = (
     ("runtime/appshell/commands/", "runtime/shell/command/"),
     ("runtime/shell/appcore/command/", "runtime/shell/command/"),
     ("runtime/shell/appcore/ui_bind/", "tools/codegen/ui/bind/"),
+    ("runtime/render/soft/", "runtime/render/software/"),
+    ("runtime/render/stub/", "runtime/render/null/"),
+    ("runtime/render/client/renderers/", "runtime/render/backend/"),
+    ("runtime/shell/commands/", "runtime/shell/command/"),
+    ("runtime/shell/ui_backends/", "runtime/ui/backend/"),
+    ("runtime/capability/capability/", "runtime/capability/core/"),
+    ("runtime/ui/core/", "runtime/ui/service/"),
     ("docs/accessibility/", "docs/runtime/ui/accessibility/"),
     ("docs/agents/", "docs/game/agents/"),
     ("docs/aide/", "docs/development/aide/"),
@@ -195,6 +205,8 @@ _CANONICAL_PREFIX_ALIASES = (
     ("docs/worldgen/", "docs/domains/worldgen/"),
     ("docs/xstack/", "docs/development/xstack/"),
     ("game/domains/", "game/domain/"),
+    ("game/rules/", "game/rule/"),
+    ("game/include/dominium/rules/", "game/include/dominium/law/"),
     ("apps/server/net/", "runtime/network/server/"),
     ("apps/server/runtime/", "runtime/shell/server/"),
     ("apps/client/render/renderers/", "runtime/render/backend/"),
@@ -213,6 +225,8 @@ _CANONICAL_PREFIX_ALIASES = (
     ("tools/launcher/", "tools/package/launcher/"),
     ("tools/mvp/", "tools/release/mvp/"),
     ("tools/server/", "tools/test/server/"),
+    ("tools/validator/", "tools/validators/"),
+    ("tools/validation/", "tools/validators/validation/"),
     ("tools/setup/", "tools/package/setup/"),
     ("tools/worldgen_offline/", "tools/domain/worldgen/offline/"),
     ("tools/worldgen/", "tools/domain/worldgen/"),
@@ -371,10 +385,10 @@ CANON_INDEX_PATH = "docs/architecture/CANON_INDEX.md"
 DOCS_ROOT = "docs"
 DOC_EXTS = [".md", ".txt"]
 DOC_STATUS_VALUES = {"CANONICAL", "DERIVED", "HISTORICAL"}
-SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("contracts", "registry", "semantic_contract_registry.json")
 SEMANTIC_CONTRACT_BUNDLE_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", "universe_contract_bundle.schema")
 SEMANTIC_CONTRACT_BUNDLE_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_contract_bundle.schema.json")
-SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "contracts", "SEMANTIC_CONTRACT_MODEL.md")
+SEMANTIC_CONTRACT_MODEL_REL = os.path.join("docs", "reference", "contracts", "SEMANTIC_CONTRACT_MODEL.md")
 UNIVERSE_CONTRACT_BUNDLE_DOC_REL = os.path.join("docs", "meta", "UNIVERSE_CONTRACT_BUNDLE.md")
 UNIVERSE_IDENTITY_SCHEMA_REL = os.path.join("contracts", "schemas", "universe", "universe_identity.schema")
 UNIVERSE_IDENTITY_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "universe_identity.schema.json")
@@ -400,12 +414,12 @@ REQUIRED_SEMANTIC_CONTRACT_IDS = (
 )
 EXTENSION_DISCIPLINE_DOC_REL = os.path.join("docs", "meta", "EXTENSION_DISCIPLINE.md")
 EXTENSION_MIGRATION_NOTES_REL = os.path.join("docs", "meta", "EXTENSION_MIGRATION_NOTES.md")
-EXTENSION_INTERPRETATION_REGISTRY_REL = os.path.join("data", "registries", "extension_interpretation_registry.json")
+EXTENSION_INTERPRETATION_REGISTRY_REL = os.path.join("contracts", "registry", "extension_interpretation_registry.json")
 EXTENSION_ENGINE_REL = os.path.join("meta_extensions_engine.py")
 EXTENSION_ENGINE_WRAPPER_REL = os.path.join("meta", "extensions", "extensions_engine.py")
 MOD_POLICY_DOC_REL = os.path.join("docs", "modding", "MOD_TRUST_AND_CAPABILITIES.md")
-MOD_POLICY_BASELINE_REL = os.path.join("docs", "audit", "MOD_POLICY_BASELINE.md")
-MOD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "mod_policy_registry.json")
+MOD_POLICY_BASELINE_REL = os.path.join("docs", "archive", "audit", "MOD_POLICY_BASELINE.md")
+MOD_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "mod_policy_registry.json")
 MOD_POLICY_ENGINE_REL = os.path.join("modding", "mod_policy_engine.py")
 MOD_POLICY_PACK_LOADER_REL = os.path.join("tools", "xstack", "pack_loader", "loader.py")
 MOD_POLICY_COMPILER_REL = os.path.join("tools", "xstack", "registry_compile", "compiler.py")
@@ -414,16 +428,16 @@ MOD_POLICY_SESSION_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "run
 MOD_POLICY_SCRIPT_RUNNER_REL = os.path.join("tools", "xstack", "sessionx", "script_runner.py")
 MOD_POLICY_SESSION_CONTROL_REL = os.path.join("tools", "xstack", "sessionx", "session_control.py")
 MOD_POLICY_SESSION_CREATE_REL = os.path.join("tools", "xstack", "session_create.py")
-MOD_POLICY_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
+MOD_POLICY_CAPABILITY_REGISTRY_REL = os.path.join("contracts", "registry", "capability_registry.json")
 MOD_POLICY_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 PACK_COMPAT_DOC_REL = os.path.join("docs", "packs", "PACK_COMPATIBILITY_MANIFEST.md")
-PACK_COMPAT_BASELINE_REL = os.path.join("docs", "audit", "PACK_COMPAT_BASELINE.md")
+PACK_COMPAT_BASELINE_REL = os.path.join("docs", "archive", "audit", "PACK_COMPAT_BASELINE.md")
 PACK_COMPAT_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_compat_manifest.schema")
 PACK_COMPAT_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "pack_compat_manifest.schema.json")
 PACK_COMPAT_VALIDATOR_REL = os.path.join("packs", "compat", "pack_compat_validator.py")
-PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("data", "registries", "pack_degrade_mode_registry.json")
+PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("contracts", "registry", "pack_degrade_mode_registry.json")
 PACK_VERIFICATION_DOC_REL = os.path.join("docs", "packs", "PACK_VERIFICATION_PIPELINE.md")
-PACK_VERIFICATION_BASELINE_REL = os.path.join("docs", "audit", "PACK_VERIFICATION_BASELINE.md")
+PACK_VERIFICATION_BASELINE_REL = os.path.join("docs", "archive", "audit", "PACK_VERIFICATION_BASELINE.md")
 PACK_COMPAT_REPORT_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_compatibility_report.schema")
 PACK_COMPAT_REPORT_JSON_SCHEMA_REL = os.path.join("contracts", "schemas", "pack_compatibility_report.schema.json")
 PACK_LOCK_SCHEMA_REL = os.path.join("contracts", "schemas", "packs", "pack_lock.schema")
@@ -439,12 +453,12 @@ DISTRIBUTION_LIB_REL = os.path.join("tools", "distribution", "distribution_lib.p
 PACK_LOADER_REL = os.path.join("tools", "xstack", "pack_loader", "loader.py")
 EXTENSION_LITERAL_RE = re.compile(r'extensions\s*\.\s*get\(\s*["\']([^"\']+)["\']')
 CANON_STATE_PATH = os.path.join("repo", "canon_state.json")
-PROCESS_REGISTRY_REL = os.path.join("data", "registries", "process_registry.json")
+PROCESS_REGISTRY_REL = os.path.join("contracts", "registry", "process_registry.json")
 PROCESS_SCHEMA_ID = "dominium.schema.process"
 PROCESS_REGISTRY_SCHEMA_ID = "dominium.schema.process_registry"
 SCHEMA_MIGRATION_REGISTRY_REL = os.path.join("contracts", "schemas", "SCHEMA_MIGRATION_REGISTRY.json")
 SCHEMA_MIGRATION_REGISTRY_SCHEMA_ID = "dominium.schema.migration_registry"
-SOLVER_REGISTRY_REL = os.path.join("data", "registries", "solver_registry.json")
+SOLVER_REGISTRY_REL = os.path.join("contracts", "registry", "solver_registry.json")
 SOLVER_REGISTRY_SCHEMA_ID = "dominium.registry.solver_registry"
 PROCESS_FIXTURE_PATHS = (
     os.path.join("tests", "contract", "terrain_fixtures.json"),
@@ -571,9 +585,9 @@ RATCHET_KEY = "ratchet_after"
 DIST_PKG_ROOT_REL = os.path.join("dist", "pkg")
 DIST_META_ROOT_REL = os.path.join("dist", "meta")
 DIST_SYS_ROOT_REL = os.path.join("dist", "sys")
-PLATFORM_REGISTRY_REL = os.path.join("data", "registries", "platform_registry.json")
-PRODUCT_GRAPH_REL = os.path.join("data", "registries", "product_graph.json")
-MODE_BACKEND_REL = os.path.join("data", "registries", "mode_backend.json")
+PLATFORM_REGISTRY_REL = os.path.join("contracts", "registry", "platform_registry.json")
+PRODUCT_GRAPH_REL = os.path.join("contracts", "registry", "product_graph.json")
+MODE_BACKEND_REL = os.path.join("contracts", "registry", "mode_backend.json")
 PLATFORM_REGISTRY_SCHEMA_ID = "dominium.schema.distribution.platform_registry"
 PRODUCT_GRAPH_SCHEMA_ID = "dominium.schema.distribution.product_graph"
 MODE_BACKEND_SCHEMA_ID = "dominium.schema.ui.mode_backend"
@@ -684,7 +698,7 @@ EARTH_LIGHTING_PROBE_TOOL_REL = os.path.join("tools", "worldgen", "earth5_probe.
 EARTH_LIGHTING_REPLAY_TOOL_REL = os.path.join("tools", "worldgen", "tool_replay_illumination_view.py")
 EARTH_PROCEDURAL_DOC_REL = os.path.join("docs", "domains", "worldgen", "EARTH_PROCEDURAL_CONSTITUTION.md")
 WORLDGEN_LOCK_DOC_REL = os.path.join("docs", "domains", "worldgen", "WORLDGEN_LOCK_v0_0_0.md")
-WORLDGEN_LOCK_RETRO_AUDIT_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK0_RETRO_AUDIT.md")
+WORLDGEN_LOCK_RETRO_AUDIT_REL = os.path.join("docs", "archive", "audit", "WORLDGEN_LOCK0_RETRO_AUDIT.md")
 WORLDGEN_LOCK_REGISTRY_REL = os.path.join("contracts", "registry", "worldgen_lock_registry.json")
 WORLDGEN_LOCK_BASELINE_SEED_REL = os.path.join("tests", "fixtures", "baselines", "worldgen", "baseline_seed.txt")
 WORLDGEN_LOCK_BASELINE_SNAPSHOT_REL = os.path.join("tests", "fixtures", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
@@ -692,7 +706,7 @@ WORLDGEN_LOCK_GENERATE_TOOL_REL = os.path.join("tools", "worldgen", "tool_genera
 WORLDGEN_LOCK_GENERATE_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_generate_worldgen_baseline.py")
 WORLDGEN_LOCK_VERIFY_TOOL_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock")
 WORLDGEN_LOCK_VERIFY_TOOL_PY_REL = os.path.join("tools", "worldgen", "tool_verify_worldgen_lock.py")
-WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
+WORLDGEN_LOCK_VERIFY_DOC_REL = os.path.join("docs", "archive", "audit", "WORLDGEN_LOCK_VERIFY.md")
 WORLDGEN_LOCK_VERIFY_JSON_REL = os.path.join("archive", "generated", "audit", "worldgen_lock_verify.json")
 EARTH_HYDROLOGY_DOC_REL = os.path.join("docs", "worldgen", "EARTH_HYDROLOGY_MODEL.md")
 EARTH_SEASONAL_CLIMATE_DOC_REL = os.path.join("docs", "worldgen", "EARTH_SEASONAL_CLIMATE_MODEL.md")
@@ -778,7 +792,7 @@ EARTH9_STRESS_TOOL_REL = os.path.join("tools", "earth", "tool_run_earth_mvp_stre
 EARTH9_VIEW_REPLAY_TOOL_REL = os.path.join("tools", "earth", "tool_replay_earth_view_window.py")
 EARTH9_PHYSICS_REPLAY_TOOL_REL = os.path.join("tools", "earth", "tool_replay_earth_physics_window.py")
 EARTH9_BASELINE_REL = os.path.join("data", "regression", "earth_mvp_baseline.json")
-EARTH9_FINAL_AUDIT_REL = os.path.join("docs", "audit", "EARTH_MVP_FINAL_BASELINE.md")
+EARTH9_FINAL_AUDIT_REL = os.path.join("docs", "archive", "audit", "EARTH_MVP_FINAL_BASELINE.md")
 EARTH_SKY_FORBIDDEN_TOKENS = (
     "random.",
     "uuid",
@@ -833,15 +847,15 @@ EMB1_SCANNER_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "
 EMB1_LOGIC_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "logic_tool.py")
 EMB1_TELEPORT_TOOL_REL = os.path.join("game", "domains", "embodiment", "tools", "teleport_tool.py")
 EMB1_TOOLBELT_ENGINE_REL = os.path.join("game", "domains", "embodiment", "tools", "toolbelt_engine.py")
-EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "body_template_registry.json")
-EARTH6_COLLISION_PROVIDER_REGISTRY_REL = os.path.join("data", "registries", "collision_provider_registry.json")
-EARTH6_SLOPE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "movement_slope_params_registry.json")
-EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "lens_profile_registry.json")
-EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("data", "registries", "system_template_registry.json")
-EMB1_TOOL_CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "tool_capability_registry.json")
-EMB1_ENTITLEMENT_REGISTRY_REL = os.path.join("data", "registries", "entitlement_registry.json")
-EMB2_JUMP_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "jump_params_registry.json")
-EMB2_CAMERA_SMOOTHING_REGISTRY_REL = os.path.join("data", "registries", "camera_smoothing_registry.json")
+EMB_BODY_TEMPLATE_REGISTRY_REL = os.path.join("contracts", "registry", "body_template_registry.json")
+EARTH6_COLLISION_PROVIDER_REGISTRY_REL = os.path.join("contracts", "registry", "collision_provider_registry.json")
+EARTH6_SLOPE_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "movement_slope_params_registry.json")
+EMB_LENS_PROFILE_REGISTRY_REL = os.path.join("contracts", "registry", "lens_profile_registry.json")
+EMB_SYSTEM_TEMPLATE_REGISTRY_REL = os.path.join("contracts", "registry", "system_template_registry.json")
+EMB1_TOOL_CAPABILITY_REGISTRY_REL = os.path.join("contracts", "registry", "tool_capability_registry.json")
+EMB1_ENTITLEMENT_REGISTRY_REL = os.path.join("contracts", "registry", "entitlement_registry.json")
+EMB2_JUMP_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "jump_params_registry.json")
+EMB2_CAMERA_SMOOTHING_REGISTRY_REL = os.path.join("contracts", "registry", "camera_smoothing_registry.json")
 EMB_RUNTIME_BUNDLE_REL = os.path.join("tools", "mvp", "runtime_bundle.py")
 EARTH6_PROBE_TOOL_REL = os.path.join("tools", "embodiment", "earth6_probe.py")
 EARTH6_REPLAY_TOOL_REL = os.path.join("tools", "embodiment", "tool_replay_movement_window.py")
@@ -944,19 +958,19 @@ SOL_PIN_IMMUTABLE_PROPERTY_PATHS = (
 )
 SOL_PIN_MAX_PATCH_COUNT = 96
 SOL_PIN_MAX_TOTAL_BYTES = 73728
-IDENTITY_FINGERPRINT_REL = os.path.join("docs", "audit", "identity_fingerprint.json")
-IDENTITY_EXPLANATION_REL = os.path.join("docs", "audit", "identity_fingerprint_explanation.md")
+IDENTITY_FINGERPRINT_REL = os.path.join("docs", "archive", "audit", "identity_fingerprint.json")
+IDENTITY_EXPLANATION_REL = os.path.join("docs", "archive", "audit", "identity_fingerprint_explanation.md")
 GLOSSARY_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "glossary.schema")
-GLOSSARY_REGISTRY_REL = os.path.join("data", "registries", "glossary.json")
+GLOSSARY_REGISTRY_REL = os.path.join("contracts", "registry", "glossary.json")
 PRESENTATION_MATRIX_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "presentation_matrix.schema")
 PRESENTATION_MATRIX_REGISTRY_REL = os.path.join("contracts", "registry", "presentation_matrix.json")
 PRESENTATION_MATRIX_SCHEMA_ID = "dominium.schema.governance.presentation_matrix"  # schema_version: 1.0.0
 AUDITX_PROMOTION_POLICY_REL = os.path.join("docs", "governance", "AUDITX_PROMOTION_POLICY.md")
-REPO_HEALTH_SNAPSHOT_JSON_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.json")
-REPO_HEALTH_SNAPSHOT_MD_REL = os.path.join("docs", "audit", "system", "REPO_HEALTH_SNAPSHOT.md")
-GOVERNANCE_FINAL_REPORT_REL = os.path.join("docs", "audit", "system", "GOVERNANCE_FINAL_REPORT.md")
+REPO_HEALTH_SNAPSHOT_JSON_REL = os.path.join("docs", "archive", "audit", "system", "REPO_HEALTH_SNAPSHOT.json")
+REPO_HEALTH_SNAPSHOT_MD_REL = os.path.join("docs", "archive", "audit", "system", "REPO_HEALTH_SNAPSHOT.md")
+GOVERNANCE_FINAL_REPORT_REL = os.path.join("docs", "archive", "audit", "system", "GOVERNANCE_FINAL_REPORT.md")
 DERIVED_ARTIFACT_CONTRACT_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "derived_artifact_contract.schema")
-DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("data", "registries", "derived_artifacts.json")
+DERIVED_ARTIFACT_REGISTRY_REL = os.path.join("contracts", "registry", "derived_artifacts.json")
 DERIVED_ARTIFACT_SCHEMA_ID = "dominium.schema.governance.derived_artifact_contract"  # schema_version: 1.0.0
 DERIVED_ARTIFACT_CLASSES = ("CANONICAL", "DERIVED_VIEW", "RUN_META")
 DERIVED_ARTIFACT_REQUIRED_IDS = (
@@ -978,7 +992,7 @@ DERIVED_ARTIFACT_CANONICAL_FORBIDDEN_KEYS = (
     "duration_ms",
 )
 REMEDIATION_PLAYBOOK_SCHEMA_REL = os.path.join("contracts", "schemas", "governance", "remediation_playbook.schema")
-REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("data", "registries", "remediation_playbooks.json")
+REMEDIATION_PLAYBOOK_REGISTRY_REL = os.path.join("contracts", "registry", "remediation_playbooks.json")
 REMEDIATION_PLAYBOOK_SCHEMA_ID = ".".join(("dominium", "schema", "governance", "remediation_playbook"))  # schema_version is validated from payload
 REMEDIATION_PLAYBOOK_REQUIRED_BLOCKERS = (
     "TOOL_DISCOVERY",
@@ -1012,7 +1026,7 @@ SECUREX_TRUST_POLICY_SCHEMA_ID = "dominium.schema.governance.trust_policy"  # sc
 SECUREX_PRIVILEGE_MODEL_SCHEMA_REL = os.path.join("contracts", "schema", "governance", "privilege_model.schema")
 SECUREX_PRIVILEGE_MODEL_REGISTRY_REL = os.path.join("contracts", "registry", "security_roles.json")
 SECUREX_PRIVILEGE_MODEL_SCHEMA_ID = "dominium.schema.governance.privilege_model"  # schema_version: 1.0.0
-SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "audit", "security", "INTEGRITY_MANIFEST.json")
+SECUREX_INTEGRITY_MANIFEST_REL = os.path.join("docs", "archive", "audit", "security", "INTEGRITY_MANIFEST.json")
 SECUREX_INTEGRITY_MANIFEST_SCHEMA_ID = "dominium.schema.governance.integrity_manifest"  # schema_version: 1.0.0
 
 BUILD_PRESET_CONTRACT_CONFIGURE = (
@@ -4768,9 +4782,9 @@ def check_all_products_have_endpoint_descriptor(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    product_registry_rel = os.path.join("data", "registries", "product_registry.json")
-    negotiation_rel = os.path.join("compat", "capability_negotiation.py")
-    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+    product_registry_rel = os.path.join("contracts", "registry", "product_registry.json")
+    negotiation_rel = os.path.join("tools", "validators", "compatibility", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "reference", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
 
     violations = []
     required_tokens = {
@@ -4819,9 +4833,9 @@ def check_negotiation_required_for_connections(repo_root):
         return []
 
     handshake_rel = os.path.join("tools", "xstack", "sessionx", "net_handshake.py")
-    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
-    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
-    server_probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+    loopback_rel = os.path.join("runtime", "network", "server", "loopback_transport.py")
+    doctrine_rel = os.path.join("docs", "reference", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+    server_probe_rel = os.path.join("tools", "test", "server", "server_mvp0_probe.py")
 
     violations = []
     required_tokens = {
@@ -4839,7 +4853,7 @@ def check_negotiation_required_for_connections(repo_root):
         ),
         doctrine_rel: (
             "Identify themselves and their capabilities",
-            "Choose a mutually supported â€œcompatibility modeâ€",
+            "Choose a mutually supported",
             "Produce a signed/hashed negotiation record",
         ),
         server_probe_rel: (
@@ -4870,8 +4884,8 @@ def check_connection_requires_negotiation(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("runtime", "network", "server", "loopback_transport.py")
     server_boot_rel = os.path.join("apps", "server", "server_boot.py")
 
     violations = []
@@ -4916,8 +4930,8 @@ def check_negotiation_record_logged(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("runtime", "network", "server", "loopback_transport.py")
     tick_loop_rel = os.path.join("apps", "server", "runtime", "tick_loop.py")
     replay_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
 
@@ -4966,8 +4980,8 @@ def check_readonly_enforced_when_negotiated(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
-    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "NEGOTIATION_HANDSHAKES.md")
+    loopback_rel = os.path.join("runtime", "network", "server", "loopback_transport.py")
     server_boot_rel = os.path.join("apps", "server", "server_boot.py")
 
     violations = []
@@ -5011,11 +5025,11 @@ def check_degrade_plan_declared(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    degrade_ladder_registry_rel = os.path.join("data", "registries", "degrade_ladder_registry.json")
-    capability_fallback_registry_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
-    compat_mode_registry_rel = os.path.join("data", "registries", "compat_mode_registry.json")
-    negotiation_rel = os.path.join("compat", "capability_negotiation.py")
-    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    degrade_ladder_registry_rel = os.path.join("contracts", "registry", "degrade_ladder_registry.json")
+    capability_fallback_registry_rel = os.path.join("contracts", "registry", "capability_fallback_registry.json")
+    compat_mode_registry_rel = os.path.join("contracts", "registry", "compat_mode_registry.json")
+    negotiation_rel = os.path.join("tools", "validators", "compatibility", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "DEGRADE_LADDERS.md")
 
     violations = []
     required_tokens = {
@@ -5070,12 +5084,12 @@ def check_degrade_ladder_declared(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    doctrine_rel = os.path.join("docs", "compatibility", "DEGRADE_LADDERS.md")
     ladder_schema_rel = os.path.join("contracts", "schemas", "compat", "degrade_ladder.schema")
     fallback_schema_rel = os.path.join("contracts", "schemas", "compat", "fallback_map.schema")
-    ladder_registry_rel = os.path.join("data", "registries", "degrade_ladder_registry.json")
-    fallback_registry_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
-    enforcer_rel = os.path.join("compat", "negotiation", "degrade_enforcer.py")
+    ladder_registry_rel = os.path.join("contracts", "registry", "degrade_ladder_registry.json")
+    fallback_registry_rel = os.path.join("contracts", "registry", "capability_fallback_registry.json")
+    enforcer_rel = os.path.join("tools", "validators", "compatibility", "negotiation", "degrade_enforcer.py")
 
     violations = []
     required_tokens = {
@@ -5133,8 +5147,8 @@ def check_no_silent_degrade(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
-    enforcer_rel = os.path.join("compat", "negotiation", "degrade_enforcer.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "DEGRADE_LADDERS.md")
+    enforcer_rel = os.path.join("tools", "validators", "compatibility", "negotiation", "degrade_enforcer.py")
     local_controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
     server_console_rel = os.path.join("apps", "server", "server_console.py")
     logic_tool_rel = os.path.join("game", "domains", "embodiment", "tools", "logic_tool.py")
@@ -5190,9 +5204,9 @@ def check_degrade_recorded_in_negotiation(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    negotiation_rel = os.path.join("compat", "capability_negotiation.py")
+    negotiation_rel = os.path.join("tools", "validators", "compatibility", "capability_negotiation.py")
     negotiation_schema_rel = os.path.join("contracts", "schemas", "compat", "negotiation_record.schema")
-    handshake_doc_rel = os.path.join("docs", "compat", "NEGOTIATION_HANDSHAKES.md")
+    handshake_doc_rel = os.path.join("docs", "compatibility", "NEGOTIATION_HANDSHAKES.md")
     replay_tool_rel = os.path.join("tools", "compat", "tool_replay_negotiation.py")
 
     violations = []
@@ -5293,7 +5307,7 @@ def check_degrade_ladder_coverage(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "DEGRADE_LADDERS.md")
+    doctrine_rel = os.path.join("docs", "compatibility", "DEGRADE_LADDERS.md")
     common_rel = os.path.join("tools", "compat", "cap_neg4_common.py")
     baseline_rel = os.path.join("data", "regression", "cap_neg_full_baseline.json")
 
@@ -5343,9 +5357,9 @@ def check_unknown_cap_ignored_deterministically(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    capability_registry_rel = os.path.join("data", "registries", "capability_registry.json")
-    negotiation_rel = os.path.join("compat", "capability_negotiation.py")
-    doctrine_rel = os.path.join("docs", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
+    capability_registry_rel = os.path.join("contracts", "registry", "capability_registry.json")
+    negotiation_rel = os.path.join("tools", "validators", "compatibility", "capability_negotiation.py")
+    doctrine_rel = os.path.join("docs", "reference", "contracts", "CAPABILITY_NEGOTIATION_CONSTITUTION.md")
 
     violations = []
     required_tokens = {
@@ -5383,7 +5397,7 @@ def check_unknown_cap_ignored_deterministically(repo_root):
 
 
 def _load_product_dist_bin_map(repo_root):
-    registry_rel = os.path.join("data", "registries", "product_registry.json")
+    registry_rel = os.path.join("contracts", "registry", "product_registry.json")
     registry_path = os.path.join(repo_root, registry_rel.replace("/", os.sep))
     try:
         payload = json.load(open(registry_path, "r", encoding="utf-8"))
@@ -5421,9 +5435,9 @@ def check_all_products_emit_descriptor(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    doctrine_rel = os.path.join("docs", "compat", "ENDPOINT_DESCRIPTORS.md")
-    defaults_rel = os.path.join("data", "registries", "product_capability_defaults.json")
-    engine_rel = os.path.join("compat", "descriptor", "descriptor_engine.py")
+    doctrine_rel = os.path.join("docs", "compatibility", "ENDPOINT_DESCRIPTORS.md")
+    defaults_rel = os.path.join("contracts", "registry", "product_capability_defaults.json")
+    engine_rel = os.path.join("tools", "validators", "compatibility", "descriptor", "descriptor_engine.py")
     emit_tool_rel = os.path.join("tools", "compat", "tool_emit_descriptor.py")
     manifest_tool_rel = os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py")
 
@@ -5522,10 +5536,10 @@ def check_descriptor_deterministic(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    engine_rel = os.path.join("compat", "descriptor", "descriptor_engine.py")
+    engine_rel = os.path.join("tools", "validators", "compatibility", "descriptor", "descriptor_engine.py")
     emit_tool_rel = os.path.join("tools", "compat", "tool_emit_descriptor.py")
     manifest_tool_rel = os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py")
-    doctrine_rel = os.path.join("docs", "compat", "ENDPOINT_DESCRIPTORS.md")
+    doctrine_rel = os.path.join("docs", "compatibility", "ENDPOINT_DESCRIPTORS.md")
 
     violations = []
     required_tokens = {
@@ -5575,7 +5589,7 @@ def check_no_wallclock_in_descriptor(repo_root):
         return []
 
     scanned = (
-        os.path.join("compat", "descriptor", "descriptor_engine.py"),
+        os.path.join("tools", "validators", "compatibility", "descriptor", "descriptor_engine.py"),
         os.path.join("tools", "compat", "tool_emit_descriptor.py"),
         os.path.join("tools", "compat", "tool_generate_descriptor_manifest.py"),
     )
@@ -5830,7 +5844,7 @@ def check_commands_registered(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
-    registry_rel = os.path.join("data", "registries", "command_registry.json")
+    registry_rel = os.path.join("contracts", "registry", "command_registry.json")
     engine_rel = appshell_rel("commands", "command_engine.py")
     registry_loader_rel = appshell_rel("command_registry.py")
     docs_tool_rel = os.path.join("tools", "appshell", "tool_generate_command_docs.py")
@@ -6034,8 +6048,8 @@ def check_refusal_codes_stable(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "COMMANDS_AND_REFUSALS.md")
-    registry_rel = os.path.join("data", "registries", "refusal_to_exit_registry.json")
-    refusal_registry_rel = os.path.join("data", "registries", "refusal_code_registry.json")
+    registry_rel = os.path.join("contracts", "registry", "refusal_to_exit_registry.json")
+    refusal_registry_rel = os.path.join("contracts", "registry", "refusal_code_registry.json")
     engine_rel = appshell_rel("commands", "command_engine.py")
 
     violations = []
@@ -6141,7 +6155,7 @@ def check_no_printf_logging(repo_root):
     log_engine_rel = appshell_rel("logging", "log_engine.py")
     sink_rel = appshell_rel("logging_sink.py")
     guarded_rels = (
-        os.path.join("apps", "server", "net", "loopback_transport.py"),
+        os.path.join("runtime", "network", "server", "loopback_transport.py"),
         os.path.join("apps", "server", "runtime", "tick_loop.py"),
         appshell_rel("diag", "diag_snapshot.py"),
     )
@@ -6180,7 +6194,7 @@ def check_log_engine_only(repo_root):
             "message_key",
             "diag snapshot",
         ),
-        os.path.join("apps", "server", "net", "loopback_transport.py"): (
+        os.path.join("runtime", "network", "server", "loopback_transport.py"): (
             "from runtime.shell.logging import build_log_event, get_current_log_engine",
             "message_key=",
         ),
@@ -6213,7 +6227,7 @@ def check_no_wallclock_in_sim(repo_root):
         return []
 
     rel_paths = (
-        os.path.join("apps", "server", "net", "loopback_transport.py"),
+        os.path.join("runtime", "network", "server", "loopback_transport.py"),
         os.path.join("apps", "server", "runtime", "tick_loop.py"),
         appshell_rel("logging", "log_engine.py"),
         appshell_rel("diag", "diag_snapshot.py"),
@@ -6348,7 +6362,7 @@ def check_tui_fallback_declared(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "appshell", "TUI_FRAMEWORK.md")
-    fallback_rel = os.path.join("data", "registries", "capability_fallback_registry.json")
+    fallback_rel = os.path.join("contracts", "registry", "capability_fallback_registry.json")
     engine_rel = appshell_rel("tui", "tui_engine.py")
     violations = []
 
@@ -7461,13 +7475,13 @@ def check_overlay_conflict_policy_declared(repo_root):
     if is_override_active(repo_root, invariant_id):
         return []
 
-    conflict_registry_rel = os.path.join("data", "registries", "overlay_conflict_policy_registry.json")
+    conflict_registry_rel = os.path.join("contracts", "registry", "overlay_conflict_policy_registry.json")
     conflict_doc_rel = os.path.join("docs", "geo", "OVERLAY_CONFLICT_POLICIES.md")
     conflict_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_policy.schema")
     conflict_artifact_schema_rel = os.path.join("contracts", "schemas", "geo", "overlay_conflict_artifact.schema")
-    overlay_policy_registry_rel = os.path.join("data", "registries", "overlay_policy_registry.json")
+    overlay_policy_registry_rel = os.path.join("contracts", "registry", "overlay_policy_registry.json")
     overlay_engine_rel = os.path.join("game", "domains", "geology", "overlay", "overlay_merge_engine.py")
-    explain_registry_rel = os.path.join("data", "registries", "explain_contract_registry.json")
+    explain_registry_rel = os.path.join("contracts", "registry", "explain_contract_registry.json")
 
     violations = []
     required_tokens = {
@@ -10312,8 +10326,8 @@ def check_server_tick_deterministic(repo_root):
         return []
 
     tick_loop_rel = os.path.join("apps", "server", "runtime", "tick_loop.py")
-    replay_tool_rel = os.path.join("tools", "server", "tool_replay_server_window.py")
-    probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+    replay_tool_rel = os.path.join("tools", "test", "server", "tool_replay_server_window.py")
+    probe_rel = os.path.join("tools", "test", "server", "server_mvp0_probe.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
 
     violations = []
@@ -10383,7 +10397,7 @@ def check_contracts_validated_on_boot(repo_root):
     server_main_rel = os.path.join("apps", "server", "server_main.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
     config_schema_rel = os.path.join("contracts", "schemas", "server", "server_config.schema")
-    config_registry_rel = os.path.join("data", "registries", "server_config_registry.json")
+    config_registry_rel = os.path.join("contracts", "registry", "server_config_registry.json")
 
     violations = []
     required_tokens = {
@@ -10437,8 +10451,8 @@ def check_authority_required(repo_root):
         return []
 
     server_boot_rel = os.path.join("apps", "server", "server_boot.py")
-    loopback_rel = os.path.join("apps", "server", "net", "loopback_transport.py")
-    probe_rel = os.path.join("tools", "server", "server_mvp0_probe.py")
+    loopback_rel = os.path.join("runtime", "network", "server", "loopback_transport.py")
+    probe_rel = os.path.join("tools", "test", "server", "server_mvp0_probe.py")
     doc_rel = os.path.join("docs", "server", "SERVER_MVP_BASELINE.md")
 
     violations = []
@@ -10685,7 +10699,7 @@ def check_no_wallclock_timeouts_in_boot(repo_root):
 
     controller_rel = os.path.join("apps", "client", "local_server", "local_server_controller.py")
     runtime_entry_rel = os.path.join("tools", "mvp", "runtime_entry.py")
-    replay_tool_rel = os.path.join("tools", "server", "tool_replay_local_singleplayer.py")
+    replay_tool_rel = os.path.join("tools", "test", "server", "tool_replay_local_singleplayer.py")
     doc_rel = os.path.join("docs", "server", "LOCAL_SINGLEPLAYER_MODEL.md")
 
     violations = []
@@ -10932,7 +10946,7 @@ def check_repro_bundle_deterministic(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
-    baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
+    baseline_rel = os.path.join("docs", "archive", "audit", "REPRO_BUNDLE_BASELINE.md")
     schema_rel = os.path.join("contracts", "schemas", "diag", "repro_bundle_manifest.schema")
     builder_rel = os.path.join("runtime", "diagnostics", "repro_bundle_builder.py")
     replay_rel = os.path.join("tools", "diag", "tool_replay_bundle.py")
@@ -11019,7 +11033,7 @@ def check_repro_bundle_no_secrets(repo_root):
         return []
 
     doctrine_rel = os.path.join("docs", "diag", "REPRO_BUNDLE_MODEL.md")
-    baseline_rel = os.path.join("docs", "audit", "REPRO_BUNDLE_BASELINE.md")
+    baseline_rel = os.path.join("docs", "archive", "audit", "REPRO_BUNDLE_BASELINE.md")
     builder_rel = os.path.join("runtime", "diagnostics", "repro_bundle_builder.py")
     test_rel = os.path.join("tools", "xstack", "testx", "tests", "test_no_secrets_in_bundle.py")
 
@@ -13794,7 +13808,7 @@ def check_derived_artifact_contract(repo_root):
 
 def check_auditx_artifact_headers(repo_root):
     invariant_id = "INV-AUDITX-ARTIFACT-HEADERS"
-    output_root = os.path.join(repo_root, "docs", "audit", "auditx")
+    output_root = os.path.join(repo_root, "docs", "archive", "audit", "auditx")
     if not os.path.isdir(output_root):
         return []
 

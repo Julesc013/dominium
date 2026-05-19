@@ -17,7 +17,7 @@ def run(repo_root: str):
 
     from game.domain.materials.composition_engine import validate_element_registry
 
-    path = os.path.join(repo_root, "data", "registries", "element_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "element_registry.json")
     payload = json.load(open(path, "r", encoding="utf-8"))
     record = dict(payload.get("record") or {})
     rows = validate_element_registry(record)

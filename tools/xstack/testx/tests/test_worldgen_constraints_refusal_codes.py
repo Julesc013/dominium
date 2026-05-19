@@ -12,7 +12,7 @@ TEST_TAGS = ["strict", "worldgen", "determinism"]
 
 
 def _load_module_registry(repo_root: str) -> dict:
-    path = os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "worldgen_module_registry.json")
     return json.load(open(path, "r", encoding="utf-8"))
 
 

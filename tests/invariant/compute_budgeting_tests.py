@@ -262,8 +262,8 @@ def case_power_coupling_ledgered_when_enabled() -> int:
 
 
 def case_cross_platform_compute_hash_match(repo_root: str) -> int:
-    profile_registry = _load_json(os.path.join(repo_root, "data", "registries", "compute_budget_profile_registry.json"))
-    degrade_registry = _load_json(os.path.join(repo_root, "data", "registries", "compute_degrade_policy_registry.json"))
+    profile_registry = _load_json(os.path.join(repo_root, "contracts", "registry", "compute_budget_profile_registry.json"))
+    degrade_registry = _load_json(os.path.join(repo_root, "contracts", "registry", "compute_degrade_policy_registry.json"))
     if not profile_registry or not degrade_registry:
         print("failed to load compute registries")
         return 1

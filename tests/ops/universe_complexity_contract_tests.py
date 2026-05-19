@@ -50,7 +50,7 @@ REQUIRED_GUARD_TESTS = [
     os.path.join("tests", "app", "scale1_collapse_expand_tests.py"),
 ]
 
-SOLVER_REGISTRY = os.path.join("data", "registries", "solver_registry.json")
+SOLVER_REGISTRY = os.path.join("contracts", "registry", "solver_registry.json")
 SEMVER_RE = re.compile(r"^\d+\.\d+\.\d+$")
 
 

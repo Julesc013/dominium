@@ -27,8 +27,8 @@ def _row_by_id(rows: object, key_field: str, key_value: str) -> dict:
 
 
 def run(repo_root: str):
-    machine_path = os.path.join(repo_root, "data", "registries", "machine_type_registry.json")
-    port_path = os.path.join(repo_root, "data", "registries", "port_type_registry.json")
+    machine_path = os.path.join(repo_root, "contracts", "registry", "machine_type_registry.json")
+    port_path = os.path.join(repo_root, "contracts", "registry", "port_type_registry.json")
     if not os.path.isfile(machine_path):
         return {"status": "fail", "message": "machine_type_registry.json missing"}
     if not os.path.isfile(port_path):

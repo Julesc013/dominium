@@ -10,7 +10,7 @@ TEST_TAGS = ["fast", "governance", "repox"]
 
 
 def run(repo_root: str):
-    rel_path = os.path.join("docs", "audit", "WORKTREE_LEFTOVERS.md")
+    rel_path = os.path.join("docs", "archive", "audit", "WORKTREE_LEFTOVERS.md")
     abs_path = os.path.join(repo_root, rel_path)
     if not os.path.isfile(abs_path):
         return {

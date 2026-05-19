@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-19T18:23:13Z",
+  "generated_at_utc": "2026-05-19T22:54:20Z",
   "repo_root": ".",
-  "head_sha": "a4ca69c640ecf9be5a4ae93c3e2bfb0db4b0d70d",
+  "head_sha": "f0fa0a4c16ebf1c24c90911ea28f32dd9891799c",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",
@@ -314,6 +314,22 @@
       "phase_hint": "none",
       "authority_status": "metadata",
       "notes": "Allowed root file."
+    },
+    {
+      "name": "data",
+      "path": "data",
+      "kind": "directory",
+      "present": true,
+      "classification": "transitional_content_or_data_root",
+      "ownership_surface": "content",
+      "current_role": "Current content, data, pack, profile, or export-adjacent root retained until split review.",
+      "proposed_target": "content_or_runtime_store_review",
+      "migration_action": "split",
+      "split_required": true,
+      "risk_level": "high",
+      "phase_hint": "CONVERGE-09",
+      "authority_status": "transitional",
+      "notes": "Data contains registries, content, planning mirrors, and generated evidence; split by authority."
     },
     {
       "name": "docs",

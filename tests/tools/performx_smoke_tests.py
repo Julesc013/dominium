@@ -66,8 +66,8 @@ def main():
             print("invalid json {}".format(rel))
             return 1
 
-    results_payload = _load_json(os.path.join(repo_root, "docs", "audit", "performance", "PERFORMX_RESULTS.json"))
-    regressions_payload = _load_json(os.path.join(repo_root, "docs", "audit", "performance", "PERFORMX_REGRESSIONS.json"))
+    results_payload = _load_json(os.path.join(repo_root, "docs", "archive", "audit", "performance", "PERFORMX_RESULTS.json"))
+    regressions_payload = _load_json(os.path.join(repo_root, "docs", "archive", "audit", "performance", "PERFORMX_REGRESSIONS.json"))
     if str(results_payload.get("artifact_class", "")).strip() != "CANONICAL":
         print("unexpected artifact_class for results")
         return 1

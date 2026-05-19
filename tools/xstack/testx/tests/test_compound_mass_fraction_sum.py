@@ -26,8 +26,8 @@ def run(repo_root: str):
 
     from game.domain.materials.composition_engine import DEFAULT_FRACTION_SCALE, validate_compound_composition
 
-    element_payload = json.load(open(os.path.join(repo_root, "data", "registries", "element_registry.json"), "r", encoding="utf-8"))
-    compound_payload = json.load(open(os.path.join(repo_root, "data", "registries", "compound_registry.json"), "r", encoding="utf-8"))
+    element_payload = json.load(open(os.path.join(repo_root, "contracts", "registry", "element_registry.json"), "r", encoding="utf-8"))
+    compound_payload = json.load(open(os.path.join(repo_root, "contracts", "registry", "compound_registry.json"), "r", encoding="utf-8"))
     element_registry = dict(element_payload.get("record") or {})
     compound_row = _row_by_id((compound_payload.get("record") or {}).get("compounds"), "compound_id", "compound.H2O")
     if not compound_row:

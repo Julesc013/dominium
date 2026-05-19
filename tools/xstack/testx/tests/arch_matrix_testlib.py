@@ -10,7 +10,7 @@ from tools.xstack.testx.tests.update_model_testlib import ensure_assets as ensur
 
 
 def _registry_path(repo_root: str) -> str:
-    return os.path.join(os.path.abspath(repo_root), "data", "registries", "target_matrix_registry.json")
+    return os.path.join(os.path.abspath(repo_root), "contracts", "registry", "target_matrix_registry.json")
 
 
 def ensure_assets(repo_root: str) -> None:

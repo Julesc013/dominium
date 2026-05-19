@@ -26,7 +26,7 @@ def run(repo_root: str):
 
     from game.domain.materials.composition_engine import DEFAULT_FRACTION_SCALE, validate_mixture_composition
 
-    payload = json.load(open(os.path.join(repo_root, "data", "registries", "mixture_registry.json"), "r", encoding="utf-8"))
+    payload = json.load(open(os.path.join(repo_root, "contracts", "registry", "mixture_registry.json"), "r", encoding="utf-8"))
     mixture_row = _row_by_id((payload.get("record") or {}).get("mixtures"), "mixture_id", "mixture.air")
     if not mixture_row:
         return {"status": "fail", "message": "mixture.air missing from registry"}

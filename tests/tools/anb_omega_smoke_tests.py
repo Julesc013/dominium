@@ -50,11 +50,11 @@ def main():
         print(stress.stdout)
         return 1
 
-    baseline_state = os.path.join(repo_root, "docs", "audit", "system", "BASELINE_STATE.json")
-    baseline_meta = os.path.join(repo_root, "docs", "audit", "system", "BASELINE_META.json")
-    stress_matrix = os.path.join(repo_root, "docs", "audit", "system", "STRESS_MATRIX.json")
-    omega_report = os.path.join(repo_root, "docs", "audit", "system", "ANB_OMEGA_REPORT.md")
-    portability_report = os.path.join(repo_root, "docs", "audit", "system", "PORTABILITY_REPORT.md")
+    baseline_state = os.path.join(repo_root, "docs", "archive", "audit", "system", "BASELINE_STATE.json")
+    baseline_meta = os.path.join(repo_root, "docs", "archive", "audit", "system", "BASELINE_META.json")
+    stress_matrix = os.path.join(repo_root, "docs", "archive", "audit", "system", "STRESS_MATRIX.json")
+    omega_report = os.path.join(repo_root, "docs", "archive", "audit", "system", "ANB_OMEGA_REPORT.md")
+    portability_report = os.path.join(repo_root, "docs", "archive", "audit", "system", "PORTABILITY_REPORT.md")
 
     required_paths = (baseline_state, baseline_meta, stress_matrix, omega_report, portability_report)
     for path in required_paths:

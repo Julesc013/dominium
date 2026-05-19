@@ -239,7 +239,7 @@
         "tools/xstack/**",
         "docs/repo/**",
         "docs/architecture/**",
-        "data/registries/**",
+        "contracts/registry/**",
         "contracts/**"
       ],
       "tiers": [

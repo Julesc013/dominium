@@ -41,7 +41,7 @@ _FAST_CODE_PREFIXES = (
 
 _STRICT_PREFIXES = (
     "contracts/schema/",
-    "data/registries/",
+    "contracts/registry/",
     "repo/repox/",
     "tests/",
     "scripts/ci/",

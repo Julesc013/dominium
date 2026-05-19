@@ -16,7 +16,7 @@ for _repo_root_probe_depth in range(16):
         break
     REPO_ROOT_HINT = parent
 REPO_ROOT_HINT = os.path.normpath(REPO_ROOT_HINT)
-REGISTRY_ROOT = os.path.join(REPO_ROOT_HINT, "data", "registries")
+REGISTRY_ROOT = os.path.join(REPO_ROOT_HINT, "contracts", "registry")
 
 
 SCOPED_REGISTRY_GROUPS: dict[str, tuple[str, ...]] = {
@@ -102,7 +102,7 @@ def _all_registry_paths() -> tuple[str, ...]:
         abs_path = os.path.join(REGISTRY_ROOT, name)
         if not os.path.isfile(abs_path):
             continue
-        rows.append("data/registries/{}".format(str(name).replace("\\", "/")))
+        rows.append("contracts/registry/{}".format(str(name).replace("\\", "/")))
     return tuple(rows)
 
 

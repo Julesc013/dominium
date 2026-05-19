@@ -13,7 +13,7 @@ THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 if THIS_DIR not in sys.path:
     sys.path.insert(0, THIS_DIR)
 
-DEV_SCRIPT_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "scripts", "dev"))
+DEV_SCRIPT_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "..", "scripts", "dev"))
 if DEV_SCRIPT_DIR not in sys.path:
     sys.path.insert(0, DEV_SCRIPT_DIR)
 

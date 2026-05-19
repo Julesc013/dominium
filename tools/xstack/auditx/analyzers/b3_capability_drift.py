@@ -7,7 +7,7 @@ from analyzers.base import make_finding
 
 
 ANALYZER_ID = "A3_CAPABILITY_DRIFT"
-WATCH_PREFIXES = ("libs/appcore/command/", "tests/testx/capability_sets/", "data/registries/")
+WATCH_PREFIXES = ("libs/appcore/command/", "tests/testx/capability_sets/", "contracts/registry/")
 
 CAP_RE = re.compile(r'"([a-z0-9]+(?:\.[a-z0-9_]+){1,})"')
 

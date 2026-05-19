@@ -11,7 +11,7 @@ def run(repo_root: str):
     import json
     import os
 
-    path = os.path.join(repo_root, "data", "registries", "exit_code_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "exit_code_registry.json")
     try:
         payload = json.load(open(path, "r", encoding="utf-8"))
     except (OSError, ValueError):

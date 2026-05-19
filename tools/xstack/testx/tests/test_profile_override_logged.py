@@ -13,7 +13,7 @@ TEST_TAGS = ["fast", "geo", "profile", "determinism"]
 
 
 def run(repo_root: str):
-    profile_registry_path = os.path.join(repo_root, "data", "registries", "profile_registry.json")
+    profile_registry_path = os.path.join(repo_root, "contracts", "registry", "profile_registry.json")
     try:
         profile_registry_payload = json.load(open(profile_registry_path, "r", encoding="utf-8"))
     except (OSError, ValueError):

@@ -18,7 +18,7 @@ CORE_DIR = os.path.join(THIS_DIR, "core")
 if CORE_DIR not in sys.path:
     sys.path.insert(0, CORE_DIR)
 
-DEV_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "scripts", "dev"))
+DEV_DIR = os.path.normpath(os.path.join(THIS_DIR, "..", "..", "..", "scripts", "dev"))
 if DEV_DIR not in sys.path:
     sys.path.insert(0, DEV_DIR)
 
@@ -31,9 +31,9 @@ from reproducible_build_check import canonical_hash_map, compare_hash_maps
 from trust_model import load_and_validate as load_trust_policy
 
 
-TRUST_POLICY_REL = os.path.join("data", "registries", "trust_policy.json")
-SECURITY_ROLES_REL = os.path.join("data", "registries", "security_roles.json")
-OUTPUT_DIR_REL = os.path.join("docs", "audit", "security")
+TRUST_POLICY_REL = os.path.join("contracts", "registry", "trust_policy.json")
+SECURITY_ROLES_REL = os.path.join("contracts", "registry", "security_roles.json")
+OUTPUT_DIR_REL = os.path.join("docs", "archive", "audit", "security")
 FINDINGS_REL = "FINDINGS.json"
 RUN_META_REL = "RUN_META.json"
 INTEGRITY_REL = "INTEGRITY_MANIFEST.json"
@@ -83,7 +83,7 @@ def _canonicalize(value: Any) -> Any:
 
 
 def _iter_source_files(repo_root: str) -> Iterable[str]:
-    roots = [os.path.join(repo_root, part) for part in ("engine", "game", "client", "server", "launcher", "setup", "tools")]
+    roots = [os.path.join(repo_root, part) for part in ("apps", "runtime", "engine", "game", "tools")]
     for root in roots:
         if not os.path.isdir(root):
             continue
@@ -136,7 +136,7 @@ def _security_findings(repo_root: str) -> List[Dict[str, Any]]:
                         "evidence": token,
                     }
                 )
-        if rel.startswith(("apps/client/", "renderer/")) and any(token in lowered for token in direct_io_tokens):
+        if rel.startswith(("apps/client/", "runtime/render/")) and any(token in lowered for token in direct_io_tokens):
             findings.append(
                 {
                     "category": "boundary_io",
@@ -158,25 +158,25 @@ def _security_findings(repo_root: str) -> List[Dict[str, Any]]:
 
 def _manifest_inputs(repo_root: str) -> Tuple[List[tuple[str, str]], List[tuple[str, str]], List[tuple[str, str]], List[tuple[str, str]]]:
     schema_files = [
-        ("schema.trust_policy", os.path.join(repo_root, "contracts", "schemas", "governance", "trust_policy.schema")),
-        ("schema.pack_signature", os.path.join(repo_root, "contracts", "schemas", "governance", "pack_signature.schema")),
-        ("schema.integrity_manifest", os.path.join(repo_root, "contracts", "schemas", "governance", "integrity_manifest.schema")),
-        ("schema.privilege_model", os.path.join(repo_root, "contracts", "schemas", "governance", "privilege_model.schema")),
+        ("schema.trust_policy", os.path.join(repo_root, "contracts", "schema", "governance", "trust_policy.schema")),
+        ("schema.pack_signature", os.path.join(repo_root, "contracts", "schema", "governance", "pack_signature.schema")),
+        ("schema.integrity_manifest", os.path.join(repo_root, "contracts", "schema", "governance", "integrity_manifest.schema")),
+        ("schema.privilege_model", os.path.join(repo_root, "contracts", "schema", "governance", "privilege_model.schema")),
     ]
     pack_files = [
         ("registry.trust_policy", os.path.join(repo_root, TRUST_POLICY_REL)),
         ("registry.security_roles", os.path.join(repo_root, SECURITY_ROLES_REL)),
     ]
     tool_files = [
-        ("tool.securex", os.path.join(repo_root, "tools", "securex", "securex.py")),
-        ("tool.auditx", os.path.join(repo_root, "tools", "auditx", "auditx.py")),
-        ("tool.compatx", os.path.join(repo_root, "tools", "compatx", "compatx.py")),
-        ("tool.controlx", os.path.join(repo_root, "tools", "controlx", "controlx.py")),
+        ("tool.securex", os.path.join(repo_root, "tools", "xstack", "securex", "securex.py")),
+        ("tool.auditx", os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py")),
+        ("tool.compatx", os.path.join(repo_root, "tools", "xstack", "compatx", "compatx.py")),
+        ("tool.controlx", os.path.join(repo_root, "tools", "xstack", "controlx", "controlx.py")),
     ]
     canonical_artifacts = [
-        ("artifact.identity_fingerprint", os.path.join(repo_root, "docs", "audit", "identity_fingerprint.json")),
-        ("artifact.auditx.findings", os.path.join(repo_root, "docs", "audit", "auditx", "FINDINGS.json")),
-        ("artifact.compatx.baseline", os.path.join(repo_root, "docs", "audit", "compat", "COMPAT_BASELINE.json")),
+        ("artifact.identity_fingerprint", os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint.json")),
+        ("artifact.auditx.findings", os.path.join(repo_root, "docs", "archive", "audit", "auditx", "FINDINGS.json")),
+        ("artifact.compatx.baseline", os.path.join(repo_root, "docs", "archive", "audit", "compat", "COMPAT_BASELINE.json")),
     ]
     return schema_files, pack_files, tool_files, canonical_artifacts
 
@@ -233,7 +233,7 @@ def _run_verify(args: argparse.Namespace) -> int:
             pack_files=pack_files,
             tool_files=tool_files,
             canonical_artifacts=canonical_artifacts,
-            identity_path=os.path.join(repo_root, "docs", "audit", "identity_fingerprint.json"),
+            identity_path=os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint.json"),
         )
     )
     write_manifest(integrity_path, integrity_payload)
@@ -426,7 +426,7 @@ def _cmd_integrity_manifest(args: argparse.Namespace) -> int:
             pack_files=pack_files,
             tool_files=tool_files,
             canonical_artifacts=canonical_artifacts,
-            identity_path=os.path.join(repo_root, "docs", "audit", "identity_fingerprint.json"),
+            identity_path=os.path.join(repo_root, "docs", "archive", "audit", "identity_fingerprint.json"),
         )
     )
     output_path = os.path.normpath(os.path.abspath(args.output))

@@ -114,7 +114,7 @@ def run(graph, repo_root, changed_files=None):
                 )
             if _POLICY_LITERAL_RE.search(str(line)):
                 lower = str(line).lower()
-                if "data/registries/" in lower or "docs/runtime/network/" in lower:
+                if "contracts/registry/" in lower or "docs/runtime/network/" in lower:
                     continue
                 if "tools/xstack/testx/tests/" in _norm(rel_path):
                     continue

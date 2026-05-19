@@ -11,7 +11,7 @@ ANALYZER_ID = "E32_COHORT_LEAK_SMELL"
 WATCH_PREFIXES = (
     "tools/xstack/sessionx/",
     "docs/domains/civilization/",
-    "data/registries/",
+    "contracts/registry/",
 )
 
 

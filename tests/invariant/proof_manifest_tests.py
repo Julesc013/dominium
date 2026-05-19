@@ -15,7 +15,7 @@ def parse_args():
     parser.add_argument("--repo-root", default=".")
     parser.add_argument(
         "--manifest",
-        default=os.path.join("docs", "audit", "proof_manifest.json"),
+        default=os.path.join("docs", "archive", "audit", "proof_manifest.json"),
     )
     return parser.parse_args()
 

@@ -126,7 +126,7 @@ def _write_pack(root: str, pack_id: str) -> None:
 def _build_contract_bundle_payload(install_manifest: dict, bundle_id: str) -> tuple[dict, str]:
     registry_payload = json.load(
         open(
-            os.path.join(REPO_ROOT_HINT, "data", "registries", "semantic_contract_registry.json"),
+            os.path.join(REPO_ROOT_HINT, "contracts", "registry", "semantic_contract_registry.json"),
             "r",
             encoding="utf-8",
         )
@@ -178,7 +178,7 @@ def _run_share(repo_root: str, args: list, allow_fail: bool = False):
 def _write_install_manifest(repo_root: str, root: str, install_id: str) -> str:
     path = os.path.join(root, "install.manifest.json")
     _ensure_dir(os.path.join(root, "bin"))
-    registry_payload = json.load(open(os.path.join(repo_root, "data", "registries", "semantic_contract_registry.json"), "r", encoding="utf-8"))
+    registry_payload = json.load(open(os.path.join(repo_root, "contracts", "registry", "semantic_contract_registry.json"), "r", encoding="utf-8"))
     _write_json(os.path.join(root, "semantic_contract_registry.json"), registry_payload)
     game_bin = os.path.join(root, "bin", "dominium_game")
     with open(game_bin, "w", encoding="utf-8", newline="\n") as handle:

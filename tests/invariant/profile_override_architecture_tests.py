@@ -239,7 +239,7 @@ def case_profile_binding_hash_stable():
 
 
 def case_cross_platform_profile_hash_match(repo_root: str):
-    registry_path = os.path.join(repo_root, "data", "registries", "profile_registry.json")
+    registry_path = os.path.join(repo_root, "contracts", "registry", "profile_registry.json")
     try:
         payload = json.load(open(registry_path, "r", encoding="utf-8"))
     except (OSError, ValueError):

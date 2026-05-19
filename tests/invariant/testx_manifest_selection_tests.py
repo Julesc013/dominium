@@ -22,8 +22,16 @@ def _require(condition, message):
 
 def run_selection_logic(repo_root):
     runner = _load_runner(repo_root)
+    expected_registry = os.path.join("contracts", "registry", "testx_suites.json")
+    if not _require(runner.DEFAULT_REGISTRY_REL == expected_registry, "TestX default suite registry is not canonical"):
+        return 1
     registry, refusal = runner.load_suite_registry(repo_root)
     if not _require(registry is not None, "failed to load suite registry: {}".format(refusal)):
+        return 1
+    if not _require(
+        os.path.normpath(registry["path"]).endswith(os.path.normpath(expected_registry)),
+        "loaded TestX suite registry from non-canonical path: {}".format(registry["path"]),
+    ):
         return 1
     suite = registry["index"].get("testx_fast")
     if not _require(isinstance(suite, dict), "missing testx_fast suite"):

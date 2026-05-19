@@ -26,9 +26,9 @@ def _by_id(rows, key):
 
 
 def run(repo_root: str):
-    replication_path = os.path.join(repo_root, "data", "registries", "net_replication_policy_registry.json")
-    anti_cheat_path = os.path.join(repo_root, "data", "registries", "anti_cheat_policy_registry.json")
-    module_path = os.path.join(repo_root, "data", "registries", "anti_cheat_module_registry.json")
+    replication_path = os.path.join(repo_root, "contracts", "registry", "net_replication_policy_registry.json")
+    anti_cheat_path = os.path.join(repo_root, "contracts", "registry", "anti_cheat_policy_registry.json")
+    module_path = os.path.join(repo_root, "contracts", "registry", "anti_cheat_module_registry.json")
     try:
         replication_payload = _read_json(replication_path)
         anti_cheat_payload = _read_json(anti_cheat_path)

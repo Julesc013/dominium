@@ -80,7 +80,7 @@ def run(graph, repo_root, changed_files=None):
 
     overlays_rel = "runtime/ui/client/interaction/inspection_overlays.py"
     overlays_text = _read_text(repo_root, overlays_rel)
-    if not overlays_text or "_plan_overlay_payload(" not in overlays_text or "\"plan_archive\generated\archive\generated\archive\generated\artifacts\"" not in overlays_text:
+    if not overlays_text or "_plan_overlay_payload(" not in overlays_text or '"overlay_kind": "plan_ghost"' not in overlays_text:
         findings.append(
             make_finding(
                 analyzer_id=ANALYZER_ID,
@@ -101,4 +101,3 @@ def run(graph, repo_root, changed_files=None):
         findings,
         key=lambda item: (_norm(item.location.file_path), item.location.line_start, item.severity),
     )
-

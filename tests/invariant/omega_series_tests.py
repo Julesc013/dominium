@@ -7,7 +7,7 @@ import sys
 
 PLAN_REL = os.path.join("docs", "omega", "OMEGA_PLAN.md")
 GATES_REL = os.path.join("docs", "omega", "OMEGA_GATES.md")
-REGISTRY_REL = os.path.join("data", "registries", "omega_artifact_registry.json")
+REGISTRY_REL = os.path.join("contracts", "registry", "omega_artifact_registry.json")
 
 EXPECTED_PLAN_LINES = [
     "Ω-0 OMEGA_INDEX",
@@ -73,19 +73,19 @@ EXPECTED_GATE_SECTIONS = {
 }
 
 PREREQ_EVIDENCE = {
-    "NUMERIC-DISCIPLINE-0": os.path.join("docs", "audit", "NUMERIC_DISCIPLINE0_RETRO_AUDIT.md"),
-    "CONCURRENCY-CONTRACT-0": os.path.join("docs", "audit", "CONCURRENCY_CONTRACT_BASELINE.md"),
-    "STORE-GC-0": os.path.join("docs", "audit", "STORE_GC0_RETRO_AUDIT.md"),
-    "MIGRATION-LIFECYCLE-0": os.path.join("docs", "audit", "MIGRATION_LIFECYCLE0_RETRO_AUDIT.md"),
-    "OBSERVABILITY-0": os.path.join("docs", "audit", "OBSERVABILITY0_RETRO_AUDIT.md"),
-    "UPDATE-MODEL-0": os.path.join("docs", "audit", "UPDATE_MODEL0_RETRO_AUDIT.md"),
-    "TRUST-MODEL-0": os.path.join("docs", "audit", "TRUST_MODEL0_RETRO_AUDIT.md"),
-    "COMPONENT-GRAPH-0": os.path.join("docs", "audit", "COMPONENT_GRAPH_BASELINE.md"),
-    "DIST-REFINE-1": os.path.join("docs", "audit", "DIST_REFINE1_RETRO_AUDIT.md"),
-    "UNIVERSAL-IDENTITY-0": os.path.join("docs", "audit", "UNIVERSAL_IDENTITY0_RETRO_AUDIT.md"),
-    "RELEASE-INDEX-POLICY-0": os.path.join("docs", "audit", "RELEASE_INDEX_POLICY0_RETRO_AUDIT.md"),
-    "ARCHIVE-POLICY-0": os.path.join("docs", "audit", "ARCHIVE_POLICY0_RETRO_AUDIT.md"),
-    "RELEASE-2": os.path.join("docs", "audit", "RELEASE2_RETRO_AUDIT.md"),
+    "NUMERIC-DISCIPLINE-0": os.path.join("docs", "archive", "audit", "NUMERIC_DISCIPLINE0_RETRO_AUDIT.md"),
+    "CONCURRENCY-CONTRACT-0": os.path.join("docs", "archive", "audit", "CONCURRENCY_CONTRACT_BASELINE.md"),
+    "STORE-GC-0": os.path.join("docs", "archive", "audit", "STORE_GC0_RETRO_AUDIT.md"),
+    "MIGRATION-LIFECYCLE-0": os.path.join("docs", "archive", "audit", "MIGRATION_LIFECYCLE0_RETRO_AUDIT.md"),
+    "OBSERVABILITY-0": os.path.join("docs", "archive", "audit", "OBSERVABILITY0_RETRO_AUDIT.md"),
+    "UPDATE-MODEL-0": os.path.join("docs", "archive", "audit", "UPDATE_MODEL0_RETRO_AUDIT.md"),
+    "TRUST-MODEL-0": os.path.join("docs", "archive", "audit", "TRUST_MODEL0_RETRO_AUDIT.md"),
+    "COMPONENT-GRAPH-0": os.path.join("docs", "archive", "audit", "COMPONENT_GRAPH_BASELINE.md"),
+    "DIST-REFINE-1": os.path.join("docs", "archive", "audit", "DIST_REFINE1_RETRO_AUDIT.md"),
+    "UNIVERSAL-IDENTITY-0": os.path.join("docs", "archive", "audit", "UNIVERSAL_IDENTITY0_RETRO_AUDIT.md"),
+    "RELEASE-INDEX-POLICY-0": os.path.join("docs", "archive", "audit", "RELEASE_INDEX_POLICY0_RETRO_AUDIT.md"),
+    "ARCHIVE-POLICY-0": os.path.join("docs", "archive", "audit", "ARCHIVE_POLICY0_RETRO_AUDIT.md"),
+    "RELEASE-2": os.path.join("docs", "archive", "audit", "RELEASE2_RETRO_AUDIT.md"),
 }
 
 EXPECTED_OUTPUTS = {

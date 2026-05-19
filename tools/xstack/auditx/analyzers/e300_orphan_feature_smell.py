@@ -25,7 +25,7 @@ FEATURE_PATH_PREFIXES = (
     "game/",
     "apps/server/",
     "apps/client/",
-    "data/registries/",
+    "contracts/registry/",
     "contracts/schema/",
     "packs/system_templates/",
     "tools/domain/",

@@ -17,7 +17,7 @@ def _run_scan(repo_root: str, out_rel: str):
     proc = subprocess.run(
         [
             sys.executable,
-            os.path.join(repo_root, "tools", "auditx", "auditx.py"),
+            os.path.join(repo_root, "tools", "xstack", "auditx", "auditx.py"),
             "scan",
             "--repo-root",
             repo_root,
