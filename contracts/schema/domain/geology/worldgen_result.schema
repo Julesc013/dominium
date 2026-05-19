@@ -1,0 +1,30 @@
+SCHEMA: geo/worldgen_result.schema
+schema_id: dominium.schema.geo.worldgen_result
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical GEO-8 procedural base-layer worldgen result contract.
+- Preserve deterministic output identity for replay, caching, and overlay layering.
+
+NON-SEMANTICS:
+- This schema does not encode overlay content.
+- This schema does not imply deep simulation beyond initial conditions.
+
+REQUIRED SHAPE:
+record worldgen_result
+  required:
+    - result_id: id
+    - geo_cell_key: map
+    - generator_version_id: id
+    - realism_profile_id: id
+    - spawned_object_ids: list<string>
+    - field_initializations: list<map>
+    - geometry_initializations: list<map>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- result content must be derived solely from locked universe inputs and the request
+- spawned_object_ids must use stable GEO-derived identity
+- field_initializations and geometry_initializations must remain deterministic and replayable

@@ -1,0 +1,20 @@
+SCHEMA: control/stacking_policy.schema
+schema_id: dominium.schema.control.stacking_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic CTRL-8 effect stacking policy declaration artifact.
+
+REQUIRED SHAPE:
+record stacking_policy
+  required:
+    - schema_version: semver
+    - stacking_policy_id: id
+    - mode: enum(replace|max|min|add|multiply)
+    - tie_break_rule: id
+    - extensions: map
+
+INVARIANTS:
+- Stacking is deterministic under canonical ordering `(effect_type_id, applied_tick, effect_id)`.
+- Policy rows are data-driven and free of runtime reflection.

@@ -1,0 +1,23 @@
+SCHEMA: civilisation/diplomatic_relation.schema
+schema_id: dominium.schema.civilisation.diplomatic_relation
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic diplomatic relation records for faction pairs.
+
+REQUIRED SHAPE:
+record diplomatic_relation
+  required:
+    - schema_version: semver
+    - faction_a: id
+    - faction_b: id
+    - relation_state: id
+    - updated_tick: u64
+    - extensions: map
+
+INVARIANTS:
+- CIV-1 relation updates are symmetric over canonicalized faction pairs.
+- relation_state must resolve from diplomatic state registry.
+- No gameplay semantics are implied by relation changes in CIV-1.
+

@@ -40,7 +40,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

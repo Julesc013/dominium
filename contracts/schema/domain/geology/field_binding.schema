@@ -1,0 +1,24 @@
+SCHEMA: geo/field_binding.schema
+schema_id: dominium.schema.geo.field_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the canonical GEO-4 binding between a Field and a GEO partition/topology storage domain.
+- Freeze the rule that field storage identity is GEO-addressed, not raw grid-assumption addressed.
+
+REQUIRED SHAPE:
+record field_binding
+  required:
+    - field_id: id
+    - topology_profile_id: id
+    - partition_profile_id: id
+    - storage_kind: enum(cell|tile|octree_stub)
+    - interpolation_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- field bindings must be deterministic for identical field/profile inputs
+- binding identity must not depend on runtime mode flags
+- storage semantics must remain compatible with canonical geo_cell_key addressing

@@ -1,8 +1,8 @@
 /*
 Economy Work IR migration tests (ADOPT4).
 */
-#include "dominium/rules/economy/economy_system.h"
-#include "dominium/rules/economy/ledger_tasks.h"
+#include "dominium/economy/economy_system.h"
+#include "dominium/economy/ledger_tasks.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"
 #include "domino/execution/task_graph.h"

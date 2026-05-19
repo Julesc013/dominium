@@ -14,7 +14,7 @@ Scope: deterministic capability and pack resolution artifacts.
 ## Authoritative Forms
 
 - Legacy adapter: `schema/capability_lockfile.schema`
-- LIB-0 canonical pack lock artifact: `schema/packs/pack_lock.schema`
+- LIB-0 canonical pack lock artifact: `schema/package/pack_lock.schema`
 - Portable capability adapter artifact: `capabilities.lock`
 
 ## Storage Rules
@@ -33,6 +33,6 @@ Scope: deterministic capability and pack resolution artifacts.
 
 ## Related Contracts
 
-- `schema/packs/pack_lock.schema`
+- `schema/package/pack_lock.schema`
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`

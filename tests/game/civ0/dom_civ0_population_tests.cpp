@@ -1,12 +1,12 @@
 /*
 CIV0 population genesis tests.
 */
-#include "dominium/rules/population/cohort_types.h"
-#include "dominium/rules/population/demographics.h"
-#include "dominium/rules/population/household_model.h"
-#include "dominium/rules/population/migration_model.h"
-#include "dominium/rules/population/population_projections.h"
-#include "dominium/rules/population/population_scheduler.h"
+#include "dominium/population/cohort_types.h"
+#include "dominium/population/demographics.h"
+#include "dominium/population/household_model.h"
+#include "dominium/population/migration_model.h"
+#include "dominium/population/population_projections.h"
+#include "dominium/population/population_scheduler.h"
 
 #include <stdio.h>
 #include <string.h>

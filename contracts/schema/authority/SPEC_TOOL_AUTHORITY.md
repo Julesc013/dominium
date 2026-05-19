@@ -38,6 +38,6 @@ Anti-cheat is expressed as law that denies tool capabilities for most actors.
 No tool-specific bypasses are allowed outside law evaluation.
 
 ## Cross-References
-- Tool intents: `schema/tools/SPEC_TOOL_INTENTS.md`
-- Tool capabilities: `schema/tools/SPEC_TOOL_CAPABILITIES.md`
+- Tool intents: `schema/tool/SPEC_TOOL_INTENTS.md`
+- Tool capabilities: `schema/tool/SPEC_TOOL_CAPABILITIES.md`
 - Law kernel: `schema/law/SPEC_LAW_KERNEL.md`

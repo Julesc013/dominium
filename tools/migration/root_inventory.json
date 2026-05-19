@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
-  "generated_at_utc": "2026-05-18T17:54:18Z",
+  "generated_at_utc": "2026-05-19T10:57:44Z",
   "repo_root": ".",
-  "head_sha": "ce504d4e1a0a5397123f014036cca78e49355658",
+  "head_sha": "2717d898ca63348ba825c7758f914fce05891f31",
   "source_branch": "main",
   "contract_id": "dominium.repo.layout.v1",
   "contract_phase": "CONVERGE-10",

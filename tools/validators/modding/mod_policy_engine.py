@@ -19,8 +19,8 @@ PACK_TRUST_DESCRIPTOR_SCHEMA_NAME = "pack_trust_descriptor"
 PACK_CAPABILITIES_SCHEMA_NAME = "pack_capabilities"
 MOD_POLICY_PROFILE_SCHEMA_NAME = "mod_policy_profile"
 
-MOD_POLICY_REGISTRY_REL = os.path.join("data", "registries", "mod_policy_registry.json")
-CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
+MOD_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "mod_policy_registry.json")
+CAPABILITY_REGISTRY_REL = os.path.join("contracts", "registry", "capability_registry.json")
 
 REFUSAL_MOD_TRUST_DENIED = "refusal.mod.trust_denied"
 REFUSAL_MOD_CAPABILITY_DENIED = "refusal.mod.capability_denied"

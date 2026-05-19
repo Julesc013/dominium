@@ -87,7 +87,7 @@ Conceptual framing lives in `docs/architectureitecture/MENTAL_MODEL.md`.
 ### Dominium game (authoritative rules + domain logic)
 
 
-- Game logic lives under `game/rule/`, `game/rules/`, and `game/economy/`.
+- Game logic lives under `game/rule/`, `game/domain/`, and current game public include surfaces.
 
 
 - Game code uses engine public headers only; it must not include `engine/modules/**`.

@@ -179,8 +179,8 @@ and their CI enforcement equivalents in `docs/CI_ENFORCEMENT_MATRIX.md`.
 ## Integration points
 - LIFE pipelines: `schema/life/SPEC_LIFE_CONTINUITY.md`,
   `schema/life/SPEC_DEATH_AND_ESTATE.md`
-- CIV1 logistics/production: `schema/civ/SPEC_LOGISTICS_FLOWS.md`,
-  `schema/civ/SPEC_BUILDINGS_MACHINES.md`, `schema/civ/SPEC_PRODUCTION_CHAINS.md`
+- CIV1 logistics/production: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`,
+  `schema/domain/civilization/SPEC_BUILDINGS_MACHINES.md`, `schema/domain/civilization/SPEC_PRODUCTION_CHAINS.md`
 - CIV2 legitimacy/enforcement: `schema/governance/SPEC_LEGITIMACY.md`,
   `schema/governance/SPEC_ENFORCEMENT.md`
 - CIV3 knowledge/epistemics: `schema/knowledge/SPEC_SECRECY.md`,

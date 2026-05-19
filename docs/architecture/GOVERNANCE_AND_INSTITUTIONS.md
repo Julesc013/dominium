@@ -144,13 +144,13 @@ If enforcement is weak at macro scale, micro outcomes must reflect that.
 - Reality flow: `docs/architecture/REALITY_FLOW.md`
 
 
-- Institutions schema: `schema/civ/SPEC_INSTITUTIONS.md`
+- Institutions schema: `schema/domain/civilization/SPEC_INSTITUTIONS.md`
 
 
-- Governance schema: `schema/civ/SPEC_GOVERNANCE.md`
+- Governance schema: `schema/domain/civilization/SPEC_GOVERNANCE.md`
 
 
-- Legitimacy schema: `schema/civ/SPEC_LEGITIMACY.md`
+- Legitimacy schema: `schema/domain/civilization/SPEC_LEGITIMACY.md`
 
 
 

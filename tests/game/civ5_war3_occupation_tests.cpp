@@ -1,18 +1,18 @@
 /*
 CIV5 WAR3 occupation and resistance tests.
 */
-#include "dominium/rules/governance/enforcement_capacity.h"
-#include "dominium/rules/governance/legitimacy_model.h"
-#include "dominium/rules/infrastructure/store_model.h"
-#include "dominium/rules/logistics/transport_capacity.h"
-#include "dominium/rules/survival/cohort_model.h"
-#include "dominium/rules/survival/needs_model.h"
-#include "dominium/rules/war/disruption_effects.h"
-#include "dominium/rules/war/occupation_state.h"
-#include "dominium/rules/war/pacification_policies.h"
-#include "dominium/rules/war/resistance_scheduler.h"
-#include "dominium/rules/war/resistance_state.h"
-#include "dominium/rules/war/territory_control.h"
+#include "dominium/governance/enforcement_capacity.h"
+#include "dominium/governance/legitimacy_model.h"
+#include "dominium/infrastructure/store_model.h"
+#include "dominium/logistics/transport_capacity.h"
+#include "dominium/survival/cohort_model.h"
+#include "dominium/survival/needs_model.h"
+#include "dominium/war/disruption_effects.h"
+#include "dominium/war/occupation_state.h"
+#include "dominium/war/pacification_policies.h"
+#include "dominium/war/resistance_scheduler.h"
+#include "dominium/war/resistance_state.h"
+#include "dominium/war/territory_control.h"
 
 #include <stdio.h>
 #include <string.h>

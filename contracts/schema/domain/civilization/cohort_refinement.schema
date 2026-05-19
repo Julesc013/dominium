@@ -1,0 +1,26 @@
+SCHEMA: civilisation/cohort_refinement.schema
+schema_id: dominium.schema.civilisation.cohort_refinement
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic cohort refinement intent/artifact records for macro<->micro transitions.
+
+REQUIRED SHAPE:
+record cohort_refinement
+  required:
+    - schema_version: semver
+    - refinement_id: id
+    - cohort_id: id
+    - target_state: enum(macro|micro)
+    - interest_region_id: id
+    - created_tick: u64
+    - deterministic_seed: text
+    - mapping_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- deterministic_seed must be stable for same input tuple.
+- mapping_policy_id must exist in cohort mapping policy registry.
+- transition order is deterministic and process-only.
+

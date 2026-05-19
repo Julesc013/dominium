@@ -1,0 +1,25 @@
+SCHEMA: geo/projection_profile.schema
+schema_id: dominium.schema.geo.projection_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic projection and slicing policy from authoritative space into observation/render coordinates.
+- Keep projection selection explicit and profile-driven.
+
+NON-SEMANTICS:
+- This schema does not mutate truth.
+- This schema does not bypass Lens or Law gating.
+
+REQUIRED SHAPE:
+record projection_profile
+  required:
+    - projection_profile_id: id
+    - projection_kind: enum(ortho_2d|perspective_3d|atlas_unwrap|slice_nd_stub)
+    - parameters: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- projection algorithms must be deterministic
+- projection outputs remain observational artifacts

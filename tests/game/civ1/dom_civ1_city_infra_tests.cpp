@@ -1,13 +1,13 @@
 /*
 CIV1 city/infrastructure/logistics tests.
 */
-#include "dominium/rules/city/city_model.h"
-#include "dominium/rules/infrastructure/building_machine.h"
-#include "dominium/rules/infrastructure/machine_scheduler.h"
-#include "dominium/rules/infrastructure/production_chain.h"
-#include "dominium/rules/infrastructure/store_model.h"
-#include "dominium/rules/logistics/logistics_flow.h"
-#include "dominium/rules/logistics/transport_capacity.h"
+#include "dominium/city/city_model.h"
+#include "dominium/infrastructure/building_machine.h"
+#include "dominium/infrastructure/machine_scheduler.h"
+#include "dominium/infrastructure/production_chain.h"
+#include "dominium/infrastructure/store_model.h"
+#include "dominium/logistics/logistics_flow.h"
+#include "dominium/logistics/transport_capacity.h"
 
 #include <stdio.h>
 #include <string.h>

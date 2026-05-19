@@ -744,7 +744,7 @@ Enforced by:
 - `docs/architecture/TOOLS_AS_CAPABILITIES.md`
 
 
-- `schema/tools/README.md`
+- `schema/tool/README.md`
 
 
 - CI: OMNI1-NOTOOLBYPASS-001, TOOL0-NOMUT-004

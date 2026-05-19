@@ -32,10 +32,10 @@ from tools.xstack.compatx.canonical_json import canonical_json_text, canonical_s
 WORLDGEN_LOCK_ID = "worldgen_lock.v0_0_0"
 WORLDGEN_LOCK_VERSION = 0
 WORLDGEN_LOCK_BASELINE_SCHEMA_ID = "dominium.schema.governance" + ".worldgen_lock_baseline"
-WORLDGEN_LOCK_REGISTRY_REL = os.path.join("data", "registries", "worldgen_lock_registry.json")
-WORLDGEN_BASELINE_SEED_REL = os.path.join("data", "baselines", "worldgen", "baseline_seed.txt")
-WORLDGEN_BASELINE_SNAPSHOT_REL = os.path.join("data", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
-WORLDGEN_VERIFY_JSON_REL = os.path.join("data", "audit", "worldgen_lock_verify.json")
+WORLDGEN_LOCK_REGISTRY_REL = os.path.join("contracts", "registry", "worldgen_lock_registry.json")
+WORLDGEN_BASELINE_SEED_REL = os.path.join("tests", "fixtures", "baselines", "worldgen", "baseline_seed.txt")
+WORLDGEN_BASELINE_SNAPSHOT_REL = os.path.join("tests", "fixtures", "baselines", "worldgen", "baseline_worldgen_snapshot.json")
+WORLDGEN_VERIFY_JSON_REL = os.path.join("archive", "generated", "audit", "worldgen_lock_verify.json")
 WORLDGEN_VERIFY_DOC_REL = os.path.join("docs", "audit", "WORLDGEN_LOCK_VERIFY.md")
 
 WORLD_CELL_SAMPLE_INDEX_TUPLES = (

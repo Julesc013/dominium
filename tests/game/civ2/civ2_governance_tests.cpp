@@ -1,12 +1,12 @@
 /*
 CIV2 governance tests.
 */
-#include "dominium/rules/governance/enforcement_capacity.h"
-#include "dominium/rules/governance/jurisdiction_model.h"
-#include "dominium/rules/governance/legitimacy_model.h"
-#include "dominium/rules/governance/org_governance_binding.h"
-#include "dominium/rules/governance/policy_model.h"
-#include "dominium/rules/governance/policy_scheduler.h"
+#include "dominium/governance/enforcement_capacity.h"
+#include "dominium/governance/jurisdiction_model.h"
+#include "dominium/governance/legitimacy_model.h"
+#include "dominium/governance/org_governance_binding.h"
+#include "dominium/governance/policy_model.h"
+#include "dominium/governance/policy_scheduler.h"
 
 #include <stdio.h>
 #include <string.h>

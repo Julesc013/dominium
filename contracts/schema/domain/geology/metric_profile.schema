@@ -1,0 +1,26 @@
+SCHEMA: geo/metric_profile.schema
+schema_id: dominium.schema.geo.metric_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic metric and geodesic policy for a topology.
+- Bind distance and measure semantics to explicit tolerance policy.
+
+NON-SEMANTICS:
+- This schema does not define pathfinding.
+- This schema does not authorize nondeterministic approximation.
+
+REQUIRED SHAPE:
+record metric_profile
+  required:
+    - metric_profile_id: id
+    - metric_kind: enum(euclidean|spherical_stub|torus_wrap|custom)
+    - parameters: map
+    - tolerance_policy_id: id
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- distance evaluation must be deterministic
+- approximation must declare bounded error through tolerance policy

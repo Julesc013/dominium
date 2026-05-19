@@ -1,0 +1,22 @@
+SCHEMA: net/tick_intent_list.schema
+schema_id: dominium.schema.net.tick_intent_list
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-tick ordered intent ledger artifacts.
+
+REQUIRED SHAPE:
+record net_tick_intent_list
+  required:
+    - schema_version: semver
+    - tick: u64
+    - shard_id: id
+    - ordered_envelopes: [map]
+    - ordering_rule_id: id
+    - tick_hash_anchor: hash64
+    - extensions: map
+
+INVARIANTS:
+- ordered_envelopes must already be deterministic for the declared ordering_rule_id.
+- tick_hash_anchor must be reproducible from canonical serialization.

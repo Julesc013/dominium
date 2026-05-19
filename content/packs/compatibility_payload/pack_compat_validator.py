@@ -18,8 +18,8 @@ from meta_extensions_engine import normalize_extensions_tree
 
 PACK_COMPAT_MANIFEST_NAME = "pack.compat.json"
 PACK_COMPAT_SCHEMA_NAME = "pack_compat_manifest"
-PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("data", "registries", "pack_degrade_mode_registry.json")
-CAPABILITY_REGISTRY_REL = os.path.join("data", "registries", "capability_registry.json")
+PACK_DEGRADE_MODE_REGISTRY_REL = os.path.join("contracts", "registry", "pack_degrade_mode_registry.json")
+CAPABILITY_REGISTRY_REL = os.path.join("contracts", "registry", "capability_registry.json")
 
 REFUSAL_PACK_CONTRACT_MISMATCH = "refusal.pack.contract_mismatch"
 REFUSAL_PACK_MISSING_CAPABILITY = "refusal.pack.missing_capability"
@@ -72,7 +72,7 @@ def _error(code: str, path: str, message: str) -> dict:
 
 
 def _resolve_core_registry_root(repo_root: str, schema_root: str) -> str:
-    repo_registry_dir = os.path.join(repo_root, "data", "registries")
+    repo_registry_dir = os.path.join(repo_root, "contracts", "registry")
     if os.path.isdir(repo_registry_dir):
         return repo_root
     return schema_root
@@ -88,7 +88,7 @@ def _resolve_registry_path(repo_root: str, schema_root: str, registry_rel: str) 
 def _iter_registry_dirs(repo_root: str, schema_root: str) -> List[str]:
     rows: List[str] = []
     for root in (repo_root, schema_root):
-        registry_dir = os.path.join(root, "data", "registries")
+        registry_dir = os.path.join(root, "contracts", "registry")
         if os.path.isdir(registry_dir) and registry_dir not in rows:
             rows.append(registry_dir)
     return rows
@@ -252,7 +252,7 @@ def validate_pack_compat_manifest(
 
     known_contract_ids = set()
     contract_registry_root = _resolve_core_registry_root(
-        repo_root if os.path.isfile(os.path.join(repo_root, "data", "registries", "semantic_contract_registry.json")) else schema_root,
+        repo_root if os.path.isfile(os.path.join(repo_root, "contracts", "registry", "semantic_contract_registry.json")) else schema_root,
         schema_root,
     )
     contract_registry, contract_registry_error = load_semantic_contract_registry(contract_registry_root)

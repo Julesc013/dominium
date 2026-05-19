@@ -82,13 +82,13 @@ Rules:
   `schema/scale/SPEC_SCALE_TIME_WARP.md`
 - Interplanetary logistics: `schema/scale/SPEC_INTERPLANETARY_LOGISTICS.md`,
   `schema/scale/SPEC_INTERSTELLAR_LOGISTICS.md`
-- Logistics/production: `schema/civ/SPEC_LOGISTICS_FLOWS.md`,
-  `schema/civ/SPEC_PRODUCTION_CHAINS.md`
+- Logistics/production: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`,
+  `schema/domain/civilization/SPEC_PRODUCTION_CHAINS.md`
 - Epistemic gating: `docs/SPEC_EPISTEMIC_INTERFACE.md`
 
 ## Implementation notes (CIV5-WAR4)
-- Canonical game implementation lives under `game/rules/war/` with public headers
-  in `game/include/dominium/rules/war/`.
+- Canonical game implementation lives under `game/domain/war/` with public headers
+  in `game/include/dominium/war/`.
 - Route control, blockades, interdictions, and sieges are scheduled via
   `war_scale_scheduler` and expose `next_due_tick` only.
 - Blockades apply deterministic deny/throttle/inspect effects to logistics flows.

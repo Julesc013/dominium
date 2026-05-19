@@ -102,10 +102,10 @@ collapses, micro systems must show scarcity, outages, and degraded services.
 - Life and death: `docs/architecture/DEATH_AND_CONTINUITY.md`
 
 
-- Infrastructure: `schema/civ/SPEC_INFRASTRUCTURE.md`
+- Infrastructure: `schema/domain/civilization/SPEC_INFRASTRUCTURE.md`
 
 
-- Legitimacy: `schema/civ/SPEC_LEGITIMACY.md`
+- Legitimacy: `schema/domain/civilization/SPEC_LEGITIMACY.md`
 
 
 - Economy: `docs/architecture/ECONOMY_AND_LOGISTICS.md`

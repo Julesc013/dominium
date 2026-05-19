@@ -1,0 +1,27 @@
+SCHEMA: fluid/fluid_node_payload.schema
+schema_id: dominium.schema.fluid.fluid_node_payload
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic payload for FLUID-1 FluidNetworkGraph nodes.
+- Declare fluid node behavior through model/safety/state references, not inline device logic.
+
+REQUIRED SHAPE:
+record fluid_node_payload
+  required:
+    - schema_version: semver
+    - node_kind: enum(tank|junction|pump|valve|pressure_vessel)
+    - fluid_profile_id: id
+    - model_bindings: list[id]
+    - safety_instances: list[id]
+    - state_ref: map
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - spec_id: id
+
+INVARIANTS:
+- Pump/valve/pressure behavior remains constitutive-model driven.
+- Safety pathways are explicit and auditable through safety_instances.
+

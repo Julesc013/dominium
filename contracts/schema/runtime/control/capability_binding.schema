@@ -1,0 +1,24 @@
+SCHEMA: control/capability_binding.schema
+schema_id: dominium.schema.control.capability_binding
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic capability-to-entity binding artifact for CTRL-7.
+
+REQUIRED SHAPE:
+record capability_binding
+  required:
+    - schema_version: semver
+    - binding_id: id
+    - entity_id: id
+    - capability_id: id
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - parameters: map
+
+INVARIANTS:
+- Capability bindings are deterministic and replay-safe.
+- Capability bindings express feature presence without runtime type checks.

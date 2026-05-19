@@ -1098,7 +1098,7 @@
         "Ζ-6"
       ],
       "prerequisite_artifacts": [
-        "schema/packs/pack_compat_manifest.schema",
+        "schema/package/pack_compat_manifest.schema",
         "security/trust",
         "tools/securex"
       ],

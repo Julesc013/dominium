@@ -1,10 +1,10 @@
 /*
 CIV0a survival loop tests.
 */
-#include "dominium/rules/survival/cohort_model.h"
-#include "dominium/rules/survival/consumption_scheduler.h"
-#include "dominium/rules/survival/needs_model.h"
-#include "dominium/rules/survival/survival_production_actions.h"
+#include "dominium/survival/cohort_model.h"
+#include "dominium/survival/consumption_scheduler.h"
+#include "dominium/survival/needs_model.h"
+#include "dominium/survival/survival_production_actions.h"
 
 #include <stdio.h>
 #include <string.h>

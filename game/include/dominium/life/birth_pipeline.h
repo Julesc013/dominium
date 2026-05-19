@@ -21,8 +21,8 @@ DETERMINISM: Pipeline ordering and IDs are deterministic.
 #include "dominium/life/lineage.h"
 #include "dominium/life/life_audit_log.h"
 #include "dominium/life/control_authority.h"
-#include "dominium/rules/needs_constraints.h"
-#include "dominium/rules/reproduction_rules.h"
+#include "dominium/survival/needs_constraints.h"
+#include "dominium/life/reproduction_rules.h"
 
 #ifdef __cplusplus
 extern "C" {

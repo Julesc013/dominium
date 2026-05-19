@@ -587,7 +587,7 @@
       "status": "partially_exists",
       "rationale": "Capability and trust surfaces already exist across pack metadata, schema law, and secure tooling, but they are not yet one consolidated release policy layer.",
       "evidence_refs": [
-        "schema/packs/pack_compat_manifest.schema",
+        "schema/package/pack_compat_manifest.schema",
         "security/trust",
         "tools/securex"
       ],

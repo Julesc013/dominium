@@ -1,0 +1,22 @@
+SCHEMA: civilisation/migration_model.schema
+schema_id: dominium.schema.civilisation.migration_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic CIV-4 migration model records.
+
+REQUIRED SHAPE:
+record migration_model
+  required:
+    - schema_version: semver
+    - migration_model_id: id
+    - description: text
+    - travel_time_policy_id: id
+    - capacity_limits: map
+    - extensions: map
+
+INVARIANTS:
+- travel_time policy must be deterministic for equal inputs.
+- capacity limits are tuning data only and must not embed solver logic.
+

@@ -20,7 +20,7 @@ from .season_phase_engine import (
 
 
 DEFAULT_EARTH_CLIMATE_PARAMS_ID = "climate.earth_stub_default"
-EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_climate_params_registry.json")
+EARTH_CLIMATE_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "earth_climate_params_registry.json")
 EARTH_CLIMATE_ENGINE_VERSION = "EARTH2-4"
 
 
@@ -29,7 +29,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

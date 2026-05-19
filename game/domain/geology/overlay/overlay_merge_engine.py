@@ -18,8 +18,8 @@ from game.domain.geology.worldgen.worldgen_engine import normalize_worldgen_resu
 REFUSAL_GEO_OVERLAY_INVALID = "refusal.geo.overlay_invalid"
 REFUSAL_OVERLAY_CONFLICT = "refusal.overlay.conflict"
 
-_OVERLAY_POLICY_REGISTRY_REL = os.path.join("data", "registries", "overlay_policy_registry.json")
-_OVERLAY_CONFLICT_POLICY_REGISTRY_REL = os.path.join("data", "registries", "overlay_conflict_policy_registry.json")
+_OVERLAY_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "overlay_policy_registry.json")
+_OVERLAY_CONFLICT_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "overlay_conflict_policy_registry.json")
 _OVERLAY_VERSION = "GEO9-4"
 _OVERLAY_CACHE: Dict[str, dict] = {}
 _OVERLAY_CACHE_MAX = 256
@@ -47,7 +47,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

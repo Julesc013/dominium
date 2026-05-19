@@ -1,0 +1,22 @@
+SCHEMA: control/epistemic_policy.schema
+schema_id: dominium.schema.control.epistemic_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic epistemic gating policy for CTRL-6 view/inspection/reenactment governance.
+
+REQUIRED SHAPE:
+record epistemic_policy
+  required:
+    - schema_version: semver
+    - epistemic_policy_id: id
+    - description: text
+    - max_inspection_level: enum(macro|meso|micro)
+    - max_reenactment_level: enum(macro|meso|micro)
+    - redaction_rules: list[map]
+    - extensions: map
+
+INVARIANTS:
+- Epistemic policy is additive to LawProfile gating; it never grants forbidden visibility.
+- Redaction must be deterministic and replay-safe.

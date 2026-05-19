@@ -18,10 +18,10 @@ from .insolation_proxy import daylight_proxy_permille, insolation_proxy_permille
 
 
 DEFAULT_SURFACE_PRIORS_ID = "priors.surface_default_stub"
-SURFACE_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "surface_priors_registry.json")
-SURFACE_GENERATOR_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_registry.json")
-SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("data", "registries", "surface_generator_routing_registry.json")
-EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "earth_surface_params_registry.json")
+SURFACE_PRIORS_REGISTRY_REL = os.path.join("contracts", "registry", "surface_priors_registry.json")
+SURFACE_GENERATOR_REGISTRY_REL = os.path.join("contracts", "registry", "surface_generator_registry.json")
+SURFACE_GENERATOR_ROUTING_REGISTRY_REL = os.path.join("contracts", "registry", "surface_generator_routing_registry.json")
+EARTH_SURFACE_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "earth_surface_params_registry.json")
 MW_SURFACE_REFINER_L3_VERSION = "MW3-4"
 
 
@@ -30,7 +30,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

@@ -24,10 +24,10 @@ DETERMINISM: State transitions are deterministic and replayable.
 #include "dominium/life/remains.h"
 #include "dominium/life/remains_decay_scheduler.h"
 #include "dominium/life/rights_post_death.h"
-#include "dominium/rules/survival/cohort_model.h"
-#include "dominium/rules/survival/consumption_scheduler.h"
-#include "dominium/rules/survival/needs_model.h"
-#include "dominium/rules/survival/survival_production_actions.h"
+#include "dominium/survival/cohort_model.h"
+#include "dominium/survival/consumption_scheduler.h"
+#include "dominium/survival/needs_model.h"
+#include "dominium/survival/survival_production_actions.h"
 
 #ifdef __cplusplus
 extern "C" {

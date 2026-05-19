@@ -33,7 +33,7 @@ from game.domain.worldgen.mw.mw_system_refiner_l2 import (
 
 
 DEFAULT_QUERY_MAX_CELLS = 256
-REALISM_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "realism_profile_registry.json")
+REALISM_PROFILE_REGISTRY_REL = os.path.join("contracts", "registry", "realism_profile_registry.json")
 
 
 def _as_int(value: object, default_value: int = 0) -> int:
@@ -67,7 +67,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

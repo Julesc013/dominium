@@ -123,7 +123,7 @@ EPISTEMIC_UI_DIRS = (
 
 EPISTEMIC_FORBIDDEN_INCLUDES = (
     "engine/modules/",
-    "game/rules/",
+    "game/domain/",
     "domino/sim/",
     "domino/world/",
     "domino/state/",

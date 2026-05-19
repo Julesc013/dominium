@@ -400,7 +400,7 @@ static void validate_epistemic_ui(const ValidationContext& ctx, ValidationReport
             std::string lower = to_lower(text);
             if (lower.find("#include") != std::string::npos) {
                 if (lower.find("engine/modules/") != std::string::npos ||
-                    lower.find("game/rules/") != std::string::npos ||
+                    lower.find("game/domain/") != std::string::npos ||
                     lower.find("game/economy/") != std::string::npos ||
                     lower.find("domino/sim/") != std::string::npos ||
                     lower.find("domino/world/") != std::string::npos ||

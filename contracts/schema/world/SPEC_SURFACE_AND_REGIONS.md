@@ -96,7 +96,7 @@ Rules:
 ## Integration points
 - Celestial bodies: `schema/world/SPEC_CELESTIAL_BODY.md`
 - Governance: `schema/governance/SPEC_JURISDICTIONS.md`
-- Logistics: `schema/civ/SPEC_LOGISTICS_FLOWS.md`
+- Logistics: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`
 - War domains: `schema/war/SPEC_CONFLICT_CANON.md`
 
 ## Prohibitions

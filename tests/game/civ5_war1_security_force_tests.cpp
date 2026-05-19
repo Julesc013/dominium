@@ -2,15 +2,15 @@
 CIV5 WAR1 security force tests.
 */
 #include "dominium/epistemic.h"
-#include "dominium/rules/governance/enforcement_capacity.h"
-#include "dominium/rules/governance/legitimacy_model.h"
-#include "dominium/rules/infrastructure/store_model.h"
-#include "dominium/rules/population/cohort_types.h"
-#include "dominium/rules/war/demobilization_pipeline.h"
-#include "dominium/rules/war/mobilization_pipeline.h"
-#include "dominium/rules/war/morale_state.h"
-#include "dominium/rules/war/readiness_state.h"
-#include "dominium/rules/war/security_force.h"
+#include "dominium/governance/enforcement_capacity.h"
+#include "dominium/governance/legitimacy_model.h"
+#include "dominium/infrastructure/store_model.h"
+#include "dominium/population/cohort_types.h"
+#include "dominium/war/demobilization_pipeline.h"
+#include "dominium/war/mobilization_pipeline.h"
+#include "dominium/war/morale_state.h"
+#include "dominium/war/readiness_state.h"
+#include "dominium/war/security_force.h"
 
 #include <stdio.h>
 #include <string.h>

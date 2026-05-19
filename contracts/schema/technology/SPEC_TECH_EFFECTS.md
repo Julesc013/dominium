@@ -43,7 +43,7 @@ Rules:
 
 ## Integration points
 - Tech prerequisites: `schema/technology/SPEC_TECH_PREREQUISITES.md`
-- Production recipes: `schema/civ/SPEC_PRODUCTION_CHAINS.md`
+- Production recipes: `schema/domain/civilization/SPEC_PRODUCTION_CHAINS.md`
 - Policy system: `schema/governance/SPEC_POLICY_SYSTEM.md`
 
 ## Prohibitions

@@ -1,0 +1,27 @@
+SCHEMA: geo/projected_view_artifact.schema
+schema_id: dominium.schema.geo.projected_view_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare the compactable deterministic GEO-5 projected view artifact.
+- Provide the single derived artifact consumed by CLI/TUI/GUI adapters.
+
+NON-SEMANTICS:
+- This schema does not store authoritative truth.
+- This schema does not imply that all requested layers were visible.
+
+REQUIRED SHAPE:
+record projected_view_artifact
+  required:
+    - view_id: id
+    - projection_request_id: id
+    - lens_request_id: id
+    - rendered_cells: [map]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- rendered_cells must be bounded and deterministically ordered
+- each rendered cell must reference a canonical GEO cell key or a compatible compacted derivative
+- artifacts must be replayable from the same perceived inputs and registry hashes

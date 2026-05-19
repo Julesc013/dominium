@@ -1,8 +1,8 @@
 /*
 CIV1 stub refusal tests.
 */
-#include "dominium/rules/city/city_services_stub.h"
-#include "dominium/rules/logistics/routing_stub.h"
+#include "dominium/city/city_services_stub.h"
+#include "dominium/logistics/routing_stub.h"
 
 #include <stdio.h>
 

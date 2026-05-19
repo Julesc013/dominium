@@ -153,7 +153,7 @@ capacity loss, not silent deletion.
 ## See also
 
 
-- `schema/civ/README.md`
+- `schema/domain/civilization/README.md`
 
 
 - `schema/economy/README.md`

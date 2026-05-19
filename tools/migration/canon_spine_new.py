@@ -172,7 +172,7 @@ PREFIX_ROUTES: list[tuple[str, str, str]] = [
     ("contracts/schema/appshell/", "contracts/schema/shell/", "shell schema ownership"),
     ("contracts/schema/capabilities/", "contracts/schema/capability/", "singular capability schema ownership"),
     ("contracts/schema/registries/", "contracts/schema/registry/", "singular registry schema ownership"),
-    ("contracts/schema/validation/", "contracts/schema/validator/", "validator schema ownership"),
+    ("contracts/schema/validation/", "contracts/schema/validation/", "validator schema ownership"),
     ("contracts/registries/", "contracts/registry/", "singular contract registry category"),
     ("contracts/capabilities/", "contracts/capability/", "singular contract capability category"),
     ("contracts/bundles/", "contracts/package/bundles/", "contract package bundle rules"),

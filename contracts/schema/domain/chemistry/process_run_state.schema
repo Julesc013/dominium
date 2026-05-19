@@ -1,0 +1,30 @@
+SCHEMA: chem/process_run_state.schema
+schema_id: dominium.schema.chem.process_run_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic CHEM-2 process-run state rows.
+- Persist run lifecycle, provenance linkage, and bounded progress for replay/proof.
+
+NON-SEMANTICS:
+- This schema does not execute stoichiometry or energy transforms.
+- Runtime/process handlers perform authoritative updates.
+
+REQUIRED SHAPE:
+record process_run_state
+  required:
+    - run_id: id
+    - reaction_id: id
+    - equipment_id: id
+    - input_batch_ids: list[id]
+    - output_batch_ids: list[id]
+    - start_tick: u64
+    - end_tick: optional(u64)
+    - progress: fixed_point_nonnegative
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- Run ordering and progress updates must be deterministic for equivalent inputs.
+- `reaction_id` must reference registered reaction profile rows.

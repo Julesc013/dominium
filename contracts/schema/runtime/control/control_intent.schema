@@ -1,0 +1,32 @@
+SCHEMA: control/control_intent.schema
+schema_id: dominium.schema.control.control_intent
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic control-plane intent payload.
+
+REQUIRED SHAPE:
+record control_intent
+  required:
+    - schema_version: semver
+    - control_intent_id: id
+    - requester_subject_id: id
+    - target_kind: enum(surface|pose_slot|mount_point|machine|structure|graph|none)
+    - target_id: optional_id
+    - requested_action_id: id
+    - parameters: map
+    - request_vector: map
+      required:
+        - abstraction_level_requested: enum(AL0|AL1|AL2|AL3|AL4)
+        - fidelity_requested: enum(macro|meso|micro)
+        - view_requested: id
+        - inspection_requested: enum(none|macro|meso|micro)
+        - reenactment_requested: enum(none|macro|meso|micro)
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- ControlIntent creation must be deterministic for equal inputs.
+- ControlIntent does not mutate truth directly.

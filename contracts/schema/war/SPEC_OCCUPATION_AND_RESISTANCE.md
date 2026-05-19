@@ -74,16 +74,16 @@ Rules:
 ## Integration points
 - Governance: `schema/governance/SPEC_LEGITIMACY.md`,
   `schema/governance/SPEC_ENFORCEMENT.md`
-- Logistics: `schema/civ/SPEC_LOGISTICS_FLOWS.md`
+- Logistics: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`
 - Survival needs: `docs/specs/CIV0a_SURVIVAL_LOOP.md`,
-  `schema/civ/SPEC_NEEDS_MINIMAL.md`
+  `schema/domain/civilization/SPEC_NEEDS_MINIMAL.md`
 - LIFE pipelines: `schema/life/SPEC_DEATH_AND_ESTATE.md`
 - Knowledge gating: `schema/knowledge/SPEC_SECRECY.md`,
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
 
 ## Implementation notes (CIV5-WAR3)
-- Canonical game implementation lives under `game/rules/war/` with public headers
-  in `game/include/dominium/rules/war/`.
+- Canonical game implementation lives under `game/domain/war/` with public headers
+  in `game/include/dominium/war/`.
 - Occupation and resistance are scheduled via `resistance_scheduler` due events;
   `next_due_tick` is authoritative for processing.
 - Resistance pressure is computed from legitimacy deficits, deprivation signals

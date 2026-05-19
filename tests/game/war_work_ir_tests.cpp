@@ -1,10 +1,10 @@
 /*
 War Work IR migration tests (ADOPT5).
 */
-#include "dominium/rules/war/war_system.h"
-#include "dominium/rules/war/war_tasks_engagement.h"
-#include "dominium/rules/war/war_tasks_occupation.h"
-#include "dominium/rules/war/war_tasks_interdiction.h"
+#include "dominium/war/war_system.h"
+#include "dominium/war/war_tasks_engagement.h"
+#include "dominium/war/war_tasks_occupation.h"
+#include "dominium/war/war_tasks_interdiction.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"
 #include "domino/execution/task_graph.h"

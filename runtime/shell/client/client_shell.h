@@ -9,7 +9,7 @@ Client shell core (world creation, save/load, navigation).
 
 #include "dominium/app/ui_event_log.h"
 #include "dominium/physical/local_processes.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 #include "dominium/agents/agent_institution.h"
 
 #ifdef __cplusplus

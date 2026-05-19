@@ -70,7 +70,7 @@ def _state_path(repo_root: str) -> str:
 
 
 def _load_module_registry(repo_root: str) -> Tuple[dict, Dict[str, object]]:
-    path = os.path.join(repo_root, "data", "registries", "worldgen_module_registry.json")
+    path = os.path.join(repo_root, "contracts", "registry", "worldgen_module_registry.json")
     payload, err = _read_json_object(path)
     if err:
         return {}, _refusal(

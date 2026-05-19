@@ -9,7 +9,7 @@ Agent MVP social tests (AGENT2/TestX).
 #include "dominium/agents/agent_history_macro.h"
 #include "dominium/agents/agent_institution.h"
 #include "dominium/agents/agent_planner.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 
 #include <stdio.h>
 #include <string.h>

@@ -17,7 +17,7 @@ from game.domain.worldgen.mw.sol_anchor import SOL_ANCHOR_ID, resolve_sol_anchor
 
 
 DEFAULT_GALAXY_PRIORS_ID = "priors.milkyway_stub_default"
-GALAXY_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "galaxy_priors_registry.json")
+GALAXY_PRIORS_REGISTRY_REL = os.path.join("contracts", "registry", "galaxy_priors_registry.json")
 MW_CELL_GENERATOR_VERSION = "MW1-3"
 MW_GALACTIC_FRAME_ID = "frame.milky_way.galactic"
 PARSEC_MM = 30_856_775_814_913_672_000
@@ -31,7 +31,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

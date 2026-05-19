@@ -292,7 +292,7 @@
     {
       "name": "game",
       "path": "game",
-      "apparent_domain": "compiled content/domains/game/rules root",
+      "apparent_domain": "compiled content/domains/game domain root",
       "ownership_class": "runtime",
       "authority_domains": [
         "structural"

@@ -1,13 +1,13 @@
 /*
 CIV3 knowledge and technology tests.
 */
-#include "dominium/rules/knowledge/diffusion_model.h"
-#include "dominium/rules/knowledge/institution_knowledge_binding.h"
-#include "dominium/rules/knowledge/knowledge_item.h"
-#include "dominium/rules/knowledge/research_process.h"
-#include "dominium/rules/knowledge/secrecy_controls.h"
-#include "dominium/rules/technology/tech_activation.h"
-#include "dominium/rules/technology/tech_prerequisites.h"
+#include "dominium/knowledge/diffusion_model.h"
+#include "dominium/knowledge/institution_knowledge_binding.h"
+#include "dominium/knowledge/knowledge_item.h"
+#include "dominium/knowledge/research_process.h"
+#include "dominium/knowledge/secrecy_controls.h"
+#include "dominium/technology/tech_activation.h"
+#include "dominium/technology/tech_prerequisites.h"
 
 #include <stdio.h>
 #include <string.h>

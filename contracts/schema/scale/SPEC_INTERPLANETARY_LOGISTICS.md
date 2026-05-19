@@ -51,7 +51,7 @@ Rules:
 ## Integration points
 - Scale domains: `schema/scale/SPEC_SCALE_DOMAINS.md`
 - Time warp: `schema/scale/SPEC_SCALE_TIME_WARP.md`
-- Logistics primitives: `schema/civ/SPEC_LOGISTICS_FLOWS.md`
+- Logistics primitives: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`
 
 ## Prohibitions
 - No physics simulation for travel.

@@ -1,0 +1,25 @@
+SCHEMA: control/control_policy.schema
+schema_id: dominium.schema.control.control_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Deterministic policy row used by control-plane negotiation.
+
+REQUIRED SHAPE:
+record control_policy
+  required:
+    - schema_version: semver
+    - control_policy_id: id
+    - description: text
+    - allowed_actions: list[id_or_pattern]
+    - allowed_abstraction_levels: list[enum(AL0|AL1|AL2|AL3|AL4)]
+    - allowed_view_policies: list[id]
+    - allowed_fidelity_ranges: list[enum(macro|meso|micro)]
+    - downgrade_rules: map
+    - strictness: enum(C0|C1|C2)
+    - extensions: map
+
+INVARIANTS:
+- No mode flags; policy rows drive control variance.
+- Policies must be data-defined and deterministic.

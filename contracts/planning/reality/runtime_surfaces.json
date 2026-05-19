@@ -125,7 +125,7 @@
       "evidence": [
         "game/CMakeLists.txt",
         "game/content",
-        "game/rules",
+        "game/domain",
         "game/mods"
       ],
       "notes": "Paired with engine and linked into product roots."

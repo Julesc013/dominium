@@ -5,7 +5,7 @@ Agent MVP core tests (AGENT1/TestX).
 #include "dominium/agents/agent_evaluator.h"
 #include "dominium/agents/agent_planner.h"
 #include "dominium/agents/agent_belief_update.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 
 #include <stdio.h>
 #include <string.h>

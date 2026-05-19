@@ -44,9 +44,9 @@ MVP_COMPATIBILITY_SCHEMA_REFS = (
     "space_topology_profile@1.0.0",
     "universe_identity@1.0.0",
 )
-MVP_PROFILE_BUNDLE_REL = os.path.join("profiles", "bundles", "bundle.mvp_default.json")
-MVP_PACK_LOCK_REL = os.path.join("locks", "pack_lock.mvp_default.json")
-MVP_SESSION_TEMPLATE_REL = os.path.join("data", "session_templates", "session.mvp_default.json")
+MVP_PROFILE_BUNDLE_REL = os.path.join("content", "profiles", "bundles", "bundle.mvp_default.json")
+MVP_PACK_LOCK_REL = os.path.join("contracts", "package", "locks", "pack_lock.mvp_default.json")
+MVP_SESSION_TEMPLATE_REL = os.path.join("content", "templates", "session", "session.mvp_default.json")
 MVP_DIST_ROOT_REL = "dist"
 MVP_STORE_PROFILE_BUNDLE_REL = os.path.join("store", "profiles", "bundles", "bundle.mvp_default.json")
 MVP_STORE_PACK_LOCK_REL = os.path.join("store", "locks", "pack_lock.mvp_default.json")
@@ -60,11 +60,11 @@ MVP_SOURCE_PACKS = (
         "source_packs": (
             {
                 "pack_id": "pack.core.runtime",
-                "manifest_rel": os.path.join("packs", "core", "pack.core.runtime", "pack.json"),
+                "manifest_rel": os.path.join("content", "packs", "core", "pack.core.runtime", "pack.json"),
             },
             {
                 "pack_id": "astronomy.milky_way",
-                "manifest_rel": os.path.join("packs", "domain", "astronomy.milky_way", "pack.json"),
+                "manifest_rel": os.path.join("content", "packs", "domain", "astronomy.milky_way", "pack.json"),
             },
         ),
     },
@@ -76,7 +76,7 @@ MVP_SOURCE_PACKS = (
         "source_packs": (
             {
                 "pack_id": "pack.sol.pin_minimal",
-                "manifest_rel": os.path.join("packs", "official", "pack.sol.pin_minimal", "pack.json"),
+                "manifest_rel": os.path.join("content", "packs", "official", "pack.sol.pin_minimal", "pack.json"),
             },
         ),
     },
@@ -88,7 +88,7 @@ MVP_SOURCE_PACKS = (
         "source_packs": (
             {
                 "pack_id": "planet.earth",
-                "manifest_rel": os.path.join("packs", "domain", "planet.earth", "pack.json"),
+                "manifest_rel": os.path.join("content", "packs", "domain", "planet.earth", "pack.json"),
             },
         ),
     },

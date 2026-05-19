@@ -1,17 +1,17 @@
 /*
 CIV5 WAR4 scale warfare tests.
 */
-#include "dominium/rules/governance/legitimacy_model.h"
-#include "dominium/rules/infrastructure/store_model.h"
-#include "dominium/rules/logistics/transport_capacity.h"
-#include "dominium/rules/war/blockade.h"
-#include "dominium/rules/war/interdiction.h"
-#include "dominium/rules/war/route_control.h"
-#include "dominium/rules/war/siege_effects.h"
-#include "dominium/rules/war/war_scale_scheduler.h"
-#include "dominium/rules/war/security_force.h"
-#include "dominium/rules/survival/cohort_model.h"
-#include "dominium/rules/survival/needs_model.h"
+#include "dominium/governance/legitimacy_model.h"
+#include "dominium/infrastructure/store_model.h"
+#include "dominium/logistics/transport_capacity.h"
+#include "dominium/war/blockade.h"
+#include "dominium/war/interdiction.h"
+#include "dominium/war/route_control.h"
+#include "dominium/war/siege_effects.h"
+#include "dominium/war/war_scale_scheduler.h"
+#include "dominium/war/security_force.h"
+#include "dominium/survival/cohort_model.h"
+#include "dominium/survival/needs_model.h"
 
 #include <stdio.h>
 #include <string.h>

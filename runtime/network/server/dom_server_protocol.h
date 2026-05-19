@@ -11,7 +11,7 @@ DETERMINISM: All enums and payload shapes are stable and replayable.
 #include "domino/core/types.h"
 #include "domino/core/dom_time_core.h"
 
-#include "dominium/rules/scale/scale_collapse_expand.h"
+#include "dominium/scale/scale_collapse_expand.h"
 
 #include "shard/shard_api.h"
 

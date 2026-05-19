@@ -43,5 +43,5 @@ Tools can be enabled or revoked per:
 
 ## Cross-References
 - Tool authority: `schema/authority/SPEC_TOOL_AUTHORITY.md`
-- Tool intents: `schema/tools/SPEC_TOOL_INTENTS.md`
-- Tool capabilities: `schema/tools/SPEC_TOOL_CAPABILITIES.md`
+- Tool intents: `schema/tool/SPEC_TOOL_INTENTS.md`
+- Tool capabilities: `schema/tool/SPEC_TOOL_CAPABILITIES.md`

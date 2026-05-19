@@ -1,0 +1,23 @@
+SCHEMA: control/control_ir_verification_report.schema
+schema_id: dominium.schema.control.control_ir_verification_report
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic static verification report for Control IR programs.
+
+REQUIRED SHAPE:
+record control_ir_verification_report
+  required:
+    - schema_version: semver
+    - ir_id: id
+    - valid: bool
+    - violations: list[map]
+    - required_entitlements: list[id]
+    - required_capabilities: list[id]
+    - max_cost_estimate: u32
+    - deterministic_fingerprint: sha256
+
+INVARIANTS:
+- Verification result is deterministic for equal IR + policy registry inputs.
+- Verification report fingerprints must be replay-stable.

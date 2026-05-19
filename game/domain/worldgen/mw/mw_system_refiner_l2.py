@@ -16,8 +16,8 @@ from game.domain.geology.index.object_id_engine import geo_object_id
 
 DEFAULT_SYSTEM_PRIORS_ID = "priors.system_default_stub"
 DEFAULT_PLANET_PRIORS_ID = "priors.planet_default_stub"
-SYSTEM_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "system_priors_registry.json")
-PLANET_PRIORS_REGISTRY_REL = os.path.join("data", "registries", "planet_priors_registry.json")
+SYSTEM_PRIORS_REGISTRY_REL = os.path.join("contracts", "registry", "system_priors_registry.json")
+PLANET_PRIORS_REGISTRY_REL = os.path.join("contracts", "registry", "planet_priors_registry.json")
 MW_SYSTEM_REFINER_L2_VERSION = "MW2-3"
 
 
@@ -26,7 +26,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     for _ in range(16):

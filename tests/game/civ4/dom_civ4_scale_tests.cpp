@@ -1,11 +1,11 @@
 /*
 CIV4 scale and logistics tests.
 */
-#include "dominium/rules/scale/domain_transitions.h"
-#include "dominium/rules/scale/interplanetary_logistics.h"
-#include "dominium/rules/scale/interstellar_logistics.h"
-#include "dominium/rules/scale/scale_interest_binding.h"
-#include "dominium/rules/scale/scale_time_warp.h"
+#include "dominium/scale/domain_transitions.h"
+#include "dominium/scale/interplanetary_logistics.h"
+#include "dominium/scale/interstellar_logistics.h"
+#include "dominium/scale/scale_interest_binding.h"
+#include "dominium/scale/scale_time_warp.h"
 
 #include <stdio.h>
 #include <string.h>

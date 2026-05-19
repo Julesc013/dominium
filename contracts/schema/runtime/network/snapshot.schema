@@ -1,0 +1,25 @@
+SCHEMA: net/snapshot.schema
+schema_id: dominium.schema.net.snapshot
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic snapshot metadata artifacts.
+
+REQUIRED SHAPE:
+record net_snapshot
+  required:
+    - schema_version: semver
+    - snapshot_id: id
+    - tick: u64
+    - shard_id: text
+    - pack_lock_hash: hash64
+    - registry_hashes: map
+    - truth_snapshot_hash: hash64
+    - payload_ref: text
+    - schema_versions: map
+    - extensions: map
+
+INVARIANTS:
+- Snapshot metadata is deterministic even when payload body is stored externally.
+- truth_snapshot_hash represents canonical snapshot content identity.

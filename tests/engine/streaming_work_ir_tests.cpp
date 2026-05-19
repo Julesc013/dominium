@@ -1,7 +1,7 @@
 /*
 Streaming Work IR migration tests (ADOPT1).
 */
-#include "dominium/rules/scale/world_streaming_system.h"
+#include "dominium/scale/world_streaming_system.h"
 #include "dominium/interest_set.h"
 #include "dominium/execution/system_registry.h"
 #include "dominium/execution/work_graph_builder.h"

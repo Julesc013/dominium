@@ -1,0 +1,28 @@
+SCHEMA: geo/overlay_conflict_artifact.schema
+schema_id: dominium.schema.geo.overlay_conflict_artifact
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the derived audit artifact emitted for deterministic overlay conflicts.
+- Preserve explicit evidence for last-wins, refuse, and prompt-stub policy outcomes.
+
+NON-SEMANTICS:
+- This artifact does not mutate overlay truth.
+- This artifact does not authorize merge acceptance.
+
+REQUIRED SHAPE:
+record overlay_conflict_artifact
+  required:
+    - conflict_id: id
+    - object_id: id
+    - property_path: id
+    - involved_patches: [map]
+    - mode: enum(last_wins|refuse|prompt_stub)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- involved_patches must already be deterministically ordered
+- conflict artifacts are derived-only and compactable
+- refusal-capable modes must preserve remediation hints in extensions

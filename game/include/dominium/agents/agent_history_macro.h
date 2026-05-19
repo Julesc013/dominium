@@ -14,7 +14,7 @@ DETERMINISM: History aggregation is ordered by source event id.
 
 #include "domino/core/dom_time_core.h"
 #include "domino/core/types.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 
 #ifdef __cplusplus
 extern "C" {

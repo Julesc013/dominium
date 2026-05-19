@@ -1,7 +1,7 @@
 /*
 Visitability contract tests (DOMAIN4).
 */
-#include "dominium/rules/scale/visitability_system.h"
+#include "dominium/scale/visitability_system.h"
 
 #include <stdio.h>
 #include <string.h>

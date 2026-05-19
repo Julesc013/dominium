@@ -41,7 +41,7 @@ Each schema MUST declare its class explicitly:
 - Ownership is aligned to top-level domains:
   - `schema/world/**` for game world data.
   - `schema/save/**` for saves.
-  - `schema/net/**` for network payloads.
+  - `schema/runtime/network/**` for network payloads.
   - `schema/mods/**` for mod manifests and compatibility.
   - `schema/law/**` for law and policy formats.
 

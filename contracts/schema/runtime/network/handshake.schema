@@ -1,0 +1,31 @@
+SCHEMA: net/handshake.schema
+schema_id: dominium.schema.net.handshake
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic multiplayer compatibility handshake artifacts.
+
+REQUIRED SHAPE:
+record net_handshake
+  required:
+    - schema_version: semver
+    - handshake_id: id
+    - protocol_version: semver
+    - client_peer_id: id
+    - server_peer_id: id
+    - requested_replication_policy_id: id
+    - negotiated_replication_policy_id: id
+    - anti_cheat_policy_id: id
+    - server_law_profile_id: id
+    - pack_lock_hash: hash64
+    - registry_hashes: map
+    - schema_versions: map
+    - securex_policy_id: text
+    - result: enum(accept|refuse)
+    - refusal: map
+    - extensions: map
+
+INVARIANTS:
+- No silent negotiation; mismatch must emit explicit refusal artifact.
+- Compatibility checks are deterministic and auditable.

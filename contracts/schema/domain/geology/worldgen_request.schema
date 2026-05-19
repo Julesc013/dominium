@@ -1,0 +1,27 @@
+SCHEMA: geo/worldgen_request.schema
+schema_id: dominium.schema.geo.worldgen_request
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical GEO-8 on-demand worldgen request contract.
+- Ensure generation is addressed by geo_cell_key and explicit refinement/reason codes.
+
+NON-SEMANTICS:
+- This schema does not guarantee generation success.
+- This schema does not authorize eager global enumeration.
+
+REQUIRED SHAPE:
+record worldgen_request
+  required:
+    - request_id: id
+    - geo_cell_key: map
+    - refinement_level: int
+    - reason: enum(roi|query|pathing|system_spawn)
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- geo_cell_key must be the authoritative spatial address
+- refinement_level must be explicit and deterministic
+- request batching/order must remain stable under replay

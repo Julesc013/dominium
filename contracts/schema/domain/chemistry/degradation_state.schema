@@ -1,0 +1,26 @@
+SCHEMA: chem/degradation_state.schema
+schema_id: dominium.schema.chem.degradation_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic CHEM-3 degradation truth rows for corrosion/fouling/scaling state.
+- Provide canonical per-target degradation levels for model/effect/safety pathways.
+
+NON-SEMANTICS:
+- This schema does not evaluate degradation rates.
+- Runtime/process layers enforce model evaluation and hazard increments.
+
+REQUIRED SHAPE:
+record degradation_state
+  required:
+    - target_id: id
+    - degradation_kind_id: enum(corrosion|fouling|scaling)
+    - level_value: fixed_point_in_0_1
+    - last_update_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `level_value` must be deterministic for equivalent inputs and bounded to [0, 1000] permille in runtime representation.
+- Rows are keyed by `(target_id, degradation_kind_id)` and normalized deterministically.

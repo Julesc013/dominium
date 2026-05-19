@@ -20,7 +20,7 @@ from game.domain.worldgen.mw import (
 )
 
 
-GALACTIC_REGION_REGISTRY_REL = os.path.join("data", "registries", "galactic_region_registry.json")
+GALACTIC_REGION_REGISTRY_REL = os.path.join("contracts", "registry", "galactic_region_registry.json")
 GALAXY_PROXY_ENGINE_VERSION = "GAL0-3"
 GALAXY_PROXY_SPATIAL_SCOPE_ID = "spatial.galaxy.default"
 
@@ -30,7 +30,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

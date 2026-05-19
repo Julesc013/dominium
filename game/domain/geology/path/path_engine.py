@@ -33,7 +33,7 @@ REFUSAL_GEO_PATH_INVALID = "refusal.geo.path_invalid"
 REFUSAL_GEO_PATH_NOT_FOUND = "refusal.geo.path_not_found"
 REFUSAL_GEO_PATH_BOUNDED = "refusal.geo.path_bounded"
 
-_TRAVERSAL_POLICY_REGISTRY_REL = os.path.join("data", "registries", "traversal_policy_registry.json")
+_TRAVERSAL_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "traversal_policy_registry.json")
 
 
 def _load_json(rel_path: str) -> dict:

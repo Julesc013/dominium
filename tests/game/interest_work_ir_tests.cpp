@@ -1,7 +1,7 @@
 /*
 Interest Work IR migration tests (ADOPT3).
 */
-#include "dominium/rules/scale/interest_system.h"
+#include "dominium/scale/interest_system.h"
 #include "dominium/execution/system_registry.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"

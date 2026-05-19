@@ -13,7 +13,7 @@ DETERMINISM: Capability propagation is deterministic for identical inputs.
 #define DOMINIUM_PHYSICAL_INFRASTRUCTURE_EFFECTS_H
 
 #include "dominium/physical/network_graph.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -13,9 +13,9 @@ DETERMINISM: Aggregation is deterministic.
 #define DOMINIUM_SIM_MACRO_DUE_SCHEDULER_HOOKS_H
 
 #include "domino/core/dom_time_core.h"
-#include "dominium/rules/survival/consumption_scheduler.h"
-#include "dominium/rules/survival/survival_production_actions.h"
-#include "dominium/rules/population/population_scheduler.h"
+#include "dominium/survival/consumption_scheduler.h"
+#include "dominium/survival/survival_production_actions.h"
+#include "dominium/population/population_scheduler.h"
 
 #ifdef __cplusplus
 extern "C" {

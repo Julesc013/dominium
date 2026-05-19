@@ -1,10 +1,10 @@
 /*
 Agent Work IR migration tests (ADOPT6).
 */
-#include "dominium/rules/agents/agent_system.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
-#include "dominium/rules/agents/agent_doctrine_tasks.h"
-#include "dominium/rules/agents/agent_aggregation_tasks.h"
+#include "dominium/agents/agent_system.h"
+#include "dominium/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_doctrine_tasks.h"
+#include "dominium/agents/agent_aggregation_tasks.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"
 #include "domino/execution/task_graph.h"

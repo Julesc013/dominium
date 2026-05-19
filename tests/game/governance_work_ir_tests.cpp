@@ -1,8 +1,8 @@
 /*
 Governance Work IR migration tests (ADOPT4).
 */
-#include "dominium/rules/governance/governance_system.h"
-#include "dominium/rules/governance/legitimacy_tasks.h"
+#include "dominium/governance/governance_system.h"
+#include "dominium/governance/legitimacy_tasks.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"
 #include "domino/execution/task_graph.h"

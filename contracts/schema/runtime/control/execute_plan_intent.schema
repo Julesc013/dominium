@@ -1,0 +1,21 @@
+SCHEMA: control/execute_plan_intent.schema
+schema_id: dominium.schema.control.execute_plan_intent
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic execution request for a pre-existing plan artifact.
+
+REQUIRED SHAPE:
+record execute_plan_intent
+  required:
+    - schema_version: semver
+    - execute_plan_intent_id: id
+    - plan_id: id
+    - abstraction_level_requested: enum(AL0|AL1|AL2|AL3|AL4)
+    - created_tick: u64
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- execute_plan_intent does not mutate Truth directly; it must route through control-plane negotiation and Control IR compile.

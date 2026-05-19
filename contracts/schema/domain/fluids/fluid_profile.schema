@@ -1,0 +1,23 @@
+SCHEMA: fluid/fluid_profile.schema
+schema_id: dominium.schema.fluid.fluid_profile
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic fluid material-profile proxies for F0/F1 network operation.
+- Keep compressibility/density/viscosity behavior data-driven and replayable.
+
+NON-SEMANTICS:
+- No CFD implementation.
+- No runtime solver logic is embedded in schema.
+
+REQUIRED SHAPE:
+record fluid_profile
+  required:
+    - fluid_profile_id: id
+    - compressible: bool
+    - density: number
+    - viscosity_proxy: number
+    - vapor_pressure_proxy: number
+    - deterministic_fingerprint: text
+    - extensions: map

@@ -19,7 +19,7 @@ from tools.xstack.compatx.validator import validate_instance
 from meta_extensions_engine import normalize_extensions_tree
 
 
-SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("data", "registries", "semantic_contract_registry.json")
+SEMANTIC_CONTRACT_REGISTRY_REL = os.path.join("contracts", "registry", "semantic_contract_registry.json")
 SEMANTIC_CONTRACT_BUNDLE_SCHEMA_NAME = "universe_contract_bundle"
 
 CONTRACT_FIELD_ORDER: Tuple[Tuple[str, str], ...] = (

@@ -13,7 +13,7 @@ from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semant
 
 
 DEFAULT_HYDROLOGY_PARAMS_ID = "params.hydrology.default_stub"
-HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "hydrology_params_registry.json")
+HYDROLOGY_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "hydrology_params_registry.json")
 HYDROLOGY_ENGINE_VERSION = "EARTH1-3"
 
 
@@ -22,7 +22,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

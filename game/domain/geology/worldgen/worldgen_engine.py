@@ -45,8 +45,8 @@ RNG_WORLDGEN_SYSTEM = "rng.worldgen.system"
 RNG_WORLDGEN_PLANET = "rng.worldgen.planet"
 RNG_WORLDGEN_SURFACE = "rng.worldgen.surface"
 
-_REALISM_PROFILE_REGISTRY_REL = os.path.join("data", "registries", "realism_profile_registry.json")
-_GENERATOR_VERSION_REGISTRY_REL = os.path.join("data", "registries", "generator_version_registry.json")
+_REALISM_PROFILE_REGISTRY_REL = os.path.join("contracts", "registry", "realism_profile_registry.json")
+_GENERATOR_VERSION_REGISTRY_REL = os.path.join("contracts", "registry", "generator_version_registry.json")
 _WORLDGEN_CACHE: Dict[str, dict] = {}
 _WORLDGEN_CACHE_MAX = 256
 _WORLDGEN_VERSION = "GEO8-7"
@@ -57,7 +57,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

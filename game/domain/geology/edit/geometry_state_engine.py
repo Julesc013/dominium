@@ -14,8 +14,8 @@ from game.domain.geology.index.geo_index_engine import _coerce_cell_key, _semant
 
 REFUSAL_GEO_GEOMETRY_INVALID = "refusal.geo.geometry_invalid"
 
-_GEOMETRY_EDIT_POLICY_REGISTRY_REL = os.path.join("data", "registries", "geometry_edit_policy_registry.json")
-_MATERIAL_CLASS_REGISTRY_REL = os.path.join("data", "registries", "material_class_registry.json")
+_GEOMETRY_EDIT_POLICY_REGISTRY_REL = os.path.join("contracts", "registry", "geometry_edit_policy_registry.json")
+_MATERIAL_CLASS_REGISTRY_REL = os.path.join("contracts", "registry", "material_class_registry.json")
 
 _OCCUPANCY_SCALE = 1000
 _DEFAULT_MATERIAL_ID = "material.air"
@@ -28,7 +28,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

@@ -1,0 +1,28 @@
+SCHEMA: geo/traversal_policy.schema
+schema_id: dominium.schema.geo.traversal_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declare deterministic GEO traversal policy inputs for geometry-portable path queries.
+- Bind allowed moves, cost weights, infrastructure preference, and bounded expansion policy.
+
+NON-SEMANTICS:
+- This schema does not authorize hidden runtime heuristics.
+- This schema does not encode vehicle dynamics or worldgen content.
+
+REQUIRED SHAPE:
+record traversal_policy
+  required:
+    - traversal_policy_id: id
+    - allowed_neighbor_kinds: [id]
+    - cost_weights: map
+    - infrastructure_preference: map
+    - max_expansions: u32
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- traversal cost composition must be deterministic for identical inputs
+- max_expansions must bound search work explicitly
+- infrastructure preference must remain declarative rather than imperative

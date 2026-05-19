@@ -59,8 +59,8 @@ Rules:
 - UI must reflect uncertainty; no authoritative force details in UI.
 
 ## Integration points
-- CIV1 logistics/production: `schema/civ/SPEC_LOGISTICS_FLOWS.md`,
-  `schema/civ/SPEC_BUILDINGS_MACHINES.md`, `schema/civ/SPEC_PRODUCTION_CHAINS.md`
+- CIV1 logistics/production: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`,
+  `schema/domain/civilization/SPEC_BUILDINGS_MACHINES.md`, `schema/domain/civilization/SPEC_PRODUCTION_CHAINS.md`
 - CIV2 enforcement/legitimacy: `schema/governance/SPEC_ENFORCEMENT.md`,
   `schema/governance/SPEC_LEGITIMACY.md`
 - LIFE pipelines for casualties: `schema/life/SPEC_DEATH_AND_ESTATE.md`
@@ -68,12 +68,12 @@ Rules:
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
 
 ## Implementation notes (CIV5-WAR1)
-- Canonical game implementation lives under `game/rules/war/` with public headers
-  in `game/include/dominium/rules/war/`.
+- Canonical game implementation lives under `game/domain/war/` with public headers
+  in `game/include/dominium/war/`.
 - Mobilization/demobilization pipelines enforce population, equipment, legitimacy,
   and authority checks and produce provenance-backed records.
 - Readiness and morale updates are scheduled through due-event schedulers only.
-- Refusal codes are defined in `dominium/rules/war/security_force.h`.
+- Refusal codes are defined in `dominium/war/security_force.h`.
 - WAR1 projections map `authority_id` to owning org/jurisdiction and
   `home_domain_id` to the current domain scope reference.
 

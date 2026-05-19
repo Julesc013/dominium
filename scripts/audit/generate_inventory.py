@@ -294,7 +294,7 @@ def collect_stub_report(repo_root: Path):
                 classification = "acceptable_permanent_stub"
                 reason = "explicitly documented stub"
             elif rel.startswith(("engine/kernel/", "game/domain/simulation/", "game/world/",
-                                 "game/rule/", "game/rules/")):
+                                 "game/rule/", "game/domain/")):
                 classification = "forbidden_stub"
                 reason = "authoritative stub in core runtime"
             stubs.append({

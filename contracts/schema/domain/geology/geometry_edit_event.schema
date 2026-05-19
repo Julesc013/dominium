@@ -1,0 +1,32 @@
+SCHEMA: geo/geometry_edit_event.schema
+schema_id: dominium.schema.geo.geometry_edit_event
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical GEO-7 recorded geometry edit event.
+- Preserve process-only geometry mutation provenance for replay and compaction safety.
+
+NON-SEMANTICS:
+- This schema does not permit direct mutation outside process execution.
+- This schema does not imply renderer or mesh updates.
+
+REQUIRED SHAPE:
+record geometry_edit_event
+  required:
+    - edit_id: id
+    - tick: int
+    - operator_subject_id: id
+    - edit_kind: enum(remove|add|replace|cut)
+    - target_cell_keys: list<map>
+    - volume_amount: int
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - material_in: map
+    - material_out: map
+
+INVARIANTS:
+- every authoritative geometry mutation must emit a `geometry_edit_event`
+- target cell ordering must be deterministic
+- material_in and material_out lineage must remain traceable to MAT batch surfaces

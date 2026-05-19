@@ -17,7 +17,7 @@ EXTENSION POINTS: Extend via public headers and relevant `docs/architecture/**` 
 #include "domino/core/types.h"
 #include "domino/core/dom_time_core.h"
 #include "dominium/agents/agent_goal.h"
-#include "dominium/rules/agents/agent_planning_tasks.h"
+#include "dominium/agents/agent_planning_tasks.h"
 #include "dominium/agents/agent_authority.h"
 #include "dominium/physical/field_storage.h"
 

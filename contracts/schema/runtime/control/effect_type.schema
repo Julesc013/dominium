@@ -1,0 +1,22 @@
+SCHEMA: control/effect_type.schema
+schema_id: dominium.schema.control.effect_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical deterministic CTRL-8 effect type declaration artifact.
+
+REQUIRED SHAPE:
+record effect_type
+  required:
+    - schema_version: semver
+    - effect_type_id: id
+    - description: text
+    - applies_to: list[id]
+    - modifies: list[id]
+    - default_visibility_policy_id: id
+    - extensions: map
+
+INVARIANTS:
+- Effect types are registry-driven and deterministic.
+- Effect type metadata defines parameter targets and visibility defaults for epistemic-safe projection.

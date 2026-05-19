@@ -9,7 +9,7 @@ from typing import Dict, Tuple
 from meta_extensions_engine import normalize_extensions_tree
 
 
-SCHEMA_DIR_REL = os.path.join("contracts", "schemas")
+SCHEMA_DIR_REL = os.path.join("contracts", "schema")
 LEGACY_SCHEMA_DIR_REL = "schemas"
 VERSION_REGISTRY_REL = os.path.join("tools", "xstack", "compatx", "version_registry.json")
 

@@ -12,7 +12,7 @@ DETERMINISM: All ordering, admission, and hashing are stable.
 #include "domino/core/dom_time_core.h"
 #include "domino/sim/sim.h"
 
-#include "dominium/rules/scale/scale_collapse_expand.h"
+#include "dominium/scale/scale_collapse_expand.h"
 
 #include "dom_server_types.h"
 #include "dom_server_protocol.h"

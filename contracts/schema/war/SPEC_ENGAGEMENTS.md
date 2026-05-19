@@ -75,16 +75,16 @@ Rules:
 
 ## Integration points
 - LIFE pipelines: `schema/life/SPEC_DEATH_AND_ESTATE.md`
-- CIV1 logistics/production: `schema/civ/SPEC_LOGISTICS_FLOWS.md`,
-  `schema/civ/SPEC_PRODUCTION_CHAINS.md`
+- CIV1 logistics/production: `schema/domain/civilization/SPEC_LOGISTICS_FLOWS.md`,
+  `schema/domain/civilization/SPEC_PRODUCTION_CHAINS.md`
 - CIV2 legitimacy: `schema/governance/SPEC_LEGITIMACY.md`
 - Knowledge gating: `schema/knowledge/SPEC_SECRECY.md`,
   `docs/SPEC_EPISTEMIC_INTERFACE.md`
 - Event scheduling: `docs/SPEC_EVENT_DRIVEN_STEPPING.md`
 
 ## Implementation notes (CIV5-WAR2)
-- Canonical game implementation lives under `game/rules/war/` with public headers
-  in `game/include/dominium/rules/war/`.
+- Canonical game implementation lives under `game/domain/war/` with public headers
+  in `game/include/dominium/war/`.
 - Engagements resolve via `engagement_scheduler` using due-event scheduling.
 - Resolution is deterministic and consumes logistics through CIV1 stores only.
 - Casualties are generated via LIFE2 `life_handle_death` with provenance.

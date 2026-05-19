@@ -22,7 +22,7 @@ strict_fails_unexcepted_generated_root = true
 [canonical_directories]
 apps = { required = false, notes = "Target product entrypoint root; may not exist until convergence moves." }
 engine = { required = true, notes = "Deterministic engine substrate." }
-game = { required = true, notes = "Dominium game/rules/domain layer." }
+game = { required = true, notes = "Dominium game/rule/domain layer." }
 runtime = { required = false, notes = "Target AppShell/platform/render/runtime root." }
 contracts = { required = true, notes = "Machine-readable contracts, schemas, registries, capabilities, compatibility, replay, repo/distribution contracts." }
 content = { required = false, notes = "Target packs, profiles, fixtures, datasets, assets." }

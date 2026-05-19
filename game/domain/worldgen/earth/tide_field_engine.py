@@ -21,7 +21,7 @@ from .tide_phase_engine import (
 
 
 DEFAULT_TIDE_PARAMS_ID = "tide.earth_stub_default"
-TIDE_PARAMS_REGISTRY_REL = os.path.join("data", "registries", "tide_params_registry.json")
+TIDE_PARAMS_REGISTRY_REL = os.path.join("contracts", "registry", "tide_params_registry.json")
 EARTH_TIDE_ENGINE_VERSION = "EARTH3-4"
 
 
@@ -30,7 +30,7 @@ def _repo_root() -> str:
     current = here
     markers = (
         os.path.join("docs", "canon", "constitution_v1.md"),
-        os.path.join("data", "registries"),
+        os.path.join("contracts", "registry"),
         os.path.join("tools", "xstack"),
     )
     while True:

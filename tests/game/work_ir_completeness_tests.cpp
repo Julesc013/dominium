@@ -4,7 +4,7 @@ Work IR completeness tests (EXEC-AUDIT0).
 #include "dominium/execution/system_registry.h"
 #include "dominium/execution/work_graph_builder.h"
 #include "dominium/execution/access_set_builder.h"
-#include "dominium/rules/war/war_system.h"
+#include "dominium/war/war_system.h"
 
 #include <stdio.h>
 #include <string.h>

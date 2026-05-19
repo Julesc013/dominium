@@ -111,6 +111,6 @@ If a chosen provider implies required capabilities:
 
 - `schema/lib/provides_declaration.schema`
 - `schema/lib/provides_resolution.schema`
-- `schema/packs/pack_lock.schema`
-- `schema/packs/pack_compat_manifest.schema`
+- `schema/package/pack_lock.schema`
+- `schema/package/pack_compat_manifest.schema`
 - `docs/architecture/PACK_FORMAT.md`

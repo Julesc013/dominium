@@ -1157,7 +1157,7 @@ VALIDATION_SHIMS_PATH = "tools/validators/compatibility/shims/validation_shims.p
 VALIDATION_PIPELINE_DOC_PATH = "docs/testing/validation/VALIDATION_PIPELINE.md"
 VALIDATION_INVENTORY_DOC_PATH = "docs/audit/VALIDATION_INVENTORY.md"
 VALIDATION_FINAL_DOC_PATH = "docs/audit/VALIDATION_UNIFY_FINAL.md"
-VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schema/validator/validation_result.schema"
+VALIDATION_RESULT_SCHEMA_DOC_PATH = "contracts/schema/validation/validation_result.schema"
 VALIDATION_RESULT_SCHEMA_JSON_PATH = "contracts/schema/validation_result.schema.json"
 VALIDATION_SUITE_REGISTRY_PATH = "contracts/registry/validation_suite_registry.json"
 VALIDATION_ENGINE_PATH = "tools/validators/suite/validation_engine.py"
@@ -25369,9 +25369,9 @@ def _append_fluid_containment_invariant_findings(
     mass_rule_id = "INV-NO-DIRECT-MASS-MUTATION"
 
     required_paths = (
-        "contracts/schema/fluid/pressure_vessel_state.schema",
-        "contracts/schema/fluid/leak_state.schema",
-        "contracts/schema/fluid/burst_event.schema",
+        "contracts/schema/domain/fluids/pressure_vessel_state.schema",
+        "contracts/schema/domain/fluids/leak_state.schema",
+        "contracts/schema/domain/fluids/burst_event.schema",
         "contracts/schema/pressure_vessel_state.schema.json",
         "contracts/schema/leak_state.schema.json",
         "contracts/schema/burst_event.schema.json",
