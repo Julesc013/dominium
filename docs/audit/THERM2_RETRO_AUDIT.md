@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -32,7 +32,7 @@ Scope: THERM-2 phase change, curing, insulation, and exchanger interface prep
 ## Migration Plan
 
 1. Add canonical data contracts
-- `schema/materials/phase_profile.schema`
+- `schema/domain/materials/phase_profile.schema`
 - `schema/thermal/cure_state.schema`
 - `data/registries/material_phase_registry.json`
 

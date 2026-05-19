@@ -36,8 +36,8 @@ Baseline capture output:
 
 ## Schema Contract
 
-1. `schema/render/render_snapshot.schema`
-2. `schema/render/frame_summary.schema`
+1. `schema/runtime/render/render_snapshot.schema`
+2. `schema/runtime/render/frame_summary.schema`
 
 `render_snapshot` links RenderModel identity and output references.
 `frame_summary` is deterministic metadata used for regression checks.

@@ -26603,7 +26603,7 @@
     },
     {
       "category": "schemas",
-      "path": "schema/core/README.md",
+      "path": "schema/engine/README.core-migration.md",
       "recommended_action": "keep",
       "top_level": "schema"
     },
@@ -27461,19 +27461,19 @@
     },
     {
       "category": "schemas",
-      "path": "schema/mods/SPEC_MOD_COMPATIBILITY.md",
+      "path": "schema/package/modding/SPEC_MOD_COMPATIBILITY.md",
       "recommended_action": "keep",
       "top_level": "schema"
     },
     {
       "category": "schemas",
-      "path": "schema/mods/SPEC_MOD_GRAPH.md",
+      "path": "schema/package/modding/SPEC_MOD_GRAPH.md",
       "recommended_action": "keep",
       "top_level": "schema"
     },
     {
       "category": "schemas",
-      "path": "schema/mods/SPEC_MOD_MANIFEST.md",
+      "path": "schema/package/modding/SPEC_MOD_MANIFEST.md",
       "recommended_action": "keep",
       "top_level": "schema"
     },

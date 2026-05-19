@@ -99,7 +99,7 @@ def run(graph, repo_root, changed_files=None):
                                 rel_path,
                                 "game/domain/processes/process_run_engine.py",
                                 "contracts/schema/process/process_quality_record.schema",
-                                "contracts/schema/materials/batch_quality.schema",
+                                "contracts/schema/domain/materials/batch_quality.schema",
                             ],
                         )
                     )

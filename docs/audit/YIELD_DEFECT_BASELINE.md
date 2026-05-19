@@ -19,7 +19,7 @@ PROC-2 introduces first-class quality model artifacts and runtime integration:
 - `schema/process/yield_model.schema`
 - `schema/process/defect_model.schema`
 - `schema/process/process_quality_record.schema` (canonical RECORD)
-- `schema/materials/batch_quality.schema` updated for run-link traceability fields
+- `schema/domain/materials/batch_quality.schema` updated for run-link traceability fields
 
 Registries:
 

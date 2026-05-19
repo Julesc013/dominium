@@ -93519,7 +93519,7 @@
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
-      "path": "schema/core/README.md",
+      "path": "schema/engine/README.core-migration.md",
       "subsystem": "schema"
     },
     {
@@ -93981,19 +93981,19 @@
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
-      "path": "schema/mods/SPEC_MOD_COMPATIBILITY.md",
+      "path": "schema/package/modding/SPEC_MOD_COMPATIBILITY.md",
       "subsystem": "schema"
     },
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
-      "path": "schema/mods/SPEC_MOD_GRAPH.md",
+      "path": "schema/package/modding/SPEC_MOD_GRAPH.md",
       "subsystem": "schema"
     },
     {
       "category": "schema",
       "doc": "docs/schema/SCHEMA_INDEX.md",
-      "path": "schema/mods/SPEC_MOD_MANIFEST.md",
+      "path": "schema/package/modding/SPEC_MOD_MANIFEST.md",
       "subsystem": "schema"
     },
     {

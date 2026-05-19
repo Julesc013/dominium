@@ -689,8 +689,8 @@
       "severity": "FAIL",
       "scope_paths": [
         "docs/compatibility/DEGRADE_LADDERS.md",
-        "schema/compat/degrade_ladder.schema",
-        "schema/compat/fallback_map.schema",
+        "schema/compatibility/degrade_ladder.schema",
+        "schema/compatibility/fallback_map.schema",
         "contracts/registry/degrade_ladder_registry.json",
         "contracts/registry/capability_fallback_registry.json",
         "tools/validators/compatibility/negotiation/degrade_enforcer.py"
@@ -716,7 +716,7 @@
       "severity": "FAIL",
       "scope_paths": [
         "tools/validators/compatibility/capability_negotiation.py",
-        "schema/compat/negotiation_record.schema",
+        "schema/compatibility/negotiation_record.schema",
         "docs/compatibility/NEGOTIATION_HANDSHAKES.md",
         "tools/compat/tool_replay_negotiation.py"
       ],

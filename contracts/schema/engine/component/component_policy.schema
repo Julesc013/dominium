@@ -1,0 +1,29 @@
+SCHEMA: core/component_policy.schema
+schema_id: dominium.schema.core.component_policy
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic per-quantity component capacity/loss policy maps for QuantityBundle channels.
+
+REQUIRED SHAPE:
+record component_policy
+  required:
+    - schema_version: semver
+    - policy_id: id
+    - per_quantity_rules: map<quantity_id,rule>
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+rule:
+  optional:
+    - capacity_limit: fixed_point
+    - capacity_scale_permille: fixed_point
+    - loss_fraction: fixed_point
+    - transform_to_quantity_id: id
+    - preserve_conservation: bool
+    - extensions: map
+
+INVARIANTS:
+- Rule evaluation order is deterministic by sorted quantity_id key.
+- Loss transforms are explicit and auditable; no silent component disappearance.

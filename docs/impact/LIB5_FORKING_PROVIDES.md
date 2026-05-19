@@ -10,9 +10,9 @@ Replacement Target: legacy reference surface retained without current binding au
 
 ## Changed
 
-- `schema/lib/provides_declaration.schema`
-- `schema/lib/provides_resolution.schema`
-- `schema/lib/instance_manifest.schema`
+- `schema/package/provides/provides_declaration.schema`
+- `schema/package/provides/provides_resolution.schema`
+- `schema/profile/instance_manifest.schema`
 - `schema/instance.manifest.schema`
 - `schema/packs/pack_lock.schema`
 - `schema/packs/pack_compat_manifest.schema`

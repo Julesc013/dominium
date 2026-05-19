@@ -18,10 +18,10 @@ META-MODEL-2 upgrades FlowSystem from scalar-only channels to deterministic mult
 ## Schema and Registry Changes
 
 Added/updated schema contracts:
-- `schema/core/quantity_bundle.schema` (`1.0.0`)
-- `schema/core/component_policy.schema` (`1.0.0`)
-- `schema/core/flow_channel.schema` (`1.1.0` additive)
-- `schema/core/flow_transfer_event.schema` (`1.1.0` additive)
+- `schema/domain/flow/quantity_bundle.schema` (`1.0.0`)
+- `schema/engine/component/component_policy.schema` (`1.0.0`)
+- `schema/domain/flow/flow_channel.schema` (`1.1.0` additive)
+- `schema/domain/flow/flow_transfer_event.schema` (`1.1.0` additive)
 
 Added registry datasets:
 - `data/registries/quantity_bundle_registry.json`

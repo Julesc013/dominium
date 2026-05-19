@@ -1,0 +1,32 @@
+SCHEMA: materials/ag_node.schema
+schema_id: dominium.schema.materials.ag_node
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic AG node payloads.
+
+REQUIRED SHAPE:
+record ag_node
+  required:
+    - schema_version: semver
+    - node_id: id
+    - node_kind: enum(part|subassembly|connector|site_anchor)
+    - children: list<id>
+    - local_transform: deterministic_transform
+    - tags: list<string>
+    - extensions: map
+  optional:
+    - part_class_id: id|null
+    - material_requirements: list<map>
+    - planned_commitment_ids: list<id>
+
+record deterministic_transform
+  required:
+    - position_mm: map{x:int,y:int,z:int}
+    - orientation_mdeg: map{yaw:int,pitch:int,roll:int}
+    - scale_permille: int
+
+INVARIANTS:
+- child ids must be deterministic references only.
+- local_transform uses integer channels only.

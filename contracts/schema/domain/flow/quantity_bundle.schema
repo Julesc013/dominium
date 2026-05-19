@@ -1,0 +1,22 @@
+SCHEMA: core/quantity_bundle.schema
+schema_id: dominium.schema.core.quantity_bundle
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical ordered multi-quantity bundle declarations for coupled FlowSystem channels.
+
+REQUIRED SHAPE:
+record quantity_bundle
+  required:
+    - schema_version: semver
+    - bundle_id: id
+    - quantity_ids: ordered_list[id]
+    - description: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- `quantity_ids` ordering is canonical and replay-stable.
+- Bundle IDs are deterministic registry identities.
+- A legacy single-quantity flow is representable as bundle cardinality 1.

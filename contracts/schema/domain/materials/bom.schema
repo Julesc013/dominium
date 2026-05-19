@@ -1,0 +1,34 @@
+SCHEMA: materials/bom.schema
+schema_id: dominium.schema.materials.bom
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic bill-of-materials declarations for blueprint compilation.
+
+REQUIRED SHAPE:
+record bom
+  required:
+    - schema_version: semver
+    - bom_id: id
+    - description: string
+    - required_materials: list<material_requirement>
+    - version_introduced: semver
+    - extensions: map
+  optional:
+    - required_part_classes: list<part_class_requirement>
+    - tolerances: map
+
+record material_requirement
+  required:
+    - material_id_or_class: id
+    - quantity_mass_raw: int
+
+record part_class_requirement
+  required:
+    - part_class_id: id
+    - count: int
+
+INVARIANTS:
+- required_materials quantities must be non-negative integers.
+- required_part_classes counts must be non-negative integers.

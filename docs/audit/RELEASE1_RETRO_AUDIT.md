@@ -40,7 +40,7 @@ Replacement Target: release-pinned artifact manifest audit archive after RELEASE
   - binary hashes
   - endpoint descriptor hashes
   - build ids
-- `schema/lib/artifact_manifest.schema` defines content-addressed LIB artifacts.
+- `schema/package/artifact/artifact_manifest.schema` defines content-addressed LIB artifacts.
 - `archive/generated/dist/manifest.json` is a legacy distribution inventory surface with:
   - file hashes
   - bundle id

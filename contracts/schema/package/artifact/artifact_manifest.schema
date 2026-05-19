@@ -1,0 +1,49 @@
+SCHEMA: lib/artifact_manifest.schema
+schema_id: dominium.schema.lib.artifact_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the LIB-4 universal manifest envelope for shareable non-pack, non-binary artifacts.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+NON-SEMANTICS:
+- Artifact identity does not depend on a specific install root.
+- Artifact load compatibility does not imply silent migration.
+- Topology/physics compatibility gates load policy only; it does not change simulation law.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- semver: semantic version string `major.minor.patch`.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record artifact_manifest
+  required:
+    - artifact_id: id
+    - artifact_kind_id: tag
+    - format_version: semver
+    - content_hash: sha256
+    - required_contract_ranges: map
+    - degrade_mode_id: tag
+    - migration_refs: [id]
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - required_capabilities: [id]
+    - compatible_topology_profiles: [id]
+    - compatible_physics_profiles: [id]
+    - notes: map
+
+INVARIANTS:
+- content_hash must verify against the canonical serialized artifact payload or declared sidecar payload reference.
+- required_contract_ranges gate load compatibility and must not be silently ignored.
+- degrade_mode_id must be one of the registered artifact degrade modes.
+- migration_refs declare explicit migration hooks only; migration remains explicit invoke-only.
+- deterministic_fingerprint is computed from canonical serialized content.

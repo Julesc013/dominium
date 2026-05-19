@@ -1,0 +1,22 @@
+SCHEMA: materials/reenactment_descriptor.schema
+schema_id: dominium.schema.materials.reenactment_descriptor
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Persist deterministic replay inputs required for future materialization reenactment.
+
+REQUIRED SHAPE:
+record reenactment_descriptor
+  required:
+    - schema_version: semver
+    - structure_id: id
+    - tick_range: map
+    - ag_nodes_involved: list<id>
+    - batch_ids: list<id>
+    - seed_reference: string
+    - extensions: map
+
+INVARIANTS:
+- descriptor contents must be sufficient to reconstruct deterministic micro materialization decisions.
+- seed_reference must remain stable for equivalent process inputs.

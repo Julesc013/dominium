@@ -307,10 +307,10 @@ Schemas are the authoritative data-shape contracts. Start here:
 - `schema/appshell/refusal_code_registry.schema`
 - `schema/appshell/command_descriptor.schema`
 - `schema/appshell/tui_panel_descriptor.schema`
-- `schema/diag/repro_bundle_manifest.schema`
-- `schema/diag/repro_bundle_index.schema`
-- `schema/diag/replay_request.schema`
-- `schema/diag/replay_result.schema`
+- `schema/runtime/diagnostics/repro_bundle_manifest.schema`
+- `schema/runtime/diagnostics/repro_bundle_index.schema`
+- `schema/runtime/diagnostics/replay_request.schema`
+- `schema/runtime/diagnostics/replay_result.schema`
 
 
 

@@ -238,5 +238,5 @@ Native binary status:
 
 Current blockers:
 
-- `invariant_units_present` fails because the canonical unit table does not declare `unit.mass_energy.stub` and the validator treats `contracts/schema/materials/unit.schema` as a `unit.schema` token.
+- `invariant_units_present` fails because the canonical unit table does not declare `unit.mass_energy.stub` and the validator treats `contracts/schema/domain/materials/unit.schema` as a `unit.schema` token.
 - `inv_repox_rules` fails on broad RepoX drift that remains outside safe POST-CONVERGE-10E remediation scope.

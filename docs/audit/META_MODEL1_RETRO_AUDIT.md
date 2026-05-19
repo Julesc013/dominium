@@ -37,7 +37,7 @@ Scope: Constitutive model migration candidates
 
 ## Migration plan
 
-1. Introduce canonical model schemas + registries (`schema/models/*`, `data/registries/*`).
+1. Introduce canonical model schemas + registries (`schema/domain/modeling/*`, `data/registries/*`).
 2. Add deterministic model evaluation runtime (`src/models/model_engine.py`) with cache and budget handling.
 3. Bridge process runtime via `process.model_evaluate_tick` and output process families.
 4. Migrate existing inline response curves incrementally behind registered model IDs.

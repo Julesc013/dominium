@@ -24,7 +24,7 @@ Replacement Target: legacy reference surface retained without current binding au
   - Intent/dispatch refusal paths include authority-context checks in client/server wiring.
   - TestX coverage present: `test_intent_without_authority_refused`, `test_survival_no_console`, `test_survival_no_freecam`, `test_server_rejects_capability_escalation`.
 - Phase 3 (Affordance/material foundation): Complete.
-  - Schemas present: `schema/material/material.schema`, `schema/tool/tool_capability.schema`, `schema/process/process_requirement.schema`.
+  - Schemas present: `schema/domain/materials/material.schema`, `schema/tool/tool_capability.schema`, `schema/process/process_requirement.schema`.
   - Registries present: `data/registries/materials.json`, `data/registries/tool_capabilities.json`, `data/registries/process_requirements.json`.
   - Required structural process ids present: gather/craft/build/consume baseline set.
 - Phase 4 (Minimal survival vertical slice): Complete (scaffolding level).

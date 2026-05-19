@@ -549,13 +549,13 @@ Source: `tools/review/tool_repo_inventory.py`
 | `data/regression/cap_neg_full_baseline.json` | `legacy` | `engine` | `CAP-NEG` |
 | `schema/appshell/command_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/appshell/tui_panel_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
-| `schema/compat/endpoint_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
-| `schema/compat/negotiation_record.schema` | `validation` | `engine` | `CAP-NEG` |
+| `schema/compatibility/endpoint_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
+| `schema/compatibility/negotiation_record.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/control/negotiation_request.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/control/negotiation_result.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/ipc/ipc_endpoint_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
-| `schema/lib/product_build_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
-| `schema/materials/reenactment_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
+| `schema/install/product_build_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
+| `schema/domain/materials/reenactment_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/mobility/mobility_reenactment_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/modding/pack_trust_descriptor.schema` | `validation` | `engine` | `CAP-NEG` |
 | `schema/runtime.descriptor.schema` | `validation` | `engine` | `CAP-NEG` |

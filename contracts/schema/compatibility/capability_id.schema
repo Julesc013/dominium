@@ -1,0 +1,24 @@
+SCHEMA: compat/capability_id.schema
+schema_id: dominium.schema.compat.capability_id
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a stable capability identifier contract for interoperability negotiation.
+
+NON-SEMANTICS:
+- Capability ids are declarative only.
+- Capability ids do not change law or truth semantics by themselves.
+
+REQUIRED SHAPE:
+record capability_id
+  required:
+    - schema_version: tag
+    - capability_id: id
+    - description: text
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+INVARIANTS:
+- unknown capability ids are ignored deterministically by default negotiation policy
+- capability ids must remain stable once published

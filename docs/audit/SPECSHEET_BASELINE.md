@@ -21,11 +21,11 @@ Replacement Target: legacy reference surface retained without current binding au
   - `INV-SPECSHEET-OPTIONAL`
 
 ## Schemas
-- `schema/specs/spec_sheet.schema`
-- `schema/specs/spec_type.schema`
-- `schema/specs/tolerance_policy.schema`
-- `schema/specs/compliance_check.schema`
-- `schema/specs/compliance_result.schema`
+- `schema/validation/specs/spec_sheet.schema`
+- `schema/validation/specs/spec_type.schema`
+- `schema/validation/specs/tolerance_policy.schema`
+- `schema/validation/specs/compliance_check.schema`
+- `schema/validation/specs/compliance_result.schema`
 
 CompatX JSON mirrors:
 - `schemas/spec_sheet.schema.json`

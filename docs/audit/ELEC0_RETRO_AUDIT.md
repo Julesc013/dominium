@@ -18,7 +18,7 @@ Observed power-like substrate hooks already present:
 - [data/registries/constitutive_model_registry.json](/d:/Projects/Dominium/dominium/data/registries/constitutive_model_registry.json)
   - Includes electrical constitutive stub: `model.elec.load.phasor.default`.
   - Uses `model_type.elec_load_phasor_stub` and emits `derived.elec.power_factor`.
-- [schema/core/flow_channel.schema](/d:/Projects/Dominium/dominium/schema/core/flow_channel.schema) and [schema/core/quantity_bundle.schema](/d:/Projects/Dominium/dominium/schema/core/quantity_bundle.schema)
+- [schema/domain/flow/flow_channel.schema](/d:/Projects/Dominium/dominium/schema/domain/flow/flow_channel.schema) and [schema/domain/flow/quantity_bundle.schema](/d:/Projects/Dominium/dominium/schema/domain/flow/quantity_bundle.schema)
   - Already support bundle-capable flow channels and `bundle.power_phasor`.
 - [data/registries/component_capacity_policy_registry.json](/d:/Projects/Dominium/dominium/data/registries/component_capacity_policy_registry.json)
   - Contains `comp_capacity.power_phasor_stub`.

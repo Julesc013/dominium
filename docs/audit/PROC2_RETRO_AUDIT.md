@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -16,7 +16,7 @@ Scope: Yield/defect quality outcomes for ProcessDefinition and ProcessRun paths.
 - `CHEM-2` already contains deterministic quality outcomes through:
   - `src/models/model_engine.py` (`model_type.chem_yield_factor`, `model_type.chem_contamination_risk`)
   - `src/chem/process_run_engine.py` (`build_batch_quality_row`)
-  - `schema/materials/batch_quality.schema`
+  - `schema/domain/materials/batch_quality.schema`
   - `data/registries/yield_model_registry.json`
 - Existing quality fields in truth rows:
   - `quality_grade`

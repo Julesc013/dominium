@@ -1,0 +1,22 @@
+SCHEMA: materials/quality_distribution.schema
+schema_id: dominium.schema.materials.quality_distribution
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define quality/defect distribution model identifiers for material batches and classes.
+
+REQUIRED SHAPE:
+record quality_distribution
+  required:
+    - schema_version: semver
+    - quality_distribution_model_id: id
+    - description: text
+    - parameters: map
+    - tags: list<string>
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- Model IDs are stable, deterministic references.

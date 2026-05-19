@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -28,7 +28,7 @@ Scope: temporal semantics constitution baseline (`TEMP-0`)
 ## Findings
 | Area | Location | Classification | Notes |
 |---|---|---|---|
-| Schedule domain declaration | `schema/core/schedule.schema`, `schemas/schedule.schema.json`, `src/core/schedule/schedule_engine.py`, `src/signals/aggregation/aggregation_engine.py` | needs migration to TemporalDomain | Existing schedule rows are canonical-tick based but did not explicitly declare `temporal_domain_id`; migrate with default `time.canonical_tick` while preserving semantics. |
+| Schedule domain declaration | `schema/engine/schedule/schedule.schema`, `schemas/schedule.schema.json`, `src/core/schedule/schedule_engine.py`, `src/signals/aggregation/aggregation_engine.py` | needs migration to TemporalDomain | Existing schedule rows are canonical-tick based but did not explicitly declare `temporal_domain_id`; migrate with default `time.canonical_tick` while preserving semantics. |
 | Wall-clock dependencies | `tools/xstack/sessionx/common.py`, multiple non-authoritative tooling paths (`tools/*`) | compliant (non-authoritative) | Wall-clock calls are present in tooling/report metadata, not in authoritative tick advancement; keep forbidden in authoritative runtime paths. |
 | Ad-hoc warp behavior | interior flow substeps (`src/interior/compartment_flow_engine.py`) | compliant with migration note | Deterministic fixed substeps already used; formalize under explicit substep policy registry to avoid drift. |
 | Future receipt causality | SIG receipt generation (`src/signals/transport/transport_engine.py`) | compliant | Receipt acquisition tick is bound to canonical current tick; no future-receipt dependency pattern found in authoritative paths. |

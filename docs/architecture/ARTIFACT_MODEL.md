@@ -83,7 +83,7 @@ No silent migration is permitted.
 
 ## Related Contracts
 
-- `schema/lib/artifact_manifest.schema`
-- `schema/lib/artifact_reference.schema`
+- `schema/package/artifact/artifact_manifest.schema`
+- `schema/package/artifact/artifact_reference.schema`
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/BUNDLE_MODEL.md`

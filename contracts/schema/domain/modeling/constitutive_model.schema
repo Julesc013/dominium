@@ -1,0 +1,32 @@
+SCHEMA: models/constitutive_model.schema
+schema_id: dominium.schema.models.constitutive_model
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical constitutive model definition for deterministic response evaluation.
+
+REQUIRED SHAPE:
+record constitutive_model
+  required:
+    - schema_version: semver
+    - model_id: id
+    - model_type_id: id
+    - description: text
+    - supported_tiers: list[enum(macro|meso|micro)]
+    - input_signature: list[input_ref]
+    - output_signature: list[output_ref]
+    - cost_units: int
+    - cache_policy_id: id
+    - uses_rng_stream: bool
+    - deterministic_fingerprint: sha256
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+  optional:
+    - rng_stream_name: id
+
+INVARIANTS:
+- Evaluation order and model identity are deterministic.
+- RNG usage is explicit and named when enabled.
+- Model outputs must be process-mediated.

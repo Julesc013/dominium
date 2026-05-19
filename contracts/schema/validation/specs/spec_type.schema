@@ -1,0 +1,20 @@
+SCHEMA: specs/spec_type.schema
+schema_id: dominium.schema.specs.spec_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Declares deterministic spec type metadata and parameter schema binding.
+
+REQUIRED SHAPE:
+record spec_type
+  required:
+    - schema_version: semver
+    - spec_type_id: id
+    - description: string
+    - parameter_schema_id: id
+    - extensions: map
+
+INVARIANTS:
+- Spec type ids are stable and must not be repurposed.
+- Parameter typing is resolved through parameter_schema_id.

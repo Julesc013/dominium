@@ -162,7 +162,7 @@ rules = [
 
 [routing.models]
 rules = [
-  "schema -> contracts/schema/models/",
+  "schema -> contracts/schema/domain/modeling/",
   "registry -> contracts/registry/models/",
   "asset -> content/assets/models/",
   "markdown -> docs/domains/models/",

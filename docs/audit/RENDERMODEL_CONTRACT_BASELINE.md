@@ -1,4 +1,4 @@
-﻿Status: DERIVED
+Status: DERIVED
 Last Reviewed: 2026-03-16
 Supersedes: none
 Superseded By: none
@@ -15,12 +15,12 @@ Status: Baseline complete (Perceived->Render contract, deterministic resolver, n
 
 ### Schemas (v1.0.0)
 
-1. `schema/render/render_model.schema`
-2. `schema/render/renderable.schema`
-3. `schema/render/render_primitive.schema`
-4. `schema/render/procedural_material.schema`
-5. `schema/render/representation_rule.schema`
-6. `schema/render/material_template.schema`
+1. `schema/runtime/render/render_model.schema`
+2. `schema/runtime/render/renderable.schema`
+3. `schema/runtime/render/render_primitive.schema`
+4. `schema/runtime/render/procedural_material.schema`
+5. `schema/runtime/render/representation_rule.schema`
+6. `schema/runtime/render/material_template.schema`
 
 All six are now in strict canonical schema format with required-shape and invariant sections.
 

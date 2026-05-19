@@ -1,0 +1,22 @@
+SCHEMA: materials/dimension.schema
+schema_id: dominium.schema.materials.dimension
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical dimension vectors as integer exponents over base dimensions.
+
+REQUIRED SHAPE:
+record dimension
+  required:
+    - schema_version: semver
+    - dimension_id: id
+    - base_exponents: map(id -> integer)
+    - description: text
+    - version_introduced: semver
+    - deprecated: bool
+    - extensions: map
+
+INVARIANTS:
+- base_exponents keys reference declared base dimensions.
+- Exponents are deterministic integers.

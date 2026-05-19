@@ -65,7 +65,7 @@ contract so a regression is routed instead of silently tolerated.
   material to `contracts/templates/`, examples to
   `content/examples/templates/`, docs to `docs/development/templates/`, payloads
   to `content/templates/`.
-- `models/`: schemas to `contracts/schema/models/`, registries to
+- `models/`: schemas to `contracts/schema/domain/modeling/`, registries to
   `contracts/registry/models/`, assets to `content/assets/models/`, domain data
   to `content/domains/models/`, docs to `docs/domains/models/`.
 - `modding/`: schemas to `contracts/schema/modding/`, package/capability law to

@@ -13,7 +13,7 @@ Scope: FlowSystem quantity representation, coupled-quantity approximations, migr
 
 ## 1) Current FlowChannel Quantity Usage
 
-Observed canonical `FlowSystem` channel shape in [schema/core/flow_channel.schema](../../schema/core/flow_channel.schema):
+Observed canonical `FlowSystem` channel shape in [schema/domain/flow/flow_channel.schema](../../schema/domain/flow/flow_channel.schema):
 
 - `quantity_id` is required and singular.
 - No first-class multi-component quantity bundle declaration exists.
@@ -24,7 +24,7 @@ Observed runtime in [src/core/flow/flow_engine.py](../../src/core/flow/flow_engi
 - `tick_flow_channels()` executes scalar transfer (`transferred_amount`, `lost_amount`) only.
 - Deterministic ordering is by `channel_id` and stable tie behavior is already present.
 
-Observed event schema in [schema/core/flow_transfer_event.schema](../../schema/core/flow_transfer_event.schema):
+Observed event schema in [schema/domain/flow/flow_transfer_event.schema](../../schema/domain/flow/flow_transfer_event.schema):
 
 - Emits only scalar `transferred_amount` and `lost_amount`.
 - No per-component transfer/loss map.

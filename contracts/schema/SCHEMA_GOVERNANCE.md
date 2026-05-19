@@ -42,7 +42,7 @@ Each schema MUST declare its class explicitly:
   - `schema/world/**` for game world data.
   - `schema/save/**` for saves.
   - `schema/runtime/network/**` for network payloads.
-  - `schema/mods/**` for mod manifests and compatibility.
+  - `schema/package/modding/**` for mod manifests and compatibility.
   - `schema/law/**` for law and policy formats.
 
 **Rationale**

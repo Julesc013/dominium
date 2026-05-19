@@ -18,13 +18,13 @@ This baseline establishes deterministic constitutive model runtime plumbing with
 ## Delivered Artifacts
 
 - Schemas:
-  - `schema/models/constitutive_model.schema`
-  - `schema/models/model_type.schema`
-  - `schema/models/model_binding.schema`
-  - `schema/models/input_ref.schema`
-  - `schema/models/output_ref.schema`
-  - `schema/models/cache_policy.schema`
-  - `schema/models/model_evaluation_result.schema`
+  - `schema/domain/modeling/constitutive_model.schema`
+  - `schema/domain/modeling/model_type.schema`
+  - `schema/domain/modeling/model_binding.schema`
+  - `schema/domain/modeling/input_ref.schema`
+  - `schema/domain/modeling/output_ref.schema`
+  - `schema/domain/modeling/cache_policy.schema`
+  - `schema/domain/modeling/model_evaluation_result.schema`
 - JSON schema projections:
   - `schemas/constitutive_model.schema.json`
   - `schemas/model_type.schema.json`

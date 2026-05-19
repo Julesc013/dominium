@@ -10,8 +10,8 @@ Replacement Target: legacy reference surface retained without current binding au
 
 ## Changed
 
-- `schema/lib/save_manifest.schema`
-- `schema/lib/migration_event.schema`
+- `schema/save/save_manifest.schema`
+- `schema/repo/migration/migration_event.schema`
 - `schema/save.manifest.schema`
 - `tools/package/libraries/save/__init__.py`
 - `tools/package/libraries/save/save_validator.py`

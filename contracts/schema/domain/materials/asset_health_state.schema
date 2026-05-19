@@ -1,0 +1,24 @@
+SCHEMA: materials/asset_health_state.schema
+schema_id: dominium.schema.materials.asset_health_state
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define canonical deterministic health state records for tracked assets.
+
+REQUIRED SHAPE:
+record asset_health_state
+  required:
+    - schema_version: semver
+    - asset_id: id
+    - failure_mode_ids: list<id>
+    - accumulated_wear: map<failure_mode_id,fixed_raw>
+    - hazard_state: map
+    - maintenance_backlog: fixed_raw
+    - last_inspection_tick: int
+    - last_maintenance_tick: int
+    - extensions: map
+
+INVARIANTS:
+- failure_mode_ids must resolve through failure mode registry.
+- accumulated_wear keys must be subset of failure_mode_ids.

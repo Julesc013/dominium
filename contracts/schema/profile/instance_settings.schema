@@ -1,0 +1,46 @@
+SCHEMA: lib/instance_settings.schema
+schema_id: dominium.schema.lib.instance_settings
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define deterministic instance settings carried by LIB-2 instance manifests.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- bool: canonical true|false value.
+- path_ref: relative or logical path string.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record instance_settings
+  required:
+    - renderer_mode: tag
+    - ui_mode_default: tag
+    - allow_read_only_fallback: bool
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - data_root: path_ref
+    - active_profiles: [id]
+    - active_modpacks: [id]
+    - tick_budget_policy_id: id
+    - compute_profile_id: id
+    - sandbox_policy_ref: id
+    - update_channel: tag
+    - created_at: tag
+    - last_used_at: tag
+    - notes: map
+
+INVARIANTS:
+- renderer_mode must be null, `software`, or `hardware_stub`.
+- ui_mode_default must be `cli`, `tui`, or `rendered`.
+- allow_read_only_fallback governs explicit degrade-to-read-only behavior only.
+- deterministic_fingerprint is computed from canonical serialized content.

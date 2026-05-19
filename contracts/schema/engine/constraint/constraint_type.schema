@@ -1,0 +1,21 @@
+SCHEMA: core/constraint_type.schema
+schema_id: dominium.schema.core.constraint_type
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define reusable deterministic constraint type contracts for ConstraintComponent.
+
+REQUIRED SHAPE:
+record constraint_type
+  required:
+    - schema_version: semver
+    - constraint_type_id: id
+    - description: string
+    - applicable_entity_kinds: list[string]
+    - enforcement_tier: enum(macro|meso|micro)
+    - extensions: map
+
+INVARIANTS:
+- Constraint types are data-defined and registry-driven.
+- Constraint enforcement tier guides where strict enforcement is expected.

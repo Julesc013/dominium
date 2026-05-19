@@ -70,7 +70,7 @@ The 10D CTest blockers were:
 | `dict | None` annotations | `tools/setup/setup_cli.py` | Python 3.9 compatibility blocker | fixed | postponed annotation evaluation; no behavior change |
 | `verify_release_manifest` exception | `tools/mvp/ecosystem_verify_common.py` | generated manifest absence surfaced as crash | fixed | now returns deterministic refused result with blocking error |
 | `unit.mass_energy.stub` | `contracts/schema/quantity.schema.json` | unit registry drift | classified | not changed in this task |
-| `unit.schema` | `contracts/schema/materials/unit.schema` | false-positive unit-token/path-string drift | classified | not changed in this task |
+| `unit.schema` | `contracts/schema/domain/materials/unit.schema` | false-positive unit-token/path-string drift | classified | not changed in this task |
 
 ## Changes Made
 
@@ -114,7 +114,7 @@ Canonical `verify` also produced `setup.exe`, `launcher.exe`, `client.exe`, and 
 
 ## Remaining Blockers
 
-- `invariant_units_present` fails because the unit validation table does not declare `unit.mass_energy.stub`, and it treats `contracts/schema/materials/unit.schema` as a `unit.schema` reference.
+- `invariant_units_present` fails because the unit validation table does not declare `unit.mass_energy.stub`, and it treats `contracts/schema/domain/materials/unit.schema` as a `unit.schema` reference.
 - `inv_repox_rules` fails on broad existing RepoX drift. This includes missing generated distribution descriptors, canonical index drift, missing AppShell/embodiment/projection surfaces, stale generated audit evidence, rule map gaps, and root-structure drift.
 - `ctest --preset verify --output-on-failure` exceeds a 40-minute shell timeout because slow AuditX tests are part of the full test set, even though the focused AuditX tests now pass.
 

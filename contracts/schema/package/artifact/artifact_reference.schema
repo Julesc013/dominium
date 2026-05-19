@@ -1,0 +1,33 @@
+SCHEMA: lib/artifact_reference.schema
+schema_id: dominium.schema.lib.artifact_reference
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define a deterministic reference to a shareable artifact by stable id or content hash.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- No field removal or semantic reuse without a MAJOR version bump.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- sha256: lowercase hex SHA-256 digest.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record artifact_reference
+  required:
+    - expected_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+  optional:
+    - artifact_id: id
+    - content_hash: sha256
+    - notes: map
+
+INVARIANTS:
+- At least one of `artifact_id` or `content_hash` must be present.
+- expected_hash pins the caller-visible artifact identity and must match the resolved content hash.
+- deterministic_fingerprint is computed from canonical serialized content.

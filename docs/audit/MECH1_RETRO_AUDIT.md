@@ -49,7 +49,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 ### 4) Connection semantics are currently tag-level only
 - Evidence:
-  - `schema/materials/connection_type.schema` models declarative tags.
+  - `schema/domain/materials/connection_type.schema` models declarative tags.
   - `data/registries/connection_type_registry.json` currently stores tag-like connection entries.
 - Impact:
   - No canonical stiffness/max-load/rotation/translation support contract for deterministic structural evaluation.

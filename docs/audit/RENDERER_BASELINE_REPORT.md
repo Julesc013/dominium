@@ -8,7 +8,7 @@ Replacement Target: canon-aligned documentation set for convergence and release 
 
 # Renderer Baseline Report (RND-2)
 
-Date: 2026-02-26  
+Date: 2026-02-26
 Status: Baseline complete (null + software renderers, derived snapshot pipeline)
 
 ## 1) Implemented Renderer Capabilities
@@ -43,8 +43,8 @@ Status: Baseline complete (null + software renderers, derived snapshot pipeline)
 
 Added strict schemas:
 
-1. `schema/render/render_snapshot.schema`
-2. `schema/render/frame_summary.schema`
+1. `schema/runtime/render/render_snapshot.schema`
+2. `schema/runtime/render/frame_summary.schema`
 
 Snapshot payload includes:
 

@@ -8,8 +8,8 @@ Replacement Target: legacy reference surface retained without current binding au
 
 # CHEM-2 Retro Consistency Audit
 
-Status: AUDIT  
-Last Updated: 2026-03-05  
+Status: AUDIT
+Last Updated: 2026-03-05
 Scope: CHEM-2 processing/refining/catalyst/quality preflight over current CHEM-1 + MAT + process registries.
 
 ## 1) Existing Batch Quality Mechanisms
@@ -57,7 +57,7 @@ Assessment:
 
 1. Introduce canonical processing schemas:
    - `schema/chem/process_equipment_profile.schema`
-   - `schema/materials/batch_quality.schema`
+   - `schema/domain/materials/batch_quality.schema`
    - `schema/chem/process_run_state.schema`
 2. Extend reaction/rate registries with processing stubs and yield model registry.
 3. Add constitutive model types:

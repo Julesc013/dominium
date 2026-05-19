@@ -109,8 +109,8 @@ If a chosen provider implies required capabilities:
 
 ## Related Contracts
 
-- `schema/lib/provides_declaration.schema`
-- `schema/lib/provides_resolution.schema`
+- `schema/package/provides/provides_declaration.schema`
+- `schema/package/provides/provides_resolution.schema`
 - `schema/package/pack_lock.schema`
 - `schema/package/pack_compat_manifest.schema`
 - `docs/architecture/PACK_FORMAT.md`

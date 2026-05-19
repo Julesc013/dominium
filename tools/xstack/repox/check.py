@@ -1152,7 +1152,7 @@ VIRTUAL_PATHS_COMMON_PATH = "tools/release/virtual_paths_common.py"
 VIRTUAL_PATHS_BASELINE_PATH = "docs/audit/VIRTUAL_PATHS_BASELINE.md"
 VIRTUAL_PATHS_REPORT_PATH = "archive/generated/audit/virtual_paths_report.json"
 INSTALL_DISCOVERY_ENGINE_PATH = "runtime/package/install_discovery_engine.py"
-INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/lib/install_registry.schema"
+INSTALL_DISCOVERY_SCHEMA_PATH = "contracts/schema/install/install_registry.schema"
 INSTALL_DISCOVERY_TOOL_PATH = "tools/release/tool_run_install_discovery.py"
 INSTALL_DISCOVERY_COMMON_PATH = "tools/release/install_discovery_common.py"
 INSTALL_DISCOVERY_BASELINE_PATH = "docs/audit/INSTALL_DISCOVERY_BASELINE.md"
@@ -17077,7 +17077,7 @@ def _append_time_constitution_invariant_findings(
             )
 
     schedule_domain_required_tokens = {
-        "contracts/schema/core/schedule.schema": (
+        "contracts/schema/engine/schedule/schedule.schema": (
             "temporal_domain_id",
         ),
         "tools/validators/core/schedule/schedule_engine.py": (
@@ -29219,7 +29219,7 @@ def _append_chem_processing_invariant_findings(
     runtime_rel = "tools/xstack/sessionx/process_runtime.py"
     reaction_registry_rel = "contracts/registry/reaction_profile_registry.json"
     yield_registry_rel = "contracts/registry/yield_model_registry.json"
-    quality_schema_rel = "contracts/schema/materials/batch_quality.schema"
+    quality_schema_rel = "contracts/schema/domain/materials/batch_quality.schema"
     provenance_registry_rel = "contracts/registry/provenance_classification_registry.json"
 
     reaction_payload, reaction_error = _load_json_object(repo_root, reaction_registry_rel)
@@ -32755,8 +32755,8 @@ def _append_store_gc_findings(
     required_files = (
         ("docs/audit/STORE_GC0_RETRO_AUDIT.md", "STORE-GC retro audit is required", graph_rule_id),
         ("docs/lib/STORE_INTEGRITY_AND_GC.md", "store integrity and GC doctrine is required", graph_rule_id),
-        ("contracts/schema/lib/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
-        ("contracts/schema/lib/gc_report.schema", "gc_report schema is required", policy_rule_id),
+        ("contracts/schema/runtime/storage/gc_policy.schema", "gc_policy schema is required", policy_rule_id),
+        ("contracts/schema/runtime/storage/gc_report.schema", "gc_report schema is required", policy_rule_id),
         ("contracts/schema/gc_policy.schema.json", "compiled gc_policy schema is required", policy_rule_id),
         ("contracts/schema/gc_report.schema.json", "compiled gc_report schema is required", policy_rule_id),
         ("contracts/registry/gc_policy_registry.json", "gc policy registry is required", policy_rule_id),
@@ -33430,7 +33430,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PACK-LOCK",
                 "pack_lock_hash",
             ),
-            "contracts/schema/lib/instance_manifest.schema": (
+            "contracts/schema/profile/instance_manifest.schema": (
                 "pack_lock_hash",
                 "profile_bundle_hash",
             ),
@@ -33448,7 +33448,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-INSTANCE-USES-PROFILE-BUNDLE",
                 "profile_bundle_hash",
             ),
-            "contracts/schema/lib/instance_manifest.schema": (
+            "contracts/schema/profile/instance_manifest.schema": (
                 "profile_bundle_hash",
                 "instance_kind",
             ),
@@ -33466,7 +33466,7 @@ def _append_instance_manifest_invariant_findings(
                 "INV-SAVES-NOT-EMBEDDED-IN-INSTANCE",
                 "save_refs",
             ),
-            "contracts/schema/lib/instance_manifest.schema": (
+            "contracts/schema/profile/instance_manifest.schema": (
                 "save_refs",
                 "last_opened_save_id",
             ),
@@ -33527,7 +33527,7 @@ def _append_save_manifest_invariant_findings(
                 "INV-SAVE-MANIFEST-REQUIRED",
                 "save.manifest.json",
             ),
-            "contracts/schema/lib/save_manifest.schema": (
+            "contracts/schema/save/save_manifest.schema": (
                 "save_format_version",
                 "migration_chain",
             ),
@@ -33546,7 +33546,7 @@ def _append_save_manifest_invariant_findings(
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
             ),
-            "contracts/schema/lib/save_manifest.schema": (
+            "contracts/schema/save/save_manifest.schema": (
                 "universe_contract_bundle_hash",
                 "pack_lock_hash",
                 "allow_read_only_open",
@@ -33567,7 +33567,7 @@ def _append_save_manifest_invariant_findings(
                 "INV-NO-SILENT-MIGRATION",
                 "explicit invoke-only",
             ),
-            "contracts/schema/lib/migration_event.schema": (
+            "contracts/schema/repo/migration/migration_event.schema": (
                 "migration application remains explicit invoke-only",
                 "tick_applied",
             ),
@@ -33630,7 +33630,7 @@ def _append_artifact_manifest_invariant_findings(
                 "artifact_id",
                 "content_hash",
             ),
-            "contracts/schema/lib/artifact_manifest.schema": (
+            "contracts/schema/package/artifact/artifact_manifest.schema": (
                 "artifact_id",
                 "artifact_kind_id",
                 "content_hash",
@@ -33751,7 +33751,7 @@ def _append_forking_provides_invariant_findings(
                 "resolve.deterministic_lowest_pack_id",
                 "All provider selections are logged",
             ),
-            "contracts/schema/lib/provides_resolution.schema": (
+            "contracts/schema/package/provides/provides_resolution.schema": (
                 "resolution_policy_id",
                 "chosen_pack_id",
                 "deterministic_fingerprint",
@@ -34644,9 +34644,9 @@ def _append_migration_lifecycle_findings(
     required_files = (
         ("docs/audit/MIGRATION_LIFECYCLE0_RETRO_AUDIT.md", "migration lifecycle retro audit is required", policy_rule_id),
         ("docs/compatibility/MIGRATION_LIFECYCLE_MODEL.md", "migration lifecycle doctrine is required", policy_rule_id),
-        ("contracts/schema/compat/migration_policy.schema", "migration policy schema is required", policy_rule_id),
-        ("contracts/schema/compat/migration_chain.schema", "migration chain schema is required", policy_rule_id),
-        ("contracts/schema/compat/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
+        ("contracts/schema/compatibility/migration_policy.schema", "migration policy schema is required", policy_rule_id),
+        ("contracts/schema/compatibility/migration_chain.schema", "migration chain schema is required", policy_rule_id),
+        ("contracts/schema/compatibility/migration_decision_record.schema", "migration decision record schema is required", policy_rule_id),
         ("contracts/schema/migration_policy.schema.json", "compiled migration policy schema is required", policy_rule_id),
         ("contracts/schema/migration_chain.schema.json", "compiled migration chain schema is required", policy_rule_id),
         ("contracts/schema/migration_decision_record.schema.json", "compiled migration decision record schema is required", policy_rule_id),
@@ -34739,7 +34739,7 @@ def _append_bundle_invariant_findings(
                 "`bundle_hash` is computed from the canonical ordered item-hash projection only.",
                 "filesystem timestamps do not affect `bundle_hash`",
             ),
-            "contracts/schema/lib/bundle_manifest.schema": (
+            "contracts/schema/package/bundle/bundle_manifest.schema": (
                 "included_artifacts ordering is canonical",
                 "bundle_hash is computed from the canonical ordered item projection",
                 "deterministic_fingerprint",

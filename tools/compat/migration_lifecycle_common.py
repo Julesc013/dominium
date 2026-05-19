@@ -438,9 +438,9 @@ def migration_lifecycle_violations(repo_root: str) -> list[dict]:
     required_paths = (
         (RETRO_AUDIT_DOC_REL, "migration lifecycle retro audit is required", RULE_POLICY),
         (DOCTRINE_DOC_REL, "migration lifecycle doctrine is required", RULE_POLICY),
-        ("contracts/schema/compat/migration_policy.schema", "migration policy schema is required", RULE_POLICY),
-        ("contracts/schema/compat/migration_chain.schema", "migration chain schema is required", RULE_POLICY),
-        ("contracts/schema/compat/migration_decision_record.schema", "migration decision record schema is required", RULE_POLICY),
+        ("contracts/schema/compatibility/migration_policy.schema", "migration policy schema is required", RULE_POLICY),
+        ("contracts/schema/compatibility/migration_chain.schema", "migration chain schema is required", RULE_POLICY),
+        ("contracts/schema/compatibility/migration_decision_record.schema", "migration decision record schema is required", RULE_POLICY),
         ("contracts/schema/migration_policy.schema.json", "compiled migration policy schema is required", RULE_POLICY),
         ("contracts/schema/migration_chain.schema.json", "compiled migration chain schema is required", RULE_POLICY),
         ("contracts/schema/migration_decision_record.schema.json", "compiled migration decision record schema is required", RULE_POLICY),

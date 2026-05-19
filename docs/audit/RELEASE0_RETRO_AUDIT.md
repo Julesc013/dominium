@@ -125,10 +125,10 @@ There is not yet a single naming constitution for:
 
 Current manifest-like surfaces related to release identity include:
 
-- `schema/lib/install_manifest.schema`
-- `schema/lib/artifact_manifest.schema`
-- `schema/lib/product_build_descriptor.schema`
-- `schema/diag/repro_bundle_manifest.schema`
+- `schema/install/install_manifest.schema`
+- `schema/package/artifact/artifact_manifest.schema`
+- `schema/install/product_build_descriptor.schema`
+- `schema/runtime/diagnostics/repro_bundle_manifest.schema`
 - `schema/distribution/build_manifest.schema`
 
 Current state:

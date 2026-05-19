@@ -49,7 +49,7 @@ No root moves, deletes, renames, reference rewrites, feature work, product proof
 | Unit/token | Source | Classification | Change |
 | --- | --- | --- | --- |
 | `unit.mass_energy.stub` | `contracts/schema/quantity.schema.json`, `data/registries/quantity_registry.json`, `tools/xstack/sessionx/universe_physics.py` | valid provisional unit missing from machine-readable unit registry | added to `data/registries/unit_registry.json` |
-| `unit.schema` | path fragment `contracts/schema/materials/unit.schema` | stale tokenization / false-positive path fragment | `tests/contract/unit_annotation_validation.py` now ignores unit-like tokens preceded by `/` or `\` |
+| `unit.schema` | path fragment `contracts/schema/domain/materials/unit.schema` | stale tokenization / false-positive path fragment | `tests/contract/unit_annotation_validation.py` now ignores unit-like tokens preceded by `/` or `\` |
 
 The unit validator now accepts declared units from the canonical policy table and the machine-readable unit registry. No fake units were added, and no invariant was weakened.
 

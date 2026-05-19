@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "explicit invoke-only",
         "Silent save upgrades are forbidden.",
     ),
-    "contracts/schema/lib/migration_event.schema": (
+    "contracts/schema/repo/migration/migration_event.schema": (
         "migration application remains explicit invoke-only",
         "tick_applied",
         "migration_id",

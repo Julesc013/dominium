@@ -89,12 +89,12 @@ This topology flag is a storage declaration only. It is not a gameplay/runtime m
 
 ## Related Contracts
 
-- `schema/lib/store_root.schema`
-- `schema/lib/install_manifest.schema`
-- `schema/lib/instance_manifest.schema`
-- `schema/lib/save_manifest.schema`
-- `schema/lib/artifact_manifest.schema`
-- `schema/lib/artifact_reference.schema`
+- `schema/install/store_root.schema`
+- `schema/install/install_manifest.schema`
+- `schema/profile/instance_manifest.schema`
+- `schema/save/save_manifest.schema`
+- `schema/package/artifact/artifact_manifest.schema`
+- `schema/package/artifact/artifact_reference.schema`
 - `docs/architecture/SAVE_MODEL.md`
 - `docs/architecture/INSTALL_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`

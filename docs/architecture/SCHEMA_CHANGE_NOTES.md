@@ -23,43 +23,43 @@ Template:
   Migration: <required migration steps or "none">
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/bundle_manifest.schema; schema/lib/bundle_item.schema
+  Schema(s): schema/package/bundle/bundle_manifest.schema; schema/package/bundle/bundle_item.schema
   Change: add LIB-6 deterministic bundle manifest and ordered bundle item contracts for export/import tooling
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-BUNDLES-DETERMINISTIC; INV-IMPORT-VALIDATES-HASHES
   Migration: legacy `bundle.container.json` remains a compatibility surface until LIB-6 export/import engines fully replace it
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/provides_declaration.schema; schema/lib/provides_resolution.schema; schema/lib/instance_manifest.schema; schema/instance.manifest.schema; schema/package/pack_lock.schema; schema/package/pack_compat_manifest.schema; schema/pack_manifest.schema
+  Schema(s): schema/package/provides/provides_declaration.schema; schema/package/provides/provides_resolution.schema; schema/profile/instance_manifest.schema; schema/instance.manifest.schema; schema/package/pack_lock.schema; schema/package/pack_compat_manifest.schema; schema/pack_manifest.schema
   Change: add LIB-5 fork namespacing plus deterministic provides declarations and resolution records across instance and pack-lock contracts
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-FORKS-MUST-NAMESPACE; INV-PROVIDES-RESOLUTION-DETERMINISTIC; INV-STRICT-REFUSES-AMBIGUITY
   Migration: legacy reverse-DNS pack ids remain loadable; normalize provider declarations and instance/lock resolution records through `tools/package/libraries/provides/provider_resolution.py`
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/artifact_manifest.schema; schema/lib/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/materials/blueprint.schema; schema/system/system_template.schema; schema/process/process_definition.schema
+  Schema(s): schema/package/artifact/artifact_manifest.schema; schema/package/artifact/artifact_reference.schema; schema/profile/profile_bundle.schema; schema/domain/materials/blueprint.schema; schema/system/system_template.schema; schema/process/process_definition.schema
   Change: add LIB-4 shareable artifact manifest/reference contracts plus compatible payload envelope fields for profile bundles, blueprints, system templates, and process definitions
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-SHAREABLE-ARTIFACTS-MUST-HAVE-MANIFEST; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-ARTIFACT-LOAD-VALIDATED
   Migration: existing payload schemas remain loadable; LIB-4 export/store flows canonicalize the artifact envelope or sidecar through `tools/package/libraries/artifact/artifact_validator.py`
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/save_manifest.schema; schema/lib/migration_event.schema; schema/save.manifest.schema
+  Schema(s): schema/save/save_manifest.schema; schema/repo/migration/migration_event.schema; schema/save.manifest.schema
   Change: upgrade save manifest contracts for LIB-3 pinned contract bundles, explicit migration lineage, and read-only fallback policy
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-SAVE-MANIFEST-REQUIRED; INV-SAVE-PINS-CONTRACTS; INV-NO-SILENT-MIGRATION
   Migration: normalize legacy save manifests through `tools/package/libraries/save/save_validator.py`; legacy adapter field `contract_bundle_hash` remains available for compatibility
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/instance_manifest.schema; schema/lib/instance_settings.schema; schema/instance.manifest.schema
+  Schema(s): schema/profile/instance_manifest.schema; schema/profile/instance_settings.schema; schema/instance.manifest.schema
   Change: upgrade instance manifest contracts for LIB-2 instance kinds, save associations, portable embedded builds, and explicit pack/profile binding
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTANCE-USES-PACK-LOCK; INV-INSTANCE-USES-PROFILE-BUNDLE; INV-SAVES-NOT-EMBEDDED-IN-INSTANCE
   Migration: normalize legacy instance manifests through `tools/package/libraries/instance/instance_validator.py`; legacy adapter fields remain available for existing launcher/setup flows
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/install_manifest.schema; schema/lib/product_build_descriptor.schema; schema/lib/instance_manifest.schema; schema/install.manifest.schema
+  Schema(s): schema/install/install_manifest.schema; schema/install/product_build_descriptor.schema; schema/profile/instance_manifest.schema; schema/install.manifest.schema
   Change: upgrade install manifest contracts for LIB-1 multi-install build selection, per-product binary descriptors, and instance build pinning
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-INSTALL-MANIFEST-REQUIRED; INV-INSTALL-NO-ABSOLUTE-PATH-DEPENDENCY; INV-BINARY-HASH-MATCHES-MANIFEST
   Migration: regenerate or explicitly refuse provisional LIB-0 install manifests; legacy install.manifest.json remains the compatibility adapter
 
 - Date: 2026-03-11
-  Schema(s): schema/lib/store_root.schema; schema/lib/install_manifest.schema; schema/lib/instance_manifest.schema; schema/lib/save_manifest.schema
+  Schema(s): schema/install/store_root.schema; schema/install/install_manifest.schema; schema/profile/instance_manifest.schema; schema/save/save_manifest.schema
   Change: add LIB-0 content-store root, install, instance, and save manifest contracts for CAS-backed linked/portable flows
   Invariants: INV-SCHEMA-VERSION-BUMP; INV-ARTIFACTS-CONTENT-ADDRESSED; INV-NO-PATH-BASED-SEMANTICS; INV-PORTABLE-MODE-SELF-CONTAINED
   Migration: none (new schemas; existing top-level install/instance/save schemas remain compatibility adapters)

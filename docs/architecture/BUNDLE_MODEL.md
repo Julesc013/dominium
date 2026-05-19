@@ -57,7 +57,7 @@ Instance bundles are the LIB-2 portable interchange primitive.
 ## Related Contracts
 
 - `schema/bundle.container.schema`
-- `schema/lib/artifact_manifest.schema`
+- `schema/package/artifact/artifact_manifest.schema`
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
 - `docs/architecture/ARTIFACT_MODEL.md`

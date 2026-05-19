@@ -14,7 +14,7 @@ REQUIRED_TOKENS = {
         "pack_lock_hash",
         "profile_bundle_hash",
     ),
-    "contracts/schema/lib/instance_manifest.schema": (
+    "contracts/schema/profile/instance_manifest.schema": (
         "pack_lock_hash",
         "profile_bundle_hash",
         "save_refs",

@@ -1,0 +1,52 @@
+SCHEMA: lib/bundle_manifest.schema
+schema_id: dominium.schema.lib.bundle_manifest
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Define the canonical LIB-6 bundle manifest for deterministic export/import.
+
+STABILITY GUARANTEES:
+- Required fields MUST exist.
+- Records are open maps; unknown fields MUST be preserved.
+- Breaking field removal or semantic reuse requires a MAJOR version bump.
+
+NON-SEMANTICS:
+- Bundle manifests describe transport containers only; they do not bypass install, instance, save, pack, or capability law.
+- Bundle manifests do not imply that any import is compatible.
+
+CONVENTIONS:
+- id: stable namespaced string; opaque.
+- tag: namespaced string; unknown values allowed.
+- sha256: lowercase SHA-256 hex string.
+- map: open key/value map; unknown keys preserved.
+
+REQUIRED SHAPE:
+record bundle_manifest
+  required:
+    - bundle_id: id
+    - bundle_kind: tag
+    - created_by_build_id: id
+    - contract_registry_hash: sha256
+    - included_artifacts: [bundle_item]
+    - included_hashes: [sha256]
+    - bundle_hash: sha256
+    - deterministic_fingerprint: sha256
+    - extensions: map
+
+TYPE DEFINITIONS:
+record bundle_item
+  required:
+    - item_kind: tag
+    - item_id_or_hash: tag
+    - relative_path: tag
+    - content_hash: sha256
+    - deterministic_fingerprint: sha256
+  optional:
+    - extensions: map
+
+INVARIANTS:
+- included_artifacts ordering is canonical and must be lexicographic by `relative_path`.
+- included_hashes must appear in the same order as `included_artifacts[*].content_hash`.
+- bundle_hash is computed from the canonical ordered item projection, not filesystem metadata.
+- deterministic_fingerprint is computed from canonical serialized manifest content with blank fingerprint fields.

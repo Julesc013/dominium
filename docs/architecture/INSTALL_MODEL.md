@@ -20,8 +20,8 @@ Scope: install identity, product build selection, store linkage, and multi-insta
 Install identity is carried by:
 
 - `schema/install.manifest.schema` for the legacy/runtime-compatible install manifest.
-- `schema/lib/install_manifest.schema` for the LIB-1 hash-pinned install descriptor.
-- `schema/lib/product_build_descriptor.schema` for per-product binary + endpoint descriptor identity.
+- `schema/install/install_manifest.schema` for the LIB-1 hash-pinned install descriptor.
+- `schema/install/product_build_descriptor.schema` for per-product binary + endpoint descriptor identity.
 
 ## Rules
 
@@ -79,4 +79,4 @@ Descriptor sidecars may live adjacent to binaries under `bin/`.
 - `docs/architecture/CONTENT_AND_STORAGE_MODEL.md`
 - `docs/architecture/INSTANCE_MODEL.md`
 - `docs/audit/INSTALL_MANIFEST_BASELINE.md`
-- `schema/lib/store_root.schema`
+- `schema/install/store_root.schema`

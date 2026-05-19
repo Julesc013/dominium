@@ -1,0 +1,21 @@
+SCHEMA: models/input_ref.schema
+schema_id: dominium.schema.models.input_ref
+schema_version: 1.0.0
+stability: core
+
+PURPOSE:
+- Canonical constitutive model input dependency descriptor.
+
+REQUIRED SHAPE:
+record input_ref
+  required:
+    - schema_version: semver
+    - input_kind: enum(field|flow_quantity|hazard|state_machine|spec_param|material_property|derived)
+    - input_id: id
+    - extensions: map
+  optional:
+    - selector: text
+
+INVARIANTS:
+- Inputs identify declared substrate dependencies.
+- Selector semantics are deterministic and side-effect free.

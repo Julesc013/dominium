@@ -121,12 +121,12 @@ Deferred schema buckets:
 
 - `contracts/schema/core/`
 - `contracts/schema/lib/`
-- `contracts/schema/compat/`
-- `contracts/schema/diag/`
-- `contracts/schema/models/`
-- `contracts/schema/mods/`
-- `contracts/schema/render/`
-- `contracts/schema/specs/`
+- `contracts/schema/compatibility/`
+- `contracts/schema/runtime/diagnostics/`
+- `contracts/schema/domain/modeling/`
+- `contracts/schema/package/modding/`
+- `contracts/schema/runtime/render/`
+- `contracts/schema/validation/specs/`
 - remaining already-canonical-or-ambiguous category roots requiring a focused
   `SCHEMA-CANON-02` pass
 

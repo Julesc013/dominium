@@ -16,8 +16,8 @@ Scope: portable save manifests, pinned contract bundles, migration lineage, and 
 Save identity is carried by:
 
 - `schema/save.manifest.schema` for the legacy/runtime-compatible save manifest adapter.
-- `schema/lib/save_manifest.schema` for the LIB-3 canonical save descriptor.
-- `schema/lib/migration_event.schema` for explicit save migration lineage records.
+- `schema/save/save_manifest.schema` for the LIB-3 canonical save descriptor.
+- `schema/repo/migration/migration_event.schema` for explicit save migration lineage records.
 
 ## Required LIB-3 Identity
 

@@ -909,13 +909,13 @@ ownership rules and boundary enforcement.
 
 
 
-| `schema/mods/SPEC_MOD_MANIFEST.md` | schema | game, client, server, tools | core |
+| `schema/package/modding/SPEC_MOD_MANIFEST.md` | schema | game, client, server, tools | core |
 
 
-| `schema/mods/SPEC_MOD_GRAPH.md` | schema | game, client, server, tools | core |
+| `schema/package/modding/SPEC_MOD_GRAPH.md` | schema | game, client, server, tools | core |
 
 
-| `schema/mods/SPEC_MOD_COMPATIBILITY.md` | schema | game, client, server, tools | core |
+| `schema/package/modding/SPEC_MOD_COMPATIBILITY.md` | schema | game, client, server, tools | core |
 
 
 | `schema/ecs/SPEC_COMPONENT_SCHEMA.md` | schema | engine, game, tools | core |

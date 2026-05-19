@@ -16,8 +16,8 @@ Scope: runnable instance manifests, install/build selection, save associations, 
 Instance manifests are defined by:
 
 - `schema/instance.manifest.schema` for legacy/runtime-compatible fields.
-- `schema/lib/instance_manifest.schema` for the LIB-2 canonical instance contract.
-- `schema/lib/instance_settings.schema` for deterministic instance settings.
+- `schema/profile/instance_manifest.schema` for the LIB-2 canonical instance contract.
+- `schema/profile/instance_settings.schema` for deterministic instance settings.
 
 ## Required LIB-2 Identity
 

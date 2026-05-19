@@ -42,10 +42,10 @@ Reference layout:
 
 Added LIB-0 schemas:
 
-- `schema/lib/store_root.schema`
-- `schema/lib/install_manifest.schema`
-- `schema/lib/instance_manifest.schema`
-- `schema/lib/save_manifest.schema`
+- `schema/install/store_root.schema`
+- `schema/install/install_manifest.schema`
+- `schema/profile/instance_manifest.schema`
+- `schema/save/save_manifest.schema`
 
 Compatibility stance:
 
@@ -81,10 +81,10 @@ Relevant invariants/docs upheld:
 
 Contract/schema impact:
 
-- changed: `schema/lib/store_root.schema`
-- changed: `schema/lib/install_manifest.schema`
-- changed: `schema/lib/instance_manifest.schema`
-- changed: `schema/lib/save_manifest.schema`
+- changed: `schema/install/store_root.schema`
+- changed: `schema/install/install_manifest.schema`
+- changed: `schema/profile/instance_manifest.schema`
+- changed: `schema/save/save_manifest.schema`
 - unchanged: existing top-level install/instance/save schema ids and versions
 
 Validation runs:
